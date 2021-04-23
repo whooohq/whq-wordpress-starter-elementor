@@ -24,6 +24,7 @@ Beside the [official WordPress developer resources](https://developer.wordpress.
 * Start coding.
 
 ## Rules and Guidelines
+* Code and comment in english. The site itself (front-end) could be targeted to spanish, portuguese or english speakers, that's fine. But your code and comments must always be written in english, so anyone from any country can understand and work over your code too.
 * You must follow [WordPress codings standars](https://make.wordpress.org/core/handbook/best-practices/coding-standards/). That's why we include the .editorconfig file. Use it. There's support for it on many code editors and IDEs. [Check it out](https://editorconfig.org/). Make your code editor or IDE honor the included [EditorConfig](https://editorconfig.org/) rules included in this kit.
 * You must use the included site builder plugin.
 * You can't add third party plugins **withous asking us first**. Any third party plugin not included in this repository must be approved by us first. This is mandatory. Failure to follow this rule will result on your work to be rejected by us.
