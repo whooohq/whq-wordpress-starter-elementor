@@ -23,7 +23,7 @@ Beside the [official WordPress developer resources](https://developer.wordpress.
 * Update any development plugin included. Then enable the ones you want to use during development.
 * Start coding.
 
-## Don't forget
+## Rules and Guidelines
 * You must follow [WordPress codings standars](https://make.wordpress.org/core/handbook/best-practices/coding-standards/). That's why we include the .editorconfig file. Use it. There's support for it on many code editors and IDEs. [Check it out](https://editorconfig.org/). Make your code editor or IDE honor the included [EditorConfig](https://editorconfig.org/) rules included in this kit.
 * You must use the included site builder plugin.
 * You can't add third party plugins **withous asking us first**. Any third party plugin not included in this repository must be approved by us first. This is mandatory. Failure to follow this rule will result on your work to be rejected by us.
