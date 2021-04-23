@@ -1,49 +1,82 @@
 <?php
-/*
-Plugin Name:	WHQ Custom Functionality
-Plugin URI:		https://whooohq.com
-Description:	Custom functionality for this site.
-Version:		1.0.0
-Author:			WhoooHQ
-Author URI:		https://whooohq.com
-License:		GPL-2.0+
-License URI:	http://www.gnu.org/licenses/gpl-2.0.txt
 
-This plugin is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or
-any later version.
+/**
+ * The plugin bootstrap file
+ *
+ * This file is read by WordPress to generate the plugin information in the plugin
+ * admin area. This file also includes all of the dependencies used by the plugin,
+ * registers the activation and deactivation functions, and defines a function
+ * that starts the plugin.
+ *
+ * @link              https://whooohq.com
+ * @since             1.0.0
+ * @package           Whq_Custom_Functionality
+ *
+ * @wordpress-plugin
+ * Plugin Name:       WHQ Custom Functionality
+ * Plugin URI:        https://whooohq.com
+ * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Version:           1.0.0
+ * Author:            WhoooHQ
+ * Author URI:        https://whooohq.com
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain:       whq-custom-functionality
+ * Domain Path:       /languages
+ */
 
-This plugin is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with This plugin. If not, see {URI to Plugin License}.
-*/
-
+// If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-add_action( 'wp_enqueue_scripts', 'custom_enqueue_files' );
 /**
- * Loads <list assets here>.
+ * Currently plugin version.
+ * Start at version 1.0.0 and use SemVer - https://semver.org
+ * Rename this for your plugin and update it as you release new versions.
  */
-function custom_enqueue_files() {
-	// if this is not the front page, abort.
-	// if ( ! is_front_page() ) {
-	// 	return;
-	// }
+define( 'WHQ_CUSTOM_FUNCTIONALITY_VERSION', '1.0.0' );
 
-	// loads a CSS file in the head.
-	// wp_enqueue_style( 'highlightjs-css', plugin_dir_url( __FILE__ ) . 'assets/css/style.css' );
-
-	/**
-	 * loads JS files in the footer.
-	 */
-	// wp_enqueue_script( 'highlightjs', plugin_dir_url( __FILE__ ) . 'assets/js/highlight.pack.js', '', '9.9.0', true );
-
-	// wp_enqueue_script( 'highlightjs-init', plugin_dir_url( __FILE__ ) . 'assets/js/highlight-init.js', '', '1.0.0', true );
+/**
+ * The code that runs during plugin activation.
+ * This action is documented in includes/class-whq-custom-functionality-activator.php
+ */
+function activate_whq_custom_functionality() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-whq-custom-functionality-activator.php';
+	Whq_Custom_Functionality_Activator::activate();
 }
+
+/**
+ * The code that runs during plugin deactivation.
+ * This action is documented in includes/class-whq-custom-functionality-deactivator.php
+ */
+function deactivate_whq_custom_functionality() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-whq-custom-functionality-deactivator.php';
+	Whq_Custom_Functionality_Deactivator::deactivate();
+}
+
+register_activation_hook( __FILE__, 'activate_whq_custom_functionality' );
+register_deactivation_hook( __FILE__, 'deactivate_whq_custom_functionality' );
+
+/**
+ * The core plugin class that is used to define internationalization,
+ * admin-specific hooks, and public-facing site hooks.
+ */
+require plugin_dir_path( __FILE__ ) . 'includes/class-whq-custom-functionality.php';
+
+/**
+ * Begins execution of the plugin.
+ *
+ * Since everything within the plugin is registered via hooks,
+ * then kicking off the plugin from this point in the file does
+ * not affect the page life cycle.
+ *
+ * @since    1.0.0
+ */
+function run_whq_custom_functionality() {
+
+	$plugin = new Whq_Custom_Functionality();
+	$plugin->run();
+
+}
+run_whq_custom_functionality();

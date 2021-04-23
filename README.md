@@ -17,7 +17,7 @@
 Beside the [official WordPress developer resources](https://developer.wordpress.org/), this is what you should know to begin:
 
 * Download this repository (don't clone it). Download it using the button: Code -> Download Zip. Use this files in your new project.
-* If you need to add custom functionality for the site you are building, that cannot be done using the included site builder, then use the custom plugin included: **whq-custom-functionality**. Don't use a child theme nor modify the included main theme. Keep your custom code inside the included custom plugin.
+* If you need to add custom functionality for the site you are building, that cannot be done using the included site builder, then use the custom plugin included: **whq-custom-functionality** (based on [wppb](https://wppb.me/)). Don't use a child theme nor modify the included main theme. Keep your custom code inside the included custom plugin.
 * Use your local dev enviroment to develop your new site. If you don't have a local dev enviroment, we recommend [Local WP](https://localwp.com/).
 * Configure your local WordPress instance with [WP_DEBUG enabled](https://developer.wordpress.org/themes/getting-started/setting-up-a-development-environment/#wp_debug).
 * Update any development plugin included. Then enable the ones you want to use during development.
