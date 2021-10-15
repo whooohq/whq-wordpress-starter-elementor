@@ -8,12 +8,12 @@ use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Image_Size;
 use \Elementor\Group_Control_Typography;
-use Elementor\Plugin;
-use \Elementor\Scheme_Typography;
+use \Elementor\Plugin;
+use \Elementor\Icons_Manager;
+use \Elementor\Core\Schemes\Typography;
 use \Elementor\Widget_Base;
 use \Elementor\Utils;
 
-//use \Essential_Addons_Elementor\Classes\Helper;
 use \Essential_Addons_Elementor\Pro\Classes\Helper;
 
 
@@ -100,31 +100,10 @@ class Post_List extends Widget_Base
                 [
                     'label' => __('Layout Type', 'essential-addons-elementor'),
                     'type' => Controls_Manager::SELECT,
-                    'options' => [
-                        'default' => __('Default (Pro)', 'essential-addons-elementor'),
-                        'preset-2' => __('Preset 2 (Pro)', 'essential-addons-elementor'),
-                        'preset-3' => __('Preset 3 (Pro)', 'essential-addons-elementor'),
-                        'advanced' => __('Advanced (Pro)', 'essential-addons-elementor'),
-                    ],
+                    'options' => $this->get_template_list_for_dropdown(),
                     'default' => 'default',
                 ]
             );
-
-//            $this->add_control(
-//                'eael_post_list_layout_preset',
-//                [
-//                    'label' => __('Preset', 'essential-addons-elementor'),
-//                    'type' => Controls_Manager::SELECT,
-//                    'options' => [
-//                        'preset-1' => __('Preset 1', 'essential-addons-elementor'),
-//                        'preset-2' => __('Preset 2', 'essential-addons-elementor'),
-//                    ],
-//                    'default' => 'preset-1',
-//                    'condition' => [
-//                        'eael_post_list_layout_type' => ['default','preset-2','preset-3'],
-//                    ],
-//                ]
-//            );
 
             $this->add_control(
                 'eael_enable_ajax_post_search',
@@ -286,33 +265,9 @@ class Post_List extends Widget_Base
                 'label' => __('Featured Post', 'essential-addons-elementor'),
                 'label_block' => true,
                 'type' => 'eael-select2',
-                'source_type' => 'post',
+                'source_name' => 'post_type',
+                'source_type' => 'any',
                 'condition' => [
-                    'eael_post_list_featured_area' => 'yes',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'featured_page_divider',
-            [
-                'type' => Controls_Manager::RAW_HTML,
-                'label_block' => false,
-                'raw' => '<br>',
-                'condition' => [
-                    'post_type' => 'page',
-                ],
-            ]
-        );
-        $this->add_control(
-            'featured_page',
-            [
-                'label' => __('Featured Page', 'essential-addons-elementor'),
-                'type' => 'eael-select2',
-                'label_block' => true,
-                'source_type' => 'page',
-                'condition' => [
-                    'post_type' => 'page',
                     'eael_post_list_featured_area' => 'yes',
                 ],
             ]
@@ -489,7 +444,7 @@ class Post_List extends Widget_Base
         $this->add_control(
             'eael_post_list_post_feature_image',
             [
-                'label' => __('Show Featured Image', 'essential-addons-elementor'),
+                'label' => __('Show Image', 'essential-addons-elementor'),
                 'type' => Controls_Manager::SWITCHER,
                 'default' => 'yes',
                 'label_on' => __('Yes', 'essential-addons-elementor'),
@@ -580,7 +535,7 @@ class Post_List extends Widget_Base
         $this->add_control(
             'eael_post_list_excerpt_expanison_indicator',
             [
-                'label' => esc_html__('Expanison Indicator', 'essential-addons-elementor'),
+                'label' => esc_html__('Expansion Indicator', 'essential-addons-elementor'),
                 'type' => Controls_Manager::TEXT,
                 'dynamic' => [ 'active' => true ],
                 'label_block' => false,
@@ -645,6 +600,162 @@ class Post_List extends Widget_Base
                 'label_on' => __('Yes', 'essential-addons-elementor'),
                 'label_off' => __('No', 'essential-addons-elementor'),
                 'return_value' => 'yes',
+            ]
+        );
+
+        $this->end_controls_section();
+
+        /**
+         * Content Tab: Links
+         */
+
+        $this->start_controls_section(
+            'section_post_list_links',
+            [
+                'label' => __('Links', 'essential-addons-elementor'),
+                'conditions' => [
+                    'relation' => 'or',
+                    'terms' => [
+                       [
+                          'name' => 'eael_post_list_post_feature_image',
+                          'operator' => '==',
+                          'value' => 'yes',
+                       ],
+                       [
+                          'name' => 'eael_post_list_post_title',
+                          'operator' => '==',
+                          'value' => 'yes',
+                       ],
+                       [
+                          'name' => 'eael_show_read_more_button',
+                          'operator' => '==',
+                          'value' => 'yes',
+                       ],
+                       
+                    ],
+                 ],
+            ]
+        );
+
+        $this->add_control(
+            'image_link',
+            [
+                'label' => __('Image', 'essential-addons-elementor'),
+                'type' => Controls_Manager::HEADING,
+                'condition' => [
+                    'eael_post_list_post_feature_image' => 'yes',
+                    'eael_post_list_layout_type' => 'advanced',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'image_link_nofollow',
+            [
+                'label' => __('No Follow', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => __('Yes', 'essential-addons-elementor'),
+                'label_off' => __('No', 'essential-addons-elementor'),
+                'return_value' => 'true',
+                'condition' => [
+                    'eael_post_list_post_feature_image' => 'yes',
+                    'eael_post_list_layout_type' => 'advanced',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'image_link_target_blank',
+            [
+                'label' => __('Target Blank', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => __('Yes', 'essential-addons-elementor'),
+                'label_off' => __('No', 'essential-addons-elementor'),
+                'return_value' => 'true',
+                'condition' => [
+                    'eael_post_list_post_feature_image' => 'yes',
+                    'eael_post_list_layout_type' => 'advanced',
+                ],
+                'separator' => 'after',
+            ]
+        );
+
+        $this->add_control(
+            'title_link',
+            [
+                'label' => __('Title', 'essential-addons-elementor'),
+                'type' => Controls_Manager::HEADING,
+                'condition' => [
+                    'eael_post_list_post_title' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'title_link_nofollow',
+            [
+                'label' => __('No Follow', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => __('Yes', 'essential-addons-elementor'),
+                'label_off' => __('No', 'essential-addons-elementor'),
+                'return_value' => 'true',
+                'condition' => [
+                    'eael_post_list_post_title' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'title_link_target_blank',
+            [
+                'label' => __('Target Blank', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => __('Yes', 'essential-addons-elementor'),
+                'label_off' => __('No', 'essential-addons-elementor'),
+                'return_value' => 'true',
+                'condition' => [
+                    'eael_post_list_post_title' => 'yes',
+                ],
+                'separator' => 'after',
+            ]
+        );
+
+        $this->add_control(
+            'read_more_link',
+            [
+                'label' => __('Read More', 'essential-addons-elementor'),
+                'type' => Controls_Manager::HEADING,
+                'condition' => [
+                    'eael_show_read_more_button' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'read_more_link_nofollow',
+            [
+                'label' => __('No Follow', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => __('Yes', 'essential-addons-elementor'),
+                'label_off' => __('No', 'essential-addons-elementor'),
+                'return_value' => 'true',
+                'condition' => [
+                    'eael_show_read_more_button' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'read_more_link_target_blank',
+            [
+                'label' => __('Target Blank', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => __('Yes', 'essential-addons-elementor'),
+                'label_off' => __('No', 'essential-addons-elementor'),
+                'return_value' => 'true',
+                'condition' => [
+                    'eael_show_read_more_button' => 'yes',
+                ],
             ]
         );
 
@@ -822,7 +933,7 @@ class Post_List extends Widget_Base
             [
                 'name' => 'eael_section_post_list_topbar_tag_typo',
                 'label' => __('Tag Typography', 'essential-addons-elementor'),
-                'scheme' => Scheme_Typography::TYPOGRAPHY_3,
+                'scheme' => Typography::TYPOGRAPHY_3,
                 'selector' => '{{WRAPPER}} .eael-post-list-header .header-title .title',
             ]
         );
@@ -839,7 +950,7 @@ class Post_List extends Widget_Base
             [
                 'name' => 'eael_section_post_list_topbar_category_typo',
                 'label' => __('Typography', 'essential-addons-elementor'),
-                'scheme' => Scheme_Typography::TYPOGRAPHY_3,
+                'scheme' => Typography::TYPOGRAPHY_3,
                 'selector' => '{{WRAPPER}} .eael-post-list-header .post-categories a',
             ]
         );
@@ -930,15 +1041,15 @@ class Post_List extends Widget_Base
                 'options' => [
                     'left' => [
                         'title' => __('Left', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-left',
+                        'icon' => 'eicon-text-align-left',
                     ],
                     'center' => [
                         'title' => __('Center', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-center',
+                        'icon' => 'eicon-text-align-center',
                     ],
                     'right' => [
                         'title' => __('Right', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-right',
+                        'icon' => 'eicon-text-align-right',
                     ],
                 ],
                 'default' => 'left',
@@ -947,6 +1058,26 @@ class Post_List extends Widget_Base
                 ],
             ]
         );
+
+	    $this->add_control(
+		    'eael_section_post_list_nav_icon_size',
+		    [
+			    'label' => esc_html__('Icon Size', 'essential-addons-elementor'),
+			    'type' => Controls_Manager::SLIDER,
+			    'default' => [
+				    'size' => 14,
+			    ],
+			    'range' => [
+				    'px' => [
+					    'max' => 50,
+				    ],
+			    ],
+			    'selectors' => [
+				    '{{WRAPPER}} .post-list-pagination .btn-next-post i, {{WRAPPER}} .post-list-pagination .btn-prev-post i' => 'font-size: {{SIZE}}px;',
+				    '{{WRAPPER}} .post-list-pagination .btn-prev-post svg, {{WRAPPER}} .post-list-pagination .btn-next-post svg' => 'width: {{SIZE}}px;',
+			    ],
+		    ]
+	    );
 
         $this->add_control(
             'eael_section_post_list_nav_icon_color',
@@ -1125,15 +1256,15 @@ class Post_List extends Widget_Base
                 'options' => [
                     'left' => [
                         'title' => __('Left', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-left',
+                        'icon' => 'eicon-text-align-left',
                     ],
                     'center' => [
                         'title' => __('Center', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-center',
+                        'icon' => 'eicon-text-align-center',
                     ],
                     'right' => [
                         'title' => __('Right', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-right',
+                        'icon' => 'eicon-text-align-right',
                     ],
                 ],
                 'selectors' => [
@@ -1146,7 +1277,7 @@ class Post_List extends Widget_Base
             [
                 'name' => 'eael_post_list_featured_title_typography',
                 'label' => __('Typography', 'essential-addons-elementor'),
-                'scheme' => Scheme_Typography::TYPOGRAPHY_1,
+                'scheme' => Typography::TYPOGRAPHY_1,
                 'selector' => '{{WRAPPER}} .eael-post-list-featured-wrap .featured-content .eael-post-list-title, {{WRAPPER}} .eael-post-list-featured-wrap .featured-content .eael-post-list-title a',
             ]
         );
@@ -1177,19 +1308,19 @@ class Post_List extends Widget_Base
                 'options' => [
                     'left' => [
                         'title' => __('Left', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-left',
+                        'icon' => 'eicon-text-align-left',
                     ],
                     'center' => [
                         'title' => __('Center', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-center',
+                        'icon' => 'eicon-text-align-center',
                     ],
                     'right' => [
                         'title' => __('Right', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-right',
+                        'icon' => 'eicon-text-align-right',
                     ],
                     'justify' => [
                         'title' => __('Justified', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-justify',
+                        'icon' => 'eicon-text-align-justify',
                     ],
                 ],
                 'selectors' => [
@@ -1202,7 +1333,7 @@ class Post_List extends Widget_Base
             [
                 'name' => 'eael_post_list_featured_excerpt_typography',
                 'label' => __('Excerpt Typography', 'essential-addons-elementor'),
-                'scheme' => Scheme_Typography::TYPOGRAPHY_3,
+                'scheme' => Typography::TYPOGRAPHY_3,
                 'selector' => '{{WRAPPER}} .eael-post-list-featured-wrap .featured-content p',
             ]
         );
@@ -1233,15 +1364,15 @@ class Post_List extends Widget_Base
                 'options' => [
                     'left' => [
                         'title' => __('Left', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-left',
+                        'icon' => 'eicon-text-align-left',
                     ],
                     'center' => [
                         'title' => __('Center', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-center',
+                        'icon' => 'eicon-text-align-center',
                     ],
                     'right' => [
                         'title' => __('Right', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-right',
+                        'icon' => 'eicon-text-align-right',
                     ],
                 ],
                 'selectors' => [
@@ -1254,7 +1385,7 @@ class Post_List extends Widget_Base
             [
                 'name' => 'eael_post_list_featured_meta_typography',
                 'label' => __('Date Typography', 'essential-addons-elementor'),
-                'scheme' => Scheme_Typography::TYPOGRAPHY_3,
+                'scheme' => Typography::TYPOGRAPHY_3,
                 'selector' => '{{WRAPPER}} .eael-post-list-featured-wrap .featured-content .meta',
             ]
         );
@@ -1378,15 +1509,15 @@ class Post_List extends Widget_Base
                 'options' => [
                     'left' => [
                         'title' => __('Left', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-left',
+                        'icon' => 'eicon-text-align-left',
                     ],
                     'center' => [
                         'title' => __('Center', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-center',
+                        'icon' => 'eicon-text-align-center',
                     ],
                     'right' => [
                         'title' => __('Right', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-right',
+                        'icon' => 'eicon-text-align-right',
                     ],
                 ],
                 'selectors' => [
@@ -1399,7 +1530,7 @@ class Post_List extends Widget_Base
             [
                 'name' => 'eael_post_list_title_typography',
                 'label' => __('Typography', 'essential-addons-elementor'),
-                'scheme' => Scheme_Typography::TYPOGRAPHY_1,
+                'scheme' => Typography::TYPOGRAPHY_1,
                 'selector' => '{{WRAPPER}} .eael-post-list-content .eael-post-list-title, {{WRAPPER}} .eael-post-list-content .eael-post-list-title a',
             ]
         );
@@ -1430,19 +1561,19 @@ class Post_List extends Widget_Base
                 'options' => [
                     'left' => [
                         'title' => __('Left', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-left',
+                        'icon' => 'eicon-text-align-left',
                     ],
                     'center' => [
                         'title' => __('Center', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-center',
+                        'icon' => 'eicon-text-align-center',
                     ],
                     'right' => [
                         'title' => __('Right', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-right',
+                        'icon' => 'eicon-text-align-right',
                     ],
                     'justify' => [
                         'title' => __('Justified', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-justify',
+                        'icon' => 'eicon-text-align-justify',
                     ],
                 ],
                 'selectors' => [
@@ -1455,7 +1586,7 @@ class Post_List extends Widget_Base
             [
                 'name' => 'eael_post_list_excerpt_typography',
                 'label' => __('Excerpt Typography', 'essential-addons-elementor'),
-                'scheme' => Scheme_Typography::TYPOGRAPHY_3,
+                'scheme' => Typography::TYPOGRAPHY_3,
                 'selector' => '{{WRAPPER}} .eael-post-list-content p',
             ]
         );
@@ -1486,15 +1617,15 @@ class Post_List extends Widget_Base
                 'options' => [
                     'left' => [
                         'title' => __('Left', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-left',
+                        'icon' => 'eicon-text-align-left',
                     ],
                     'center' => [
                         'title' => __('Center', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-center',
+                        'icon' => 'eicon-text-align-center',
                     ],
                     'right' => [
                         'title' => __('Right', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-right',
+                        'icon' => 'eicon-text-align-right',
                     ],
                 ],
                 'selectors' => [
@@ -1507,7 +1638,7 @@ class Post_List extends Widget_Base
             [
                 'name' => 'eael_post_list_meta_typography',
                 'label' => __('Meta Typography', 'essential-addons-elementor'),
-                'scheme' => Scheme_Typography::TYPOGRAPHY_3,
+                'scheme' => Typography::TYPOGRAPHY_3,
                 'selector' => '{{WRAPPER}} .eael-post-list-content .meta',
             ]
         );
@@ -1706,7 +1837,7 @@ class Post_List extends Widget_Base
             [
                 'name' => 'author_name_typography',
                 'label' => __('Title Typography', 'essential-addons-elementor'),
-                'scheme' => Scheme_Typography::TYPOGRAPHY_3,
+                'scheme' => Typography::TYPOGRAPHY_3,
                 'selector' => '{{WRAPPER}} .eael-post-list-container.layout-advanced .eael-post-list-post .eael-post-list-content .boxed-meta .author-info h5',
             ]
         );
@@ -1749,7 +1880,7 @@ class Post_List extends Widget_Base
             [
                 'name' => 'author_meta_date_typography',
                 'label' => __('Date Typography', 'essential-addons-elementor'),
-                'scheme' => Scheme_Typography::TYPOGRAPHY_3,
+                'scheme' => Typography::TYPOGRAPHY_3,
                 'selector' => '{{WRAPPER}} .eael-post-list-container.layout-advanced .eael-post-list-posts-wrap .eael-post-list-post .eael-post-list-content .boxed-meta .author-meta .author-info > a p',
             ]
         );
@@ -1784,7 +1915,7 @@ class Post_List extends Widget_Base
             [
                 'name' => 'category_typography',
                 'label' => __('Typography', 'essential-addons-elementor'),
-                'scheme' => Scheme_Typography::TYPOGRAPHY_3,
+                'scheme' => Typography::TYPOGRAPHY_3,
                 'selector' => '{{WRAPPER}} .eael-post-list-container.layout-advanced .eael-post-list-content .boxed-meta .meta-categories .meta-cats-wrap a, {{WRAPPER}} .eael-post-list-container.layout-default .eael-post-list-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-2 .eael-post-list-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-2 .eael-post-list-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-default .featured-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-2 .featured-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-3 .featured-content .meta-categories a',
             ]
         );
@@ -2007,6 +2138,15 @@ class Post_List extends Widget_Base
             'eael_post_featured_image_size' => $settings['eael_post_featured_image_size'],
         ];
 
+        $link_settings = [
+            'image_link_nofollow' => $settings['image_link_nofollow'] ? 'rel="nofollow"' : '',
+            'image_link_target_blank' => $settings['image_link_target_blank'] ? 'target="_blank"' : '',
+            'title_link_nofollow' => $settings['title_link_nofollow'] ? 'rel="nofollow"' : '',
+            'title_link_target_blank' => $settings['title_link_target_blank'] ? 'target="_blank"' : '',
+            'read_more_link_nofollow' => $settings['read_more_link_nofollow'] ? 'rel="nofollow"' : '',
+            'read_more_link_target_blank' => $settings['read_more_link_target_blank'] ? 'target="_blank"' : '',
+        ];
+
         $this->add_render_attribute(
             'post-list-wrapper-attribute',
             [
@@ -2028,7 +2168,9 @@ class Post_List extends Widget_Base
             }
 
             if ($settings['eael_post_list_terms'] === 'yes') {
-                echo '<div class="post-categories" data-nonce="'.wp_create_nonce( 'load_more' ).'" data-page-id="'.$this->page_id.'" data-widget-id="'.$this->get_id().'" data-template=' . json_encode(['dir'   => 'pro', 'file_name' => $settings['eael_post_list_layout_type'], 'name' => $this->process_directory_name()], 1) . ' data-widget="' . $this->get_id() . '" data-class="' . get_class($this) . '" data-args="' . http_build_query($args) . '" data-settings="' . http_build_query($data_settings) . '" data-page="1">
+	            $template = $this->get_template($this->get_settings('eael_post_list_layout_type'));
+	            $dir_name = method_exists( $this, 'get_temp_dir_name' ) ? $this->get_temp_dir_name( $this->get_filename_only($template) ) : "pro";
+                echo '<div class="post-categories" data-nonce="'.wp_create_nonce( 'load_more' ).'" data-page-id="'.$this->page_id.'" data-widget-id="'.$this->get_id().'" data-template=' . json_encode(['dir'   => $dir_name, 'file_name' => $this->get_filename_only($template), 'name' => $this->process_directory_name()], 1) . ' data-widget="' . $this->get_id() . '" data-class="' . get_class($this) . '" data-args="' . http_build_query($args) . '" data-settings="' . http_build_query($data_settings) . '" data-page="1">
                             <a href="javascript:;" data-taxonomy="all" data-id="" class="active post-list-filter-item post-list-cat-' . $this->get_id() . '">' . __($settings['eael_post_list_topbar_term_all_text'], 'essential-addons-elementor') . '</a>';
 
                 if (!empty($args['tax_query'])) {
@@ -2070,7 +2212,7 @@ class Post_List extends Widget_Base
             $post = get_post(intval($settings['featured_posts']));
             setup_postdata($post);
 
-            $category = get_the_category();
+            $category = wp_get_object_terms( get_the_ID(), get_object_taxonomies( get_post_type( get_the_ID() ) ) );
             $featured_image_url = Group_Control_Image_Size::get_attachment_image_src(
                 get_post_thumbnail_id(),
                 'featured_image_size',
@@ -2085,7 +2227,7 @@ class Post_List extends Widget_Base
 							</div>
                             
                             <div class="featured-content">';
-                if ($settings['eael_post_list_post_cat'] != '') {
+                if ($settings['eael_post_list_post_cat'] != '' && !empty($category[0]->term_id)) {
                     echo '<div class="meta-categories">
 						                    <a href="' . esc_url(get_category_link($category[0]->term_id)) . '">' . esc_html($category[0]->name) . '</a>
 						                </div>';
@@ -2096,13 +2238,13 @@ class Post_List extends Widget_Base
 				                                    <i class="fas fa-user"></i>
 				                                    <a href="' . get_author_posts_url(get_the_author_meta('ID')) . '">' . get_the_author() . '</a>
 				                                </span>
-				                                <span><i class="far fa-calendar-alt"></i>' . get_the_date('d M Y') . '</span>
+				                                <span><i class="far fa-calendar-alt"></i>' . get_the_date(get_option('date_format')) . '</span>
 				                          </div>';
                 }
 
                 if ($settings['eael_post_list_featured_title'] == 'yes' && !empty($settings['eael_post_list_title_tag'])) {
                     echo '<' . Helper::eael_pro_validate_html_tag($settings['eael_post_list_title_tag']) . ' class="eael-post-list-title">
-		                                        <a href="' . get_the_permalink() . '">' . get_the_title() . '</a>
+		                                        <a href="' . get_the_permalink() . '"' . $link_settings['title_link_nofollow'] . '' . $link_settings['title_link_target_blank'] . '>' . get_the_title() . '</a>
 		                                    </' . Helper::eael_pro_validate_html_tag($settings['eael_post_list_title_tag']) . '>';
                 }
 
@@ -2115,7 +2257,7 @@ class Post_List extends Widget_Base
                 echo '<div class="eael-post-list-featured-wrap">
                         <div class="eael-post-list-featured-inner" style="background-image: url(' . wp_get_attachment_image_url(get_post_thumbnail_id(), 'full') . ')">
                             <div class="featured-content">';
-                if ($settings['eael_post_list_layout_type'] == 'default' && $settings['eael_post_list_post_cat'] != '') {
+                if ($settings['eael_post_list_layout_type'] == 'default' && $settings['eael_post_list_post_cat'] != '' && !empty($category[0]->term_id)) {
                     echo '<div class="meta-categories">
 						                    <a href="' . esc_url(get_category_link($category[0]->term_id)) . '">' . esc_html($category[0]->name) . '</a>
 						                </div>';
@@ -2126,13 +2268,13 @@ class Post_List extends Widget_Base
 				                                    <i class="fas fa-user"></i>
 				                                    <a href="' . get_author_posts_url(get_the_author_meta('ID')) . '">' . get_the_author() . '</a>
 				                                </span>
-				                                <span><i class="far fa-calendar-alt"></i>' . get_the_date('d M Y') . '</span>
+				                                <span><i class="far fa-calendar-alt"></i>' . get_the_date(get_option('date_format')) . '</span>
 				                            </div>';
                 }
 
                 if ($settings['eael_post_list_featured_title'] == 'yes' && !empty($settings['eael_post_list_title_tag'])) {
                     echo '<' . Helper::eael_pro_validate_html_tag($settings['eael_post_list_title_tag']) . ' class="eael-post-list-title">
-		                                        <a href="' . get_the_permalink() . '">' . get_the_title() . '</a>
+		                                        <a href="' . get_the_permalink() . '"' . $link_settings['title_link_nofollow'] . '' . $link_settings['title_link_target_blank'] . '>' . get_the_title() . '</a>
 		                                    </' . Helper::eael_pro_validate_html_tag($settings['eael_post_list_title_tag']) . '>';
                 }
 
@@ -2147,7 +2289,6 @@ class Post_List extends Widget_Base
 
             wp_reset_postdata();
         }
-
         // list
         $template = $this->get_template($this->get_settings('eael_post_list_layout_type'));
 
@@ -2175,14 +2316,23 @@ class Post_List extends Widget_Base
         if ($settings['eael_post_list_pagination'] === 'yes') {
             $eael_post_list_pagination_prev_icon = (isset($settings['__fa4_migrated']['eael_post_list_pagination_prev_icon_new']) || empty($settings['eael_post_list_pagination_prev_icon']) ? $settings['eael_post_list_pagination_prev_icon_new']['value'] : $settings['eael_post_list_pagination_prev_icon']);
             $eael_post_list_pagination_next_icon = (isset($settings['__fa4_migrated']['eael_post_list_pagination_next_icon_new']) || empty($settings['eael_post_list_pagination_next_icon']) ? $settings['eael_post_list_pagination_next_icon_new']['value'] : $settings['eael_post_list_pagination_next_icon']);
-
-            echo '<div class="post-list-pagination"  data-nonce="'.wp_create_nonce( 'load_more' ).'" data-page-id="'.$this->page_id.'" data-widget-id="'.$this->get_id().'" data-template=' . json_encode(['dir'   => 'pro', 'file_name' => $settings['eael_post_list_layout_type'], 'name' => $this->process_directory_name()], 1) . ' data-widget="' . $this->get_id() . '" data-class="' . get_class($this) . '" data-args="' . http_build_query($args) . '" data-settings="' . http_build_query($data_settings) . '" data-page="1">
-                <button class="btn btn-prev-post" id="post-nav-prev-' . $this->get_id() . '" disabled="true">
-                    <span class="' . $eael_post_list_pagination_prev_icon . '"></span>
-                </button>
-                <button class="btn btn-next-post" id="post-nav-next-' . $this->get_id() . '">
-                    <span class="' . $eael_post_list_pagination_next_icon . '"></span>
-                </button>
+	        $dir_name = method_exists( $this, 'get_temp_dir_name' ) ? $this->get_temp_dir_name( $this->get_filename_only($template) ) : "pro";
+            echo '<div class="post-list-pagination"  data-nonce="'.wp_create_nonce( 'load_more' ).'" data-page-id="'.$this->page_id.'" data-widget-id="'.$this->get_id().'" data-template=' . json_encode(['dir'   => $dir_name, 'file_name' => $this->get_filename_only($template), 'name' => $this->process_directory_name()], 1) . ' data-widget="' . $this->get_id() . '" data-class="' . get_class($this) . '" data-args="' . http_build_query($args) . '" data-settings="' . http_build_query($data_settings) . '" data-page="1">
+                <button class="btn btn-prev-post" id="post-nav-prev-' . $this->get_id() . '" disabled="true">';
+                    if (isset($settings['__fa4_migrated']['eael_post_list_pagination_prev_icon_new']) || empty($settings['eael_post_list_pagination_prev_icon'])) {
+                        Icons_Manager::render_icon( $settings['eael_post_list_pagination_prev_icon_new'], [ 'aria-hidden' => 'true' ] );
+                    } else {
+                        echo '<span class="' . $settings['eael_post_list_pagination_prev_icon'] . '"></span>';
+                    }               
+                echo '</button>';
+                echo '<button class="btn btn-next-post" id="post-nav-next-' . $this->get_id() . '">';
+                    if (isset($settings['__fa4_migrated']['eael_post_list_pagination_next_icon_new']) || empty
+                    ($settings['eael_post_list_pagination_next_icon'])) {
+                        Icons_Manager::render_icon( $settings['eael_post_list_pagination_next_icon_new'], [ 'aria-hidden' => 'true' ] );
+                    } else {
+                        echo '<span class="' . $settings['eael_post_list_pagination_next_icon'] . '"></span>';
+                    }
+                echo '</button>
 			</div>';
         }
     }

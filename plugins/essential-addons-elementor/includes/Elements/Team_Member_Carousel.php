@@ -2,6 +2,8 @@
 
 namespace Essential_Addons_Elementor\Pro\Elements;
 
+use Elementor\Control_Media;
+use Elementor\Group_Control_Image_Size;
 use Elementor\Modules\DynamicTags\Module as TagsModule;
 use \Elementor\Controls_Manager;
 use \Elementor\Group_Control_Background;
@@ -9,7 +11,7 @@ use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
 use Elementor\Repeater;
-use \Elementor\Scheme_Typography;
+use \Elementor\Core\Schemes\Typography;
 use \Elementor\Utils;
 use \Elementor\Widget_Base;
 
@@ -326,6 +328,68 @@ class Team_Member_Carousel extends Widget_Base
             ]
         );
 
+        $repeater->add_control(
+            'xing_url',
+            [
+                'name'        => 'xing_url',
+                'label'       => __('XING', 'essential-addons-elementor'),
+                'type'        => Controls_Manager::TEXT,
+                'dynamic'     => [
+                    'active'     => true,
+                    'categories' => [
+                        TagsModule::POST_META_CATEGORY,
+                    ],
+                ],
+                'description' => __('Enter XING profile URL of team member', 'essential-addons-elementor'),
+            ]
+        );
+
+        $repeater->add_control(
+            'snapchat_url',
+            [
+                'name'        => 'snapchat_url',
+                'label'       => __('Snapchat', 'essential-addons-elementor'),
+                'type'        => Controls_Manager::TEXT,
+                'dynamic'     => [
+                    'active'     => true,
+                    'categories' => [
+                        TagsModule::POST_META_CATEGORY,
+                    ],
+                ],
+                'description' => __('Enter Snapchat profile URL of team member', 'essential-addons-elementor'),
+            ]
+        );
+
+        $repeater->add_control(
+            'custom_url',
+            [
+                'name'        => 'custom_url',
+                'label'       => __('Custom URL', 'essential-addons-elementor'),
+                'type'        => Controls_Manager::TEXT,
+                'dynamic'     => [
+                    'active'     => true,
+                    'categories' => [
+                        TagsModule::POST_META_CATEGORY,
+                    ],
+                ],
+                'description' => __('Enter Custom URL of team member', 'essential-addons-elementor'),
+            ]
+        );
+
+	    $repeater->add_control(
+		    'custom_icon',
+		    [
+			    'label' => esc_html__( 'Custom Icon', 'essential-addons-elementor'),
+			    'type' => Controls_Manager::ICONS,
+			    'skin' => 'inline',
+			    'label_block' => false,
+			    'exclude_inline_options' => [ 'svg' ],
+			    'default' => [
+				    'value' => 'fab fa-wordpress',
+				    'library' => 'fa-brands',
+			    ],
+		    ]
+	    );
 
         $this->add_control(
             'team_member_details',
@@ -383,6 +447,14 @@ class Team_Member_Carousel extends Widget_Base
                 'label' => __('Team Member Settings', 'essential-addons-elementor'),
             ]
         );
+
+	    $this->add_group_control(
+		    Group_Control_Image_Size::get_type(),
+		    [
+			    'name' => 'image_size',
+			    'default' => 'full',
+		    ]
+	    );
 
         $this->add_control(
             'name_html_tag',
@@ -673,15 +745,15 @@ class Team_Member_Carousel extends Widget_Base
                 'options'   => [
                     'left'   => [
                         'title' => __('Left', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-left',
+                        'icon'  => 'eicon-text-align-left',
                     ],
                     'center' => [
                         'title' => __('Center', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-center',
+                        'icon'  => 'eicon-text-align-center',
                     ],
                     'right'  => [
                         'title' => __('Right', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-right',
+                        'icon'  => 'eicon-text-align-right',
                     ],
                 ],
                 'default'   => '',
@@ -871,15 +943,15 @@ class Team_Member_Carousel extends Widget_Base
                 'options'   => [
                     'left'   => [
                         'title' => __('Left', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-left',
+                        'icon'  => 'eicon-text-align-left',
                     ],
                     'center' => [
                         'title' => __('Center', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-center',
+                        'icon'  => 'eicon-text-align-center',
                     ],
                     'right'  => [
                         'title' => __('Right', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-right',
+                        'icon'  => 'eicon-text-align-right',
                     ],
                 ],
                 'default'   => '',
@@ -961,6 +1033,29 @@ class Team_Member_Carousel extends Widget_Base
             ]
         );
 
+        $this->add_responsive_control(
+            'member_image_height',
+            [
+                'label'          => __('Image Height', 'essential-addons-elementor'),
+                'type'           => Controls_Manager::SLIDER,
+                'size_units'     => ['%', 'px'],
+                'range'          => [
+                    'px' => [
+                        'max' => 800,
+                    ],
+                ],
+                'tablet_default' => [
+                    'unit' => 'px',
+                ],
+                'mobile_default' => [
+                    'unit' => 'px',
+                ],
+                'selectors'      => [
+                    '{{WRAPPER}} .eael-tm-image img' => 'height: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
         $this->add_group_control(
             Group_Control_Border::get_type(),
             [
@@ -1029,7 +1124,7 @@ class Team_Member_Carousel extends Widget_Base
             [
                 'name'     => 'member_name_typography',
                 'label'    => __('Typography', 'essential-addons-elementor'),
-                'scheme'   => Scheme_Typography::TYPOGRAPHY_4,
+                'scheme'   => Typography::TYPOGRAPHY_4,
                 'selector' => '{{WRAPPER}} .eael-tm-name',
             ]
         );
@@ -1092,8 +1187,8 @@ class Team_Member_Carousel extends Widget_Base
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '',
                 'scheme'    => [
-                    'type'  => \Elementor\Scheme_Color::get_type(),
-                    'value' => \Elementor\Scheme_Color::COLOR_1,
+                    'type'  => \Elementor\Core\Schemes\Color::get_type(),
+                    'value' => \Elementor\Core\Schemes\Color::COLOR_1,
                 ],
                 'selectors' => [
                     '{{WRAPPER}} .eael-tm-title-divider' => 'border-bottom-color: {{VALUE}}',
@@ -1232,7 +1327,7 @@ class Team_Member_Carousel extends Widget_Base
             [
                 'name'     => 'member_position_typography',
                 'label'    => __('Typography', 'essential-addons-elementor'),
-                'scheme'   => Scheme_Typography::TYPOGRAPHY_4,
+                'scheme'   => Typography::TYPOGRAPHY_4,
                 'selector' => '{{WRAPPER}} .eael-tm-position',
             ]
         );
@@ -1295,8 +1390,8 @@ class Team_Member_Carousel extends Widget_Base
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '',
                 'scheme'    => [
-                    'type'  => \Elementor\Scheme_Color::get_type(),
-                    'value' => \Elementor\Scheme_Color::COLOR_1,
+                    'type'  => \Elementor\Core\Schemes\Color::get_type(),
+                    'value' => \Elementor\Core\Schemes\Color::COLOR_1,
                 ],
                 'selectors' => [
                     '{{WRAPPER}} .eael-tm-position-divider' => 'border-bottom-color: {{VALUE}}',
@@ -1435,7 +1530,7 @@ class Team_Member_Carousel extends Widget_Base
             [
                 'name'     => 'member_description_typography',
                 'label'    => __('Typography', 'essential-addons-elementor'),
-                'scheme'   => Scheme_Typography::TYPOGRAPHY_4,
+                'scheme'   => Typography::TYPOGRAPHY_4,
                 'selector' => '{{WRAPPER}} .eael-tm-description',
             ]
         );
@@ -1498,8 +1593,8 @@ class Team_Member_Carousel extends Widget_Base
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '',
                 'scheme'    => [
-                    'type'  => \Elementor\Scheme_Color::get_type(),
-                    'value' => \Elementor\Scheme_Color::COLOR_1,
+                    'type'  => \Elementor\Core\Schemes\Color::get_type(),
+                    'value' => \Elementor\Core\Schemes\Color::COLOR_1,
                 ],
                 'selectors' => [
                     '{{WRAPPER}} .eael-tm-description-divider' => 'border-bottom-color: {{VALUE}}',
@@ -2296,7 +2391,15 @@ class Team_Member_Carousel extends Widget_Base
                         <div class="swiper-slide">
                             <div class="eael-tm">
                                 <div class="eael-tm-image">
-                                    <?php echo '<img src="' . $item['team_member_image']['url'] . '" alt="' . esc_attr(get_post_meta($item['team_member_image']['id'], '_wp_attachment_image_alt', true)) . '">'; ?>
+                                    <?php
+                                    $image_url = Group_Control_Image_Size::get_attachment_image_src( $item['team_member_image']['id'], 'image_size', $settings );
+
+                                    if ( $image_url ) {
+	                                    echo $image_html = '<img src="' . esc_url( $image_url ) . '"alt="' . esc_attr(get_post_meta($item['team_member_image']['id'], '_wp_attachment_image_alt', true)) . '">';
+                                    } else {
+	                                    echo $image_html = '<img src="' . esc_url( $item['team_member_image']['url'] ) .'">';
+                                    }
+                                    ?>
                                     <?php if ($settings['overlay_content'] !== 'none') : ?>
                                         <div class="eael-tm-overlay-content-wrap">
                                             <div class="eael-tm-content">
@@ -2431,6 +2534,10 @@ class Team_Member_Carousel extends Widget_Base
         $youtube_url = $item['youtube_url'];
         $pinterest_url = $item['pinterest_url'];
         $dribbble_url = $item['dribbble_url'];
+        $xing_url = $item['xing_url'];
+        $snapchat_url = $item['snapchat_url'];
+        $custom_url = $item['custom_url'];
+        $custom_icon = empty( $item['custom_icon']['value'] ) ? '' : $item['custom_icon']['value'];
         ?>
         <div class="eael-tm-social-links-wrap">
             <ul class="eael-tm-social-links">
@@ -2461,6 +2568,15 @@ class Team_Member_Carousel extends Widget_Base
                 }
                 if ($dribbble_url) {
                     printf('<li><a href="%1$s" target="_blank"><span class="eael-tm-social-icon-wrap"><span class="eael-tm-social-icon fa fa-dribbble"></span></span></a></li>', esc_url($dribbble_url));
+                }
+                if ($xing_url) {
+                    printf('<li><a href="%1$s" target="_blank"><span class="eael-tm-social-icon-wrap"><span class="eael-tm-social-icon fa fa-xing"></span></span></a></li>', esc_url($xing_url));
+                }
+                if ($snapchat_url) {
+                    printf('<li><a href="%1$s" target="_blank"><span class="eael-tm-social-icon-wrap"><span class="eael-tm-social-icon fa fa-snapchat"></span></span></a></li>', esc_url($snapchat_url));
+                }
+                if ( $custom_url ) {
+                    printf( '<li><a href="%1$s" target="_blank"><span class="eael-tm-social-icon-wrap"><span class="eael-tm-social-icon %2$s"></span></span></a></li>', esc_url( $custom_url ), esc_attr( $custom_icon ) );
                 }
                 ?>
             </ul>
@@ -2516,7 +2632,7 @@ class Team_Member_Carousel extends Widget_Base
 <?php }
     }
 
-    protected function _content_template()
+    protected function content_template()
     {
     }
 }

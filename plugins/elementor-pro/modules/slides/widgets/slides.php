@@ -3,8 +3,10 @@ namespace ElementorPro\Modules\Slides\Widgets;
 
 use Elementor\Controls_Manager;
 use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
+use Elementor\Group_Control_Background;
 use Elementor\Group_Control_Text_Shadow;
 use Elementor\Group_Control_Typography;
+use Elementor\Icons_Manager;
 use Elementor\Repeater;
 use ElementorPro\Base\Base_Widget;
 
@@ -952,13 +954,17 @@ class Slides extends Base_Widget {
 			]
 		);
 
-		$this->add_control(
-			'button_background_color',
+		$this->add_group_control(
+			Group_Control_Background::get_type(),
 			[
-				'label' => __( 'Background Color', 'elementor-pro' ),
-				'type' => Controls_Manager::COLOR,
-				'selectors' => [
-					'{{WRAPPER}} .elementor-slide-button' => 'background-color: {{VALUE}};',
+				'name' => 'button_background',
+				'types' => [ 'classic', 'gradient' ],
+				'exclude' => [ 'image' ],
+				'selector' => '{{WRAPPER}} .elementor-slide-button',
+				'fields_options' => [
+					'background' => [
+						'default' => 'classic',
+					],
 				],
 			]
 		);
@@ -989,13 +995,17 @@ class Slides extends Base_Widget {
 			]
 		);
 
-		$this->add_control(
-			'button_hover_background_color',
+		$this->add_group_control(
+			Group_Control_Background::get_type(),
 			[
-				'label' => __( 'Background Color', 'elementor-pro' ),
-				'type' => Controls_Manager::COLOR,
-				'selectors' => [
-					'{{WRAPPER}} .elementor-slide-button:hover' => 'background-color: {{VALUE}};',
+				'name' => 'button_hover_background',
+				'types' => [ 'classic', 'gradient' ],
+				'exclude' => [ 'image' ],
+				'selector' => '{{WRAPPER}} .elementor-slide-button:hover',
+				'fields_options' => [
+					'background' => [
+						'default' => 'classic',
+					],
 				],
 			]
 		);
@@ -1084,6 +1094,7 @@ class Slides extends Base_Widget {
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .elementor-swiper-button' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .elementor-swiper-button svg' => 'fill: {{VALUE}}',
 				],
 				'condition' => [
 					'navigation' => [ 'arrows', 'both' ],
@@ -1228,15 +1239,7 @@ class Slides extends Base_Widget {
 			$slide_count++;
 		}
 
-		$prev = 'left';
-		$next = 'right';
-		$direction = 'ltr';
-
-		if ( is_rtl() ) {
-			$prev = 'right';
-			$next = 'left';
-			$direction = 'rtl';
-		}
+		$direction = is_rtl() ? 'rtl' : 'ltr';
 
 		$show_dots = ( in_array( $settings['navigation'], [ 'dots', 'both' ] ) );
 		$show_arrows = ( in_array( $settings['navigation'], [ 'arrows', 'both' ] ) );
@@ -1254,11 +1257,11 @@ class Slides extends Base_Widget {
 					<?php endif; ?>
 					<?php if ( $show_arrows ) : ?>
 						<div class="elementor-swiper-button elementor-swiper-button-prev">
-							<i class="eicon-chevron-<?php echo $prev; ?>" aria-hidden="true"></i>
+							<?php $this->render_swiper_button( 'previous' ); ?>
 							<span class="elementor-screen-only"><?php _e( 'Previous', 'elementor-pro' ); ?></span>
 						</div>
 						<div class="elementor-swiper-button elementor-swiper-button-next">
-							<i class="eicon-chevron-<?php echo $next; ?>" aria-hidden="true"></i>
+							<?php $this->render_swiper_button( 'next' ); ?>
 							<span class="elementor-screen-only"><?php _e( 'Next', 'elementor-pro' ); ?></span>
 						</div>
 					<?php endif; ?>
@@ -1337,5 +1340,20 @@ class Slides extends Base_Widget {
 			</div>
 		</div>
 		<?php
+	}
+
+	private function render_swiper_button( $type ) {
+		$direction = 'next' === $type ? 'right' : 'left';
+
+		if ( is_rtl() ) {
+			$direction = 'right' === $direction ? 'left' : 'right';
+		}
+
+		$icon_value = 'eicon-chevron-' . $direction;
+
+		Icons_Manager::render_icon( [
+			'library' => 'eicons',
+			'value' => $icon_value,
+		], [ 'aria-hidden' => 'true' ] );
 	}
 }

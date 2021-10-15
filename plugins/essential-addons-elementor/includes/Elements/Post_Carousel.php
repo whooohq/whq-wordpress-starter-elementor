@@ -6,7 +6,7 @@ use \Elementor\Controls_Manager;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
-use \Elementor\Scheme_Typography;
+use \Elementor\Core\Schemes\Typography;
 use \Elementor\Widget_Base;
 use \Essential_Addons_Elementor\Classes\Helper;
 
@@ -300,6 +300,159 @@ class Post_Carousel extends Widget_Base
 
         $this->end_controls_section();
 
+        /**
+         * Content Tab: Links
+         */
+
+        $this->start_controls_section(
+            'section_post_carousel_links',
+            [
+                'label' => __('Links', 'essential-addons-elementor'),
+                'conditions' => [
+                    'relation' => 'or',
+                    'terms' => [
+                       [
+                          'name' => 'eael_show_image',
+                          'operator' => '==',
+                          'value' => 'yes',
+                       ],
+                       [
+                          'name' => 'eael_show_title',
+                          'operator' => '==',
+                          'value' => 'yes',
+                       ],
+                       [
+                          'name' => 'eael_show_read_more_button',
+                          'operator' => '==',
+                          'value' => 'yes',
+                       ],
+                       
+                    ],
+                 ],
+            ]
+        );
+
+        $this->add_control(
+            'image_link',
+            [
+                'label' => __('Image', 'essential-addons-elementor'),
+                'type' => Controls_Manager::HEADING,
+                'condition' => [
+                    'eael_show_image' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'image_link_nofollow',
+            [
+                'label' => __('No Follow', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => __('Yes', 'essential-addons-elementor'),
+                'label_off' => __('No', 'essential-addons-elementor'),
+                'return_value' => 'true',
+                'condition' => [
+                    'eael_show_image' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'image_link_target_blank',
+            [
+                'label' => __('Target Blank', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => __('Yes', 'essential-addons-elementor'),
+                'label_off' => __('No', 'essential-addons-elementor'),
+                'return_value' => 'true',
+                'condition' => [
+                    'eael_show_image' => 'yes',
+                ],
+                'separator' => 'after',
+            ]
+        );
+
+        $this->add_control(
+            'title_link',
+            [
+                'label' => __('Title', 'essential-addons-elementor'),
+                'type' => Controls_Manager::HEADING,
+                'condition' => [
+                    'eael_show_title' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'title_link_nofollow',
+            [
+                'label' => __('No Follow', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => __('Yes', 'essential-addons-elementor'),
+                'label_off' => __('No', 'essential-addons-elementor'),
+                'return_value' => 'true',
+                'condition' => [
+                    'eael_show_title' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'title_link_target_blank',
+            [
+                'label' => __('Target Blank', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => __('Yes', 'essential-addons-elementor'),
+                'label_off' => __('No', 'essential-addons-elementor'),
+                'return_value' => 'true',
+                'condition' => [
+                    'eael_show_title' => 'yes',
+                ],
+                'separator' => 'after',
+            ]
+        );
+
+        $this->add_control(
+            'read_more_link',
+            [
+                'label' => __('Read More', 'essential-addons-elementor'),
+                'type' => Controls_Manager::HEADING,
+                'condition' => [
+                    'eael_show_read_more_button' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'read_more_link_nofollow',
+            [
+                'label' => __('No Follow', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => __('Yes', 'essential-addons-elementor'),
+                'label_off' => __('No', 'essential-addons-elementor'),
+                'return_value' => 'true',
+                'condition' => [
+                    'eael_show_read_more_button' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'read_more_link_target_blank',
+            [
+                'label' => __('Target Blank', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => __('Yes', 'essential-addons-elementor'),
+                'label_off' => __('No', 'essential-addons-elementor'),
+                'return_value' => 'true',
+                'condition' => [
+                    'eael_show_read_more_button' => 'yes',
+                ],
+            ]
+        );
+
+        $this->end_controls_section();
+
         $this->start_controls_section(
             'eael_section_post_grid_style',
             [
@@ -580,15 +733,15 @@ class Post_Carousel extends Widget_Base
                 'options'   => [
                     'left'   => [
                         'title' => __('Left', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-left',
+                        'icon'  => 'eicon-text-align-left',
                     ],
                     'center' => [
                         'title' => __('Center', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-center',
+                        'icon'  => 'eicon-text-align-center',
                     ],
                     'right'  => [
                         'title' => __('Right', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-right',
+                        'icon'  => 'eicon-text-align-right',
                     ],
                 ],
                 'selectors' => [
@@ -602,7 +755,7 @@ class Post_Carousel extends Widget_Base
             [
                 'name'     => 'eael_post_grid_title_typography',
                 'label'    => __('Typography', 'essential-addons-elementor'),
-                'scheme'   => Scheme_Typography::TYPOGRAPHY_1,
+                'scheme'   => Typography::TYPOGRAPHY_1,
                 'selector' => '{{WRAPPER}} .eael-entry-title, {{WRAPPER}} .eael-entry-title > a',
             ]
         );
@@ -648,19 +801,19 @@ class Post_Carousel extends Widget_Base
                 'options'   => [
                     'left'    => [
                         'title' => __('Left', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-left',
+                        'icon'  => 'eicon-text-align-left',
                     ],
                     'center'  => [
                         'title' => __('Center', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-center',
+                        'icon'  => 'eicon-text-align-center',
                     ],
                     'right'   => [
                         'title' => __('Right', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-right',
+                        'icon'  => 'eicon-text-align-right',
                     ],
                     'justify' => [
                         'title' => __('Justified', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-justify',
+                        'icon'  => 'eicon-text-align-justify',
                     ],
                 ],
                 'selectors' => [
@@ -675,7 +828,7 @@ class Post_Carousel extends Widget_Base
             [
                 'name'     => 'eael_post_grid_excerpt_typography',
                 'label'    => __('Excerpt Typography', 'essential-addons-elementor'),
-                'scheme'   => Scheme_Typography::TYPOGRAPHY_3,
+                'scheme'   => Typography::TYPOGRAPHY_3,
                 'selector' => '{{WRAPPER}} .eael-grid-post-excerpt p',
             ]
         );
@@ -724,7 +877,7 @@ class Post_Carousel extends Widget_Base
             [
                 'name'     => 'eael_post_grid_terms_typography',
                 'label'    => __('Meta Typography', 'essential-addons-elementor'),
-                'scheme'   => Scheme_Typography::TYPOGRAPHY_3,
+                'scheme'   => Typography::TYPOGRAPHY_3,
                 'selector' => '{{WRAPPER}} .post-carousel-categories li a, {{WRAPPER}} .post-meta-categories li, {{WRAPPER}} .post-meta-categories li a',
             ]
         );
@@ -784,7 +937,7 @@ class Post_Carousel extends Widget_Base
             [
                 'name'     => 'eael_post_grid_meta_date_typography',
                 'label'    => __('Meta Date Typography', 'essential-addons-elementor'),
-                'scheme'   => Scheme_Typography::TYPOGRAPHY_3,
+                'scheme'   => Typography::TYPOGRAPHY_3,
                 'selector' => '{{WRAPPER}} .eael-meta-posted-on',
             ]
         );
@@ -862,15 +1015,15 @@ class Post_Carousel extends Widget_Base
                 'options'   => [
                     'flex-start' => [
                         'title' => __('Left', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-left',
+                        'icon'  => 'eicon-text-align-left',
                     ],
                     'center'     => [
                         'title' => __('Center', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-center',
+                        'icon'  => 'eicon-text-align-center',
                     ],
                     'flex-end'   => [
                         'title' => __('Right', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-right',
+                        'icon'  => 'eicon-text-align-right',
                     ],
                 ],
                 'default'   => 'center',
@@ -885,8 +1038,8 @@ class Post_Carousel extends Widget_Base
             [
                 'name'     => 'eael_post_grid_meta_header_typography',
                 'label'    => __('Meta Typography', 'essential-addons-elementor'),
-                'scheme'   => Scheme_Typography::TYPOGRAPHY_3,
-                'selector' => '{{WRAPPER}} .eael-entry-meta > span',
+                'scheme'   => Typography::TYPOGRAPHY_3,
+                'selector' => '{{WRAPPER}} .eael-entry-meta > span,{{WRAPPER}} .eael-entry-meta > .eael-posted-by,{{WRAPPER}} .eael-entry-meta > .eael-posted-on',
             ]
         );
 
@@ -1572,6 +1725,12 @@ class Post_Carousel extends Widget_Base
             'title_tag'                        => $settings['title_tag'],
             'eael_title_length'                => $settings['eael_title_length'],
             'eael_post_carousel_preset_style'  => $settings['eael_post_carousel_preset_style'],
+            'image_link_nofollow'              => $settings['image_link_nofollow'] ? 'rel="nofollow"' : '',
+            'image_link_target_blank'          => $settings['image_link_target_blank'] ? 'target="_blank"' : '',
+            'title_link_nofollow'              => $settings['title_link_nofollow'] ? 'rel="nofollow"' : '',
+            'title_link_target_blank'          => $settings['title_link_target_blank'] ? 'target="_blank"' : '',
+            'read_more_link_nofollow'          => $settings['read_more_link_nofollow'] ? 'rel="nofollow"' : '',
+            'read_more_link_target_blank'      => $settings['read_more_link_target_blank'] ? 'target="_blank"' : '',
         ];
 ?>
         <div <?php echo $this->get_render_attribute_string('eael-post-carousel-container'); ?>>

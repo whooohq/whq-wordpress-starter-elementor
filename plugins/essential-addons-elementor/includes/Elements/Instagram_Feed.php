@@ -166,14 +166,14 @@ class Instagram_Feed extends Widget_Base {
                     ],
                 ],
                 'selectors' => [
-                    '{{WRAPPER}} .eael-instafeed-square-img .eael-instafeed-item img' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}}; object-fit: cover;',
+                    '{{WRAPPER}} .eael-instafeed-square-img .eael-instafeed-item img' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}}; object-fit: fill;',
                 ],
                 'condition' => [
                     'eael_instafeed_force_square' => 'yes',
                 ],
             ]
         );
-
+        
         $this->end_controls_section();
 
         $this->start_controls_section(
@@ -703,6 +703,28 @@ class Instagram_Feed extends Widget_Base {
             'data-post-id' => $post_id,
             'data-page' => 1,
         ]);
+
+	    if ( \Elementor\Plugin::instance()->editor->is_edit_mode() ) {
+		    $this->add_render_attribute( 'load-more', [
+			    'data-settings' => http_build_query( [
+				    'eael_instafeed_access_token'       => $settings['eael_instafeed_access_token'],
+				    'eael_instafeed_data_cache_limit'   => $settings['eael_instafeed_data_cache_limit'],
+				    'eael_instafeed_image_count'        => $settings['eael_instafeed_image_count'],
+				    'eael_instafeed_sort_by'            => $settings['eael_instafeed_sort_by'],
+				    'eael_instafeed_link'               => $settings['eael_instafeed_link'],
+				    'eael_instafeed_link_target'        => $settings['eael_instafeed_link_target'],
+				    'eael_instafeed_layout'             => $settings['eael_instafeed_layout'],
+				    'eael_instafeed_overlay_style'      => $settings['eael_instafeed_overlay_style'],
+				    'eael_instafeed_caption'            => $settings['eael_instafeed_caption'],
+				    'eael_instafeed_date'               => $settings['eael_instafeed_date'],
+				    'eael_instafeed_show_profile_image' => $settings['eael_instafeed_show_profile_image'],
+				    'eael_instafeed_profile_image'      => $settings['eael_instafeed_profile_image'],
+				    'eael_instafeed_show_username'      => $settings['eael_instafeed_show_username'],
+				    'eael_instafeed_username'           => $settings['eael_instafeed_username'],
+				    'eael_instafeed_card_style'         => $settings['eael_instafeed_card_style'],
+			    ] )
+		    ] );
+	    }
         ?>
         <div <?php $this->print_render_attribute_string('insta-wrap'); ?>>
             <?php echo $this->instafeed_render_items(); ?>

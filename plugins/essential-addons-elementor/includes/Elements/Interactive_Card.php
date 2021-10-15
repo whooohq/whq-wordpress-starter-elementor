@@ -3,6 +3,7 @@
 namespace Essential_Addons_Elementor\Pro\Elements;
 
 use \Elementor\Controls_Manager;
+use Elementor\Icons_Manager;
 use \Elementor\Plugin;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
@@ -104,6 +105,40 @@ class Interactive_Card extends Widget_Base
 		$this->start_controls_tabs('eael_interactive_card_Tabs');
 		// Front Panel Tab
 		$this->start_controls_tab('front-panel', ['label' => esc_html__('Front Panel', 'essential-addons-elementor')]);
+
+		$this->add_control(
+			'eael_interactive_card_is_show_front_panel_cover',
+			[
+				'label' => __('Show Cover Image', 'essential-addons-elementor'),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'label_on' => __('Show', 'essential-addons-elementor'),
+				'label_off' => __('Hide', 'essential-addons-elementor'),
+				'return_value' => 'yes',
+				'default' => '',
+				'condition' => [
+					'eael_interactive_card_style' => 'text-card',
+				]
+			]
+		);
+
+		$this->add_control(
+			'eael_interactive_card_front_cover',
+			[
+				'label' => esc_html__('Cover Image', 'essential-addons-elementor'),
+				'type' => Controls_Manager::MEDIA,
+				'default' => [
+					'url' => Utils::get_placeholder_image_src(),
+				],
+				'condition' => [
+					'eael_interactive_card_style' => 'text-card',
+					'eael_interactive_card_is_show_front_panel_cover' => 'yes',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .interactive-card .front-content .image-screen' => 'background: center / cover url({{URL}}) no-repeat !important;',
+				],
+			]
+		);
+
 		$this->add_control(
 			'eael_interactive_card_front_panel_counter',
 			[
@@ -115,6 +150,26 @@ class Interactive_Card extends Widget_Base
 				'condition' => [
 					'eael_interactive_card_style' => 'text-card',
 				]
+			]
+		);
+
+		$this->add_control(
+			'counter_html_tag',
+			[
+				'label'   => __( 'Counter HTML Tag', 'essential-addons-elementor' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'h1',
+				'options' => [
+					'h1'   => __( 'H1', 'essential-addons-elementor' ),
+					'h2'   => __( 'H2', 'essential-addons-elementor' ),
+					'h3'   => __( 'H3', 'essential-addons-elementor' ),
+					'h4'   => __( 'H4', 'essential-addons-elementor' ),
+					'h5'   => __( 'H5', 'essential-addons-elementor' ),
+					'h6'   => __( 'H6', 'essential-addons-elementor' ),
+					'div'  => __( 'div', 'essential-addons-elementor' ),
+					'span' => __( 'span', 'essential-addons-elementor' ),
+					'p'    => __( 'p', 'essential-addons-elementor' ),
+				],
 			]
 		);
 
@@ -231,11 +286,11 @@ class Interactive_Card extends Widget_Base
 				'options' => [
 					'left' => [
 						'title' => __('Left', 'essential-addons-elementor'),
-						'icon' => 'fa fa-align-left',
+						'icon' => 'eicon-text-align-left',
 					],
 					'right' => [
 						'title' => __('Right', 'essential-addons-elementor'),
-						'icon' => 'fa fa-align-right',
+						'icon' => 'eicon-text-align-right',
 					],
 				],
 				'default' => 'left',
@@ -262,8 +317,8 @@ class Interactive_Card extends Widget_Base
 					'size' => 5,
 				],
 				'selectors' => [
-					'{{WRAPPER}} .interactive-card .front-text-content .footer a.interactive-btn i.left' => 'margin-right: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .interactive-card .front-text-content .footer a.interactive-btn i.right' => 'margin-left: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .interactive-card .front-text-content .footer a.interactive-btn .front-btn-icon.left' => 'margin-right: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .interactive-card .front-text-content .footer a.interactive-btn .front-btn-icon.right' => 'margin-left: {{SIZE}}{{UNIT}};',
 				],
 				'condition'	=> [
 					'eael_interactive_card_is_show_front_panel_btn_icon'	=> 'yes'
@@ -469,11 +524,11 @@ class Interactive_Card extends Widget_Base
 				'options' => [
 					'left' => [
 						'title' => __('Left', 'essential-addons-elementor'),
-						'icon' => 'fa fa-align-left',
+						'icon' => 'eicon-text-align-left',
 					],
 					'right' => [
 						'title' => __('Right', 'essential-addons-elementor'),
-						'icon' => 'fa fa-align-right',
+						'icon' => 'eicon-text-align-right',
 					],
 				],
 				'default' => 'left',
@@ -500,8 +555,8 @@ class Interactive_Card extends Widget_Base
 					'size' => 5,
 				],
 				'selectors' => [
-					'{{WRAPPER}} .interactive-card a.interactive-btn i.left' => 'margin-right: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .interactive-card a.interactive-btn i.right' => 'margin-left: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .interactive-card a.interactive-btn .rear-btn-icon.left' => 'margin-right: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .interactive-card a.interactive-btn .rear-btn-icon.right' => 'margin-left: {{SIZE}}{{UNIT}};',
 				],
 				'condition'	=> [
 					'eael_interactive_card_is_show_rear_panel_btn_icon'	=> 'yes'
@@ -769,15 +824,15 @@ class Interactive_Card extends Widget_Base
 				'options' => [
 					'left' => [
 						'title' => __('Left', 'essential-addons-elementor'),
-						'icon' => 'fa fa-align-left',
+						'icon' => 'eicon-text-align-left',
 					],
 					'center' => [
 						'title' => __('Center', 'essential-addons-elementor'),
-						'icon' => 'fa fa-align-center',
+						'icon' => 'eicon-text-align-center',
 					],
 					'right' => [
 						'title' => __('Right', 'essential-addons-elementor'),
-						'icon' => 'fa fa-align-right',
+						'icon' => 'eicon-text-align-right',
 					],
 				],
 				'default' => 'center',
@@ -970,15 +1025,15 @@ class Interactive_Card extends Widget_Base
 				'options' => [
 					'left' => [
 						'title' => __('Left', 'essential-addons-elementor'),
-						'icon' => 'fa fa-align-left',
+						'icon' => 'eicon-text-align-left',
 					],
 					'center' => [
 						'title' => __('Center', 'essential-addons-elementor'),
-						'icon' => 'fa fa-align-center',
+						'icon' => 'eicon-text-align-center',
 					],
 					'right' => [
 						'title' => __('Right', 'essential-addons-elementor'),
-						'icon' => 'fa fa-align-right',
+						'icon' => 'eicon-text-align-right',
 					],
 				],
 				'toggle' => true,
@@ -1380,6 +1435,32 @@ class Interactive_Card extends Widget_Base
 			]
 		);
 
+		$this->add_responsive_control(
+			'eael_interactive_card_front_btn_icon_size',
+			[
+				'label' => __('Icon Size', 'essential-addons-for-elementor-lite'),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => 14,
+				],
+				'range' => [
+					'px' => [
+						'min' => 5,
+						'max' => 100,
+						'step' => 1,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .interactive-btn .front-btn-icon i' => 'font-size: {{SIZE}}px;',
+					'{{WRAPPER}} .interactive-btn .front-btn-icon svg' => 'height: {{SIZE}}px; width: {{SIZE}}px;',
+					'{{WRAPPER}} .interactive-btn .front-btn-icon' => 'height: {{SIZE}}px; width: {{SIZE}}px;',
+				],
+				'condition' => [
+					'eael_interactive_card_is_show_front_panel_btn_icon' => 'yes',
+				]
+			]
+		);
+
 		$this->start_controls_tabs('eael_interactive_card_front_button_tabs');
 
 		// Normal State Tab
@@ -1419,6 +1500,22 @@ class Interactive_Card extends Widget_Base
 				],
 				'condition' => [
 					'eael_interactive_card_style' => 'text-card'
+				]
+			]
+		);
+
+		$this->add_control(
+			'eael_interactive_card_front_btn_normal_icon_color',
+			[
+				'label' => esc_html__('Icon Color', 'essential-addons-elementor'),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#fff',
+				'selectors' => [
+					'{{WRAPPER}} .interactive-card .interactive-btn i' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .interactive-card .interactive-btn svg' => 'fill: {{VALUE}};',
+				],
+				'condition' => [
+					'eael_interactive_card_is_show_rear_panel_btn_icon' => 'yes',
 				]
 			]
 		);
@@ -1493,6 +1590,22 @@ class Interactive_Card extends Widget_Base
 				],
 				'condition' => [
 					'eael_interactive_card_style' => 'text-card'
+				]
+			]
+		);
+
+		$this->add_control(
+			'eael_interactive_card_front_btn_normal_icon_color_hover',
+			[
+				'label' => esc_html__('Icon Color', 'essential-addons-elementor'),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#fff',
+				'selectors' => [
+					'{{WRAPPER}} .interactive-card .interactive-btn:hover i' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .interactive-card .interactive-btn:hover svg' => 'fill: {{VALUE}};',
+				],
+				'condition' => [
+					'eael_interactive_card_is_show_front_panel_btn_icon' => 'yes',
 				]
 			]
 		);
@@ -1595,6 +1708,32 @@ class Interactive_Card extends Widget_Base
 			]
 		);
 
+		$this->add_responsive_control(
+			'eael_interactive_card_rear_btn_icon_size',
+			[
+				'label' => __('Icon Size', 'essential-addons-for-elementor-lite'),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => 14,
+				],
+				'range' => [
+					'px' => [
+						'min' => 5,
+						'max' => 100,
+						'step' => 1,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .interactive-btn .rear-btn-icon i' => 'font-size: {{SIZE}}px;',
+					'{{WRAPPER}} .interactive-btn .rear-btn-icon svg' => 'height: {{SIZE}}px; width: {{SIZE}}px;',
+					'{{WRAPPER}} .interactive-btn .rear-btn-icon' => 'height: {{SIZE}}px; width: {{SIZE}}px;',
+				],
+				'condition' => [
+					'eael_interactive_card_is_show_rear_panel_btn_icon' => 'yes',
+				]
+			]
+		);
+
 		$this->start_controls_tabs('eael_interactive_card_rear_button_tabs');
 
 		// Normal State Tab
@@ -1621,6 +1760,22 @@ class Interactive_Card extends Widget_Base
 				'selectors' => [
 					'{{WRAPPER}} .interactive-card .interactive-btn' => 'background: {{VALUE}};',
 				],
+			]
+		);
+
+		$this->add_control(
+			'eael_interactive_card_rear_btn_normal_icon_color_hover',
+			[
+				'label' => esc_html__('Icon Color', 'essential-addons-elementor'),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#fff',
+				'selectors' => [
+					'{{WRAPPER}} .interactive-card .interactive-btn i' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .interactive-card .interactive-btn svg' => 'fill: {{VALUE}};',
+				],
+				'condition' => [
+					'eael_interactive_card_is_show_rear_panel_btn_icon' => 'yes',
+				]
 			]
 		);
 
@@ -1675,6 +1830,21 @@ class Interactive_Card extends Widget_Base
 				'selectors' => [
 					'{{WRAPPER}} .interactive-card .interactive-btn:hover' => 'background: {{VALUE}};',
 				],
+			]
+		);
+		$this->add_control(
+			'eael_interactive_card_rear_btn_normal_icon_color',
+			[
+				'label' => esc_html__('Icon Color', 'essential-addons-elementor'),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#fff',
+				'selectors' => [
+					'{{WRAPPER}} .interactive-card .interactive-btn:hover i' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .interactive-card .interactive-btn:hover svg' => 'fill: {{VALUE}};',
+				],
+				'condition' => [
+					'eael_interactive_card_is_show_rear_panel_btn_icon' => 'yes',
+				]
 			]
 		);
 
@@ -1877,7 +2047,6 @@ class Interactive_Card extends Widget_Base
 			$icon = $settings['eael_interactive_card_close_button_icon'];
 		}
 
-
 		// Youtube FullScreen
 		if ('yes' === $settings['eael_interactive_card_youtube_video_fullscreen']) : $full_screen = 'allowfullscreen';
 		else : $full_screen = '';
@@ -1897,9 +2066,11 @@ class Interactive_Card extends Widget_Base
 				<div class="front-content front-text-content">
 					<div class="image-screen">
 						<div class="header">
-							<?php if (!empty($settings['eael_interactive_card_front_panel_counter'])) : ?>
-								<h1 class="card-number"><?php echo $settings['eael_interactive_card_front_panel_counter']; ?></h1>
-							<?php endif; ?>
+							<?php if ( ! empty( $settings['eael_interactive_card_front_panel_counter'] ) ) {
+								printf( '<%1$s class="card-number">', $settings['counter_html_tag'] );
+								echo $settings['eael_interactive_card_front_panel_counter'];
+								printf( '</%1$s>', $settings['counter_html_tag'] );
+							} ?>
 							<?php if (!empty($settings['eael_interactive_card_front_panel_title'])) : ?>
 								<h2 class="title"><?php echo $settings['eael_interactive_card_front_panel_title']; ?></h2>
 							<?php endif; ?>
@@ -1924,11 +2095,15 @@ class Interactive_Card extends Widget_Base
 								<a href="javascript:;" class="interactive-btn">
 									<?php
 									if ($settings['eael_interactive_card_is_show_front_panel_btn_icon'] == 'yes' && $settings['eael_interactive_card_front_panel_btn_icon_alignment'] == 'left') {
-										echo '<i class="' . $settings['eael_interactive_card_front_panel_btn_icon_alignment'] . " " . $settings['eael_interactive_card_front_panel_btn_icon']['value'] . '"></i>';
+										echo '<span class="' . $settings['eael_interactive_card_front_panel_btn_icon_alignment'] . ' front-btn-icon"></i>';
+									    Icons_Manager::render_icon( $settings['eael_interactive_card_front_panel_btn_icon'], [ 'aria-hidden' => 'true' ] );
+										echo '</span>';
 									}
 									echo $settings['eael_interactive_card_front_panel_btn'];
 									if ($settings['eael_interactive_card_is_show_front_panel_btn_icon'] == 'yes' && $settings['eael_interactive_card_front_panel_btn_icon_alignment'] == 'right') {
-										echo '<i class="' . $settings['eael_interactive_card_front_panel_btn_icon_alignment'] . " " . $settings['eael_interactive_card_front_panel_btn_icon']['value'] . '"></i>';
+										echo '<span class="' . $settings['eael_interactive_card_front_panel_btn_icon_alignment'] . ' front-btn-icon"></i>';
+										Icons_Manager::render_icon( $settings['eael_interactive_card_front_panel_btn_icon'], [ 'aria-hidden' => 'true' ] );
+										echo '</span>';
 									}
 									?>
 								</a>
@@ -1972,11 +2147,15 @@ class Interactive_Card extends Widget_Base
 									<a href="<?php echo esc_url($settings['eael_interactive_card_rear_btn_link']['url']); ?>" <?php echo $target; ?> <?php echo $nofollow; ?> class="interactive-btn">
 										<?php
 										if ($settings['eael_interactive_card_is_show_rear_panel_btn_icon'] == 'yes' && $settings['eael_interactive_card_rear_panel_btn_icon_alignment'] == 'left') {
-											echo '<i class="' . $settings['eael_interactive_card_rear_panel_btn_icon_alignment'] . " " . $settings['eael_interactive_card_rear_panel_btn_icon']['value'] . '"></i>';
+											echo '<span class="' . $settings['eael_interactive_card_rear_panel_btn_icon_alignment'] . ' rear-btn-icon"></i>';
+											Icons_Manager::render_icon( $settings['eael_interactive_card_rear_panel_btn_icon'], [ 'aria-hidden' => 'true' ] );
+											echo '</span>';
 										}
 										echo $settings['eael_interactive_card_rear_btn'];
 										if ($settings['eael_interactive_card_is_show_rear_panel_btn_icon'] == 'yes' && $settings['eael_interactive_card_rear_panel_btn_icon_alignment'] == 'right') {
-											echo '<i class="' . $settings['eael_interactive_card_rear_panel_btn_icon_alignment'] . " " . $settings['eael_interactive_card_rear_panel_btn_icon']['value'] . '"></i>';
+											echo '<span class="' . $settings['eael_interactive_card_rear_panel_btn_icon_alignment'] . ' rear-btn-icon"></i>';
+											Icons_Manager::render_icon( $settings['eael_interactive_card_rear_panel_btn_icon'], [ 'aria-hidden' => 'true' ] );
+											echo '</span>';
 										}
 										?>
 									</a>

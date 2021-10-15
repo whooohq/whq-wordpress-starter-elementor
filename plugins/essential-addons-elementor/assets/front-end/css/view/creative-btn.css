@@ -282,10 +282,6 @@
      transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
 }
 .eael-creative-button--shikoba i {
-  position: absolute;
-  left: 15%;
-  -webkit-transform: translate3d(-40px, 5em, 0);
-  transform: translate3d(-40px, 5em, 0);
   -webkit-transition: -webkit-transform 0.3s;
   transition: -webkit-transform 0.3s;
   -o-transition: transform 0.3s;
@@ -295,7 +291,6 @@
   -o-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
      transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
 }
-.eael-creative-button--shikoba:hover i,
 .eael-creative-button--shikoba:hover > span {
   -webkit-transform: translate3d(10px, 0, 0);
   transform: translate3d(10px, 0, 0);

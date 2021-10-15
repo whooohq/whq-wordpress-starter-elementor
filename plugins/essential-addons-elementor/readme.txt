@@ -1,8 +1,8 @@
 === Essential Addons for Elementor - Pro ===
-Contributors: wpdevteam, Codetic, re_enter_rupok, Asif2BD, priyomukul, mahfuz01, nazsabuz
+Contributors: wpdevteam, re_enter_rupok, Asif2BD, priyomukul, manzurahammed
 Tags: elementor, elements, widgets, page builder, builder, visual editor, wordpress page builder
-Tested up to: 5.7
-Stable tag: 4.3.7
+Tested up to: 5.8
+Stable tag: 4.4.11
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
@@ -10,7 +10,7 @@ Supercharge your Elementor page building experience with Essential Addons PRO. G
 
 == Description ==
 
-Ultimate elements  library for Elementor WordPress Page Builder. 50+ useful and premium elements to complete your website quickly. Stunning design and neat and clean code. Option to enable/disable certain elements to improve page loading. No extra resources to slow down your website.
+Ultimate elements  library for Elementor WordPress Page Builder. 70+ useful and premium elements to complete your website quickly. Stunning design and neat and clean code. Option to enable/disable certain elements to improve page loading. No extra resources to slow down your website.
 
 
 List of Elements :
@@ -75,6 +75,7 @@ List of Elements :
 * LearnDash Course List
 * Formstack
 * Typeform
+* Woo Product Slider
 
 List of Extensions :
 
@@ -86,6 +87,120 @@ List of Extensions :
 * Custom JS
 
 == Changelog ==
+
+= 4.4.11 - 11/10/2021 =
+
+- Fixed: EA Static Product | Throwing Fatal Error when translating with WPML
+- Fixed: EA Static Product | Typography options not working properly
+- Fixed: EA Protected Content | Not working properly when saved template is used as content
+- Fixed: EA Advanced Menu | Sub-menu not expanding in vertical layout
+- Fixed: EA LearnDash Course List | Video Thumbnail Not Working
+- Few minor bug fix & improvements
+
+= 4.4.10 - 26/09/2021 =
+
+- Fixed: EA Advanced Google Map | Map Icon color not working
+- Improved: EA Instagram Feed | Added 'alt' text in image tag
+- Fixed: EA Offcanvas Menu | not working on "question marked" URL
+- Fixed: EA Lightbox & Modal | not working if image is selected as trigger.
+- Few minor bug fix & improvements
+
+= 4.4.9 - 01/09/2021 =
+
+- Fixed: EA Smart Post List | Date Format not getting from WordPress Setting
+- Fixed: Clicking on the arrow stopping all the Sliders
+- Fixed: EA Offcanvas Menu | not working on "question marked" URL
+- Fixed: EA Lightbox & Modal | not working if image is selected as trigger.
+- Few minor bug fix & improvements
+
+= 4.4.8 - 19/08/2021 =
+
+- Fixed: EA Toggle | Secondd toggle doesn't work if Nested template is used
+- Fixed: EA Smart Post List | Manual ordering not working
+- Fixed: EA Smart Post List | Styling issue on 9th post
+- Fixed: EA Lightbox & Modal | Not working with icon/image type
+- Few minor bug fix and improvements
+
+= 4.4.7 - 08/08/2021 =
+
+- Fixed: EA Learndash Course List | throwing PHP Warning
+- Fixed: EA Smart Post List | Custom Template not loading from theme
+- Added: EA Team Member Carousel | Options to adjust height and width
+- Removed: Unused TweenMax library from EA Parallax
+- Few minor bug fix and improvements
+
+= 4.4.6 - 27/07/2021 =
+
+- Fixed: EA Smart Post List | 'Show Category' option not functioning properly
+- Fixed: EA Woo Product Slider | Draft products being displayed on Edit Mode
+- Fixed: EA Woo Product Slider | 'Quick View' popup not showing properly when multiple images are used
+- Fixed: EA Dynamic Gallery | "Load More" not working when custom template is used from Theme
+- Fixed: EA Woo Check Out | Broken 'Multi-Steps' layout in Neve theme
+- Fixed: Conflict with Jetpack with Slider elements
+- Few minor bug fix and improvements
+
+= 4.4.5 - 18/07/2021 =
+
+- Fixed: EA Lightbox & Modal | linked to the same post
+- Fixed: EA Image Hotspots | Safari browser crashing when links are set to "Open in New Window"
+- Fixed : EA Creative Buttons | Style controls not working properly for "Winona" & "Rayen" effects 
+- Fixed: EA Woo Product Carousel | swiperslider conflict with Jetpack
+- Few minor bug fix and improvements
+
+= 4.4.4 - 07/07/2021 =
+
+- Fixed: EA Interactive Cards | no option to change heading tag for Counter text
+- Fixed: EA Image Comparison | On Hover setting not working on Frontend
+- Few minor bug fix and improvements
+
+= 4.4.3 - 29/06/2021 =
+
+- Fixed: EA Parallax | Broken in Safari browser
+- Fixed: EA Testimonial Slider | Image not being centered in some Styles
+- Fixed: EA Image Hotspot | Showing black border when the tooltip is enabled
+- Improved: EA Woo Product Slider | Added buttons shadow, image size change option and add to cart style options for preset 3
+- Improved: EA Team Member Carousel | Added Custom Social Icon option
+- Few minor bug fix and improvements
+
+= 4.4.2 - 15/06/2021 =
+- Improved: WPML Compatibility
+- Fixed: EA Smart Post List | Filtering not working
+- Fixed: EA Content Protection | Not working properly if a certain user has multiple roles
+- Few minor bug fix and improvements
+
+= 4.4.1 - 07/06/2021 =
+- Removed: Elementor  deprecation methods
+- Added: Compatibility with PHP 8.0
+- Improved: EA Team Member Carousel | Added Snapchat & XING Social link options
+- Improved: Added Target_Blank options in post widgets
+- Improved: EA Testimonial Slider | Move navigation arrows outside of the box
+- Fixed: EA Post Block | Hover Card Style not working
+- Fixed: EA Dual Color Heading |Font Gradient color not changing
+- Fixed: EA Woo Product Slider | Quick View not showing properly
+- Few minor bug fix and improvements
+
+= 4.4.0 - 09/05/2021 =
+- Added: EA Woo Product Carousel
+- Few minor bug fix and improvements
+
+= 4.3.9.1 - 03/05/2021 =
+- Version issue fixed
+
+= 4.3.9 - 03/05/2021 =
+
+- Improved: Query Optimization in dynamic widgets
+- Fixed: Conflict with swiperJS
+- Fixed: EA Advanced Google Map | showing wrong info for some markers on mobile screens
+- Fixed: EA Image Comparison | not loading properly initially
+- Fixed: EA LearnDash Course list | Image quality issue
+- Fixed: EA Smart Post List | Uploaded SVG Icon not appearing
+- Fixed: EA Smart Post List | Search result under Featured Post Settings not working for CPT
+- Few minor bug fix and improvements
+
+= 4.3.8 - 25/04/2021 =
+
+- Fixed: Elementor\Scheme_Typography is deprecated
+- Few minor bug fix and improvements
 
 = 4.3.7 - 13/04/2021 =
 

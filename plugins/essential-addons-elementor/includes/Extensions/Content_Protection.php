@@ -11,7 +11,7 @@ use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
 use \Elementor\Plugin;
-use \Elementor\Scheme_Typography;
+use \Elementor\Core\Schemes\Typography;
 use \Essential_Addons_Elementor\Pro\Classes\Helper;
 use http\Message\Body;
 
@@ -265,7 +265,7 @@ class Content_Protection {
 			Group_Control_Typography::get_type(),
 			[
 				'name'      => 'eael_ext_content_protection_message_text_typography',
-				'scheme'    => Scheme_Typography::TYPOGRAPHY_2,
+				'scheme'    => Typography::TYPOGRAPHY_2,
 				'selector'  => '{{WRAPPER}} .eael-protected-content-message',
 				'condition' => [
 					'eael_ext_content_protection_message_type' => 'text',
@@ -282,15 +282,15 @@ class Content_Protection {
 				'options'     => [
 					'left'   => [
 						'title' => esc_html__( 'Left', 'essential-addons-elementor' ),
-						'icon'  => 'fa fa-align-left',
+						'icon'  => 'eicon-text-align-left',
 					],
 					'center' => [
 						'title' => esc_html__( 'Center', 'essential-addons-elementor' ),
-						'icon'  => 'fa fa-align-center',
+						'icon'  => 'eicon-text-align-center',
 					],
 					'right'  => [
 						'title' => esc_html__( 'Right', 'essential-addons-elementor' ),
-						'icon'  => 'fa fa-align-right',
+						'icon'  => 'eicon-text-align-right',
 					],
 				],
 				'default'     => 'left',
@@ -347,7 +347,7 @@ class Content_Protection {
             Group_Control_Typography::get_type(),
             [
                 'name' => 'eael_ext_content_protection_error_message_text_typography',
-                'scheme' => Scheme_Typography::TYPOGRAPHY_2,
+                'scheme' => Typography::TYPOGRAPHY_2,
                 'selector' => '{{WRAPPER}} .protected-content-error-msg',
                 'condition' => [
                     'eael_ext_content_protection_message_type' => 'text',
@@ -364,15 +364,15 @@ class Content_Protection {
                 'options' => [
                     'left' => [
                         'title' => esc_html__('Left', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-left',
+                        'icon' => 'eicon-text-align-left',
                     ],
                     'center' => [
                         'title' => esc_html__('Center', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-center',
+                        'icon' => 'eicon-text-align-center',
                     ],
                     'right' => [
                         'title' => esc_html__('Right', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-right',
+                        'icon' => 'eicon-text-align-right',
                     ],
                 ],
                 'default' => 'left',
@@ -443,15 +443,15 @@ class Content_Protection {
 				'options'     => [
 					'flex-start' => [
 						'title' => esc_html__( 'Left', 'essential-addons-elementor' ),
-						'icon'  => 'fa fa-align-left',
+						'icon'  => 'eicon-text-align-left',
 					],
 					'center'     => [
 						'title' => esc_html__( 'Center', 'essential-addons-elementor' ),
-						'icon'  => 'fa fa-align-center',
+						'icon'  => 'eicon-text-align-center',
 					],
 					'flex-end'   => [
 						'title' => esc_html__( 'Right', 'essential-addons-elementor' ),
-						'icon'  => 'fa fa-align-right',
+						'icon'  => 'eicon-text-align-right',
 					],
 				],
 				'default'     => 'left',
@@ -774,8 +774,8 @@ class Content_Protection {
 			return;
 		}
 
-		$user_role = reset( wp_get_current_user()->roles );
-		return in_array( $user_role, (array)$settings[ 'eael_ext_content_protection_role' ] );
+        $user_role = wp_get_current_user()->roles ;
+        return !empty( array_intersect( $user_role,(array)$settings['eael_ext_content_protection_role'] ));
 	}
 
 	/**

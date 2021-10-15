@@ -4,8 +4,8 @@
 	Description: A plain-vanilla & lightweight theme for Elementor page builder
 	Author: Elementor Team
 	Author URI: https://elementor.com/?utm_source=wp-themes&utm_campaign=author-uri&utm_medium=wp-dash
-	Version: 2.3.1
-	Stable tag: 2.3.1
+	Version: 2.4.1
+	Stable tag: 2.4.1
 	Requires at least: 4.7
 	Tested up to: 5.6
 	Requires PHP: 5.6
@@ -14,22 +14,19 @@
 	Text Domain: hello-elementor
 	Tags: flexible-header, custom-colors, custom-menu, custom-logo, featured-images, rtl-language-support, threaded-comments, translation-ready
 */
-/* Style - include Theme style
-   ========================================================================== */
 /**
  * DO NOT CHANGE THIS FILE!
  * To override any of the settings in this section, add your styling code in the custom directory.
- * Loading first in the style.scss & editor-style.scss
+ * Loading first in the style.scss & classic-editor.scss
  */
 /*!
  * Based on Normalize.css v8.0.0, HTML5 Boilerplate v6.1.0, & Bootstrap Reboot v4.1.0 | Under MIT License
 */
 /**
+ * Document basic styling
  * DO NOT CHANGE THIS FILE!
  * To override any of the settings in this section, add your styling code in the custom directory.
  */
-/* Document
-   ========================================================================== */
 /**
  * 1. Correct the line height in all browsers.
  * 2. Prevent adjustments of font size after orientation changes in iOS.
@@ -44,12 +41,11 @@ html {
 *,
 *::before,
 *::after {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   /* 3 */ }
 
 /* Sections
-   ========================================================================== */
+ */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -96,14 +92,13 @@ p {
   margin-bottom: .9rem; }
 
 /* Grouping content
-   ========================================================================== */
+ */
 /**
  * 1. Add the correct box sizing in Firefox.
  * 2. Show the overflow in Edge and IE.
  */
 hr {
-  -webkit-box-sizing: content-box;
-          box-sizing: content-box;
+  box-sizing: content-box;
   /* 1 */
   height: 0;
   /* 1 */
@@ -115,14 +110,14 @@ hr {
  * 2. Correct the odd `em` font sizing in all browsers.
  */
 pre {
-  font-family: monospace;
+  font-family: monospace, monospace;
   /* 1 */
   font-size: 1em;
   /* 2 */
   white-space: pre-wrap; }
 
 /* Text-level semantics
-   ========================================================================== */
+ */
 a {
   background-color: transparent;
   text-decoration: none;
@@ -145,10 +140,7 @@ a {
 abbr[title] {
   border-bottom: none;
   /* 1 */
-  text-decoration: underline;
-  /* 2 */
-  -webkit-text-decoration: underline dotted;
-          text-decoration: underline dotted;
+  text-decoration: underline dotted;
   /* 2 */ }
 
 /**
@@ -194,7 +186,7 @@ sup {
   top: -0.5em; }
 
 /* Embedded content
-   ========================================================================== */
+ */
 /**
  * Remove the border on images inside links in IE 10.
  */
@@ -204,7 +196,7 @@ img {
   max-width: 100%; }
 
 /* Interactive
-   ========================================================================== */
+ */
 /*
  * Add the correct display in Edge, IE 10+, and Firefox.
  */
@@ -225,7 +217,7 @@ figcaption {
   font-weight: 400; }
 
 /* Misc
-   ========================================================================== */
+ */
 /**
  * Add the correct display in IE 10+.
  */
@@ -249,7 +241,7 @@ template {
   border: 0; }
 
 /* Print
-   ========================================================================== */
+ */
 @media print {
   *,
   *:before,
@@ -290,12 +282,11 @@ template {
   h3 {
     page-break-after: avoid; } }
 
-/*
-DO NOT CHANGE THIS FILE
-to override any of the settings in this section, add your styling code in the custom directory.
+/**
+ * Form styling
+ * DO NOT CHANGE THIS FILE!
+ * To override any of the settings in this section, add your styling code in the custom directory.
  */
-/* Forms
-   ========================================================================== */
 label {
   display: inline-block;
   line-height: 1;
@@ -333,8 +324,6 @@ textarea {
   border: solid 1px #666666;
   border-radius: 3px;
   padding: 0.5rem 1rem;
-  -webkit-transition: all .3s;
-  -o-transition: all .3s;
   transition: all .3s; }
   input[type="text"]:focus,
   input[type="date"]:focus,
@@ -404,22 +393,16 @@ button,
   color: #CC3366;
   text-align: center;
   white-space: nowrap;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  user-select: none;
   background-color: transparent;
   border: 1px solid #CC3366;
   padding: 0.5rem 1rem;
   font-size: 1rem;
   border-radius: 3px;
-  -webkit-transition: all .3s;
-  -o-transition: all .3s;
   transition: all .3s; }
   button:focus,
   [type="submit"]:focus,
   [type="button"]:focus {
-    outline: 1px dotted;
     outline: 5px auto -webkit-focus-ring-color; }
   button:hover, button:focus,
   [type="submit"]:hover,
@@ -447,8 +430,7 @@ fieldset {
  *    `fieldset` elements in all browsers.
  */
 legend {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   /* 1 */
   color: inherit;
   /* 2 */
@@ -480,8 +462,7 @@ textarea {
  */
 [type="checkbox"],
 [type="radio"] {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   /* 1 */
   padding: 0;
   /* 2 */ }
@@ -522,12 +503,11 @@ textarea {
 select {
   display: block; }
 
-/*
-DO NOT CHANGE THIS FILE
-to override any of the settings in this section, add your styling code in the custom directory.
+/**
+ * Table styling
+ * DO NOT CHANGE THIS FILE!
+ * To override any of the settings in this section, add your styling code in the custom directory.
  */
-/* Table
-   ========================================================================== */
 table {
   background-color: transparent;
   width: 100%;
@@ -562,6 +542,9 @@ table {
   table tbody > tr:nth-child(odd) > td,
   table tbody > tr:nth-child(odd) > th {
     background-color: #f7f7f7; }
+  table tbody tr:hover > td,
+  table tbody tr:hover > th {
+    background-color: #e9e9e9; }
   table tbody + tbody {
     border-top: 2px solid #cccccc; }
   @media (max-width: 767px) {
@@ -574,12 +557,11 @@ table {
       table table th {
         font-weight: 400; } }
 
-/*
-DO NOT CHANGE THIS FILE
-to override any of the settings in this section, add your styling code in the custom directory.
+/**
+ * List styling
+ * DO NOT CHANGE THIS FILE!
+ * To override any of the settings in this section, add your styling code in the custom directory.
  */
-/* Lists
-   ========================================================================== */
 dl,
 dt,
 dd,

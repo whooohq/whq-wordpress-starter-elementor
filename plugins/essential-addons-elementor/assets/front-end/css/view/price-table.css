@@ -203,9 +203,13 @@
   text-transform: uppercase;
   padding: 5px 15px;
 }
-.eael-pricing.style-4 .eael-pricing-item:hover {
+.eael-pricing.style-4:hover,
+.eael-pricing.style-5:hover {
   -webkit-box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  -webkit-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
 }
 .eael-pricing.style-4 .eael-pricing-item .header {
   background: #c8e6c9;
@@ -535,11 +539,15 @@
 .eael-pricing-content-align-left .eael-pricing.style-5 .header {
   text-align: left;
 }
-.eael-pricing-content-align-left .eael-pricing.style-5 .eael-pricing-item .eael-pricing-image,
-.eael-pricing-content-align-left .eael-pricing.style-5 .eael-pricing-item .eael-pricing-icon .icon {
+.eael-pricing-content-align-left .eael-pricing.style-5 .eael-pricing-item .eael-pricing-image {
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
+}
+.eael-pricing-content-align-left .eael-pricing.style-5 .eael-pricing-item .eael-pricing-icon .icon {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 .eael-pricing-content-align-center .eael-pricing.style-5 .body,
 .eael-pricing-content-align-center .eael-pricing.style-5 .header {
@@ -555,11 +563,15 @@
 .eael-pricing-content-align-right .eael-pricing.style-5 .header {
   text-align: right;
 }
-.eael-pricing-content-align-right .eael-pricing.style-5 .eael-pricing-item .eael-pricing-image,
-.eael-pricing-content-align-right .eael-pricing.style-5 .eael-pricing-item .eael-pricing-icon .icon {
+.eael-pricing-content-align-right .eael-pricing.style-5 .eael-pricing-item .eael-pricing-image {
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
+}
+.eael-pricing-content-align-right .eael-pricing.style-5 .eael-pricing-item .eael-pricing-icon .icon {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 .eael-pricing-button-align-left .eael-pricing.style-5 .footer {
   text-align: left;
@@ -575,11 +587,15 @@
 .eael-pricing-content-align-tablet-left .eael-pricing.style-5 .header {
     text-align: left;
   }
-  .eael-pricing-content-align-tablet-left .eael-pricing.style-5 .eael-pricing-item .eael-pricing-image,
-.eael-pricing-content-align-tablet-left .eael-pricing.style-5 .eael-pricing-item .eael-pricing-icon .icon {
+  .eael-pricing-content-align-tablet-left .eael-pricing.style-5 .eael-pricing-item .eael-pricing-image {
     -webkit-box-pack: start;
         -ms-flex-pack: start;
             justify-content: flex-start;
+  }
+  .eael-pricing-content-align-tablet-left .eael-pricing.style-5 .eael-pricing-item .eael-pricing-icon .icon {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
   }
 
   .eael-pricing-content-align-tablet-center .eael-pricing.style-5 .body,
@@ -597,11 +613,15 @@
 .eael-pricing-content-align-tablet-right .eael-pricing.style-5 .header {
     text-align: right;
   }
-  .eael-pricing-content-align-tablet-right .eael-pricing.style-5 .eael-pricing-item .eael-pricing-image,
-.eael-pricing-content-align-tablet-right .eael-pricing.style-5 .eael-pricing-item .eael-pricing-icon .icon {
+  .eael-pricing-content-align-tablet-right .eael-pricing.style-5 .eael-pricing-item .eael-pricing-image {
     -webkit-box-pack: end;
         -ms-flex-pack: end;
             justify-content: flex-end;
+  }
+  .eael-pricing-content-align-tablet-right .eael-pricing.style-5 .eael-pricing-item .eael-pricing-icon .icon {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
   }
 
   .eael-pricing-button-align-tablet-left .eael-pricing.style-5 .footer {
@@ -621,11 +641,15 @@
 .eael-pricing-content-align-mobile-left .eael-pricing.style-5 .header {
     text-align: left;
   }
-  .eael-pricing-content-align-mobile-left .eael-pricing.style-5 .eael-pricing-item .eael-pricing-image,
-.eael-pricing-content-align-mobile-left .eael-pricing.style-5 .eael-pricing-item .eael-pricing-icon .icon {
+  .eael-pricing-content-align-mobile-left .eael-pricing.style-5 .eael-pricing-item .eael-pricing-image {
     -webkit-box-pack: start;
         -ms-flex-pack: start;
             justify-content: flex-start;
+  }
+  .eael-pricing-content-align-mobile-left .eael-pricing.style-5 .eael-pricing-item .eael-pricing-icon .icon {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
   }
 
   .eael-pricing-content-align-mobile-center .eael-pricing.style-5 .body,
@@ -643,11 +667,15 @@
 .eael-pricing-content-align-mobile-right .eael-pricing.style-5 .header {
     text-align: right;
   }
-  .eael-pricing-content-align-mobile-right .eael-pricing.style-5 .eael-pricing-item .eael-pricing-image,
-.eael-pricing-content-align-mobile-right .eael-pricing.style-5 .eael-pricing-item .eael-pricing-icon .icon {
+  .eael-pricing-content-align-mobile-right .eael-pricing.style-5 .eael-pricing-item .eael-pricing-image {
     -webkit-box-pack: end;
         -ms-flex-pack: end;
             justify-content: flex-end;
+  }
+  .eael-pricing-content-align-mobile-right .eael-pricing.style-5 .eael-pricing-item .eael-pricing-icon .icon {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
   }
 
   .eael-pricing-button-align-mobile-left .eael-pricing.style-5 .footer {

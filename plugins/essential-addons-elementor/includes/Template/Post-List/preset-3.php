@@ -40,13 +40,13 @@ echo '<div class="eael-post-list-post ' . (has_post_thumbnail() ? '' : 'eael-emp
 			$validate = Helper::eael_pro_validate_html_tag($settings['eael_post_list_title_tag']);
             if ($settings['eael_post_list_post_title'] == 'yes' && !empty($settings['eael_post_list_title_tag'])) {
                 echo "<{$validate} class=\"eael-post-list-title\">";
-                    echo '<a href="' . get_the_permalink() . '">' . get_the_title() . '</a>';
+                    echo '<a href="' . get_the_permalink() . '"' . $link_settings['title_link_nofollow'] . '' . $link_settings['title_link_target_blank'] . '>' . get_the_title() . '</a>';
                 echo "</{$validate}>";
             }
 
             if ($settings['eael_post_list_post_meta'] === 'yes') {
                 echo '<div class="meta">
-                    <span><i class="far fa-calendar-alt"></i> ' . get_the_date('d M Y') . '</span>
+                    <span><i class="far fa-calendar-alt"></i> ' . get_the_date(get_option('date_format')) . '</span>
                 </div>';
             }
 
@@ -56,7 +56,7 @@ echo '<div class="eael-post-list-post ' . (has_post_thumbnail() ? '' : 'eael-emp
 
             if ( isset($settings['eael_show_read_more_button']) && $settings['eael_show_read_more_button'] ) {
         
-                echo '<a href="' . get_the_permalink() . '" class="eael-post-elements-readmore-btn">' . esc_attr($settings['eael_post_list_read_more_text']) . '</a>';
+                echo '<a href="' . get_the_permalink() . '" class="eael-post-elements-readmore-btn"' . $link_settings['read_more_link_nofollow'] . '' . $link_settings['read_more_link_target_blank'] . '>' . esc_attr($settings['eael_post_list_read_more_text']) . '</a>';
             
             }
         echo '</div>';

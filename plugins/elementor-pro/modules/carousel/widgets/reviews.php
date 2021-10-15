@@ -30,6 +30,23 @@ class Reviews extends Base {
 		return [ 'reviews', 'social', 'rating', 'testimonial', 'carousel' ];
 	}
 
+	public function get_inline_css_depends() {
+		$slides = $this->get_settings_for_display( 'slides' );
+
+		foreach ( $slides as $slide ) {
+			if ( $slide['rating'] ) {
+				return [
+					[
+						'name' => 'star-rating',
+						'is_core_dependency' => true,
+					],
+				];
+			}
+		}
+
+		return [];
+	}
+
 	protected function register_controls() {
 		parent::register_controls();
 
@@ -806,5 +823,9 @@ class Reviews extends Base {
 
 	protected function render() {
 		$this->print_slider();
+	}
+
+	public function get_group_name() {
+		return 'carousel';
 	}
 }

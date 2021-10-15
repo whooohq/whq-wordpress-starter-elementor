@@ -5,9 +5,20 @@ use Essential_Addons_Elementor\Pro\Classes\Helper;
     <div class="eael-learn-dash-course-inner">
         <?php $this->_generate_tags($tags); ?>
 
-        <?php if($image && $settings['show_thumbnail'] === 'true') : ?>
+<!--        --><?php //if($image && $settings['show_thumbnail'] === 'true') : ?>
+        <?php if($settings['show_thumbnail'] === 'true') : ?>
         <a href="<?php echo esc_url(get_permalink($course->ID)); ?>" class="eael-learn-dash-course-thumbnail">
-            <img src="<?php echo esc_url($image[0]); ?>" alt="<?php echo $image_alt; ?>" />
+            <?php if( 1 == $ld_course_grid_enable_video_preview && ! empty( $ld_course_grid_video_embed_code ) ) : ?>
+                <!-- .ld_course_grid_video_embed helps to load default css and js from learndash -->
+                <div class="ld_course_grid_video_embed">
+                    <?php echo $ld_course_grid_video_embed_code; ?>
+                </div>
+            <?php elseif( $image ) :?>
+                <img src="<?php echo esc_url($image[0]); ?>" alt="<?php echo $image_alt; ?>" />
+            <?php else : ?>
+                <img alt="" src="<?php echo \Elementor\Utils::get_placeholder_image_src(); ?>"/>
+            <?php endif; ?>
+
             <?php if($price && $settings['show_price'] === 'true' && $image[0]): ?><div class="price-ticker-tag"><?php echo esc_attr($price); ?></div><?php endif; ?>
         </a>
         <?php endif; ?>

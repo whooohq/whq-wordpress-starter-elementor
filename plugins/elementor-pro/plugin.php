@@ -11,6 +11,7 @@ use ElementorPro\Core\Editor\Editor;
 use ElementorPro\Core\Modules_Manager;
 use ElementorPro\Core\Preview\Preview;
 use ElementorPro\Core\Upgrade\Manager as UpgradeManager;
+use ElementorPro\License\API;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -147,13 +148,15 @@ class Plugin {
 	}
 
 	public function enqueue_styles() {
-		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		$suffix = $this->get_assets_suffix();
 
 		$direction_suffix = is_rtl() ? '-rtl' : '';
 
-		$frontend_file_name = 'frontend' . $direction_suffix . $suffix . '.css';
+		$frontend_file_name_base = $this->is_optimized_css_mode() ? 'frontend-lite' : 'frontend';
 
-		$has_custom_file = Responsive::has_custom_breakpoints();
+		$frontend_file_name = $frontend_file_name_base . $direction_suffix . $suffix . '.css';
+
+		$has_custom_file = self::elementor()->breakpoints->has_custom_breakpoints();
 
 		if ( $has_custom_file ) {
 			$frontend_file = new FrontendFile( 'custom-pro-' . $frontend_file_name, self::get_responsive_templates_path() . $frontend_file_name );
@@ -178,16 +181,12 @@ class Plugin {
 	}
 
 	public function enqueue_frontend_scripts() {
-		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		$suffix = $this->get_assets_suffix();
 
 		wp_enqueue_script(
 			'elementor-pro-frontend',
 			ELEMENTOR_PRO_URL . 'assets/js/frontend' . $suffix . '.js',
-			[
-				'elementor-pro-webpack-runtime',
-				'elementor-frontend-modules',
-				'elementor-sticky',
-			],
+			$this->get_frontend_depends(),
 			ELEMENTOR_PRO_VERSION,
 			true
 		);
@@ -203,6 +202,7 @@ class Plugin {
 			'nonce' => wp_create_nonce( 'elementor-pro-frontend' ),
 			'urls' => [
 				'assets' => apply_filters( 'elementor_pro/frontend/assets_url', ELEMENTOR_PRO_ASSETS_URL ),
+				'rest' => get_rest_url(),
 			],
 		];
 
@@ -222,6 +222,10 @@ class Plugin {
 			'ElementorProFrontendConfig',
 			$locale_settings
 		);
+
+		if ( $this->is_assets_loader_exist() ) {
+			$this->register_assets();
+		}
 	}
 
 	public function register_frontend_scripts() {
@@ -265,15 +269,17 @@ class Plugin {
 			true
 		);
 
-		wp_register_script(
-			'elementor-sticky',
-			ELEMENTOR_PRO_URL . 'assets/lib/sticky/jquery.sticky' . $suffix . '.js',
-			[
-				'jquery',
-			],
-			ELEMENTOR_PRO_VERSION,
-			true
-		);
+		if ( ! $this->is_assets_loader_exist() ) {
+			wp_register_script(
+				'elementor-sticky',
+				ELEMENTOR_PRO_URL . 'assets/lib/sticky/jquery.sticky' . $suffix . '.js',
+				[
+					'jquery',
+				],
+				ELEMENTOR_PRO_VERSION,
+				true
+			);
+		}
 	}
 
 	public function register_preview_scripts() {
@@ -291,7 +297,7 @@ class Plugin {
 	}
 
 	public function get_responsive_stylesheet_templates( $templates ) {
-		$templates_paths = glob( self::get_responsive_templates_path() . '*.css' );
+		$templates_paths = glob( $this->get_responsive_templates_path() . '*.css' );
 
 		foreach ( $templates_paths as $template_path ) {
 			$file_name = 'custom-pro-' . basename( $template_path );
@@ -328,8 +334,30 @@ class Plugin {
 		$document->update_meta( '_elementor_pro_version', ELEMENTOR_PRO_VERSION );
 	}
 
+	private function get_frontend_depends() {
+		$frontend_depends = [
+			'elementor-pro-webpack-runtime',
+			'elementor-frontend-modules',
+		];
+
+		if ( ! $this->is_assets_loader_exist() ) {
+			$frontend_depends[] = 'elementor-sticky';
+		}
+
+		return $frontend_depends;
+	}
+
 	private function get_responsive_templates_path() {
 		return ELEMENTOR_PRO_ASSETS_PATH . 'css/templates/';
+	}
+
+	private function add_subscription_template_access_level_to_settings( $settings ) {
+		// Core >= 3.2.0
+		if ( isset( $settings['library_connect']['current_access_level'] ) ) {
+			$settings['library_connect']['current_access_level'] = API::get_library_access_level();
+		}
+
+		return $settings;
 	}
 
 	private function setup_hooks() {
@@ -343,6 +371,44 @@ class Plugin {
 
 		add_filter( 'elementor/core/responsive/get_stylesheet_templates', [ $this, 'get_responsive_stylesheet_templates' ] );
 		add_action( 'elementor/document/save_version', [ $this, 'on_document_save_version' ] );
+
+		add_filter( 'elementor/editor/localize_settings', function ( $settings ) {
+			return $this->add_subscription_template_access_level_to_settings( $settings );
+		}, 11 /** After Elementor Core (Library) */ );
+	}
+
+	private function is_optimized_css_mode() {
+		$is_optimized_css_loading = self::elementor()->experiments->is_feature_active( 'e_optimized_css_loading' );
+
+		return ! Utils::is_script_debug() && $is_optimized_css_loading && ! self::elementor()->preview->is_preview_mode();
+	}
+
+	private function get_assets() {
+		$suffix = $this->get_assets_suffix();
+
+		return [
+			'scripts' => [
+				'e-sticky' => [
+					'src' => ELEMENTOR_PRO_URL . 'assets/lib/sticky/jquery.sticky' . $suffix . '.js',
+					'version' => ELEMENTOR_PRO_VERSION,
+					'dependencies' => [
+						'jquery',
+					],
+				],
+			],
+		];
+	}
+
+	private function register_assets() {
+		$assets = $this->get_assets();
+
+		if ( $assets ) {
+			self::elementor()->assets_loader->add_assets( $assets );
+		}
+	}
+
+	private function is_assets_loader_exist() {
+		return ! ! self::elementor()->assets_loader;
 	}
 
 	/**
@@ -365,6 +431,10 @@ class Plugin {
 			$this->admin = new Admin();
 			$this->license_admin = new License\Admin();
 		}
+	}
+
+	private function get_assets_suffix() {
+		return defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 	}
 
 	final public static function get_title() {

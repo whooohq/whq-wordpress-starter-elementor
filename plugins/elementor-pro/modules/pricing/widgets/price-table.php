@@ -4,6 +4,7 @@ namespace ElementorPro\Modules\Pricing\Widgets;
 use Elementor\Controls_Manager;
 use Elementor\Core\Kits\Documents\Tabs\Global_Colors;
 use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
+use Elementor\Group_Control_Background;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Typography;
@@ -385,7 +386,7 @@ class Price_Table extends Base_Widget {
 					'default' => Global_Colors::COLOR_SECONDARY,
 				],
 				'selectors' => [
-					'{{WRAPPER}} .elementor-price-table__header' => 'background-color: {{VALUE}}',
+					'{{WRAPPER}}' => '--e-price-table-header-background-color: {{VALUE}}',
 				],
 			]
 		);
@@ -514,7 +515,8 @@ class Price_Table extends Base_Widget {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'price_typography',
-				'selector' => '{{WRAPPER}} .elementor-price-table__price',
+				// Targeting also the .elementor-price-table class in order to get a higher specificity from the inline CSS.
+				'selector' => '{{WRAPPER}} .elementor-price-table .elementor-price-table__price',
 				'global' => [
 					'default' => Global_Typography::TYPOGRAPHY_PRIMARY,
 				],
@@ -545,7 +547,7 @@ class Price_Table extends Base_Widget {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .elementor-price-table__currency' => 'font-size: calc({{SIZE}}em/100)',
+					'{{WRAPPER}} .elementor-price-table__price > .elementor-price-table__currency' => 'font-size: calc({{SIZE}}em/100)',
 				],
 				'condition' => [
 					'currency_symbol!' => '',
@@ -849,7 +851,7 @@ class Price_Table extends Base_Widget {
 				],
 				'separator' => 'before',
 				'selectors' => [
-					'{{WRAPPER}} .elementor-price-table__features-list' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .elementor-price-table__features-list' => '--e-price-table-features-list-color: {{VALUE}}',
 				],
 			]
 		);
@@ -1118,16 +1120,22 @@ class Price_Table extends Base_Widget {
 			]
 		);
 
-		$this->add_control(
-			'button_background_color',
+		$this->add_group_control(
+			Group_Control_Background::get_type(),
 			[
-				'label' => __( 'Background Color', 'elementor-pro' ),
-				'type' => Controls_Manager::COLOR,
-				'global' => [
-					'default' => Global_Colors::COLOR_ACCENT,
-				],
-				'selectors' => [
-					'{{WRAPPER}} .elementor-price-table__button' => 'background-color: {{VALUE}};',
+				'name' => 'button_background',
+				'types' => [ 'classic', 'gradient' ],
+				'exclude' => [ 'image' ],
+				'selector' => '{{WRAPPER}} .elementor-price-table__button',
+				'fields_options' => [
+					'background' => [
+						'default' => 'classic',
+					],
+					'color' => [
+						'global' => [
+							'default' => Global_Colors::COLOR_ACCENT,
+						],
+					],
 				],
 			]
 		);
@@ -1187,13 +1195,17 @@ class Price_Table extends Base_Widget {
 			]
 		);
 
-		$this->add_control(
-			'button_background_hover_color',
+		$this->add_group_control(
+			Group_Control_Background::get_type(),
 			[
-				'label' => __( 'Background Color', 'elementor-pro' ),
-				'type' => Controls_Manager::COLOR,
-				'selectors' => [
-					'{{WRAPPER}} .elementor-price-table__button:hover' => 'background-color: {{VALUE}};',
+				'name' => 'button_background_hover',
+				'types' => [ 'classic', 'gradient' ],
+				'exclude' => [ 'image' ],
+				'selector' => '{{WRAPPER}} .elementor-price-table__button:hover',
+				'fields_options' => [
+					'background' => [
+						'default' => 'classic',
+					],
 				],
 			]
 		);
@@ -1372,7 +1384,7 @@ class Price_Table extends Base_Widget {
 		$currency_position = $this->get_settings( 'currency_position' );
 		$location_setting = ! empty( $currency_position ) ? $currency_position : 'before';
 		if ( ! empty( $symbol ) && $location === $location_setting ) {
-			echo '<span class="elementor-price-table__currency elementor-currency--' . $location . '">' . $symbol . '</span>';
+			echo '<span class="elementor-price-table__currency">' . $symbol . '</span>';
 		}
 	}
 
@@ -1468,7 +1480,13 @@ class Price_Table extends Base_Widget {
 
 			<div class="elementor-price-table__price">
 				<?php if ( 'yes' === $settings['sale'] && ! empty( $settings['original_price'] ) ) : ?>
-					<div class="elementor-price-table__original-price elementor-typo-excluded"><?php echo $symbol . $settings['original_price']; ?></div>
+					<div class="elementor-price-table__original-price elementor-typo-excluded">
+						<?php
+						$this->render_currency_symbol( $symbol, 'before' );
+						echo $settings['original_price'];
+						$this->render_currency_symbol( $symbol, 'after' );
+						?>
+					</div>
 				<?php endif; ?>
 				<?php $this->render_currency_symbol( $symbol, 'before' ); ?>
 				<?php if ( ! empty( $intpart ) || 0 <= $intpart ) : ?>
@@ -1645,7 +1663,20 @@ class Price_Table extends Base_Widget {
 
 			<div class="elementor-price-table__price">
 				<# if ( settings.sale && settings.original_price ) { #>
-					<div class="elementor-price-table__original-price elementor-typo-excluded">{{{ symbol + settings.original_price }}}</div>
+					<div class="elementor-price-table__original-price elementor-typo-excluded">
+						<# if ( ! _.isEmpty( symbol ) && ( 'before' == settings.currency_position || _.isEmpty( settings.currency_position ) ) ) { #>
+							<span class="elementor-price-table__currency">{{{ symbol }}}</span>{{{ settings.original_price }}}
+						<# } #>
+						<#
+						/* The duplicate usage of the original price setting in the "if blocks" is to avoid whitespace between the number and the symbol. */
+						if ( _.isEmpty( symbol ) ) {
+						#>
+							{{{ settings.original_price }}}
+						<# } #>
+						<# if ( ! _.isEmpty( symbol ) && 'after' == settings.currency_position ) { #>
+						{{{ settings.original_price }}}<span class="elementor-price-table__currency">{{{ symbol }}}</span>
+						<# } #>
+					</div>
 				<# } #>
 
 				<# if ( ! _.isEmpty( symbol ) && ( 'before' == settings.currency_position || _.isEmpty( settings.currency_position ) ) ) { #>
@@ -1724,5 +1755,9 @@ class Price_Table extends Base_Widget {
 			</div>
 		<# } #>
 		<?php
+	}
+
+	public function get_group_name() {
+		return 'pricing';
 	}
 }

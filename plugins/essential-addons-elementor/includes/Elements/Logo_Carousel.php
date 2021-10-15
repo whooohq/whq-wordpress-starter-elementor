@@ -6,7 +6,7 @@ use \Elementor\Group_Control_Background;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Typography;
 use Elementor\Repeater;
-use \Elementor\Scheme_Typography;
+use \Elementor\Core\Schemes\Typography;
 use \Elementor\Utils;
 use \Elementor\Widget_Base;
 
@@ -653,7 +653,7 @@ class Logo_Carousel extends Widget_Base {
             [
                 'name'     => 'title_typography',
                 'label'    => __( 'Typography', 'essential-addons-elementor' ),
-                'scheme'   => Scheme_Typography::TYPOGRAPHY_4,
+                'scheme'   => Typography::TYPOGRAPHY_4,
                 'selector' => '{{WRAPPER}} .eael-logo-carousel-title',
             ]
         );

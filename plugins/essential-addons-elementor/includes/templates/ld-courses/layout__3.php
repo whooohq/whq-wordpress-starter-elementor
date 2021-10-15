@@ -4,11 +4,20 @@ use Essential_Addons_Elementor\Pro\Classes\Helper;
 
 <div class="eael-learn-dash-course eael-course-layout-3 card-style">
     <div class="eael-learn-dash-course-inner">
-        <?php if($image): ?>
+<!--        --><?php //if($image): ?>
         <a class="card-thumb" href="<?php echo esc_url(get_permalink($course->ID)); ?>">
-            <img src="<?php echo esc_url($image[0]); ?>" alt="<?php echo $image_alt; ?>" />
+            <?php if( 1 == $ld_course_grid_enable_video_preview && ! empty( $ld_course_grid_video_embed_code ) ) : ?>
+                <!-- .ld_course_grid_video_embed helps to load default css and js from learndash -->
+                <div class="ld_course_grid_video_embed">
+                    <?php echo $ld_course_grid_video_embed_code; ?>
+                </div>
+            <?php elseif( $image ) :?>
+                <img src="<?php echo esc_url($image[0]); ?>" alt="<?php echo $image_alt; ?>" />
+            <?php else : ?>
+                <img alt="" src="<?php echo \Elementor\Utils::get_placeholder_image_src(); ?>"/>
+            <?php endif; ?>
         </a>
-        <?php endif; ?>
+<!--        --><?php //endif; ?>
 
         <?php if($settings['show_price'] == 'true') : ?>
             <div class="card-price"><?php echo $legacy_meta['sfwd-courses_course_price'] ? $legacy_meta['sfwd-courses_course_price'] : __('Free', 'essential-addons-elementor'); ?></div>

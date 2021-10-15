@@ -20,22 +20,26 @@ if ( $settings['eael_post_carousel_preset_style'] === 'two' ) {
 
     if (  ( $settings['eael_show_image'] == '0' || $settings['eael_show_image'] == 'yes' ) && has_post_thumbnail() ) {
         echo '<div class="eael-entry-media eael-entry-medianone">';
+
+	    if ($settings['eael_show_post_terms'] === 'yes') {
+		    echo Helper::get_terms_as_list($settings['eael_post_terms'], $settings['eael_post_terms_max_length']);
+	    }
+
         if ( isset( $settings['post_block_hover_animation'] ) && 'none' !== $settings['post_block_hover_animation'] ) {
             echo '<div class="eael-entry-overlay ' . ( $settings['post_block_hover_animation'] ) . '">';
 
-        
             if ( isset( $settings['__fa4_migrated']['eael_post_grid_bg_hover_icon_new'] ) || empty( $settings['eael_post_grid_bg_hover_icon'] ) ) {
                 echo '<i class="' . $settings['eael_post_grid_bg_hover_icon_new'] . '" aria-hidden="true"></i>';
             } else {
                 echo '<i class="fas fa-long-arrow-alt-right" aria-hidden="true"></i>';
             }
-            echo '<a href="' . get_the_permalink() . '"></a></div>';
+            echo '<a href="' . get_the_permalink() . '"' . $settings['image_link_nofollow'] . '' . $settings['image_link_target_blank'] . '></a></div>';
         }
         
         echo '<div class="eael-entry-thumbnail">
                 <img src="' . esc_url( wp_get_attachment_image_url( get_post_thumbnail_id(), $settings['image_size'] ) ) . '" alt="' . esc_attr( get_post_meta( get_post_thumbnail_id(), '_wp_attachment_image_alt', true ) ) . '">
-                <a href="' . get_the_permalink() . '"></a>
-            </div>';
+                <a href="' . get_the_permalink() . '"' . $settings['image_link_nofollow'] . '' . $settings['image_link_target_blank'] . '></a>
+             </div>';
         echo '</div>';
 
     }
@@ -90,7 +94,7 @@ if ( $settings['eael_post_carousel_preset_style'] === 'two' ) {
 
         if ( $settings['eael_show_title'] ) {
             echo '<' . $settings['title_tag'] . ' class="eael-entry-title">';
-            echo '<a class="eael-grid-post-link" href="' . get_permalink() . '" title="' . get_the_title() . '">';
+            echo '<a class="eael-grid-post-link" href="' . get_permalink() . '" title="' . get_the_title() . '"' . $settings['title_link_nofollow'] . '' . $settings['title_link_target_blank'] . '>';
             if ( empty( $settings['eael_title_length'] ) ) {
                 echo get_the_title();
             } else {
@@ -119,7 +123,7 @@ if ( $settings['eael_post_carousel_preset_style'] === 'two' ) {
             woocommerce_template_loop_add_to_cart();
             echo '</p>';
         } else {
-            echo '<div class="eael-post-elements-readmore-wrap"><a href="' . get_the_permalink() . '" class="eael-post-elements-readmore-btn">' . esc_attr( $settings['read_more_button_text'] ) . '</a></div>';
+            echo '<div class="eael-post-elements-readmore-wrap"><a href="' . get_the_permalink() . '" class="eael-post-elements-readmore-btn"' . $settings['read_more_link_nofollow'] . '' . $settings['read_more_link_target_blank'] . '>' . esc_attr( $settings['read_more_button_text'] ) . '</a></div>';
         }
         echo '</div>
             </div>';
@@ -132,9 +136,14 @@ if ( $settings['eael_post_carousel_preset_style'] === 'two' ) {
                 echo '<span class="eael-meta-posted-on"><i class="far fa-clock"></i><time datetime="' . get_the_date() . '">' . get_the_date() . '</time></span>';
             }
             if ( $settings['eael_show_post_terms'] === 'yes' ) {
-                if ( $settings['eael_post_terms'] === 'category' || $settings['eael_post_terms'] === 'tags' ) {
-                    $terms = wp_get_object_terms( get_the_ID(), get_object_taxonomies( get_post_type( get_the_ID() ) ) );
-                }
+	            if ( $settings['eael_post_terms'] === 'category' ) {
+		            $terms = get_the_category();
+	            }
+
+	            if ( $settings['eael_post_terms'] === 'tags' ) {
+		            $terms = get_the_tags();
+	            }
+
                 if ( !empty( $terms ) ) {
                     $html = '<ul class="post-meta-categories">';
                     $count = 0;
@@ -171,6 +180,11 @@ if ( $settings['eael_post_carousel_preset_style'] === 'two' ) {
 
     if (  ( $settings['eael_show_image'] == '0' || $settings['eael_show_image'] == 'yes' ) && has_post_thumbnail() ) {
         echo '<div class="eael-entry-media eael-entry-medianone">';
+
+	    if ($settings['eael_show_post_terms'] === 'yes') {
+		    echo Helper::get_terms_as_list($settings['eael_post_terms'], $settings['eael_post_terms_max_length']);
+	    }
+
         if ( isset( $settings['post_block_hover_animation'] ) && 'none' !== $settings['post_block_hover_animation'] ) {
             echo '<div class="eael-entry-overlay ' . ( $settings['post_block_hover_animation'] ) . '">';
             
@@ -179,7 +193,7 @@ if ( $settings['eael_post_carousel_preset_style'] === 'two' ) {
             } else {
                 echo '<i class="fas fa-long-arrow-alt-right" aria-hidden="true"></i>';
             }
-            echo '<a href="' . get_the_permalink() . '"></a></div>';
+            echo '<a href="' . get_the_permalink() . '"' . $settings['image_link_nofollow'] . '' . $settings['image_link_target_blank'] . '></a></div>';
         }
         
         echo '<div class="eael-entry-thumbnail">
@@ -201,7 +215,7 @@ if ( $settings['eael_post_carousel_preset_style'] === 'two' ) {
 
         if ( $settings['eael_show_title'] ) {
             echo '<' . $settings['title_tag'] . ' class="eael-entry-title">';
-            echo '<a class="eael-grid-post-link" href="' . get_permalink() . '" title="' . get_the_title() . '">';
+            echo '<a class="eael-grid-post-link" href="' . get_permalink() . '" title="' . get_the_title() . '"' . $settings['title_link_nofollow'] . '' . $settings['title_link_target_blank'] . '>';
             if ( empty( $settings['eael_title_length'] ) ) {
                 echo get_the_title();
             } else {
@@ -232,7 +246,7 @@ if ( $settings['eael_post_carousel_preset_style'] === 'two' ) {
                 woocommerce_template_loop_add_to_cart();
                 echo '</p>';
             } else {
-                echo '<div class="eael-post-elements-readmore-wrap"><a href="' . get_the_permalink() . '" class="eael-post-elements-readmore-btn">' . esc_attr( $settings['read_more_button_text'] ) . '</a></div>';
+                echo '<div class="eael-post-elements-readmore-wrap"><a href="' . get_the_permalink() . '" class="eael-post-elements-readmore-btn"' . $settings['read_more_link_nofollow'] . '' . $settings['read_more_link_target_blank'] . '>' . esc_attr( $settings['read_more_button_text'] ) . '</a></div>';
             }
             echo '</div>
         </div>';
@@ -249,14 +263,20 @@ if ( $settings['eael_post_carousel_preset_style'] === 'two' ) {
 
         if (  ( $settings['eael_show_image'] == '0' || $settings['eael_show_image'] == 'yes' ) && has_post_thumbnail() ) {
             echo '<div class="eael-entry-media eael-entry-medianone">';
+
+	        if ($settings['eael_show_post_terms'] === 'yes') {
+		        echo Helper::get_terms_as_list($settings['eael_post_terms'], $settings['eael_post_terms_max_length']);
+	        }
+
             if ( isset( $settings['post_block_hover_animation'] ) && 'none' !== $settings['post_block_hover_animation'] ) {
                 echo '<div class="eael-entry-overlay ' . ( $settings['post_block_hover_animation'] ) . '">';
+
                 if ( isset( $settings['__fa4_migrated']['eael_post_grid_bg_hover_icon_new'] ) || empty( $settings['eael_post_grid_bg_hover_icon'] ) ) {
                     echo '<i class="' . $settings['eael_post_grid_bg_hover_icon_new'] . '" aria-hidden="true"></i>';
                 } else {
                     echo '<i class="fas fa-long-arrow-alt-right" aria-hidden="true"></i>';
                 }
-                echo '<a href="' . get_the_permalink() . '"></a></div>';
+                echo '<a href="' . get_the_permalink() . '"' . $settings['image_link_nofollow'] . '' . $settings['image_link_target_blank'] . '></a></div>';
             }
             
             echo '<div class="eael-entry-thumbnail">
@@ -285,7 +305,7 @@ if ( $settings['eael_post_carousel_preset_style'] === 'two' ) {
 
         if ( $settings['eael_show_title'] ) {
             echo '<' . $settings['title_tag'] . ' class="eael-entry-title">';
-            echo '<a class="eael-grid-post-link" href="' . get_permalink() . '" title="' . get_the_title() . '">';
+            echo '<a class="eael-grid-post-link" href="' . get_permalink() . '" title="' . get_the_title() . '"' . $settings['title_link_nofollow'] . '' . $settings['title_link_target_blank'] . '>';
             if ( empty( $settings['eael_title_length'] ) ) {
                 echo get_the_title();
             } else {
@@ -316,7 +336,7 @@ if ( $settings['eael_post_carousel_preset_style'] === 'two' ) {
                 woocommerce_template_loop_add_to_cart();
                 echo '</p>';
             } else {
-                echo '<div class="eael-post-elements-readmore-wrap"><a href="' . get_the_permalink() . '" class="eael-post-elements-readmore-btn">' . esc_attr( $settings['read_more_button_text'] ) . '</a></div>';
+                echo '<div class="eael-post-elements-readmore-wrap"><a href="' . get_the_permalink() . '" class="eael-post-elements-readmore-btn"' . $settings['read_more_link_nofollow'] . '' . $settings['read_more_link_target_blank'] . '>' . esc_attr( $settings['read_more_button_text'] ) . '</a></div>';
             }
             echo '</div>
         </div>';

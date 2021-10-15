@@ -7,7 +7,7 @@ use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
 use \Elementor\Plugin;
-use \Elementor\Scheme_Typography;
+use \Elementor\Core\Schemes\Typography;
 use \Elementor\Widget_Base;
 use \Essential_Addons_Elementor\Pro\Classes\Helper;
 
@@ -94,10 +94,12 @@ class Protected_Content extends Widget_Base {
 		$this->add_control(
 			'eael_protected_content_template',
 			[
-				'label'     => __( 'Choose Template', 'essential-addons-elementor' ),
-				'type'      => Controls_Manager::SELECT,
-				'options'   => Helper::get_elementor_templates(),
-				'condition' => [
+				'label'       => __( 'Choose Template', 'essential-addons-elementor' ),
+				'type'        => 'eael-select2',
+				'source_name' => 'post_type',
+				'source_type' => 'elementor_library',
+				'label_block' => true,
+				'condition'   => [
 					'eael_protected_content_type' => 'template',
 				],
 			]
@@ -288,10 +290,12 @@ class Protected_Content extends Widget_Base {
 		$this->add_control(
 			'eael_protected_content_message_template',
 			[
-				'label'     => __( 'Choose Template', 'essential-addons-elementor' ),
-				'type'      => Controls_Manager::SELECT,
-				'options'   => Helper::get_elementor_templates(),
-				'condition' => [
+				'label'       => __( 'Choose Template', 'essential-addons-elementor' ),
+				'type'        => 'eael-select2',
+				'source_name' => 'post_type',
+				'source_type' => 'elementor_library',
+				'label_block' => true,
+				'condition'   => [
 					'eael_protected_content_message_type' => 'template',
 				],
 			]
@@ -344,7 +348,7 @@ class Protected_Content extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'eael_protected_content_typography',
-				'scheme'   => Scheme_Typography::TYPOGRAPHY_2,
+				'scheme'   => Typography::TYPOGRAPHY_2,
 				'selector' => '{{WRAPPER}} .eael-protected-content .protected-content',
 			]
 		);
@@ -358,15 +362,15 @@ class Protected_Content extends Widget_Base {
 				'options'     => [
 					'left'   => [
 						'title' => esc_html__( 'Left', 'essential-addons-elementor' ),
-						'icon'  => 'fa fa-align-left',
+						'icon'  => 'eicon-text-align-left',
 					],
 					'center' => [
 						'title' => esc_html__( 'Center', 'essential-addons-elementor' ),
-						'icon'  => 'fa fa-align-center',
+						'icon'  => 'eicon-text-align-center',
 					],
 					'right'  => [
 						'title' => esc_html__( 'Right', 'essential-addons-elementor' ),
-						'icon'  => 'fa fa-align-right',
+						'icon'  => 'eicon-text-align-right',
 					],
 				],
 				'default'     => 'left',
@@ -426,7 +430,7 @@ class Protected_Content extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'      => 'eael_protected_content_message_text_typography',
-				'scheme'    => Scheme_Typography::TYPOGRAPHY_2,
+				'scheme'    => Typography::TYPOGRAPHY_2,
 				'selector'  => '{{WRAPPER}} .eael-protected-content-message',
 				'condition' => [
 					'eael_protected_content_message_type' => 'text',
@@ -443,15 +447,15 @@ class Protected_Content extends Widget_Base {
 				'options'     => [
 					'left'   => [
 						'title' => esc_html__( 'Left', 'essential-addons-elementor' ),
-						'icon'  => 'fa fa-align-left',
+						'icon'  => 'eicon-text-align-left',
 					],
 					'center' => [
 						'title' => esc_html__( 'Center', 'essential-addons-elementor' ),
-						'icon'  => 'fa fa-align-center',
+						'icon'  => 'eicon-text-align-center',
 					],
 					'right'  => [
 						'title' => esc_html__( 'Right', 'essential-addons-elementor' ),
-						'icon'  => 'fa fa-align-right',
+						'icon'  => 'eicon-text-align-right',
 					],
 				],
 				'default'     => 'left',
@@ -505,7 +509,7 @@ class Protected_Content extends Widget_Base {
             Group_Control_Typography::get_type(),
             [
                 'name' => 'eael_protected_content_error_message_text_typography',
-                'scheme' => Scheme_Typography::TYPOGRAPHY_2,
+                'scheme' => Typography::TYPOGRAPHY_2,
                 'selector' => '{{WRAPPER}} .protected-content-error-msg',
                 'condition' => [
                     'eael_protected_content_message_type' => 'text',
@@ -522,15 +526,15 @@ class Protected_Content extends Widget_Base {
                 'options' => [
                     'left' => [
                         'title' => esc_html__('Left', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-left',
+                        'icon' => 'eicon-text-align-left',
                     ],
                     'center' => [
                         'title' => esc_html__('Center', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-center',
+                        'icon' => 'eicon-text-align-center',
                     ],
                     'right' => [
                         'title' => esc_html__('Right', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-right',
+                        'icon' => 'eicon-text-align-right',
                     ],
                 ],
                 'default' => 'left',
@@ -595,15 +599,15 @@ class Protected_Content extends Widget_Base {
 				'options'     => [
 					'flex-start' => [
 						'title' => esc_html__( 'Left', 'essential-addons-elementor' ),
-						'icon'  => 'fa fa-align-left',
+						'icon'  => 'eicon-text-align-left',
 					],
 					'center'     => [
 						'title' => esc_html__( 'Center', 'essential-addons-elementor' ),
-						'icon'  => 'fa fa-align-center',
+						'icon'  => 'eicon-text-align-center',
 					],
 					'flex-end'   => [
 						'title' => esc_html__( 'Right', 'essential-addons-elementor' ),
-						'icon'  => 'fa fa-align-right',
+						'icon'  => 'eicon-text-align-right',
 					],
 				],
 				'default'     => 'left',
@@ -923,8 +927,8 @@ class Protected_Content extends Widget_Base {
 			return false;
 		}
 
-		$user_role = reset( wp_get_current_user()->roles );
-		return in_array( $user_role, (array)$this->get_settings( 'eael_protected_content_role' ) );
+		$user_role = wp_get_current_user()->roles ;
+		return !empty( array_intersect( $user_role,(array)$this->get_settings( 'eael_protected_content_role' ) ));
 	}
 
 	protected function eael_render_message( $settings ) {
@@ -1032,6 +1036,11 @@ class Protected_Content extends Widget_Base {
                 <input type="submit" value="<?php echo $settings[ 'protection_password_submit_btn_txt' ]; ?>"
                        class="eael-submit">
 				<?php
+
+				if ( 'template' === $settings[ 'eael_protected_content_type' ] ) {
+					echo sprintf( '<input name="eael_protected_content_id" value="%s" type="hidden">', $widget_id );
+				}
+
 				if ( isset( $_POST[ 'protection_password_' . $widget_id ] ) && ( $settings[ 'protection_password' ] !== $_POST[ 'protection_password_' . $widget_id ] ) ) {
 					echo sprintf(
 						__( '<p class="protected-content-error-msg">%s</p>', 'essential-addons-elementor' ),

@@ -1,6 +1,6 @@
 (function($){
 
-  $.fn.twentytwenty = function(options) {
+  $.fn.eatwentytwenty = function(options) {
     var options = $.extend({
       default_offset_pct: 0.5,
       orientation: 'horizontal',
@@ -83,7 +83,7 @@
       };
 
 
-      $(window).on("resize.twentytwenty", function(e) {
+      $(window).on("resize.eatwentytwenty", function(e) {
         adjustSlider(sliderPct);
       });
 
@@ -145,7 +145,7 @@
         });
       }
 
-      $(window).trigger("resize.twentytwenty");
+      $(window).trigger("resize.eatwentytwenty");
     });
   };
 

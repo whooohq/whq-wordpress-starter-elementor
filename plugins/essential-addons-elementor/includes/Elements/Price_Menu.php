@@ -4,7 +4,7 @@ namespace Essential_Addons_Elementor\Pro\Elements;
 use \Elementor\Controls_Manager;
 use \Elementor\Group_Control_Background;
 use Elementor\Repeater;
-use \Elementor\Scheme_Typography;
+use \Elementor\Core\Schemes\Typography;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
@@ -230,19 +230,19 @@ class Price_Menu extends Widget_Base {
 				'options'               => [
 					'left'      => [
 						'title' => __( 'Left', 'essential-addons-elementor' ),
-						'icon'  => 'fa fa-align-left',
+						'icon'  => 'eicon-text-align-left',
 					],
 					'center'    => [
 						'title' => __( 'Center', 'essential-addons-elementor' ),
-						'icon'  => 'fa fa-align-center',
+						'icon'  => 'eicon-text-align-center',
 					],
 					'right'     => [
 						'title' => __( 'Right', 'essential-addons-elementor' ),
-						'icon'  => 'fa fa-align-right',
+						'icon'  => 'eicon-text-align-right',
 					],
 					'justify'   => [
 						'title' => __( 'Justified', 'essential-addons-elementor' ),
-						'icon'  => 'fa fa-align-justify',
+						'icon'  => 'eicon-text-align-justify',
 					],
 				],
 				'default'               => '',
@@ -435,8 +435,8 @@ class Price_Menu extends Widget_Base {
             [
                 'name'                  => 'title_typography',
                 'label'                 => __( 'Typography', 'essential-addons-elementor' ),
-                'scheme'                => Scheme_Typography::TYPOGRAPHY_4,
-                'selector'              => '{{WRAPPER}} .eael-restaurant-menu .eael-restaurant-menu-title',
+                'scheme'                => Typography::TYPOGRAPHY_4,
+                'selector'              => '{{WRAPPER}} .eael-restaurant-menu .eael-restaurant-menu-title, {{WRAPPER}} .eael-restaurant-menu .eael-restaurant-menu-title a',
             ]
         );
         
@@ -651,7 +651,7 @@ class Price_Menu extends Widget_Base {
             [
                 'name'                  => 'price_typography',
                 'label'                 => __( 'Typography', 'essential-addons-elementor' ),
-                'scheme'                => Scheme_Typography::TYPOGRAPHY_4,
+                'scheme'                => Typography::TYPOGRAPHY_4,
                 'selector'              => '{{WRAPPER}} .eael-restaurant-menu .eael-restaurant-menu-price-discount',
             ]
         );
@@ -697,7 +697,7 @@ class Price_Menu extends Widget_Base {
             [
                 'name'                  => 'original_price_typography',
                 'label'                 => __( 'Original Price Typography', 'essential-addons-elementor' ),
-                'scheme'                => Scheme_Typography::TYPOGRAPHY_4,
+                'scheme'                => Typography::TYPOGRAPHY_4,
                 'selector'              => '{{WRAPPER}} .eael-restaurant-menu .eael-restaurant-menu-price-original',
             ]
         );
@@ -729,7 +729,7 @@ class Price_Menu extends Widget_Base {
             [
                 'name'                  => 'description_typography',
                 'label'                 => __( 'Typography', 'essential-addons-elementor' ),
-                'scheme'                => Scheme_Typography::TYPOGRAPHY_4,
+                'scheme'                => Typography::TYPOGRAPHY_4,
                 'selector'              => '{{WRAPPER}} .eael-restaurant-menu-description',
             ]
         );
@@ -1136,5 +1136,5 @@ class Price_Menu extends Widget_Base {
         <?php
     }
 
-    protected function _content_template() { }
+    protected function content_template() { }
 }

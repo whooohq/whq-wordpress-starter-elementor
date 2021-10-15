@@ -28,6 +28,13 @@
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
 }
+.elementor-widget-eael-testimonial-slider .eael-testimonial-slider .swiper-container {
+  width: 100%;
+}
+.elementor-widget-eael-testimonial-slider .eael-testimonial-slider .swiper-container .swiper-button-prev:after,
+.elementor-widget-eael-testimonial-slider .eael-testimonial-slider .swiper-container .swiper-button-next:after {
+  content: none;
+}
 .elementor-widget-eael-testimonial-slider .testimonial-star-rating {
   padding: 0;
   margin: 0;
@@ -204,6 +211,11 @@
 .elementor-widget-eael-testimonial-slider .eael-testimonial-align-center .eael-testimonial-user,
 .elementor-widget-eael-testimonial-slider .eael-testimonial-align-center .eael-testimonial-user-company {
   float: none;
+  text-align: center;
+}
+.elementor-widget-eael-testimonial-slider .default-style .eael-testimonial-item.eael-testimonial-align-center,
+.elementor-widget-eael-testimonial-slider .classic-style .eael-testimonial-item.eael-testimonial-align-center,
+.elementor-widget-eael-testimonial-slider .middle-style .eael-testimonial-item.eael-testimonial-align-center {
   text-align: center;
 }
 .elementor-widget-eael-testimonial-slider .eael-testimonial-image,
@@ -437,4 +449,23 @@
   .elementor-widget-eael-testimonial-slider .eael-testimonial-gallary-pagination.eael_gallery_pagination_hide_on_mobile {
     display: none !important;
   }
+}
+.elementor-widget-eael-testimonial-slider .eael-arrow-box .swiper-button-prev {
+  background-image: none !important;
+  left: -20px;
+  right: auto;
+  cursor: pointer;
+}
+.elementor-widget-eael-testimonial-slider .eael-arrow-box .swiper-button-next:focus,
+.elementor-widget-eael-testimonial-slider .eael-arrow-box .swiper-button-prev:focus {
+  outline: none;
+}
+.elementor-widget-eael-testimonial-slider .eael-arrow-box .swiper-button-next {
+  background-image: none !important;
+  right: -20px;
+  left: auto;
+  cursor: pointer;
+}
+.elementor-widget-eael-testimonial-slider .swiper-container-wrap-dots-outside .swiper-pagination {
+  position: static;
 }

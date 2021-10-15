@@ -4,13 +4,14 @@ namespace Essential_Addons_Elementor\Pro\Elements;
 use \Elementor\Controls_Manager;
 use \Elementor\Group_Control_Background;
 use Elementor\Repeater;
-use \Elementor\Scheme_Typography;
+use \Elementor\Core\Schemes\Typography;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
 use \Elementor\Utils;
 use \Elementor\Group_Control_Image_Size;
 use \Elementor\Widget_Base;
+use Essential_Addons_Elementor\Classes\Helper as HelperClass;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // If this file is called directly, abort.
 
@@ -603,6 +604,32 @@ class Flip_Carousel extends Widget_Base {
 			]
 		);
 
+        $this->add_responsive_control(
+			'eael__filp_carousel_content_alignment',
+			[
+				'label'       => esc_html__('Content Alignment', 'essential-addons-elementor'),
+				'type'        => Controls_Manager::CHOOSE,
+				'options'     => [
+					'left' => [
+						'title' => esc_html__('Left', 'essential-addons-elementor'),
+						'icon'  => 'eicon-text-align-left',
+					],
+					'center' => [
+						'title' => esc_html__('Center', 'essential-addons-elementor'),
+						'icon'  => 'eicon-text-align-center',
+					],
+					'right' => [
+						'title' => esc_html__('Right', 'essential-addons-elementor'),
+						'icon'  => 'eicon-text-align-right',
+					],
+				],
+				'default'   => 'center',
+				'selectors' => [
+					'{{WRAPPER}} .flip-carousel-text' => 'text-align: {{VALUE}}',
+				],
+			]
+		);
+
 		$this->add_control(
 			'eael_flip_carousel_content_heading',
 			[
@@ -717,12 +744,12 @@ class Flip_Carousel extends Widget_Base {
 								<img src="<?php echo $slides['eael_flip_carousel_slide']['url'] ?>" alt="<?php echo esc_attr($image_alt_text); ?>">
 							</a>
 							<?php if( $slides['eael_flip_carousel_slide_text'] !='' ) : ?>
-								<p class="flip-carousel-text"><?php echo esc_html__( $slides['eael_flip_carousel_slide_text'] ); ?></p>
+								<p class="flip-carousel-text"><?php echo HelperClass::eael_wp_kses($slides['eael_flip_carousel_slide_text'] ); ?></p>
 							<?php endif; ?>
 						<?php else: ?>
 							<img src="<?php echo $slides['eael_flip_carousel_slide']['url'] ?>" alt="<?php echo esc_attr($image_alt_text); ?>">
 							<?php if( $slides['eael_flip_carousel_slide_text'] !='' ) : ?>
-								<p class="flip-carousel-text"><?php echo esc_html__( $slides['eael_flip_carousel_slide_text'] ); ?></p>
+								<p class="flip-carousel-text"><?php echo HelperClass::eael_wp_kses($slides['eael_flip_carousel_slide_text'] ); ?></p>
 							<?php endif; ?>
 						<?php endif; ?>
 

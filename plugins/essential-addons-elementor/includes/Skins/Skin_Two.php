@@ -12,7 +12,9 @@ use \Elementor\Controls_Manager;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
-use \Elementor\Scheme_Typography;
+use \Elementor\Core\Schemes\Typography;
+use Essential_Addons_Elementor\Pro\Classes\Custom_Walker_Nav_Menu;
+
 
 class Skin_Two extends Skin_Base
 {
@@ -131,6 +133,27 @@ class Skin_Two extends Skin_Base
         );
 
         $this->add_control(
+            'eael_advanced_menu_submenu_expand',
+            [
+                'label' => esc_html__('Expand Active Submenu', 'essential-addons-elementor'),
+                'description' => sprintf( __('Expand submenu if it contains the active page', 'essential-addons-elementor') ),
+                'type' => Controls_Manager::SWITCHER,
+                'label_block' => false,
+                'label_on' => __( 'Yes', 'essential-addons-elementor' ),
+                'label_off' => __( 'No', 'essential-addons-elementor' ),
+                'return_value' => 'block',
+                'default' => 'none',
+                'selectors' => [
+                    '{{WRAPPER}} .eael-advanced-menu-container li.current-menu-ancestor > ul' => 'display: {{VALUE}}',
+                    '{{WRAPPER}} .eael-advanced-menu-container li.current-menu-ancestor > ul li' => 'padding-left:20px'
+                ],
+                'condition' => [
+                    'skin_two_eael_advanced_menu_layout' => ['vertical'],
+                ],
+            ]
+        );
+
+        $this->add_control(
             'eael_advanced_menu_dropdown_background',
             [
                 'label' => __('Background Color', 'essential-addons-elementor'),
@@ -207,15 +230,15 @@ class Skin_Two extends Skin_Base
                 'options' => [
                     'eael-advanced-menu-align-left' => [
                         'title' => __('Left', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-left',
+                        'icon' => 'eicon-text-align-left',
                     ],
                     'eael-advanced-menu-align-center' => [
                         'title' => __('Center', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-center',
+                        'icon' => 'eicon-text-align-center',
                     ],
                     'eael-advanced-menu-align-right' => [
                         'title' => __('Right', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-right',
+                        'icon' => 'eicon-text-align-right',
                     ],
                 ],
                 'default' => 'eael-advanced-menu-align-center',
@@ -228,7 +251,7 @@ class Skin_Two extends Skin_Base
             [
                 'name' => 'eael_advanced_menu_item_typography',
                 'label' => __('Typography', 'essential-addons-elementor'),
-                'scheme' => Scheme_Typography::TYPOGRAPHY_1,
+                'scheme' => Typography::TYPOGRAPHY_1,
                 'selector' => '{{WRAPPER}} .eael-advanced-menu li > a, .eael-advanced-menu-container .eael-advanced-menu-toggle-text',
                 'fields_options' => [
                     'font_family' => [
@@ -517,15 +540,15 @@ class Skin_Two extends Skin_Base
                 'options' => [
                     'eael-advanced-menu-dropdown-align-left' => [
                         'title' => __('Left', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-left',
+                        'icon' => 'eicon-text-align-left',
                     ],
                     'eael-advanced-menu-dropdown-align-center' => [
                         'title' => __('Center', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-center',
+                        'icon' => 'eicon-text-align-center',
                     ],
                     'eael-advanced-menu-dropdown-align-right' => [
                         'title' => __('Right', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-right',
+                        'icon' => 'eicon-text-align-right',
                     ],
                 ],
                 'default' => 'eael-advanced-menu-dropdown-align-left',
@@ -537,7 +560,7 @@ class Skin_Two extends Skin_Base
             [
                 'name' => 'eael_advanced_menu_dropdown_item_typography',
                 'label' => __('Typography', 'essential-addons-elementor'),
-                'scheme' => Scheme_Typography::TYPOGRAPHY_1,
+                'scheme' => Typography::TYPOGRAPHY_1,
                 'selector' => '{{WRAPPER}} .eael-advanced-menu li ul li > a',
                 'fields_options' => [
                     'font_family' => [
@@ -803,7 +826,7 @@ class Skin_Two extends Skin_Base
                 'menu_class' => implode(' ', array_filter($menu_classes)),
                 'fallback_cb' => '__return_empty_string',
                 'container' => false,
-                'echo' => false,
+                'echo' => false
             ];
 
             echo '<div ' . $this->parent->get_render_attribute_string('eael-advanced-menu') . '>' . wp_nav_menu($args) . '</div>';

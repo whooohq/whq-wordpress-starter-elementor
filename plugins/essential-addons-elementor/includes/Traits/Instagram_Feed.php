@@ -42,6 +42,11 @@ trait Instagram_Feed
             }
             $settings = HelperClass::eael_get_widget_settings($post_id, $widget_id);
 
+	        if ( ! empty ( $_POST['settings'] ) ) {
+		        parse_str( $_POST['settings'], $new_settings );
+		        $settings = wp_parse_args( $new_settings, $settings );
+	        }
+
         } else {
             // init vars
             $page = 0;
@@ -115,6 +120,11 @@ trait Instagram_Feed
                 $settings['eael_instafeed_image_count']['size']);
 
             foreach ($items as $item) {
+                $img_alt_posted_by = !empty($item['username']) ? $item['username'] : '-';
+//                $img_alt_posted_on = !empty($item['timestamp']) ? date('F j, Y, g:i a', $item['timestamp']) : '-';
+//                $img_alt_content = __('Photo by', 'essential-addons-elementor') . $img_alt_posted_by . __(' on ', 'essential-addons-elementor') . $img_alt_posted_on;
+                $img_alt_content = __('Photo by ', 'essential-addons-elementor') . $img_alt_posted_by;
+
                 if ('yes' === $settings['eael_instafeed_link']) {
                     $target = ($settings['eael_instafeed_link_target']) ? 'target=_blank' : 'target=_self';
                 } else {
@@ -127,7 +137,7 @@ trait Instagram_Feed
                 if ($settings['eael_instafeed_layout'] == 'overlay') {
                     $html .= '<a href="' . $item['permalink'] . '" ' . esc_attr($target) . ' class="eael-instafeed-item">
                         <div class="eael-instafeed-item-inner">
-                            <img class="eael-instafeed-img" src="' . $image_src . '">
+                            <img alt="' . $img_alt_content . '" class="eael-instafeed-img" src="' . $image_src . '">
 
                             <div class="eael-instafeed-caption">
                                 <div class="eael-instafeed-caption-inner">';
@@ -167,7 +177,7 @@ trait Instagram_Feed
                             <header class="eael-instafeed-item-header clearfix">
                                <div class="eael-instafeed-item-user clearfix">';
                     if ($settings['eael_instafeed_show_profile_image'] == 'yes' && !empty($settings['eael_instafeed_profile_image']['url'])) {
-                        $html .= '<a href="//www.instagram.com/' . $item['username'] . '"><img src="' . $settings['eael_instafeed_profile_image']['url'] . '" alt="' . $item['username'] . '" class="eael-instafeed-avatar"></a>';
+                        $html .= '<a href="//www.instagram.com/' . $item['username'] . '"><img alt="' . $img_alt_content . '" src="' . $settings['eael_instafeed_profile_image']['url'] . '" alt="' . $item['username'] . '" class="eael-instafeed-avatar"></a>';
                     }
                     if ($settings['eael_instafeed_show_username'] == 'yes' && !empty($settings['eael_instafeed_username'])) {
                         $html .= '<a href="//www.instagram.com/' . $item['username'] . '"><p class="eael-instafeed-username">' . $settings['eael_instafeed_username'] . '</p></a>';
@@ -182,7 +192,7 @@ trait Instagram_Feed
                     }
                     $html .= '</header>
                             <a href="' . $item['permalink'] . '" ' . esc_attr($target) . ' class="eael-instafeed-item-content">
-                                <img class="eael-instafeed-img" src="' . $image_src . '">';
+                                <img alt="' . $img_alt_content . '" class="eael-instafeed-img" src="' . $image_src . '">';
 
                     if ($settings['eael_instafeed_card_style'] == 'inner' && $settings['eael_instafeed_caption'] && !empty($item['caption'])) {
                         $html .= '<div class="eael-instafeed-caption">

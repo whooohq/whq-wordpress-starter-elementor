@@ -3,8 +3,8 @@ Contributors: dudaster
 Tags: page-builder, elementor, loop, archive list, post widget, skin, custom, post grid
 Donate link: https://www.paypal.me/dudaster
 Requires at least: 5.0
-Tested up to: 5.7.1
-Stable tag: 3.1.0
+Tested up to: 5.8
+Stable tag: 3.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,6 +64,15 @@ Add to your template a Post or Post Archive widget and from Skins select Custom 
 
 == Changelog ==
 
+
+= 3.1.3 =
+* Fixed issues with Elementor PRO 3.4.
+
+= 3.1.2 =
+* Fixed the url error message issues.
+
+= 3.1.1 =
+* Tested for the new elementor versions
 
 = 3.1.0 =
 * Tweak: Ajax Pagination URL change is optional

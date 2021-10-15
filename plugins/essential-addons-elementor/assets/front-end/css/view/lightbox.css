@@ -4,6 +4,56 @@
   cursor: pointer;
 }
 
+.eael-lightbox-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: left;
+      -ms-flex-align: left;
+          align-items: left;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+/*--- For icon background shape ---*/
+
+.eael-lightbox-icon-bg-shape-square .eael-lightbox-btn,
+.eael-lightbox-icon-bg-shape-radius .eael-lightbox-btn,
+.eael-lightbox-icon-bg-shape-circle .eael-lightbox-btn {
+  width: 90px;
+  height: 90px;
+  text-align: center;
+}
+
+.eael-lightbox-icon-hover-bg-shape-square:hover .eael-lightbox-btn {
+  border-radius: 0;
+}
+
+.eael-lightbox-icon-bg-shape-radius .eael-lightbox-btn,
+.eael-lightbox-icon-hover-bg-shape-radius:hover .eael-lightbox-btn {
+  border-radius: 15px;
+}
+
+.eael-lightbox-icon-bg-shape-circle .eael-lightbox-btn,
+.eael-lightbox-icon-hover-bg-shape-circle:hover .eael-lightbox-btn {
+  border-radius: 50%;
+}
+
+.eael-lightbox-icon-bg-shape-square .eael-lightbox-btn .eael-trigger-svg-icon svg,
+.eael-lightbox-icon-bg-shape-radius .eael-lightbox-btn .eael-trigger-svg-icon svg,
+.eael-lightbox-icon-bg-shape-circle .eael-lightbox-btn .eael-trigger-svg-icon svg,
+.eael-lightbox-icon-bg-shape-square .eael-lightbox-btn .eael-trigger-icon i,
+.eael-lightbox-icon-bg-shape-radius .eael-lightbox-btn .eael-trigger-icon i,
+.eael-lightbox-icon-bg-shape-circle .eael-lightbox-btn .eael-trigger-icon i {
+  margin-top: 50%;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+/*--- For icon background shape End ---*/
+
 button.mfp-close {
   background: transparent;
 }
@@ -206,15 +256,12 @@ button.mfp-close {
 
 .mfp-move-from-top .eael-lightbox-popup-window {
   opacity: 0;
-  position: absolute;
   -webkit-transition: all 0.2s;
   -o-transition: all 0.2s;
   transition: all 0.2s;
-  top: 0;
-  left: 50%;
-  -webkit-transform: translate(-50%, -80%);
-  -ms-transform: translate(-50%, -80%);
-  transform: translate(-50%, -80%);
+  -webkit-transform: translateY(-100px);
+      -ms-transform: translateY(-100px);
+          transform: translateY(-100px);
 }
 
 .mfp-move-from-top.mfp-bg {
@@ -225,17 +272,15 @@ button.mfp-close {
 
 .mfp-move-from-top.mfp-ready .eael-lightbox-popup-window {
   opacity: 1;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+  -webkit-transform: translateY(0);
+      -ms-transform: translateY(0);
+          transform: translateY(0);
 }
 
 .mfp-move-from-top.mfp-removing .eael-lightbox-popup-window {
-  top: 0;
-  -webkit-transform: translate(-50%, -80%);
-  -ms-transform: translate(-50%, -80%);
-  transform: translate(-50%, -80%);
+  -webkit-transform: translateY(-100px);
+      -ms-transform: translateY(-100px);
+          transform: translateY(-100px);
   opacity: 0;
 }
 
@@ -380,11 +425,15 @@ button.mfp-close {
   opacity: 0;
 }
 
+.eael-trigger-icon {
+  cursor: pointer;
+}
+
 .mfp-newspaper.mfp-removing.mfp-bg {
   opacity: 0;
 }
 
-.eael-lightbox-button-svg-icon {
+.eael-lightbox-button-svg-icon svg {
   width: 18px;
 }
 

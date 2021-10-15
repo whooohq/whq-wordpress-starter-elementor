@@ -39,7 +39,7 @@ if ($settings['grid_style'] == 'post-block-style-overlay') {
                     echo '<div class="eael-entry-wrapper ' . $settings['post_block_hover_animation'] . '">
                         <header class="eael-entry-header">';
                             if ($settings['eael_show_title']) {
-                                echo '<h2 class="eael-entry-title"><a class="eael-grid-post-link" href="' . get_the_permalink() . '" title="' . get_the_title() . '">' . get_the_title() . '</a></h2>';
+                                echo '<h2 class="eael-entry-title"><a class="eael-grid-post-link" href="' . get_the_permalink() . '" title="' . get_the_title() . '"' . $link_settings['title_link_nofollow'] . '' . $link_settings['title_link_target_blank'] . '>' . get_the_title() . '</a></h2>';
                             }
 
                             if ($settings['eael_show_meta'] && $settings['meta_position'] == 'meta-entry-header') {
@@ -69,7 +69,7 @@ if ($settings['grid_style'] == 'post-block-style-overlay') {
                                                 woocommerce_template_loop_add_to_cart();
                                             echo '</p>';
                                         } else {
-                                            echo '<a href="' . get_the_permalink() . '" class="eael-post-elements-readmore-btn">' . esc_attr($settings['read_more_button_text']) . '</a>';
+                                            echo '<a href="' . get_the_permalink() . '" class="eael-post-elements-readmore-btn"' . $link_settings['read_more_link_nofollow'] . '' . $link_settings['read_more_link_target_blank'] . '>' . esc_attr($settings['read_more_button_text']) . '</a>';
                                         }
                                     }
                                 echo '</div>';
@@ -99,7 +99,8 @@ if ($settings['grid_style'] == 'post-block-style-overlay') {
                             echo '</div>';
                         }
                         echo '<div class="eael-entry-overlay-ssss">
-                            <a href="' . get_the_permalink() . '"></a>
+                        <a href="' . get_the_permalink() . '"' . $link_settings['image_link_nofollow'] . '' . $link_settings['image_link_target_blank'] . '>
+                        </a>
                         </div>
                     </div>';
                 }
@@ -118,7 +119,7 @@ if ($settings['grid_style'] == 'post-block-style-overlay') {
                         }else {
                             echo '<i class="' . $settings['eael_post_block_bg_hover_icon'] . '" aria-hidden="true"></i>';
                         }
-                        echo '<a href="' . get_the_permalink() . '"></a>
+                        echo '<a href="' . get_the_permalink() . '"' . $link_settings['image_link_nofollow'] . '' . $link_settings['image_link_target_blank'] . '></a>
                         </div>
                         <div class="eael-entry-thumbnail">
                             <img src="' . wp_get_attachment_image_url(get_post_thumbnail_id(), $settings['image_size']) . '" alt="' . esc_attr(get_post_meta(get_post_thumbnail_id(), '_wp_attachment_image_alt', true)) . '">
@@ -132,7 +133,7 @@ if ($settings['grid_style'] == 'post-block-style-overlay') {
 				                }else {
 					                echo '<i class="' . $settings['eael_post_block_bg_hover_icon'] . '" aria-hidden="true"></i>';
 				                }
-				                echo '<a href="' . get_the_permalink() . '"></a>
+				                echo '<a href="' . get_the_permalink() . '"' . $link_settings['image_link_nofollow'] . '' . $link_settings['image_link_target_blank'] . '></a>
 	                        </div>
 	                        <div class="eael-entry-thumbnail">
 	                            <img src="' . $eael_fallback_thumb_url . '" alt="' . esc_attr(get_post_meta(get_post_thumbnail_id(), '_wp_attachment_image_alt', true)) . '">
@@ -144,7 +145,7 @@ if ($settings['grid_style'] == 'post-block-style-overlay') {
                     echo '<div class="eael-entry-wrapper">
                         <header class="eael-entry-header">';
                             if ($settings['eael_show_title']) {
-                                echo '<h2 class="eael-entry-title"><a class="eael-grid-post-link" href="' . get_the_permalink() . '" title="' . get_the_title() . '">' . get_the_title() . '</a></h2>';
+                                echo '<h2 class="eael-entry-title"><a class="eael-grid-post-link" href="' . get_the_permalink() . '" title="' . get_the_title() . '"' . $link_settings['title_link_nofollow'] . '' . $link_settings['title_link_target_blank'] . '>' . get_the_title() . '</a></h2>';
                             }
 
                             if ($settings['eael_show_meta'] && $settings['meta_position'] == 'meta-entry-header') {
@@ -170,7 +171,7 @@ if ($settings['grid_style'] == 'post-block-style-overlay') {
                                     }
 
                                     if ('yes' == $settings['show_read_more_button']) {
-                                        echo '<a href="' . get_the_permalink() . '" class="eael-post-elements-readmore-btn">' . esc_attr($settings['read_more_button_text']) . '</a>';
+                                        echo '<a href="' . get_the_permalink() . '" class="eael-post-elements-readmore-btn"' . $link_settings['read_more_link_nofollow'] . '' . $link_settings['read_more_link_target_blank'] . '>' . esc_attr($settings['read_more_button_text']) . '</a>';
                                     }
 
                                     if (class_exists('WooCommerce') && $settings['post_type'] == 'product') {

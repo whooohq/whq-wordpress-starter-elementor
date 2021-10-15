@@ -400,3 +400,12 @@
   z-index: 9999;
   max-height: 100vh;
 }
+.theme-twentytwentyone .eael-advanced-menu-container button.sub-menu-toggle {
+  display: none;
+}
+.ast-container .eael-advanced-menu-container span.dropdown-menu-toggle {
+  display: none;
+}
+.ast-container .eael-advanced-menu-container .eael-advanced-menu.eael-advanced-menu-horizontal li ul li a span {
+  display: none;
+}

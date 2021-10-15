@@ -1,6 +1,25 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+
+function ECS_find_url_type($values){
+  $interest=["url"];
+  $keys=[];
+  if(is_array($values)){
+    foreach ($values as $key => $value){
+      if (isset($value["type"]) && $value["type"] == "url") $keys[]=  $key;
+    }
+  }
+  return $keys;
+}
+/* peopele keep getting errors from url types */
+function ECS_remove_url_type(&$array){
+  $keys=ECS_find_url_type($array);
+  foreach($keys as $key){
+    ECS_recursive_unset($array, $key);
+  }
+}
+
 function ECS_clean_selector_value($values){
   $interest=["url"];
   if(is_array($values)){
@@ -20,7 +39,7 @@ function ECS_recursive_unset(&$array, $unwanted_key) {
     unset($array[$unwanted_key]);
     foreach ($array as &$value) {
         if (is_array($value)) {
-            recursive_unset($value, $unwanted_key);
+            ECS_recursive_unset($value, $unwanted_key);
         }
     }
 }
@@ -36,7 +55,7 @@ function ECS_set_dynamic_style( \Elementor\Element_Base $element ) {
 
   $all_controls = isset($all_controls) ? $all_controls : []; $dynamic_settings = isset($dynamic_settings) ? $dynamic_settings : [];
   $controls = array_intersect_key( $all_controls, $dynamic_settings );
-  ECS_recursive_unset($dynamic_settings, 'link');//we don't need the link options
+  ECS_remove_url_type($controls);//we don't need the link options
   $settings = $element->parse_dynamic_settings( $dynamic_settings, $controls); // @ <- dirty fix for that fugly controls-stack.php  Illegal string offset 'url' error
 
   $ECS_css="";

@@ -4,7 +4,7 @@ namespace Essential_Addons_Elementor\Pro\Elements;
 
 use \Elementor\Controls_Manager;
 use \Elementor\Group_Control_Background;
-use \Elementor\Scheme_Typography;
+use \Elementor\Core\Schemes\Typography;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
@@ -629,15 +629,15 @@ class Image_Hot_Spots extends Widget_Base
                 'options' => [
                     'left' => [
                         'title' => esc_html__('Left', 'essential-addons-for-elementor-lite'),
-                        'icon' => 'fa fa-align-left',
+                        'icon' => 'eicon-text-align-left',
                     ],
                     'centered' => [
                         'title' => esc_html__('Center', 'essential-addons-for-elementor-lite'),
-                        'icon' => 'fa fa-align-center',
+                        'icon' => 'eicon-text-align-center',
                     ],
                     'right' => [
                         'title' => esc_html__('Right', 'essential-addons-for-elementor-lite'),
-                        'icon' => 'fa fa-align-right',
+                        'icon' => 'eicon-text-align-right',
                     ],
                 ],
                 'default' => 'centered',
@@ -902,7 +902,7 @@ class Image_Hot_Spots extends Widget_Base
             [
                 'name'                  => 'tooltip_typography',
                 'label'                 => __('Typography', 'essential-addons-elementor'),
-                'scheme'                => Scheme_Typography::TYPOGRAPHY_4,
+                'scheme'                => Typography::TYPOGRAPHY_4,
                 'selector'              => '.eael-tooltip-{{ID}}',
             ]
         );
@@ -989,10 +989,10 @@ class Image_Hot_Spots extends Widget_Base
                             if ($item['hotspot_type'] == 'icon') {
                                 if (isset($icon['url'])) {
                                     printf('<span class="eael-hotspot-icon-wrap">
-                                        <img class="eael-hotspot-icon tooltip hotspot-svg-icon" src="%1$s" alt="%2$s" />
+                                        <img class="eael-hotspot-icon eael-hotspot-tooltip hotspot-svg-icon" src="%1$s" alt="%2$s" />
                                         </span>', esc_url($icon['url']), esc_attr(get_post_meta($icon['id'], '_wp_attachment_image_alt', true)));
                                 } else {
-                                    printf('<span class="eael-hotspot-icon-wrap"><span class="eael-hotspot-icon tooltip %1$s"></span></span>', esc_attr($icon));
+                                    printf('<span class="eael-hotspot-icon-wrap"><span class="eael-hotspot-icon eael-hotspot-tooltip %1$s"></span></span>', esc_attr($icon));
                                 }
                             } elseif ($item['hotspot_type'] == 'text') {
                                 printf('<span class="eael-hotspot-icon-wrap"><span class="eael-hotspot-text">%1$s</span></span>', esc_attr($item['hotspot_text']));

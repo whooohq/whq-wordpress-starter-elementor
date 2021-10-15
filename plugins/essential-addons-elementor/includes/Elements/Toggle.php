@@ -3,7 +3,7 @@ namespace Essential_Addons_Elementor\Pro\Elements;
 
 use \Elementor\Controls_Manager;
 use \Elementor\Group_Control_Background;
-use \Elementor\Scheme_Typography;
+use \Elementor\Core\Schemes\Typography;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
@@ -137,14 +137,16 @@ class Toggle extends Widget_Base {
         
         $this->add_control(
             'primary_templates',
-            [
-                'label'                 => __( 'Choose Template', 'essential-addons-elementor' ),
-                'type'                  => Controls_Manager::SELECT,
-                'options'               => Helper::get_elementor_templates(),
-				'condition'             => [
-					'primary_content_type'      => 'template',
-				],
-            ]
+	        [
+		        'label'       => __( 'Choose Template', 'essential-addons-elementor' ),
+		        'type'        => 'eael-select2',
+		        'source_name' => 'post_type',
+		        'source_type' => 'elementor_library',
+		        'label_block' => true,
+		        'condition'   => [
+			        'primary_content_type' => 'template',
+		        ],
+	        ]
         );
         
         $this->add_control(
@@ -211,14 +213,16 @@ class Toggle extends Widget_Base {
         
         $this->add_control(
             'secondary_templates',
-            [
-                'label'                 => __( 'Choose Template', 'essential-addons-elementor' ),
-                'type'                  => Controls_Manager::SELECT,
-                'options'               => Helper::get_elementor_templates(),
-				'condition'             => [
-					'secondary_content_type'      => 'template',
-				],
-            ]
+	        [
+		        'label'       => __( 'Choose Template', 'essential-addons-elementor' ),
+		        'type'        => 'eael-select2',
+		        'source_name' => 'post_type',
+		        'source_type' => 'elementor_library',
+		        'label_block' => true,
+		        'condition'   => [
+			        'secondary_content_type' => 'template',
+		        ],
+	        ]
         );
         
         $this->add_control(
@@ -579,7 +583,7 @@ class Toggle extends Widget_Base {
             [
                 'name'              => 'label_typography_primary',
                 'label'             => __( 'Typography', 'essential-addons-elementor' ),
-                'scheme'            => Scheme_Typography::TYPOGRAPHY_4,
+                'scheme'            => Typography::TYPOGRAPHY_4,
                 'selector'          => '{{WRAPPER}} .eael-primary-toggle-label',
                 'separator'         => 'before',
             ]
@@ -623,7 +627,7 @@ class Toggle extends Widget_Base {
             [
                 'name'              => 'label_typography_secondary',
                 'label'             => __( 'Typography', 'essential-addons-elementor' ),
-                'scheme'            => Scheme_Typography::TYPOGRAPHY_4,
+                'scheme'            => Typography::TYPOGRAPHY_4,
                 'selector'          => '{{WRAPPER}} .eael-secondary-toggle-label',
                 'separator'         => 'before',
             ]
@@ -689,7 +693,7 @@ class Toggle extends Widget_Base {
             [
                 'name'              => 'content_typography',
                 'label'             => __( 'Typography', 'essential-addons-elementor' ),
-                'scheme'            => Scheme_Typography::TYPOGRAPHY_4,
+                'scheme'            => Typography::TYPOGRAPHY_4,
                 'selector'          => '{{WRAPPER}} .eael-toggle-content-wrap',
             ]
         );
@@ -786,6 +790,6 @@ class Toggle extends Widget_Base {
      *
      * @access protected
      */
-    protected function _content_template() {
+    protected function content_template() {
     }
 }

@@ -6,7 +6,7 @@ use \Elementor\Controls_Manager;
 use \Elementor\Group_Control_Background;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Typography;
-use \Elementor\Scheme_Typography;
+use \Elementor\Core\Schemes\Typography;
 use \Elementor\Utils;
 use \Elementor\Widget_Base;
 
@@ -268,7 +268,7 @@ class Interactive_Promo extends Widget_Base
             Group_Control_Typography::get_type(),
             [
                 'name' => 'eael_promo_title_typography',
-                'scheme' => Scheme_Typography::TYPOGRAPHY_1,
+                'scheme' => Typography::TYPOGRAPHY_1,
                 'selector' => '{{WRAPPER}} .eael-interactive-promo figure figcaption h2',
             ]
         );
@@ -289,7 +289,7 @@ class Interactive_Promo extends Widget_Base
             Group_Control_Typography::get_type(),
             [
                 'name' => 'eael_promo_content_typography',
-                'scheme' => Scheme_Typography::TYPOGRAPHY_1,
+                'scheme' => Typography::TYPOGRAPHY_1,
                 'selector' => '{{WRAPPER}} .eael-interactive-promo figure p',
             ]
         );

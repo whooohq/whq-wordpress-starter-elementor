@@ -4,13 +4,7 @@
 **Don't clone this repository.**
 
 ## What's included
-1. [Elementor](https://elementor.com/) v3.2.1
-2. [Elementor Pro](https://elementor.com/) v3.1.0
-3. [Essential Addons for Elementor Pro](https://essential-addons.com/elementor/) v4.3.7
-4. [Advanced Custom Fields Pro](https://www.advancedcustomfields.com/pro/) v5.9.4
-5. [Piotnet Forms Pro](https://piotnetforms.com/) v1.0.78
-6. [EditorConfig](https://editorconfig.org/) file to follow [WordPress codings standars](https://make.wordpress.org/core/handbook/best-practices/coding-standards/).
-7. Several recommended [WordPress plugins for theme development](https://developer.wordpress.org/themes/getting-started/setting-up-a-development-environment/). For use during development.
+Open the ```/plugins/``` folder to check the included plugins.
 
 ## Quick Docs: How to start & develop with this kit
 
@@ -18,9 +12,11 @@ Beside the [official WordPress developer resources](https://developer.wordpress.
 
 * Download this repository (don't clone it). Download it using the button: Code -> Download Zip. Use this files in your new project.
 * If you need to add custom functionality for the site you are building, that cannot be done using the included site builder, then use the custom plugin included: **whq-custom-functionality** (based on [wppb](https://wppb.me/)). Don't use a child theme nor modify the included main theme. Keep your custom code inside the included custom plugin.
+If you are using Elementor, you can use his Hello Elementor Child theme to include your custom functionality. Using the **whq-custom-functionality** plugin instead is highly encouraged.
 * Use your local dev enviroment to develop your new site. If you don't have a local dev enviroment, we recommend [Local WP](https://localwp.com/).
 * Configure your local WordPress instance with [WP_DEBUG enabled](https://developer.wordpress.org/themes/getting-started/setting-up-a-development-environment/#wp_debug).
 * Update any development plugin included. Then enable the ones you want to use during development.
+* Only enable and use the included plugins. Don't add nor use any other plugin. More on that below, at the rules and guidelines.
 * Start coding.
 
 ## Rules and Guidelines

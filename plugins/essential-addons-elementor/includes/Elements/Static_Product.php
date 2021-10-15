@@ -7,7 +7,7 @@ use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
 use Elementor\Modules\DynamicTags\Module as TagsModule;
-use \Elementor\Scheme_Typography;
+use \Elementor\Core\Schemes\Typography;
 use \Elementor\Utils;
 use \Elementor\Widget_Base;
 
@@ -151,7 +151,7 @@ class Static_Product extends Widget_Base
                 'label'       => __('Product Heading', 'essential-addons-elementor'),
                 'type'        => Controls_Manager::TEXT,
                 'label_block' => true,
-                'default'     => 'Product Name',
+                'default'     => __('Product Name','essential-addons-elementor'),
                 'placeholder' => __('Enter heading for the product', 'essential-addons-elementor'),
                 'title'       => __('Enter heading for the product', 'essential-addons-elementor'),
                 'dynamic'     => ['active' => true],
@@ -476,15 +476,15 @@ class Static_Product extends Widget_Base
                 'options'     => [
                     'left'   => [
                         'title' => esc_html__('Left', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-left',
+                        'icon'  => 'eicon-text-align-left',
                     ],
                     'center' => [
                         'title' => esc_html__('Center', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-center',
+                        'icon'  => 'eicon-text-align-center',
                     ],
                     'right'  => [
                         'title' => esc_html__('Right', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-right',
+                        'icon'  => 'eicon-text-align-right',
                     ],
                 ],
                 'default'     => 'center',
@@ -503,15 +503,15 @@ class Static_Product extends Widget_Base
                 'options'     => [
                     'flex-start'   => [
                         'title' => esc_html__('Left', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-left',
+                        'icon'  => 'eicon-text-align-left',
                     ],
                     'center' => [
                         'title' => esc_html__('Center', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-center',
+                        'icon'  => 'eicon-text-align-center',
                     ],
                     'flex-end'  => [
                         'title' => esc_html__('Right', 'essential-addons-elementor'),
-                        'icon'  => 'fa fa-align-right',
+                        'icon'  => 'eicon-text-align-right',
                     ],
                 ],
                 'selectors'   => [
@@ -622,7 +622,7 @@ class Static_Product extends Widget_Base
             [
                 'name'     => 'eael_static_product_price_typography',
                 'label'    => __('Price Typography', 'essential-addons-elementor'),
-                'scheme'   => Scheme_Typography::TYPOGRAPHY_1,
+                'scheme'   => Typography::TYPOGRAPHY_1,
                 'selector' => '{{WRAPPER}} .eael-static-product .eael-static-product-details .eael-static-product-price-and-reviews .eael-static-product-price',
             ]
         );
@@ -632,7 +632,7 @@ class Static_Product extends Widget_Base
             [
                 'name'     => 'eael_static_product_reviews_typography',
                 'label'    => __('Reviews Typography', 'essential-addons-elementor'),
-                'scheme'   => Scheme_Typography::TYPOGRAPHY_1,
+                'scheme'   => Typography::TYPOGRAPHY_1,
                 'selector' => '{{WRAPPER}} .eael-static-product .eael-static-product-details .eael-static-product-price-and-reviews .eael-static-product-reviews',
             ]
         );
@@ -813,7 +813,7 @@ class Static_Product extends Widget_Base
             Group_Control_Typography::get_type(),
             [
                 'name'     => 'eael_static_product_live_link_typography',
-                'scheme'   => Scheme_Typography::TYPOGRAPHY_1,
+                'scheme'   => Typography::TYPOGRAPHY_1,
                 'selector' => '{{WRAPPER}} .eael-static-product-media a.eael-static-product-live-demo-btn',
             ]
         );
@@ -935,8 +935,8 @@ class Static_Product extends Widget_Base
             Group_Control_Typography::get_type(),
             [
                 'name'     => 'eael_static_product_title_typography',
-                'scheme'   => Scheme_Typography::TYPOGRAPHY_1,
-                'selector' => '{{WRAPPER}} .eael-static-product-details > h2',
+                'scheme'   => Typography::TYPOGRAPHY_1,
+                'selector' => '{{WRAPPER}} .eael-static-product-details > h2 > a',
             ]
         );
 
@@ -1003,7 +1003,7 @@ class Static_Product extends Widget_Base
             Group_Control_Typography::get_type(),
             [
                 'name'     => 'eael_static_product_content_typography',
-                'scheme'   => Scheme_Typography::TYPOGRAPHY_1,
+                'scheme'   => Typography::TYPOGRAPHY_1,
                 'selector' => '{{WRAPPER}} .eael-static-product-details > p',
             ]
         );
@@ -1136,8 +1136,8 @@ class Static_Product extends Widget_Base
             Group_Control_Typography::get_type(),
             [
                 'name'      => 'eael_static_product_btn_typography',
-                'scheme'    => Scheme_Typography::TYPOGRAPHY_1,
-                'selector'  => '{{WRAPPER}} .eael-static-product-btn',
+                'scheme'    => Typography::TYPOGRAPHY_1,
+                'selector'  => '{{WRAPPER}} .eael-static-product-btn .eael-static-product-btn-inner',
                 'condition' => [
                     'eael_static_product_show_details_btn' => 'yes',
                 ],
@@ -1404,8 +1404,8 @@ class Static_Product extends Widget_Base
             Group_Control_Typography::get_type(),
             [
                 'name'     => 'eael_static_product_add_to_cart_btn_typography',
-                'scheme'   => Scheme_Typography::TYPOGRAPHY_1,
-                'selector' => '{{WRAPPER}} .eael-static-product-add-to-cart',
+                'scheme'   => Typography::TYPOGRAPHY_1,
+                'selector' => '{{WRAPPER}} .eael-static-product-add-to-cart .eael-static-product-btn-inner',
             ]
         );
 

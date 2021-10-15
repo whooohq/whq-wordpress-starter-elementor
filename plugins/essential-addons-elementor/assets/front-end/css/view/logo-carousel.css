@@ -71,3 +71,12 @@
   -o-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
+
+.eael-logo-carousel-wrap .swiper-container {
+  width: 100%;
+}
+
+.eael-logo-carousel-wrap .swiper-container ~ .swiper-button-prev:after,
+.eael-logo-carousel-wrap .swiper-container ~ .swiper-button-next:after {
+  content: none;
+}

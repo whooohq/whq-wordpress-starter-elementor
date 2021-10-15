@@ -16,7 +16,6 @@ class Bootstrap
     use \Essential_Addons_Elementor\Pro\Traits\Enqueue;
     use \Essential_Addons_Elementor\Pro\Traits\Helper;
     use \Essential_Addons_Elementor\Pro\Traits\Instagram_Feed;
-    use \Essential_Addons_Elementor\Pro\Classes\WPML\Eael_WPML;
     use Login_Registration;
     // instance container
     private static $instance = null;
@@ -146,9 +145,6 @@ class Bootstrap
 
         // admin script
         add_action('admin_enqueue_scripts', [$this, 'admin_scripts']);
-
-        //WPML integration
-        add_action('wpml_elementor_widgets_to_translate', [$this, 'translatable_widgets']);
 
         if (is_admin()) {
             // Core

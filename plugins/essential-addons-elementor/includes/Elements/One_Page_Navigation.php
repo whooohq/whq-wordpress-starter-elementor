@@ -4,7 +4,7 @@ namespace Essential_Addons_Elementor\Pro\Elements;
 
 use \Elementor\Controls_Manager;
 use \Elementor\Group_Control_Background;
-use \Elementor\Scheme_Typography;
+use \Elementor\Core\Schemes\Typography;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
@@ -661,7 +661,7 @@ class One_Page_Navigation extends Widget_Base
             [
                 'name'                  => 'tooltip_typography',
                 'label'                 => __('Typography', 'essential-addons-elementor'),
-                'scheme'                => Scheme_Typography::TYPOGRAPHY_4,
+                'scheme'                => Typography::TYPOGRAPHY_4,
                 'selector'              => '{{WRAPPER}} .eael-nav-dot-tooltip',
                 'condition'             => [
                     'nav_tooltip'  => 'yes',
@@ -744,7 +744,7 @@ class One_Page_Navigation extends Widget_Base
     /**
      * Render one page navigation widget output in the editor.
      */
-    protected function _content_template()
+    protected function content_template()
     {
     }
 }

@@ -267,7 +267,7 @@ class ECS_Ajax_Load {
         ]
       );
 
-      $element->start_controls_tabs( 'tabs_button_style' );
+      $element->start_controls_tabs( 'ecs_load_more_tabs_button_style' );
 
       $element->start_controls_tab(
         'loadmore_tab_button_normal',

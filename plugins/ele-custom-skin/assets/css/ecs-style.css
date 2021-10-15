@@ -39,6 +39,11 @@
     height: 100%;
 
 }
+/* Fix for Elementor 3.4 */
+
+.elementor-widget-posts .ecs-posts .elementor-button-wrapper {
+    margin-top: 0;
+}
 
 /* Fix astra css issues */
 

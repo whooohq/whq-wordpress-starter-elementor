@@ -312,3 +312,12 @@
 .rtl .eael-logo-carousel-wrap .eael-entry-footer {
   direction: ltr;
 }
+
+.elementor-widget-eael-post-carousel .swiper-container {
+  width: 100%;
+}
+
+.elementor-widget-eael-post-carousel .swiper-container ~ .swiper-button-prev:after,
+.elementor-widget-eael-post-carousel .swiper-container ~ .swiper-button-next:after {
+  content: none;
+}

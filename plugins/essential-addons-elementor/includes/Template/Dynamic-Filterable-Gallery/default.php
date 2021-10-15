@@ -10,6 +10,13 @@ if ( !defined( 'ABSPATH' ) ) {
 
 $classes = \Essential_Addons_Elementor\Pro\Traits\Dynamic_Filterable_Gallery::get_dynamic_gallery_item_classes();
 
+$linkNofollow = $settings['link_nofollow'] ? 'rel="nofollow"' : '';
+$titleNofollow = $settings['title_link_nofollow'] ? 'rel="nofollow"' : '';
+$readMoreNofollow = $settings['read_more_link_nofollow'] ? 'rel="nofollow"' : '';
+$linkTarget = $settings['link_target_blank'] ? 'target="_blank"' : '';
+$titleTarget = $settings['title_link_target_blank'] ? 'target="_blank"' : '';
+$readMoreTarget = $settings['read_more_link_target_blank'] ? 'target="_blank"' : '';
+
 if ($settings['eael_fg_grid_style'] == 'eael-hoverer') {
         echo '<div class="dynamic-gallery-item ' . esc_attr(implode(' ', $classes)) . '">
             <div class="dynamic-gallery-item-inner">
@@ -29,10 +36,10 @@ if ($settings['eael_fg_grid_style'] == 'eael-hoverer') {
                                 } elseif ('buttons' == $settings['eael_fg_show_popup_styles']) {
                                     echo '<div class="item-content">';
                                         if($settings['eael_show_hover_title']) {
-                                            echo '<h2 class="title"><a href="' . get_the_permalink() . '">' . get_the_title() . '</a></h2>';
+                                            echo '<h2 class="title"><a href="' . get_the_permalink() . '"'.$titleNofollow . '' . $titleTarget .'>' . get_the_title() . '</a></h2>';
                                         }
                                         if($settings['eael_show_hover_excerpt']) {
-                                            echo '<p>' . wp_trim_words(strip_shortcodes(get_the_excerpt() ? get_the_excerpt() : get_the_content()), $settings['eael_post_excerpt'], '<a class="eael_post_excerpt_read_more" href="' . get_the_permalink() . '"> ' . $settings['eael_post_excerpt_read_more'] . '</a>') . '</p>';
+                                            echo '<p>' . wp_trim_words(strip_shortcodes(get_the_excerpt() ? get_the_excerpt() : get_the_content()), $settings['eael_post_excerpt'], '<a class="eael_post_excerpt_read_more" href="' . get_the_permalink() . '"'.$readMoreNofollow . '' . $readMoreTarget .'> ' . $settings['eael_post_excerpt_read_more'] . '</a>') . '</p>';
                                         }
                                     echo '</div>';
                                     echo '<div class="buttons">';
@@ -51,7 +58,7 @@ if ($settings['eael_fg_grid_style'] == 'eael-hoverer') {
                                         }
 
                                         if (!empty($settings['eael_section_fg_link_icon'])) {
-                                            echo  '<a href="' . get_the_permalink() . '">';
+                                            echo  '<a href="' . get_the_permalink() . '"'.$linkNofollow . '' . $linkTarget .'>';
                                                 if( isset($settings['eael_section_fg_link_icon']['url'])) {
                                                     echo '<img class="eael-dnmcg-svg-icon" src="'.esc_url($settings['eael_section_fg_link_icon']['url']).'" alt="'.esc_attr(get_post_meta($settings['eael_section_fg_link_icon']['id'], '_wp_attachment_image_alt', true)).'" />';
                                                 }else {
@@ -115,7 +122,7 @@ if ($settings['eael_fg_grid_style'] == 'eael-hoverer') {
                                 }
 
                                 if (!empty($settings['eael_section_fg_link_icon'])) {
-                                    echo  '<a href="' . get_the_permalink() . '">';
+                                    echo  '<a href="' . get_the_permalink() . '"'.$linkNofollow . '' . $linkTarget .'>';
                                         if( isset($settings['eael_section_fg_link_icon']['url'])) {
                                             echo '<img class="eael-dnmcg-svg-icon" src="'.esc_url($settings['eael_section_fg_link_icon']['url']).'" alt="'.esc_attr(get_post_meta($settings['eael_section_fg_link_icon']['id'], '_wp_attachment_image_alt', true)).'" />';
                                         }else {
@@ -132,9 +139,9 @@ if ($settings['eael_fg_grid_style'] == 'eael-hoverer') {
 
             <div class="item-content">';
              if($settings['eael_show_hover_title']) {
-                echo '<h2 class="title"><a href="' . get_the_permalink() . '">' . get_the_title() . '</a></h2>';
+                echo '<h2 class="title"><a href="' . get_the_permalink() . '"'.$titleNofollow . '' . $titleTarget .'>' . get_the_title() . '</a></h2>';
             } if($settings['eael_show_hover_excerpt']) {
-                 echo '<p>' . wp_trim_words(strip_shortcodes(get_the_excerpt() ? get_the_excerpt() : get_the_content()), $settings['eael_post_excerpt'], '<a class="eael_post_excerpt_read_more" href="' . get_the_permalink() . '"> ' . $settings['eael_post_excerpt_read_more'] . '</a>') . '</p>';
+                 echo '<p>' . wp_trim_words(strip_shortcodes(get_the_excerpt() ? get_the_excerpt() : get_the_content()), $settings['eael_post_excerpt'], '<a class="eael_post_excerpt_read_more" href="' . get_the_permalink() . '"'.$readMoreNofollow . '' . $readMoreTarget .'> ' . $settings['eael_post_excerpt_read_more'] . '</a>') . '</p>';
              }
 
                 if (('buttons' == $settings['eael_fg_show_popup_styles']) && ('eael-none' == $settings['eael_fg_grid_hover_style'])) {
@@ -143,7 +150,7 @@ if ($settings['eael_fg_grid_style'] == 'eael-hoverer') {
                             echo '<a href="' . wp_get_attachment_image_url(get_post_thumbnail_id(), 'full') . '" class="eael-magnific-link"><i class="' . esc_attr($settings['eael_section_fg_zoom_icon']) . '"></i></a>';
                         }
                         if (!empty($settings['eael_section_fg_link_icon'])) {
-                            echo '<a href="' . get_the_permalink() . '"><i class="' . esc_attr($settings['eael_section_fg_link_icon']) . '"></i></a>';
+                            echo '<a href="' . get_the_permalink() . '"'.$linkNofollow . '' . $linkTarget .'><i class="' . esc_attr($settings['eael_section_fg_link_icon']) . '"></i></a>';
                         }
                     echo '</div>';
                 }

@@ -16,6 +16,11 @@ class Mailchimp extends Integration_Base {
 
 	const OPTION_NAME_API_KEY = 'pro_mailchimp_api_key';
 
+	/**
+	 * @var string - Mailchimp API key.
+	 */
+	private $api_key;
+
 	private function get_global_api_key() {
 		return get_option( 'elementor_' . self::OPTION_NAME_API_KEY );
 	}
@@ -158,9 +163,170 @@ class Mailchimp extends Integration_Base {
 	}
 
 	public function run( $record, $ajax_handler ) {
-		$subscriber = $this->map_fields( $record );
 		$form_settings = $record->get( 'form_settings' );
 
+		if ( 'default' === $form_settings['mailchimp_api_key_source'] ) {
+			$this->api_key = $this->get_global_api_key();
+		} else {
+			$this->api_key = $form_settings['mailchimp_api_key'];
+		}
+
+		// Data from the form in the frontend.
+		$subscriber_data = $this->map_fields( $record );
+
+		// Create or update a subscriber.
+		$subscriber = $this->create_or_update_subscriber( $subscriber_data, $form_settings );
+
+		// Parse the Mailchimp tags.
+		$tags = $this->parse_tags( $form_settings['mailchimp_tags'] );
+
+		// Set the subscriber tags only if he doesn't have them already.
+		if ( ! $this->subscriber_has_tags( $subscriber, $tags ) ) {
+			$this->set_subscriber_tags( $subscriber, $tags );
+		}
+	}
+
+	/**
+	 * @param string $tags - List of comma separated tags from the forms settings ( i.e. 'tag-1, tag-2' ).
+	 *
+	 * @return array|string[] - Array of tags that were extracted from the input ( i.e. [ 'tag-1', 'tag-2' ] ).
+	 */
+	private function parse_tags( $tags ) {
+		$parsed_tags = [];
+
+		if ( ! empty( $tags ) ) {
+			$parsed_tags = explode( ',', trim( $tags ) );
+
+			// Remove empty tags.
+			$parsed_tags = array_filter( $parsed_tags );
+
+			// Trim tags.
+			$parsed_tags = array_map( 'trim', $parsed_tags );
+		}
+
+		return $parsed_tags;
+	}
+
+	/**
+	 * Determine if a subscriber has specific tags, and ONLY those tags.
+	 *
+	 * @param array $subscriber - Subscriber data from an API response.
+	 * @param array $tags - List of tags to check ( i.e. [ 'tag-1', 'tag-2' ] ).
+	 *
+	 * @return bool
+	 */
+	private function subscriber_has_tags( array $subscriber, array $tags ) {
+		// Extract current tags.
+		$subscriber_tags = [];
+
+		foreach ( $subscriber['tags'] as $tag ) {
+			$subscriber_tags[] = $tag['name'];
+		}
+
+		return array_diff( $tags, $subscriber_tags ) === array_diff( $subscriber_tags, $tags );
+	}
+
+	/**
+	 * Set Mailchimp subscriber tags.
+	 *
+	 * @param array $subscriber - Subscriber data from a create/update request.
+	 * @param array $tags - List of tags to set.
+	 *
+	 * @return void
+	 */
+	private function set_subscriber_tags( array $subscriber, array $tags ) {
+		// Build the request tags.
+		$request_tags = [];
+
+		// Set current tags to active.
+		foreach ( $subscriber['tags'] as $tag ) {
+			$request_tags[] = [
+				'name' => $tag['name'],
+				'status' => 'active',
+			];
+		}
+
+		// Set new tags to active.
+		foreach ( $tags as $tag ) {
+			$request_tags[] = [
+				'name' => $tag,
+				'status' => 'active',
+			];
+		}
+
+		// Send the API request.
+		$endpoint = sprintf( 'lists/%s/members/%s/tags', $subscriber['list_id'], md5( strtolower( $subscriber['email_address'] ) ) );
+		$args = [
+			'tags' => $request_tags,
+		];
+
+		$handler = new Mailchimp_Handler( $this->api_key );
+		$response = $handler->post( $endpoint, $args );
+
+		if ( 204 !== $response['code'] ) {
+			$error = ! empty( $response['body']['detail'] ) ? $response['body']['detail'] : '';
+			$code = $response['code'];
+
+			throw new \Exception( "HTTP {$code} - {$error}" );
+		}
+	}
+
+	/**
+	 * Get Mailchimp subscriber data.
+	 *
+	 * @param string $list - Mailchimp List ID.
+	 * @param string $email_hash - Subscriber's email hash (lowercase + MD5).
+	 *
+	 * @return array|null
+	 */
+	private function get_subscriber_data( $list, $email_hash ) {
+		$handler = new Mailchimp_Handler( $this->api_key );
+		$end_point = sprintf( 'lists/%s/members/%s', $list, $email_hash );
+
+		try {
+			return $handler->query( $end_point );
+		} catch ( \Exception $e ) {
+			return null;
+		}
+	}
+
+	/**
+	 * Set Mailchimp subscriber data.
+	 *
+	 * @param string $list - Mailchimp List ID.
+	 * @param string $email_hash - Subscriber's email hash (lowercase + MD5).
+	 * @param array $data - New subscriber data to set.
+	 *
+	 * @return array
+	 */
+	private function set_subscriber_data( $list, $email_hash, $data ) {
+		$handler = new Mailchimp_Handler( $this->api_key );
+
+		$end_point = sprintf( 'lists/%s/members/%s', $list, $email_hash );
+
+		$response = $handler->post( $end_point, $data, [
+			'method' => 'PUT', // Add or Update
+		] );
+
+		if ( 200 !== $response['code'] ) {
+			$error = ! empty( $response['body']['detail'] ) ? $response['body']['detail'] : '';
+			$code = $response['code'];
+
+			throw new \Exception( "HTTP {$code} - {$error}" );
+		}
+
+		return $response['body'];
+	}
+
+	/**
+	 * Create or update a Mailchimp subscriber.
+	 *
+	 * @param array $subscriber - Subscriber data from the form in the frontend.
+	 * @param array $form_settings - Settings from the editor.
+	 *
+	 * @return array - An array that contains the newly created subscriber's data.
+	 */
+	private function create_or_update_subscriber( array $subscriber, array $form_settings ) {
 		if ( ! empty( $form_settings['mailchimp_groups'] ) ) {
 			$subscriber['interests'] = [];
 		}
@@ -175,26 +341,24 @@ class Mailchimp extends Integration_Base {
 			$subscriber['tags'] = explode( ',', trim( $form_settings['mailchimp_tags'] ) );
 		}
 
-		if ( 'default' === $form_settings['mailchimp_api_key_source'] ) {
-			$api_key = $this->get_global_api_key();
+		$list = $form_settings['mailchimp_list'];
+		$email_hash = md5( strtolower( $subscriber['email_address'] ) );
+		$double_opt_in = ( 'yes' === $form_settings['mailchimp_double_opt_in'] );
+
+		$subscriber['status_if_new'] = $double_opt_in ? 'pending' : 'subscribed';
+
+		if ( $double_opt_in ) {
+			$subscriber_data = $this->get_subscriber_data( $list, $email_hash );
+
+			// Change the current status only if the user isn't subscribed already.
+			if ( $subscriber_data && 'subscribed' !== $subscriber_data['status'] ) {
+				$subscriber['status'] = 'pending';
+			}
 		} else {
-			$api_key = $form_settings['mailchimp_api_key'];
+			$subscriber['status'] = 'subscribed';
 		}
 
-		$handler = new Mailchimp_Handler( $api_key );
-
-		$subscriber['status_if_new'] = 'yes' === $form_settings['mailchimp_double_opt_in'] ? 'pending' : 'subscribed';
-		$subscriber['status'] = 'subscribed';
-
-		$end_point = sprintf( 'lists/%s/members/%s', $form_settings['mailchimp_list'], md5( strtolower( $subscriber['email_address'] ) ) );
-
-		$response = $handler->post( $end_point, $subscriber, [
-			'method' => 'PUT', // Add or Update
-		] );
-
-		if ( 200 !== $response['code'] ) {
-			throw new \Exception( Ajax_Handler::SERVER_ERROR );
-		}
+		return $this->set_subscriber_data( $list, $email_hash, $subscriber );
 	}
 
 	/**
@@ -255,11 +419,19 @@ class Mailchimp extends Integration_Base {
 
 		$handler = new Mailchimp_Handler( $api_key );
 
-		if ( 'lists' === $data['mailchimp_action'] ) {
-			return $handler->get_lists();
-		}
+		switch ( $data['mailchimp_action'] ) {
+			case 'lists':
+				return $handler->get_lists();
 
-		return $handler->get_list_details( $data['mailchimp_list'] );
+			case 'fields':
+				return $handler->get_fields( $data['mailchimp_list'] );
+
+			case 'groups':
+				return $handler->get_groups( $data['mailchimp_list'] );
+
+			default:
+				return $handler->get_list_details( $data['mailchimp_list'] );
+		}
 	}
 
 	public function register_admin_fields( Settings $settings ) {

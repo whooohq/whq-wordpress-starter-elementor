@@ -5,7 +5,7 @@ namespace Essential_Addons_Elementor\Pro\Elements;
 use \Elementor\Controls_Manager;
 use \Elementor\Group_Control_Background;
 use Elementor\Repeater;
-use \Elementor\Scheme_Typography;
+use \Elementor\Core\Schemes\Typography;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
@@ -382,6 +382,22 @@ class Testimonial_Slider extends Widget_Base
             ]
         );
 
+	    $this->add_control(
+		    'navigation_arrow_position',
+		    [
+			    'label'                 => __('Navigation arrow position', 'essential-addons-elementor'),
+			    'type'                  => Controls_Manager::SELECT2,
+			    'default' => 'default',
+			    'options' => [
+				    'default'            => __( 'Default', 'plugin-domain' ),
+				    'outside-of-the-box' => __( 'Outside of the box', 'plugin-domain' ),
+			    ],
+			    'condition' => [
+				    'arrows'    => 'yes'
+			    ]
+		    ]
+	    );
+
         $this->add_control(
             'dots',
             [
@@ -402,6 +418,9 @@ class Testimonial_Slider extends Widget_Base
                 'label_on'              => __('Yes', 'essential-addons-elementor'),
                 'label_off'             => __('No', 'essential-addons-elementor'),
                 'return_value'          => 'yes',
+                'condition' => [
+	                'dots'    => 'yes'
+                ]
             ]
         );
 
@@ -523,19 +542,19 @@ class Testimonial_Slider extends Widget_Base
                 'options' => [
                     'eael-testimonial-align-default' => [
                         'title' => __('Default', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-ban',
+                        'icon' => 'eicon-ban',
                     ],
                     'eael-testimonial-align-left' => [
                         'title' => esc_html__('Left', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-left',
+                        'icon' => 'eicon-text-align-left',
                     ],
                     'eael-testimonial-align-center' => [
                         'title' => esc_html__('Center', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-center',
+                        'icon' => 'eicon-text-align-center',
                     ],
                     'eael-testimonial-align-right' => [
                         'title' => esc_html__('Right', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-right',
+                        'icon' => 'eicon-text-align-right',
                     ],
                 ],
                 'default' => 'eael-testimonial-align-left'
@@ -1479,6 +1498,7 @@ class Testimonial_Slider extends Widget_Base
             '.eael-testimonial-quote',
             []
         );
+
     }
 
     protected function _render_user_meta( $item ) {
@@ -1544,6 +1564,9 @@ class Testimonial_Slider extends Widget_Base
         $navigation_type = $this->get_settings('eael_testimonial_slider_navigation');
         $description_height = $this->get_settings('eael_testimonial_item_description_height');
         $this->add_render_attribute('testimonial-slider-wrap', 'class', 'swiper-container-wrap');
+	    if($settings['navigation_arrow_position']=='outside-of-the-box'){
+		    $this->add_render_attribute('testimonial-slider-wrap', 'class', 'eael-arrow-box');
+        }
 
         if ($settings['dots_position']) {
             $this->add_render_attribute('testimonial-slider-wrap', 'class', 'swiper-container-wrap-dots-' . $settings['dots_position']);
@@ -1623,6 +1646,11 @@ class Testimonial_Slider extends Widget_Base
     ?>
 
         <div <?php echo $this->get_render_attribute_string('testimonial-slider-wrap'); ?>>
+            <?php
+            if($settings['navigation_arrow_position']=='outside-of-the-box'){
+	            $this->render_arrows();
+            }
+            ?>
             <div <?php echo $this->get_render_attribute_string('testimonial-slider'); ?>>
 
                 <div class="swiper-wrapper">
@@ -1776,7 +1804,9 @@ class Testimonial_Slider extends Widget_Base
                 </div>
                 <?php
                 $this->render_dots();
-                $this->render_arrows();
+                if($settings['navigation_arrow_position']!='outside-of-the-box'){
+	                $this->render_arrows();
+                }
                 ?>
             </div>
             <?php
@@ -1795,7 +1825,7 @@ class Testimonial_Slider extends Widget_Base
     {
         $settings = $this->get_settings_for_display();
 
-        if ($settings['dots'] == 'yes') { ?>
+        if ($settings['dots'] == 'yes' && $settings['image_dots'] != 'yes') { ?>
             <!-- Add Pagination -->
             <div class="swiper-pagination swiper-pagination-<?php echo esc_attr($this->get_id()); ?>"></div>
         <?php }

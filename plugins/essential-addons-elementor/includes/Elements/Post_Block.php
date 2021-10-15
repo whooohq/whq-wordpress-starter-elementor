@@ -67,8 +67,158 @@ class Post_Block extends Widget_Base
          * Query And Layout Controls!
          * @source includes/elementor-helper.php
          */
-	    do_action('eael/controls/layout', $this);
         do_action('eael/controls/query', $this);
+	    do_action('eael/controls/layout', $this);
+
+
+        $this->start_controls_section(
+            'section_post_block_links',
+            [
+                'label' => __('Links', 'essential-addons-elementor'),
+                'conditions' => [
+                    'relation' => 'or',
+                    'terms' => [
+                       [
+                          'name' => 'eael_show_image',
+                          'operator' => '==',
+                          'value' => 'yes',
+                       ],
+                       [
+                          'name' => 'eael_show_title',
+                          'operator' => '==',
+                          'value' => 'yes',
+                       ],
+                       [
+                          'name' => 'eael_show_read_more_button',
+                          'operator' => '==',
+                          'value' => 'yes',
+                       ],
+                       
+                    ],
+                 ],
+            ]
+        );
+
+        $this->add_control(
+            'image_link',
+            [
+                'label' => __('Image', 'essential-addons-elementor'),
+                'type' => Controls_Manager::HEADING,
+                'condition' => [
+                    'eael_show_image' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'image_link_nofollow',
+            [
+                'label' => __('No Follow', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => __('Yes', 'essential-addons-elementor'),
+                'label_off' => __('No', 'essential-addons-elementor'),
+                'return_value' => 'true',
+                'condition' => [
+                    'eael_show_image' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'image_link_target_blank',
+            [
+                'label' => __('Target Blank', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => __('Yes', 'essential-addons-elementor'),
+                'label_off' => __('No', 'essential-addons-elementor'),
+                'return_value' => 'true',
+                'condition' => [
+                    'eael_show_image' => 'yes',
+                ],
+                'separator' => 'after',
+            ]
+        );
+
+        $this->add_control(
+            'title_link',
+            [
+                'label' => __('Title', 'essential-addons-elementor'),
+                'type' => Controls_Manager::HEADING,
+                'condition' => [
+                    'eael_show_title' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'title_link_nofollow',
+            [
+                'label' => __('No Follow', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => __('Yes', 'essential-addons-elementor'),
+                'label_off' => __('No', 'essential-addons-elementor'),
+                'return_value' => 'true',
+                'condition' => [
+                    'eael_show_title' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'title_link_target_blank',
+            [
+                'label' => __('Target Blank', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => __('Yes', 'essential-addons-elementor'),
+                'label_off' => __('No', 'essential-addons-elementor'),
+                'return_value' => 'true',
+                'condition' => [
+                    'eael_show_title' => 'yes',
+                ],
+                'separator' => 'after',
+            ]
+        );
+
+        $this->add_control(
+            'read_more_link',
+            [
+                'label' => __('Read More', 'essential-addons-elementor'),
+                'type' => Controls_Manager::HEADING,
+                'condition' => [
+                    'eael_show_read_more_button' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'read_more_link_nofollow',
+            [
+                'label' => __('No Follow', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => __('Yes', 'essential-addons-elementor'),
+                'label_off' => __('No', 'essential-addons-elementor'),
+                'return_value' => 'true',
+                'condition' => [
+                    'eael_show_read_more_button' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'read_more_link_target_blank',
+            [
+                'label' => __('Target Blank', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => __('Yes', 'essential-addons-elementor'),
+                'label_off' => __('No', 'essential-addons-elementor'),
+                'return_value' => 'true',
+                'condition' => [
+                    'eael_show_read_more_button' => 'yes',
+                ],
+            ]
+        );
+
+        $this->end_controls_section();
 
         $this->start_controls_section(
             'eael_section_post_block_style',
@@ -294,15 +444,15 @@ class Post_Block extends Widget_Base
                 'options' => [
                     'left' => [
                         'title' => __('Left', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-left',
+                        'icon' => 'eicon-text-align-left',
                     ],
                     'center' => [
                         'title' => __('Center', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-center',
+                        'icon' => 'eicon-text-align-center',
                     ],
                     'right' => [
                         'title' => __('Right', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-right',
+                        'icon' => 'eicon-text-align-right',
                     ],
                 ],
                 'selectors' => [
@@ -364,19 +514,19 @@ class Post_Block extends Widget_Base
                 'options' => [
                     'left' => [
                         'title' => __('Left', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-left',
+                        'icon' => 'eicon-text-align-left',
                     ],
                     'center' => [
                         'title' => __('Center', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-center',
+                        'icon' => 'eicon-text-align-center',
                     ],
                     'right' => [
                         'title' => __('Right', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-right',
+                        'icon' => 'eicon-text-align-right',
                     ],
                     'justify' => [
                         'title' => __('Justified', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-justify',
+                        'icon' => 'eicon-text-align-justify',
                     ],
                 ],
                 'selectors' => [
@@ -454,15 +604,15 @@ class Post_Block extends Widget_Base
                 'options' => [
                     'flex-start' => [
                         'title' => __('Left', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-left',
+                        'icon' => 'eicon-text-align-left',
                     ],
                     'center' => [
                         'title' => __('Center', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-center',
+                        'icon' => 'eicon-text-align-center',
                     ],
                     'flex-end' => [
                         'title' => __('Right', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-right',
+                        'icon' => 'eicon-text-align-right',
                     ],
                 ],
                 'selectors' => [
@@ -482,19 +632,19 @@ class Post_Block extends Widget_Base
                 'options' => [
                     'left' => [
                         'title' => __('Left', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-left',
+                        'icon' => 'eicon-text-align-left',
                     ],
                     'center' => [
                         'title' => __('Center', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-center',
+                        'icon' => 'eicon-text-align-center',
                     ],
                     'right' => [
                         'title' => __('Right', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-right',
+                        'icon' => 'eicon-text-align-right',
                     ],
                     'justify' => [
                         'title' => __('Justified', 'essential-addons-elementor'),
-                        'icon' => 'fa fa-align-justify',
+                        'icon' => 'eicon-text-align-justify',
                     ],
                 ],
                 'selectors' => [
@@ -644,6 +794,15 @@ class Post_Block extends Widget_Base
         $settings ['eael_post_block_bg_hover_icon'] = (isset($settings['__fa4_migrated']['eael_post_block_bg_hover_icon_new']) || empty($settings['eael_post_block_bg_hover_icon'])) ? $settings['eael_post_block_bg_hover_icon_new']['value'] : $settings['eael_post_block_bg_hover_icon'];
         $settings ['expanison_indicator'] = $settings['excerpt_expanison_indicator'];
 
+        $link_settings = [
+            'image_link_nofollow' => $settings['image_link_nofollow'] ? 'rel="nofollow"' : '',
+            'image_link_target_blank' => $settings['image_link_target_blank'] ? 'target="_blank"' : '',
+            'title_link_nofollow' => $settings['title_link_nofollow'] ? 'rel="nofollow"' : '',
+            'title_link_target_blank' => $settings['title_link_target_blank'] ? 'target="_blank"' : '',
+            'read_more_link_nofollow' => $settings['read_more_link_nofollow'] ? 'rel="nofollow"' : '',
+            'read_more_link_target_blank' => $settings['read_more_link_target_blank'] ? 'target="_blank"' : '',
+        ];
+
         $this->add_render_attribute(
             'eael-post-block-wrapper',
             [
@@ -666,10 +825,15 @@ class Post_Block extends Widget_Base
         echo '<div ' . $this->get_render_attribute_string('eael-post-block-wrapper') . '>
             <div ' . $this->get_render_attribute_string('eael-post-block-wrap-inner') . '>';
 
-        $template = $this->get_template($this->get_settings('eael_dynamic_template_Layout'));
+        $template = $this->get_template($settings['eael_dynamic_template_Layout']);
+        $settings['loadable_file_name'] = $this->get_filename_only($template);
+	    $found_posts = 0;
         if (file_exists($template)) {
             $query = new \WP_Query($args);
             if ($query->have_posts()) {
+	            $found_posts      = $query->found_posts;
+	            $max_page         = ceil( $found_posts / absint( $args['posts_per_page'] ) );
+	            $args['max_page'] = $max_page;
                 while ($query->have_posts()) {
                     $query->the_post();
                     include($template);
@@ -687,8 +851,9 @@ class Post_Block extends Widget_Base
 
         // normalize settings for load more
         $settings['eael_dynamic_template_Layout'] = 'default';
-        if (method_exists($this, 'print_load_more_button')) {
-            $this->print_load_more_button($settings, $args, 'pro');
+        if (method_exists($this, 'print_load_more_button') && $found_posts > $args['posts_per_page']) {
+	        $dir_name = method_exists( $this, 'get_temp_dir_name' ) ? $this->get_temp_dir_name( $settings[ 'loadable_file_name' ] ) : "pro";
+            $this->print_load_more_button($settings, $args, $dir_name);
         }
     }
 }

@@ -31,7 +31,7 @@ echo '<div class="eael-content-timeline-block">
 
     echo '<div class="eael-content-timeline-content">';
         if( 'yes' == $settings['eael_show_title'] ) {
-            echo '<'.Helper::eael_pro_validate_html_tag($settings['title_tag']).' class="eael-timeline-title"><a href="'.esc_url( get_the_permalink() ).'">'.get_the_title().'</a></'.Helper::eael_pro_validate_html_tag($settings['title_tag']).'>';
+            echo '<'.Helper::eael_pro_validate_html_tag($settings['title_tag']).' class="eael-timeline-title"><a href="'.esc_url( get_the_permalink() ).'"' . $settings['title_link_nofollow'] . '' . $settings['title_link_target_blank'] .'>'.get_the_title().'</a></'.Helper::eael_pro_validate_html_tag($settings['title_tag']).'>';
         }
 
         if( 'yes' == $settings['eael_show_excerpt'] ) {
@@ -43,7 +43,7 @@ echo '<div class="eael-content-timeline-block">
         }
 
         if( 'yes' == $settings['eael_show_read_more'] && !empty( $settings['eael_read_more_text'] ) ) {
-            echo '<a href="'.esc_url( get_the_permalink() ).'" class="eael-read-more">'.esc_html__( $settings['eael_read_more_text'], 'essential-addons-elementor' ).'</a>';
+            echo '<a href="'.esc_url( get_the_permalink() ).'" class="eael-read-more"' . $settings['read_more_link_nofollow'] . '' . $settings['read_more_link_target_blank'] .'>'.esc_html__( $settings['eael_read_more_text'], 'essential-addons-elementor' ).'</a>';
         }
 
         echo '<span class="eael-date">'.get_the_date().'</span>';
