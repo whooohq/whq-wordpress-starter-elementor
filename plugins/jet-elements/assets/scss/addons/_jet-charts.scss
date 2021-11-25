@@ -1,0 +1,61 @@
+.jet-pie-chart-container,
+.jet-bar-chart-container,
+.jet-line-chart-container {
+	position: relative;
+	height: 400px;
+	max-width: 100%;
+}
+
+.jet-pie-chart-title-container {
+	.jet-pie-chart-title {
+		display: block;
+		margin: 0;
+		padding: 0;
+		text-align: center;
+	}
+}
+
+.jet-line-chart-container {
+	width: 100%;
+}
+
+.jet-line-chart-tooltip {
+	background: rgba(0, 0, 0, 0.5);
+	border-radius: 4px;
+	padding: 6px;
+
+	.jet-line-chart-tooltip-color-box {
+		width: 10px;
+		height: 10px;
+		display: inline-block;
+		@include margin-end(5px);
+	}
+}
+
+.jet-line-chart-tooltip-title {
+	color: #fff;
+	font-size: 12px;
+
+	& + .jet-line-chart-tooltip-body {
+		display: block;
+	}
+}
+
+.jet-line-chart-tooltip-body {
+	color: #fff;
+	font-size: 10px;
+	line-height: 1;
+
+	& + .jet-line-chart-tooltip-body {
+		margin-top: 5px;
+	}
+}
+
+.jet-line-chart-tooltip-compare-current,
+.jet-line-chart-tooltip-compare-previous,
+.jet-line-chart-tooltip-body,
+.jet-line-chart-tooltip-title {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}

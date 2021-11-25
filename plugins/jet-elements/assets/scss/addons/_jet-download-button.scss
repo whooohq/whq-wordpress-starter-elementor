@@ -1,0 +1,42 @@
+.jet-download {
+	&.elementor-button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+	&.jet-download-icon-position-top,
+	&.jet-download-icon-position-bottom {
+		flex-direction: column;
+	}
+	&__icon.jet-download-icon-left {
+		margin-right: 10px;
+		order: getValueByDirection( 1, 3 );
+	}
+	&__icon.jet-download-icon-right {
+		margin-left: 10px;
+		order: getValueByDirection( 3, 1 );
+	}
+	&__icon.jet-download-icon-top {
+		margin-bottom: 10px;
+		order: 1;
+	}
+	&__icon.jet-download-icon-bottom {
+		margin-top: 10px;
+		order: 3;
+	}
+	&__icon {
+		transition: all 0.3s ease;
+	}
+	&__text {
+		text-align: left;
+		order: 2;
+	}
+	&__label {
+		display: block;
+		transition: all 0.3s ease;
+	}
+	&__sub-label {
+		display: block;
+		transition: all 0.3s ease;
+	}
+}

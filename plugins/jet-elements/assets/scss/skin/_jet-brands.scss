@@ -1,0 +1,17 @@
+.brands-list {
+	.brands-list__item {
+		&-name {
+			margin: 20px 0 0 0;
+			text-align: center;
+		}
+		&-desc {
+			text-align: center;
+		}
+		&-img-wrap {
+			text-align: center;
+		}
+		&-img {
+			display: inline-block;
+		}
+	}
+}

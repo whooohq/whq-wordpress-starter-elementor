@@ -1,0 +1,90 @@
+.pricing-table {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+
+	> * {
+		width: 100%;
+	}
+
+	&__icon {
+		&-box {
+			.jet-elements-icon {
+				display: inline-flex;
+				justify-content: center;
+				align-items: center;
+			}
+		}
+	}
+	&__badge {
+		position: absolute;
+		right: 20px;
+		top: 20px;
+		width: auto;
+	}
+
+	.pricing-table-button {
+		overflow: hidden;
+
+		&.button-full-size {
+			width: 100%;
+		}
+	}
+	.button-icon {
+		margin-right: 5px;
+	}
+
+	&__fold-mask {
+		overflow: hidden;
+
+		&:not(.pricing-table-unfold-state) {
+			max-height: 0;
+		}
+	}
+
+	&__fold-trigger {
+		display: flex;
+		justify-content: center;
+	}
+
+	&__fold-button {
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+	}
+
+	&__fold-button-icon,
+	&__fold-button-text {
+		transition: all .3s;
+	}
+}
+
+.pricing-feature {
+
+	&:not(:first-child):before {
+		content: "";
+		display: block;
+		height: 0;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	&__inner {
+		display: inline-flex;
+		align-items: center;
+	}
+	.item-bullet {
+		display: flex;
+		align-items: center;
+		@include margin-end(7px);
+	}
+
+	&:last-child {
+		margin-bottom: 0 !important;
+	}
+}
+
+.fold_visible_last {
+	margin-bottom: 0 !important;
+}
+
+
