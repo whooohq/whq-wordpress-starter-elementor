@@ -30,7 +30,7 @@ class Elementor_Post_Query {
 		$this->prefix = $group_query_name . '_';
 		$this->query_args = $query_args;
 
-		$settings = $this->widget->get_settings();
+		$settings = $this->widget->get_settings_for_display();
 		$defaults = $this->get_query_defaults();
 
 		$this->widget_settings = wp_parse_args( $settings, $defaults );
@@ -58,6 +58,9 @@ class Elementor_Post_Query {
 		$post_type = $this->get_widget_settings( 'post_type' );
 
 		if ( 'by_id' !== $post_type && 0 < $offset_control ) {
+			/**
+			 * @see https://codex.wordpress.org/Making_Custom_Queries_using_Offset_and_Pagination
+			 */
 			add_action( 'pre_get_posts', [ $this, 'fix_query_offset' ], 1 );
 			add_filter( 'found_posts', [ $this, 'fix_query_found_posts' ], 1, 2 );
 		}
@@ -70,6 +73,15 @@ class Elementor_Post_Query {
 
 		Module::add_to_avoid_list( wp_list_pluck( $query->posts, 'ID' ) );
 
+		/**
+		 * Elementor Pro query results.
+		 *
+		 * Fires before the actual query is run. This hook allows developers
+		 * to alter individual query results.
+		 *
+		 * @param \WP_Query   $query  An instance of WordPress query.
+		 * @param Widget_Base $widget An instance of Elementor widget.
+		 */
 		do_action( 'elementor/query/query_results', $query, $this->widget );
 
 		return $query;
@@ -97,7 +109,8 @@ class Elementor_Post_Query {
 			/**
 			 * Current query variables.
 			 *
-			 * Filters the query variables for the current query.
+			 * Filters the query variables for the current query. This hook allows
+			 * developers to alter those variables.
 			 *
 			 * @since 1.0.0
 			 *
@@ -123,6 +136,15 @@ class Elementor_Post_Query {
 			$this->set_date_args();
 		}
 
+		/**
+		 * Current query arguments.
+		 *
+		 * Filters the query arguments for the current query. This hook allows
+		 * developers to alter those arguments.
+		 *
+		 * @param array       $query_args An array of WordPress query arguments.
+		 * @param Widget_Base $widget     An instance of Elementor widget.
+		 */
 		$this->query_args = apply_filters( 'elementor/query/query_args', $this->query_args, $this->widget );
 
 		return $this->query_args;
@@ -320,7 +342,7 @@ class Elementor_Post_Query {
 		}
 	}
 
-	/**\
+	/**
 	 * @param string $control_name
 	 *
 	 * @return mixed|null
@@ -334,7 +356,6 @@ class Elementor_Post_Query {
 	 * @param       $key
 	 * @param       $value
 	 * @param false $override
-	 *
 	 */
 	protected function set_query_arg( $key, $value, $override = false ) {
 		if ( ! isset( $this->query_args[ $key ] ) || $override ) {
@@ -360,18 +381,19 @@ class Elementor_Post_Query {
 			$query_id = $this->get_widget_settings( 'query_id' );
 			$widget_name = $this->widget->get_name();
 			/**
-			 * Elementor Pro posts widget Query args.
+			 * Elementor Pro query arguments.
 			 *
-			 * It allows developers to alter individual posts widget queries.
+			 * Fires before the actual query is run. This hook allows developers to
+			 * alter individual queries by id.
 			 *
-			 * The dynamic portions of the hook name, `$widget_name` & `$query_id`, refers to the Widget name and Query ID respectively.
+			 * The dynamic portions of the hook name, `$widget_name` & `$query_id`,
+			 * refers to the widget name and query id respectively.
 			 *
 			 * @since 2.1.0
 			 *
-			 * @param \WP_Query     $wp_query
-			 * @param Widget_Base   $this->current_widget
+			 * @param \WP_Query   $wp_query An instance of WordPress query.
+			 * @param Widget_Base $widget   An instance of Elementor widget
 			 */
-			do_action_deprecated( "elementor_pro/{$widget_name}/query/{$query_id}", [ $wp_query, $this->widget ], '2.5.0', "elementor/query/{$query_id}" );
 			do_action( "elementor/query/{$query_id}", $wp_query, $this->widget );
 		}
 	}

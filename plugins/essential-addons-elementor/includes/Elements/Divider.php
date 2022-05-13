@@ -76,7 +76,7 @@ class Divider extends Widget_Base
 	/**
 	 * Register divider widget controls.
 	 */
-	protected function _register_controls()
+	protected function register_controls()
 	{
 
 		/*-----------------------------------------------------------------------------------*/

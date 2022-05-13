@@ -20,6 +20,9 @@ use ElementorPro\Modules\ThemeBuilder\Classes\Locations_Manager;
 
 Plugin::elementor()->documents->register_document_type( 'loop', Loop::get_class_full_name() );
 Source_Local::add_template_type( 'loop' );
+//fix for EPro 3.6 when woocommerce is active
+Plugin::elementor()->documents->register_document_type( 'custom_grid', customGrid::get_class_full_name() );
+Source_Local::add_template_type( 'custom_grid' );
 
 function elecs_get_document( $post_id ) {
 		$document = null;
@@ -101,4 +104,4 @@ add_action( 'elementor/documents/register', 'elecs_register_documents_grid' );
 		);
 	}
 
-add_action( 'elementor/theme/register_locations', 'elecs_register_location_grid' );
+//add_action( 'elementor/theme/register_locations', 'elecs_register_location_grid' );//not working from EPro 3.6

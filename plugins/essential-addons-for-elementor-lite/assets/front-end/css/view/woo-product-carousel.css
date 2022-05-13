@@ -190,7 +190,7 @@
   text-align: left;
 }
 .eael-woo-product-carousel-container.preset-2 .eael-product-carousel .carousel-overlay {
-  background: #5f3ae069;
+  background: rgba(95, 58, 224, 0.4117647059);
   position: absolute;
   height: 100%;
   width: 100%;
@@ -1207,4 +1207,20 @@
   -webkit-column-gap: 0;
      -moz-column-gap: 0;
           column-gap: 0;
+}
+.theme-blocksy .button:before {
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(enabled=false)";
+  -webkit-filter: none !important;
+          filter: none !important;
+  /* IE 7 and the rest of the world */
+  opacity: 1;
+  z-index: 0;
+  bottom: 0 !important;
+  right: 0;
+  line-height: 1.2em;
+}
+.theme-blocksy .button:hover {
+  -webkit-transform: none;
+      -ms-transform: none;
+          transform: none;
 }

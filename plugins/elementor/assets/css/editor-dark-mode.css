@@ -1,4 +1,4 @@
-/*! elementor - v3.4.5 - 12-10-2021 */
+/*! elementor - v3.6.5 - 27-04-2022 */
 body {
   color: #E0E1E3; }
   body .pcr-app {
@@ -53,6 +53,9 @@ body {
 
 .elementor-control-type-global-style-repeater .elementor-button-wrapper {
   border-top-color: #34383C; }
+
+.elementor-control-type-global-style-repeater .elementor-repeater-fields.ui-sortable-helper {
+  background-color: #404349; }
 
 .e-control-tool {
   background-color: #34383C;
@@ -142,7 +145,6 @@ select {
     background-color: #404349; }
     .elementor-panel .elementor-panel-navigation .elementor-panel-navigation-tab.elementor-active {
       background-image: -webkit-gradient(linear, left top, left bottom, from(#34383C), to(#4C4F56));
-      background-image: -webkit-linear-gradient(top, #34383C, #4C4F56);
       background-image: -o-linear-gradient(top, #34383C, #4C4F56);
       background-image: linear-gradient(to bottom, #34383C, #4C4F56);
       border-bottom-color: #71D7F7; }
@@ -283,11 +285,9 @@ a.elementor-responsive-switcher {
   border-color: #64666A; }
 
 .elementor-control-media-area, .pcr-app[data-theme=monolith] .pcr-color-palette, .pcr-button {
-  background-image: -webkit-linear-gradient(45deg, #34383C 25%, transparent 0, transparent 75%, #34383C 0, #34383C), -webkit-linear-gradient(45deg, #34383C 25%, transparent 0, transparent 75%, #34383C 0, #34383C);
   background-image: -o-linear-gradient(45deg, #34383C 25%, transparent 0, transparent 75%, #34383C 0, #34383C), -o-linear-gradient(45deg, #34383C 25%, transparent 0, transparent 75%, #34383C 0, #34383C);
   background-image: linear-gradient(45deg, #34383C 25%, transparent 0, transparent 75%, #34383C 0, #34383C), linear-gradient(45deg, #34383C 25%, transparent 0, transparent 75%, #34383C 0, #34383C);
-  -webkit-background-size: 12px 12px;
-          background-size: 12px 12px;
+  background-size: 12px 12px;
   background-position: 0 0, 6px 6px;
   background-color: #64666A; }
 
@@ -315,8 +315,7 @@ a.elementor-responsive-switcher {
 .elementor-control-type-gallery .elementor-control-dynamic-switcher {
   border-bottom: 1px solid #64666A;
   border-left: 1px solid #64666A;
-  -webkit-border-radius: 0 3px 0 0;
-          border-radius: 0 3px 0 0; }
+  border-radius: 0 3px 0 0; }
 
 body.rtl .elementor-control-type-gallery .elementor-control-dynamic-switcher {
   border-right: 1px solid #64666A;
@@ -373,8 +372,7 @@ body.rtl .elementor-control-type-gallery .elementor-control-dynamic-switcher {
 .elementor-control-type-wysiwyg .mce-toolbar .mce-btn-group .mce-btn.mce-listbox {
   background-color: #404349;
   border-color: #7D7E82;
-  -webkit-border-radius: 3px;
-          border-radius: 3px; }
+  border-radius: 3px; }
 
 .elementor-control-type-wysiwyg .quicktags-toolbar {
   border-color: #7D7E82; }
@@ -593,7 +591,6 @@ body.rtl #elementor-element--promotion__dialog:after {
 
 .elementor-template-library-menu-item.elementor-active {
   background-image: -webkit-gradient(linear, left top, left bottom, from(#26292C), to(#34383C));
-  background-image: -webkit-linear-gradient(top, #26292C, #34383C);
   background-image: -o-linear-gradient(top, #26292C, #34383C);
   background-image: linear-gradient(to bottom, #26292C, #34383C);
   border-color: #71D7F7; }

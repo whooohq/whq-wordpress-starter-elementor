@@ -889,6 +889,25 @@ $config = [
 		        ],
 	        ],
         ],
+        'advanced-search' => [
+	        'class'      => '\Essential_Addons_Elementor\Pro\Elements\Advanced_Search',
+	        'dependency' => [
+		        'css' => [
+			        [
+				        'file'    => EAEL_PRO_PLUGIN_PATH . 'assets/front-end/css/view/advanced-search.min.css',
+				        'type'    => 'self',
+				        'context' => 'view',
+			        ],
+		        ],
+		        'js'  => [
+			        [
+				        'file'    => EAEL_PRO_PLUGIN_PATH . 'assets/front-end/js/view/advanced-search.min.js',
+				        'type'    => 'self',
+				        'context' => 'view',
+			        ],
+		        ],
+	        ],
+        ],
     ],
     'extensions' => [
         'section-particles'       => [
@@ -989,6 +1008,12 @@ $config = [
                     ],
                 ],
             ],
+        ],
+        'xd-copy' => [
+	        'class' => '\Essential_Addons_Elementor\Pro\Extensions\XD_Copy',
+        ],
+        'conditional-display' => [
+	        'class' => '\Essential_Addons_Elementor\Pro\Extensions\Conditional_Display',
         ],
     ],
 ];

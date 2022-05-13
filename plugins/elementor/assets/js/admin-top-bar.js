@@ -1,4 +1,4 @@
-/*! elementor - v3.4.5 - 12-10-2021 */
+/*! elementor - v3.6.5 - 27-04-2022 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -89,7 +89,7 @@ function _arrayLikeToArray(arr, len) {
 }
 
 module.exports = _arrayLikeToArray;
-module.exports.default = module.exports, module.exports.__esModule = true;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
@@ -106,7 +106,7 @@ function _arrayWithHoles(arr) {
 }
 
 module.exports = _arrayWithHoles;
-module.exports.default = module.exports, module.exports.__esModule = true;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
@@ -123,7 +123,7 @@ function _interopRequireDefault(obj) {
 }
 
 module.exports = _interopRequireDefault;
-module.exports.default = module.exports, module.exports.__esModule = true;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
@@ -133,7 +133,7 @@ module.exports.default = module.exports, module.exports.__esModule = true;
   \********************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-var _typeof = __webpack_require__(/*! @babel/runtime-corejs2/helpers/typeof */ "../node_modules/@babel/runtime-corejs2/helpers/typeof.js").default;
+var _typeof = __webpack_require__(/*! @babel/runtime-corejs2/helpers/typeof */ "../node_modules/@babel/runtime-corejs2/helpers/typeof.js")["default"];
 
 var _WeakMap = __webpack_require__(/*! @babel/runtime-corejs2/core-js/weak-map */ "../node_modules/@babel/runtime-corejs2/core-js/weak-map.js");
 
@@ -192,7 +192,7 @@ function _interopRequireWildcard(obj, nodeInterop) {
 }
 
 module.exports = _interopRequireWildcard;
-module.exports.default = module.exports, module.exports.__esModule = true;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
@@ -237,7 +237,7 @@ function _iterableToArrayLimit(arr, i) {
 }
 
 module.exports = _iterableToArrayLimit;
-module.exports.default = module.exports, module.exports.__esModule = true;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
@@ -252,7 +252,7 @@ function _nonIterableRest() {
 }
 
 module.exports = _nonIterableRest;
-module.exports.default = module.exports, module.exports.__esModule = true;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
@@ -275,7 +275,7 @@ function _slicedToArray(arr, i) {
 }
 
 module.exports = _slicedToArray;
-module.exports.default = module.exports, module.exports.__esModule = true;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
@@ -297,20 +297,20 @@ function _typeof(obj) {
       return typeof obj;
     };
 
-    module.exports.default = module.exports, module.exports.__esModule = true;
+    module.exports["default"] = module.exports, module.exports.__esModule = true;
   } else {
     module.exports = _typeof = function _typeof(obj) {
       return obj && typeof _Symbol === "function" && obj.constructor === _Symbol && obj !== _Symbol.prototype ? "symbol" : typeof obj;
     };
 
-    module.exports.default = module.exports, module.exports.__esModule = true;
+    module.exports["default"] = module.exports, module.exports.__esModule = true;
   }
 
   return _typeof(obj);
 }
 
 module.exports = _typeof;
-module.exports.default = module.exports, module.exports.__esModule = true;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
@@ -334,7 +334,7 @@ function _unsupportedIterableToArray(o, minLen) {
 }
 
 module.exports = _unsupportedIterableToArray;
-module.exports.default = module.exports, module.exports.__esModule = true;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
@@ -353,7 +353,7 @@ _Object$defineProperty(exports, "__esModule", {
   value: true
 });
 
-exports.default = void 0;
+exports["default"] = void 0;
 
 __webpack_require__(/*! core-js/modules/es6.object.to-string.js */ "../node_modules/core-js/modules/es6.object.to-string.js");
 
@@ -398,7 +398,7 @@ isAppleWebkit = matchUserAgent('AppleWebKit') && !isBlink,
 };
 
 var _default = environment;
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -422,7 +422,7 @@ _Object$defineProperty(exports, "__esModule", {
   value: true
 });
 
-exports.default = AdminTopBar;
+exports["default"] = AdminTopBar;
 
 var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
 
@@ -436,7 +436,7 @@ var _usePageTitle = __webpack_require__(/*! ./hooks/use-page-title/use-page-titl
 
 var _environment = _interopRequireDefault(__webpack_require__(/*! elementor-common/utils/environment */ "../core/common/assets/js/utils/environment.js"));
 
-function AdminTopBar(props) {
+function AdminTopBar() {
   var actionButtonsRef = (0, _react.useRef)(); // Handle Top Bar visibility on initiation: Indicate that the admin top bar is visible and the page content needs to push down below the admin top bar for visibility.
 
   (0, _react.useEffect)(function () {
@@ -497,7 +497,7 @@ _Object$defineProperty(exports, "__esModule", {
   value: true
 });
 
-exports.default = BarButton;
+exports["default"] = BarButton;
 
 var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
 
@@ -560,7 +560,7 @@ _Object$defineProperty(exports, "__esModule", {
   value: true
 });
 
-exports.default = BarHeading;
+exports["default"] = BarHeading;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
@@ -603,7 +603,7 @@ _Object$defineProperty(exports, "__esModule", {
   value: true
 });
 
-exports.default = ConnectionButton;
+exports["default"] = ConnectionButton;
 
 var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
 
@@ -617,11 +617,7 @@ function ConnectionButton() {
       return;
     }
 
-    jQuery(buttonRef.current).elementorConnect({
-      UTM: function UTM() {
-        return '&utm_source=admin-top-bar&utm_medium=wp-dash&utm_campaign=admin-top-bar&source=generic';
-      }
-    });
+    jQuery(buttonRef.current).elementorConnect();
   }, []);
 
   var tooltipText = __('Connect your account to get access to Elementor\'s Template Library & more.', 'elementor'),

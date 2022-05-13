@@ -65,7 +65,15 @@ use Essential_Addons_Elementor\Pro\Classes\Helper;
 
             <?php if($settings['show_button'] === 'true') : ?>
             <div class="course-button-wrap">
-                <a href="<?php echo esc_url(get_permalink($course->ID)); ?>" class="eael-course-button"><?php echo empty($button_text) ? __( 'See More', 'essential-addons-elementor' ) : $button_text; ?></a>
+                <a href="<?php echo esc_url(get_permalink($course->ID)); ?>" class="eael-course-button">
+	                <?php
+	                if($settings['change_button_text'] === 'true' && !empty($settings['button_text'])) {
+		                echo $settings['button_text'];
+	                } else {
+		                echo empty($button_text) ? __( 'See More', 'essential-addons-elementor' ) : $button_text;
+	                }
+	                ?>
+                </a>
             </div>
             <?php endif; ?>
 

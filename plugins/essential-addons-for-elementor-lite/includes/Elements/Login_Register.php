@@ -191,7 +191,7 @@ class Login_Register extends Widget_Base {
 	/**
 	 * @inheritDoc
 	 */
-	protected function _register_controls() {
+	protected function register_controls() {
 		/*----Content Tab----*/
 		do_action( 'eael/login-register/before-content-controls', $this );
 		$this->init_content_general_controls();
@@ -1051,7 +1051,7 @@ class Login_Register extends Widget_Base {
 					],
 				],
 				'default'     => '1',
-				'description' => '<span class="pro-feature"> Get the  <a href="https://wpdeveloper.net/upgrade/ea-pro" target="_blank">Pro version</a> for more stunning elements and customization options.</span>',
+				'description' => '<span class="pro-feature"> Get the  <a href="https://wpdeveloper.com/upgrade/ea-pro" target="_blank">Pro version</a> for more stunning elements and customization options.</span>',
 			]
 		);
 

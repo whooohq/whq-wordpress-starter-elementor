@@ -31,7 +31,17 @@ use Essential_Addons_Elementor\Pro\Classes\Helper;
             <?php if($settings['show_course_meta'] === 'true') : ?>
             <div class="eael-learn-dash-course-meta-card">
                 <?php if($settings['show_price'] == 'true') : ?>
-                    <span class="price"><?php echo $legacy_meta['sfwd-courses_course_price'] ? $legacy_meta['sfwd-courses_course_price'] : __( 'Free', 'essential-addons-elementor' ); ?></span>
+                    <span class="price">
+                        <?php
+                        if($legacy_meta['sfwd-courses_course_price']){
+	                        echo $legacy_meta['sfwd-courses_course_price'];
+                        } elseif($settings['change_free_price_text'] == 'true' && !empty($settings['free_price_text'])) {
+	                        echo $settings['free_price_text'];
+                        } else {
+	                        echo __('Free', 'essential-addons-elementor');
+                        }
+                        ?>
+                    </span>
                 <?php endif; ?>
                 
                 <?php if($access_list) : ?><span class="enrolled-count"><i class="far fa-user"></i><?php echo $access_list; ?></span><?php endif; ?>
@@ -48,7 +58,15 @@ use Essential_Addons_Elementor\Pro\Classes\Helper;
             </div><?php endif; ?>
 
             <?php if($settings['show_button'] === 'true') : ?>
-            <a href="<?php echo esc_url(get_permalink($course->ID)); ?>" class="eael-course-button"><?php echo empty($button_text) ? __( 'See More', 'essential-addons-elementor' ) : $button_text; ?></a>
+            <a href="<?php echo esc_url(get_permalink($course->ID)); ?>" class="eael-course-button">
+	            <?php
+	            if($settings['change_button_text'] === 'true' && !empty($settings['button_text'])) {
+		            echo $settings['button_text'];
+	            } else {
+		            echo empty($button_text) ? __( 'See More', 'essential-addons-elementor' ) : $button_text;
+	            }
+	            ?>
+            </a>
             <?php endif; ?>
 
             <?php

@@ -83,7 +83,7 @@ class Filterable_Gallery extends Widget_Base
         return 'https://essential-addons.com/elementor/docs/filterable-gallery/';
     }
     
-    protected function _register_controls()
+    protected function register_controls()
     {
         /**
          * Filter Gallery Settings
@@ -809,7 +809,7 @@ class Filterable_Gallery extends Widget_Base
                         ],
                     ],
                     'default' => '1',
-                    'description' => '<span class="pro-feature"> Get the  <a href="https://wpdeveloper.net/upgrade/ea-pro" target="_blank">Pro version</a> for more stunning elements and customization options.</span>'
+                    'description' => '<span class="pro-feature"> Get the  <a href="https://wpdeveloper.com/upgrade/ea-pro" target="_blank">Pro version</a> for more stunning elements and customization options.</span>'
                 ]
             );
             
@@ -2749,22 +2749,46 @@ class Filterable_Gallery extends Widget_Base
         
         $this->end_controls_section();
     }
-    
-    public function sorter_class($string)
-    {
-        $sorter_class = strtolower($string);
-        $sorter_class = str_replace(' ', '-', $sorter_class);
-        $sorter_class = str_replace('&', 'and', $sorter_class);
-        $sorter_class = str_replace('amp;', '', $sorter_class);
-        $sorter_class = str_replace('/', 'slash', $sorter_class);
-        $sorter_class = str_replace("'", 'apostrophe', $sorter_class);
-        $sorter_class = str_replace('"', 'apostrophe', $sorter_class);
-        $sorter_class = str_replace(',-', ' eael-cf-', $sorter_class);
-        $sorter_class = str_replace('.', '-', $sorter_class);
-        $sorter_class = str_replace(',', ' ', $sorter_class);
-        $sorter_class = utf8_encode($sorter_class);
-        return $sorter_class;
-    }
+
+	public function sorter_class( $string ) {
+		$sorter_class = strtolower( $string );
+		$sorter_class = str_replace( ' ', '-', $sorter_class );
+		$sorter_class = str_replace( ',-', ' eael-cf-', $sorter_class );
+		$sorter_class = str_replace( ',', 'comma', $sorter_class );
+		$sorter_class = str_replace( '&', 'and', $sorter_class );
+		$sorter_class = str_replace( '+', 'plus', $sorter_class );
+		$sorter_class = str_replace( 'amp;', '', $sorter_class );
+		$sorter_class = str_replace( '/', 'slash', $sorter_class );
+		$sorter_class = str_replace( "'", 'apostrophe', $sorter_class );
+		$sorter_class = str_replace( '"', 'apostrophe', $sorter_class );
+		$sorter_class = str_replace( '.', '-', $sorter_class );
+		$sorter_class = str_replace( '~', 'tilde', $sorter_class );
+		$sorter_class = str_replace( '!', 'exclamation', $sorter_class );
+		$sorter_class = str_replace( '@', 'at', $sorter_class );
+		$sorter_class = str_replace( '#', 'hash', $sorter_class );
+		$sorter_class = str_replace( '(', 'parenthesis', $sorter_class );
+		$sorter_class = str_replace( ')', 'parenthesis', $sorter_class );
+		$sorter_class = str_replace( '=', 'equal', $sorter_class );
+		$sorter_class = str_replace( ';', 'semicolon', $sorter_class );
+		$sorter_class = str_replace( ':', 'colon', $sorter_class );
+		$sorter_class = str_replace( '<', 'lessthan', $sorter_class );
+		$sorter_class = str_replace( '>', 'greaterthan', $sorter_class );
+		$sorter_class = str_replace( '|', 'pipe', $sorter_class );
+		$sorter_class = str_replace( '\\', 'backslash', $sorter_class );
+		$sorter_class = str_replace( '^', 'caret', $sorter_class );
+		$sorter_class = str_replace( '*', 'asterisk', $sorter_class );
+		$sorter_class = str_replace( '$', 'dollar', $sorter_class );
+		$sorter_class = str_replace( '%', 'percent', $sorter_class );
+		$sorter_class = str_replace( '`', 'backtick', $sorter_class );
+		$sorter_class = str_replace( '[', 'bracket', $sorter_class );
+		$sorter_class = str_replace( ']', 'bracket', $sorter_class );
+		$sorter_class = str_replace( '{', 'curlybracket', $sorter_class );
+		$sorter_class = str_replace( '}', 'curlybracket', $sorter_class );
+		$sorter_class = str_replace( '?', 'questionmark', $sorter_class );
+		$sorter_class = utf8_encode( $sorter_class );
+
+		return $sorter_class;
+	}
     
     protected function render_filters()
     {
@@ -2947,11 +2971,11 @@ class Filterable_Gallery extends Widget_Base
         if($check_popup_status){
             if ($settings['eael_section_fg_full_image_action'] === 'lightbox' && !$this->popup_status) {
                 $this->popup_status = true;
-                $html .= '<a href="' . esc_url($item['image']) . '" class="eael-magnific-link media-content-wrap" data-elementor-open-lightbox="no">';
+                $html .= '<a href="' . esc_url($item['image']) . '" class="eael-magnific-link media-content-wrap active" data-elementor-open-lightbox="no">';
             }
         }else {
             if ($settings['eael_section_fg_full_image_action'] === 'lightbox') {
-                $html .= '<a href="' . esc_url($item['image']) . '" class="eael-magnific-link media-content-wrap" data-elementor-open-lightbox="no">';
+                $html .= '<a href="' . esc_url($item['image']) . '" class="eael-magnific-link media-content-wrap active" data-elementor-open-lightbox="no">';
             }
         }
 

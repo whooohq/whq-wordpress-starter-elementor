@@ -1,6 +1,8 @@
 <?php
 
 use ElementorPro\Modules\ThemeBuilder\Documents\Theme_Section_Document;
+use Elementor\Core\DocumentTypes\Post;
+use ElementorPro\Modules\ThemeBuilder\Documents\Single;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -12,7 +14,7 @@ class customGrid extends Theme_Section_Document {
 		$properties = parent::get_properties();
 
 		$properties['condition_type'] = 'custom_grid';
-		$properties['location'] = 'custom_grid';
+		$properties['location'] = 'single';
     		$properties['support_kit'] = true;
 		$properties['support_site_editor'] = true;
 
@@ -28,6 +30,10 @@ class customGrid extends Theme_Section_Document {
 	}
   
 	public function get_name() {
+		return 'custom_grid';
+	}
+  
+  public static function get_type() {
 		return 'custom_grid';
 	}
 
@@ -53,4 +59,3 @@ I want a preview like the template not default
   
  
 }
-

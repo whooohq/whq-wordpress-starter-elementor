@@ -13,6 +13,9 @@ if ( ! class_exists( 'GFForms' ) ) {
 // Require GFFeedAddOn.
 require_once( 'class-gf-feed-addon.php' );
 
+use \Gravity_Forms\Gravity_Forms\Orders\Factories\GF_Order_Factory;
+use \Gravity_Forms\Gravity_Forms\Orders\Exporters\GF_Save_Entry_Order_Exporter;
+
 /**
  * Class GFPaymentAddOn
  *
@@ -955,6 +958,13 @@ abstract class GFPaymentAddOn extends GFFeedAddOn {
 
 		}
 
+		$order = GF_Order_Factory::create_from_feed( $feed, $form, $entry, $this->current_submission_data, $this );
+		gform_add_meta(
+			$entry['id'],
+			'gform_order',
+			( new GF_Save_Entry_Order_Exporter( $order ) )->export()
+		);
+
 		return $entry;
 	}
 
@@ -1064,7 +1074,6 @@ abstract class GFPaymentAddOn extends GFFeedAddOn {
 
 		// Updating subscription information.
 		if ( $subscription['is_success'] ) {
-
 			$entry = $this->start_subscription( $entry, $subscription );
 
 		} else {
@@ -1441,7 +1450,6 @@ abstract class GFPaymentAddOn extends GFFeedAddOn {
 		$currency = RGCurrency::get_currency( $entry['currency'] );
 		$decimals = rgar( $currency, 'decimals', 0 );
 		$amount   = GFCommon::round_number( $amount, $decimals );
-
 		return array(
 			'payment_amount' => $amount,
 			'setup_fee'      => $fee_amount,
@@ -3268,9 +3276,12 @@ abstract class GFPaymentAddOn extends GFFeedAddOn {
 
 	public function results_filter_ui( $filter_ui, $form_id, $page_title, $gf_page, $gf_view ) {
 
-		if ( $gf_view == "gf_results_{$this->_slug}" ) {
-			unset( $filter_ui['fields'] );
+		// Don't use this filter if we aren't on the results page for this add-on
+		if ( $gf_view !== "gf_results_{$this->_slug}" ) {
+			return $filter_ui;
 		}
+
+		unset( $filter_ui['fields'] );
 
 		$view_markup = "<div>
                     <select id='gaddon-sales-group' name='group'>

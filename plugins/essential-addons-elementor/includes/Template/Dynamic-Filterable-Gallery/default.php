@@ -8,7 +8,10 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
-$classes = \Essential_Addons_Elementor\Pro\Traits\Dynamic_Filterable_Gallery::get_dynamic_gallery_item_classes();
+$show_category_child_items = !empty($settings['category_show_child_items']) && 'yes' === $settings['category_show_child_items'] ? 1 : 0;
+$show_product_cat_child_items = !empty($settings['product_cat_show_child_items']) && 'yes' === $settings['product_cat_show_child_items'] ? 1 : 0;
+
+$classes = \Essential_Addons_Elementor\Pro\Traits\Dynamic_Filterable_Gallery::get_dynamic_gallery_item_classes($show_category_child_items, $show_product_cat_child_items);
 
 $linkNofollow = $settings['link_nofollow'] ? 'rel="nofollow"' : '';
 $titleNofollow = $settings['title_link_nofollow'] ? 'rel="nofollow"' : '';
@@ -19,7 +22,7 @@ $readMoreTarget = $settings['read_more_link_target_blank'] ? 'target="_blank"' :
 
 if ($settings['eael_fg_grid_style'] == 'eael-hoverer') {
         echo '<div class="dynamic-gallery-item ' . esc_attr(implode(' ', $classes)) . '">
-            <div class="dynamic-gallery-item-inner">
+            <div class="dynamic-gallery-item-inner" data-itemid=" ' . esc_attr( get_the_ID() ) . ' ">
                 <div class="dynamic-gallery-thumbnail">';
 
                     if(has_post_thumbnail()) {
@@ -76,7 +79,7 @@ if ($settings['eael_fg_grid_style'] == 'eael-hoverer') {
         </div>';
 } else if ($settings['eael_fg_grid_style'] == 'eael-cards') {
     echo '<div class="dynamic-gallery-item ' . esc_attr(implode(' ', $classes)) . '">
-        <div class="dynamic-gallery-item-inner">
+        <div class="dynamic-gallery-item-inner" data-itemid=" ' . esc_attr( get_the_ID() ) . ' ">
             <div class="dynamic-gallery-thumbnail">';
                 if(has_post_thumbnail()) {
                     echo '<img src="' . wp_get_attachment_image_url(get_post_thumbnail_id(), $settings['image_size']) . '" alt="' . esc_attr(get_post_meta(get_post_thumbnail_id(), '_wp_attachment_image_alt', true)) . '">';

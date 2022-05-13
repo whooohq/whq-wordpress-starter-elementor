@@ -239,7 +239,7 @@ class Post_List extends Widget_Base
         $this->end_controls_section();
     }
 
-    protected function _register_controls()
+    protected function register_controls()
     {
         do_action('eael/controls/query', $this);
 
@@ -1088,6 +1088,7 @@ class Post_List extends Widget_Base
                 'selectors' => [
                     '{{WRAPPER}} .post-list-pagination .btn-next-post' => 'color: {{VALUE}}',
                     '{{WRAPPER}} .post-list-pagination .btn-prev-post' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .post-list-pagination .btn-next-post svg, {{WRAPPER}} .post-list-pagination .btn-prev-post svg' => 'fill: {{VALUE}}',
                 ],
 
             ]

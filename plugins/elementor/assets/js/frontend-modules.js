@@ -1,4 +1,4 @@
-/*! elementor - v3.4.5 - 12-10-2021 */
+/*! elementor - v3.6.5 - 27-04-2022 */
 (self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["frontend-modules"],{
 
 /***/ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js":
@@ -14,7 +14,46 @@ function _interopRequireDefault(obj) {
 }
 
 module.exports = _interopRequireDefault;
-module.exports.default = module.exports, module.exports.__esModule = true;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/utils/is-instanceof.js":
+/*!******************************************************!*\
+  !*** ../assets/dev/js/editor/utils/is-instanceof.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+/**
+ * Some FileAPI objects such as FileList, DataTransferItem and DataTransferItemList has inconsistency with the retrieved
+ * object (from events, etc.) and the actual JavaScript object so a regular instanceof doesn't work. This function can
+ * check whether it's instanceof by using the objects constructor and prototype names.
+ *
+ * @param object
+ * @param constructors
+ * @returns {boolean}
+ */
+var _default = (object, constructors) => {
+  constructors = Array.isArray(constructors) ? constructors : [constructors];
+
+  for (const constructor of constructors) {
+    if (object.constructor.name === constructor.prototype[Symbol.toStringTag]) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+exports["default"] = _default;
 
 /***/ }),
 
@@ -30,7 +69,7 @@ module.exports.default = module.exports, module.exports.__esModule = true;
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class _default extends elementorModules.ViewModule {
   getDefaultSettings() {
@@ -90,7 +129,7 @@ class _default extends elementorModules.ViewModule {
 
 }
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -108,7 +147,7 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _base = _interopRequireDefault(__webpack_require__(/*! ./base */ "../assets/dev/js/frontend/handlers/base.js"));
 
@@ -158,7 +197,7 @@ class SwiperHandlerBase extends _base.default {
 
 }
 
-exports.default = SwiperHandlerBase;
+exports["default"] = SwiperHandlerBase;
 
 /***/ }),
 
@@ -509,9 +548,11 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _instanceType = _interopRequireDefault(__webpack_require__(/*! ./instance-type */ "../assets/dev/js/modules/imports/instance-type.js"));
+
+var _isInstanceof = _interopRequireDefault(__webpack_require__(/*! ../../editor/utils/is-instanceof */ "../assets/dev/js/editor/utils/is-instanceof.js"));
 
 class ArgsObject extends _instanceType.default {
   static getInstanceType() {
@@ -586,7 +627,7 @@ class ArgsObject extends _instanceType.default {
   requireArgumentInstance(property, instance, args = this.args) {
     this.requireArgument(property, args);
 
-    if (!(args[property] instanceof instance)) {
+    if (!(args[property] instanceof instance) && !(0, _isInstanceof.default)(args[property], instance)) {
       throw Error(`${property} invalid instance.`);
     }
   }
@@ -605,16 +646,17 @@ class ArgsObject extends _instanceType.default {
 
 
   requireArgumentConstructor(property, type, args = this.args) {
-    this.requireArgument(property, args);
+    this.requireArgument(property, args); // Note: Converting the constructor to string in order to avoid equation issues
+    // due to different memory addresses between iframes (window.Object !== window.top.Object).
 
-    if (args[property].constructor !== type) {
+    if (args[property].constructor.toString() !== type.prototype.constructor.toString()) {
       throw Error(`${property} invalid constructor type.`);
     }
   }
 
 }
 
-exports.default = ArgsObject;
+exports["default"] = ArgsObject;
 
 /***/ }),
 
@@ -630,7 +672,7 @@ exports.default = ArgsObject;
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = exports.ForceMethodImplementation = void 0;
+exports["default"] = exports.ForceMethodImplementation = void 0;
 
 // TODO: Wrong location used as `elementorModules.ForceMethodImplementation(); should be` `elementorUtils.forceMethodImplementation()`;
 class ForceMethodImplementation extends Error {
@@ -662,7 +704,7 @@ var _default = () => {
   throw new ForceMethodImplementation(info);
 };
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -678,7 +720,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class InstanceType {
   static [Symbol.hasInstance](target) {
@@ -740,7 +782,7 @@ class InstanceType {
 
 }
 
-exports.default = InstanceType;
+exports["default"] = InstanceType;
 
 /***/ }),
 
@@ -1019,7 +1061,7 @@ module.exports = _viewModule.default.extend({
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 // Moved from elementor pro: 'assets/dev/js/frontend/utils'
 class Scroll {
@@ -1056,7 +1098,7 @@ class Scroll {
       threshold: buildThreshholds(obj.sensitivity)
     };
 
-    function handleIntersect(entries, observer) {
+    function handleIntersect(entries) {
       const currentScrollY = entries[0].boundingClientRect.y,
             isInViewport = entries[0].isIntersecting,
             intersectionScrollDirection = currentScrollY < lastScrollY ? 'down' : 'up',
@@ -1113,7 +1155,7 @@ class Scroll {
 
 }
 
-exports.default = Scroll;
+exports["default"] = Scroll;
 
 /***/ }),
 
@@ -1161,7 +1203,7 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _module = _interopRequireDefault(__webpack_require__(/*! ./imports/module */ "../assets/dev/js/modules/imports/module.js"));
 
@@ -1186,14 +1228,12 @@ var _default = window.elementorModules = {
   }
 };
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ })
 
 },
 /******/ __webpack_require__ => { // webpackRuntimeModules
-/******/ "use strict";
-/******/ 
 /******/ var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
 /******/ var __webpack_exports__ = (__webpack_exec__("../assets/dev/js/frontend/modules.js"));
 /******/ }

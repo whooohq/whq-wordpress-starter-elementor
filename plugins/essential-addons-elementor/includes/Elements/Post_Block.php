@@ -61,7 +61,7 @@ class Post_Block extends Widget_Base
         return 'https://essential-addons.com/elementor/docs/post-block/';
     }
 
-    protected function _register_controls()
+    protected function register_controls()
     {
         /**
          * Query And Layout Controls!

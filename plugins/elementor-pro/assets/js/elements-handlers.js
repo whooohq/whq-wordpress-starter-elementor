@@ -1,4 +1,4 @@
-/*! elementor-pro - v3.4.2 - 12-10-2021 */
+/*! elementor-pro - v3.7.0 - 08-05-2022 */
 (self["webpackChunkelementor_pro"] = self["webpackChunkelementor_pro"] || []).push([["elements-handlers"],{
 
 /***/ "../assets/dev/js/frontend/elements-handlers.js":
@@ -539,7 +539,17 @@ class _default extends elementorModules.frontend.Document {
       if (!modal) {
         const settings = this.getDocumentSettings(),
               id = this.getSettings('id'),
-              triggerPopupEvent = eventType => elementorFrontend.elements.$document.trigger('elementor/popup/' + eventType, [id, this]);
+              triggerPopupEvent = eventType => {
+          const event = 'elementor/popup/' + eventType;
+          elementorFrontend.elements.$document.trigger(event, [id, this]); // TODO: Use `elementorFrontend.utils.events.dispatch` when it's in master.
+
+          window.dispatchEvent(new CustomEvent(event, {
+            detail: {
+              id,
+              instance: this
+            }
+          }));
+        };
 
         let classes = 'elementor-popup-modal';
 
@@ -1773,6 +1783,9 @@ exports.default = void 0;
 class _default extends elementorModules.Module {
   constructor() {
     super();
+    ['archive_classic', 'archive_full_content', 'archive_cards'].forEach(skinName => {
+      elementorFrontend.elementsHandler.attachHandler('archive-posts', () => __webpack_require__.e(/*! import() | archive-posts */ "archive-posts").then(__webpack_require__.bind(__webpack_require__, /*! ./handlers/archive-posts-load-more */ "../modules/theme-builder/assets/js/frontend/handlers/archive-posts-load-more.js")), skinName);
+    });
     elementorFrontend.elementsHandler.attachHandler('archive-posts', () => __webpack_require__.e(/*! import() | archive-posts */ "archive-posts").then(__webpack_require__.bind(__webpack_require__, /*! ./handlers/archive-posts-skin-classic */ "../modules/theme-builder/assets/js/frontend/handlers/archive-posts-skin-classic.js")), 'archive_classic');
     elementorFrontend.elementsHandler.attachHandler('archive-posts', () => __webpack_require__.e(/*! import() | archive-posts */ "archive-posts").then(__webpack_require__.bind(__webpack_require__, /*! ./handlers/archive-posts-skin-classic */ "../modules/theme-builder/assets/js/frontend/handlers/archive-posts-skin-classic.js")), 'archive_full_content');
     elementorFrontend.elementsHandler.attachHandler('archive-posts', () => __webpack_require__.e(/*! import() | archive-posts */ "archive-posts").then(__webpack_require__.bind(__webpack_require__, /*! ./handlers/archive-posts-skin-cards */ "../modules/theme-builder/assets/js/frontend/handlers/archive-posts-skin-cards.js")), 'archive_cards');
@@ -1839,11 +1852,41 @@ class _default extends elementorModules.Module {
   constructor() {
     super();
     elementorFrontend.elementsHandler.attachHandler('woocommerce-menu-cart', () => __webpack_require__.e(/*! import() | woocommerce-menu-cart */ "woocommerce-menu-cart").then(__webpack_require__.bind(__webpack_require__, /*! ./handlers/menu-cart */ "../modules/woocommerce/assets/js/frontend/handlers/menu-cart.js")));
+    elementorFrontend.elementsHandler.attachHandler('woocommerce-purchase-summary', () => __webpack_require__.e(/*! import() | woocommerce-purchase-summary */ "woocommerce-purchase-summary").then(__webpack_require__.bind(__webpack_require__, /*! ./handlers/purchase-summary */ "../modules/woocommerce/assets/js/frontend/handlers/purchase-summary.js")));
+    elementorFrontend.elementsHandler.attachHandler('woocommerce-checkout-page', () => __webpack_require__.e(/*! import() | woocommerce-checkout-page */ "woocommerce-checkout-page").then(__webpack_require__.bind(__webpack_require__, /*! ./handlers/checkout-page */ "../modules/woocommerce/assets/js/frontend/handlers/checkout-page.js")));
+    elementorFrontend.elementsHandler.attachHandler('woocommerce-cart', () => __webpack_require__.e(/*! import() | woocommerce-cart */ "woocommerce-cart").then(__webpack_require__.bind(__webpack_require__, /*! ./handlers/cart */ "../modules/woocommerce/assets/js/frontend/handlers/cart.js")));
+    elementorFrontend.elementsHandler.attachHandler('woocommerce-my-account', () => __webpack_require__.e(/*! import() | woocommerce-my-account */ "woocommerce-my-account").then(__webpack_require__.bind(__webpack_require__, /*! ./handlers/my-account */ "../modules/woocommerce/assets/js/frontend/handlers/my-account.js")));
+    elementorFrontend.elementsHandler.attachHandler('woocommerce-notices', () => __webpack_require__.e(/*! import() | woocommerce-notices */ "woocommerce-notices").then(__webpack_require__.bind(__webpack_require__, /*! ./handlers/notices */ "../modules/woocommerce/assets/js/frontend/handlers/notices.js")));
+    /**
+     * `wc-cart` script is enqueued in the Editor by the widget `get_script_depends()`. As a result WooCommerce
+     * triggers its cart related event callbacks. One of the callbacks requires `.woocommerce-cart-form` to be in
+     * the page and reloads the Preview if it's not there. To get around this we add our own empty
+     * `.woocommerce-cart-form` to the page to stop the page reloading.
+     */
+
+    if (elementorFrontend.isEditMode()) {
+      elementorFrontend.on('components:init', () => {
+        if (!elementorFrontend.elements.$body.find('.elementor-widget-woocommerce-cart').length) {
+          elementorFrontend.elements.$body.append('<div class="woocommerce-cart-form">');
+        }
+      });
+    }
   }
 
 }
 
 exports.default = _default;
+
+/***/ }),
+
+/***/ "@wordpress/i18n":
+/*!**************************!*\
+  !*** external "wp.i18n" ***!
+  \**************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = wp.i18n;
 
 /***/ })
 

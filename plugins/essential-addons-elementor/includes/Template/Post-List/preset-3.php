@@ -12,6 +12,10 @@ if (!defined('ABSPATH')) {
 
 
 $category = get_the_category();
+if ( $settings['post_type'] === 'product' ) {
+	$category = get_the_terms( get_the_ID(), 'product_cat' );
+}
+
 $cat_name = $cat_id = null;
 $show_cat = ($settings['eael_post_list_post_cat'] != '');
 if (!empty($category[0])) {

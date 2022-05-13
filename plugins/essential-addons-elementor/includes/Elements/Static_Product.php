@@ -67,7 +67,7 @@ class Static_Product extends Widget_Base
         return 'https://essential-addons.com/elementor/docs/static-product/';
     }
 
-    protected function _register_controls()
+    protected function register_controls()
     {
         $this->start_controls_section(
             'eael_section_layout_static_product',
@@ -1547,6 +1547,11 @@ class Static_Product extends Widget_Base
         $eael_static_product_layout = (!empty($settings['eael_static_product_layout']) ? $settings['eael_static_product_layout'] : '');
         $add_to_cart_icon = empty($settings['eael_static_product_add_to_cart_button_icon_new']);
         $product_ID = (!empty($settings['eael_static_product_add_to_cart_btn_product_ID']) ? $settings['eael_static_product_add_to_cart_btn_product_ID'] : '');
+
+	    // WC Notices
+	    if ( class_exists( 'woocommerce' ) ) {
+		    woocommerce_output_all_notices();
+	    }
 
         // template markup
         $cartButtonMarkup = '';

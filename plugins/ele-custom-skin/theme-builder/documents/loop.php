@@ -14,13 +14,21 @@ class Loop extends Single {
 
 		$properties['condition_type'] = 'loop';
     //$properties['location'] = 'archive';
-		$properties['location'] = 'loop';
+		$properties['location'] = 'single';
     		$properties['support_kit'] = true;
 		$properties['support_site_editor'] = true;
 		return $properties;
 	}
 
+    protected static function get_site_editor_type() {
+		return 'loop';
+	}
+  
 	public function get_name() {
+		return 'loop';
+	}
+  
+  public static function get_type() {
 		return 'loop';
 	}
   

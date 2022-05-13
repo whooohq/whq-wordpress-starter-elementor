@@ -1,17 +1,17 @@
-# Copyright (C) 2021 Gravity Forms
+# Copyright (C) 2022 Gravity Forms
 # This file is distributed under the same license as the Gravity Forms Advanced Post Creation Add-On plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity Forms Advanced Post Creation Add-On 1.1\n"
+"Project-Id-Version: Gravity Forms Advanced Post Creation Add-On 1.2\n"
 "Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
 "Last-Translator: Gravity Forms <support@gravityforms.com>\n"
 "Language-Team: Gravity Forms <support@gravityforms.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-08-05T18:42:28+00:00\n"
+"POT-Creation-Date: 2022-02-02T19:27:38+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.4.0\n"
+"X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: gravityformsadvancedpostcreation\n"
 
 #. Plugin Name of the plugin

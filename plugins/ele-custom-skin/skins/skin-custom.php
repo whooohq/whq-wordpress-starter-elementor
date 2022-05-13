@@ -362,7 +362,7 @@ class Skin_Posts_ECS extends Skin_Base {
       $parent_settings[$this->get_id().'_post_slider'] = isset($parent_settings[$this->get_id().'_post_slider'])? $parent_settings[$this->get_id().'_post_slider'] : "";
 
       if($parent_settings[$this->get_id().'_post_slider'] == "yes") {
-        echo '<div class="swiper-container">';
+        echo '<div class="elementor-main-swiper swiper-container">';
         $this->grid_settings['allow'] = false;
       } else {// we don't use custom grid if slider is activated
         if($parent_settings[$this->get_id().'_use_custom_grid'] == "yes" && $parent_settings[$this->get_id().'_custom_grid'] ){

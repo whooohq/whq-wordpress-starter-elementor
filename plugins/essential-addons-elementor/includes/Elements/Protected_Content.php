@@ -50,7 +50,7 @@ class Protected_Content extends Widget_Base {
 		return 'https://essential-addons.com/elementor/docs/ea-protected-content/';
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 
 		/**
 		 * Content Settings

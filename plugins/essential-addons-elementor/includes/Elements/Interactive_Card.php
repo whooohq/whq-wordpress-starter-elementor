@@ -59,7 +59,7 @@ class Interactive_Card extends Widget_Base
 		return 'https://essential-addons.com/elementor/docs/interactive-cards/';
 	}
 
-	protected function _register_controls()
+	protected function register_controls()
 	{
 
 		/**
@@ -605,7 +605,7 @@ class Interactive_Card extends Widget_Base
 				'label' => esc_html__('Youtube URL', 'essential-addons-elementor'),
 				'type' => Controls_Manager::TEXT,
 				'label_block' => false,
-				'default' => esc_html__('https://www.youtube.com/embed/7Spk7k69WZM', 'essential-addons-elementor'),
+				'default' => esc_html__('https://www.youtube.com/watch?v=3rV9imkbV7k', 'essential-addons-elementor'),
 				'condition' => [
 					'eael_interactive_card_type' => 'video'
 				]

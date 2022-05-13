@@ -32,6 +32,12 @@
 					contentShow.addClass(values.contentAnimation);
 				}, options.revealTime * 2);
 			}, options.revealTime);
+
+			var $thisWrapper = $(this).closest('.interactive-card').not('.eaNiceScrollActivated');
+			if ($thisWrapper.length) {
+				eaNiceScroll($thisWrapper);
+				$thisWrapper.addClass('eaNiceScrollActivated');
+			}
 		});
 
 		closeMe.on("click", function () {
@@ -96,16 +102,18 @@
 		}
 
 		// NiceScroll Effect
-		var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+		function eaNiceScroll($scope) {
+			var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-		if (!isMobile) {
-			$(".content-overflow").niceScroll({
-				cursorcolor: "#424242",
-				cursorwidth: "5px",
-				cursorborder: "1px solid #fff",
-				cursorborderradius: "5px",
-				zindex: 1000,
-			});
+			if (!isMobile) {
+				$(".content-overflow", $scope).niceScroll({
+					cursorcolor: "#424242",
+					cursorwidth: "5px",
+					cursorborder: "1px solid #fff",
+					cursorborderradius: "5px",
+					zindex: 1000,
+				});
+			}
 		}
 	};
 })(jQuery);

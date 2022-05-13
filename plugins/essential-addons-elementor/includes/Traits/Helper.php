@@ -147,8 +147,10 @@ trait Helper
     {
 
         $ea_woo_checkout_btn_next_data = $settings['ea_woo_checkout_tabs_btn_next_text'];
-        if (get_option('woocommerce_enable_coupons') === 'yes') {
-            $enable_coupon = 1;
+	    if ( get_option( 'woocommerce_enable_coupons' ) === 'yes' && $settings['ea_woo_checkout_coupon_hide'] !== 'yes' ) {
+		    $enable_coupon = 1;
+	    } else {
+		    $enable_coupon = '';
         }
 ?>
         <div class="layout-split-container" data-coupon="<?php echo $enable_coupon; ?>">
@@ -165,7 +167,7 @@ trait Helper
                         <li id="step-0" data-step="0" class="split-tab first active"><?php echo $settings['ea_woo_checkout_tab_login_text']; ?></li>
                     <?php
                     }
-                    if (get_option('woocommerce_enable_coupons') === 'yes') { ?>
+                    if ( get_option( 'woocommerce_enable_coupons' ) === 'yes' && $settings['ea_woo_checkout_coupon_hide'] !== 'yes' ) { ?>
                         <li id="step-1" class="split-tab <?php echo $step1_class; ?>" data-step="1"><?php echo
                                                                                                         $settings['ea_woo_checkout_tab_coupon_text']; ?></li>
                         <li id="step-2" class="split-tab" data-step="2"><?php echo $settings['ea_woo_checkout_tab_billing_shipping_text']; ?></li>
@@ -256,9 +258,11 @@ trait Helper
     {
 
         $ea_woo_checkout_btn_next_data = $settings['ea_woo_checkout_tabs_btn_next_text'];
-        if (get_option('woocommerce_enable_coupons') === 'yes') {
-            $enable_coupon = 1;
-        }
+	    if ( get_option( 'woocommerce_enable_coupons' ) === 'yes' && $settings['ea_woo_checkout_coupon_hide'] !== 'yes' ) {
+		    $enable_coupon = 1;
+	    } else {
+		    $enable_coupon = '';
+	    }
     ?>
         <div class="layout-multi-steps-container" data-coupon="<?php echo $enable_coupon; ?>">
             <ul class="ms-tabs">
@@ -273,7 +277,7 @@ trait Helper
                     <li class="ms-tab first active" id="step-0" data-step="0"><?php echo
                                                                                     $settings['ea_woo_checkout_tab_login_text']; ?></li>
                 <?php }
-                if (get_option('woocommerce_enable_coupons') === 'yes') { ?>
+                if ( get_option( 'woocommerce_enable_coupons' ) === 'yes' && $settings['ea_woo_checkout_coupon_hide'] !== 'yes' ) { ?>
                     <li class="ms-tab <?php echo $step1_class; ?>" id="step-1" data-step="1"><?php echo
                                                                                                     $settings['ea_woo_checkout_tab_coupon_text']; ?></li>
                     <li class="ms-tab" id="step-2" data-step="2"><?php echo $settings['ea_woo_checkout_tab_billing_shipping_text']; ?></li>
@@ -339,4 +343,205 @@ trait Helper
             </div>
         </div>
 <?php }
+
+	public function fetch_search_result() {
+
+		if ( empty( $_POST[ 'nonce' ] ) ) {
+			$err_msg = __( 'Insecure form submitted without security token', 'essential-addons-for-elementor-lite' );
+			wp_send_json_error( $err_msg );
+		}
+
+		if ( !wp_verify_nonce( $_POST[ 'nonce' ], 'essential-addons-elementor' ) ) {
+			$err_msg = __( 'Security token did not match', 'essential-addons-for-elementor-lite' );
+			wp_send_json_error( $err_msg );
+		}
+
+		$search   = sanitize_text_field( trim( $_POST[ 's' ] ) );
+		$response = [];
+		if ( !empty( $_POST[ 'settings' ][ 'show_category' ] ) && strlen( $search ) > 2 ) {
+
+			if ( !empty( $_POST[ 'settings' ][ 'post_type' ] ) ) {
+				$args[ 'post_types' ] = $_POST[ 'settings' ][ 'post_type' ];
+			}
+
+			if ( !empty( $_POST[ 'settings' ][ 'cat_id' ] ) ) {
+				$args[ 'include' ] = [ $_POST[ 'settings' ][ 'cat_id' ] ];
+			}
+			$args[ 'search' ]         = $search;
+			$response[ 'cate_lists' ] = $this->get_terms_data( $args );
+		}
+
+		$post_args = [
+			's'                      => $search,
+			'posts_per_page'         => !empty( $_POST[ 'settings' ][ 'post_per_page' ] ) ? intval( $_POST[ 'settings' ][ 'post_per_page' ] ) : 5,
+			'cache_results'          => false,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+			'no_found_rows'          => true,
+			'post_status'            => 'publish',
+		];
+
+		if ( !empty( $_POST[ 'settings' ][ 'offset' ] ) ) {
+			$post_args[ 'offset' ] = $_POST[ 'settings' ][ 'offset' ];
+		}
+
+		if ( !empty( $_POST[ 'settings' ][ 'post_type' ] ) ) {
+			$post_args[ 'post_type' ] = $_POST[ 'settings' ][ 'post_type' ];
+		}
+
+		if ( !empty( $_POST[ 'settings' ][ 'cat_id' ] ) ) {
+			$term = get_term( $_POST[ 'settings' ][ 'cat_id' ] );
+			if ( !is_wp_error( $term ) ) {
+				$post_args[ 'tax_query' ][] = [
+					'taxonomy' => $term->taxonomy,
+					'field'    => 'term_id',
+					'terms'    => $term->term_id,
+				];
+			}
+		}
+
+		$query                   = new \WP_Query( $post_args );
+		$post_lists              = '';
+		$response[ 'more_data' ] = $query->post_count >= $post_args[ 'posts_per_page' ];
+		if ( $query->have_posts() ) {
+			while ( $query->have_posts() ) {
+				$query->the_post();
+				$post_lists .= sprintf( '<a href="%s" class="eael-advanced-search-content-item">', esc_url( get_the_permalink() ) );
+				if ( has_post_thumbnail() && !empty( $_POST[ 'settings' ][ 'show_content_image' ] ) ) {
+					$image      = wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID() ), 'single-post-thumbnail' );
+					$post_lists .= sprintf( '<div class="item-thumb"><img src="%s"></div>', current( $image ) );
+				}
+
+				$post_lists .= '<div class="item-content"><h4>' . strip_tags( get_the_title() ) . '</h4><p>' . wp_trim_words( strip_shortcodes( get_the_excerpt() ), 30 ) . '</p></div>';
+				$post_lists .= '</a>';
+			}
+			wp_reset_postdata();
+			$response[ 'post_lists' ] = $post_lists;
+		}
+
+		$show_popular_keyword = !empty( $_POST[ 'settings' ][ 'show_popular_keyword' ] );
+
+		if ( strlen( $search ) > 4 || $show_popular_keyword ) {
+			$update           = !empty( $response[ 'post_lists' ] );
+			$popular_keywords = $this->manage_popular_keyword( $search, $show_popular_keyword, $update );
+			if ( $show_popular_keyword ) {
+				$response[ 'popular_keyword' ] = $popular_keywords;
+			}
+		}
+
+		wp_send_json_success( $response );
+
+	}
+
+	/**
+	 * manage_popular_keyword
+	 * @param string $key
+	 * @param bool $status
+	 * @param bool $update
+	 * @return string|null
+	 */
+	public function manage_popular_keyword( $key, $status = false, $update = true ) {
+
+		$popular_keywords = (array)get_option( 'eael_adv_search_popular_keyword', true );
+
+		if ( strlen( $key ) >= 4 ) {
+
+			$key = str_replace( ' ', '_', strtolower( $key ) );
+			if ( !empty( $popular_keywords ) ) {
+				if ( !empty( $popular_keywords[ $key ] ) ) {
+					$popular_keywords[ $key ] = $popular_keywords[ $key ] + 1;
+				} else {
+					$popular_keywords[ $key ] = 1;
+				}
+			}
+
+			if ( $update ) {
+				update_option( 'eael_adv_search_popular_keyword', $popular_keywords );
+			}
+		}
+
+		if ( $status ) {
+			arsort( $popular_keywords );
+			$lists = null;
+			$rank  = !empty( $_POST[ 'settings' ][ 'show_popular_keyword_rank' ] ) ? intval( $_POST[ 'settings' ][ 'show_popular_keyword_rank' ] ) : 5;
+			foreach ( array_slice( $popular_keywords, 1, intval( $_POST[ 'settings' ][ 'total_number_of_popular_search' ] ) ) as $key => $item ) {
+				if ( $item <= $rank ) {
+					continue;
+				}
+				$keywords = ucfirst( str_replace( '_', ' ', $key ) );
+				$lists    .= sprintf( '<a href="javascript:void(0)" data-keyword="%1$s" class="eael-popular-keyword-item">%1$s</a>', $keywords, $key );
+			}
+			return $lists;
+		}
+		return null;
+	}
+
+	/**
+	 * get_terms_data
+	 * @param $args array
+	 * @return string|null
+	 */
+	public function get_terms_data( $args ) {
+
+		$args = wp_parse_args( $args, [
+			'hide_empty' => true,
+			'orderby'    => 'name',
+			'order'      => 'ASC'
+		] );
+
+		if ( !empty( $args[ 'post_types' ] ) && is_array( $args[ 'post_types' ] ) ) {
+			$taxonomies = get_object_taxonomies( $args[ 'post_types' ] );
+			if ( !empty( $taxonomies ) ) {
+				$args[ 'taxonomy' ] = $taxonomies;
+			}
+		}
+
+		$terms      = get_terms( $args );
+		$term_lists = '';
+		if ( !empty( $terms ) && !is_wp_error( $terms ) ) {
+			foreach ( $terms as $term ) {
+				$term_lists .= sprintf( '<li><a href="%s">%s</a></li>', esc_url( get_term_link( $term ) ), $term->name );
+			}
+			$term_lists = sprintf( "<ul>%s</ul>", $term_lists );
+		}
+		return $term_lists;
+	}
+
+	/**
+	 * eael_valid_select_query
+	 * Check this sql query only contain select query that's mean
+	 * if query have update, delete or insert instruction this method return false
+	 *
+	 * @param string $query raw sql query
+	 *
+	 * @return false|int
+	 * @since 5.0.1
+	 */
+	public function eael_valid_select_query( $query ) {
+		$valid = preg_match(
+			'/^\s*(?:'
+			. 'SELECT.*?\s+FROM'
+			. ')\s+((?:[0-9a-zA-Z$_.`-]|[\xC2-\xDF][\x80-\xBF])+)/is',
+			$query
+		);
+
+		return $valid;
+	}
+
+    /**
+     * Adds extra protocols to wp allowed tags
+     * @param array $protocols
+     * @return array
+     * @since 4.4.11
+     */
+    public static function eael_wp_allowed_tags( $protocols = array() ){
+        $eael_wp_allowed_protocols = wp_allowed_protocols();
+        if(is_array($protocols) && count($protocols)){
+            foreach ($protocols as $protocol){
+                $eael_wp_allowed_protocols[] = $protocol;
+            }
+        }
+
+        return array_unique($eael_wp_allowed_protocols);
+    }
 }

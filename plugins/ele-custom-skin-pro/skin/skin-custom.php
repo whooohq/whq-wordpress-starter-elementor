@@ -125,7 +125,19 @@ add_action( 'ECS_after_control', function($skin){
         'return_value' => '100%',
 				'default' => 'auto',
 				'selectors' => [
-					'{{WRAPPER}} .ecs-link-wrapper, {{WRAPPER}} .ecs-custom-grid .ecs-post-loop, {{WRAPPER}} .ecs-post-loop .elementor, {{WRAPPER}} .ecs-post-loop .elementor .elementor-inner, {{WRAPPER}} .ecs-post-loop .elementor .elementor-inner .elementor-section-wrap, {{WRAPPER}} .ecs-post-loop .elementor .elementor-section-wrap, {{WRAPPER}} .ecs-post-loop .elementor .elementor-inner .elementor-section-wrap .elementor-top-section,  {{WRAPPER}} .ecs-post-loop .elementor .elementor-section-wrap .elementor-top-section, {{WRAPPER}} .ecs-post-loop .elementor .elementor-container'
+					 '{{WRAPPER}} .ecs-link-wrapper, 
+            {{WRAPPER}} .ecs-custom-grid .ecs-post-loop,
+            {{WRAPPER}} .ecs-post-loop > .elementor, 
+            {{WRAPPER}} .ecs-post-loop > .elementor .elementor-inner, 
+            {{WRAPPER}} .ecs-post-loop > .elementor .elementor-inner .elementor-section-wrap, 
+            {{WRAPPER}} .ecs-post-loop > .elementor .elementor-section-wrap,
+            {{WRAPPER}} .ecs-post-loop > .elementor > .elementor-section,
+            {{WRAPPER}} .ecs-post-loop > ecs-link-wrapper > .elementor > .elementor-section,
+            {{WRAPPER}} .ecs-link-wrapper > .has-post-thumbnail, .ecs-link-wrapper > .has-post-thumbnail > .elementor-section,
+            {{WRAPPER}} .ecs-post-loop > .has-post-thumbnail, .ecs-post-loop > .has-post-thumbnail > .elementor-section,
+            {{WRAPPER}} .ecs-post-loop > .elementor .elementor-inner .elementor-section-wrap .elementor-top-section,  
+            {{WRAPPER}} .ecs-post-loop > .elementor .elementor-section-wrap .elementor-top-section, 
+            {{WRAPPER}} .ecs-post-loop > .elementor .elementor-container'
               => 'height: {{VALUE}} ',
           '{{WRAPPER}} .elementor-post' => 'height:auto',
 				],
@@ -184,6 +196,10 @@ add_action( 'ECS_after_control', function($skin){
 					$skin->get_id().'_post_slider' => 'yes',
 				],
 				'frontend_available' => true,
+        'render_type' => 'template',
+				'selectors' => [
+					'{{WRAPPER}}' => '--e-posts-slides-to-show: {{VALUE}}',
+				],
 			]
 		);
   	$skin->add_responsive_control(

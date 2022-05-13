@@ -64,7 +64,7 @@ class Dynamic_Filterable_Gallery extends Widget_Base
         return 'https://essential-addons.com/elementor/docs/dynamic-filterable-gallery/';
     }
 
-    protected function _register_controls()
+    protected function register_controls()
     {
 
         /**
@@ -1696,6 +1696,7 @@ class Dynamic_Filterable_Gallery extends Widget_Base
         $settings = $this->get_settings_for_display();
         $settings = HelperClass::fix_old_query($settings);
         $args = HelperClass::get_query_args($settings);
+        
         $this->add_render_attribute(
             'eael_dynamic_filter_gallery_wrap',
             [
@@ -1730,14 +1731,14 @@ class Dynamic_Filterable_Gallery extends Widget_Base
         if (1 == $settings['show_gallery_filter_controls']) {
             echo '<div class="eael-filter-gallery-control">
                     <ul>
-                        <li class="control active" data-filter="*">' . (isset($settings['eael_fg_all_label_text']) && !empty($settings['eael_fg_all_label_text']) ? esc_attr($settings['eael_fg_all_label_text']) : 'All') . '</li>';
+                        <li class="control active dynamic-gallery-category " data-filter="*">' . (isset($settings['eael_fg_all_label_text']) && !empty($settings['eael_fg_all_label_text']) ? esc_attr($settings['eael_fg_all_label_text']) : 'All') . '</li>';
 
             if (!empty($args['tax_query'])) {
                 foreach ($args['tax_query'] as $taxonomy) {
                     if (!empty($taxonomy['terms'])) {
                         foreach ($taxonomy['terms'] as $term_id) {
                             $term = get_term($term_id, $taxonomy['taxonomy']);
-                            echo '<li class="control" data-filter=".' . esc_attr($term->slug) . '">' . ucfirst($term->name) . '</li>';
+                            echo '<li class="control dynamic-gallery-category " data-termid="' . esc_attr($term->term_id) . '" data-taxonomy="' . esc_attr($term->taxonomy) . '" data-filter=".' . esc_attr($term->slug) . '">' . ucfirst($term->name) . '</li>';
                         }
                     }
                 }
@@ -1759,6 +1760,7 @@ class Dynamic_Filterable_Gallery extends Widget_Base
 	            $found_posts = 0;
 
                 if(file_exists($template)){
+
                     $query = new \WP_Query($args);
 
                     if ($query->have_posts()) {

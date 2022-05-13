@@ -51,7 +51,7 @@ class Image_Comparison extends Widget_Base {
         return 'https://essential-addons.com/elementor/docs/image-comparison/';
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         // Content Controls
         $this->start_controls_section(
@@ -339,8 +339,10 @@ class Image_Comparison extends Widget_Base {
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '',
                 'selectors' => [
-                    '{{WRAPPER}} .twentytwenty-left-arrow'  => 'border-right-color: {{VALUE}}',
-                    '{{WRAPPER}} .twentytwenty-right-arrow' => 'border-left-color: {{VALUE}}',
+	                '{{WRAPPER}} .twentytwenty-left-arrow'  => 'border-right-color: {{VALUE}}',
+	                '{{WRAPPER}} .twentytwenty-right-arrow' => 'border-left-color: {{VALUE}}',
+	                '{{WRAPPER}} .twentytwenty-up-arrow'    => 'border-bottom-color: {{VALUE}}',
+	                '{{WRAPPER}} .twentytwenty-down-arrow'  => 'border-top-color: {{VALUE}}',
                 ],
             ]
         );
@@ -402,8 +404,10 @@ class Image_Comparison extends Widget_Base {
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '',
                 'selectors' => [
-                    '{{WRAPPER}} .twentytwenty-handle:hover .twentytwenty-left-arrow'  => 'border-right-color: {{VALUE}}',
-                    '{{WRAPPER}} .twentytwenty-handle:hover .twentytwenty-right-arrow' => 'border-left-color: {{VALUE}}',
+	                '{{WRAPPER}} .twentytwenty-handle:hover .twentytwenty-left-arrow'  => 'border-right-color: {{VALUE}}',
+	                '{{WRAPPER}} .twentytwenty-handle:hover .twentytwenty-right-arrow' => 'border-left-color: {{VALUE}}',
+	                '{{WRAPPER}} .twentytwenty-handle:hover .twentytwenty-up-arrow'    => 'border-bottom-color: {{VALUE}}',
+	                '{{WRAPPER}} .twentytwenty-handle:hover .twentytwenty-down-arrow'  => 'border-top-color: {{VALUE}}',
                 ],
             ]
         );
@@ -481,6 +485,7 @@ class Image_Comparison extends Widget_Base {
                 ],
                 'selectors'      => [
                     '{{WRAPPER}} .twentytwenty-horizontal .twentytwenty-handle:before, {{WRAPPER}} .twentytwenty-horizontal .twentytwenty-handle:after' => 'width: {{SIZE}}{{UNIT}}; margin-left: calc(-{{SIZE}}{{UNIT}}/2);',
+                    '{{WRAPPER}} .twentytwenty-vertical .twentytwenty-handle:before, {{WRAPPER}} .twentytwenty-vertical .twentytwenty-handle:after' => 'height: {{SIZE}}{{UNIT}}; margin-top: calc(-{{SIZE}}{{UNIT}}/2);',
                 ],
             ]
         );

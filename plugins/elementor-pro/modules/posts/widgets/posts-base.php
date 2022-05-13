@@ -45,7 +45,7 @@ abstract class Posts_Base extends Base_Widget {
 		$this->add_control(
 			'heading_load_more_style_button',
 			[
-				'label' => __( 'Button', 'elementor-pro' ),
+				'label' => esc_html__( 'Button', 'elementor-pro' ),
 				'type' => Controls_Manager::HEADING,
 				'condition' => [
 					'pagination_type' => 'load_more_on_click',
@@ -64,11 +64,14 @@ abstract class Posts_Base extends Base_Widget {
 		$this->add_control(
 			'heading_load_more_on_click_no_posts_message',
 			[
-				'label' => __( 'No More Posts Message', 'elementor-pro' ),
+				'label' => esc_html__( 'No More Posts Message', 'elementor-pro' ),
 				'type' => Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => [
 					'pagination_type' => 'load_more_on_click',
+				],
+				'dynamic' => [
+					'active' => true,
 				],
 			]
 		);
@@ -76,10 +79,13 @@ abstract class Posts_Base extends Base_Widget {
 		$this->add_control(
 			'heading_load_more_on_click_infinity_scroll_no_posts_message',
 			[
-				'label' => __( 'No More Posts Message', 'elementor-pro' ),
+				'label' => esc_html__( 'No More Posts Message', 'elementor-pro' ),
 				'type' => Controls_Manager::HEADING,
 				'condition' => [
 					'pagination_type' => 'load_more_infinite_scroll',
+				],
+				'dynamic' => [
+					'active' => true,
 				],
 			]
 		);
@@ -98,7 +104,7 @@ abstract class Posts_Base extends Base_Widget {
 		$this->add_control(
 			'load_more_no_posts_message_color',
 			[
-				'label' => __( 'Color', 'elementor-pro' ),
+				'label' => esc_html__( 'Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
 				'default' => '',
 				'selectors' => [
@@ -110,7 +116,7 @@ abstract class Posts_Base extends Base_Widget {
 		$this->add_control(
 			'load_more_spinner_color',
 			[
-				'label' => __( 'Spinner Color', 'elementor-pro' ),
+				'label' => esc_html__( 'Spinner Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
 				'default' => '',
 				'selectors' => [
@@ -126,7 +132,7 @@ abstract class Posts_Base extends Base_Widget {
 		$this->add_responsive_control(
 			'load_more_spacing',
 			[
-				'label' => __( 'Spacing', 'elementor-pro' ),
+				'label' => esc_html__( 'Spacing', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -145,14 +151,14 @@ abstract class Posts_Base extends Base_Widget {
 		$this->start_controls_section(
 			'section_pagination',
 			[
-				'label' => __( 'Pagination', 'elementor-pro' ),
+				'label' => esc_html__( 'Pagination', 'elementor-pro' ),
 			]
 		);
 
 		$this->add_control(
 			'pagination_type',
 			[
-				'label' => __( 'Pagination', 'elementor-pro' ),
+				'label' => esc_html__( 'Pagination', 'elementor-pro' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => '',
 				'options' => $this->get_pagination_type_options(),
@@ -163,7 +169,7 @@ abstract class Posts_Base extends Base_Widget {
 		$this->add_control(
 			'pagination_page_limit',
 			[
-				'label' => __( 'Page Limit', 'elementor-pro' ),
+				'label' => esc_html__( 'Page Limit', 'elementor-pro' ),
 				'default' => '5',
 				'condition' => [
 					'pagination_type!' => [
@@ -178,7 +184,7 @@ abstract class Posts_Base extends Base_Widget {
 		$this->add_control(
 			'pagination_numbers_shorten',
 			[
-				'label' => __( 'Shorten', 'elementor-pro' ),
+				'label' => esc_html__( 'Shorten', 'elementor-pro' ),
 				'type' => Controls_Manager::SWITCHER,
 				'default' => '',
 				'condition' => [
@@ -193,8 +199,11 @@ abstract class Posts_Base extends Base_Widget {
 		$this->add_control(
 			'pagination_prev_label',
 			[
-				'label' => __( 'Previous Label', 'elementor-pro' ),
-				'default' => __( '&laquo; Previous', 'elementor-pro' ),
+				'label' => esc_html__( 'Previous Label', 'elementor-pro' ),
+				'dynamic' => [
+					'active' => true,
+				],
+				'default' => esc_html__( '&laquo; Previous', 'elementor-pro' ),
 				'condition' => [
 					'pagination_type' => [
 						'prev_next',
@@ -207,13 +216,16 @@ abstract class Posts_Base extends Base_Widget {
 		$this->add_control(
 			'pagination_next_label',
 			[
-				'label' => __( 'Next Label', 'elementor-pro' ),
-				'default' => __( 'Next &raquo;', 'elementor-pro' ),
+				'label' => esc_html__( 'Next Label', 'elementor-pro' ),
+				'default' => esc_html__( 'Next &raquo;', 'elementor-pro' ),
 				'condition' => [
 					'pagination_type' => [
 						'prev_next',
 						'numbers_and_prev_next',
 					],
+				],
+				'dynamic' => [
+					'active' => true,
 				],
 			]
 		);
@@ -221,19 +233,19 @@ abstract class Posts_Base extends Base_Widget {
 		$this->add_control(
 			'pagination_align',
 			[
-				'label' => __( 'Alignment', 'elementor-pro' ),
+				'label' => esc_html__( 'Alignment', 'elementor-pro' ),
 				'type' => Controls_Manager::CHOOSE,
 				'options' => [
 					'left' => [
-						'title' => __( 'Left', 'elementor-pro' ),
+						'title' => esc_html__( 'Left', 'elementor-pro' ),
 						'icon' => 'eicon-text-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'elementor-pro' ),
+						'title' => esc_html__( 'Center', 'elementor-pro' ),
 						'icon' => 'eicon-text-align-center',
 					],
 					'right' => [
-						'title' => __( 'Right', 'elementor-pro' ),
+						'title' => esc_html__( 'Right', 'elementor-pro' ),
 						'icon' => 'eicon-text-align-right',
 					],
 				],
@@ -254,7 +266,7 @@ abstract class Posts_Base extends Base_Widget {
 		$this->add_control(
 			'load_more_spinner',
 			[
-				'label' => __( 'Spinner', 'elementor-pro' ),
+				'label' => esc_html__( 'Spinner', 'elementor-pro' ),
 				'type' => Controls_Manager::ICONS,
 				'fa4compatibility' => 'icon',
 				'default' => [
@@ -287,7 +299,7 @@ abstract class Posts_Base extends Base_Widget {
 		$this->add_control(
 			'heading_load_more_button',
 			[
-				'label' => __( 'Button', 'elementor-pro' ),
+				'label' => esc_html__( 'Button', 'elementor-pro' ),
 				'type' => Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => [
@@ -297,8 +309,8 @@ abstract class Posts_Base extends Base_Widget {
 		);
 
 		$this->register_button_content_controls( [
-			'button_text' => __( 'Load More', 'elementor-pro' ),
-			'control_label_name' => __( 'Button Text', 'elementor-pro' ),
+			'button_text' => esc_html__( 'Load More', 'elementor-pro' ),
+			'control_label_name' => esc_html__( 'Button Text', 'elementor-pro' ),
 			'prefix_class' => 'load-more-align-',
 			'alignment_default' => 'center',
 			'section_condition' => [
@@ -314,7 +326,7 @@ abstract class Posts_Base extends Base_Widget {
 		$this->add_control(
 			'heading_load_more_no_posts_message',
 			[
-				'label' => __( 'No More Posts Message', 'elementor-pro' ),
+				'label' => esc_html__( 'No More Posts Message', 'elementor-pro' ),
 				'type' => Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => [
@@ -323,29 +335,32 @@ abstract class Posts_Base extends Base_Widget {
 						'load_more_infinite_scroll',
 					],
 				],
+				'dynamic' => [
+					'active' => true,
+				],
 			]
 		);
 
 		$this->add_responsive_control(
 			'load_more_no_posts_message_align',
 			[
-				'label' => __( 'Alignment', 'elementor-pro' ),
+				'label' => esc_html__( 'Alignment', 'elementor-pro' ),
 				'type' => Controls_Manager::CHOOSE,
 				'options' => [
 					'left'    => [
-						'title' => __( 'Left', 'elementor-pro' ),
+						'title' => esc_html__( 'Left', 'elementor-pro' ),
 						'icon' => 'eicon-text-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'elementor-pro' ),
+						'title' => esc_html__( 'Center', 'elementor-pro' ),
 						'icon' => 'eicon-text-align-center',
 					],
 					'right' => [
-						'title' => __( 'Right', 'elementor-pro' ),
+						'title' => esc_html__( 'Right', 'elementor-pro' ),
 						'icon' => 'eicon-text-align-right',
 					],
 					'justify' => [
-						'title' => __( 'Justified', 'elementor-pro' ),
+						'title' => esc_html__( 'Justified', 'elementor-pro' ),
 						'icon' => 'eicon-text-align-justify',
 					],
 				],
@@ -364,7 +379,7 @@ abstract class Posts_Base extends Base_Widget {
 		$this->add_control(
 			'load_more_no_posts_message_switcher',
 			[
-				'label' => __( 'Custom Messages', 'elementor-pro' ),
+				'label' => esc_html__( 'Custom Messages', 'elementor-pro' ),
 				'type' => Controls_Manager::SWITCHER,
 				'default' => '',
 				'condition' => [
@@ -379,9 +394,9 @@ abstract class Posts_Base extends Base_Widget {
 		$this->add_control(
 			'load_more_no_posts_custom_message',
 			[
-				'label' => __( 'No more posts message', 'elementor-pro' ),
+				'label' => esc_html__( 'No more posts message', 'elementor-pro' ),
 				'type' => Controls_Manager::TEXT,
-				'default' => __( 'No more posts to show', 'elementor-pro' ),
+				'default' => esc_html__( 'No more posts to show', 'elementor-pro' ),
 				'condition' => [
 					'pagination_type' => [
 						'load_more_on_click',
@@ -390,6 +405,9 @@ abstract class Posts_Base extends Base_Widget {
 					'load_more_no_posts_message_switcher' => 'yes',
 				],
 				'label_block' => true,
+				'dynamic' => [
+					'active' => true,
+				],
 			]
 		);
 
@@ -399,7 +417,7 @@ abstract class Posts_Base extends Base_Widget {
 		$this->start_controls_section(
 			'section_pagination_style',
 			[
-				'label' => __( 'Pagination', 'elementor-pro' ),
+				'label' => esc_html__( 'Pagination', 'elementor-pro' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'pagination_type!' => [
@@ -425,7 +443,7 @@ abstract class Posts_Base extends Base_Widget {
 		$this->add_control(
 			'pagination_color_heading',
 			[
-				'label' => __( 'Colors', 'elementor-pro' ),
+				'label' => esc_html__( 'Colors', 'elementor-pro' ),
 				'type' => Controls_Manager::HEADING,
 				'separator' => 'before',
 			]
@@ -436,14 +454,14 @@ abstract class Posts_Base extends Base_Widget {
 		$this->start_controls_tab(
 			'pagination_color_normal',
 			[
-				'label' => __( 'Normal', 'elementor-pro' ),
+				'label' => esc_html__( 'Normal', 'elementor-pro' ),
 			]
 		);
 
 		$this->add_control(
 			'pagination_color',
 			[
-				'label' => __( 'Color', 'elementor-pro' ),
+				'label' => esc_html__( 'Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .elementor-pagination .page-numbers:not(.dots)' => 'color: {{VALUE}};',
@@ -456,14 +474,14 @@ abstract class Posts_Base extends Base_Widget {
 		$this->start_controls_tab(
 			'pagination_color_hover',
 			[
-				'label' => __( 'Hover', 'elementor-pro' ),
+				'label' => esc_html__( 'Hover', 'elementor-pro' ),
 			]
 		);
 
 		$this->add_control(
 			'pagination_hover_color',
 			[
-				'label' => __( 'Color', 'elementor-pro' ),
+				'label' => esc_html__( 'Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .elementor-pagination a.page-numbers:hover' => 'color: {{VALUE}};',
@@ -476,14 +494,14 @@ abstract class Posts_Base extends Base_Widget {
 		$this->start_controls_tab(
 			'pagination_color_active',
 			[
-				'label' => __( 'Active', 'elementor-pro' ),
+				'label' => esc_html__( 'Active', 'elementor-pro' ),
 			]
 		);
 
 		$this->add_control(
 			'pagination_active_color',
 			[
-				'label' => __( 'Color', 'elementor-pro' ),
+				'label' => esc_html__( 'Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .elementor-pagination .page-numbers.current' => 'color: {{VALUE}};',
@@ -498,7 +516,7 @@ abstract class Posts_Base extends Base_Widget {
 		$this->add_responsive_control(
 			'pagination_spacing',
 			[
-				'label' => __( 'Space Between', 'elementor-pro' ),
+				'label' => esc_html__( 'Space Between', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
 				'separator' => 'before',
 				'default' => [
@@ -522,7 +540,7 @@ abstract class Posts_Base extends Base_Widget {
 		$this->add_responsive_control(
 			'pagination_spacing_top',
 			[
-				'label' => __( 'Spacing', 'elementor-pro' ),
+				'label' => esc_html__( 'Spacing', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -542,7 +560,7 @@ abstract class Posts_Base extends Base_Widget {
 		$this->start_controls_section(
 			'section_style',
 			[
-				'label' => __( 'Pagination', 'elementor-pro' ),
+				'label' => esc_html__( 'Pagination', 'elementor-pro' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'pagination_type' => [
@@ -563,14 +581,14 @@ abstract class Posts_Base extends Base_Widget {
 	abstract public function query_posts();
 
 	public function get_current_page() {
-		if ( '' === $this->get_settings( 'pagination_type' ) ) {
+		if ( '' === $this->get_settings_for_display( 'pagination_type' ) ) {
 			return 1;
 		}
 
 		return max( 1, get_query_var( 'paged' ), get_query_var( 'page' ) );
 	}
 
-	private function get_wp_link_page( $i ) {
+	public function get_wp_link_page( $i ) {
 		if ( ! is_singular() || is_front_page() ) {
 			return get_pagenum_link( $i );
 		}
@@ -621,17 +639,17 @@ abstract class Posts_Base extends Base_Widget {
 				$next_page = 1;
 			}
 
-			$return['prev'] = sprintf( $link_template, 'prev', $this->get_wp_link_page( $next_page ), $this->get_settings( 'pagination_prev_label' ) );
+			$return['prev'] = sprintf( $link_template, 'prev', $this->get_wp_link_page( $next_page ), $this->get_settings_for_display( 'pagination_prev_label' ) );
 		} else {
-			$return['prev'] = sprintf( $disabled_template, 'prev', $this->get_settings( 'pagination_prev_label' ) );
+			$return['prev'] = sprintf( $disabled_template, 'prev', $this->get_settings_for_display( 'pagination_prev_label' ) );
 		}
 
 		$next_page = intval( $paged ) + 1;
 
 		if ( $next_page <= $page_limit ) {
-			$return['next'] = sprintf( $link_template, 'next', $this->get_wp_link_page( $next_page ), $this->get_settings( 'pagination_next_label' ) );
+			$return['next'] = sprintf( $link_template, 'next', $this->get_wp_link_page( $next_page ), $this->get_settings_for_display( 'pagination_next_label' ) );
 		} else {
-			$return['next'] = sprintf( $disabled_template, 'next', $this->get_settings( 'pagination_next_label' ) );
+			$return['next'] = sprintf( $disabled_template, 'next', $this->get_settings_for_display( 'pagination_next_label' ) );
 		}
 
 		return $return;
@@ -641,7 +659,7 @@ abstract class Posts_Base extends Base_Widget {
 		$this->start_controls_section(
 			'section_layout',
 			[
-				'label' => __( 'Layout', 'elementor-pro' ),
+				'label' => esc_html__( 'Layout', 'elementor-pro' ),
 				'tab' => Controls_Manager::TAB_CONTENT,
 			]
 		);
@@ -651,12 +669,12 @@ abstract class Posts_Base extends Base_Widget {
 
 	protected function get_pagination_type_options() {
 		return [
-			'' => __( 'None', 'elementor-pro' ),
-			'numbers' => __( 'Numbers', 'elementor-pro' ),
-			'prev_next' => __( 'Previous/Next', 'elementor-pro' ),
-			'numbers_and_prev_next' => __( 'Numbers', 'elementor-pro' ) . ' + ' . __( 'Previous/Next', 'elementor-pro' ),
-			self::LOAD_MORE_ON_CLICK => __( 'Load on Click', 'elementor-pro' ),
-			self::LOAD_MORE_INFINITE_SCROLL => __( 'Infinite Scroll', 'elementor-pro' ),
+			'' => esc_html__( 'None', 'elementor-pro' ),
+			'numbers' => esc_html__( 'Numbers', 'elementor-pro' ),
+			'prev_next' => esc_html__( 'Previous/Next', 'elementor-pro' ),
+			'numbers_and_prev_next' => esc_html__( 'Numbers', 'elementor-pro' ) . ' + ' . esc_html__( 'Previous/Next', 'elementor-pro' ),
+			self::LOAD_MORE_ON_CLICK => esc_html__( 'Load on Click', 'elementor-pro' ),
+			self::LOAD_MORE_INFINITE_SCROLL => esc_html__( 'Infinite Scroll', 'elementor-pro' ),
 		];
 	}
 

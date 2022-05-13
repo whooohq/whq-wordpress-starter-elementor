@@ -4,8 +4,6 @@ if ( ! class_exists( 'GFForms' ) ) {
 	die();
 }
 
-require_once( ABSPATH . WPINC . '/post.php' );
-
 /**
  * Class GF_Forms_Model_Legacy
  *
@@ -452,7 +450,7 @@ class GF_Forms_Model_Legacy {
 			$field_value = '';
 		}
 
-		self::delete_physical_file( $file_url );
+		self::delete_physical_file( $file_url, $entry_id );
 
 		// update lead field value - simulate form submission
 

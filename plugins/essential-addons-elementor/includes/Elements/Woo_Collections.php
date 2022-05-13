@@ -60,7 +60,7 @@ class Woo_Collections extends Widget_Base
         return 'https://essential-addons.com/elementor/docs/ea-woo-product-collections/';
     }
 
-    protected function _register_controls()
+    protected function register_controls()
     {
         /**
          * General Settings
@@ -216,16 +216,39 @@ class Woo_Collections extends Widget_Base
                 'label' => __('Layout Style', 'essential-addons-elementor'),
                 'type' => \Elementor\Controls_Manager::HEADING,
                 'separator' => 'before',
-                'condition' => [
-                    'eael_woo_collections_layout'   => 'two'
-                ]
+//                'condition' => [
+//                    'eael_woo_collections_layout'   => 'two'
+//                ]
             ]
         );
 
+	    $this->add_control(
+		    'eael_woo_collections_main_area_padding',
+		    [
+			    'label' => __('Padding', 'essential-addons-elementor'),
+			    'type' => Controls_Manager::DIMENSIONS,
+			    'size_units' => ['px', '%', 'em'],
+			    'default'   => [
+				    'top'   => '20',
+				    'right'   => '20',
+				    'bottom'   => '20',
+				    'left'   => '20',
+				    'isLinked'   => true,
+			    ],
+			    'selectors' => [
+				    '{{WRAPPER}} .eael-woo-collections-layout-two' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				    '{{WRAPPER}} .eael-woo-collections-layout-two .eael-woo-collections-overlay' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+			    ],
+			    'condition' => [
+				    'eael_woo_collections_layout'   => 'two'
+			    ]
+		    ]
+	    );
+
         $this->add_control(
-            'eael_woo_collections_main_area_padding',
+            'eael_woo_collections_overlay_padding',
             [
-                'label' => __('Padding', 'essential-addons-elementor'),
+                'label' => __('Overlay Padding', 'essential-addons-elementor'),
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', '%', 'em'],
                 'default'   => [
@@ -236,11 +259,8 @@ class Woo_Collections extends Widget_Base
                     'isLinked'   => true,
                 ],
                 'selectors' => [
-                    '{{WRAPPER}}, {{WRAPPER}} .eael-woo-collections-layout-two > a' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} .eael-woo-collections-overlay' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
-                'condition' => [
-                    'eael_woo_collections_layout'   => 'two'
-                ]
             ]
         );
 
@@ -258,11 +278,11 @@ class Woo_Collections extends Widget_Base
                     'isLinked'   => true,
                 ],
                 'selectors' => [
-                    '{{WRAPPER}}, {{WRAPPER}} .eael-woo-collections-layout-two' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} .eael-woo-collections-layout-, {{WRAPPER}} .eael-woo-collections-layout-two' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
-                'condition' => [
-                    'eael_woo_collections_layout'   => 'two'
-                ]
+//                'condition' => [
+//                    'eael_woo_collections_layout'   => 'two'
+//                ]
             ]
         );
 
@@ -271,10 +291,10 @@ class Woo_Collections extends Widget_Base
             [
                 'name' => 'eael_woo_collections_main_area_border',
                 'label' => __('Border', 'essential-addons-elementor'),
-                'selector' => '{{WRAPPER}} .eael-woo-collections-layout-two',
-                'condition' => [
-                    'eael_woo_collections_layout'   => 'two'
-                ]
+                'selector' => '{{WRAPPER}} .eael-woo-collections-layout-two, {{WRAPPER}} .eael-woo-collections-layout-',
+//                'condition' => [
+//                    'eael_woo_collections_layout'   => 'two'
+//                ]
             ]
         );
 
@@ -283,10 +303,10 @@ class Woo_Collections extends Widget_Base
             [
                 'name' => 'eael_woo_collections_main_area_shadow',
                 'label' => __('Shadow', 'essential-addons-elementor'),
-                'selector' => '{{WRAPPER}} .eael-woo-collections-layout-two',
-                'condition' => [
-                    'eael_woo_collections_layout'   => 'two'
-                ]
+                'selector' => '{{WRAPPER}} .eael-woo-collections-layout-two, {{WRAPPER}} .eael-woo-collections-layout-',
+//                'condition' => [
+//                    'eael_woo_collections_layout'   => 'two'
+//                ]
             ]
         );
 
@@ -344,6 +364,18 @@ class Woo_Collections extends Widget_Base
             ]
         );
 
+	    $this->add_control(
+		    'eael_woo_collections_overlay_radius',
+		    [
+			    'label' => __('Border Radius', 'essential-addons-elementor'),
+			    'type' => Controls_Manager::DIMENSIONS,
+			    'size_units' => ['px', '%', 'em'],
+			    'selectors' => [
+				    '{{WRAPPER}} .eael-woo-collections-layout- .eael-woo-collections-overlay, {{WRAPPER}} .eael-woo-collections-layout-two > a' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+			    ],
+		    ]
+	    );
+
         $this->add_control(
             'eael_woo_collections_overlay_content_hr',
             [
@@ -400,7 +432,7 @@ class Woo_Collections extends Widget_Base
                 'default' => 'center',
                 'toggle' => true,
                 'selectors' => [
-                    '{{WRAPPER}} .eael-woo-collections-layout-two .eael-woo-collections-content'  => 'text-align: {{VALUE}}',
+                    '{{WRAPPER}} .eael-woo-collections-overlay-inner'  => 'text-align: {{VALUE}}',
                 ],
                 'condition' => [
                     'eael_woo_collections_layout'   => 'two'
@@ -600,11 +632,18 @@ class Woo_Collections extends Widget_Base
             'alt' => esc_attr(get_post_meta($settings['eael_woo_collections_bg_img']['id'], '_wp_attachment_image_alt', true)),
         ]);
 
-        echo '<div class="eael-woo-collections">
+	    $badge = '';
+
+        if ( $settings['eael_woo_collections_is_show_badge'] == 'yes' && !empty($settings['eael_woo_collections_badge_label'])) {
+        	$badge = '<div class="eael-woo-collection-badge">'.$settings['eael_woo_collections_badge_label'].'</div>';
+        }
+
+        echo '<div class="eael-woo-collections eael-woo-collections-layout-'.$settings['eael_woo_collections_layout'].'">
             <a href="' . $link . '">
 				<img ' . $this->get_render_attribute_string('eael-woo-collections-bg') . '>
 				<div class="eael-woo-collections-overlay ' . $settings['eael_woo_collections_overlay_content_hr'] . '">
 					<div class="eael-woo-collections-overlay-inner ' . $settings['eael_woo_collections_overlay_content_vr'] . '">
+						'.$badge.'
 						<span>' . sprintf(esc_html__('%s', 'essential-addons-elementor'), ($settings['eael_woo_collections_subtitle'] ?: '')) . '</span>
 						<h2>' . sprintf(esc_html__('%s', 'essential-addons-elementor'), $name) . '</h2>
 					</div>

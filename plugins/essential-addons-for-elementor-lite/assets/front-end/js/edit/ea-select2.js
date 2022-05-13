@@ -80,3 +80,30 @@
 
     });
 }(jQuery));
+
+function ea_woo_cart_column_type_title(value) {
+    const labelValues = {
+        remove: eael_select2_localize.remove,
+        thumbnail: eael_select2_localize.thumbnail,
+        name: eael_select2_localize.name,
+        price: eael_select2_localize.price,
+        quantity: eael_select2_localize.quantity,
+        subtotal: eael_select2_localize.subtotal,
+    };
+
+    return labelValues[value] ? labelValues[value] : '';
+}
+
+function ea_conditional_logic_type_title(value) {
+    const labelValues = {
+        login_status: eael_select2_localize.cl_login_status,
+        user_role: eael_select2_localize.cl_user_role,
+        user: eael_select2_localize.cl_user,
+        post_type: eael_select2_localize.cl_post_type,
+        dynamic: eael_select2_localize.cl_dynamic,
+        browser: eael_select2_localize.cl_browser,
+        date_time: eael_select2_localize.cl_date_time
+    };
+
+    return labelValues[value] ? labelValues[value] : '';
+}

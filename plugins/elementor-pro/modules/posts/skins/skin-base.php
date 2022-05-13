@@ -7,13 +7,15 @@ use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use Elementor\Group_Control_Css_Filter;
 use Elementor\Group_Control_Image_Size;
 use Elementor\Group_Control_Typography;
+use Elementor\Group_Control_Text_Stroke;
 use Elementor\Icons_Manager;
 use Elementor\Skin_Base as Elementor_Skin_Base;
 use Elementor\Widget_Base;
-use ElementorPro\Core\Utils;
+use Elementor\Utils;
 use ElementorPro\Modules\Posts\Traits\Button_Widget_Trait;
 use ElementorPro\Plugin;
 use ElementorPro\Modules\Posts\Widgets\Posts_Base;
+use ElementorPro\Core\Utils as ProUtils;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -61,14 +63,14 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'thumbnail',
 			[
-				'label' => __( 'Image Position', 'elementor-pro' ),
+				'label' => esc_html__( 'Image Position', 'elementor-pro' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'top',
 				'options' => [
-					'top' => __( 'Top', 'elementor-pro' ),
-					'left' => __( 'Left', 'elementor-pro' ),
-					'right' => __( 'Right', 'elementor-pro' ),
-					'none' => __( 'None', 'elementor-pro' ),
+					'top' => esc_html__( 'Top', 'elementor-pro' ),
+					'left' => esc_html__( 'Left', 'elementor-pro' ),
+					'right' => esc_html__( 'Right', 'elementor-pro' ),
+					'none' => esc_html__( 'None', 'elementor-pro' ),
 				],
 				'prefix_class' => 'elementor-posts--thumbnail-',
 			]
@@ -77,10 +79,10 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'masonry',
 			[
-				'label' => __( 'Masonry', 'elementor-pro' ),
+				'label' => esc_html__( 'Masonry', 'elementor-pro' ),
 				'type' => Controls_Manager::SWITCHER,
-				'label_off' => __( 'Off', 'elementor-pro' ),
-				'label_on' => __( 'On', 'elementor-pro' ),
+				'label_off' => esc_html__( 'Off', 'elementor-pro' ),
+				'label_on' => esc_html__( 'On', 'elementor-pro' ),
 				'condition' => [
 					$this->get_control_id( 'columns!' ) => '1',
 					$this->get_control_id( 'thumbnail' ) => 'top',
@@ -106,7 +108,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_responsive_control(
 			'item_ratio',
 			[
-				'label' => __( 'Image Ratio', 'elementor-pro' ),
+				'label' => esc_html__( 'Image Ratio', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 0.66,
@@ -138,7 +140,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_responsive_control(
 			'image_width',
 			[
-				'label' => __( 'Image Width', 'elementor-pro' ),
+				'label' => esc_html__( 'Image Width', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'%' => [
@@ -177,7 +179,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_responsive_control(
 			'columns',
 			[
-				'label' => __( 'Columns', 'elementor-pro' ),
+				'label' => esc_html__( 'Columns', 'elementor-pro' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => '3',
 				'tablet_default' => '2',
@@ -200,7 +202,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'posts_per_page',
 			[
-				'label' => __( 'Posts Per Page', 'elementor-pro' ),
+				'label' => esc_html__( 'Posts Per Page', 'elementor-pro' ),
 				'type' => Controls_Manager::NUMBER,
 				'default' => 6,
 			]
@@ -211,10 +213,10 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'show_title',
 			[
-				'label' => __( 'Title', 'elementor-pro' ),
+				'label' => esc_html__( 'Title', 'elementor-pro' ),
 				'type' => Controls_Manager::SWITCHER,
-				'label_on' => __( 'Show', 'elementor-pro' ),
-				'label_off' => __( 'Hide', 'elementor-pro' ),
+				'label_on' => esc_html__( 'Show', 'elementor-pro' ),
+				'label_off' => esc_html__( 'Hide', 'elementor-pro' ),
 				'default' => 'yes',
 				'separator' => 'before',
 			]
@@ -223,7 +225,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'title_tag',
 			[
-				'label' => __( 'Title HTML Tag', 'elementor-pro' ),
+				'label' => esc_html__( 'Title HTML Tag', 'elementor-pro' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
 					'h1' => 'H1',
@@ -249,10 +251,10 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'show_excerpt',
 			[
-				'label' => __( 'Excerpt', 'elementor-pro' ),
+				'label' => esc_html__( 'Excerpt', 'elementor-pro' ),
 				'type' => Controls_Manager::SWITCHER,
-				'label_on' => __( 'Show', 'elementor-pro' ),
-				'label_off' => __( 'Hide', 'elementor-pro' ),
+				'label_on' => esc_html__( 'Show', 'elementor-pro' ),
+				'label_off' => esc_html__( 'Hide', 'elementor-pro' ),
 				'default' => 'yes',
 			]
 		);
@@ -260,10 +262,24 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'excerpt_length',
 			[
-				'label' => __( 'Excerpt Length', 'elementor-pro' ),
+				'label' => esc_html__( 'Excerpt Length', 'elementor-pro' ),
 				'type' => Controls_Manager::NUMBER,
 				/** This filter is documented in wp-includes/formatting.php */
 				'default' => apply_filters( 'excerpt_length', 25 ),
+				'condition' => [
+					$this->get_control_id( 'show_excerpt' ) => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'apply_to_custom_excerpt',
+			[
+				'label' => esc_html__( 'Apply to custom Excerpt', 'elementor-pro' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_on' => esc_html__( 'Yes', 'elementor-pro' ),
+				'label_off' => esc_html__( 'No', 'elementor-pro' ),
+				'default' => 'no',
 				'condition' => [
 					$this->get_control_id( 'show_excerpt' ) => 'yes',
 				],
@@ -275,10 +291,10 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'show_read_more',
 			[
-				'label' => __( 'Read More', 'elementor-pro' ),
+				'label' => esc_html__( 'Read More', 'elementor-pro' ),
 				'type' => Controls_Manager::SWITCHER,
-				'label_on' => __( 'Show', 'elementor-pro' ),
-				'label_off' => __( 'Hide', 'elementor-pro' ),
+				'label_on' => esc_html__( 'Show', 'elementor-pro' ),
+				'label_off' => esc_html__( 'Hide', 'elementor-pro' ),
 				'default' => 'yes',
 				'separator' => 'before',
 			]
@@ -287,10 +303,33 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'read_more_text',
 			[
-				'label' => __( 'Read More Text', 'elementor-pro' ),
+				'label' => esc_html__( 'Read More Text', 'elementor-pro' ),
 				'type' => Controls_Manager::TEXT,
-				'default' => __( 'Read More »', 'elementor-pro' ),
+				'dynamic' => [
+					'active' => true,
+				],
+				'default' => esc_html__( 'Read More »', 'elementor-pro' ),
 				'condition' => [
+					$this->get_control_id( 'show_read_more' ) => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'read_more_alignment',
+			[
+				'label' => esc_html__( 'Automatically align buttons', 'elementor-pro' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_on' => esc_html__( 'Yes', 'elementor-pro' ),
+				'label_off' => esc_html__( 'No', 'elementor-pro' ),
+				'default' => '',
+				'render_type' => 'template',
+				'selectors' => [
+					// --item-display is used for the styling of both elementor-post__card and elementor-post__text
+					'{{WRAPPER}}' => '--item-display: flex; --read-more-alignment: 1;',
+				],
+				'condition' => [
+					$this->get_control_id( 'masonry!' ) => 'yes',
 					$this->get_control_id( 'show_read_more' ) => 'yes',
 				],
 			]
@@ -301,10 +340,10 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'open_new_tab',
 			[
-				'label' => __( 'Open in new window', 'elementor-pro' ),
+				'label' => esc_html__( 'Open in new window', 'elementor-pro' ),
 				'type' => Controls_Manager::SWITCHER,
-				'label_on' => __( 'Yes', 'elementor-pro' ),
-				'label_off' => __( 'No', 'elementor-pro' ),
+				'label_on' => esc_html__( 'Yes', 'elementor-pro' ),
+				'label_off' => esc_html__( 'No', 'elementor-pro' ),
 				'default' => 'no',
 				'render_type' => 'none',
 			]
@@ -323,17 +362,17 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'meta_data',
 			[
-				'label' => __( 'Meta Data', 'elementor-pro' ),
+				'label' => esc_html__( 'Meta Data', 'elementor-pro' ),
 				'label_block' => true,
 				'type' => Controls_Manager::SELECT2,
 				'default' => [ 'date', 'comments' ],
 				'multiple' => true,
 				'options' => [
-					'author' => __( 'Author', 'elementor-pro' ),
-					'date' => __( 'Date', 'elementor-pro' ),
-					'time' => __( 'Time', 'elementor-pro' ),
-					'comments' => __( 'Comments', 'elementor-pro' ),
-					'modified' => __( 'Date Modified', 'elementor-pro' ),
+					'author' => esc_html__( 'Author', 'elementor-pro' ),
+					'date' => esc_html__( 'Date', 'elementor-pro' ),
+					'time' => esc_html__( 'Time', 'elementor-pro' ),
+					'comments' => esc_html__( 'Comments', 'elementor-pro' ),
+					'modified' => esc_html__( 'Date Modified', 'elementor-pro' ),
 				],
 				'separator' => 'before',
 			]
@@ -342,7 +381,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'meta_separator',
 			[
-				'label' => __( 'Separator Between', 'elementor-pro' ),
+				'label' => esc_html__( 'Separator Between', 'elementor-pro' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '///',
 				'selectors' => [
@@ -350,6 +389,9 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 				],
 				'condition' => [
 					$this->get_control_id( 'meta_data!' ) => [],
+				],
+				'dynamic' => [
+					'active' => true,
 				],
 			]
 		);
@@ -362,15 +404,15 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->start_controls_section(
 			'section_design_layout',
 			[
-				'label' => __( 'Layout', 'elementor-pro' ),
+				'label' => esc_html__( 'Layout', 'elementor-pro' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'column_gap',
 			[
-				'label' => __( 'Columns Gap', 'elementor-pro' ),
+				'label' => esc_html__( 'Columns Gap', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 30,
@@ -387,10 +429,10 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'row_gap',
 			[
-				'label' => __( 'Rows Gap', 'elementor-pro' ),
+				'label' => esc_html__( 'Rows Gap', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 35,
@@ -411,19 +453,19 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'alignment',
 			[
-				'label' => __( 'Alignment', 'elementor-pro' ),
+				'label' => esc_html__( 'Alignment', 'elementor-pro' ),
 				'type' => Controls_Manager::CHOOSE,
 				'options' => [
 					'left' => [
-						'title' => __( 'Left', 'elementor-pro' ),
+						'title' => esc_html__( 'Left', 'elementor-pro' ),
 						'icon' => 'eicon-text-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'elementor-pro' ),
+						'title' => esc_html__( 'Center', 'elementor-pro' ),
 						'icon' => 'eicon-text-align-center',
 					],
 					'right' => [
-						'title' => __( 'Right', 'elementor-pro' ),
+						'title' => esc_html__( 'Right', 'elementor-pro' ),
 						'icon' => 'eicon-text-align-right',
 					],
 				],
@@ -438,7 +480,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->start_controls_section(
 			'section_design_image',
 			[
-				'label' => __( 'Image', 'elementor-pro' ),
+				'label' => esc_html__( 'Image', 'elementor-pro' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					$this->get_control_id( 'thumbnail!' ) => 'none',
@@ -446,10 +488,10 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'img_border_radius',
 			[
-				'label' => __( 'Border Radius', 'elementor-pro' ),
+				'label' => esc_html__( 'Border Radius', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
@@ -461,10 +503,10 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'image_spacing',
 			[
-				'label' => __( 'Spacing', 'elementor-pro' ),
+				'label' => esc_html__( 'Spacing', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -489,7 +531,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 
 		$this->start_controls_tab( 'normal',
 			[
-				'label' => __( 'Normal', 'elementor-pro' ),
+				'label' => esc_html__( 'Normal', 'elementor-pro' ),
 			]
 		);
 
@@ -505,7 +547,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 
 		$this->start_controls_tab( 'hover',
 			[
-				'label' => __( 'Hover', 'elementor-pro' ),
+				'label' => esc_html__( 'Hover', 'elementor-pro' ),
 			]
 		);
 
@@ -528,7 +570,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->start_controls_section(
 			'section_design_content',
 			[
-				'label' => __( 'Content', 'elementor-pro' ),
+				'label' => esc_html__( 'Content', 'elementor-pro' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -536,7 +578,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'heading_title_style',
 			[
-				'label' => __( 'Title', 'elementor-pro' ),
+				'label' => esc_html__( 'Title', 'elementor-pro' ),
 				'type' => Controls_Manager::HEADING,
 				'condition' => [
 					$this->get_control_id( 'show_title' ) => 'yes',
@@ -547,7 +589,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'title_color',
 			[
-				'label' => __( 'Color', 'elementor-pro' ),
+				'label' => esc_html__( 'Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
 				'global' => [
 					'default' => Global_Colors::COLOR_SECONDARY,
@@ -575,10 +617,18 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_group_control(
+			Group_Control_Text_Stroke::get_type(),
+			[
+				'name' => 'text_stroke',
+				'selector' => '{{WRAPPER}} .elementor-post__title',
+			]
+		);
+
+		$this->add_responsive_control(
 			'title_spacing',
 			[
-				'label' => __( 'Spacing', 'elementor-pro' ),
+				'label' => esc_html__( 'Spacing', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -597,7 +647,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'heading_meta_style',
 			[
-				'label' => __( 'Meta', 'elementor-pro' ),
+				'label' => esc_html__( 'Meta', 'elementor-pro' ),
 				'type' => Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => [
@@ -609,7 +659,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'meta_color',
 			[
-				'label' => __( 'Color', 'elementor-pro' ),
+				'label' => esc_html__( 'Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .elementor-post__meta-data' => 'color: {{VALUE}};',
@@ -623,7 +673,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'meta_separator_color',
 			[
-				'label' => __( 'Separator Color', 'elementor-pro' ),
+				'label' => esc_html__( 'Separator Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .elementor-post__meta-data span:before' => 'color: {{VALUE}};',
@@ -648,10 +698,10 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'meta_spacing',
 			[
-				'label' => __( 'Spacing', 'elementor-pro' ),
+				'label' => esc_html__( 'Spacing', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -670,7 +720,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'heading_excerpt_style',
 			[
-				'label' => __( 'Excerpt', 'elementor-pro' ),
+				'label' => esc_html__( 'Excerpt', 'elementor-pro' ),
 				'type' => Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => [
@@ -682,7 +732,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'excerpt_color',
 			[
-				'label' => __( 'Color', 'elementor-pro' ),
+				'label' => esc_html__( 'Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .elementor-post__excerpt p' => 'color: {{VALUE}};',
@@ -707,10 +757,10 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'excerpt_spacing',
 			[
-				'label' => __( 'Spacing', 'elementor-pro' ),
+				'label' => esc_html__( 'Spacing', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -729,7 +779,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'heading_readmore_style',
 			[
-				'label' => __( 'Read More', 'elementor-pro' ),
+				'label' => esc_html__( 'Read More', 'elementor-pro' ),
 				'type' => Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => [
@@ -741,7 +791,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->add_control(
 			'read_more_color',
 			[
-				'label' => __( 'Color', 'elementor-pro' ),
+				'label' => esc_html__( 'Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
 				'global' => [
 					'default' => Global_Colors::COLOR_ACCENT,
@@ -759,7 +809,8 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'read_more_typography',
-				'selector' => '{{WRAPPER}} .elementor-post__read-more',
+				// The 'a' selector is added for specificity, for when this control's selector is used in globals CSS.
+				'selector' => '{{WRAPPER}} a.elementor-post__read-more',
 				'global' => [
 					'default' => Global_Typography::TYPOGRAPHY_ACCENT,
 				],
@@ -769,10 +820,10 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'read_more_spacing',
 			[
-				'label' => __( 'Spacing', 'elementor-pro' ),
+				'label' => esc_html__( 'Spacing', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -855,8 +906,8 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$optional_attributes_html = $this->get_optional_link_attributes_html();
 
 		?>
-		<a class="elementor-post__thumbnail__link" href="<?php echo $this->current_permalink; ?>" <?php echo $optional_attributes_html; ?>>
-			<div class="elementor-post__thumbnail"><?php echo $thumbnail_html; ?></div>
+		<a class="elementor-post__thumbnail__link" href="<?php echo esc_attr( $this->current_permalink ); ?>" <?php echo esc_attr( $optional_attributes_html ); ?>>
+			<div class="elementor-post__thumbnail"><?php echo wp_kses_post( $thumbnail_html ); ?></div>
 		</a>
 		<?php
 	}
@@ -868,13 +919,13 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 
 		$optional_attributes_html = $this->get_optional_link_attributes_html();
 
-		$tag = Utils::validate_html_tag( $this->get_instance_value( 'title_tag' ) );
+		$tag = $this->get_instance_value( 'title_tag' );
 		?>
-		<<?php echo $tag; ?> class="elementor-post__title">
-			<a href="<?php echo $this->current_permalink; ?>" <?php echo $optional_attributes_html; ?>>
+		<<?php Utils::print_validated_html_tag( $tag ); ?> class="elementor-post__title">
+			<a href="<?php echo esc_attr( $this->current_permalink ); ?>" <?php echo esc_attr( $optional_attributes_html ); ?>>
 				<?php the_title(); ?>
 			</a>
-		</<?php echo $tag; ?>>
+		</<?php Utils::print_validated_html_tag( $tag ); ?>>
 		<?php
 	}
 
@@ -891,7 +942,20 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 
 		?>
 		<div class="elementor-post__excerpt">
-			<?php the_excerpt(); ?>
+			<?php
+			global $post;
+			$apply_to_custom_excerpt = $this->get_instance_value( 'apply_to_custom_excerpt' );
+
+			// Force the manually-generated Excerpt length as well if the user chose to enable 'apply_to_custom_excerpt'.
+			if ( 'yes' === $apply_to_custom_excerpt && ! empty( $post->post_excerpt ) ) {
+				$max_length = (int) $this->get_instance_value( 'excerpt_length' );
+				$excerpt = apply_filters( 'the_excerpt', get_the_excerpt() );
+				$excerpt = ProUtils::trim_words( $excerpt, $max_length );
+				echo wp_kses_post( $excerpt );
+			} else {
+				the_excerpt();
+			}
+			?>
 		</div>
 		<?php
 
@@ -900,17 +964,27 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 	}
 
 	protected function render_read_more() {
+		$settings = $this->parent->get_settings_for_display();
+		$read_more_key = $this->get_control_id( 'read_more_text' );
+		$read_more = $settings[ $read_more_key ];
+
 		if ( ! $this->get_instance_value( 'show_read_more' ) ) {
 			return;
 		}
 
 		$optional_attributes_html = $this->get_optional_link_attributes_html();
 
-		?>
-			<a class="elementor-post__read-more" href="<?php echo $this->current_permalink; ?>" <?php echo $optional_attributes_html; ?>>
-				<?php echo $this->get_instance_value( 'read_more_text' ); ?>
-			</a>
-		<?php
+		if ( $this->display_read_more_bottom() ) : ?>
+			<div class="elementor-post__read-more-wrapper">
+		<?php endif; ?>
+
+		<a class="elementor-post__read-more" href="<?php echo esc_url( $this->current_permalink ); ?>" <?php Utils::print_unescaped_internal_string( $optional_attributes_html ); ?>>
+			<?php echo wp_kses_post( $read_more ); ?>
+		</a>
+
+		<?php if ( $this->display_read_more_bottom() ) : ?>
+			</div>
+		<?php endif;
 	}
 
 	protected function render_post_header() {
@@ -957,12 +1031,12 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		] );
 
 		?>
-		<div <?php echo $this->parent->get_render_attribute_string( 'container' ); ?>>
+		<div <?php $this->parent->print_render_attribute_string( 'container' ); ?>>
 		<?php
 	}
 
 	protected function render_message() {
-		$settings = $this->parent->get_settings();
+		$settings = $this->parent->get_settings_for_display();
 		?>
 		<div class="e-load-more-message"><?php echo esc_html( $settings['load_more_no_posts_custom_message'] ); ?></div>
 		<?php
@@ -991,7 +1065,9 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		}
 
 		$page_limit = $this->parent->get_query()->max_num_pages;
-		if ( '' !== $parent_settings['pagination_page_limit'] ) {
+
+		// Page limit control should not effect in load more mode.
+		if ( '' !== $parent_settings['pagination_page_limit'] && ! $using_ajax_pagination ) {
 			$page_limit = min( $parent_settings['pagination_page_limit'], $page_limit );
 		}
 
@@ -1006,9 +1082,13 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 
 		$load_more_type = $parent_settings['pagination_type'];
 
+		$current_page = $this->parent->get_current_page();
+		$next_page = intval( $current_page ) + 1;
+
 		$this->parent->add_render_attribute( 'load_more_anchor', [
-			'data-page' => $this->parent->get_current_page(),
+			'data-page' => $current_page,
 			'data-max-page' => $this->parent->get_query()->max_num_pages,
+			'data-next-page' => $this->parent->get_wp_link_page( $next_page ),
 		] );
 
 		?>
@@ -1036,7 +1116,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 				'total' => $page_limit,
 				'prev_next' => false,
 				'show_all' => 'yes' !== $parent_settings['pagination_numbers_shorten'],
-				'before_page_number' => '<span class="elementor-screen-only">' . __( 'Page', 'elementor-pro' ) . '</span>',
+				'before_page_number' => '<span class="elementor-screen-only">' . esc_html__( 'Page', 'elementor-pro' ) . '</span>',
 			];
 
 			if ( is_singular() && ! is_front_page() ) {
@@ -1058,9 +1138,10 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			$links[] = $prev_next['next'];
 		}
 
+		// PHPCS - Seems that `$links` is safe.
 		?>
 		<nav class="elementor-pagination" role="navigation" aria-label="<?php esc_attr_e( 'Pagination', 'elementor-pro' ); ?>">
-			<?php echo implode( PHP_EOL, $links ); ?>
+			<?php echo implode( PHP_EOL, $links ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		</nav>
 		<?php
 	}
@@ -1106,10 +1187,11 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 	}
 
 	/**
-	 * @deprecated since 3.0.0 Use `Skin_Base::render_date_by_type()` instead
+	 * @deprecated 3.0.0 Use `Skin_Base::render_date_by_type()` instead
 	 */
 	protected function render_date() {
-		// _deprecated_function( __METHOD__, '3.0.0', 'Skin_Base::render_date_by_type()' );
+		Plugin::elementor()->modules_manager->get_modules( 'dev-tools' )->deprecation->deprecated_function( __METHOD__, '3.0.0', 'Skin_Base::render_date_by_type()' );
+
 		$this->render_date_by_type();
 	}
 
@@ -1125,7 +1207,8 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 					$date = get_the_date();
 			endswitch;
 			/** This filter is documented in wp-includes/general-template.php */
-			echo apply_filters( 'the_date', $date, get_option( 'date_format' ), '', '' );
+			// PHPCS - The date is safe.
+			echo apply_filters( 'the_date', $date, get_option( 'date_format' ), '', '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			?>
 		</span>
 		<?php
@@ -1137,6 +1220,30 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			<?php the_time(); ?>
 		</span>
 		<?php
+	}
+
+	/**
+	 * Check if the Read More links needs to be displayed at the bottom of the Post item.
+	 *
+	 * Conditions:
+	 * 1) Read More aligned to the bottom
+	 * 2) Masonry layout not used.
+	 * 3) Display Read More link.
+	 *
+	 * @since 3.7.0
+	 *
+	 * @return boolean
+	 */
+	protected function display_read_more_bottom() {
+		$settings = $this->parent->get_settings();
+
+		if ( 'full_content' === $settings['_skin'] ) {
+			return false;
+		}
+
+		return 'yes' === $settings[ $this->get_control_id( 'read_more_alignment' ) ] &&
+		'yes' === $settings[ $this->get_control_id( 'show_read_more' ) ] &&
+		'yes' !== $settings[ $this->get_control_id( 'masonry' ) ];
 	}
 
 	protected function render_comments() {

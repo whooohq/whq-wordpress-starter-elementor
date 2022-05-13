@@ -47,7 +47,7 @@ class EAELicense {
 	 * Contact Support URL
 	 * @var string
 	 */
-	private $support_url = 'https://wpdeveloper.net/support/new-ticket';
+	private $support_url = 'https://wpdeveloper.com/support/new-ticket';
 	/**
 	 * Initializes the license manager client.
 	 */
@@ -222,6 +222,13 @@ class EAELicense {
 		if ( null === $expiration ) {
 			$expiration = $this->dev_mode ? 10 : 12 * HOUR_IN_SECONDS;
 		}
+
+		if( isset( $license_data->expires ) && $license_data->expires === 'lifetime' ) {
+			$expiration = 0;
+		} elseif( isset( $license_data->expires ) ) {
+			$expiration = strtotime( $license_data->expires );
+		}
+
 		set_transient( $this->product_slug . '-license_data', $license_data, $expiration );
 	}
 	/**
@@ -403,7 +410,7 @@ class EAELicense {
 			case 'expired':
 				$message = sprintf(
 					__( 'Your license has been expired. Please %1$srenew your license%2$s key to enable updates for %3$s.', $this->text_domain ),
-					'<a href="https://wpdeveloper.net/account">', '</a>',
+					'<a href="https://wpdeveloper.com/account">', '</a>',
 					'<strong>' . $this->product_name . '</strong>'
 				);
 				break;

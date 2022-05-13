@@ -11,6 +11,7 @@ use \Elementor\Group_Control_Typography;
 use \Elementor\Utils;
 use \Elementor\Widget_Base;
 use Elementor\Group_Control_Image_Size;
+use Essential_Addons_Elementor\Pro\Traits\Helper;
 
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
@@ -79,7 +80,7 @@ class Image_Hot_Spots extends Widget_Base
     /**
      * Register image hotspots widget controls.
      */
-    protected function _register_controls()
+    protected function register_controls()
     {
 
         /*-----------------------------------------------------------------------------------*/
@@ -179,15 +180,20 @@ class Image_Hot_Spots extends Widget_Base
                     ],
                 ]
             );
-            
+
             $repeater->add_control(
                 'hotspot_link',
                 [
                     'label'           => __( 'Link', 'essential-addons-elementor' ),
-                    'type'            => Controls_Manager::TEXT,
-                    'dynamic'   => ['active' => true],
+                    'type' => Controls_Manager::URL,
+                    'dynamic' => [
+                        'active' => true,
+                    ],
                     'label_block'     => true,
-                    'default'         => '#',
+                    'placeholder' => esc_html__( 'https://your-link.com', 'elementor' ),
+                    'default' => [
+                        'url' => '#',
+                    ],
                 ]
             );
 
@@ -932,12 +938,15 @@ class Image_Hot_Spots extends Widget_Base
 
                     $this->add_render_attribute('hotspot' . $i, 'data-tooltip-position-global', $settings['tooltip_position']);
 
-                    if ($item['hotspot_link'] != '#' && $item['hotspot_link'] != '') {
-                        $this->add_render_attribute('hotspot' . $i, 'data-link', esc_url($item['hotspot_link']));
-                    }
+	                if ( $item['hotspot_link'] != '#' && $item['hotspot_link'] != '' ) {
+		                $eael_wp_allowed_tags = Helper::eael_wp_allowed_tags( array( 'viber' ) );
+		                $this->add_render_attribute( 'hotspot' . $i, 'data-link', esc_url( $item['hotspot_link']['url'], $eael_wp_allowed_tags ) );
 
-                    if ($item['hotspot_link_target']) {
-                        $this->add_render_attribute('hotspot' . $i, 'data-link-target', '_blank');
+		                $this->add_render_attribute( 'hotspot' . $i, 'href', esc_url( $item['hotspot_link']['url'] ) );
+	                }
+
+                    if ($item['hotspot_link_target'] || ($item['hotspot_link']['is_external'] == 'on')) {
+                        $this->add_render_attribute('hotspot' . $i, 'target', '_blank');
                     }
 
                     if ($item['tooltip_position_local'] != 'global') {
@@ -965,12 +974,15 @@ class Image_Hot_Spots extends Widget_Base
                     if ($settings['tooltip_animation_delay']) {
                         $this->add_render_attribute('hotspot' . $i, 'data-tooltip-animation-delay', $settings['tooltip_animation_delay']['size']);
                     }
-                    if ($settings['tooltip_bg_color']) {
-                        $this->add_render_attribute('hotspot' . $i, 'data-tooltip-background', $settings['tooltip_bg_color']);
+
+                    $settings_tooltip_bg_color = $this->fetch_color_or_global_color($settings, 'tooltip_bg_color');
+                    if ($settings_tooltip_bg_color) {
+                        $this->add_render_attribute('hotspot' . $i, 'data-tooltip-background', $settings_tooltip_bg_color);
                     }
 
-                    if ($settings['tooltip_color']) {
-                        $this->add_render_attribute('hotspot' . $i, 'data-tooltip-text-color', $settings['tooltip_color']);
+                    $settings_tooltip_color = $this->fetch_color_or_global_color($settings, 'tooltip_color');
+                    if ($settings_tooltip_color) {
+                        $this->add_render_attribute('hotspot' . $i, 'data-tooltip-text-color', $settings_tooltip_color);
                     }
 
                     if ($settings['tooltip_arrow'] == 'yes') {
@@ -983,7 +995,7 @@ class Image_Hot_Spots extends Widget_Base
                         $this->add_render_attribute('hotspot_inner_' . $i, 'class', 'hotspot-animation');
                     }
                 ?>
-                    <span <?php echo $this->get_render_attribute_string('hotspot' . $i); ?>>
+                    <a <?php echo $this->get_render_attribute_string('hotspot' . $i); ?>>
                         <span <?php echo $this->get_render_attribute_string('hotspot_inner_' . $i); ?>>
                             <?php
                             if ($item['hotspot_type'] == 'icon') {
@@ -999,7 +1011,7 @@ class Image_Hot_Spots extends Widget_Base
                             }
                             ?>
                         </span>
-                    </span>
+                    </a>
                 <?php $i++;
                 endforeach; ?>
 
@@ -1007,5 +1019,25 @@ class Image_Hot_Spots extends Widget_Base
             </div>
         </div>
 <?php
+    }
+
+    public function fetch_color_or_global_color($settings, $control_name=''){
+        if( !isset($settings[$control_name])) {
+            return '';
+        }
+
+        $color = $settings[$control_name];
+
+        if(!empty($settings['__globals__']) && !empty($settings['__globals__'][$control_name])){
+            $color = $settings['__globals__'][$control_name];
+            $color_arr = explode('?id=', $color); //E.x. 'globals/colors/?id=primary'
+
+            $color_name = count($color_arr) > 1 ? $color_arr[1] : '';
+            if( !empty($color_name) ) {
+                $color = "var( --e-global-color-$color_name )";
+            }
+        }
+
+        return $color;
     }
 }

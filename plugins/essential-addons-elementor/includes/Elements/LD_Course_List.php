@@ -81,7 +81,7 @@ class LD_Course_List extends Widget_Base
         return true;
     }
 
-    protected function _register_controls()
+    protected function register_controls()
     {
         if (!defined('LEARNDASH_VERSION')) {
             $this->start_controls_section(
@@ -373,6 +373,41 @@ class LD_Course_List extends Widget_Base
                 ]
             );
 
+	        $this->add_control(
+		        'change_free_price_text',
+		        [
+			        'label'       => __('Change Free Price Text?', 'essential-addons-elementor'),
+			        'type'        => Controls_Manager::CHOOSE,
+			        'options' => [
+				        'true' => [
+					        'title' => __('Show', 'essential-addons-elementor'),
+					        'icon' => 'fa fa-check',
+				        ],
+				        'false' => [
+					        'title' => __('Hide', 'essential-addons-elementor'),
+					        'icon' => 'eicon-ban',
+				        ]
+			        ],
+			        'default'   => 'false',
+			        'condition' => [
+				         'template_skin!' => ['layout__1' ]
+			        ]
+		        ]
+	        );
+
+	        $this->add_control(
+		        'free_price_text',
+		        [
+			        'label'       => __('Free Price Text', 'essential-addons-elementor'),
+			        'type'        => Controls_Manager::TEXT,
+			        'default'   => __('Free', 'essential-addons-elementor'),
+			        'condition' => [
+				        'change_free_price_text' => 'true',
+                        'template_skin!' => ['layout__1' ]
+			        ]
+		        ]
+	        );
+
             $this->add_control(
                 'show_button',
                 [
@@ -393,6 +428,37 @@ class LD_Course_List extends Widget_Base
                 ]
             );
 
+	        $this->add_control(
+		        'change_button_text',
+		        [
+			        'label'       => __('Change Button Text?', 'essential-addons-elementor'),
+			        'description' => __('Hide course enroll button.', 'essential-addons-elementor'),
+			        'type'        => Controls_Manager::CHOOSE,
+			        'options' => [
+				        'true' => [
+					        'title' => __('Show', 'essential-addons-elementor'),
+					        'icon' => 'fa fa-check',
+				        ],
+				        'false' => [
+					        'title' => __('Hide', 'essential-addons-elementor'),
+					        'icon' => 'eicon-ban',
+				        ]
+			        ],
+			        'default'   => 'false'
+		        ]
+	        );
+
+	        $this->add_control(
+		        'button_text',
+		        [
+			        'label'       => __('Button Text', 'essential-addons-elementor'),
+			        'type'        => Controls_Manager::TEXT,
+			        'default'   => __('Read More', 'essential-addons-elementor'),
+                    'condition' => [
+                        'change_button_text' => 'true'
+                    ]
+		        ]
+	        );
 
             $this->add_control(
                 'show_progress_bar',

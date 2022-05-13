@@ -21,10 +21,16 @@ class Manager {
 
 	const OPTION_ACTIVE = 'elementor_active_kit';
 
+	const OPTION_PREVIOUS = 'elementor_previous_kit';
+
 	const E_HASH_COMMAND_OPEN_SITE_SETTINGS = 'e:run:panel/global/open';
 
 	public function get_active_id() {
 		return get_option( self::OPTION_ACTIVE );
+	}
+
+	public function get_previous_id() {
+		return get_option( self::OPTION_PREVIOUS );
 	}
 
 	public function get_active_kit() {
@@ -116,7 +122,27 @@ class Manager {
 
 		$kit = Plugin::$instance->documents->create( 'kit', $kit_data, $kit_meta_data );
 
+		if ( isset( $kit_data['settings'] ) ) {
+			$kit->save( [ 'settings' => $kit_data['settings'] ] );
+		}
+
 		return $kit->get_id();
+	}
+
+	public function create_new_kit( $kit_name = '', $settings = [], $active = true ) {
+		$kit_name = $kit_name ? $kit_name : esc_html__( 'Custom', 'elementor' );
+
+		$id = $this->create( [
+			'post_title' => $kit_name,
+			'settings' => $settings,
+		] );
+
+		if ( $active ) {
+			update_option( self::OPTION_PREVIOUS, $this->get_active_id() );
+			update_option( self::OPTION_ACTIVE, $id );
+		}
+
+		return $id;
 	}
 
 	public function create_default() {
@@ -287,7 +313,7 @@ class Manager {
 	public function register_controls() {
 		$controls_manager = Plugin::$instance->controls_manager;
 
-		$controls_manager->register_control( Repeater::CONTROL_TYPE, new Repeater() );
+		$controls_manager->register( new Repeater() );
 	}
 
 	public function is_custom_colors_enabled() {
@@ -380,7 +406,7 @@ class Manager {
 		add_filter( 'elementor/editor/footer', [ $this, 'render_panel_html' ] );
 		add_action( 'elementor/frontend/after_enqueue_styles', [ $this, 'frontend_before_enqueue_styles' ], 0 );
 		add_action( 'elementor/preview/enqueue_styles', [ $this, 'preview_enqueue_styles' ], 0 );
-		add_action( 'elementor/controls/controls_registered', [ $this, 'register_controls' ] );
+		add_action( 'elementor/controls/register', [ $this, 'register_controls' ] );
 
 		add_action( 'wp_trash_post', function ( $post_id ) {
 			$this->before_delete_kit( $post_id );

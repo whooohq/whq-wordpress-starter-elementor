@@ -50,6 +50,7 @@ class Adv_Accordion extends Widget_Base
             'toggle',
             'collapsible',
             'faq',
+            'faq schema',
             'group',
             'expand',
             'collapse',
@@ -78,7 +79,7 @@ class Adv_Accordion extends Widget_Base
         return 'https://essential-addons.com/elementor/docs/advanced-accordion/';
     }
 
-    protected function _register_controls()
+    protected function register_controls()
     {
         /**
          * Content Tab Controls
@@ -184,6 +185,18 @@ class Adv_Accordion extends Widget_Base
                 'default'     => 300,
             ]
         );
+
+        $this->add_control(
+            'eael_adv_accordion_faq_schema_show',
+            [
+                'label'        => esc_html__('Enable FAQ Schema', 'essential-addons-for-elementor-lite'),
+                'type'         => Controls_Manager::SWITCHER,
+                'default'      => 'no',
+                'return_value' => 'yes',
+                'separator'    => 'before',
+            ]
+        );
+
         $this->end_controls_section();
     }
 
@@ -338,7 +351,7 @@ class Adv_Accordion extends Widget_Base
                         ],
                     ],
                     'default'     => '1',
-                    'description' => '<span class="pro-feature"> Get the  <a href="https://wpdeveloper.net/upgrade/ea-pro" target="_blank">Pro version</a> for more stunning elements and customization options.</span>',
+                    'description' => '<span class="pro-feature"> Get the  <a href="https://wpdeveloper.com/upgrade/ea-pro" target="_blank">Pro version</a> for more stunning elements and customization options.</span>',
                 ]
             );
 
@@ -1029,8 +1042,11 @@ class Adv_Accordion extends Widget_Base
                 $tab_content_class[] = 'active-default';
             }
 
+            $tab_id = $tab['eael_adv_accordion_tab_id'] ? $tab['eael_adv_accordion_tab_id'] : Helper::str_to_css_id( $tab['eael_adv_accordion_tab_title'] );
+            $tab_id = $tab_id === 'safari' ? 'eael-safari' : $tab_id;
+
             $this->add_render_attribute($tab_title_setting_key, [
-                'id'            => $tab['eael_adv_accordion_tab_id'] ? $tab['eael_adv_accordion_tab_id'] : Helper::str_to_css_id($tab['eael_adv_accordion_tab_title']),
+                'id'            => $tab_id,
                 'class'         => $tab_title_class,
                 'tabindex'      => $id_int . $tab_count,
                 'data-tab'      => $tab_count,
@@ -1043,7 +1059,7 @@ class Adv_Accordion extends Widget_Base
                 'class'           => $tab_content_class,
                 'data-tab'        => $tab_count,
                 'role'            => 'tabpanel',
-                'aria-labelledby' => $tab['eael_adv_accordion_tab_id'] ? $tab['eael_adv_accordion_tab_id'] : Helper::str_to_css_id($tab['eael_adv_accordion_tab_title']),
+                'aria-labelledby' => $tab_id,
             ]);
 
             echo '<div class="eael-accordion-list">
@@ -1094,6 +1110,33 @@ class Adv_Accordion extends Widget_Base
                 </div>';
         }
         echo '</div>';
+        ?>
+
+        <!-- FAQ Schema : Starts-->
+        <?php
+			if ( !empty( $settings['eael_adv_accordion_faq_schema_show'] ) && 'yes' === $settings['eael_adv_accordion_faq_schema_show'] ) {
+				$json = [
+					'@context' => 'https://schema.org',
+					'@type' => 'FAQPage',
+					'mainEntity' => [],
+				];
+
+				foreach ( $settings['eael_adv_accordion_tab'] as $index => $tab ) {
+					$json['mainEntity'][] = [
+						'@type' => 'Question',
+						'name' => Helper::eael_wp_kses( $tab['eael_adv_accordion_tab_title'] ),
+						'acceptedAnswer' => [
+							'@type' => 'Answer',
+							'text' => ('content' === $tab['eael_adv_accordion_text_type']) ? do_shortcode( $tab['eael_adv_accordion_tab_content'] ) : '',
+						],
+					];
+				}
+				?>
+				<script type="application/ld+json"><?php echo wp_json_encode( $json ); ?></script>
+			<?php } ?>
+        <!-- FAQ Schema : Ends-->
+
+        <?php 
     }
 
     protected function print_toggle_icon($settings)

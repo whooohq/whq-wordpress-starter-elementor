@@ -58,7 +58,7 @@ class Image_Scroller extends Widget_Base
         return 'https://essential-addons.com/elementor/docs/ea-image-scroller/';
     }
 
-    protected function _register_controls()
+    protected function register_controls()
     {
         /**
          * General Settings

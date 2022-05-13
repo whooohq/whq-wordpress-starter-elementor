@@ -1,8 +1,8 @@
 === Essential Addons for Elementor - Pro ===
 Contributors: wpdevteam, re_enter_rupok, Asif2BD, priyomukul, manzurahammed
 Tags: elementor, elements, widgets, page builder, builder, visual editor, wordpress page builder
-Tested up to: 5.8
-Stable tag: 4.4.11
+Tested up to: 5.9
+Stable tag: 5.1.1
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
@@ -85,8 +85,101 @@ List of Extensions :
 * Content Protection
 * Reading Progress Bar
 * Custom JS
+* Conditional Display
 
 == Changelog ==
+
+= 5.1.1 - 10/05/2022 =
+
+- Fixed: EA Dynamic Gallery | Posts under child categories only loading inside "All" tab
+- Few minor bug fixes & improvements
+
+= 5.1.0 - 19/04/2022 =
+
+- Added: EA Conditional Display extension
+- Few minor bug fixes & improvements
+
+= 5.0.10 - 12/04/2022 =
+
+- Fixed: EA Twitter Feed Carousel | Latest feed data not showing automatically
+- Few minor bug fixes & improvements
+
+= 5.0.9 - 23/03/2022 =
+
+- Fixed: “_register_skins is depcrecated” error
+- Fixed: EA Post Carousel | Responsive Breakpoints not working
+- Fixed: EA Interactive Cards | Rear side video content continuously playing despite closing it
+- Fixed: EA Image Hotspots | Popup dynamic field not showing in the content
+- Few minor bug fixes & improvements
+
+
+= 5.0.8 - 08/03/2022 =
+
+- Fixed: EA Advanced Data table | When Remote database with different language is used as source
+- Fixed: EA Advanced Data Table | TablePress integration not working properly
+- Fixed: EA Image Hotspots | Tooltip background color not changing when global color is used
+- Fixed: EA Post Widgets | Extra attributes showing after load more button is pressed
+- Few minor bug fixes & improvements
+
+= 5.0.7 - 16/02/2022 =
+
+- Fixed: EA Login/Register Form | Social login error message not working properly
+- Fixed: EA Offcanvas | Entrance Animation not working on Google Chrome Mac OS
+- Fixed: EA Post Carousel | Conflict with Beehive Theme
+- Fixed: EA Woo Product Slider | Some Style options not working properly
+- Fixed: EA Image Comparison | Divider width and handle icon color not working in vertical mode
+- Fixed: EA Image Hotspots | Popup controller not showing in Content tab Link option
+- Fixed: EA Post Carousel | Post Terms not working for the Products
+- Fixed: EA Testimonial Slider | Visible items not working properly for responsive devices
+- Fixed: EA Tooltip & Image Hotspots | Viber link not working 
+- Fixed: EA Logo Carousel | Conflict with Lazy Loader
+- Fixed: EA Advanced Menu | Hamburger menu not showing in mobile view
+- Fixed: EA Smart Post List | Filtering option not working properly
+- Few minor bug fixes & improvements
+
+= 5.0.6 - 02/02/2022 =
+
+- EA Advanced Google Map | "Add Item" button not working in Polygon type
+- Few minor bug fixes & improvements
+
+= 5.0.5 - 27/01/2022 =
+
+- Few minor bug fixes & improvements
+
+= 5.0.4 - 27/01/2022 =
+
+- Fixed: EA Parallax | Throwing Console Error
+- Fixed: EA Advanced Search | Throwing PHP Warning
+- Few minor bug fixes & improvements
+
+= 5.0.3 - 25/01/2022 =
+
+- Fixed: EA Lightbox & Modal | Modal text adding span tag at the end after pagination
+- Added: EA Advanced Search | Exclude taxonomy option
+- Few minor bug fixes & improvements
+
+= 5.0.2 - 19/01/2022 =
+
+- Improved: EA Advanced Data Table | SQL Queries for Database source
+- EA Testimonial Slider | Throwing error on PHP 8.0 
+- Few minor bug fixes & improvements
+
+= 5.0.1 - 30/12/2021 =
+
+- Few minor bug fix & improvements
+
+= 5.0.0 - 26/12/2021 =
+
+- Added: EA Advanced Search
+- Added: EA Cross-Domain Copy Paste
+- Few minor bug fix & improvements
+
+= 4.4.12 - 14/12/2021 =
+
+- Improved: EA LearnDash Course List | Added controller to change the “Free” and “See More” texts
+- Fixed: EA Static Product | add to cart not working
+- Fixed: EA Instagram Feed | Force square option not stretching the images
+- Few minor bug fix & improvements
 
 = 4.4.11 - 11/10/2021 =
 

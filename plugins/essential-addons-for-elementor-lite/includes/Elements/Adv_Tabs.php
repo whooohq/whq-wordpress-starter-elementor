@@ -63,7 +63,7 @@ class Adv_Tabs extends Widget_Base
         return 'https://essential-addons.com/elementor/docs/advanced-tabs/';
     }
 
-    protected function _register_controls()
+    protected function register_controls()
     {
         /**
          * Advance Tabs Settings
@@ -311,7 +311,7 @@ class Adv_Tabs extends Widget_Base
                         ],
                     ],
                     'default' => '1',
-                    'description' => '<span class="pro-feature"> Get the  <a href="https://wpdeveloper.net/upgrade/ea-pro" target="_blank">Pro version</a> for more stunning elements and customization options.</span>',
+                    'description' => '<span class="pro-feature"> Get the  <a href="https://wpdeveloper.com/upgrade/ea-pro" target="_blank">Pro version</a> for more stunning elements and customization options.</span>',
                 ]
             );
 
@@ -447,7 +447,7 @@ class Adv_Tabs extends Widget_Base
                 'selectors' => [
                     '{{WRAPPER}} .eael-advance-tabs .eael-tabs-nav > ul li i' => 'font-size: {{SIZE}}{{UNIT}};',
                     '{{WRAPPER}} .eael-advance-tabs .eael-tabs-nav > ul li img' => 'width: {{SIZE}}{{UNIT}};',
-                    '{{WRAPPER}} .eael-advance-tabs .eael-tabs-nav > ul li svg' => 'width: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .eael-advance-tabs .eael-tabs-nav > ul li svg' => 'width: {{SIZE}}{{UNIT}}; height: auto;',
                 ],
             ]
         );
@@ -925,8 +925,26 @@ class Adv_Tabs extends Widget_Base
         <div <?php echo $this->get_render_attribute_string('eael_tab_wrapper'); ?>>
             <div class="eael-tabs-nav">
                 <ul <?php echo $this->get_render_attribute_string('eael_tab_icon_position'); ?>>
-                    <?php foreach ($settings['eael_adv_tabs_tab'] as $tab) : ?>
-                        <li id="<?php echo $tab['eael_adv_tabs_tab_id'] ? $tab['eael_adv_tabs_tab_id'] : Helper::str_to_css_id($tab['eael_adv_tabs_tab_title']); ?>" class="<?php echo esc_attr($tab['eael_adv_tabs_tab_show_as_default']); ?>">
+                    <?php foreach ($settings['eael_adv_tabs_tab'] as $index => $tab) :
+	                    $tab_id = $tab['eael_adv_tabs_tab_id'] ? $tab['eael_adv_tabs_tab_id'] : Helper::str_to_css_id( $tab['eael_adv_tabs_tab_title'] );
+	                    $tab_id = $tab_id === 'safari' ? 'eael-safari' : $tab_id;
+
+                        $tab_count = $index + 1;
+					    $tab_title_setting_key = $this->get_repeater_setting_key( 'eael_adv_tabs_tab_title', 'eael_adv_tabs_tab', $index );
+					    
+
+                        $this->add_render_attribute( $tab_title_setting_key, [
+                            'id' => $tab_id,
+                            'class' => [ $tab['eael_adv_tabs_tab_show_as_default'], 'eael-tab-item-trigger' ],
+                            'aria-selected' => 1 === $tab_count ? 'true' : 'false',
+                            'data-tab' => $tab_count,
+                            'role' => 'tab',
+                            'tabindex' => 1 === $tab_count ? '0' : '-1',
+                            'aria-controls' => $tab_id . '-tab',
+                            'aria-expanded' => 'false',
+                        ] );
+                        ?>
+                        <li <?php $this->print_render_attribute_string( $tab_title_setting_key ); ?>>
                             <?php if( $settings['eael_adv_tab_icon_position'] === 'eael-tab-inline-icon' && $settings['eael_adv_tabs_tab_icon_alignment'] === 'after' ) : ?>
                                 <span class="eael-tab-title title-before-icon"><?php echo Helper::eael_wp_kses($tab['eael_adv_tabs_tab_title']); ?></span>
                             <?php endif; ?>
@@ -956,9 +974,11 @@ class Adv_Tabs extends Widget_Base
             </div>
             <div class="eael-tabs-content">
 		        <?php foreach ($settings['eael_adv_tabs_tab'] as $tab) :
-			        $eael_find_default_tab[] = $tab['eael_adv_tabs_tab_show_as_default']; ?>
+			        $eael_find_default_tab[] = $tab['eael_adv_tabs_tab_show_as_default'];
+			        $tab_id = $tab['eael_adv_tabs_tab_id'] ? $tab['eael_adv_tabs_tab_id'] : Helper::str_to_css_id( $tab['eael_adv_tabs_tab_title'] );
+			        $tab_id = $tab_id === 'safari' ? 'eael-safari-tab' : $tab_id . '-tab'; ?>
 
-                    <div id="<?php echo $tab['eael_adv_tabs_tab_id'] ? $tab['eael_adv_tabs_tab_id'] : Helper::str_to_css_id($tab['eael_adv_tabs_tab_title']).'-tab'; ?>" class="clearfix eael-tab-content-item <?php echo esc_attr($tab['eael_adv_tabs_tab_show_as_default']); ?>" data-title-link="<?php echo $tab['eael_adv_tabs_tab_id'] ? $tab['eael_adv_tabs_tab_id'] : Helper::str_to_css_id($tab['eael_adv_tabs_tab_title']); ?>">
+                    <div id="<?php echo $tab_id; ?>" class="clearfix eael-tab-content-item <?php echo esc_attr($tab['eael_adv_tabs_tab_show_as_default']); ?>" data-title-link="<?php echo $tab_id; ?>">
 				        <?php if ('content' == $tab['eael_adv_tabs_text_type']) : ?>
 					        <?php echo do_shortcode($tab['eael_adv_tabs_tab_content']); ?>
 				        <?php elseif ('template' == $tab['eael_adv_tabs_text_type']) : ?>

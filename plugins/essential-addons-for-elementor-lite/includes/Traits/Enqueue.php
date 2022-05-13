@@ -127,16 +127,32 @@ trait Enqueue
             EAEL_PLUGIN_VERSION
         );
 
-        // localize object
-        $this->localize_objects = apply_filters('eael/localize_objects', [
-            'ajaxurl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('essential-addons-elementor'),
-	        'i18n' => [
-	        	'added' => __('Added ', 'essential-addons-for-elementor-lite'),
-	        	'compare' => __('Compare', 'essential-addons-for-elementor-lite'),
-                'loading' => esc_html__('Loading...', 'essential-addons-for-elementor-lite')
-            ],
-        ]);
+        // register scroll to top assets
+        wp_register_style(
+            'eael-scroll-to-top',
+            EAEL_PLUGIN_URL . 'assets/front-end/css/view/scroll-to-top.min.css',
+            false,
+            EAEL_PLUGIN_VERSION
+        );
+
+        wp_register_script(
+            'eael-scroll-to-top',
+            EAEL_PLUGIN_URL . 'assets/front-end/js/view/scroll-to-top.min.js',
+            ['jquery'],
+            EAEL_PLUGIN_VERSION
+        );
+
+	    // localize object
+	    $this->localize_objects = apply_filters( 'eael/localize_objects', [
+		    'ajaxurl'        => admin_url( 'admin-ajax.php' ),
+		    'nonce'          => wp_create_nonce( 'essential-addons-elementor' ),
+		    'i18n'           => [
+			    'added'   => __( 'Added ', 'essential-addons-for-elementor-lite' ),
+			    'compare' => __( 'Compare', 'essential-addons-for-elementor-lite' ),
+			    'loading' => esc_html__( 'Loading...', 'essential-addons-for-elementor-lite' )
+		    ],
+		    'page_permalink' => get_the_permalink(),
+	    ] );
 
         // edit mode
         if ($this->is_edit_mode()) {
@@ -294,7 +310,8 @@ trait Enqueue
         wp_enqueue_style(
             'ea-icon',
             $this->safe_url(EAEL_PLUGIN_URL . 'assets/admin/css/eaicon.css'),
-            false
+            false,
+	        EAEL_PLUGIN_VERSION
         );
 
         // editor style
@@ -310,7 +327,7 @@ trait Enqueue
     {
         if ($this->is_edit_mode() || $this->is_preview_mode()) {
             if ($this->css_strings) {
-                echo '<style id="' . $this->uid . '">' . $this->css_strings . '</style>';
+	            printf( '<style id="%1$s">%2$s</style>', esc_attr( $this->uid ), $this->css_strings );
             }
         }
     }
@@ -321,8 +338,8 @@ trait Enqueue
         // view/edit mode mode
         if ($this->is_edit_mode() || $this->is_preview_mode()) {
             if ($this->js_strings) {
-                echo '<script>var localize =' . json_encode($this->localize_objects) . '</script>';
-                echo '<script>' . $this->js_strings . '</script>';
+                printf('<script>%1$s</script>','var localize ='.wp_json_encode($this->localize_objects));
+	            printf( '<script id="%1$s">%2$s</script>', esc_attr( $this->uid ), $this->js_strings );
             }
         }
     }
@@ -366,4 +383,19 @@ trait Enqueue
         }";
         wp_add_inline_style( 'elementor-icons', $css );
     }
+
+	// replace beehive theme's swiper slider lib file with elementor's swiper lib file
+	public function beehive_theme_swiper_slider_compatibility( $scripts ) {
+		unset( $scripts['swiper'] );
+		unset( $scripts['beehive-elements'] );
+
+		$scripts['beehive-elements'] = array(
+			'src'       => EAEL_PLUGIN_URL . 'assets/front-end/js/view/beehive-elements.min.js',
+			'deps'      => array( 'jquery' ),
+			'in_footer' => true,
+			'enqueue'   => true,
+		);
+
+		return $scripts;
+	}
 }

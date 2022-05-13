@@ -62,7 +62,7 @@ class Lightbox extends Widget_Base
 
 
 
-	protected function _register_controls()
+	protected function register_controls()
 	{
 
         $this->content_tab();
@@ -1985,7 +1985,7 @@ class Lightbox extends Widget_Base
                             printf('<i class="open-pop-up-button-icon-right %1$s" aria-hidden="true"></i>', $settings['eael_lightbox_open_btn_icon']);
                         }
 
-						printf('</ %1$s>', $trigger_html_tag);
+						printf('</%1$s>', $trigger_html_tag);
 
 					} else if ('icon' ==  $settings['trigger_type']) {
 

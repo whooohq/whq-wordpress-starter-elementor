@@ -136,6 +136,9 @@ class Bootstrap
         add_action('wp_ajax_eael-login-register-form', [$this, 'login_or_register_user']);
         add_action('wp_ajax_nopriv_eael-login-register-form', [$this, 'login_or_register_user']);
         add_action('eael/login-register/before-processing-login-register', [$this, 'lr_handle_social_login']);
+		//adv search
+	    add_action('wp_ajax_fetch_search_result', array($this, 'fetch_search_result'));
+	    add_action('wp_ajax_nopriv_fetch_search_result', array($this, 'fetch_search_result'));
 
         // localize script
         add_filter('eael/localize_objects', [$this, 'script_localizer']);

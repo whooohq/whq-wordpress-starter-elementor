@@ -1579,7 +1579,7 @@ class GF_Advanced_Post_Creation extends GFFeedAddOn {
 
 				// If term exists, add it to the preload array.
 				if ( $term ) {
-					$terms[ $term->slug ] = $term->name;
+					$terms[ $term->slug ] = esc_html( $term->name );
 				}
 
 			}
@@ -1635,7 +1635,7 @@ class GF_Advanced_Post_Creation extends GFFeedAddOn {
 				// Add field to results.
 				$results[] = array(
 					'id'   => esc_html( $term->slug ),
-					'text' => esc_html( $term->name ),
+					'text' => wp_strip_all_tags( $term->name ),
 				);
 
 			}

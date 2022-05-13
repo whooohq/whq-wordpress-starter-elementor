@@ -16,6 +16,9 @@ trait Library
      *
      * @todo filter output
      */
+
+	public $OPTION_CLEAR_HOOK = "eael_remove_unused_options_data";
+
     public function get_registered_elements()
     {
         return array_keys($this->registered_elements);
@@ -122,6 +125,7 @@ trait Library
                 unlink($path);
             }
         }
+	    do_action( 'eael_remove_assets', $uid, $ext );
     }
 
     /**
@@ -149,27 +153,7 @@ trait Library
      *
      * @since 3.0.0
      */
-    public function clear_cache_files()
-    {
-        check_ajax_referer('essential-addons-elementor', 'security');
 
-        if(!current_user_can('manage_options')){
-            wp_send_json_error(__('you are not allowed to do this action', 'essential-addons-for-elementor-lite'));
-        }
-
-        if (isset($_REQUEST['posts'])) {
-            if (!empty($_POST['posts'])) {
-                foreach (json_decode($_POST['posts']) as $post) {
-                    $this->remove_files('post-' . $post);
-                }
-            }
-        } else {
-            // clear cache files
-            $this->empty_dir(EAEL_ASSET_PATH);
-        }
-
-        wp_send_json(true);
-    }
 
     /**
      * Check if wp running in background
@@ -186,7 +170,7 @@ trait Library
             return true;
         }
         
-        if (!empty($_REQUEST['action']) && !$this->check_background_action($_REQUEST['action'])) {
+        if (!empty($_REQUEST['action']) && !$this->check_background_action( sanitize_text_field( $_REQUEST['action'] ) )) {
             return true;
         }
 
@@ -218,7 +202,7 @@ trait Library
             return false;
         }
 
-        if (!empty($_REQUEST['action']) && !$this->check_background_action($_REQUEST['action'])) {
+        if (!empty($_REQUEST['action']) && !$this->check_background_action( sanitize_text_field( $_REQUEST['action'] ) )) {
             return false;
         }
 
@@ -302,37 +286,13 @@ trait Library
 	        'payments',
 	        'newpassword',
 	        'manage_sub_accounts',
+	        'ppw_postpass',
         ];
         if (in_array($action_name, $allow_action)){
             return true;
         }
         return false;
     }
-
-	/**
-	 * Remove some old options value from wp_options table which are not use any more
-	 *
-	 * @since 4.7.4
-	 */
-	public function remove_old_options_cache() {
-		$status = get_option( "eael_remove_old_cache" );
-		if ( !$status ) {
-			update_option("eael_remove_old_cache",true);
-			global $wpdb;
-			$sql     = "from {$wpdb->options} as options_tb 
-    				inner join (SELECT option_id FROM {$wpdb->options} 
-    				WHERE ((option_name like '%\_elements' and LENGTH(option_name) = 18 and option_name not like '%\_eael_elements') 
-    				           or (option_name like '%\_custom_js' and LENGTH(option_name) = 19 and option_name not like '%\_eael_custom_js' and (option_value IS NULL or option_value = ''))) 
-    				  and autoload = 'yes') AS options_tb2 
-    				    ON options_tb2.option_id = options_tb.option_id";
-			$selection_sql  = "select count(options_tb.option_id) as total ".$sql;
-			$results = $wpdb->get_var( $selection_sql );
-			if ( $results > 1 ) {
-				$deletiation_sql  = "delete options_tb ".$sql;
-				$wpdb->query($deletiation_sql);
-			}
-		}
-	}
 
 	/*
 	 * Check some other cookie for solve asset loading issue
@@ -359,5 +319,49 @@ trait Library
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * eael_job_init
+	 *
+	 * Register Cron Event
+	 *
+	 * @access public
+	 * @return void
+	 * @since 5.0.6
+	 */
+	public function eael_job_init() {
+
+		add_action( $this->OPTION_CLEAR_HOOK, [ $this, 'remove_unused_options_data' ] );
+
+		if ( ! wp_next_scheduled( $this->OPTION_CLEAR_HOOK ) ) {
+			wp_schedule_event( time(), 'daily', $this->OPTION_CLEAR_HOOK );
+		}
+	}
+
+	/**
+	 * remove_unused_options_data
+	 * Remove unused eael related fields from wp_option for increase site speed.
+	 * This method attached with wp schedule cron job and run one time daily
+	 *
+	 * @access public
+	 * @return void
+	 * @since 5.0.6
+	 */
+	public function remove_unused_options_data() {
+
+		global $wpdb;
+		$sql           = "from {$wpdb->options} as options_tb 
+                inner join (SELECT option_id FROM {$wpdb->options} 
+                WHERE ((option_name like '%\_eael_elements' and LENGTH(option_name) = 23 and option_value = 'a:0:{}' ) 
+                           or (option_name like '%\_eael_custom_js' and LENGTH(option_name) = 24 and (option_value IS NULL or option_value = '')))
+                  ) AS options_tb2 
+                    ON options_tb2.option_id = options_tb.option_id";
+		$selection_sql = "select count(options_tb.option_id) as total " . $sql;
+		$results       = $wpdb->get_var( $selection_sql );
+		if ( $results > 0 ) {
+			$deletiation_sql = "delete options_tb " . $sql;
+			$wpdb->query( $deletiation_sql );
+		}
 	}
 }

@@ -1499,16 +1499,13 @@ class Woo_Product_Slider extends Widget_Base {
                 'selectors' => [
                     '{{WRAPPER}} .eael-product-slider .icons-wrap li a' => 'width: {{SIZE}}px; height: {{SIZE}}px;',
                 ],
-                'condition' => [
-                    'eael_dynamic_template_layout!' => 'preset-3',
-                ]
             ]
         );
         
         $this->add_control(
             'eael_product_slider_buttons_height',
             [
-                'label'     => esc_html__( 'Height', 'essential-addons-elementor' ),
+                'label'     => esc_html__( 'Bottom Space', 'essential-addons-elementor' ),
                 'type'      => Controls_Manager::SLIDER,
                 'range'     => [
                     'px' => [
@@ -1516,7 +1513,10 @@ class Woo_Product_Slider extends Widget_Base {
                     ],
                 ],
                 'selectors' => [
-                    '{{WRAPPER}} .eael-product-slider .icons-wrap' => 'height: {{SIZE}}px;',
+                    '{{WRAPPER}} .eael-product-slider .eael-add-to-cart-button' => 'margin-top: {{SIZE}}px;',
+                ],
+                'condition' => [
+	                'eael_dynamic_template_layout' => 'preset-3',
                 ],
             ]
         );

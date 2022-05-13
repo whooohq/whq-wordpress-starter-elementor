@@ -78,7 +78,7 @@ class One_Page_Navigation extends Widget_Base
     /**
      * Register one page navigation widget controls.
      */
-    protected function _register_controls()
+    protected function register_controls()
     {
 
         /*-----------------------------------------------------------------------------------*/

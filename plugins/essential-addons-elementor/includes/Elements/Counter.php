@@ -55,7 +55,7 @@ class Counter extends Widget_Base {
         return 'eaicon-counter';
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         /**
          *	CONTENT TAB

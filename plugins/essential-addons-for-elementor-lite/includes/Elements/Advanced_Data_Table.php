@@ -64,7 +64,7 @@ class Advanced_Data_Table extends Widget_Base
         return 'https://essential-addons.com/elementor/docs/advanced-data-table/';
     }
 
-    protected function _register_controls()
+    protected function register_controls()
     {
         // general
         $this->start_controls_section(
@@ -107,7 +107,7 @@ class Advanced_Data_Table extends Widget_Base
 		    $this->add_control(
 			    'eael_adv_data_table_pro_enable_warning',
 			    [
-				    'label' => sprintf( '<a target="_blank" href="https://wpdeveloper.net/upgrade/ea-pro">%s</a>', esc_html__('Only Available in Pro Version!', 'essential-addons-for-elementor-lite')),
+				    'label' => sprintf( '<a target="_blank" href="https://wpdeveloper.com/upgrade/ea-pro">%s</a>', esc_html__('Only Available in Pro Version!', 'essential-addons-for-elementor-lite')),
 				    'type' => Controls_Manager::RAW_HTML,
 				    'condition' => [
 					    'ea_adv_data_table_source' => ['database','remote','google','tablepress'],

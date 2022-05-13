@@ -1,4 +1,5 @@
-/*! elementor - v3.4.5 - 12-10-2021 */
+/*! elementor - v3.6.5 - 27-04-2022 */
+"use strict";
 (self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["frontend"],{
 
 /***/ "../assets/dev/js/frontend/documents-manager.js":
@@ -7,7 +8,6 @@
   \******************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
@@ -15,7 +15,7 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _document = _interopRequireDefault(__webpack_require__(/*! ./document */ "../assets/dev/js/frontend/document.js"));
 
@@ -70,7 +70,7 @@ class _default extends elementorModules.ViewModule {
 
 }
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -80,17 +80,25 @@ exports.default = _default;
   \**************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
 
 var _global = _interopRequireDefault(__webpack_require__(/*! ./handlers/global */ "../assets/dev/js/frontend/handlers/global.js"));
 
-var _section = _interopRequireDefault(__webpack_require__(/*! ./handlers/section/section */ "../assets/dev/js/frontend/handlers/section/section.js"));
+var _background = _interopRequireDefault(__webpack_require__(/*! ./handlers/background */ "../assets/dev/js/frontend/handlers/background.js"));
+
+var _container = _interopRequireDefault(__webpack_require__(/*! ./handlers/container/container */ "../assets/dev/js/frontend/handlers/container/container.js"));
 
 var _column = _interopRequireDefault(__webpack_require__(/*! ./handlers/column */ "../assets/dev/js/frontend/handlers/column.js"));
 
+var _handlesPosition = _interopRequireDefault(__webpack_require__(/*! ./handlers/section/handles-position */ "../assets/dev/js/frontend/handlers/section/handles-position.js"));
+
+var _stretchedSection = _interopRequireDefault(__webpack_require__(/*! ./handlers/section/stretched-section */ "../assets/dev/js/frontend/handlers/section/stretched-section.js"));
+
+var _shapes = _interopRequireDefault(__webpack_require__(/*! ./handlers/section/shapes */ "../assets/dev/js/frontend/handlers/section/shapes.js"));
+
+// Section handlers.
 module.exports = function ($) {
   const handlersInstances = {};
   this.elementsHandlers = {
@@ -109,7 +117,14 @@ module.exports = function ($) {
   const addGlobalHandlers = () => elementorFrontend.hooks.addAction('frontend/element_ready/global', _global.default);
 
   const addElementsHandlers = () => {
-    this.elementsHandlers.section = _section.default;
+    this.elementsHandlers.section = [_stretchedSection.default, // Must run before background handlers to init the slideshow only after the stretch.
+    ..._background.default, _handlesPosition.default, _shapes.default];
+    this.elementsHandlers.container = [..._background.default]; // Add editor-only handlers.
+
+    if (elementorFrontend.isEditMode()) {
+      this.elementsHandlers.container.push(..._container.default);
+    }
+
     this.elementsHandlers.column = _column.default;
     $.each(this.elementsHandlers, (elementName, Handlers) => {
       const elementData = elementName.split('.');
@@ -134,6 +149,10 @@ module.exports = function ($) {
         }, true);
       } else {
         const handlerValue = Handler();
+
+        if (!handlerValue) {
+          return;
+        }
 
         if (handlerValue instanceof Promise) {
           handlerValue.then(({
@@ -186,10 +205,6 @@ module.exports = function ($) {
   };
 
   this.getHandler = function (handlerName) {
-    if (!handlerName) {
-      return;
-    }
-
     const elementHandler = this.elementsHandlers[handlerName];
 
     if (isClassHandler(elementHandler)) {
@@ -251,7 +266,6 @@ module.exports = function ($) {
   \*********************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
@@ -259,7 +273,7 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 __webpack_require__(/*! ../public-path */ "../assets/dev/js/public-path.js");
 
@@ -277,13 +291,15 @@ var _baseLoader = _interopRequireDefault(__webpack_require__(/*! ./utils/video-a
 
 var _urlActions = _interopRequireDefault(__webpack_require__(/*! ./utils/url-actions */ "../assets/dev/js/frontend/utils/url-actions.js"));
 
-var _swiperBc = _interopRequireDefault(__webpack_require__(/*! ./utils/swiper-bc */ "../assets/dev/js/frontend/utils/swiper-bc.js"));
+var _swiper = _interopRequireDefault(__webpack_require__(/*! ./utils/swiper */ "../assets/dev/js/frontend/utils/swiper.js"));
 
 var _lightboxManager = _interopRequireDefault(__webpack_require__(/*! ./utils/lightbox/lightbox-manager */ "../assets/dev/js/frontend/utils/lightbox/lightbox-manager.js"));
 
 var _assetsLoader = _interopRequireDefault(__webpack_require__(/*! ./utils/assets-loader */ "../assets/dev/js/frontend/utils/assets-loader.js"));
 
 var _breakpoints = _interopRequireDefault(__webpack_require__(/*! elementor-utils/breakpoints */ "../assets/dev/js/utils/breakpoints.js"));
+
+var _events = _interopRequireDefault(__webpack_require__(/*! elementor-utils/events */ "../assets/dev/js/utils/events.js"));
 
 var _frontend = _interopRequireDefault(__webpack_require__(/*! elementor/modules/shapes/assets/js/frontend/frontend */ "../modules/shapes/assets/js/frontend/frontend.js"));
 
@@ -461,7 +477,7 @@ class Frontend extends elementorModules.ViewModule {
       },
 
       urlActions: new _urlActions.default(),
-      swiper: _swiperBc.default,
+      swiper: _swiper.default,
       environment: _environment.default,
       assetsLoader: new _assetsLoader.default(),
       escapeHTML: _utils.escapeHTML
@@ -584,8 +600,11 @@ class Frontend extends elementorModules.ViewModule {
   initModules() {
     const handlers = {
       shapes: _frontend.default
-    };
-    elementorFrontend.trigger('elementor/modules/init:before');
+    }; // TODO: BC - Deprecated since 3.5.0
+
+    elementorFrontend.trigger('elementor/modules/init:before'); // TODO: Use this instead.
+
+    elementorFrontend.trigger('elementor/modules/init/before');
     Object.entries(handlers).forEach(([moduleName, ModuleClass]) => {
       this.modulesHandlers[moduleName] = new ModuleClass();
     });
@@ -615,7 +634,8 @@ class Frontend extends elementorModules.ViewModule {
     } // Keep this line before `initOnReadyComponents` call
 
 
-    this.elements.$window.trigger('elementor/frontend/init');
+    _events.default.dispatch(this.elements.$window, 'elementor/frontend/init');
+
     this.initModules();
     this.initOnReadyElements();
     this.initOnReadyComponents();
@@ -629,7 +649,7 @@ class Frontend extends elementorModules.ViewModule {
 
 }
 
-exports.default = Frontend;
+exports["default"] = Frontend;
 window.elementorFrontend = new Frontend();
 
 if (!elementorFrontend.isEditMode()) {
@@ -644,13 +664,12 @@ if (!elementorFrontend.isEditMode()) {
   \******************************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class BackgroundSlideshow extends elementorModules.frontend.handlers.SwiperBase {
   getDefaultSettings() {
@@ -659,6 +678,7 @@ class BackgroundSlideshow extends elementorModules.frontend.handlers.SwiperBase 
         swiperContainer: 'elementor-background-slideshow swiper-container',
         swiperWrapper: 'swiper-wrapper',
         swiperSlide: 'elementor-background-slideshow__slide swiper-slide',
+        swiperPreloader: 'swiper-lazy-preloader',
         slideBackground: 'elementor-background-slideshow__slide__image',
         kenBurns: 'elementor-ken-burns',
         kenBurnsActive: 'elementor-ken-burns--active',
@@ -669,8 +689,8 @@ class BackgroundSlideshow extends elementorModules.frontend.handlers.SwiperBase 
   }
 
   getSwiperOptions() {
-    const elementSettings = this.getElementSettings();
-    const swiperOptions = {
+    const elementSettings = this.getElementSettings(),
+          swiperOptions = {
       grabCursor: false,
       slidesPerView: 1,
       slidesPerGroup: 1,
@@ -710,6 +730,13 @@ class BackgroundSlideshow extends elementorModules.frontend.handlers.SwiperBase 
         break;
     }
 
+    if ('yes' === elementSettings.background_slideshow_lazyload) {
+      swiperOptions.lazy = {
+        loadPrevNext: true,
+        loadPrevNextAmount: 1
+      };
+    }
+
     return swiperOptions;
   }
 
@@ -724,7 +751,8 @@ class BackgroundSlideshow extends elementorModules.frontend.handlers.SwiperBase 
           $wrapper = jQuery('<div>', {
       class: classes.swiperWrapper
     }),
-          kenBurnsActive = elementSettings.background_slideshow_ken_burns;
+          kenBurnsActive = elementSettings.background_slideshow_ken_burns,
+          lazyload = 'yes' === elementSettings.background_slideshow_lazyload;
     let slideInnerClass = classes.slideBackground;
 
     if (kenBurnsActive) {
@@ -733,15 +761,33 @@ class BackgroundSlideshow extends elementorModules.frontend.handlers.SwiperBase 
       slideInnerClass += ' ' + classes[kenBurnsDirection];
     }
 
+    if (lazyload) {
+      slideInnerClass += ' swiper-lazy';
+    }
+
     this.elements.$slides = jQuery();
     elementSettings.background_slideshow_gallery.forEach(slide => {
       const $slide = jQuery('<div>', {
         class: classes.swiperSlide
-      }),
-            $slidebg = jQuery('<div>', {
-        class: slideInnerClass,
-        style: 'background-image: url("' + slide.url + '");'
       });
+      let $slidebg;
+
+      if (lazyload) {
+        const $slideloader = jQuery('<div>', {
+          class: classes.swiperPreloader
+        });
+        $slidebg = jQuery('<div>', {
+          class: slideInnerClass,
+          'data-background': slide.url
+        });
+        $slidebg.append($slideloader);
+      } else {
+        $slidebg = jQuery('<div>', {
+          class: slideInnerClass,
+          style: 'background-image: url("' + slide.url + '");'
+        });
+      }
+
       $slide.append($slidebg);
       $wrapper.append($slide);
       this.elements.$slides = this.elements.$slides.add($slide);
@@ -808,126 +854,22 @@ class BackgroundSlideshow extends elementorModules.frontend.handlers.SwiperBase 
 
 }
 
-exports.default = BackgroundSlideshow;
+exports["default"] = BackgroundSlideshow;
 
 /***/ }),
 
-/***/ "../assets/dev/js/frontend/handlers/column.js":
-/*!****************************************************!*\
-  !*** ../assets/dev/js/frontend/handlers/column.js ***!
-  \****************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports.default = void 0;
-
-var _backgroundSlideshow = _interopRequireDefault(__webpack_require__(/*! ./background-slideshow */ "../assets/dev/js/frontend/handlers/background-slideshow.js"));
-
-var _default = [_backgroundSlideshow.default];
-exports.default = _default;
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/handlers/global.js":
-/*!****************************************************!*\
-  !*** ../assets/dev/js/frontend/handlers/global.js ***!
-  \****************************************************/
+/***/ "../assets/dev/js/frontend/handlers/background-video.js":
+/*!**************************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/background-video.js ***!
+  \**************************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
-
-class GlobalHandler extends elementorModules.frontend.handlers.Base {
-  getWidgetType() {
-    return 'global';
-  }
-
-  animate() {
-    const $element = this.$element,
-          animation = this.getAnimation();
-
-    if ('none' === animation) {
-      $element.removeClass('elementor-invisible');
-      return;
-    }
-
-    const elementSettings = this.getElementSettings(),
-          animationDelay = elementSettings._animation_delay || elementSettings.animation_delay || 0;
-    $element.removeClass(animation);
-
-    if (this.currentAnimation) {
-      $element.removeClass(this.currentAnimation);
-    }
-
-    this.currentAnimation = animation;
-    setTimeout(() => {
-      $element.removeClass('elementor-invisible').addClass('animated ' + animation);
-    }, animationDelay);
-  }
-
-  getAnimation() {
-    return this.getCurrentDeviceSetting('animation') || this.getCurrentDeviceSetting('_animation');
-  }
-
-  onInit(...args) {
-    super.onInit(...args);
-
-    if (this.getAnimation()) {
-      const observer = elementorModules.utils.Scroll.scrollObserver({
-        callback: event => {
-          if (event.isInViewport) {
-            this.animate();
-            observer.unobserve(this.$element[0]);
-          }
-        }
-      });
-      observer.observe(this.$element[0]);
-    }
-  }
-
-  onElementChange(propertyName) {
-    if (/^_?animation/.test(propertyName)) {
-      this.animate();
-    }
-  }
-
-}
-
-var _default = $scope => {
-  elementorFrontend.elementsHandler.addHandler(GlobalHandler, {
-    $element: $scope
-  });
-};
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/handlers/section/background-video.js":
-/*!**********************************************************************!*\
-  !*** ../assets/dev/js/frontend/handlers/section/background-video.js ***!
-  \**********************************************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class BackgroundVideo extends elementorModules.frontend.handlers.Base {
   getDefaultSettings() {
@@ -1018,12 +960,11 @@ class BackgroundVideo extends elementorModules.frontend.handlers.Base {
     }
   }
 
-  prepareVimeoVideo(Vimeo, videoId) {
+  prepareVimeoVideo(Vimeo, videoLink) {
     const elementSettings = this.getElementSettings(),
-          startTime = elementSettings.background_video_start ? elementSettings.background_video_start : 0,
           videoSize = this.elements.$backgroundVideoContainer.outerWidth(),
           vimeoOptions = {
-      id: videoId,
+      url: videoLink,
       width: videoSize.width,
       autoplay: true,
       loop: !elementSettings.background_play_once,
@@ -1144,7 +1085,7 @@ class BackgroundVideo extends elementorModules.frontend.handlers.Base {
         }
 
         if ('vimeo' === this.videoType) {
-          this.prepareVimeoVideo(apiObject, videoID);
+          this.prepareVimeoVideo(apiObject, videoLink);
         }
       });
     } else {
@@ -1206,7 +1147,149 @@ class BackgroundVideo extends elementorModules.frontend.handlers.Base {
 
 }
 
-exports.default = BackgroundVideo;
+exports["default"] = BackgroundVideo;
+
+/***/ }),
+
+/***/ "../assets/dev/js/frontend/handlers/background.js":
+/*!********************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/background.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _backgroundSlideshow = _interopRequireDefault(__webpack_require__(/*! ./background-slideshow */ "../assets/dev/js/frontend/handlers/background-slideshow.js"));
+
+var _backgroundVideo = _interopRequireDefault(__webpack_require__(/*! ./background-video */ "../assets/dev/js/frontend/handlers/background-video.js"));
+
+var _default = [_backgroundSlideshow.default, _backgroundVideo.default];
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/frontend/handlers/column.js":
+/*!****************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/column.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _backgroundSlideshow = _interopRequireDefault(__webpack_require__(/*! ./background-slideshow */ "../assets/dev/js/frontend/handlers/background-slideshow.js"));
+
+var _default = [_backgroundSlideshow.default];
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/frontend/handlers/container/container.js":
+/*!*****************************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/container/container.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _default = [() => __webpack_require__.e(/*! import() | container */ "container").then(__webpack_require__.bind(__webpack_require__, /*! ./handles-position */ "../assets/dev/js/frontend/handlers/container/handles-position.js")), () => __webpack_require__.e(/*! import() | container */ "container").then(__webpack_require__.bind(__webpack_require__, /*! ./shapes */ "../assets/dev/js/frontend/handlers/container/shapes.js"))];
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/frontend/handlers/global.js":
+/*!****************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/global.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+class GlobalHandler extends elementorModules.frontend.handlers.Base {
+  getWidgetType() {
+    return 'global';
+  }
+
+  animate() {
+    const $element = this.$element,
+          animation = this.getAnimation();
+
+    if ('none' === animation) {
+      $element.removeClass('elementor-invisible');
+      return;
+    }
+
+    const elementSettings = this.getElementSettings(),
+          animationDelay = elementSettings._animation_delay || elementSettings.animation_delay || 0;
+    $element.removeClass(animation);
+
+    if (this.currentAnimation) {
+      $element.removeClass(this.currentAnimation);
+    }
+
+    this.currentAnimation = animation;
+    setTimeout(() => {
+      $element.removeClass('elementor-invisible').addClass('animated ' + animation);
+    }, animationDelay);
+  }
+
+  getAnimation() {
+    return this.getCurrentDeviceSetting('animation') || this.getCurrentDeviceSetting('_animation');
+  }
+
+  onInit(...args) {
+    super.onInit(...args);
+
+    if (this.getAnimation()) {
+      const observer = elementorModules.utils.Scroll.scrollObserver({
+        callback: event => {
+          if (event.isInViewport) {
+            this.animate();
+            observer.unobserve(this.$element[0]);
+          }
+        }
+      });
+      observer.observe(this.$element[0]);
+    }
+  }
+
+  onElementChange(propertyName) {
+    if (/^_?animation/.test(propertyName)) {
+      this.animate();
+    }
+  }
+
+}
+
+var _default = $scope => {
+  elementorFrontend.elementsHandler.addHandler(GlobalHandler, {
+    $element: $scope
+  });
+};
+
+exports["default"] = _default;
 
 /***/ }),
 
@@ -1216,13 +1299,12 @@ exports.default = BackgroundVideo;
   \**********************************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class HandlesPosition extends elementorModules.frontend.handlers.Base {
   isActive() {
@@ -1293,39 +1375,7 @@ class HandlesPosition extends elementorModules.frontend.handlers.Base {
 
 }
 
-exports.default = HandlesPosition;
-
-/***/ }),
-
-/***/ "../assets/dev/js/frontend/handlers/section/section.js":
-/*!*************************************************************!*\
-  !*** ../assets/dev/js/frontend/handlers/section/section.js ***!
-  \*************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports.default = void 0;
-
-var _backgroundSlideshow = _interopRequireDefault(__webpack_require__(/*! ../background-slideshow */ "../assets/dev/js/frontend/handlers/background-slideshow.js"));
-
-var _backgroundVideo = _interopRequireDefault(__webpack_require__(/*! ./background-video */ "../assets/dev/js/frontend/handlers/section/background-video.js"));
-
-var _handlesPosition = _interopRequireDefault(__webpack_require__(/*! ./handles-position */ "../assets/dev/js/frontend/handlers/section/handles-position.js"));
-
-var _stretchedSection = _interopRequireDefault(__webpack_require__(/*! ./stretched-section */ "../assets/dev/js/frontend/handlers/section/stretched-section.js"));
-
-var _shapes = _interopRequireDefault(__webpack_require__(/*! ./shapes */ "../assets/dev/js/frontend/handlers/section/shapes.js"));
-
-var _default = [_stretchedSection.default, // Must run before BackgroundSlideshow to init the slideshow only after the stretch.
-_backgroundSlideshow.default, _backgroundVideo.default, _handlesPosition.default, _shapes.default];
-exports.default = _default;
+exports["default"] = HandlesPosition;
 
 /***/ }),
 
@@ -1335,13 +1385,12 @@ exports.default = _default;
   \************************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class Shapes extends elementorModules.frontend.handlers.Base {
   getDefaultSettings() {
@@ -1439,7 +1488,7 @@ class Shapes extends elementorModules.frontend.handlers.Base {
 
 }
 
-exports.default = Shapes;
+exports["default"] = Shapes;
 
 /***/ }),
 
@@ -1449,13 +1498,12 @@ exports.default = Shapes;
   \***********************************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class StretchedSection extends elementorModules.frontend.handlers.Base {
   bindEvents() {
@@ -1531,7 +1579,7 @@ class StretchedSection extends elementorModules.frontend.handlers.Base {
 
 }
 
-exports.default = StretchedSection;
+exports["default"] = StretchedSection;
 
 /***/ }),
 
@@ -1539,10 +1587,11 @@ exports.default = StretchedSection;
 /*!**************************************************!*\
   !*** ../assets/dev/js/frontend/utils/anchors.js ***!
   \**************************************************/
-/***/ ((module) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
 
+
+var _utils = __webpack_require__(/*! ./utils */ "../assets/dev/js/frontend/utils/utils.js");
 
 module.exports = elementorModules.ViewModule.extend({
   getDefaultSettings: function () {
@@ -1551,7 +1600,7 @@ module.exports = elementorModules.ViewModule.extend({
       selectors: {
         links: 'a[href*="#"]',
         targets: '.elementor-element, .elementor-menu-anchor',
-        scrollable: 'html, body'
+        scrollable: (0, _utils.isScrollSnapActive)() ? 'body' : 'html, body'
       }
     };
   },
@@ -1603,14 +1652,23 @@ module.exports = elementorModules.ViewModule.extend({
     }
 
     event.preventDefault();
-    scrollTop = elementorFrontend.hooks.applyFilters('frontend/handlers/menu_anchor/scroll_top_distance', scrollTop);
+    scrollTop = elementorFrontend.hooks.applyFilters('frontend/handlers/menu_anchor/scroll_top_distance', scrollTop); // on scroll animation start: remove scroll-snap.
+
+    if ((0, _utils.isScrollSnapActive)()) {
+      elementorFrontend.elements.$body.css('scroll-snap-type', 'none');
+    }
+
     this.elements.$scrollable.animate({
       scrollTop: scrollTop
-    }, this.getSettings('scrollDuration'), 'linear');
+    }, this.getSettings('scrollDuration'), 'linear', () => {
+      // on scroll animation complete: add scroll-snap back.
+      if ((0, _utils.isScrollSnapActive)()) {
+        elementorFrontend.elements.$body.css('scroll-snap-type', '');
+      }
+    });
   },
   onInit: function () {
     elementorModules.ViewModule.prototype.onInit.apply(this, arguments);
-    this.bindEvents();
   }
 });
 
@@ -1622,13 +1680,12 @@ module.exports = elementorModules.ViewModule.extend({
   \********************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class AssetsLoader {
   getScriptElement(src) {
@@ -1663,12 +1720,12 @@ class AssetsLoader {
 
 }
 
-exports.default = AssetsLoader;
+exports["default"] = AssetsLoader;
 const fileSuffix = elementorFrontendConfig.environmentMode.isScriptDebug ? '' : '.min';
 AssetsLoader.assets = {
   script: {
     dialog: {
-      src: `${elementorFrontendConfig.urls.assets}lib/dialog/dialog${fileSuffix}.js?ver=4.8.1`
+      src: `${elementorFrontendConfig.urls.assets}lib/dialog/dialog${fileSuffix}.js?ver=4.9.0`
     },
     'share-link': {
       src: `${elementorFrontendConfig.urls.assets}lib/share-link/share-link${fileSuffix}.js?ver=${elementorFrontendConfig.version}`
@@ -1688,13 +1745,12 @@ AssetsLoader.assets = {
   \********************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class LightboxManager extends elementorModules.ViewModule {
   static getLightbox() {
@@ -1790,38 +1846,35 @@ class LightboxManager extends elementorModules.ViewModule {
 
 }
 
-exports.default = LightboxManager;
+exports["default"] = LightboxManager;
 
 /***/ }),
 
-/***/ "../assets/dev/js/frontend/utils/swiper-bc.js":
-/*!****************************************************!*\
-  !*** ../assets/dev/js/frontend/utils/swiper-bc.js ***!
-  \****************************************************/
+/***/ "../assets/dev/js/frontend/utils/swiper.js":
+/*!*************************************************!*\
+  !*** ../assets/dev/js/frontend/utils/swiper.js ***!
+  \*************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
-class SwiperBC {
+class Swiper {
   constructor(container, config) {
     this.config = config;
 
     if (this.config.breakpoints) {
       // The config is passed as a param to allow adjustConfig to be called outside of this wrapper
       this.config = this.adjustConfig(config);
-    } // In case of a legacy behaviour the constructor should return a new Swiper instance instead of a Promise.
+    } // The Swiper will overlap the column width when applying custom margin values on the column.
 
 
-    if (config.legacy) {
-      return this.createSwiperInstance(container, this.config);
-    }
-
+    jQuery(container).closest('.elementor-widget-wrap').addClass('e-swiper-container');
+    jQuery(container).closest('.elementor-widget').addClass('e-widget-swiper');
     return new Promise(resolve => {
       if (!elementorFrontend.config.experimentalFeatures.e_optimized_assets_loading) {
         return resolve(this.createSwiperInstance(container, this.config));
@@ -1832,14 +1885,7 @@ class SwiperBC {
   }
 
   createSwiperInstance(container, config) {
-    // The condition should run only once to prevent an additional overwrite of the SwiperSource.
-    if (!SwiperBC.isSwiperLoaded && elementorFrontend.config.experimentalFeatures.e_optimized_assets_loading) {
-      SwiperSource = window.Swiper;
-      SwiperBC.isSwiperLoaded = true; // Once the SwiperSource has the Swiper lib function, we need to overwrite window.Swiper with the legacySwiper class.
-
-      legacySwiper();
-    }
-
+    const SwiperSource = window.Swiper;
     SwiperSource.prototype.adjustConfig = this.adjustConfig;
     return new SwiperSource(container, config);
   } // Backwards compatibility for Elementor Pro <2.9.0 (old Swiper version - <5.0.0)
@@ -1887,27 +1933,9 @@ class SwiperBC {
     return config;
   }
 
-} // The following code is needed to support Pro version < 3.1.0.
-
-
-exports.default = SwiperBC;
-SwiperBC.isSwiperLoaded = false; // In the legacy behavior, window.Swiper was a class that returns an instance of the Swiper lib function after config adjustments.
-
-function legacySwiper() {
-  window.Swiper = class {
-    constructor(container, config) {
-      config.legacy = true;
-      return new SwiperBC(container, config);
-    }
-
-  };
 }
 
-let SwiperSource = window.Swiper; // In case that the Swiper lib exists (meaning not in optimized mode) we overwrite the window.Swiper with a class that supports legacy behavior.
-
-if (SwiperSource) {
-  legacySwiper();
-}
+exports["default"] = Swiper;
 
 /***/ }),
 
@@ -1917,13 +1945,12 @@ if (SwiperSource) {
   \******************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class _default extends elementorModules.ViewModule {
   getDefaultSettings() {
@@ -1943,9 +1970,15 @@ class _default extends elementorModules.ViewModule {
       lightbox: async settings => {
         const lightbox = await elementorFrontend.utils.lightbox;
 
-        if (settings.id) {
-          lightbox.openSlideshow(settings.id, settings.url);
+        if (settings.slideshow) {
+          // Handle slideshow display
+          lightbox.openSlideshow(settings.slideshow, settings.url);
         } else {
+          // If the settings has an ID - the lightbox target content is an image - the ID is an attachment ID.
+          if (settings.id) {
+            settings.type = 'image';
+          }
+
           lightbox.showModal(settings);
         }
       }
@@ -1986,8 +2019,15 @@ class _default extends elementorModules.ViewModule {
   }
 
   runHashAction() {
-    if (location.hash) {
-      this.runAction(location.hash);
+    if (!location.hash) {
+      return;
+    } // Only if an element with this action hash exists on the page do we allow running the action.
+
+
+    const elementWithHash = document.querySelector(`[e-action-hash="${location.hash}"], a[href*="${location.hash}"]`);
+
+    if (elementWithHash) {
+      this.runAction(elementWithHash.getAttribute('e-action-hash'));
     }
   }
 
@@ -2004,7 +2044,7 @@ class _default extends elementorModules.ViewModule {
 
 }
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -2014,13 +2054,12 @@ exports.default = _default;
   \************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.escapeHTML = void 0;
+exports.isScrollSnapActive = exports.escapeHTML = void 0;
 
 // Escape HTML special chars to prevent XSS.
 const escapeHTML = str => {
@@ -2032,9 +2071,19 @@ const escapeHTML = str => {
     '"': '&quot;'
   };
   return str.replace(/[&<>'"]/g, tag => specialChars[tag] || tag);
-};
+}; // Check if Scroll-Snap is active.
+
 
 exports.escapeHTML = escapeHTML;
+
+const isScrollSnapActive = () => {
+  var _elementor$settings$p, _elementorFrontend$co;
+
+  const scrollSnapStatus = elementorFrontend.isEditMode() ? (_elementor$settings$p = elementor.settings.page.model.attributes) === null || _elementor$settings$p === void 0 ? void 0 : _elementor$settings$p['scroll_snap'] : (_elementorFrontend$co = elementorFrontend.config.settings.page) === null || _elementorFrontend$co === void 0 ? void 0 : _elementorFrontend$co['scroll_snap'];
+  return 'yes' === scrollSnapStatus ? true : false;
+};
+
+exports.isScrollSnapActive = isScrollSnapActive;
 
 /***/ }),
 
@@ -2044,13 +2093,12 @@ exports.escapeHTML = escapeHTML;
   \****************************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class BaseLoader extends elementorModules.ViewModule {
   getDefaultSettings() {
@@ -2101,7 +2149,7 @@ class BaseLoader extends elementorModules.ViewModule {
 
 }
 
-exports.default = BaseLoader;
+exports["default"] = BaseLoader;
 
 /***/ }),
 
@@ -2111,7 +2159,6 @@ exports.default = BaseLoader;
   \*****************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
@@ -2119,7 +2166,7 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _baseLoader = _interopRequireDefault(__webpack_require__(/*! ./base-loader */ "../assets/dev/js/frontend/utils/video-api/base-loader.js"));
 
@@ -2149,7 +2196,7 @@ class VimeoLoader extends _baseLoader.default {
 
 }
 
-exports.default = VimeoLoader;
+exports["default"] = VimeoLoader;
 
 /***/ }),
 
@@ -2159,7 +2206,6 @@ exports.default = VimeoLoader;
   \*******************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
@@ -2167,7 +2213,7 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _baseLoader = _interopRequireDefault(__webpack_require__(/*! ./base-loader */ "../assets/dev/js/frontend/utils/video-api/base-loader.js"));
 
@@ -2190,7 +2236,7 @@ class YoutubeLoader extends _baseLoader.default {
 
 }
 
-exports.default = YoutubeLoader;
+exports["default"] = YoutubeLoader;
 
 /***/ }),
 
@@ -2200,7 +2246,6 @@ exports.default = YoutubeLoader;
   \***************************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
 
 
 /* eslint-disable camelcase */
@@ -2214,13 +2259,12 @@ __webpack_require__.p = elementorFrontendConfig.urls.assets + 'js/';
   \*********************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 /**
  * Breakpoints
@@ -2400,7 +2444,59 @@ class Breakpoints extends elementorModules.Module {
 
 }
 
-exports.default = Breakpoints;
+exports["default"] = Breakpoints;
+
+/***/ }),
+
+/***/ "../assets/dev/js/utils/events.js":
+/*!****************************************!*\
+  !*** ../assets/dev/js/utils/events.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Events = void 0;
+
+class Events {
+  /**
+   * Dispatch an Elementor event.
+   *
+   * Will dispatch both native event & jQuery event (as BC).
+   * By default, `bcEvent` is `null`.
+   *
+   * @param {Object} context - The context that will dispatch the event.
+   * @param {string} event - Event to dispatch.
+   * @param {*} data - Data to pass to the event, default to `null`.
+   * @param {string|null} bcEvent - BC event to dispatch, default to `null`.
+   *
+   * @return {void}
+   */
+  static dispatch(context, event, data = null, bcEvent = null) {
+    // Make sure to use the native context if it's a jQuery instance.
+    context = context instanceof jQuery ? context[0] : context; // Dispatch the BC event only if exists.
+
+    if (bcEvent) {
+      context.dispatchEvent(new CustomEvent(bcEvent, {
+        detail: data
+      }));
+    } // jQuery's `.on()` listens also to native custom events, so there is no need
+    // to dispatch also a jQuery event.
+
+
+    context.dispatchEvent(new CustomEvent(event, {
+      detail: data
+    }));
+  }
+
+}
+
+exports.Events = Events;
+var _default = Events;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -2410,7 +2506,6 @@ exports.default = Breakpoints;
   \***************************************/
 /***/ ((module) => {
 
-"use strict";
 
 /**
  * Handles managing all events for whatever you plug it into. Priorities for hooks are based on lowest to highest in
@@ -2697,13 +2792,12 @@ module.exports = EventManager;
   \*****************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 const matchUserAgent = UserAgentStr => {
   return userAgent.indexOf(UserAgentStr) >= 0;
@@ -2744,7 +2838,7 @@ isAppleWebkit = matchUserAgent('AppleWebKit') && !isBlink,
 };
 
 var _default = environment;
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -2754,13 +2848,12 @@ exports.default = _default;
   \*************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class _default extends elementorModules.Module {
   get(key, options) {
@@ -2844,7 +2937,7 @@ class _default extends elementorModules.Module {
 
 }
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -2854,13 +2947,12 @@ exports.default = _default;
   \********************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class _default extends elementorModules.Module {
   constructor() {
@@ -2870,14 +2962,12 @@ class _default extends elementorModules.Module {
 
 }
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ })
 
 },
 /******/ __webpack_require__ => { // webpackRuntimeModules
-/******/ "use strict";
-/******/ 
 /******/ var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
 /******/ __webpack_require__.O(0, ["frontend-modules"], () => (__webpack_exec__("../assets/dev/js/frontend/frontend.js")));
 /******/ var __webpack_exports__ = __webpack_require__.O();

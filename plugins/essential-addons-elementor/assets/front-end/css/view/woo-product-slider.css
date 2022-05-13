@@ -1240,3 +1240,31 @@
      -moz-column-gap: unset;
           column-gap: unset;
 }
+.theme-blocksy .button:before {
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(enabled=false)";
+  -webkit-filter: none !important;
+          filter: none !important;
+  /* IE 7 and the rest of the world */
+  opacity: 1;
+  z-index: 0;
+  bottom: 0 !important;
+  right: 0;
+  line-height: 1.2em;
+}
+.theme-blocksy .button:hover {
+  -webkit-transform: none;
+      -ms-transform: none;
+          transform: none;
+}
+.theme-woodmart .amount {
+  font-weight: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+.theme-woodmart del .amount {
+  color: inherit;
+  font-weight: inherit;
+}
+.theme-woodmart .price del {
+  color: inherit;
+}

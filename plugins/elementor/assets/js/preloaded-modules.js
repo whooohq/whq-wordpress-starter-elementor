@@ -1,5 +1,31 @@
-/*! elementor - v3.4.5 - 12-10-2021 */
+/*! elementor - v3.6.5 - 27-04-2022 */
 (self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["preloaded-modules"],{
+
+/***/ "../node_modules/@babel/runtime/helpers/defineProperty.js":
+/*!****************************************************************!*\
+  !*** ../node_modules/@babel/runtime/helpers/defineProperty.js ***!
+  \****************************************************************/
+/***/ ((module) => {
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+module.exports = _defineProperty;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+
+/***/ }),
 
 /***/ "../assets/dev/js/frontend/handlers/accordion.js":
 /*!*******************************************************!*\
@@ -15,7 +41,7 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _baseTabs = _interopRequireDefault(__webpack_require__(/*! ./base-tabs */ "../assets/dev/js/frontend/handlers/base-tabs.js"));
 
@@ -30,7 +56,7 @@ class Accordion extends _baseTabs.default {
 
 }
 
-exports.default = Accordion;
+exports["default"] = Accordion;
 
 /***/ }),
 
@@ -46,7 +72,7 @@ exports.default = Accordion;
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class Alert extends elementorModules.frontend.handlers.Base {
   getDefaultSettings() {
@@ -74,7 +100,7 @@ class Alert extends elementorModules.frontend.handlers.Base {
 
 }
 
-exports.default = Alert;
+exports["default"] = Alert;
 
 /***/ }),
 
@@ -90,7 +116,7 @@ exports.default = Alert;
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class baseTabs extends elementorModules.frontend.handlers.Base {
   getDefaultSettings() {
@@ -173,12 +199,12 @@ class baseTabs extends elementorModules.frontend.handlers.Base {
 
       case 'Home':
         event.preventDefault();
-        $tabs.first().focus();
+        $tabs.first().trigger('focus');
         return;
 
       case 'End':
         event.preventDefault();
-        $tabs.last().focus();
+        $tabs.last().trigger('focus');
         return;
 
       default:
@@ -192,9 +218,9 @@ class baseTabs extends elementorModules.frontend.handlers.Base {
     if (nextTab) {
       nextTab.focus();
     } else if (-1 === tabIndex + direction) {
-      $tabs.last().focus();
+      $tabs.last().trigger('focus');
     } else {
-      $tabs.first().focus();
+      $tabs.first().trigger('focus');
     }
   }
 
@@ -226,7 +252,7 @@ class baseTabs extends elementorModules.frontend.handlers.Base {
       'aria-selected': 'true',
       'aria-expanded': 'true'
     });
-    $requestedContent[settings.showTabFn](animationDuration, () => elementorFrontend.elements.$window.trigger('resize'));
+    $requestedContent[settings.showTabFn](animationDuration, () => elementorFrontend.elements.$window.trigger('elementor-pro/motion-fx/recalc'));
     $requestedContent.removeAttr('hidden');
   }
 
@@ -298,7 +324,7 @@ class baseTabs extends elementorModules.frontend.handlers.Base {
 
 }
 
-exports.default = baseTabs;
+exports["default"] = baseTabs;
 
 /***/ }),
 
@@ -314,7 +340,7 @@ exports.default = baseTabs;
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class Counter extends elementorModules.frontend.handlers.Base {
   getDefaultSettings() {
@@ -334,21 +360,27 @@ class Counter extends elementorModules.frontend.handlers.Base {
 
   onInit() {
     super.onInit();
-    elementorFrontend.waypoint(this.elements.$counterNumber, () => {
-      const data = this.elements.$counterNumber.data(),
-            decimalDigits = data.toValue.toString().match(/\.(.*)/);
+    this.intersectionObserver = elementorModules.utils.Scroll.scrollObserver({
+      callback: event => {
+        if (event.isInViewport) {
+          this.intersectionObserver.unobserve(this.elements.$counterNumber[0]);
+          const data = this.elements.$counterNumber.data(),
+                decimalDigits = data.toValue.toString().match(/\.(.*)/);
 
-      if (decimalDigits) {
-        data.rounding = decimalDigits[1].length;
+          if (decimalDigits) {
+            data.rounding = decimalDigits[1].length;
+          }
+
+          this.elements.$counterNumber.numerator(data);
+        }
       }
-
-      this.elements.$counterNumber.numerator(data);
     });
+    this.intersectionObserver.observe(this.elements.$counterNumber[0]);
   }
 
 }
 
-exports.default = Counter;
+exports["default"] = Counter;
 
 /***/ }),
 
@@ -364,7 +396,7 @@ exports.default = Counter;
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class ImageCarousel extends elementorModules.frontend.handlers.SwiperBase {
   getDefaultSettings() {
@@ -453,6 +485,13 @@ class ImageCarousel extends elementorModules.frontend.handlers.SwiperBase {
       };
     }
 
+    if ('yes' === elementSettings.lazyload) {
+      swiperOptions.lazy = {
+        loadPrevNext: true,
+        loadPrevNextAmount: 1
+      };
+    }
+
     return swiperOptions;
   }
 
@@ -527,7 +566,7 @@ class ImageCarousel extends elementorModules.frontend.handlers.SwiperBase {
 
 }
 
-exports.default = ImageCarousel;
+exports["default"] = ImageCarousel;
 
 /***/ }),
 
@@ -543,7 +582,7 @@ exports.default = ImageCarousel;
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class Progress extends elementorModules.frontend.handlers.Base {
   getDefaultSettings() {
@@ -571,7 +610,7 @@ class Progress extends elementorModules.frontend.handlers.Base {
 
 }
 
-exports.default = Progress;
+exports["default"] = Progress;
 
 /***/ }),
 
@@ -589,7 +628,7 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _baseTabs = _interopRequireDefault(__webpack_require__(/*! ./base-tabs */ "../assets/dev/js/frontend/handlers/base-tabs.js"));
 
@@ -603,7 +642,7 @@ class Tabs extends _baseTabs.default {
 
 }
 
-exports.default = Tabs;
+exports["default"] = Tabs;
 
 /***/ }),
 
@@ -619,7 +658,7 @@ exports.default = Tabs;
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class TextEditor extends elementorModules.frontend.handlers.Base {
   getDefaultSettings() {
@@ -706,7 +745,7 @@ class TextEditor extends elementorModules.frontend.handlers.Base {
 
 }
 
-exports.default = TextEditor;
+exports["default"] = TextEditor;
 
 /***/ }),
 
@@ -724,7 +763,7 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _baseTabs = _interopRequireDefault(__webpack_require__(/*! ./base-tabs */ "../assets/dev/js/frontend/handlers/base-tabs.js"));
 
@@ -741,7 +780,7 @@ class Toggle extends _baseTabs.default {
 
 }
 
-exports.default = Toggle;
+exports["default"] = Toggle;
 
 /***/ }),
 
@@ -757,7 +796,7 @@ exports.default = Toggle;
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class Video extends elementorModules.frontend.handlers.Base {
   getDefaultSettings() {
@@ -765,7 +804,8 @@ class Video extends elementorModules.frontend.handlers.Base {
       selectors: {
         imageOverlay: '.elementor-custom-embed-image-overlay',
         video: '.elementor-video',
-        videoIframe: '.elementor-video-iframe'
+        videoIframe: '.elementor-video-iframe',
+        playIcon: '.elementor-custom-embed-play'
       }
     };
   }
@@ -775,7 +815,8 @@ class Video extends elementorModules.frontend.handlers.Base {
     return {
       $imageOverlay: this.$element.find(selectors.imageOverlay),
       $video: this.$element.find(selectors.video),
-      $videoIframe: this.$element.find(selectors.videoIframe)
+      $videoIframe: this.$element.find(selectors.videoIframe),
+      $playIcon: this.$element.find(selectors.playIcon)
     };
   }
 
@@ -873,6 +914,15 @@ class Video extends elementorModules.frontend.handlers.Base {
 
   bindEvents() {
     this.elements.$imageOverlay.on('click', this.handleVideo.bind(this));
+    this.elements.$playIcon.on('keydown', event => {
+      const playKeys = [13, // Enter key.
+      32 // Space bar key.
+      ];
+
+      if (playKeys.includes(event.keyCode)) {
+        this.handleVideo();
+      }
+    });
   }
 
   onInit() {
@@ -948,7 +998,7 @@ class Video extends elementorModules.frontend.handlers.Base {
 
 }
 
-exports.default = Video;
+exports["default"] = Video;
 
 /***/ }),
 
@@ -1004,6 +1054,303 @@ elementorFrontend.elements.$window.on('elementor/frontend/init', () => {
 
 /***/ }),
 
+/***/ "../assets/dev/js/frontend/utils/icons/e-icons.js":
+/*!********************************************************!*\
+  !*** ../assets/dev/js/frontend/utils/icons/e-icons.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.zoomOutBold = exports.zoomInBold = exports.twitter = exports.shareArrow = exports.pinterest = exports.loading = exports.frameMinimize = exports.frameExpand = exports.facebook = exports.downloadBold = exports.close = exports.chevronRight = exports.chevronLeft = void 0;
+
+var _manager = _interopRequireDefault(__webpack_require__(/*! ./manager */ "../assets/dev/js/frontend/utils/icons/manager.js"));
+
+// This file is automatically generated, please don't change anything in this file.
+const iconsManager = new _manager.default('eicon');
+const chevronLeft = {
+  get element() {
+    const svgData = {
+      path: 'M646 125C629 125 613 133 604 142L308 442C296 454 292 471 292 487 292 504 296 521 308 533L604 854C617 867 629 875 646 875 663 875 679 871 692 858 704 846 713 829 713 812 713 796 708 779 692 767L438 487 692 225C700 217 708 204 708 187 708 171 704 154 692 142 675 129 663 125 646 125Z',
+      width: 1000,
+      height: 1000
+    };
+    return iconsManager.createSvgElement('chevron-left', svgData);
+  }
+
+};
+exports.chevronLeft = chevronLeft;
+const chevronRight = {
+  get element() {
+    const svgData = {
+      path: 'M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z',
+      width: 1000,
+      height: 1000
+    };
+    return iconsManager.createSvgElement('chevron-right', svgData);
+  }
+
+};
+exports.chevronRight = chevronRight;
+const close = {
+  get element() {
+    const svgData = {
+      path: 'M742 167L500 408 258 167C246 154 233 150 217 150 196 150 179 158 167 167 154 179 150 196 150 212 150 229 154 242 171 254L408 500 167 742C138 771 138 800 167 829 196 858 225 858 254 829L496 587 738 829C750 842 767 846 783 846 800 846 817 842 829 829 842 817 846 804 846 783 846 767 842 750 829 737L588 500 833 258C863 229 863 200 833 171 804 137 775 137 742 167Z',
+      width: 1000,
+      height: 1000
+    };
+    return iconsManager.createSvgElement('close', svgData);
+  }
+
+};
+exports.close = close;
+const downloadBold = {
+  get element() {
+    const svgData = {
+      path: 'M572 42H428C405 42 385 61 385 85V385H228C197 385 180 424 203 447L475 719C489 732 511 732 524 719L797 447C819 424 803 385 771 385H614V85C615 61 595 42 572 42ZM958 915V715C958 691 939 672 915 672H653L565 760C529 796 471 796 435 760L347 672H85C61 672 42 691 42 715V915C42 939 61 958 85 958H915C939 958 958 939 958 915ZM736 873C736 853 720 837 700 837 681 837 665 853 665 873 665 892 681 908 700 908 720 908 736 892 736 873ZM815 837C835 837 851 853 851 873 851 892 835 908 815 908 795 908 779 892 779 873 779 853 795 837 815 837Z',
+      width: 1000,
+      height: 1000
+    };
+    return iconsManager.createSvgElement('download-bold', svgData);
+  }
+
+};
+exports.downloadBold = downloadBold;
+const facebook = {
+  get element() {
+    const svgData = {
+      path: 'M858 42H142C88 42 42 87 42 142V863C42 913 88 958 142 958H421V646H292V500H421V387C421 258 496 192 613 192 667 192 725 200 725 200V325H663C600 325 579 362 579 404V500H721L700 646H583V958H863C917 958 963 913 963 858V142C958 87 913 42 858 42L858 42Z',
+      width: 1000,
+      height: 1000
+    };
+    return iconsManager.createSvgElement('facebook', svgData);
+  }
+
+};
+exports.facebook = facebook;
+const frameExpand = {
+  get element() {
+    const svgData = {
+      path: 'M863 583C890 583 914 605 916 632L917 637V863L916 868C914 893 893 914 868 916L863 917H638L632 916C607 914 586 893 584 868L583 863 584 857C586 832 607 811 632 809L638 808H808V637L809 632C811 605 835 583 863 583ZM138 583C165 583 189 605 191 632L192 637V808H363C390 808 414 830 416 857L417 863C417 890 395 914 368 916L363 917H138C110 917 86 895 84 868L83 863V637C83 607 108 583 138 583ZM863 83C890 83 914 105 916 132L917 137V362C917 392 893 417 863 417 835 417 811 395 809 368L808 362V192H638C610 192 586 170 584 143L583 137C583 110 605 86 632 84L638 83H863ZM363 83L368 84C393 86 414 107 416 132L417 137 416 143C414 168 393 189 368 191L363 192H192V362L191 368C189 395 165 417 138 417S86 395 84 368L83 362V137L84 132C86 107 107 86 132 84L138 83H363Z',
+      width: 1000,
+      height: 1000
+    };
+    return iconsManager.createSvgElement('frame-expand', svgData);
+  }
+
+};
+exports.frameExpand = frameExpand;
+const frameMinimize = {
+  get element() {
+    const svgData = {
+      path: 'M363 583C392 583 413 604 417 633L417 637V863C417 892 392 917 363 917 333 917 313 896 308 867L308 863V692H138C108 692 88 671 83 642L83 637C83 608 104 587 133 583L138 583H363ZM638 583C608 583 588 604 583 633L583 637V863C583 892 608 917 638 917 667 917 688 896 692 867L692 863V692H863C892 692 913 671 917 642L917 637C917 608 896 587 867 583L863 583H638ZM363 417C392 417 413 396 417 367L417 362V137C417 108 392 83 363 83 333 83 313 104 308 133L308 137V308H138C108 308 88 329 83 358L83 362C83 392 104 412 133 417L138 417H363ZM638 417C608 417 588 396 583 367L583 362V137C583 108 608 83 638 83 667 83 688 104 692 133L692 137V308H863C892 308 913 329 917 358L917 362C917 392 896 412 867 417L863 417H638Z',
+      width: 1000,
+      height: 1000
+    };
+    return iconsManager.createSvgElement('frame-minimize', svgData);
+  }
+
+};
+exports.frameMinimize = frameMinimize;
+const loading = {
+  get element() {
+    const svgData = {
+      path: 'M500 975V858C696 858 858 696 858 500S696 142 500 142 142 304 142 500H25C25 237 238 25 500 25S975 237 975 500 763 975 500 975Z',
+      width: 1000,
+      height: 1000
+    };
+    return iconsManager.createSvgElement('loading', svgData);
+  }
+
+};
+exports.loading = loading;
+const pinterest = {
+  get element() {
+    const svgData = {
+      path: 'M950 496C950 746 746 950 496 950 450 950 404 942 363 929 379 900 408 850 421 808 425 787 450 700 450 700 467 729 508 754 554 754 692 754 792 629 792 471 792 321 671 208 513 208 317 208 213 342 213 483 213 550 250 633 304 658 313 662 317 662 321 654 321 650 329 617 333 604 333 600 333 596 329 592 313 567 296 525 296 487 288 387 367 292 496 292 608 292 688 367 688 475 688 600 625 683 546 683 500 683 467 646 479 600 492 546 517 487 517 450 517 417 500 387 458 387 413 387 375 433 375 496 375 537 388 562 388 562S342 754 333 787C325 825 329 883 333 917 163 854 42 687 42 496 42 246 246 42 496 42S950 246 950 496Z',
+      width: 1000,
+      height: 1000
+    };
+    return iconsManager.createSvgElement('pinterest', svgData);
+  }
+
+};
+exports.pinterest = pinterest;
+const shareArrow = {
+  get element() {
+    const svgData = {
+      path: 'M946 383L667 133C642 112 604 129 604 162V292C238 296 71 637 42 812 238 587 363 521 604 517V658C604 692 642 708 667 687L946 442C963 425 963 400 946 383Z',
+      width: 1000,
+      height: 1000
+    };
+    return iconsManager.createSvgElement('share-arrow', svgData);
+  }
+
+};
+exports.shareArrow = shareArrow;
+const twitter = {
+  get element() {
+    const svgData = {
+      path: 'M863 312C863 321 863 329 863 337 863 587 675 871 329 871 221 871 125 842 42 787 58 787 71 792 88 792 175 792 254 762 321 712 238 712 171 658 146 583 158 583 171 587 183 587 200 587 217 583 233 579 146 562 83 487 83 396V387C108 400 138 408 167 412 117 379 83 321 83 254 83 221 92 187 108 158 200 271 342 346 496 354 492 342 492 325 492 312 492 208 575 125 679 125 733 125 783 146 817 183 858 175 900 158 938 137 925 179 896 217 854 242 892 237 929 229 963 212 933 250 900 283 863 312Z',
+      width: 1000,
+      height: 1000
+    };
+    return iconsManager.createSvgElement('twitter', svgData);
+  }
+
+};
+exports.twitter = twitter;
+const zoomInBold = {
+  get element() {
+    const svgData = {
+      path: 'M388 383V312C388 283 413 258 442 258 471 258 496 283 496 312V383H567C596 383 621 408 621 437S596 492 567 492H496V562C496 592 471 617 442 617 413 617 388 592 388 562V492H317C288 492 263 467 263 437S288 383 317 383H388ZM654 733C592 779 517 804 438 804 233 804 71 642 71 437S233 71 438 71 804 233 804 437C804 521 779 596 733 654L896 817C917 837 917 871 896 892 875 913 842 913 821 892L654 733ZM438 696C579 696 696 579 696 437S579 179 438 179 179 296 179 437 296 696 438 696Z',
+      width: 1000,
+      height: 1000
+    };
+    return iconsManager.createSvgElement('zoom-in-bold', svgData);
+  }
+
+};
+exports.zoomInBold = zoomInBold;
+const zoomOutBold = {
+  get element() {
+    const svgData = {
+      path: 'M750 683L946 879C963 896 963 929 946 946 929 963 896 967 879 946L683 750C617 804 533 833 438 833 221 833 42 654 42 437S221 42 438 42 833 221 833 437C833 529 800 612 750 683ZM296 392H575C600 392 621 412 621 442 621 467 600 487 575 487H296C271 487 250 467 250 442 250 412 271 392 296 392ZM438 737C604 737 738 604 738 437S604 137 438 137 138 271 138 437 271 737 438 737Z',
+      width: 1000,
+      height: 1000
+    };
+    return iconsManager.createSvgElement('zoom-out-bold', svgData);
+  }
+
+};
+exports.zoomOutBold = zoomOutBold;
+
+/***/ }),
+
+/***/ "../assets/dev/js/frontend/utils/icons/manager.js":
+/*!********************************************************!*\
+  !*** ../assets/dev/js/frontend/utils/icons/manager.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+
+class IconsManager {
+  constructor(elementsPrefix) {
+    this.prefix = `${elementsPrefix}-`;
+    this.createSvgSymbolsContainer();
+  }
+
+  createSvgElement(name, {
+    path,
+    width,
+    height
+  }) {
+    const iconName = this.prefix + name,
+          iconSelector = '#' + this.prefix + name; // Create symbol if not exist yet.
+
+    if (!IconsManager.iconsUsageList.includes(iconName)) {
+      if (!IconsManager.symbolsContainer.querySelector(iconSelector)) {
+        const symbol = this.createSymbolElement({
+          id: iconName,
+          path,
+          width,
+          height
+        });
+        IconsManager.symbolsContainer.appendChild(symbol);
+      }
+
+      IconsManager.iconsUsageList.push(iconName);
+    }
+
+    return this.createSvgIconElement({
+      iconName,
+      iconSelector
+    });
+  }
+
+  createSvgNode(tag, {
+    props = {},
+    attrs = {}
+  }) {
+    const node = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    Object.keys(props).map(key => node[key] = props[key]);
+    Object.keys(attrs).map(key => node.setAttributeNS(null, key, attrs[key]));
+    return node;
+  }
+
+  createSvgIconElement({
+    iconName,
+    iconSelector
+  }) {
+    return this.createSvgNode('svg', {
+      props: {
+        innerHTML: '<use xlink:href="' + iconSelector + '" />'
+      },
+      attrs: {
+        class: 'e-font-icon-svg e-' + iconName
+      }
+    });
+  }
+
+  createSvgSymbolsContainer() {
+    if (!IconsManager.symbolsContainer) {
+      const symbolsContainerId = 'e-font-icon-svg-symbols';
+      IconsManager.symbolsContainer = document.getElementById(symbolsContainerId);
+
+      if (!IconsManager.symbolsContainer) {
+        IconsManager.symbolsContainer = this.createSvgNode('svg', {
+          attrs: {
+            style: 'display: none;',
+            class: symbolsContainerId
+          }
+        });
+        document.body.appendChild(IconsManager.symbolsContainer);
+      }
+    }
+  }
+
+  createSymbolElement({
+    id,
+    path,
+    width,
+    height
+  }) {
+    return this.createSvgNode('symbol', {
+      props: {
+        innerHTML: '<path d="' + path + '"></path>',
+        id
+      },
+      attrs: {
+        viewBox: '0 0 ' + width + ' ' + height
+      }
+    });
+  }
+
+}
+
+exports["default"] = IconsManager;
+(0, _defineProperty2.default)(IconsManager, "symbolsContainer", void 0);
+(0, _defineProperty2.default)(IconsManager, "iconsUsageList", []);
+
+/***/ }),
+
 /***/ "../assets/dev/js/frontend/utils/lightbox/lightbox.js":
 /*!************************************************************!*\
   !*** ../assets/dev/js/frontend/utils/lightbox/lightbox.js ***!
@@ -1017,11 +1364,14 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 
 var _screenfull = _interopRequireDefault(__webpack_require__(/*! ./screenfull */ "../assets/dev/js/frontend/utils/lightbox/screenfull.js"));
 
+var _eIcons = __webpack_require__(/*! @elementor/e-icons */ "../assets/dev/js/frontend/utils/icons/e-icons.js");
+
 module.exports = elementorModules.ViewModule.extend({
   oldAspectRatio: null,
   oldAnimation: null,
   swiper: null,
   player: null,
+  isFontIconSvgExperiment: elementorFrontend.config.experimentalFeatures.e_font_icon_svg,
   getDefaultSettings: function () {
     return {
       classes: {
@@ -1089,11 +1439,18 @@ module.exports = elementorModules.ViewModule.extend({
     return module.exports.modal;
   },
   initModal: function () {
+    const closeIcon = {}; // If the experiment is active the closeIcon should be an entire SVG element otherwise it should pass the eicon class name.
+
+    if (this.isFontIconSvgExperiment) {
+      closeIcon.iconElement = _eIcons.close.element;
+    } else {
+      closeIcon.iconClass = 'eicon-close';
+    }
+
     const modal = module.exports.modal = elementorFrontend.getDialogsManager().createWidget('lightbox', {
       className: 'elementor-lightbox',
       closeButton: true,
-      closeButtonOptions: {
-        iconClass: 'eicon-close',
+      closeButtonOptions: { ...closeIcon,
         attributes: {
           tabindex: 0,
           role: 'button',
@@ -1152,7 +1509,8 @@ module.exports = elementorModules.ViewModule.extend({
           image: options.url,
           index: 0,
           title: options.title,
-          description: options.description
+          description: options.description,
+          hash: options.hash
         }];
         options.slideshow = {
           slides,
@@ -1190,6 +1548,7 @@ module.exports = elementorModules.ViewModule.extend({
         type: 'image',
         id: slideshowID,
         url: element.href,
+        hash: element.getAttribute('e-action-hash'),
         title: element.dataset.elementorLightboxTitle,
         description: element.dataset.elementorLightboxDescription,
         modalOptions: {
@@ -1228,12 +1587,14 @@ module.exports = elementorModules.ViewModule.extend({
       }, options.videoParams);
       $videoElement = $('<video>', videoParams);
     } else {
-      let apiProvider = elementorFrontend.utils.baseVideoLoader;
+      let apiProvider;
 
       if (-1 !== options.url.indexOf('vimeo.com')) {
         apiProvider = elementorFrontend.utils.vimeo;
-      } else if (options.url.match(/^(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com)/)) {
+      } else if (options.url.match(/^(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com|youtube-nocookie\.com)/)) {
         apiProvider = elementorFrontend.utils.youtube;
+      } else {
+        return;
       }
 
       $videoElement = $('<iframe>', {
@@ -1260,9 +1621,18 @@ module.exports = elementorModules.ViewModule.extend({
       i18n
     } = elementorFrontend.config,
           socialNetworks = {
-      facebook: i18n.shareOnFacebook,
-      twitter: i18n.shareOnTwitter,
-      pinterest: i18n.pinIt
+      facebook: {
+        label: i18n.shareOnFacebook,
+        iconElement: _eIcons.facebook
+      },
+      twitter: {
+        label: i18n.shareOnTwitter,
+        iconElement: _eIcons.twitter
+      },
+      pinterest: {
+        label: i18n.pinIt,
+        iconElement: _eIcons.pinterest
+      }
     },
           $ = jQuery,
           classes = this.getSettings('classes'),
@@ -1281,40 +1651,39 @@ module.exports = elementorModules.ViewModule.extend({
       itemUrl = $image.attr('src');
     }
 
-    $.each(socialNetworks, (key, networkLabel) => {
-      const $link = $('<a>', {
-        href: this.createShareLink(key, itemUrl),
+    $.each(socialNetworks, (key, data) => {
+      const networkLabel = data.label,
+            $link = $('<a>', {
+        href: this.createShareLink(key, itemUrl, $activeSlide.attr('e-action-hash')),
         target: '_blank'
-      }).text(networkLabel);
-      $link.prepend($('<i>', {
+      }).text(networkLabel),
+            $socialNetworkIconElement = this.isFontIconSvgExperiment ? $(data.iconElement.element) : $('<i>', {
         class: 'eicon-' + key
-      }));
+      });
+      $link.prepend($socialNetworkIconElement);
       $linkList.append($link);
     });
 
     if (!videoUrl) {
+      const $downloadIcon = this.isFontIconSvgExperiment ? $(_eIcons.downloadBold.element) : $('<i>', {
+        class: 'eicon-download-bold'
+      });
+      $downloadIcon.attr('aria-label', i18n.download);
       $linkList.append($('<a>', {
         href: itemUrl,
         download: ''
-      }).text(i18n.downloadImage).prepend($('<i>', {
-        class: 'eicon-download-bold',
-        'aria-label': i18n.download
-      })));
+      }).text(i18n.downloadImage).prepend($downloadIcon));
     }
 
     return $linkList;
   },
-  createShareLink: function (networkName, itemUrl) {
+  createShareLink: function (networkName, itemUrl, hash = null) {
     const options = {};
 
     if ('pinterest' === networkName) {
       options.image = encodeURIComponent(itemUrl);
     } else {
-      const hash = elementorFrontend.utils.urlActions.createActionHash('lightbox', {
-        id: this.id,
-        url: itemUrl
-      });
-      options.url = encodeURIComponent(location.href.replace(/#.*/, '')) + hash;
+      options.url = encodeURIComponent(location.href.replace(/#.*/, '') + hash);
     }
 
     return ShareLink.getNetworkLink(networkName, options);
@@ -1341,7 +1710,8 @@ module.exports = elementorModules.ViewModule.extend({
     });
 
     if (showShare) {
-      elements.$iconShare = $('<i>', {
+      const iconElement = this.isFontIconSvgExperiment ? _eIcons.shareArrow.element : '<i>';
+      elements.$iconShare = $(iconElement, {
         class: slideshowClasses.iconShare,
         role: 'button',
         'aria-label': i18n.share,
@@ -1360,27 +1730,57 @@ module.exports = elementorModules.ViewModule.extend({
     }
 
     if (showZoom) {
-      elements.$iconZoom = $('<i>', {
-        class: slideshowClasses.iconZoomIn,
+      const iconElement = this.isFontIconSvgExperiment ? _eIcons.zoomInBold.element : '<i>',
+            showZoomElements = [],
+            showZoomAttrs = {
         role: 'switch',
         'aria-checked': false,
         'aria-label': i18n.zoom
-      });
-      elements.$iconZoom.on('click', this.toggleZoomMode);
-      elements.$header.append(elements.$iconZoom);
-      this.$buttons = this.$buttons.add(elements.$iconZoom);
+      },
+            zoomAttrs = { ...showZoomAttrs
+      };
+
+      if (!this.isFontIconSvgExperiment) {
+        zoomAttrs.class = slideshowClasses.iconZoomIn;
+      }
+
+      elements.$iconZoom = $(iconElement).attr(zoomAttrs).on('click', this.toggleZoomMode);
+      showZoomElements.push(elements.$iconZoom);
+
+      if (this.isFontIconSvgExperiment) {
+        elements.$iconZoomOut = $(_eIcons.zoomOutBold.element).attr(showZoomAttrs).addClass(classes.hidden).on('click', this.toggleZoomMode);
+        showZoomElements.push(elements.$iconZoomOut);
+      }
+
+      elements.$header.append(showZoomElements);
+      this.$buttons = this.$buttons.add(showZoomElements);
     }
 
     if (showFullscreen) {
-      elements.$iconExpand = $('<i>', {
-        class: slideshowClasses.iconExpand,
+      const iconElement = this.isFontIconSvgExperiment ? _eIcons.frameExpand.element : '<i>',
+            fullScreenElements = [],
+            fullScreenAttrs = {
         role: 'switch',
         'aria-checked': false,
         'aria-label': i18n.fullscreen
-      }).append($('<span>'), $('<span>'));
-      elements.$iconExpand.on('click', this.toggleFullscreen);
-      elements.$header.append(elements.$iconExpand);
-      this.$buttons = this.$buttons.add(elements.$iconExpand);
+      },
+            expandAttrs = { ...fullScreenAttrs
+      }; // Only if the experiment is not active, we use the class-name in order to render the icon.
+
+      if (!this.isFontIconSvgExperiment) {
+        expandAttrs.class = slideshowClasses.iconExpand;
+      }
+
+      elements.$iconExpand = $(iconElement).append($('<span>'), $('<span>')).attr(expandAttrs).on('click', this.toggleFullscreen);
+      fullScreenElements.push(elements.$iconExpand);
+
+      if (this.isFontIconSvgExperiment) {
+        elements.$iconMinimize = $(_eIcons.frameMinimize.element).attr(fullScreenAttrs).addClass(classes.hidden).on('click', this.toggleFullscreen);
+        fullScreenElements.push(elements.$iconMinimize);
+      }
+
+      elements.$header.append(fullScreenElements);
+      this.$buttons = this.$buttons.add(fullScreenElements);
     }
 
     if (showCounter) {
@@ -1438,7 +1838,13 @@ module.exports = elementorModules.ViewModule.extend({
 
     _screenfull.default.request(this.elements.$container.parents('.dialog-widget')[0]);
 
-    this.elements.$iconExpand.removeClass(classes.slideshow.iconExpand).addClass(classes.slideshow.iconShrink).attr('aria-checked', 'true');
+    if (this.isFontIconSvgExperiment) {
+      this.elements.$iconExpand.addClass(classes.hidden).attr('aria-checked', 'false');
+      this.elements.$iconMinimize.removeClass(classes.hidden).attr('aria-checked', 'true');
+    } else {
+      this.elements.$iconExpand.removeClass(classes.slideshow.iconExpand).addClass(classes.slideshow.iconShrink).attr('aria-checked', 'true');
+    }
+
     this.elements.$container.addClass(classes.slideshow.fullscreenMode);
   },
   deactivateFullscreen: function () {
@@ -1446,7 +1852,13 @@ module.exports = elementorModules.ViewModule.extend({
 
     _screenfull.default.exit();
 
-    this.elements.$iconExpand.removeClass(classes.slideshow.iconShrink).addClass(classes.slideshow.iconExpand).attr('aria-checked', 'false');
+    if (this.isFontIconSvgExperiment) {
+      this.elements.$iconExpand.removeClass(classes.hidden).attr('aria-checked', 'true');
+      this.elements.$iconMinimize.addClass(classes.hidden).attr('aria-checked', 'false');
+    } else {
+      this.elements.$iconExpand.removeClass(classes.slideshow.iconShrink).addClass(classes.slideshow.iconExpand).attr('aria-checked', 'false');
+    }
+
     this.elements.$container.removeClass(classes.slideshow.fullscreenMode);
   },
   activateZoom: function () {
@@ -1458,7 +1870,13 @@ module.exports = elementorModules.ViewModule.extend({
     swiper.allowSlidePrev = false;
     swiper.allowTouchMove = false;
     elements.$container.addClass(classes.slideshow.zoomMode);
-    elements.$iconZoom.removeClass(classes.slideshow.iconZoomIn).addClass(classes.slideshow.iconZoomOut);
+
+    if (this.isFontIconSvgExperiment) {
+      elements.$iconZoom.addClass(classes.hidden).attr('aria-checked', 'false');
+      elements.$iconZoomOut.removeClass(classes.hidden).attr('aria-checked', 'true');
+    } else {
+      elements.$iconZoom.removeClass(classes.slideshow.iconZoomIn).addClass(classes.slideshow.iconZoomOut);
+    }
   },
   deactivateZoom: function () {
     const swiper = this.swiper,
@@ -1469,7 +1887,13 @@ module.exports = elementorModules.ViewModule.extend({
     swiper.allowSlidePrev = true;
     swiper.allowTouchMove = true;
     elements.$container.removeClass(classes.slideshow.zoomMode);
-    elements.$iconZoom.removeClass(classes.slideshow.iconZoomOut).addClass(classes.slideshow.iconZoomIn);
+
+    if (this.isFontIconSvgExperiment) {
+      elements.$iconZoom.removeClass(classes.hidden).attr('aria-checked', 'true');
+      elements.$iconZoomOut.addClass(classes.hidden).attr('aria-checked', 'false');
+    } else {
+      elements.$iconZoom.removeClass(classes.slideshow.iconZoomOut).addClass(classes.slideshow.iconZoomIn);
+    }
   },
   getSlideshowFooter: function () {
     const $ = jQuery,
@@ -1517,12 +1941,10 @@ module.exports = elementorModules.ViewModule.extend({
 
       if (slide.video) {
         $slide.attr('data-elementor-slideshow-video', slide.video);
-        const $playIcon = $('<div>', {
+        const playVideoLoadingElement = this.isFontIconSvgExperiment ? _eIcons.loading.element : '<i>',
+              $playIcon = $('<div>', {
           class: classes.playButton
-        }).html($('<i>', {
-          class: classes.playButtonIcon,
-          'aria-label': i18n.playVideo
-        }));
+        }).html($(playVideoLoadingElement).attr('aria-label', i18n.playVideo).addClass(classes.playButtonIcon));
         $slide.append($playIcon);
       } else {
         const $zoomContainer = $('<div>', {
@@ -1549,6 +1971,10 @@ module.exports = elementorModules.ViewModule.extend({
         $slide.append($zoomContainer);
       }
 
+      if (slide.hash) {
+        $slide.attr('e-action-hash', slide.hash);
+      }
+
       $slidesWrapper.append($slide);
     });
     this.elements.$container = $container;
@@ -1556,18 +1982,20 @@ module.exports = elementorModules.ViewModule.extend({
     $container.prepend(this.elements.$header).append($slidesWrapper);
 
     if (!isSingleSlide) {
+      const $prevButtonIcon = this.isFontIconSvgExperiment ? $(_eIcons.chevronLeft.element) : $('<i>', {
+        class: slideshowClasses.prevButtonIcon
+      }),
+            $nextButtonIcon = this.isFontIconSvgExperiment ? $(_eIcons.chevronRight.element) : $('<i>', {
+        class: slideshowClasses.nextButtonIcon
+      });
       $prevButton = $('<div>', {
         class: slideshowClasses.prevButton + ' ' + classes.preventClose,
         'aria-label': i18n.previous
-      }).html($('<i>', {
-        class: slideshowClasses.prevButtonIcon
-      }));
+      }).html($prevButtonIcon);
       $nextButton = $('<div>', {
         class: slideshowClasses.nextButton + ' ' + classes.preventClose,
         'aria-label': i18n.next
-      }).html($('<i>', {
-        class: slideshowClasses.nextButtonIcon
-      }));
+      }).html($nextButtonIcon);
       $container.append($nextButton, $prevButton);
       this.$buttons = this.$buttons.add($nextButton).add($prevButton);
     }
@@ -1754,7 +2182,7 @@ module.exports = elementorModules.ViewModule.extend({
       if ('youtube' === videoType) {
         this.prepareYTVideo(apiObject, videoID, $videoContainer, $videoWrapper, $playIcon);
       } else if ('vimeo' === videoType) {
-        this.prepareVimeoVideo(apiObject, videoID, $videoContainer, $videoWrapper, $playIcon);
+        this.prepareVimeoVideo(apiObject, videoURL, $videoContainer, $videoWrapper, $playIcon);
       }
     });
     $playIcon.addClass(classes.playing).removeClass(classes.hidden);
@@ -1790,10 +2218,10 @@ module.exports = elementorModules.ViewModule.extend({
       }
     });
   },
-  prepareVimeoVideo: function (Vimeo, videoId, $videoContainer, $videoWrapper, $playIcon) {
+  prepareVimeoVideo: function (Vimeo, videoURL, $videoContainer, $videoWrapper, $playIcon) {
     const classes = this.getSettings('classes'),
           vimeoOptions = {
-      id: videoId,
+      url: videoURL,
       autoplay: true,
       transparent: false,
       playsinline: false
@@ -1841,7 +2269,8 @@ module.exports = elementorModules.ViewModule.extend({
         image: this.href,
         index: slideIndex,
         title: this.dataset.elementorLightboxTitle,
-        description: this.dataset.elementorLightboxDescription
+        description: this.dataset.elementorLightboxDescription,
+        hash: this.getAttribute('e-action-hash')
       };
 
       if (slideVideo) {
@@ -2020,8 +2449,6 @@ module.exports = elementorModules.ViewModule.extend({
 
 },
 /******/ __webpack_require__ => { // webpackRuntimeModules
-/******/ "use strict";
-/******/ 
 /******/ var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
 /******/ __webpack_require__.O(0, ["frontend","frontend-modules"], () => (__webpack_exec__("../assets/dev/js/frontend/preloaded-modules.js")));
 /******/ var __webpack_exports__ = __webpack_require__.O();

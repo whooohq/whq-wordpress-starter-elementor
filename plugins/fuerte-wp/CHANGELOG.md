@@ -1,6 +1,10 @@
 # Changelog
 
-# 1.3.7 / 2021-10-08
+# 1.3.11 / 2022-01-11
+- Fixed bug with un-trimmed advanced restrictions.
+- Fixed a bug with cached options values (transient).
+
+# 1.3.8 / 2021-10-08
 - Option to configure Theme Editor restriction.
 - Option to configure Plugin Editor restriction.
 - Option to configure new plugins installation restriction.

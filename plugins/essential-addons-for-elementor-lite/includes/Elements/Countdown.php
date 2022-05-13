@@ -55,7 +55,7 @@ class Countdown extends Widget_Base {
         return 'https://essential-addons.com/elementor/docs/creative-elements/ea-countdown/';
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'eael_section_countdown_settings_general',
@@ -480,7 +480,7 @@ class Countdown extends Widget_Base {
                         ],
                     ],
                     'default'     => '1',
-                    'description' => '<span class="pro-feature"> Get the  <a href="https://wpdeveloper.net/upgrade/ea-pro" target="_blank">Pro version</a> for more stunning elements and customization options.</span>',
+                    'description' => '<span class="pro-feature"> Get the  <a href="https://wpdeveloper.com/upgrade/ea-pro" target="_blank">Pro version</a> for more stunning elements and customization options.</span>',
                 ]
             );
 
@@ -1156,6 +1156,7 @@ class Countdown extends Widget_Base {
 
         $get_due_date = esc_attr( $settings['eael_countdown_due_time'] );
         $due_date = date( "M d Y G:i:s", strtotime( $get_due_date ) );
+	    $gmt_offset = str_replace( array( '.25', '.5', '.75' ), array( ':15', ':30', ':45' ), ( get_option( 'gmt_offset' ) < 0 ? '' : '+' ) . get_option( 'gmt_offset' ) );
 
         $this->add_render_attribute( 'eael-countdown', 'class', 'eael-countdown-wrapper' );
         $this->add_render_attribute( 'eael-countdown', 'data-countdown-id', esc_attr( $this->get_id() ) );
@@ -1183,20 +1184,20 @@ class Countdown extends Widget_Base {
         }
 
         // label view
-        $this->add_render_attribute( 'eael-countdown-container', [
-            'class' => [
-                'eael-countdown-container',
-                $settings['eael_countdown_label_view'],
-                $settings['eael_countdown_label_view_tablet'] . '-tablet',
-                $settings['eael_countdown_label_view_mobile'] . '-mobile',
-                $separator,
-            ],
-        ] );
+	    $this->add_render_attribute( 'eael-countdown-container', [
+		    'class' => [
+			    'eael-countdown-container',
+			    $settings['eael_countdown_label_view'],
+			    empty( $settings['eael_countdown_label_view_tablet'] ) ? '' : $settings['eael_countdown_label_view_tablet'] . '-tablet',
+			    empty( $settings['eael_countdown_label_view_mobile'] ) ? '' : $settings['eael_countdown_label_view_mobile'] . '-mobile',
+			    $separator,
+		    ],
+	    ] );
         ?>
 
 		<div <?php echo $this->get_render_attribute_string( 'eael-countdown' ); ?>>
 			<div <?php echo $this->get_render_attribute_string( 'eael-countdown-container' ); ?>>
-				<ul id="eael-countdown-<?php echo esc_attr( $this->get_id() ); ?>" class="eael-countdown-items" data-date="<?php echo esc_attr( $due_date ); ?>">
+				<ul id="eael-countdown-<?php echo esc_attr( $this->get_id() ); ?>" class="eael-countdown-items" data-date="<?php echo esc_attr( "{$due_date} {$gmt_offset}" ); ?>">
 					<?php if ( !empty( $settings['eael_countdown_days'] ) ): ?><li class="eael-countdown-item"><div class="eael-countdown-days"><span data-days class="eael-countdown-digits">00</span><?php if ( !empty( $settings['eael_countdown_days_label'] ) ): ?><span class="eael-countdown-label"><?php echo esc_attr( $settings['eael_countdown_days_label'] ); ?></span><?php endif;?></div></li><?php endif;?>
 					<?php if ( !empty( $settings['eael_countdown_hours'] ) ): ?><li class="eael-countdown-item"><div class="eael-countdown-hours"><span data-hours class="eael-countdown-digits">00</span><?php if ( !empty( $settings['eael_countdown_hours_label'] ) ): ?><span class="eael-countdown-label"><?php echo esc_attr( $settings['eael_countdown_hours_label'] ); ?></span><?php endif;?></div></li><?php endif;?>
 				<?php if ( !empty( $settings['eael_countdown_minutes'] ) ): ?><li class="eael-countdown-item"><div class="eael-countdown-minutes"><span data-minutes class="eael-countdown-digits">00</span><?php if ( !empty( $settings['eael_countdown_minutes_label'] ) ): ?><span class="eael-countdown-label"><?php echo esc_attr( $settings['eael_countdown_minutes_label'] ); ?></span><?php endif;?></div></li><?php endif;?>

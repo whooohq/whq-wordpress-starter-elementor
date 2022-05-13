@@ -74,7 +74,7 @@ class Facebook_Feed extends Widget_Base
         ];
     }
 
-    protected function _register_controls()
+    protected function register_controls()
     {
         $this->start_controls_section(
             'eael_section_facebook_feed_settings_account',
@@ -105,6 +105,21 @@ class Facebook_Feed extends Widget_Base
                 'description' => __('<a href="https://essential-addons.com/elementor/docs/facebook-feed/" class="eael-btn" target="_blank">Get Access Token</a>', 'essential-addons-for-elementor-lite'),
             ]
         );
+
+	    $this->add_control(
+		    'eael_facebook_feed_data_source',
+		    [
+			    'label' => esc_html__('Source', 'essential-addons-for-elementor-lite'),
+			    'type' => Controls_Manager::SELECT,
+			    'label_block' => true,
+			    'options' => [
+				    'posts' => esc_html__('Posts', 'essential-addons-for-elementor-lite'),
+				    'feed' => esc_html__('Feed', 'essential-addons-for-elementor-lite'),
+			    ],
+			    'default' => 'posts',
+
+		    ]
+	    );
 
 	    $this->add_control(
 		    'eael_facebook_feed_cache_limit',
@@ -991,7 +1006,7 @@ class Facebook_Feed extends Widget_Base
                 ],
                 'condition' => [
                     'eael_facebook_feed_layout' => 'card',
-                ],
+                ]
             ]
         );
 

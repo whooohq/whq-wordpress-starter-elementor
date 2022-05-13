@@ -29,6 +29,10 @@ class General extends Base_Category {
 		return esc_html__( 'General', 'elementor' );
 	}
 
+	public function get_id() {
+		return 'general';
+	}
+
 	/**
 	 * Get category items.
 	 *
@@ -69,6 +73,12 @@ class General extends Base_Category {
 				'icon' => 'library-save',
 				'url' => Plugin::$instance->app->get_settings( 'menu_url' ),
 				'keywords' => [ 'template', 'header', 'footer', 'single', 'archive', 'search', '404', 'library' ],
+			],
+			'kit-library' => [
+				'title' => esc_html__( 'Kit Library', 'elementor' ),
+				'icon' => 'kit-parts',
+				'url' => Plugin::$instance->app->get_base_url() . '#/kit-library',
+				'keywords' => [ 'kit library', 'kit', 'library', 'site parts', 'parts', 'assets', 'templates' ],
 			],
 		];
 	}

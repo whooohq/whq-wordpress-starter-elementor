@@ -65,7 +65,7 @@ class Flip_Box extends Widget_Base
         return 'https://essential-addons.com/elementor/docs/flip-box/';
     }
 
-    protected function _register_controls()
+    protected function register_controls()
     {
 
         /**
@@ -746,7 +746,7 @@ class Flip_Box extends Widget_Base
                         ],
                     ],
                     'default'     => '1',
-                    'description' => '<span class="pro-feature"> Get the  <a href="https://wpdeveloper.net/upgrade/ea-pro" target="_blank">Pro version</a> for more stunning elements and customization options.</span>',
+                    'description' => '<span class="pro-feature"> Get the  <a href="https://wpdeveloper.com/upgrade/ea-pro" target="_blank">Pro version</a> for more stunning elements and customization options.</span>',
                 ]
             );
 

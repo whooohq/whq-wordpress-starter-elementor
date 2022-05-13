@@ -17,9 +17,12 @@ trait Admin {
      * @since 1.1.2
      */
     public function admin_menu() {
+
+	    $menu_notice = ( $this->menu_notice_should_show() ) ?'<span class="eael-menu-notice">1</span>':'';
+
         add_menu_page(
-            __( 'Essential Addons', 'essential-addons-for-elementor-lite' ),
-            __( 'Essential Addons', 'essential-addons-for-elementor-lite' ),
+            __( 'Essential Addons a', 'essential-addons-for-elementor-lite' ),
+            sprintf(__( 'Essential Addons %s', 'essential-addons-for-elementor-lite' ), $menu_notice ),
             'manage_options',
             'eael-settings',
             [$this, 'admin_settings_page'],
@@ -80,8 +83,12 @@ trait Admin {
                 'ajaxurl' => admin_url( 'admin-ajax.php' ),
                 'nonce'   => wp_create_nonce( 'essential-addons-elementor' ),
                 'i18n'    => $i18n,
+                'settings_save' => EAEL_PLUGIN_URL . 'assets/admin/images/settings-save.gif',
+                'assets_regenerated' => EAEL_PLUGIN_URL . 'assets/admin/images/assets-regenerated.gif',
             ) );
         }
+
+        $this->eael_admin_inline_css();
     }
 
     /**
@@ -91,65 +98,39 @@ trait Admin {
      */
     public function admin_settings_page() {
         ?>
-        <div class="eael-settings-wrap">
-            <form action="" method="POST" id="eael-settings" name="eael-settings">
-                <div class="eael-header-bar">
-                    <div class="eael-header-left">
-                        <div class="eael-admin-logo-inline">
-                            <img src="<?php echo EAEL_PLUGIN_URL . 'assets/admin/images/icon-ea-logo.svg'; ?>"
-                                 alt="essential-addons-for-elementor">
-                        </div>
-                        <h2 class="title"><?php echo __( 'Essential Addons Settings', 'essential-addons-for-elementor-lite' ); ?></h2>
-                    </div>
-                    <div class="eael-header-right">
-                        <button type="submit"
-                                class="button eael-btn js-eael-settings-save"><?php echo __( 'Save settings', 'essential-addons-for-elementor-lite' ); ?></button>
+        <form action="" method="POST" id="eael-settings" name="eael-settings">
+            <div class="template__wrapper background__greyBg px30 py50">
+                <div class="eael-container">
+                    <div class="eael-main__tab mb45">
+                        <ul class="ls-none tab__menu">
+                            <li class="tab__list active"><a class="tab__item" href="#general"><i class="ea-admin-icon icon-gear-alt"></i><?php echo __( 'General', 'essential-addons-for-elementor-lite' ); ?></a></li>
+                            <li class="tab__list"><a class="tab__item" href="#elements"><i class="ea-admin-icon icon-element"></i><?php echo __( 'Elements', 'essential-addons-for-elementor-lite' ); ?></a></li>
+                            <li class="tab__list"><a class="tab__item" href="#extensions"><i class="ea-admin-icon icon-extension"></i><?php echo __( 'Extensions', 'essential-addons-for-elementor-lite' ); ?></a></li>
+                            <li class="tab__list"><a class="tab__item" href="#tools"><i class="ea-admin-icon icon-tools"></i><?php echo __( 'Tools', 'essential-addons-for-elementor-lite' ); ?></a></li>
+                            <li class="tab__list"><a class="tab__item" href="#integrations"><i class="ea-admin-icon icon-plug"></i><?php echo __( 'Integrations', 'essential-addons-for-elementor-lite' ); ?></a></li>
+                            <?php  if ( !$this->pro_enabled ) { ?>
+                                <li class="tab__list"><a class="tab__item" href="#go-pro"><i class="ea-admin-icon icon-lock-alt"></i><?php echo __( 'Go Premium', 'essential-addons-for-elementor-lite' ); ?></a></li>
+                             <?php } ?>
+                        </ul>
                     </div>
                 </div>
-                <div class="eael-settings-tabs">
-                    <ul class="eael-tabs">
-                        <li><a href="#general" class="active"><img
-                                        src="<?php echo EAEL_PLUGIN_URL . 'assets/admin/images/icon-general.svg'; ?>"
-                                        alt="essential-addons-general-settings"><span><?php echo __( 'General', 'essential-addons-for-elementor-lite' ); ?></span></a>
-                        </li>
-                        <li><a class="eael-elements-tab" href="#elements"><img
-                                        src="<?php echo EAEL_PLUGIN_URL . 'assets/admin/images/icon-elements.svg'; ?>"
-                                        alt="essential-addons-elements"><span><?php echo __( 'Elements', 'essential-addons-for-elementor-lite' ); ?></span></a>
-                        </li>
-                        <li><a href="#extensions"><img
-                                        src="<?php echo EAEL_PLUGIN_URL . 'assets/admin/images/icon-extensions.svg'; ?>"
-                                        alt="essential-addons-extensions"><span><?php echo __( 'Extensions', 'essential-addons-for-elementor-lite' ); ?></span></a>
-                        </li>
-                        <li><a href="#tools"><img
-                                        src="<?php echo EAEL_PLUGIN_URL . 'assets/admin/images/icon-tools.svg'; ?>"
-                                        alt="essential-addons-tools"><span><?php echo __( 'Tools', 'essential-addons-for-elementor-lite' ); ?></span></a>
-                        </li>
-                        <li><a href="#integrations"><img
-                                        src="<?php echo EAEL_PLUGIN_URL . 'assets/admin/images/icon-integrations.svg'; ?>"
-                                        alt="essential-addons-integrations"><span><?php echo __( 'Integrations', 'essential-addons-for-elementor-lite' ); ?></span></a>
-                        </li>
-                        <?php if ( !$this->pro_enabled ) { ?>
-                            <li><a href="#go-pro"><img
-                                            src="<?php echo EAEL_PLUGIN_URL . 'assets/admin/images/icon-upgrade.svg'; ?>"
-                                            alt="essential-addons-go-pro"><span><?php echo __( 'Go Premium', 'essential-addons-for-elementor-lite' ); ?></span></a>
-                            </li>
-                        <?php } ?>
-
-                    </ul>
-                    <?php
-                    include_once EAEL_PLUGIN_PATH . DIRECTORY_SEPARATOR . 'includes/templates/admin/general.php';
-                    include_once EAEL_PLUGIN_PATH . DIRECTORY_SEPARATOR . 'includes/templates/admin/elements.php';
-                    include_once EAEL_PLUGIN_PATH . DIRECTORY_SEPARATOR . 'includes/templates/admin/extensions.php';
-                    include_once EAEL_PLUGIN_PATH . DIRECTORY_SEPARATOR . 'includes/templates/admin/tools.php';
-                    if ( !$this->pro_enabled ) {
-                        include_once EAEL_PLUGIN_PATH . DIRECTORY_SEPARATOR . 'includes/templates/admin/go-pro.php';
-                    }
-                    include_once EAEL_PLUGIN_PATH . DIRECTORY_SEPARATOR . 'includes/templates/admin/integrations.php';
-                    ?>
+                <div class="eael-admin-setting-tabs">
+	                <?php
+	                include_once EAEL_PLUGIN_PATH . DIRECTORY_SEPARATOR . 'includes/templates/admin/general.php';
+	                include_once EAEL_PLUGIN_PATH . DIRECTORY_SEPARATOR . 'includes/templates/admin/elements.php';
+	                include_once EAEL_PLUGIN_PATH . DIRECTORY_SEPARATOR . 'includes/templates/admin/extensions.php';
+	                include_once EAEL_PLUGIN_PATH . DIRECTORY_SEPARATOR . 'includes/templates/admin/tools.php';
+	                if ( !$this->pro_enabled ) {
+		                include_once EAEL_PLUGIN_PATH . DIRECTORY_SEPARATOR . 'includes/templates/admin/go-pro.php';
+	                }
+	                include_once EAEL_PLUGIN_PATH . DIRECTORY_SEPARATOR . 'includes/templates/admin/integrations.php';
+	                include_once EAEL_PLUGIN_PATH . DIRECTORY_SEPARATOR . 'includes/templates/admin/popup.php';
+	                ?>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
         <?php
+	    do_action( 'eael_admin_page_setting' );
     }
 
     /**
@@ -158,82 +139,7 @@ trait Admin {
      * @return  array
      * @since 1.1.2
      */
-    public function save_settings() {
-        check_ajax_referer( 'essential-addons-elementor', 'security' );
 
-        if(!current_user_can('manage_options')){
-            wp_send_json_error(__('you are not allowed to do this action', 'essential-addons-for-elementor-lite'));
-        }
-
-        if ( !isset( $_POST[ 'fields' ] ) ) {
-            return;
-        }
-
-        parse_str( $_POST[ 'fields' ], $settings );
-
-        if ( !empty( $_POST[ 'is_login_register' ] ) ) {
-            // Saving Login | Register Related Data
-            if ( isset( $settings[ 'recaptchaSiteKey' ] ) ) {
-                update_option( 'eael_recaptcha_sitekey', sanitize_text_field( $settings[ 'recaptchaSiteKey' ] ) );
-            }
-            if ( isset( $settings[ 'recaptchaSiteSecret' ] ) ) {
-                update_option( 'eael_recaptcha_secret', sanitize_text_field( $settings[ 'recaptchaSiteSecret' ] ) );
-            }
-            if ( isset( $settings[ 'recaptchaLanguage' ] ) ) {
-                update_option( 'eael_recaptcha_language', sanitize_text_field( $settings[ 'recaptchaLanguage' ] ) );
-            }
-
-            //pro settings
-            if ( isset( $settings[ 'gClientId' ] ) ) {
-                update_option( 'eael_g_client_id', sanitize_text_field( $settings[ 'gClientId' ] ) );
-            }
-            if ( isset( $settings[ 'fbAppId' ] ) ) {
-                update_option( 'eael_fb_app_id', sanitize_text_field( $settings[ 'fbAppId' ] ) );
-            }
-            if ( isset( $settings[ 'fbAppSecret' ] ) ) {
-                update_option( 'eael_fb_app_secret', sanitize_text_field( $settings[ 'fbAppSecret' ] ) );
-            }
-
-            wp_send_json_success( [ 'message' => __( 'Login | Register Settings updated', 'essential-addons-for-elementor-lite' ) ] );
-        }
-
-
-        // Saving Google Map Api Key
-        if ( isset( $settings[ 'google-map-api' ] ) ) {
-            update_option( 'eael_save_google_map_api', sanitize_text_field( $settings[ 'google-map-api' ] ) );
-        }
-
-        // Saving Mailchimp Api Key
-        if ( isset( $settings[ 'mailchimp-api' ] ) ) {
-            update_option( 'eael_save_mailchimp_api', sanitize_text_field( $settings[ 'mailchimp-api' ] ) );
-        }
-
-        // Saving TYpeForm token
-        if ( isset( $settings[ 'typeform-personal-token' ] ) ) {
-            update_option( 'eael_save_typeform_personal_token', sanitize_text_field( $settings[ 'typeform-personal-token' ] ) );
-        }
-
-        // Saving Duplicator Settings
-        if ( isset( $settings[ 'post-duplicator-post-type' ] ) ) {
-            update_option( 'eael_save_post_duplicator_post_type', sanitize_text_field( $settings[ 'post-duplicator-post-type' ] ) );
-        }
-
-        // save js print method
-        if ( isset( $settings[ 'eael-js-print-method' ] ) ) {
-            update_option( 'eael_js_print_method', sanitize_text_field( $settings[ 'eael-js-print-method' ] ) );
-        }
-
-        $defaults = array_fill_keys( array_keys( array_merge( $this->registered_elements, $this->registered_extensions ) ), false );
-        $elements = array_merge( $defaults, array_fill_keys( array_keys( array_intersect_key( $settings, $defaults ) ), true ) );
-
-        // update new settings
-        $updated = update_option( 'eael_save_settings', $elements );
-
-        // clear assets files
-        $this->empty_dir( EAEL_ASSET_PATH );
-
-        wp_send_json( $updated );
-    }
 
     public function admin_notice() {
         $notice = new WPDeveloper_Notice( EAEL_PLUGIN_BASENAME, EAEL_PLUGIN_VERSION );
@@ -253,13 +159,13 @@ trait Admin {
         $notice->links = [
             'review' => array(
                 'later'            => array(
-                    'link'       => 'https://wpdeveloper.net/review-essential-addons-elementor',
+                    'link'       => 'https://wpdeveloper.com/review-essential-addons-elementor',
                     'target'     => '_blank',
                     'label'      => __( 'Ok, you deserve it!', 'essential-addons-for-elementor-lite' ),
                     'icon_class' => 'dashicons dashicons-external',
                 ),
                 'allready'         => array(
-                    'link'       => $url,
+                    'link'       => esc_url( $url ),
                     'label'      => __( 'I already did', 'essential-addons-for-elementor-lite' ),
                     'icon_class' => 'dashicons dashicons-smiley',
                     'data_args'  => [
@@ -267,7 +173,7 @@ trait Admin {
                     ],
                 ),
                 'maybe_later'      => array(
-                    'link'       => $url,
+                    'link'       => esc_url( $url ),
                     'label'      => __( 'Maybe Later', 'essential-addons-for-elementor-lite' ),
                     'icon_class' => 'dashicons dashicons-calendar-alt',
                     'data_args'  => [
@@ -275,12 +181,12 @@ trait Admin {
                     ],
                 ),
                 'support'          => array(
-                    'link'       => 'https://wpdeveloper.net/support',
+                    'link'       => 'https://wpdeveloper.com/support',
                     'label'      => __( 'I need help', 'essential-addons-for-elementor-lite' ),
                     'icon_class' => 'dashicons dashicons-sos',
                 ),
                 'never_show_again' => array(
-                    'link'       => $url,
+                    'link'       => esc_url( $url ),
                     'label'      => __( 'Never show again', 'essential-addons-for-elementor-lite' ),
                     'icon_class' => 'dashicons dashicons-dismiss',
                     'data_args'  => [
@@ -300,9 +206,6 @@ trait Admin {
          * classes for wrapper,
          * Message message for showing.
          */
-        // $notice->classes('upsale', 'notice is-dismissible ');
-        // $notice->message('upsale', '<p>' . __('5,000+ People using <a href="https://betterdocs.co/wordpress-plugin" target="_blank">BetterDocs</a> to create better Documentation & Knowledge Base!', 'essential-addons-for-elementor-lite') . '</p>');
-        // $notice->thumbnail('upsale', plugins_url('assets/admin/images/icon-documentation.svg', EAEL_PLUGIN_BASENAME));
 
         // Update Notice For PRO Version
         if ( $this->pro_enabled && \version_compare( EAEL_PRO_PLUGIN_VERSION, '4.0.0', '<' ) ) {
@@ -311,16 +214,7 @@ trait Admin {
             $notice->thumbnail( 'update', plugins_url( 'assets/admin/images/icon-ea-logo.svg', EAEL_PLUGIN_BASENAME ) );
         }
 
-        // $notice->upsale_args = array(
-        //     'slug' => 'betterdocs',
-        //     'page_slug' => 'betterdocs-setup',
-        //     'file' => 'betterdocs.php',
-        //     'btn_text' => __('Install Free', 'essential-addons-for-elementor-lite'),
-        //     'condition' => [
-        //         'by' => 'class',
-        //         'class' => 'BetterDocs',
-        //     ],
-        // );
+
         $notice->options_args = array(
             'notice_will_show' => [
                 'opt_in' => $notice->timestamp,
@@ -334,5 +228,46 @@ trait Admin {
         $notice->init();
     }
 
+	/**
+	 * eael_admin_inline_css
+     *
+     * Admin Menu highlighted
+     * @return false
+	 * @since 5.1.0
+	 */
+	public function eael_admin_inline_css() {
+
+	    $screen = get_current_screen();
+		if ( ! empty( $screen->id ) && $screen->id == 'toplevel_page_eael-settings' ) {
+			return false;
+		}
+
+		if ( $this->menu_notice_should_show() ) {
+			$custom_css = "
+                #toplevel_page_eael-settings a ,
+                #toplevel_page_eael-settings a:hover {
+                    color:#f0f0f1 !important;
+                    background: #7D55FF !important;
+                }
+				#toplevel_page_eael-settings .eael-menu-notice {
+                    display:block !important;
+                }"
+            ;
+			wp_add_inline_style( 'admin-bar', $custom_css );
+		}
+	}
+
+	/**
+	 * menu_notice_should_show
+     *
+     * Check two flags status (eael_admin_menu_notice and eael_admin_promotion),
+     * if both true this display menu notice. it's prevent to display menu notice multiple time
+     *
+	 * @return bool
+     * @since 5.1.0
+	 */
+	public function menu_notice_should_show() {
+		return ( get_option( 'eael_admin_menu_notice' ) < self::EAEL_PROMOTION_FLAG && get_option( 'eael_admin_promotion' ) < self::EAEL_ADMIN_MENU_FLAG );
+	}
 
 }

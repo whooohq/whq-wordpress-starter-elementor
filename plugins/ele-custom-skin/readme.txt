@@ -3,8 +3,8 @@ Contributors: dudaster
 Tags: page-builder, elementor, loop, archive list, post widget, skin, custom, post grid
 Donate link: https://www.paypal.me/dudaster
 Requires at least: 5.0
-Tested up to: 5.8
-Stable tag: 3.1.3
+Tested up to: 5.9.2
+Stable tag: 3.1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,7 +16,6 @@ This plugin adds new skin to Elementor Page Builder Posts and Posts Archive widg
 
 You can design a loop item just like a single template and it would be used as a skin so you can be able to create a post grid the way you like.
 
-Working on a major release!!! A new widget will be available that would increase the flexibility of loop creation.  
 
 All you have to do is to create a Custom Grid Template and place the Post Item Widget (placeholder) in your template made with sections and columns, and why not other widgets.
 
@@ -64,9 +63,16 @@ Add to your template a Post or Post Archive widget and from Skins select Custom 
 
 == Changelog ==
 
+= 3.1.5 =
+* Fixed issue with Custom Grid tab missing when the woocommerce is active.
+* Fixed deprecated erros with the new Elementor version.
+
+= 3.1.4 =
+* Fixed error with Custom Grid Loop Item Widget when added to the template.
+* Fixed issues with the new Theme Builder View
 
 = 3.1.3 =
-* Fixed issues with Elementor PRO 3.4.
+* Fixed CSS issue with Elementor PRO 3.4.
 
 = 3.1.2 =
 * Fixed the url error message issues.

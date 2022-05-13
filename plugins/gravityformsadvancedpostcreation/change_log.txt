@@ -1,5 +1,8 @@
-### 1.1
-- Fix a fatal error that occurs when a form is submitted with the date mapped to "Date & Time Fields" or "Custom Date & Time".
+### 1.2 | 2022-02-02
+- Fixed an issue that causes feeds to break if a taxonomy term has an apostrophe in the label.
+
+### 1.1 | 2021-08-21
+- Fixed a fatal error that occurs when a form is submitted with the date mapped to "Date & Time Fields" or "Custom Date & Time".
 
 ### 1.0 | 2021-07-21
 - Official release.

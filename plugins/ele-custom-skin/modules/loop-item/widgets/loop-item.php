@@ -69,7 +69,7 @@ class Ele_Custom_Loop_Item_Widget extends \Elementor\Widget_Base {
 	 * @since 0.1
 	 * @access protected
 	 */
-	protected function _register_controls() {
+	protected function register_controls() {
 
 		$this->start_controls_section(
 			'content_section',
@@ -107,7 +107,7 @@ class Ele_Custom_Loop_Item_Widget extends \Elementor\Widget_Base {
 	protected function render() {
 
     if ( $this->show_nice() ) {
-     $this->_content_template();
+     $this->content_template();
     } else {
        echo "{{ecs-article}}";
     }
@@ -117,14 +117,14 @@ class Ele_Custom_Loop_Item_Widget extends \Elementor\Widget_Base {
     protected function show_nice(){
       $is_preview=false;
       $document = elecs_get_document( get_the_ID() );
-  //print_r($document->get_location());
-      if($document) if('custom_grid' == $document->get_location()){
+  //print_r ( $document->get_type());
+      if($document) if('custom_grid' == $document->get_type()){
         if (isset($_GET['action'])) $is_preview = $_GET['action'] == 'elementor' ? true : false;
       }
       return $is_preview;
     }
   
-  protected function _content_template() {
+  protected function content_template() {
     
   ?>
     <div class="ecs-loop-preview">

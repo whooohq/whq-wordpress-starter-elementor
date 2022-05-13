@@ -137,6 +137,9 @@
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
 }
+.eael-product-gallery .woocommerce ul.products li.product {
+  width: 100%;
+}
 .eael-product-gallery .woocommerce ul.products.products[class*=columns-] li.product {
   width: 100%;
 }
@@ -757,12 +760,12 @@
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   vertical-align: middle;
-  margin: 0;
+  margin: 3px;
   padding: 0;
 }
 .eael-product-gallery .eael-product-wrap .icons-wrap.over-box-style li a.button.add_to_cart_button {
   padding: 0;
-  margin: 0;
+  margin: 3px;
   font-size: 0px !important;
 }
 .eael-product-gallery .eael-product-wrap .icons-wrap.over-box-style li a.button.add_to_cart_button:before {
@@ -912,7 +915,10 @@
 .eael-product-gallery.eael-product-preset-3 .product.outofstock .icons-wrap .button, .eael-product-gallery.eael-product-preset-2 .product.outofstock .icons-wrap .button, .eael-product-gallery.eael-product-preset-1 .product.outofstock .icons-wrap .button {
   display: none;
 }
-.eael-product-gallery.eael-product-preset-3 .icons-wrap .button.product_type_grouped, .eael-product-gallery.eael-product-preset-2 .icons-wrap .button.product_type_grouped, .eael-product-gallery.eael-product-preset-1 .icons-wrap .button.product_type_grouped {
+.eael-product-gallery.eael-product-preset-3 .icons-wrap .button.product_type_grouped,
+.eael-product-gallery.eael-product-preset-3 .icons-wrap .button.product_type_variable, .eael-product-gallery.eael-product-preset-2 .icons-wrap .button.product_type_grouped,
+.eael-product-gallery.eael-product-preset-2 .icons-wrap .button.product_type_variable, .eael-product-gallery.eael-product-preset-1 .icons-wrap .button.product_type_grouped,
+.eael-product-gallery.eael-product-preset-1 .icons-wrap .button.product_type_variable {
   display: none;
 }
 .eael-load-more-button.hide-load-more {
@@ -1103,4 +1109,20 @@
 }
 .woocommerce ul.products li.product .ast-shop-product-out-of-stock, .woocommerce-page ul.products li.product .ast-shop-product-out-of-stock {
   display: none;
+}
+.theme-blocksy .button:before {
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(enabled=false)";
+  -webkit-filter: none !important;
+          filter: none !important;
+  /* IE 7 and the rest of the world */
+  opacity: 1;
+  z-index: 0;
+  bottom: 0 !important;
+  right: 0;
+  line-height: 1.2em;
+}
+.theme-blocksy .button:hover {
+  -webkit-transform: none;
+      -ms-transform: none;
+          transform: none;
 }

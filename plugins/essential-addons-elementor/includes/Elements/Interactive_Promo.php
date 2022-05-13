@@ -55,7 +55,7 @@ class Interactive_Promo extends Widget_Base
         return 'https://essential-addons.com/elementor/docs/interactive-promo/';
     }
 
-    protected function _register_controls()
+    protected function register_controls()
     {
 
         // Content Controls

@@ -30,6 +30,10 @@ if ( has_post_thumbnail() ) {
 
 $title_tag = isset( $settings['eael_product_grid_title_html_tag'] ) ? Helper::eael_validate_html_tag($settings['eael_product_grid_title_html_tag'])  : 'h2';
 $should_print_compare_btn = isset( $settings['show_compare'] ) && 'yes' === $settings['show_compare'];
+
+if ( function_exists( 'YITH_WCWL' ) ) {
+	$should_print_wishlist_btn = isset( $settings['eael_product_grid_wishlist'] ) && 'yes' === $settings['eael_product_grid_wishlist'];
+}
 // Improvement
 $grid_style_preset = isset($settings['eael_product_grid_style_preset']) ? $settings['eael_product_grid_style_preset'] : '';
 $list_style_preset = isset($settings['eael_product_list_style_preset']) ? $settings['eael_product_list_style_preset'] : '';
@@ -59,15 +63,15 @@ if ( $grid_style_preset == 'eael-product-simple' || $grid_style_preset == 'eael-
             if( $should_print_image_clickable ) {
 	            echo '<a href="' . $product->get_permalink() . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
             }?>
-            <?php echo wp_kses_post( $product->get_image( 'woocommerce_thumbnail', ['loading' => 'eager'] ) );
+            <?php echo wp_kses_post( $product->get_image( $settings['eael_product_grid_image_size_size'], [ 'loading' => 'eager' ] ) );
             if ( $should_print_image_clickable ) {
 	            echo '</a>';
             }
             
             // printf('<%1$s class="woocommerce-loop-product__title"><a href="%3$s" class="woocommerce-LoopProduct-link woocommerce-loop-product__link woocommerce-loop-product__title_link woocommerce-loop-product__title_link_simple woocommerce-loop-product__title_link_reveal">%2$s</a></%1$s>', $title_tag, $product->get_title(), $product->get_permalink());
             echo '<div class="eael-product-title">
-            <a href="' . $product->get_permalink() . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
-            printf('<%1$s class="woocommerce-loop-product__title">%2$s</%1$s>', $title_tag, $product->get_title());
+            <a href="' . esc_url( $product->get_permalink() ) . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
+            printf('<%1$s class="woocommerce-loop-product__title">%2$s</%1$s>', $title_tag, Helper::eael_wp_kses( $product->get_title() ));
             echo '</a>
             </div>';
 
@@ -90,18 +94,25 @@ if ( $grid_style_preset == 'eael-product-simple' || $grid_style_preset == 'eael-
                 Product_Grid::print_compare_button( $product->get_id() );
             }
             ?>
+            <?php
+	    if ( ! empty( $should_print_wishlist_btn ) ) {
+		    echo '<div class="add-to-whishlist">';
+		    echo do_shortcode('[yith_wcwl_add_to_wishlist]');
+		    echo '</div>';
+	    }
+	    ?>
         </div>
     </li>
     <?php
 } else if ( $grid_style_preset == 'eael-product-overlay' ) {
     ?>
-    <li class="product">
+    <li <?php post_class( 'product' ); ?>>
         <div class="overlay">
             <?php
             if( $should_print_image_clickable ) {
 	            echo '<a href="' . $product->get_permalink() . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
             }
-            echo $product->get_image( 'woocommerce_thumbnail', ['loading' => 'eager'] );
+            echo $product->get_image( $settings['eael_product_grid_image_size_size'], [ 'loading' => 'eager' ] );
             if ( $should_print_image_clickable ) {
 	            echo '</a>';
             }
@@ -114,13 +125,20 @@ if ( $grid_style_preset == 'eael-product-simple' || $grid_style_preset == 'eael-
                     Product_Grid::print_compare_button( $product->get_id(), 'icon' );
                 }
                 ?>
+	            <?php
+	            if ( ! empty( $should_print_wishlist_btn ) ) {
+		            echo '<div class="add-to-whishlist">';
+		            echo do_shortcode('[yith_wcwl_add_to_wishlist]');
+		            echo '</div>';
+	            }
+	            ?>
             </div>
         </div>
         <?php
         // printf('<%1$s class="woocommerce-loop-product__title"><a href="%3$s" class="woocommerce-LoopProduct-link woocommerce-loop-product__link woocommerce-loop-product__title_link woocommerce-loop-product__title_link_overlay">%2$s</a></%1$s>', $title_tag, $product->get_title(), $product->get_permalink());        
         echo '<div class="eael-product-title">
-        <a href="' . $product->get_permalink() . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
-        printf('<%1$s class="woocommerce-loop-product__title">%2$s</%1$s>', $title_tag, $product->get_title());
+        <a href="' . esc_url( $product->get_permalink() ) . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
+        printf('<%1$s class="woocommerce-loop-product__title">%2$s</%1$s>', $title_tag,  Helper::eael_wp_kses( $product->get_title() ));
         echo '</a>
         </div>';
 
@@ -177,10 +195,15 @@ if ( $grid_style_preset == 'eael-product-simple' || $grid_style_preset == 'eael-
                                     echo '</li>';
                                 }
                                 ?>
-                                <li class="add-to-cart"><?php woocommerce_template_loop_add_to_cart();
-                                    ?></li>
+	                            <?php
+	                            if ( ! empty( $should_print_wishlist_btn ) ) {
+		                            echo '<li class="add-to-whishlist">';
+		                            echo do_shortcode('[yith_wcwl_add_to_wishlist]');
+		                            echo '</li>';
+	                            }
+	                            ?>
                                 <li class="view-details"><?php echo '<a href="' . $product->get_permalink() . '"><i class="fas fa-link"></i></a>'; ?></li>
-
+                                <li class="add-to-cart"><?php woocommerce_template_loop_add_to_cart(); ?></li>
                             </ul>
                         <?php } elseif ($grid_style_preset == 'eael-product-preset-7') { ?>
                             <ul class="icons-wrap block-box-style">
@@ -193,6 +216,13 @@ if ( $grid_style_preset == 'eael-product-simple' || $grid_style_preset == 'eael-
                                     echo '</li>';
                                 }
                                 ?>
+	                            <?php
+	                            if ( ! empty( $should_print_wishlist_btn ) ) {
+		                            echo '<li class="add-to-whishlist">';
+		                            echo do_shortcode('[yith_wcwl_add_to_wishlist]');
+		                            echo '</li>';
+	                            }
+	                            ?>
                                 <?php if( $should_print_quick_view ){?>
                                     <li class="eael-product-quick-view">
                                         <a id="eael_quick_view_<?php echo uniqid(); ?>" data-quickview-setting="<?php echo htmlspecialchars(json_encode($quick_view_setting),ENT_QUOTES); ?>"
@@ -201,6 +231,7 @@ if ( $grid_style_preset == 'eael-product-simple' || $grid_style_preset == 'eael-
                                         </a>
                                     </li>
                                 <?php } ?>
+
                                 <li class="view-details"><?php echo '<a href="' . $product->get_permalink
                                         () . '"><i class="fas fa-link"></i></a>'; ?></li>
                             </ul>
@@ -215,6 +246,13 @@ if ( $grid_style_preset == 'eael-product-simple' || $grid_style_preset == 'eael-
                                     echo '</li>';
                                 }
                                 ?>
+	                            <?php
+	                            if ( ! empty( $should_print_wishlist_btn ) ) {
+		                            echo '<li class="add-to-whishlist">';
+		                            echo do_shortcode('[yith_wcwl_add_to_wishlist]');
+		                            echo '</li>';
+	                            }
+	                            ?>
                                 <?php if( $should_print_quick_view ){?>
                                     <li class="eael-product-quick-view">
                                         <a id="eael_quick_view_<?php echo uniqid(); ?>" data-quickview-setting="<?php echo htmlspecialchars(json_encode($quick_view_setting),ENT_QUOTES); ?>"
@@ -222,6 +260,7 @@ if ( $grid_style_preset == 'eael-product-simple' || $grid_style_preset == 'eael-
                                             <i class="fas fa-eye"></i>
                                         </a>
                                     </li>
+
                                 <?php } ?>
                                 <li class="view-details" title="Details"><?php echo '<a href="' . $product->get_permalink() . '"><i class="fas fa-link"></i></a>'; ?></li>
                             </ul>
@@ -242,8 +281,8 @@ if ( $grid_style_preset == 'eael-product-simple' || $grid_style_preset == 'eael-
                     ?>
                     <div class="eael-product-title">
                         <?php 
-                        echo '<a href="' . $product->get_permalink() . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
-                        printf('<%1$s>%2$s</%1$s>', $title_tag, $product->get_title());
+                        echo '<a href="' . esc_url( $product->get_permalink() ) . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
+                        printf('<%1$s>%2$s</%1$s>', $title_tag, Helper::eael_wp_kses( $product->get_title() ));
                         echo '</a>';
                         ?>
                        <?php //printf('<%1$s><a href="%3$s" class="woocommerce-LoopProduct-link woocommerce-loop-product__link woocommerce-loop-product__title_link woocommerce-loop-product__title_link_simple woocommerce-loop-product__title_link_reveal">%2$s</a></%1$s>', $title_tag, $product->get_title(), $product->get_permalink()); ?>
@@ -287,6 +326,13 @@ if ( $grid_style_preset == 'eael-product-simple' || $grid_style_preset == 'eael-
                                 echo '</li>';
                             }
                             ?>
+	                        <?php
+	                        if ( ! empty( $should_print_wishlist_btn ) ) {
+		                        echo '<li class="add-to-whishlist">';
+		                        echo do_shortcode('[yith_wcwl_add_to_wishlist]');
+		                        echo '</li>';
+	                        }
+	                        ?>
                             <?php if( $should_print_quick_view ){?>
                                 <li class="eael-product-quick-view">
                                     <a id="eael_quick_view_<?php echo uniqid(); ?>" data-quickview-setting="<?php echo htmlspecialchars(json_encode($quick_view_setting),ENT_QUOTES); ?>"
@@ -306,8 +352,8 @@ if ( $grid_style_preset == 'eael-product-simple' || $grid_style_preset == 'eael-
                     ?>
                     <div class="eael-product-title">
                         <?php
-                            echo '<a href="' . $product->get_permalink() . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
-                            printf('<%1$s>%2$s</%1$s>', $title_tag, $product->get_title());
+                            echo '<a href="' . esc_url( $product->get_permalink() ) . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
+                            printf('<%1$s>%2$s</%1$s>', $title_tag, Helper::eael_wp_kses( $product->get_title() ));
                             echo '</a>';
                         ?>
                     </div>
@@ -343,8 +389,8 @@ if ( $grid_style_preset == 'eael-product-simple' || $grid_style_preset == 'eael-
                     <?php
                     if ($list_style_preset == 'eael-product-list-preset-2') {
                         echo '<div class="eael-product-title">
-                                                <a href="' . $product->get_permalink() . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
-                                                printf('<%1$s>%2$s</%1$s>', $title_tag, $product->get_title());
+                                                <a href="' . esc_url( $product->get_permalink() ) . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
+                                                printf('<%1$s>%2$s</%1$s>', $title_tag, Helper::eael_wp_kses( $product->get_title() ));
                                                 echo '</a>
                                               </div>';
                         if ( $should_print_excerpt ) {
@@ -373,8 +419,8 @@ if ( $grid_style_preset == 'eael-product-simple' || $grid_style_preset == 'eael-
                         echo '</div>
                             <div class="title-wrap">
                                 <div class="eael-product-title">
-                                  <a href="' . $product->get_permalink() . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
-                                  printf('<%1$s>%2$s</%1$s>', $title_tag, $product->get_title());
+                                  <a href="' . esc_url( $product->get_permalink() ) . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
+                                  printf('<%1$s>%2$s</%1$s>', $title_tag, Helper::eael_wp_kses( $product->get_title() ));
                                   echo '</a>
                                 </div>';
                         if ( $should_print_excerpt ) {
@@ -392,8 +438,8 @@ if ( $grid_style_preset == 'eael-product-simple' || $grid_style_preset == 'eael-
                         }
 
                         echo '<div class="eael-product-title">
-                                    <a href="' . $product->get_permalink() . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
-                                    printf('<%1$s>%2$s</%1$s>', $title_tag, $product->get_title());
+                                    <a href="' . esc_url( $product->get_permalink() ) . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
+                                    printf('<%1$s>%2$s</%1$s>', $title_tag, Helper::eael_wp_kses( $product->get_title() ));
                                     echo '</a>
                                     </div>';
                         if ( $should_print_excerpt ) {
@@ -408,8 +454,8 @@ if ( $grid_style_preset == 'eael-product-simple' || $grid_style_preset == 'eael-
 
                     } else {
                         echo '<div class="eael-product-title">
-                                    <a href="' . $product->get_permalink() . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
-                                    printf('<%1$s>%2$s</%1$s>', $title_tag, $product->get_title());
+                                    <a href="' . esc_url( $product->get_permalink() ) . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
+                                    printf('<%1$s>%2$s</%1$s>', $title_tag, Helper::eael_wp_kses( $product->get_title() ));
                                     echo '</a>
                                     </div>';
 
@@ -442,6 +488,13 @@ if ( $grid_style_preset == 'eael-product-simple' || $grid_style_preset == 'eael-
                         <li class="add-to-cart"><?php
                             woocommerce_template_loop_add_to_cart(); ?></li>
 
+	                    <?php
+	                    if ( ! empty( $should_print_wishlist_btn ) ) {
+		                    echo '<li class="add-to-whishlist">';
+		                    echo do_shortcode('[yith_wcwl_add_to_wishlist]');
+		                    echo '</li>';
+	                    }
+	                    ?>
                         <?php
                         if( $should_print_quick_view ){?>
                             <li class="eael-product-quick-view">

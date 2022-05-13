@@ -5,6 +5,7 @@ if (!defined('ABSPATH')) {
     exit;
 } // Exit if accessed directly.
 
+use Essential_Addons_Elementor\Classes\Helper;
 use Essential_Addons_Elementor\Classes\WPDeveloper_Core_Installer;
 
 class WPDeveloper_Notice {
@@ -73,14 +74,7 @@ class WPDeveloper_Notice {
      * @var array
      */
     public $options_args = array(
-        // 'first_install' => true,
-        // 'notice_will_show' => [
-        //     'opt_in' => true,
-        //     'first_install' => false,
-        //     'update' => true,
-        //     'review' => true,
-        //     'upsale' => true,
-        // ]
+
     );
     /**
      * Notice ID for users.
@@ -248,7 +242,7 @@ class WPDeveloper_Notice {
      * @return integer
      */
     public function makeTime( $current, $time ) {
-        return intval( strtotime( date('Y-m-d h:i:s', $current) . " +$time" ) );
+	    return intval( strtotime( date( 'Y-m-d h:i:s', intval( $current ) ) . " +$time" ) );
     }
     /**
      * Automatice Maybe Later.
@@ -331,7 +325,7 @@ class WPDeveloper_Notice {
     private function redirect_to(){
         $request_uri  = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
         $query_string = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_QUERY );
-        parse_str( $query_string, $current_url );
+	    wp_parse_str( $query_string, $current_url );
 
         $unset_array = array( 'dismiss', 'plugin', '_wpnonce', 'later', 'plugin_action', 'marketing_optin' );
 
@@ -448,7 +442,7 @@ class WPDeveloper_Notice {
         if( empty( $plugin_slug ) ) {
             return;
         }
-        echo '<button data-slug="'. $plugin_slug .'" id="plugin-install-core-'. $this->plugin_name .'" class="button button-primary">'. $btn_text .'</button>';
+        echo '<button data-slug="'. esc_attr( $plugin_slug ) .'" id="plugin-install-core-'. $this->plugin_name .'" class="button button-primary">'. Helper::eael_wp_kses( $btn_text ) .'</button>';
     }
     /**
      * This methods is responsible for get notice image.
@@ -460,10 +454,11 @@ class WPDeveloper_Notice {
         $output = '';
         if( isset( $this->data['thumbnail'] ) && isset( $this->data['thumbnail'][ $msg_for ] ) ) {
             $output = '<div class="wpdeveloper-notice-thumbnail">';
-                $output .= '<img src="'. $this->data['thumbnail'][ $msg_for ] .'" alt="">';
+                $output .= '<img src="'. esc_url( $this->data['thumbnail'][ $msg_for ] ) .'" alt="">';
             $output .= '</div>';
         }
-        echo $output;
+        echo wp_kses_post( $output );
+
     }
     /**
      * Has Thumbnail Check
@@ -489,7 +484,7 @@ class WPDeveloper_Notice {
     protected function get_message( $msg_for ){
         if( isset( $this->data['message'] ) && isset( $this->data['message'][ $msg_for ] ) ) {
             echo '<div class="wpdeveloper-notice-message">';
-                echo $this->data['message'][ $msg_for ];
+	        echo Helper::eael_wp_kses( $this->data['message'][ $msg_for ] );
                 if( $msg_for === 'upsale' ) {
                     $this->upsale_button();
                 }
@@ -575,7 +570,7 @@ class WPDeveloper_Notice {
                     $output .= '<li>';
                         if( isset( $link_value['link'] ) ) {
                             $link = $link_value['link'];
-                            $target = isset( $link_value['target'] ) ? 'target="'. $link_value['target'] .'"' : '';
+                            $target = isset( $link_value['target'] ) ? 'target="'. esc_attr( $link_value['target'] ) .'"' : '';
                             if( isset( $link_value['data_args'] ) && is_array( $link_value['data_args'] ) ) {
                                 $data_args = [];
                                 foreach( $link_value['data_args'] as $key => $args_value ) {
@@ -587,15 +582,15 @@ class WPDeveloper_Notice {
                             }
                             $class = '';
                             if( isset( $link_value['link_class'] ) ) {
-                                $class = 'class="' . implode( ' ', $link_value['link_class'] ) . '"';
+                                $class = 'class="' . sanitize_html_class( implode( ' ', $link_value['link_class'] ) )  . '"';
                             }
                             $output .= '<a '. $class .' href="'. esc_url( $link ) .'" '. $target .'>';
                         }
                         if( isset( $link_value['icon_class'] ) ) {
-                            $output .= '<span class="'. $link_value['icon_class'] .'"></span>';
+                            $output .= '<span class="'. esc_attr( $link_value['icon_class'] ) .'"></span>';
                         }
                         if( isset( $link_value['icon_img'] ) ) {
-                            $output .= '<img src="'. $link_value['icon_img'] .'" />';
+                            $output .= '<img src="'. esc_url( $link_value['icon_img'] ) .'" alt="" />';
                         }
                         $output .= $link_value['label'];
                         if( isset( $link_value['link'] ) ) {
@@ -605,7 +600,8 @@ class WPDeveloper_Notice {
                 }
             }
             $output .= '</ul>';
-            echo $output;
+
+            printf( '%1$s', $output );
         endif;
     }
     /**
@@ -787,8 +783,8 @@ class WPDeveloper_Notice {
             return;
         }
 
-        $dismiss = isset( $_POST['dismiss'] ) ? $_POST['dismiss'] : false;
-        $notice = isset( $_POST['notice'] ) ? $_POST['notice'] : false;
+        $dismiss = isset( $_POST['dismiss'] ) ? sanitize_text_field( $_POST['dismiss'] ) : false;
+        $notice = isset( $_POST['notice'] ) ? sanitize_text_field( $_POST['notice'] ) : false;
         if( $dismiss ) {
             $this->update( $notice );
             update_user_meta( get_current_user_id(), $this->plugin_name . '_' . $notice, true );
@@ -813,7 +809,7 @@ class WPDeveloper_Notice {
             return;
         }
 
-        $dismiss = isset( $_POST['dismiss'] ) ? $_POST['dismiss'] : false;
+        $dismiss = isset( $_POST['dismiss'] ) ? sanitize_text_field( $_POST['dismiss'] ) : false;
         if( $dismiss ) {
             $this->update( 'upsale' );
             echo 'success';
@@ -832,10 +828,10 @@ class WPDeveloper_Notice {
                     $('body').on('click', 'button.notice-dismiss', function (e) {
                         e.preventDefault();
                         $.ajax({
-                            url: '<?php echo admin_url( 'admin-ajax.php' ); ?>',
+                            url: '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>',
                             type: 'post',
                             data: {
-                                action: 'wpdeveloper_notice_dissmiss_for_<?php echo $this->plugin_name; ?>',
+                                action: 'wpdeveloper_notice_dissmiss_for_<?php echo esc_html( $this->plugin_name ); ?>',
                                 _wpnonce: '<?php echo wp_create_nonce('wpdeveloper_notice_dissmiss'); ?>',
                                 dismiss: true,
                                 notice: wpdevNotice.data('notice'),
@@ -875,25 +871,25 @@ class WPDeveloper_Notice {
         <script type="text/javascript">
             jQuery(document).ready( function($) {
                 <?php if( ! empty( $plugin_slug ) && ! empty( $plugin_file ) ) : ?>
-                $('#plugin-install-core-<?php echo $this->plugin_name; ?>').on('click', function (e) {
+                $('#plugin-install-core-<?php echo esc_html( $this->plugin_name ); ?>').on('click', function (e) {
                     var self = $(this);
                     e.preventDefault();
                     self.addClass('install-now updating-message');
                     self.text('<?php echo esc_js( 'Installing...' ); ?>');
 
                     $.ajax({
-                        url: '<?php echo admin_url( 'admin-ajax.php' ); ?>',
+                        url: '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>',
                         type: 'POST',
                         data: {
-                            action: 'wpdeveloper_upsale_core_install_<?php echo $this->plugin_name; ?>',
-                            _wpnonce: '<?php echo wp_create_nonce('wpdeveloper_upsale_core_install_' . $this->plugin_name); ?>',
-                            slug : '<?php echo $plugin_slug; ?>',
-                            file : '<?php echo $plugin_file; ?>'
+                            action: 'wpdeveloper_upsale_core_install_<?php echo esc_html( $this->plugin_name ); ?>',
+                            _wpnonce: '<?php echo wp_create_nonce('wpdeveloper_upsale_core_install_' . esc_html( $this->plugin_name )); ?>',
+                            slug : '<?php echo esc_html( $plugin_slug ); ?>',
+                            file : '<?php echo esc_html( $plugin_file ); ?>'
                         },
                         success: function(response) {
                             self.text('<?php echo esc_js( 'Installed' ); ?>');
                             <?php if( ! empty( $page_slug ) ) : ?>
-                                window.location.href = '<?php echo admin_url( "admin.php?page={$page_slug}" ); ?>';
+                                window.location.href = '<?php echo esc_url( admin_url( "admin.php?page={$page_slug}" ) ); ?>';
                             <?php endif; ?>
                         },
                         error: function(error) {
@@ -909,10 +905,10 @@ class WPDeveloper_Notice {
                 $('.wpdeveloper-upsale-notice').on('click', 'button.notice-dismiss', function (e) {
                     e.preventDefault();
                     $.ajax({
-                        url: '<?php echo admin_url( 'admin-ajax.php' ); ?>',
+                        url: '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>',
                         type: 'post',
                         data: {
-                            action: 'wpdeveloper_upsale_notice_dissmiss_for_<?php echo $this->plugin_name; ?>',
+                            action: 'wpdeveloper_upsale_notice_dissmiss_for_<?php echo esc_html( $this->plugin_name ); ?>',
                             _wpnonce: '<?php echo wp_create_nonce('wpdeveloper_upsale_notice_dissmiss'); ?>',
                             dismiss: true
                         },

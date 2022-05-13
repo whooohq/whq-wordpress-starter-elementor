@@ -99,7 +99,10 @@ abstract class Icon_Set_Base {
 		/**
 		 * Upload file URL.
 		 *
-		 * Filters the URL to a file uploaded using Elementor forms.
+		 * Filters the URL to a file uploaded using custom icons.
+		 *
+		 * By default URL to a file uploaded is set to `/elementor/custom-icons/{file_name}`
+		 * inside the WordPress uploads folder. This hook allows developers to change this URL.
 		 *
 		 * @since 1.0.0
 		 *
@@ -118,11 +121,15 @@ abstract class Icon_Set_Base {
 		/**
 		 * Upload file path.
 		 *
-		 * Filters the path for custom icons file uploads using custom icons.
+		 * Filters the path to a folder uploaded using custom icons.
 		 *
-		 * @param string $path .
+		 * By default the folder path to custom icon files is set to `/elementor/custom-icons`
+		 * inside the WordPress uploads folder. This hook allows developers to change this path.
+		 *
+		 * @param string $path Path to custom icons uploads directory.
 		 */
 		$path = apply_filters( 'elementor_pro/icons_manager/custom_icons/dir', $path );
+
 		Utils::get_ensure_upload_dir( $path );
 		return $path;
 	}

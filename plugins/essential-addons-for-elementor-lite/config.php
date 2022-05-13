@@ -889,6 +889,25 @@ $config = [
                 ],
             ],
         ],
+        'woo-cart' => [
+            'class' => '\Essential_Addons_Elementor\Elements\Woo_Cart',
+            'dependency' => [
+                'css' => [
+                    [
+                        'file' => EAEL_PLUGIN_PATH . 'assets/front-end/css/view/woo-cart.min.css',
+                        'type' => 'self',
+                        'context' => 'view',
+                    ],
+                ],
+                'js' => [
+                    [
+                        'file' => EAEL_PLUGIN_PATH . 'assets/front-end/js/view/woo-cart.min.js',
+                        'type' => 'self',
+                        'context' => 'view',
+                    ],
+                ],
+            ],
+        ],
         'login-register' => [
             'class' => '\Essential_Addons_Elementor\Elements\Login_Register',
             'dependency' => [
@@ -1033,6 +1052,33 @@ $config = [
 		        ],
 	        ],
         ],
+        'interactive-circle' => [
+	        'class' => '\Essential_Addons_Elementor\Elements\Interactive_Circle',
+	        'dependency' => [
+		        'css' => [
+			        [
+				        'file' => EAEL_PLUGIN_PATH . 'assets/front-end/css/view/interactive-circle.min.css',
+				        'type' => 'self',
+				        'context' => 'view',
+			        ],
+		        ],
+		        'js'  => [
+			        [
+				        'file' => EAEL_PLUGIN_PATH . 'assets/front-end/js/view/interactive-circle.min.js',
+				        'type' => 'self',
+				        'context' => 'view',
+			        ],
+		        ],
+	        ],
+        ],
+        'better-payment' => [
+            'class' => '\Essential_Addons_Elementor\Elements\Better_Payment',
+            'condition' => [
+                'class_exists',
+                'Better_Payment',
+                true,
+            ],
+        ],
     ],
     'extensions' => [
         'promotion' => [
@@ -1086,6 +1132,18 @@ $config = [
         ],
         'post-duplicator' => [
             'class' => '\Essential_Addons_Elementor\Extensions\Post_Duplicator',
+        ],
+        'scroll-to-top' => [
+            'class' => '\Essential_Addons_Elementor\Extensions\Scroll_to_Top',
+            'dependency' => [
+                'js' => [
+                    [
+                        'file' => EAEL_PLUGIN_PATH . 'assets/front-end/js/edit/scroll-to-top.min.js',
+                        'type' => 'self',
+                        'context' => 'edit',
+                    ],
+                ],
+            ],
         ],
     ],
 ];

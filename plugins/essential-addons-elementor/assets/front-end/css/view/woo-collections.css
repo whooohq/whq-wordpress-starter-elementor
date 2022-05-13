@@ -120,21 +120,24 @@
   -webkit-filter: blur(2px);
           filter: blur(2px);
 }
-.eael-woo-collections-layout-two {
+.eael-woo-collections.eael-woo-collections-layout-two {
   -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
           box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
 }
-.eael-woo-collections-layout-two > a {
+.eael-woo-collections.eael-woo-collections-layout-two > a {
   display: block;
-  padding: 20px;
   color: inherit;
+  overflow: hidden;
 }
-.eael-woo-collections-layout-two .eael-woo-collections-thumbnail {
+.eael-woo-collections.eael-woo-collections-layout-two .eael-woo-collections-thumbnail {
   border-radius: 5px;
 }
-.eael-woo-collections-layout-two .eael-woo-collections-content {
+.eael-woo-collections.eael-woo-collections-layout-two .eael-woo-collections-content {
   text-align: center;
   padding-top: 30px;
+}
+.eael-woo-collections.eael-woo-collections-layout-two .eael-woo-collections-overlay {
+  padding: 20px;
 }
 .rtl .eael-woo-collections .eael-woo-collections-overlay {
   direction: ltr;

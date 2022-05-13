@@ -12,9 +12,7 @@
                 <field type="Content Timeline: Description" editor_type="VISUAL">eael_custom_excerpt</field>
                 <field type="Content Timeline: Post Date" editor_type="LINE">eael_custom_post_date</field>
                 <field type="Content Timeline: Read More" editor_type="LINE">eael_show_custom_read_more_text</field>
-                <field type="Content Timeline: Read More Link" key_of="eael_read_more_text_link" editor_type="LINE">
-                    url
-                </field>
+                <field type="Content Timeline: Read More Link" key_of="eael_read_more_text_link" editor_type="LINE">url</field>
             </fields-in-item>
         </widget>
         <widget name="eael-counter">
@@ -52,9 +50,7 @@
             </conditions>
             <fields-in-item items_of="eael_flip_carousel_slides">
                 <field type="Flip Carousel: Slider Text" editor_type="LINE">eael_flip_carousel_slide_text</field>
-                <field type="Flip Carousel: Slider Link" key_of="eael_flip_carousel_enable_slide_link"
-                       editor_type="LINE">url
-                </field>
+                <field type="Flip Carousel: Slider Link" key_of="eael_flip_carousel_enable_slide_link" editor_type="LINE">url</field>
             </fields-in-item>
         </widget>
         <widget name="eael-google-map">
@@ -101,6 +97,7 @@
             </conditions>
             <fields>
                 <field type="Instafeed: Before Label Text" editor_type="LINE">before_image_label</field>
+                <field type="Instafeed: Load More Text" editor_type="LINE">loadmore_text</field>
             </fields>
         </widget>
         <widget name="eael-interactive-card">
@@ -108,25 +105,15 @@
                 <condition key="widgetType">eael-interactive-card</condition>
             </conditions>
             <fields>
-                <field type="Interactive Card: Counter" editor_type="LINE">eael_interactive_card_front_panel_counter
-                </field>
+                <field type="Interactive Card: Counter" editor_type="LINE">eael_interactive_card_front_panel_counter</field>
                 <field type="Interactive Card: Title" editor_type="LINE">eael_interactive_card_front_panel_title</field>
-                <field type="Interactive Card: Content" editor_type="VISUAL">eael_interactive_card_front_panel_content
-                </field>
-                <field type="Interactive Card: Front Button Text" editor_type="LINE">
-                    eael_interactive_card_front_panel_btn
-                </field>
+                <field type="Interactive Card: Content" editor_type="VISUAL">eael_interactive_card_front_panel_content</field>
+                <field type="Interactive Card: Front Button Text" editor_type="LINE">eael_interactive_card_front_panel_btn</field>
                 <field type="Interactive Card: Rear Text" editor_type="LINE">eael_interactive_card_rear_title</field>
-                <field type="Interactive Card: Rear Content" editor_type="VISUAL">eael_interactive_card_rear_content
-                </field>
-                <field type="Interactive Card: Rear Button Text" editor_type="LINE">eael_interactive_card_rear_btn
-                </field>
-                <field type="Interactive Card: Rear Button Link" key_of="eael_interactive_card_rear_btn_link"
-                       editor_type="LINE">url
-                </field>
-                <field type="Interactive Card: Rear Custom Code" editor_type="VISUAL">
-                    eael_interactive_card_rear_custom_code
-                </field>
+                <field type="Interactive Card: Rear Content" editor_type="VISUAL">eael_interactive_card_rear_content</field>
+                <field type="Interactive Card: Rear Button Text" editor_type="LINE">eael_interactive_card_rear_btn</field>
+                <field type="Interactive Card: Rear Button Link" key_of="eael_interactive_card_rear_btn_link" editor_type="LINE">url</field>
+                <field type="Interactive Card: Rear Custom Code" editor_type="VISUAL">eael_interactive_card_rear_custom_code</field>
             </fields>
         </widget>
         <widget name="eael-interactive-promo">
@@ -213,11 +200,8 @@
             </conditions>
             <fields>
                 <field type="Smart Post List: Title" editor_type="LINE">eael_post_list_topbar_title</field>
-                <field type="Smart Post List: All Label Text" editor_type="LINE">eael_post_list_topbar_term_all_text
-                </field>
-                <field type="Smart Post List: Expansion Indicator" editor_type="LINE">
-                    eael_post_list_excerpt_expanison_indicator
-                </field>
+                <field type="Smart Post List: All Label Text" editor_type="LINE">eael_post_list_topbar_term_all_text</field>
+                <field type="Smart Post List: Expansion Indicator" editor_type="LINE">eael_post_list_excerpt_expanison_indicator</field>
                 <field type="Smart Post List: Label Text" editor_type="LINE">eael_post_list_read_more_text</field>
             </fields>
         </widget>
@@ -238,10 +222,8 @@
                 <condition key="widgetType">eael-protected-content</condition>
             </conditions>
             <fields>
-                <field type="Protected Content: Protected Content" editor_type="VISUAL">eael_protected_content_field
-                </field>
-                <field type="Protected Content: Public Text" editor_type="VISUAL">eael_protected_content_message_text
-                </field>
+                <field type="Protected Content: Protected Content" editor_type="VISUAL">eael_protected_content_field</field>
+                <field type="Protected Content: Public Text" editor_type="VISUAL">eael_protected_content_message_text</field>
                 <field type="Protected Content: Message" editor_type="LINE">password_incorrect_message</field>
             </fields>
         </widget>
@@ -258,9 +240,7 @@
                 <field type="Static Product: Button Text" editor_type="LINE">eael_static_product_btn</field>
                 <field type="Static Product: Button Text" editor_type="LINE">eael_static_product_add_to_cart_btn</field>
                 <field type="Static Product: Link" key_of="link" editor_type="LINK">url</field>
-                <field type="Static Product: Demo Link" key_of="link" editor_type="LINK">
-                    url
-                </field>
+                <field type="Static Product: Demo Link" key_of="link" editor_type="LINK">url</field>
             </fields>
         </widget>
         <widget name="eael-team-member-carousel">
@@ -291,8 +271,7 @@
             <fields-in-item items_of="eael_testimonial_slider_item">
                 <field type="Team Member Carousel: Name" editor_type="LINE">eael_testimonial_name</field>
                 <field type="Team Member Carousel: Position" editor_type="LINE">eael_testimonial_company_title</field>
-                <field type="Team Member Carousel: Description" editor_type="VISUAL">eael_testimonial_description
-                </field>
+                <field type="Team Member Carousel: Description" editor_type="VISUAL">eael_testimonial_description</field>
             </fields-in-item>
         </widget>
         <widget name="eael-toggle">
@@ -320,9 +299,7 @@
                 <condition key="widgetType">eael-woo-collections</condition>
             </conditions>
             <fields>
-                <field type="Woo Collections: Subtitle" editor_type="LINE">
-                    eael_woo_collections_subtitle
-                </field>
+                <field type="Woo Collections: Subtitle" editor_type="LINE">eael_woo_collections_subtitle</field>
             </fields>
         </widget>
         <widget name="eael-woo-product-slider">

@@ -9,15 +9,17 @@ use Elementor\Controls_Manager;
 
 class Promotion
 {
-    public function __construct()
-    {
-        if (!apply_filters('eael/pro_enabled', false)) {
-            add_action('elementor/element/section/section_layout/after_section_end', [$this, 'section_parallax'], 10);
-            add_action('elementor/element/section/section_layout/after_section_end', [$this, 'section_particles'], 10);
-            add_action('elementor/element/common/_section_style/after_section_end', [$this, 'content_protection'], 10);
-            add_action('elementor/element/common/_section_style/after_section_end', [$this, 'section_tooltip'], 10);
-        }
-    }
+	public function __construct() {
+		if ( ! apply_filters( 'eael/pro_enabled', false ) ) {
+			add_action( 'elementor/element/section/section_layout/after_section_end', [ $this, 'section_parallax' ], 10 );
+			add_action( 'elementor/element/section/section_layout/after_section_end', [ $this, 'section_particles' ], 10 );
+			add_action( 'elementor/element/common/_section_style/after_section_end', [ $this, 'content_protection' ], 10 );
+			add_action( 'elementor/element/common/_section_style/after_section_end', [ $this, 'section_tooltip' ], 10 );
+			add_action( 'elementor/element/common/_section_style/after_section_end', [ $this, 'conditional_display' ] );
+			add_action( 'elementor/element/column/section_advanced/after_section_end', [ $this, 'conditional_display' ] );
+			add_action( 'elementor/element/section/section_advanced/after_section_end', [ $this, 'conditional_display' ] );
+		}
+	}
 
     public function teaser_template($texts)
     {
@@ -27,7 +29,7 @@ class Promotion
             </div>
             <div class="ea-nerd-box-title">' . $texts['title'] . '</div>
             <div class="ea-nerd-box-message">' . $texts['messages'] . '</div>
-            <a class="ea-nerd-box-link elementor-button elementor-button-default" href="https://wpdeveloper.net/upgrade/ea-pro" target="_blank">
+            <a class="ea-nerd-box-link elementor-button elementor-button-default" href="https://wpdeveloper.com/upgrade/ea-pro" target="_blank">
             ' . __('Upgrade Essential Addons', 'essential-addons-for-elementor-lite') . '
             </a>
         </div>';
@@ -130,5 +132,28 @@ class Promotion
 
         $element->end_controls_section();
     }
+
+	public function conditional_display( $element ) {
+		$element->start_controls_section(
+			'eael_conditional_display_section',
+			[
+				'label' => __( '<i class="eaicon-logo"></i> Conditional Display', 'essential-addons-for-elementor-lite' ),
+				'tab'   => Controls_Manager::TAB_ADVANCED
+			]
+		);
+
+		$element->add_control(
+			'eael_conditional_display_section_pro_required',
+			[
+				'type' => Controls_Manager::RAW_HTML,
+				'raw'  => $this->teaser_template( [
+					'title'    => __( 'Meet EA Conditional Display', 'essential-addons-for-elementor-lite' ),
+					'messages' => __( "Control any section, column, container or widget’s visibility with your own logic.", 'essential-addons-for-elementor-lite' ),
+				] ),
+			]
+		);
+
+		$element->end_controls_section();
+	}
 
 }

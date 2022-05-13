@@ -116,13 +116,8 @@ if ( ! class_exists( 'ACF_Updates' ) ) :
 			$url = "https://connect.advancedcustomfields.com/$endpoint";
 
 			// Staging environment.
-			if ( defined( 'ACF_DEV_API' ) && ACF_DEV_API === 'STAGE' ) {
-				$url = "https://staging.connect.advancedcustomfields.com/$endpoint";
-				acf_log( $url, $body );
-
-				// Dev environment.
-			} elseif ( defined( 'ACF_DEV_API' ) && ACF_DEV_API ) {
-				$url = "http://connect/$endpoint";
+			if ( defined( 'ACF_DEV_API' ) && ACF_DEV_API ) {
+				$url = trailingslashit( ACF_DEV_API ) . $endpoint;
 				acf_log( $url, $body );
 			}
 
@@ -278,12 +273,14 @@ if ( ! class_exists( 'ACF_Updates' ) ) :
 						'wp_version'  => get_bloginfo( 'version' ),
 						'wp_language' => get_bloginfo( 'language' ),
 						'wp_timezone' => get_option( 'timezone_string' ),
+						'php_version' => PHP_VERSION,
 					)
 				),
 				'acf'     => wp_json_encode(
 					array(
 						'acf_version' => get_option( 'acf_version' ),
 						'acf_pro'     => ( defined( 'ACF_PRO' ) && ACF_PRO ),
+						'block_count' => acf_pro_get_registered_block_count(),
 					)
 				),
 			);

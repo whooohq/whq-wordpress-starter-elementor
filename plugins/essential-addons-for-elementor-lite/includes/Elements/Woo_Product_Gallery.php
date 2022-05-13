@@ -54,7 +54,7 @@ class Woo_Product_Gallery extends Widget_Base {
 	}
 
 	public function get_categories() {
-		return [ 'essential-addons-for-elementor-lite' ];
+		return [ 'essential-addons-elementor' ];
 	}
 
 	public function get_keywords() {
@@ -130,7 +130,7 @@ class Woo_Product_Gallery extends Widget_Base {
 		] );
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 		$this->init_content_wc_notice_controls();
 
 		if ( !function_exists( 'WC' ) ) {
@@ -183,7 +183,7 @@ class Woo_Product_Gallery extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'eael_product_gallery_terms_horizontal_align',
 			[
 				'label'     => __( 'Alignment', 'essential-addons-for-elementor-lite' ),
@@ -1200,7 +1200,7 @@ class Woo_Product_Gallery extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'eael_product_gallery_margin',
 			[
 				'label'      => __( 'Margin', 'essential-addons-for-elementor-lite' ),
@@ -1212,7 +1212,7 @@ class Woo_Product_Gallery extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'eael_product_gallery_padding',
 			[
 				'label'      => __( 'Padding', 'essential-addons-for-elementor-lite' ),
@@ -1224,7 +1224,7 @@ class Woo_Product_Gallery extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'eael_product_gallery_radius',
 			[
 				'label'      => __( 'Radius', 'essential-addons-for-elementor-lite' ),
@@ -1262,7 +1262,7 @@ class Woo_Product_Gallery extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'eael_product_gallery_item_margin',
 			[
 				'label'      => __( 'Margin', 'essential-addons-for-elementor-lite' ),
@@ -1274,7 +1274,7 @@ class Woo_Product_Gallery extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'eael_product_gallery_item_padding',
 			[
 				'label'      => __( 'Padding', 'essential-addons-for-elementor-lite' ),
@@ -1286,7 +1286,7 @@ class Woo_Product_Gallery extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'eael_product_gallery_item_radius',
 			[
 				'label'      => __( 'Radius', 'essential-addons-for-elementor-lite' ),
@@ -1616,7 +1616,6 @@ class Woo_Product_Gallery extends Widget_Base {
 				'condition'    => [
 					'eael_product_gallery_style_preset!' => [
                         'eael-product-preset-4',
-                        'eael-product-preset-1',
 					],
 				],
 			]
@@ -2372,7 +2371,7 @@ class Woo_Product_Gallery extends Widget_Base {
 				$found_posts                      = 0;
 
 				if ( file_exists( $template ) ) {
-					$settings[ 'eael_page_id' ] = get_the_ID();
+					$settings['eael_page_id'] = $this->page_id ? $this->page_id : get_the_ID();
 					$query = new \WP_Query( $args );
 					if ( $query->have_posts() ) {
 						$found_posts      = $query->found_posts;

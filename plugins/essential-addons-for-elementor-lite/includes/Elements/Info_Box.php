@@ -60,7 +60,7 @@ class Info_Box extends Widget_Base
         return 'https://essential-addons.com/elementor/docs/info-box/';
     }
 
-    protected function _register_controls()
+    protected function register_controls()
     {
 
         /**
@@ -506,7 +506,7 @@ class Info_Box extends Widget_Base
                         ],
                     ],
                     'default' => '1',
-                    'description' => '<span class="pro-feature"> Get the  <a href="https://wpdeveloper.net/upgrade/ea-pro" target="_blank">Pro version</a> for more stunning elements and customization options.</span>',
+                    'description' => '<span class="pro-feature"> Get the  <a href="https://wpdeveloper.com/upgrade/ea-pro" target="_blank">Pro version</a> for more stunning elements and customization options.</span>',
                 ]
             );
 
@@ -1634,7 +1634,7 @@ if ('yes' == $settings['eael_show_infobox_clickable']): ?></a><?php endif;
         ob_start();
         ?>
         <div <?php echo $this->get_render_attribute_string('infobox_content'); ?>>
-            <<?php echo $settings['eael_infobox_title_tag']; ?> class="title"><?php echo $settings['eael_infobox_title']; ?></<?php echo $settings['eael_infobox_title_tag']; ?>>
+            <<?php echo Helper::eael_validate_html_tag( $settings['eael_infobox_title_tag'] ); ?> class="title"><?php echo $settings['eael_infobox_title']; ?></<?php echo Helper::eael_validate_html_tag( $settings['eael_infobox_title_tag'] ); ?>>
             <?php if ('yes' == $settings['eael_show_infobox_content']): ?>
                 <?php if ('content' === $settings['eael_infobox_text_type']): ?>
                     <?php if (!empty($settings['eael_infobox_text'])): ?>

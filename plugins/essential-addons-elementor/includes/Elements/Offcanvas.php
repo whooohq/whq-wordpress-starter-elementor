@@ -96,7 +96,7 @@ class Offcanvas extends Widget_Base
         return 'https://essential-addons.com/elementor/docs/essential-addons-elementor-offcanvas/';
     }
 
-    protected function _register_controls()
+    protected function register_controls()
     {
 
         /*--------------------------------------*/

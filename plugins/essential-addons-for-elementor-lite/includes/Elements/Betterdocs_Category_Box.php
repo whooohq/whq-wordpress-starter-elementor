@@ -74,7 +74,7 @@ class Betterdocs_Category_Box extends Widget_Base {
         return 'https://essential-addons.com/elementor/docs/betterdocs-category-box/';
     }
 
-    protected function _register_controls()
+    protected function register_controls()
     {
         /*-----------------------------------------------------------------------------------*/
         /*    Content Tab
@@ -1082,19 +1082,24 @@ class Betterdocs_Category_Box extends Widget_Base {
         $terms_object = array(
             'taxonomy' => 'doc_category',
             'order'    => $settings['order'],
-            'orderby'  => $settings['orderby'],
             'offset'   => $settings['offset'],
             'number'   => $settings['box_per_page']
         );
 
-        if ($settings['include'])
-        {
+        if ($settings['include']) {
             $terms_object['include'] = array_diff($settings['include'], (array) $settings['exclude']);
         }
 
-        if ($settings['exclude'])
-        {
+        if ($settings['exclude']) {
             $terms_object['exclude'] = $settings['exclude'];
+        }
+
+        if ($settings['orderby'] == 'betterdocs_order') {
+            $terms_object['meta_key'] = 'doc_category_order';
+            $terms_object['orderby'] = 'meta_value_num';
+            $terms_object['order'] = 'ASC';
+        } else {
+            $terms_object['orderby'] = $settings['orderby'];
         }
 
 

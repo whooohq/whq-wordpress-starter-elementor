@@ -2,7 +2,9 @@
 namespace Essential_Addons_Elementor\Pro\Elements;
 
 use \Elementor\Controls_Manager;
+use Elementor\Core\Files\Assets\Svg\Svg_Handler;
 use \Elementor\Group_Control_Background;
+use Elementor\Icons_Manager;
 use Elementor\Repeater;
 use \Elementor\Core\Schemes\Typography;
 use \Elementor\Group_Control_Border;
@@ -54,7 +56,7 @@ class Flip_Carousel extends Widget_Base {
 		return 'https://essential-addons.com/elementor/docs/flip-carousel/';
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 
 		/**
   		 * Flip Carousel Settings
@@ -505,7 +507,8 @@ class Flip_Carousel extends Widget_Base {
 				],
 				'selectors' => [
 					'{{WRAPPER}} .flip-custom-nav' => 'font-size: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .eael-flip-carousel-svg-icon'	=> 'width: {{SIZE}}{{UNIT}};'
+					'{{WRAPPER}} .eael-flip-carousel-svg-icon'	=> 'width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .flip-custom-nav svg'	=> 'width: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -556,6 +559,7 @@ class Flip_Carousel extends Widget_Base {
 				'default' => '#42418e',
 				'selectors' => [
 					'{{WRAPPER}} .flip-custom-nav' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .flip-custom-nav svg' => 'fill: {{VALUE}};',
 				],
 			]
 		);
@@ -713,19 +717,28 @@ class Flip_Carousel extends Widget_Base {
 		);
 
 		if( isset($nav_prev['url']) ) {
-			$nav_prev['alt'] = esc_attr(get_post_meta($nav_prev['id'], '_wp_attachment_image_alt', true));
-			$this->add_render_attribute( 'eael-flip-carousel-wrap', 'data-buttonprev', wp_json_encode($nav_prev) );
+			ob_start();
+			Icons_Manager::render_icon( $settings['eael_flip_carousel_custom_nav_prev_new'], [ 'aria-hidden' => 'true' ] );
+			$nav_prev_icon = ob_get_clean();
+
+			$this->add_render_attribute( 'eael-flip-carousel-wrap', 'data-buttonprev', $nav_prev_icon );
+			$this->add_render_attribute( 'eael-flip-carousel-wrap', 'data-icon', 'svg' );
 		} else {
 			$this->add_render_attribute('eael-flip-carousel-wrap', 'data-buttonprev', $nav_prev );
+			$this->add_render_attribute( 'eael-flip-carousel-wrap', 'data-icon', 'icon' );
 		}
 
 		if( isset($nav_next['url']) ) {
-			$nav_next['alt'] = esc_attr(get_post_meta($nav_next['id'], '_wp_attachment_image_alt', true));
-			$this->add_render_attribute( 'eael-flip-carousel-wrap', 'data-buttonnext', wp_json_encode($nav_next) );
+			ob_start();
+			Icons_Manager::render_icon( $settings['eael_flip_carousel_custom_nav_next_new'], [ 'aria-hidden' => 'true' ] );
+			$nav_next_icon = ob_get_clean();
+
+			$this->add_render_attribute( 'eael-flip-carousel-wrap', 'data-buttonnext', $nav_next_icon );
+			$this->add_render_attribute( 'eael-flip-carousel-wrap', 'data-nexticon', 'svg' );
 		}else {
 			$this->add_render_attribute('eael-flip-carousel-wrap', 'data-buttonnext', $nav_next );
+			$this->add_render_attribute( 'eael-flip-carousel-wrap', 'data-nexticon', 'icon' );
 		}
-
 
 		?>
 		<div <?php echo $this->get_render_attribute_string('eael-flip-carousel-wrap'); ?>>

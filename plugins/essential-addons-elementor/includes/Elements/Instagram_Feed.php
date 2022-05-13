@@ -67,7 +67,7 @@ class Instagram_Feed extends Widget_Base {
         ];
     }
 
-    protected function _register_controls () {
+    protected function register_controls () {
         $this->start_controls_section(
             'eael_section_instafeed_settings_account',
             [
@@ -151,6 +151,25 @@ class Instagram_Feed extends Widget_Base {
             ]
         );
 
+	    $this->add_control(
+		    'eael_instafeed_force_square_type',
+		    [
+			    'label'     => esc_html__( 'Image Render Type', 'essential-addons-elementor' ),
+			    'type'      => Controls_Manager::SELECT,
+			    'default'   => 'fill',
+			    'options'   => [
+				    'fill'  => esc_html__( 'Stretched', 'essential-addons-elementor' ),
+				    'cover' => esc_html__( 'Cropped', 'essential-addons-elementor' ),
+			    ],
+			    'selectors' => [
+				    '{{WRAPPER}} .eael-instafeed-square-img .eael-instafeed-item img' => 'object-fit: {{VALUE}};',
+			    ],
+			    'condition' => [
+				    'eael_instafeed_force_square' => 'yes',
+			    ],
+		    ]
+	    );
+
         $this->add_responsive_control(
             'eael_instafeed_sq_image_size',
             [
@@ -166,7 +185,7 @@ class Instagram_Feed extends Widget_Base {
                     ],
                 ],
                 'selectors' => [
-                    '{{WRAPPER}} .eael-instafeed-square-img .eael-instafeed-item img' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}}; object-fit: fill;',
+                    '{{WRAPPER}} .eael-instafeed-square-img .eael-instafeed-item img' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
                 ],
                 'condition' => [
                     'eael_instafeed_force_square' => 'yes',
@@ -428,16 +447,16 @@ class Instagram_Feed extends Widget_Base {
             ]
         );
 
-        $this->add_control(
-            'eael_instafeed_box_border_radius',
-            [
-                'label'     => esc_html__('Border Radius', 'essential-addons-elementor'),
-                'type'      => Controls_Manager::DIMENSIONS,
-                'selectors' => [
-                    '{{WRAPPER}} .eael-instafeed-item-inner' => 'border-radius: {{TOP}}px {{RIGHT}}px {{BOTTOM}}px {{LEFT}}px;',
-                ],
-            ]
-        );
+	    $this->add_control(
+		    'eael_instafeed_box_border_radius',
+		    [
+			    'label'     => esc_html__( 'Border Radius', 'essential-addons-elementor' ),
+			    'type'      => Controls_Manager::DIMENSIONS,
+			    'selectors' => [
+				    '{{WRAPPER}} .eael-instafeed-item-inner' => 'border-radius: {{TOP}}px {{RIGHT}}px {{BOTTOM}}px {{LEFT}}px; overflow: hidden;',
+			    ],
+		    ]
+	    );
 
         $this->end_controls_section();
 
@@ -496,7 +515,8 @@ class Instagram_Feed extends Widget_Base {
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '#ffffff',
                 'selectors' => [
-                    '{{WRAPPER}} .eael-instafeed-caption' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .eael-instafeed-caption,
+                    {{WRAPPER}} .eael-instafeed-caption-text' => 'color: {{VALUE}};',
                 ],
             ]
         );

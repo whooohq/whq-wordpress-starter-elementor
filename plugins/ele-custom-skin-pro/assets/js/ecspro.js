@@ -24,8 +24,83 @@ var EleCustomSkinSlider = elementorModules.frontend.handlers.Base.extend({
   getSlidesCount: function getSlidesCount() {
     return this.elements.$swiperSlides.length;
   },
+/***** start new getSwipperSettings function *******************/
+   getSwiperSettings: function getSwiperSettings() {
+    const elementSettings = this.getElementSettings(),
+          slidesToShow = +elementSettings[this.getSkinPrefix() + 'slides_to_show'] || 3,
+          isSingleSlide = 1 === slidesToShow,
+          elementorBreakpoints = elementorFrontend.config.responsive.activeBreakpoints,
+          defaultSlidesToShowMap = {
+      mobile: 1,
+      tablet: isSingleSlide ? 1 : 2
+    };
+    const swiperOptions = {
+      slidesPerView: slidesToShow,
+      loop: 'yes' === elementSettings[this.getSkinPrefix() + 'infinite'],
+      speed: elementSettings[this.getSkinPrefix() + 'speed'],
+      handleElementorBreakpoints: true
+    };
+    swiperOptions.breakpoints = {};
+    let lastBreakpointSlidesToShowValue = slidesToShow;
+    Object.keys(elementorBreakpoints).reverse().forEach(breakpointName => {
+      // Tablet has a specific default `slides_to_show`.
+      const defaultSlidesToShow = defaultSlidesToShowMap[breakpointName] ? defaultSlidesToShowMap[breakpointName] : lastBreakpointSlidesToShowValue;
+      swiperOptions.breakpoints[elementorBreakpoints[breakpointName].value] = {
+        slidesPerView: +elementSettings[this.getSkinPrefix() + 'slides_to_show_' + breakpointName] || defaultSlidesToShow,
+        slidesPerGroup: +elementSettings[this.getSkinPrefix() + 'slides_to_scroll_' + breakpointName] || 1
+      };
+      lastBreakpointSlidesToShowValue = +elementSettings[this.getSkinPrefix() + 'slides_to_show_' + breakpointName] || defaultSlidesToShow;
+    });
 
-  getSwiperSettings: function getSwiperSettings() {
+    if ('yes' === elementSettings[this.getSkinPrefix() + 'autoplay']) {
+      swiperOptions.autoplay = {
+        delay: elementSettings[this.getSkinPrefix() + 'autoplay_speed'],
+        disableOnInteraction: 'yes' === elementSettings[this.getSkinPrefix() + 'pause_on_interaction']
+      };
+    }
+
+    if (isSingleSlide) {
+      swiperOptions.effect = elementSettings[this.getSkinPrefix() + 'effect'];
+
+      if ('fade' === elementSettings[this.getSkinPrefix() + 'effect']) {
+        swiperOptions.fadeEffect = {
+          crossFade: true
+        };
+      }
+    } else {
+      swiperOptions.slidesPerGroup = +elementSettings[this.getSkinPrefix() + 'slides_to_scroll'] || 1;
+    }
+
+     
+    if (elementSettings[this.getSkinPrefix() + 'slide_gap']['size']) {
+      swiperOptions.spaceBetween = elementSettings[this.getSkinPrefix() + 'slide_gap']['size'];
+    }
+
+    const showArrows = 'arrows' === elementSettings[this.getSkinPrefix() + 'navigation'] || 'both' === elementSettings[this.getSkinPrefix() + 'navigation'],
+          showDots = 'dots' === elementSettings[this.getSkinPrefix() + 'navigation'] || 'both' === elementSettings[this.getSkinPrefix() + 'navigation'];
+
+    if (showArrows) {
+      swiperOptions.navigation = {
+        prevEl: '.elementor-swiper-button-prev',
+        nextEl: '.elementor-swiper-button-next'
+      };
+    }
+
+    if (showDots) {
+      swiperOptions.pagination = {
+        el: '.swiper-pagination',
+        type: 'bullets',
+        clickable: true
+      };
+    }
+
+    return swiperOptions;
+  },
+
+  
+  /***** end new getSwipperSettings function *******************/
+
+  getSwiperSettingss: function getSwiperSettingss() {
     
     var elementSettings = this.getElementSettings(),
       slidesToShow = +elementSettings[this.getSkinPrefix() + 'slides_to_show'] || 3, // this.getElementSettings(this.getSkinPrefix() + 'slides_to_show');
@@ -52,7 +127,9 @@ var EleCustomSkinSlider = elementorModules.frontend.handlers.Base.extend({
     if (!this.isEdit && 'yes' === elementSettings[this.getSkinPrefix() + 'autoplay']) {
       swiperOptions.autoplay = {
         delay: elementSettings[this.getSkinPrefix() + 'autoplay_speed'],
-        disableOnInteraction: !!elementSettings[this.getSkinPrefix() + 'pause_on_hover']
+        pause_on_hover:'yes',
+        disableOnInteraction: true, //!!elementSettings[this.getSkinPrefix() + 'pause_on_hover'],
+        pauseOnMouseEnter: true//!!elementSettings[this.getSkinPrefix() + 'pause_on_hover']
       };
     }
 
@@ -87,7 +164,7 @@ var EleCustomSkinSlider = elementorModules.frontend.handlers.Base.extend({
         clickable: true
       };
     }
-//console.log(swiperOptions);
+
     return swiperOptions;
   },
 
@@ -98,22 +175,38 @@ var EleCustomSkinSlider = elementorModules.frontend.handlers.Base.extend({
   isSliderEnabled: function isSliderEnabled() {
     return !!this.getElementSettings(this.getSkinPrefix() + 'post_slider');
   },
+   togglePauseOnHover: function togglePauseOnHover(toggleOn) {
+    if (toggleOn) {
+      this.elements.$carousel.on({
+        mouseenter: () => {
+          //this.swiper.autoplay.stop();
+        },
+        mouseleave: () => {
+          //this.swiper.autoplay.start();
+        }
+      });
+    } else {
+      this.elements.$carousel.off('mouseenter mouseleave');
+    }
+                     //console.log(this.swiper.classNames);// ------------------------comment this
+
+  },
   run: function run(){
     if(!this.isSliderEnabled()) return;
     
     if (!this.elements.$carousel.length) {
       return;
     }
-//here we call the swiper
-    if ( 'undefined' === typeof Swiper ) {
-      const asyncSwiper = elementorFrontend.utils.swiper;
+/* new way to call the swiper*/    
+    const Swiper = elementorFrontend.utils.swiper;
+    this.swiper = new Swiper(this.elements.$carousel, this.getSwiperSettings()); // Expose the swiper instance in the frontend
 
-      new asyncSwiper( this.elements.$carousel, this.getSwiperSettings() ).then( ( newSwiperInstance ) => { 
-        this.swiper = newSwiperInstance;
-      } );
-    } else {	 
-      this.swiper = new Swiper( this.elements.$carousel, this.getSwiperSettings() );
-    } 
+    this.elements.$carousel.data('swiper', this.swiper);
+
+    if ('yes' === this.getElementSettings(this.getSkinPrefix() + 'pause_on_hover') ) {
+      this.togglePauseOnHover(true);//search for the function to add it here
+    }  
+
     
     //add reinitilze for swiper
     ECScarousel = this.elements.$carousel;
@@ -123,10 +216,9 @@ var EleCustomSkinSlider = elementorModules.frontend.handlers.Base.extend({
       ECSswiper = new Swiper(ECScarousel, ECSswiperSettings);
     });
     
-    
+                //console.log(this.getSwiperSettings());// ------------------------comment this
   },
-  onInit: function onInit() {
-    
+  onInit: function onInit(...arguments) {
     elementorModules.frontend.handlers.Base.prototype.onInit.apply(this, arguments);
     this.run();
   },
@@ -141,10 +233,13 @@ var EleCustomSkinSlider = elementorModules.frontend.handlers.Base.extend({
   onEditSettingsChange: function onEditSettingsChange(propertyName) { // here you need to refresh stuff when it
     if(!this.isSliderEnabled()) return;
     if ('activeItemIndex' === propertyName) {
-      this.swiper.slideToLoop(this.getEditSettings('activeItemIndex') - 1);
+     // this.swiper.slideToLoop(this.getEditSettings('activeItemIndex') - 1);//no need, can you delete this?
     }
   }
-});
+}
+                                                                        
+                                                                        
+);
 
 var EleCustomSkinSliderArchive = EleCustomSkinSlider.extend({
   getSkinPrefix: function getSkinPrefix() {

@@ -78,7 +78,7 @@ class Betterdocs_Category_Grid extends Widget_Base
         return 'https://essential-addons.com/elementor/docs/betterdocs-category-grid/';
     }
 
-    protected function _register_controls()
+    protected function register_controls()
     {
         /*-----------------------------------------------------------------------------------*/
         /*    Content Tab
@@ -1604,6 +1604,14 @@ class Betterdocs_Category_Grid extends Widget_Base
 
         if($settings['exclude']) {
             $terms_object['exclude'] =  $settings['exclude'];
+        }
+
+        if ($settings['orderby'] == 'betterdocs_order') {
+            $terms_object['meta_key'] = 'doc_category_order';
+            $terms_object['orderby'] = 'meta_value_num';
+            $terms_object['order'] = 'ASC';
+        } else {
+            $terms_object['orderby'] = $settings['orderby'];
         }
 
         $default_multiple_kb = Helper::get_betterdocs_multiple_kb_status();

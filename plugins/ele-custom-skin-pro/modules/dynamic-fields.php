@@ -41,7 +41,7 @@ function ecs_parse_content($t,$post=NULL,$content="",$parent_settings=[]){
 					$custom_field=get_post_meta( $post->ID, $key, true); //echo "<br/>..".$key." :"; print_r($custom_field);
 				}
 				$value=$custom_field ? $custom_field : "";//pune custom field sau sa stearga keya daca nu are valoare 
-				if ($value=="" && function_exists("getProductAttributes")) $value = getProductAttributes($post->ID,$key); // iau custom product attribute
+				if ($value=="" && function_exists("wc_get_product_terms")) $value = array_shift( wc_get_product_terms( $post->ID, $key, array( 'fields' => 'names' ) ) ); // iau custom product attribute
 				if ($value=="" && function_exists('get_field') && $var->term_id) $value = get_field($key, $var->taxonomy.'_'.$var->term_id);// iau custom field de la taxonomie
 				if ($value=="") $value=$wp_query->query_vars[$key]; //get query_vars
 			}

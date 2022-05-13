@@ -52,7 +52,7 @@ class Price_Menu extends Widget_Base {
         return 'eaicon-price-menu';
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         /*-----------------------------------------------------------------------------------*/
         /*	Content Tab

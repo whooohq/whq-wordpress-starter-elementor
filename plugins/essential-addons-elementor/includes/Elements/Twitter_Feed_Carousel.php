@@ -57,7 +57,7 @@ class Twitter_Feed_Carousel extends Widget_Base
         return 'https://essential-addons.com/elementor/docs/twitter-feed-carousel/';
     }
 
-    protected function _register_controls()
+    protected function register_controls()
     {
         $this->start_controls_section(
             'eael_section_twitter_feed_carousel_acc_settings',
@@ -112,13 +112,42 @@ class Twitter_Feed_Carousel extends Widget_Base
         );
 
 	    $this->add_control(
-		    'eael_twitter_feed_data_cache_limit',
+		    'eael_auto_clear_cache',
 		    [
-			    'label' => __('Data Cache Time', 'essential-addons-for-elementor-lite'),
-			    'type' => Controls_Manager::NUMBER,
-			    'min' => 1,
-			    'default' => 60,
-			    'description' => __('Cache expiration time (Minutes)', 'essential-addons-for-elementor-lite')
+			    'label'        => esc_html__( 'Auto Cache Clear', 'essential-addons-elementor' ),
+			    'type'         => Controls_Manager::SWITCHER,
+			    'label_on'     => __( 'Yes', 'essential-addons-elementor' ),
+			    'label_off'    => __( 'No', 'essential-addons-elementor' ),
+			    'default'      => 'yes',
+			    'return_value' => 'yes',
+		    ]
+	    );
+
+	    $this->add_control(
+		    'eael_twitter_feed_cache_limit',
+		    [
+			    'label'       => __( 'Data Cache Time', 'essential-addons-elementor' ),
+			    'type'        => Controls_Manager::NUMBER,
+			    'min'         => 1,
+			    'default'     => 60,
+			    'description' => __( 'Cache expiration time (Minutes)', 'essential-addons-elementor' ),
+			    'condition'   => [
+				    'eael_auto_clear_cache' => 'yes'
+			    ]
+		    ]
+	    );
+
+	    $this->add_control(
+		    'eael_clear_cache_control',
+		    [
+			    'label'       => __( 'Clear Cache', 'essential-addons-elementor' ),
+			    'type'        => Controls_Manager::BUTTON,
+			    'text'        => __( 'Clear', 'essential-addons-elementor' ),
+			    'event'       => 'ea:cache:clear',
+			    'description' => esc_html__( 'Note: This will refresh your feed and fetch the latest data from your Twitter account', 'essential-addons-elementor' ),
+			    'condition'   => [
+				    'eael_auto_clear_cache' => ''
+			    ]
 		    ]
 	    );
 

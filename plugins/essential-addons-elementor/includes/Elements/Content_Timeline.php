@@ -65,7 +65,7 @@ class Content_Timeline extends Widget_Base
 		return 'https://essential-addons.com/elementor/docs/content-timeline/';
 	}
 
-	protected function _register_controls()
+	protected function register_controls()
 	{
 		/**
 		 * Custom Timeline Settings

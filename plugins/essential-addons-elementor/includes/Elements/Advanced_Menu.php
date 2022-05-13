@@ -69,7 +69,7 @@ class Advanced_Menu extends Widget_Base
         return 'https://essential-addons.com/elementor/docs/ea-advanced-menu/';
     }
 
-    protected function _register_skins()
+    protected function register_skins()
     {
         $this->add_skin(new Skin_Default($this));
         $this->add_skin(new Skin_One($this));
@@ -81,7 +81,7 @@ class Advanced_Menu extends Widget_Base
         $this->add_skin(new Skin_Seven($this));
     }
 
-    protected function _register_controls()
+    protected function register_controls()
     {
         /**
          * Content: General
