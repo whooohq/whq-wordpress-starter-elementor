@@ -255,6 +255,13 @@ class Options_Manager {
 	 * @return array
 	 */
 	public function get_options_data() {
+
+		foreach ( $this->current_options as $key => $data ) {
+			if ( isset( $data['options'] ) && is_callable( $data['options'] ) ) {
+				$this->current_options[ $key ]['options'] = call_user_func( $data['options'] );
+			}
+		}
+
 		return apply_filters( 'jet-menu/options-manager/options-list', $this->current_options );
 	}
 

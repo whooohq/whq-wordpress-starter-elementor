@@ -59,6 +59,8 @@ class Menu_Post_Type {
 		add_filter( 'default_option_elementor_cpt_support', array( $this, 'set_option_support' ) );
 
 		add_action( 'template_include', array( $this, 'set_post_type_template' ), 9999 );
+
+		add_filter( 'body_class', array( $this, 'add_body_classes' ), 9 );
 	}
 
 	/**
@@ -77,6 +79,20 @@ class Menu_Post_Type {
 	 */
 	public function meta_key() {
 		return $this->meta_key;
+	}
+
+	/**
+	 * @param $classes
+	 *
+	 * @return mixed
+	 */
+	public function add_body_classes( $classes ) {
+
+		if ( $this->slug() === get_post_type() ) {
+			$classes[] = 'jet-menu-post-type';
+		}
+
+		return $classes;
 	}
 
 	/**

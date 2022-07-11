@@ -70,7 +70,7 @@ class Jet_Widget_Custom_Menu extends Widget_Base {
 	 *
 	 * @access protected
 	 */
-	protected function _register_controls() {
+	protected function register_controls() {
 
 		$css_scheme = apply_filters(
 			'jet-menu/custom-menu/css-scheme',

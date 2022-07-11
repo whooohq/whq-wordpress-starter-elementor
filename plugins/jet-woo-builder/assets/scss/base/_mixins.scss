@@ -1,0 +1,22 @@
+@mixin display-grid {
+	display: -ms-grid;
+	display: grid;
+}
+
+@mixin grid-item ($col-start, $col-end, $row-start, $row-end) {
+	-ms-grid-column: $col-start;
+	-ms-grid-column-span: $col-end - $col-start;
+	-ms-grid-row: $row-start;
+	-ms-grid-row-span: $row-end - $row-start;
+	grid-column: #{$col-start}/#{$col-end};
+	grid-row: #{$row-start}/#{$row-end};
+}
+
+// Column width with margin
+@mixin column-width($columns: 3) {
+	flex: 0 0 calc( 100% / #{$columns} );
+	// Add a `max-width` to ensure content within each column does not blow out
+	// the width of the column. Applies to IE10+ and Firefox. Chrome and Safari
+	// do not appear to require this.
+	max-width: calc( 100% / #{$columns} );
+}

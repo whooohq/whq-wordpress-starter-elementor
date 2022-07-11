@@ -1,0 +1,81 @@
+.jet-checkboxes-list {
+	&-wrapper {
+		margin: -3px;
+
+		// Dropdown
+		.jet-filter-items-dropdown & {
+			padding: 5px 12px;
+		}
+	}
+
+	&__row {
+		margin: 3px;
+		margin-top: 0;
+		padding-top: 3px;
+	}
+
+	.jet-checkboxes-list__item {
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		cursor: pointer;
+
+		.jet-checkboxes-list__input {
+			outline: 0;
+			visibility: hidden;
+			margin: 0;
+			float: left;
+			font-size: inherit;
+			width: 0;
+			height: 0;
+			display: none;
+
+			&:checked {
+				+ .jet-checkboxes-list__button .jet-checkboxes-list__decorator {
+					background: #ccc;
+
+					.jet-checkboxes-list__checked-icon {
+						opacity: 1;
+					}
+				}
+			}
+		}
+
+		.jet-checkboxes-list__button {
+			display: flex;
+			border-color: #ccc;
+			border-width: 1px;
+		}
+
+		.jet-checkboxes-list__decorator {
+			margin-top: 3px;
+			position: relative;
+			width: 14px;
+			height: 14px;
+			min-width: 14px;
+			min-height: 14px;
+			border: 1px solid #ccc;
+			border-radius: 3px;
+		}
+
+		.jet-checkboxes-list__label {
+			align-self: center;
+		}
+
+		.jet-checkboxes-list__checked-icon {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			opacity: 0;
+			font-size: 10px;
+			color: #fff;
+		}
+	}
+}
+
+.jet-list-tree {
+	&__children {
+		padding-left: 10px;
+	}
+}

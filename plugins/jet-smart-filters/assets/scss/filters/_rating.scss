@@ -1,0 +1,71 @@
+.jet-rating {
+	border: none;
+	overflow: hidden;
+
+	.jet-rating-stars {
+		display: inline-block;
+	}
+
+	.jet-rating-stars__fields {
+		float: left;
+	}
+
+	&-icon {
+		&.fa {
+			.elementor-editor-active & {
+				font-family: 'FontAwesome';
+			}
+		}
+	}
+
+	fieldset,
+	label {
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+
+	.jet-rating-star {
+		&__input {
+			display: none;
+		}
+		&__icon {
+			font-size: 1.25em;
+			display: inline-block;
+		}
+		&__label {
+			color: #dddddd;
+			float: right;
+
+			&:last-of-type {
+				.jet-rating-star__icon {
+					margin-left: 0 !important;
+				}
+			}
+		}
+	}
+
+	input.is-checked ~ label,
+	input.is-checked ~ label ~ label {
+		color: #ffd700;
+	}
+
+	input:not(.is-checked) ~ label:hover,
+	input:not(.is-checked) ~ label:hover ~ label {
+		color: #ffed85;
+	}
+
+	/* input.is-checked ~ label, //show gold star when clicked
+	&:not(.is-checked) label:hover, //hover current star
+	&:not(.is-checked) label:hover ~ label {
+		//hover previous stars in list
+		color: #ffd700;
+	}
+
+	input.is-checked + label:hover, //hover current star when changing jet-rating
+	input.is-checked ~ label:hover,
+	label:hover ~ input.is-checked ~ label, //lighten current selection
+	input.is-checked ~ label:hover ~ label {
+		color: #ffed85;
+	} */
+}

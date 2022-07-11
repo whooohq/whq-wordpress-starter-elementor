@@ -1,42 +1,4 @@
 .elementor-panel {
-	.elementor-header-button {
-		.elementor-icon.eicon-menu-bar {
-			font-size: 20px;
-			&:before {
-				content: '\E87E';
-			}
-		}
-	}
-	#elementor-panel-footer-exit {
-		.fa-times {
-			&:before {
-				content: '\f053';
-			}
-		}
-
-		.eicon-close {
-			&:before {
-				content: '\E87E';
-			}
-		}
-	}
-	#elementor-panel-footer-settings {
-		.fa-cog {
-			&:before {
-				content: '\f053';
-			}
-		}
-
-		.eicon-cog {
-			&:before {
-				content: '\E87E';
-			}
-		}
-	}
-	#elementor-panel-saver-menu-save-draft,
-	#elementor-panel-saver-menu-discard {
-		display: none !important;
-	}
 }
 
 [class*="jet-menu-icon-"] {

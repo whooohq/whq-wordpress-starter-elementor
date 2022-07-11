@@ -1,0 +1,62 @@
+.jet-color-image-list {
+	&-wrapper {
+		// Dropdown
+		.jet-filter-items-dropdown & {
+			padding: 5px 12px;
+		}
+	}
+
+	&__color {
+		width: 16px;
+		height: 16px;
+	}
+
+	&__image {
+		width: 30px;
+	}
+
+	.jet-color-image-list__item {
+		position: relative;
+		display: inline-block;
+		cursor: pointer;
+
+		input {
+			outline: 0;
+			visibility: hidden;
+			margin: 0;
+			float: left;
+			font-size: inherit;
+			width: 0;
+			height: 0;
+			display: none;
+
+			&:checked {
+				+ .jet-color-image-list__button .jet-color-image-list__decorator > * {
+					border-color: #2ccc3c;
+				}
+			}
+		}
+
+		.jet-color-image-list__button {
+			display: flex;
+			border-color: #ccc;
+			border-width: 1px;
+		}
+
+		.jet-color-image-list__label {
+			align-self: center;
+		}
+
+		.jet-color-image-list__decorator > * {
+			position: relative;
+			display: inline-block;
+			border: 1px solid transparent;
+			border-radius: 3px;
+			vertical-align: middle;
+		}
+
+		.jet-color-image-list__image {
+			font-size: 0;
+		}
+	}
+}

@@ -1,0 +1,34 @@
+.jet-alphabet-list {
+	&__wrapper {
+		display: flex;
+		flex-wrap: wrap;
+		margin: -5px;
+	}
+
+	&__row {
+		padding: 5px;
+	}
+
+	&__item {
+		cursor: pointer;
+		user-select: none;
+
+		input[type="checkbox"],
+		input[type="radio"] {
+			display: none;
+		}
+	}
+
+	&__button {
+		display: block;
+		padding: 5px 8px;
+		border-color: #ccc;
+		border-width: 1px;
+		border-radius: 5px;
+		text-align: center;
+	}
+
+	&__input:checked + &__button {
+		background-color: rgb(233, 233, 233);
+	}
+}

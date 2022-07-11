@@ -1,0 +1,125 @@
+.datepickers-container {
+	z-index: 10000;
+}
+
+.jet-date-period {
+	&__wrapper {
+		display: flex;
+		align-items: stretch;
+	}
+
+	&__datepicker {
+		position: relative;
+
+		&-button {
+			cursor: pointer;
+			user-select: none;
+			display: flex;
+
+			color: #5d5d5d;
+			padding: 6px 15px;
+			border: 1px solid #d5d5d5;
+			border-radius: 4px;
+
+			&:hover {
+				color: #444;
+				border-color: #444;
+			}
+
+			&:after {
+				content: "\f107";
+				font-family: FontAwesome;
+				margin-left: 5px;
+
+				.jet-date-period-datepicker-opened & {
+					content: "\f106";
+				}
+			}
+		}
+
+		& &-input {
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			padding: 0;
+			border: 0;
+			height: 1px;
+			width: 1px;
+			clip: rect(0 0 0 0);
+			overflow: hidden;
+		}
+	}
+
+	&__prev,
+	&__next {
+		display: none;
+
+		cursor: pointer;
+		user-select: none;
+
+		width: 34px;
+		color: #bababa;
+		border: 1px solid #d5d5d5;
+		background-color: #f9f9f9;
+		border-radius: 4px;
+
+		&:hover {
+			color: #5d5d5d;
+			border-color: #444;
+		}
+
+		.jet-date-period-is-set & {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+	}
+
+	&__prev {
+		margin-right: 5px;
+	}
+	&__next {
+		margin-left: 5px;
+	}
+
+	&-separator {
+		margin: 0 5px;
+	}
+}
+
+.datepicker--cell.datepicker--cell-day.-week-hover- {
+	border-radius: 0;
+	color: inherit;
+	background-color: rgba(92, 196, 239, 0.1);
+}
+
+.datepicker--cell.datepicker--cell-day.-week-start-hover- {
+	border-radius: 5px 0 0 5px;
+}
+
+.datepicker--cell.datepicker--cell-day.-week-end-hover- {
+	border-radius: 0 5px 5px 0;
+}
+
+.datepicker--cell.datepicker--cell-day.-week-selected- {
+	border-radius: 0;
+	color: #fff;
+	background-color: #5cc4ef;
+}
+
+.datepicker--cell.datepicker--cell-day.-week-start-selected- {
+	border-radius: 5px 0 0 5px;
+}
+
+.datepicker--cell.datepicker--cell-day.-week-end-selected- {
+	border-radius: 0 5px 5px 0;
+}
+
+// RTL
+.rtl {
+	#datepickers-container {
+		.datepicker:not(.active) {
+			left: 100000px !important;
+		}
+	}
+}

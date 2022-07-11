@@ -8,6 +8,16 @@ The plugin works in tandem with Elementor live page builder, allowing to add con
 
 # ChangeLog
 
+## 2.1.7 - 23.03.2022
+* Fixed: minor JS/PHP issue
+
+## 2.1.6 - 10.02.2022
+* Fixed: minor JS/PHP issue
+
+## 2.1.5 - 10.02.2022
+* Fixed: compat with Elementor Pro 3.6 ( registration controls )
+* Fixed: minor JS/PHP issue
+
 ## 2.1.4 - 19.11.2021
 * Fixed: minor JS/PHP issue
 

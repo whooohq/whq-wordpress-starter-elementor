@@ -1,0 +1,16 @@
+.jet-listing-dynamic-image {
+	display: flex;
+	align-items: flex-start;
+	> * {
+		max-width: 100%;
+		flex: 0 0 auto;
+	}
+	img {
+		display: block;
+
+		&.wp-post-image {
+			width: auto;
+			max-height: none;
+		}
+	}
+}

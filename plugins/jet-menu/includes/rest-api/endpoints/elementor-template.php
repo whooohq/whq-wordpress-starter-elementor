@@ -169,9 +169,21 @@ class Elementor_Template extends Base {
 	 */
 	public function get_elementor_template_scripts( $template_id ) {
 
+		if ( ! $template_id ) {
+			return;
+		}
+
 		$document = \Elementor\Plugin::$instance->documents->get( $template_id );
 
+		if ( ! $document ) {
+			return;
+		}
+
 		$elements_data = $document->get_elements_raw_data();
+
+		if ( empty( $elements_data ) ) {
+			return;
+		}
 
 		$this->find_widgets_script_handlers( $elements_data );
 	}

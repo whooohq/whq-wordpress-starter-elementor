@@ -1,0 +1,42 @@
+.jet-smart-filters-active-tags {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: flex-start;
+
+	.jet-active-tags {
+		&__title {
+			flex: 0 0 auto;
+		}
+
+		&__list {
+			display: flex;
+			flex-direction: row;
+			justify-content: flex-start;
+			align-items: flex-start;
+			flex-wrap: wrap;
+			width: 100%;
+		}
+	}
+
+	.jet-active-tag {
+		position: relative;
+		display: flex;
+		padding-right: 10px;
+		cursor: pointer;
+
+		&__remove {
+			position: absolute;
+			top: 0;
+			right: 0;
+			line-height: 1;
+		}
+	}
+
+	body.rtl & {
+		.jet-active-tags__title + .jet-active-tag,
+		.jet-active-tag:first-child {
+			margin-right: 0 !important;
+		}
+	}
+}

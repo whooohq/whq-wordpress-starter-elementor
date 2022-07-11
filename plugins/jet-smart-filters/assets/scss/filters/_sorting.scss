@@ -1,0 +1,16 @@
+.jet-sorting {
+	display: flex;
+
+	&--flex-row {
+		flex-direction: row;
+		align-items: center;
+	}
+
+	&--flex-column {
+		flex-direction: column;
+	}
+
+	&-label {
+	
+	}
+}

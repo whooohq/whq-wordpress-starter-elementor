@@ -4,6 +4,7 @@ namespace Jet_Menu\Options_Manager;
 class Mobile_Menu_Options {
 
 	public function init_options() {
+
 		jet_menu()->settings_manager->options_manager->add_option( 'jet-menu-mobile-layout', array(
 			'value'   => jet_menu()->settings_manager->options_manager->get_option( 'jet-menu-mobile-layout', 'slide-out' ),
 			'options' => array(
@@ -88,17 +89,17 @@ class Mobile_Menu_Options {
 
 		jet_menu()->settings_manager->options_manager->add_option( 'jet-menu-mobile-header-template', array(
 			'value'   => jet_menu()->settings_manager->options_manager->get_option( 'jet-menu-mobile-header-template', '' ),
-			'options' => jet_menu_tools()->get_elementor_templates_select_options(),
+			'options' => array( jet_menu_tools(), 'get_elementor_templates_select_options' ),
 		) );
 
 		jet_menu()->settings_manager->options_manager->add_option( 'jet-menu-mobile-before-template', array(
 			'value'   => jet_menu()->settings_manager->options_manager->get_option( 'jet-menu-mobile-before-template', '' ),
-			'options' => jet_menu_tools()->get_elementor_templates_select_options(),
+			'options' => array( jet_menu_tools(), 'get_elementor_templates_select_options' ),
 		) );
 
 		jet_menu()->settings_manager->options_manager->add_option( 'jet-menu-mobile-after-template', array(
 			'value'   => jet_menu()->settings_manager->options_manager->get_option( 'jet-menu-mobile-after-template', '' ),
-			'options' => jet_menu_tools()->get_elementor_templates_select_options(),
+			'options' => array( jet_menu_tools(), 'get_elementor_templates_select_options' ),
 		) );
 
 		jet_menu()->settings_manager->options_manager->add_option( 'jet-menu-mobile-toggle-icon', array(
@@ -348,6 +349,7 @@ class Mobile_Menu_Options {
 		jet_menu()->settings_manager->options_manager->add_option( 'jet-mobile-loader-color', array(
 			'value' => jet_menu()->settings_manager->options_manager->get_option( 'jet-mobile-loader-color', '#3a3a3a' ),
 		) );
+
 	}
 
 	/**
@@ -361,4 +363,3 @@ class Mobile_Menu_Options {
 		add_action( 'init', array( $this, 'init_options') );
 	}
 }
-

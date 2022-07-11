@@ -1,0 +1,250 @@
+@mixin thumb {
+	cursor: pointer;
+	pointer-events: auto;
+	appearance: none;
+	width: 16px;
+	height: 16px;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	background-color: #858585;
+	border-radius: 50%;
+}
+
+@mixin track {
+	cursor: default;
+	height: initial;
+	width: initial;
+	border-radius: initial;
+	background: none;
+	border: none;
+	box-shadow: none;
+	appearance: none;
+	outline: 0;
+}
+
+@mixin reset {
+	margin: 0 !important;
+	padding: 0 !important;
+	border-radius: 0 !important;
+	border: none !important;
+	box-shadow: none !important;
+	outline: none !important;
+	background: none !important;
+	appearance: none !important;
+}
+
+.jet-range {
+	&__slider {
+		position: relative;
+		margin-bottom: 20px;
+
+		&__track {
+			position: relative;
+			color: #d0d0d0;
+			height: 4px;
+			background: #f9f9f9;
+
+			&__range {
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				background: linear-gradient(
+						90deg,
+						transparent var(--low),
+						currentColor 0,
+						currentColor var(--high),
+						transparent 0
+					)
+					no-repeat 0 100%/100% 100%;
+
+				.rtl & {
+					background: linear-gradient(
+							270deg,
+							transparent var(--low),
+							currentColor 0,
+							currentColor var(--high),
+							transparent 0
+						)
+						no-repeat 0 100%/100% 100%;
+				}
+			}
+		}
+
+		& &__input {
+			@include reset;
+			position: absolute;
+			transform: translateY(-50%);
+			top: 50%;
+			left: 0;
+			width: 100%;
+			height: 16px;
+			background: transparent !important;
+
+			&:focus {
+				outline: none;
+				box-shadow: none;
+				background: none;
+			}
+
+			&::-webkit-slider-runnable-track {
+				@include track;
+			}
+			&::-webkit-slider-thumb {
+				@include thumb;
+			}
+			&::-webkit-slider-progress {
+				@include reset;
+			}
+
+			&::-moz-focus-outer {
+				border: 0;
+			}
+			&::-moz-range-track {
+				@include track;
+			}
+			&::-moz-range-progress {
+				@include reset;
+			}
+			&::-moz-range-thumb {
+				@include thumb;
+			}
+
+			&::-ms-thumb {
+				@include thumb;
+			}
+			&::-ms-fill-lower {
+				background: none;
+			}
+			&::-ms-fill-upper {
+				background: none;
+			}
+		}
+
+		& &__input--min {
+			z-index: 21;
+
+			&::-webkit-slider-thumb {
+				background-position-x: left;
+			}
+			&::-moz-range-thumb {
+				background-position-x: left;
+			}
+			&::-ms-thumb {
+				background-position-x: left;
+			}
+		}
+
+		& &__input--max {
+			z-index: 20;
+
+			&::-webkit-slider-thumb {
+				background-position-x: right;
+			}
+			&::-moz-range-thumb {
+				background-position-x: right;
+			}
+			&::-ms-thumb {
+				background-position-x: right;
+			}
+		}
+	}
+
+	&__inputs {
+		&__container {
+			display: flex;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		&__group {
+			overflow: hidden;
+			position: relative;
+			display: flex;
+			align-items: stretch;
+			width: 100%;
+			border-radius: 5px;
+			border: 1px solid #ced4da;
+
+			input[type="number"] {
+				margin: 8px 12px;
+				padding: 0;
+				width: 100%;
+				min-height: auto;
+				color: inherit;
+				font-family: inherit;
+				font-size: inherit;
+				line-height: normal;
+				letter-spacing: inherit;
+				border: none;
+				outline: none;
+				background: none;
+
+				&:focus {
+					border-color: inherit;
+					box-shadow: none;
+					outline: none;
+				}
+			}
+
+			&__text {
+				padding: 0 10px;
+				display: flex;
+				align-items: center;
+				color: #212529;
+				text-align: center;
+				white-space: nowrap;
+				background-color: #e9ecef;
+				border-color: inherit;
+				border-width: inherit;
+				border-style: inherit;
+
+				&:first-child {
+					border-top: 0;
+					border-left: 0;
+					border-bottom: 0;
+
+					.rtl & {
+						border-left: inherit;
+						border-right: 0;
+					}
+				}
+				&:last-child {
+					border-top: 0;
+					border-right: 0;
+					border-bottom: 0;
+
+					.rtl & {
+						border-right: inherit;
+						border-left: 0;
+					}
+				}
+			}
+
+			&:first-child {
+				margin-right: 10px;
+
+				.rtl & {
+					margin-left: 10px;
+					margin-right: 0;
+				}
+			}
+			&:last-child {
+				margin-left: 10px;
+
+				.rtl & {
+					margin-right: 10px;
+					margin-left: 0;
+				}
+			}
+		}
+	}
+
+	&--mobile {
+		input[type="range"] {
+			pointer-events: none;
+		}
+	}
+}

@@ -1,0 +1,105 @@
+.jet-smart-filters-search {
+	.jet-search-filter {
+		.jet-filter-label {
+			text-align: left;
+		}
+
+		&__input {
+			width: 100%;
+			display: block;
+			appearance: none;
+
+			&-wrapper {
+				position: relative;
+				width: 100%;
+				min-width: 50px;
+			}
+
+			&-clear,
+			&-loading {
+				display: none;
+				position: absolute;
+				top: 50%;
+				color: #777;
+				font-family: FontAwesome;
+			}
+
+			&-clear {
+				cursor: pointer;
+				right: 5px;
+				padding: 5px;
+				font-size: 16px;
+				line-height: 1;
+				height: 26px;
+				margin-top: -13px;
+
+				&::before {
+					content: "\f00d";
+				}
+
+				.rtl & {
+					right: initial;
+					left: 5px;
+				}
+			}
+
+			&-loading {
+				right: 6px;
+				height: 20px;
+				width: 20px;
+				margin-top: -10px;
+				border-left: 3px solid transparent;
+				border-top: 3px solid currentColor;
+				border-right: 3px solid currentColor;
+				border-bottom: 3px solid currentColor;
+				border-radius: 50%;
+				animation: loading-spin 1s infinite linear;
+
+				.rtl & {
+					right: initial;
+					left: 6px;
+				}
+
+				@keyframes loading-spin {
+					from {
+						transform: rotate(0deg);
+						transform: rotate(0deg);
+					}
+
+					to {
+						transform: rotate(359deg);
+						transform: rotate(359deg);
+					}
+				}
+			}
+		}
+
+		&__submit {
+			margin-top: 10px;
+		}
+
+		&.jet-filters-single-loading .jet-search-filter__input-loading {
+			display: block;
+		}
+
+		&:not(.jet-filters-single-loading) .jet-input-not-empty ~ .jet-search-filter__input-clear {
+			display: block;
+		}
+
+		/* clears the 'X' from Internet Explorer */
+		.jet-search-filter__input::-ms-clear,
+		.jet-search-filter__input::-ms-reveal {
+			display: none;
+			width: 0;
+			height: 0;
+		}
+
+		/* clears the 'X' from Chrome */
+		.jet-search-filter__input::-webkit-search-decoration,
+		.jet-search-filter__input::-webkit-search-cancel-button,
+		.jet-search-filter__input::-webkit-search-results-button,
+		.jet-search-filter__input::-webkit-search-results-decoration {
+			display: none;
+		}
+	}
+}

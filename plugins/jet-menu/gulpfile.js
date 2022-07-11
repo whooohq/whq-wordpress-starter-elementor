@@ -39,7 +39,7 @@ gulp.task( 'css-editor', () => {
 			cascade:  false
 		} ) )
 		.pipe( rename( 'editor.css' ) )
-		.pipe( gulp.dest( './assets/editor/css/' ) )
+		.pipe( gulp.dest( './includes/elementor/assets/editor/css/' ) )
 		.pipe( notify( 'Compile Sass Done!' ) );
 } );
 

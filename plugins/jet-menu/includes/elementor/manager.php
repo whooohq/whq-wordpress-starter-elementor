@@ -46,7 +46,9 @@ class Elementor {
 
 		add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_addons' ), 10 );
 
-		add_action( 'elementor/init', array( $this, 'init_extension_module' ) );
+		//add_action( 'elementor/documents/register', array( $this, 'register_document_types' ) );
+
+		add_action( 'elementor/init', array( $this, 'init_extension_module' ), 0 );
 
 		add_action( 'elementor/editor/after_enqueue_styles', array( $this, 'editor_styles' ) );
 
@@ -115,6 +117,20 @@ class Elementor {
 			'title' => esc_html__( 'JetElements', 'jet-menu' ),
 			'icon'  => 'font',
 		), 1 );
+	}
+
+	/**
+	 * @param $documents_manager
+	 */
+	public function register_document_types( $documents_manager ) {
+
+		// For compatibility with Elementor 2.7.0
+		require jet_menu()->plugin_path( 'includes/elementor/document-types/not-supported.php' );
+		$documents_manager->register_document_type( 'jet-menu-not-supported', 'Jet_Menu_Not_Supported' );
+
+		require jet_menu()->plugin_path( 'includes/elementor/document-types/jet-menu-item.php' );
+		$documents_manager->register_document_type( 'jet-menu', 'Jet_Menu_Item_Document' );
+
 	}
 
 	/**

@@ -1,0 +1,21 @@
+.jet-filters-pagination {
+	margin-left: -3px;
+	margin-right: -3px;
+	margin-bottom: -6px;
+
+	&__item {
+		display: inline-block;
+		cursor: pointer;
+		margin-bottom: 6px;
+		margin-left: 3px;
+		margin-right: 3px;
+	}
+
+	&__link {
+		padding: 5px;
+	}
+
+	&__disabled {
+		display: none;
+	}
+}

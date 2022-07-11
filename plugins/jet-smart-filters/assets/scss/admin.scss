@@ -1,0 +1,182 @@
+.post-type-jet-smart-filters {
+	.cx-control.cx-control-hidden:first-child + .cx-control {
+		border-top: none;
+	}
+}
+
+.jet-smart-filters-color-image {
+	&.cx-ui-kit.cx-ui-repeater-container {
+		padding: 20px;
+	}
+
+	.cx-ui-repeater-add {
+		margin-top: 10px;
+	}
+
+	.cx-ui-repeater-list {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		align-items: flex-start;
+
+		.cx-ui-repeater-item {
+			box-sizing: border-box;
+			flex: 0 1 calc(33.333% - 20px);
+			margin: 10px;
+		}
+
+		.color-image-type-control {
+			width: 100%;
+			display: flex;
+			align-items: center;
+			margin-bottom: 10px;
+
+			label {
+				margin-bottom: 0;
+				margin-right: 10px;
+			}
+
+			.cx-ui-select-wrapper {
+				display: flex;
+				align-items: center;
+				width: 100%;
+			}
+
+			&.cx-control-hidden {
+				display: none;
+			}
+
+			&.color-control,
+			&.selected-value-control {
+				.cx-label {
+					margin-right: 7px;
+				}
+			}
+
+			&.image-control {
+				align-items: flex-start;
+
+				.cx-label {
+					margin-top: 10px;
+				}
+			}
+		}
+	}
+
+	&[data-source="posts"],
+	&[data-source="taxonomies"] {
+		.color-image-type-control.value-control {
+			display: none;
+		}
+	}
+
+	&[data-source="custom_fields"],
+	&[data-source="manual_input"] {
+		.color-image-type-control.selected-value-control {
+			display: none;
+		}
+	}
+
+	&[data-type="color"] {
+		.color-image-type-control.image-control {
+			display: none;
+		}
+	}
+
+	&[data-type="image"] {
+		.color-image-type-control.color-control {
+			display: none;
+		}
+	}
+}
+
+#jet-smart-filters-indexer-button {
+	float: right;
+	position: relative;
+	display: inline-block;
+	font-size: 11px;
+	line-height: 18px;
+	text-decoration: none;
+	padding: 4px 22px;
+	margin-top: 1px;
+	text-transform: uppercase;
+	border-radius: 4px;
+	border-width: 1px;
+	border-style: solid;
+	outline: none;
+	cursor: pointer;
+	transition: all 200ms linear;
+	color: #fff;
+	border-color: #e54444 #b83636 #b83636 #e54444;
+	background-color: #e64545;
+
+	&:hover {
+		background-color: #fd4545;
+	}
+
+	&.loading {
+		opacity: 0.7;
+		cursor: not-allowed;
+	}
+}
+
+.jet-smart-filters-settings-page {
+	.cx-vui-title {
+		font-weight: 500;
+		font-size: 14px;
+		line-height: 20px;
+	}
+
+	.cx-vui-subtitle {
+		font-size: 12px;
+		line-height: 18px;
+		font-weight: 300;
+		color: #7b7e81;
+	}
+
+	.avaliable-controls,
+	.rewritable-post-types {
+		&__list {
+			display: flex;
+			justify-content: flex-start;
+			align-items: flex-start;
+			flex-wrap: wrap;
+		}
+
+		&__item {
+			width: 50%;
+
+			> .cx-vui-component {
+				padding: 0;
+				margin-bottom: 15px;
+			}
+
+			@media screen and (max-width: 1200px) {
+				width: 50%;
+			}
+
+			@media screen and (max-width: 782px) {
+				width: 100%;
+			}
+		}
+
+		&__header {
+			margin-bottom: 20px;
+			border-bottom: 1px solid #dcdcdd;
+			padding-bottom: 15px;
+		}
+	}
+
+	.avaliable-controls {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: stretch;
+		padding: 20px;
+		margin-bottom: 40px;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
