@@ -142,6 +142,26 @@ class EAEL_Tooltip_Section
         );
 
         $element->add_control(
+            'eael_tooltip_section_follow_cursor',
+            [
+                'label' => __('Follow Cursor', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SELECT,
+                'default' => 'false',
+                'options' => [
+                    'false' => __('False', 'essential-addons-elementor'),
+                    'vertical' => __('Vertical', 'essential-addons-elementor'),
+                    'horizontal' => __('Horizontal', 'essential-addons-elementor'),
+                    'initial' => __('Initial', 'essential-addons-elementor'),
+                ],
+                'frontend_available' => true,
+                'description' => __('Follow cursor when the tooltip is visible.', 'essential-addons-elementor'),
+                'condition' => [
+                    'eael_tooltip_section_enable!' => '',
+                ],
+            ]
+        );
+
+        $element->add_control(
             'eael_tooltip_section_trigger',
             [
                 'label' => __('Trigger', 'essential-addons-elementor'),
@@ -397,33 +417,40 @@ class EAEL_Tooltip_Section
             $arrowType = $settings["eael_tooltip_section_arrow_type"];
             $size = $settings["eael_tooltip_section_size"];
             $trigger = $settings["eael_tooltip_section_trigger"];
-            $width = $settings["eael_tooltip_section_width"];?>
+            $width = $settings["eael_tooltip_section_width"];
+            $followCursor = $settings["eael_tooltip_section_follow_cursor"];
+            ?>
 
             <script>
                 jQuery(window).on('elementor/frontend/init', function() {
                     var $currentTooltip = '#eael-section-tooltip-<?php echo $element->get_id(); ?>';
 
-                    tippy($currentTooltip, {
-                        content: '<?php echo (str_replace("'", "\'", $content)); ?>',
-                        placement: '<?php echo $position; ?>',
-                        animation: '<?php echo $animation; ?>',
-                        arrow: '<?php echo $arrow; ?>',
-                        arrowType: '<?php echo $arrowType; ?>',
-                        duration: '<?php echo $duration; ?>',
-                        distance: '<?php echo $distance; ?>',
-                        delay: '<?php echo $delay; ?>',
-                        size: '<?php echo $size; ?>',
-                        trigger: '<?php echo $trigger; ?>',
-                        animateFill: false,
-                        flipOnUpdate: true,
-                        interactive: true,
-                        maxWidth: <?php echo $width['size']; ?>,
-                        zIndex: 999,
-                        onShow(instance) {
-                            var tippyPopper = instance.popper;
-                            jQuery(tippyPopper).attr('data-tippy-popper-id', '<?php echo $data['id']; ?>');
-                        }
-                    });
+                    if (typeof tippy !== 'undefined') {
+                        tippy($currentTooltip, {
+                            content: '<?php echo( str_replace( "'", "\'", $content ) ); ?>',
+                            placement: '<?php echo $position; ?>',
+                            animation: '<?php echo $animation; ?>',
+                            arrow: '<?php echo $arrow; ?>',
+                            arrowType: '<?php echo $arrowType; ?>',
+                            duration: '<?php echo $duration; ?>',
+                            distance: '<?php echo $distance; ?>',
+                            delay: '<?php echo $delay; ?>',
+                            size: '<?php echo $size; ?>',
+                            trigger: '<?php echo $trigger; ?>',
+                            animateFill: false,
+                            flipOnUpdate: true,
+                            interactive: true,
+                            maxWidth: <?php echo $width['size']; ?>,
+                            zIndex: 999,
+                            followCursor: <?php if ($followCursor !== 'false') {
+				                echo "'$followCursor'";
+			                } else { ?> false <?php } ?>,
+                            onShow(instance) {
+                                var tippyPopper = instance.popper;
+                                jQuery(tippyPopper).attr('data-tippy-popper-id', '<?php echo $data['id']; ?>');
+                            }
+                        });
+                    }
                 });
             </script>
         <?php }

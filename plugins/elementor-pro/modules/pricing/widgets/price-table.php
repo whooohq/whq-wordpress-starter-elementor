@@ -1684,7 +1684,7 @@ class Price_Table extends Base_Widget {
 			<# if ( settings.heading || settings.sub_heading ) { #>
 				<div class="elementor-price-table__header">
 					<# if ( settings.heading ) { #>
-						<# var headingTag = elementorPro.validateHTMLTag( settings.heading_tag ) #>
+						<# var headingTag = elementor.helpers.validateHTMLTag( settings.heading_tag ) #>
 						<{{ headingTag }} {{{ view.getRenderAttributeString( 'heading' ) }}}>{{{ settings.heading }}}</{{ headingTag }}>
 					<# } #>
 					<# if ( settings.sub_heading ) { #>

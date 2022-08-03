@@ -14,6 +14,7 @@ use Elementor\Core\Documents_Manager;
 use Elementor\Settings;
 use Elementor\Core\Common\Modules\Ajax\Module as Ajax;
 use ElementorPro\Modules\Woocommerce\Classes\Products_Renderer;
+use Elementor\Icons_Manager;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -24,6 +25,7 @@ class Module extends Module_Base {
 	const WOOCOMMERCE_GROUP = 'woocommerce';
 	const TEMPLATE_MINI_CART = 'cart/mini-cart.php';
 	const OPTION_NAME_USE_MINI_CART = 'use_mini_cart_template';
+	const MENU_CART_FRAGMENTS_ACTION = 'elementor-menu-cart-fragments';
 
 	protected $docs_types = [];
 	protected $use_mini_cart_template;
@@ -150,19 +152,25 @@ class Module extends Module_Base {
 		}
 	}
 
-	public static function render_menu_cart_toggle_button() {
+	public static function render_menu_cart_toggle_button( $settings ) {
 		if ( null === WC()->cart ) {
 			return;
 		}
 		$product_count = WC()->cart->get_cart_contents_count();
 		$sub_total = WC()->cart->get_cart_subtotal();
 		$counter_attr = 'data-counter="' . $product_count . '"';
+		$icon = ! empty( $settings['icon'] ) ? $settings['icon'] : 'cart-medium';
 		?>
 		<div class="elementor-menu-cart__toggle elementor-button-wrapper">
 			<a id="elementor-menu-cart__toggle_button" href="#" class="elementor-menu-cart__toggle_button elementor-button elementor-size-sm" aria-expanded="false">
 				<span class="elementor-button-text"><?php echo $sub_total; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 				<span class="elementor-button-icon" <?php echo $counter_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-					<i class="eicon"></i>
+					<?php
+					Icons_Manager::render_icon( [
+						'library' => 'eicons',
+						'value' => 'eicon-' . $icon,
+					] );
+					?>
 					<span class="elementor-screen-only"><?php esc_html_e( 'Cart', 'elementor-pro' ); ?></span>
 				</span>
 			</a>
@@ -178,7 +186,7 @@ class Module extends Module_Base {
 	 * When in the editor we populate this on page load as we can't rely on the woocoommerce js to re-add the fragments
 	 * each time a widget us re-rendered.
 	 */
-	public static function render_menu_cart() {
+	public static function render_menu_cart( $settings ) {
 		if ( null === WC()->cart ) {
 			return;
 		}
@@ -199,7 +207,7 @@ class Module extends Module_Base {
 							</div>
 						</div>
 					</div>
-					<?php self::render_menu_cart_toggle_button(); ?>
+					<?php self::render_menu_cart_toggle_button( $settings ); ?>
 				</div>
 			<?php endif; ?>
 		</div> <!-- close elementor-menu-cart__wrapper -->
@@ -207,28 +215,102 @@ class Module extends Module_Base {
 	}
 
 	/**
-	 * Refresh the Menu Cart button and items counter.
-	 * The mini-cart itself will be rendered by WC functions.
+	 * Menu cart fragments.
 	 *
-	 * @param $fragments
+	 * Ajax action to create fragments for the menu carts in a page.
 	 *
-	 * @return array
+	 * @return void
 	 */
-	public function menu_cart_fragments( $fragments ) {
-		$has_cart = is_a( WC()->cart, 'WC_Cart' );
-		if ( ! $has_cart || ! $this->use_mini_cart_template ) {
-			return $fragments;
+	public function menu_cart_fragments() {
+		$all_fragments = [];
+
+		if (
+			! isset( $_POST['_nonce'] )
+			|| ! wp_verify_nonce( $_POST['_nonce'], self::MENU_CART_FRAGMENTS_ACTION )
+			|| ! is_array( $_POST['templates'] )
+		) {
+			wp_send_json( [] );
 		}
 
-		ob_start();
-		self::render_menu_cart_toggle_button();
-		$menu_cart_toggle_button_html = ob_get_clean();
-
-		if ( ! empty( $menu_cart_toggle_button_html ) ) {
-			$fragments['body div.elementor-widget.elementor-widget-woocommerce-menu-cart div.elementor-menu-cart__toggle'] = $menu_cart_toggle_button_html;
+		if ( 'true' === $_POST['is_editor'] ) {
+			Plugin::elementor()->editor->set_edit_mode( true );
 		}
 
-		return $fragments;
+		foreach ( $_POST['templates'] as $id ) {
+			$this->get_all_fragments( $id, $all_fragments );
+		}
+
+		wp_send_json( [ 'fragments' => $all_fragments ] );
+	}
+
+	/**
+	 * Get All Fragments.
+	 *
+	 * @since 3.7.0
+	 *
+	 * @param $id
+	 * @param $all_fragments
+	 * @return void
+	 */
+	public function get_all_fragments( $id, &$all_fragments ) {
+		$fragments_in_document = $this->get_fragments_in_document( $id );
+
+		if ( $fragments_in_document ) {
+			$all_fragments += $fragments_in_document;
+		}
+	}
+
+	/**
+	 * Get Fragments In Document.
+	 *
+	 * A general function that will return any needed fragments for a Post.
+	 *
+	 * @since 3.7.0
+	 * @access public
+	 *
+	 * @param int $id
+	 *
+	 * @return mixed $fragments
+	 */
+	public function get_fragments_in_document( $id ) {
+		$document = Plugin::elementor()->documents->get( $id );
+
+		if ( ! is_object( $document ) ) {
+			return false;
+		}
+
+		$fragments = [];
+
+		$data = $document->get_elements_data();
+
+		Plugin::elementor()->db->iterate_data(
+			$data,
+			$this->get_fragments_handler( $fragments )
+		);
+
+		return ! empty( $fragments ) ? $fragments : false;
+	}
+
+	/**
+	 * Get Fragments Handler.
+	 *
+	 * @since 3.7.0
+	 *
+	 * @param array $fragments
+	 * @return void
+	 */
+	public function get_fragments_handler( array &$fragments ) {
+		return function ( $element ) use ( &$fragments ) {
+			if ( ! isset( $element['widgetType'] ) ) {
+				return;
+			}
+
+			$fragment_data = $this->get_fragment_data( $element );
+
+			if ( ! empty( $fragment_data['html'] ) ) {
+				$fragments[ $fragment_data['selector'] ] = $fragment_data['html'];
+			}
+		};
 	}
 
 	/**
@@ -288,6 +370,7 @@ class Module extends Module_Base {
 			$settings['woocommerce']['menu_cart'] = [
 				'cart_page_url' => wc_get_cart_url(),
 				'checkout_page_url' => wc_get_checkout_url(),
+				'fragments_nonce' => wp_create_nonce( self::MENU_CART_FRAGMENTS_ACTION ),
 			];
 		}
 		return $settings;
@@ -959,7 +1042,7 @@ class Module extends Module_Base {
 	 */
 	private static function get_product_widget_content( $settings, $type, $title_hook, $title_key = '' ) {
 		add_filter( $title_hook, function ( $heading ) use ( $settings, $title_key ) {
-			$title_text = $settings[ $title_key ];
+			$title_text = isset( $settings[ $title_key ] ) ? $settings[ $title_key ] : '';
 
 			if ( ! empty( $title_text ) ) {
 				return $title_text;
@@ -1033,6 +1116,32 @@ class Module extends Module_Base {
 	}
 
 	/**
+	 * Get Fragment Data.
+	 *
+	 * A function that will return the selector and HTML for WC fragments.
+	 *
+	 * @since 3.7.0
+	 * @access private
+	 *
+	 * @param array $element
+	 *
+	 * @return array $fragment_data
+	 */
+	private function get_fragment_data( $element ) {
+		$fragment_data = [];
+
+		if ( 'woocommerce-menu-cart' === $element['widgetType'] ) {
+			ob_start();
+			self::render_menu_cart_toggle_button( $element['settings'] );
+			$fragment_data['html'] = ob_get_clean();
+
+			$fragment_data['selector'] = 'div.elementor-element-' . $element['id'] . ' div.elementor-menu-cart__toggle';
+		}
+
+		return $fragment_data;
+	}
+
+	/**
 	 * Is Preview
 	 *
 	 * Helper to check if we are doing either:
@@ -1067,6 +1176,9 @@ class Module extends Module_Base {
 		add_action( 'wp_ajax_elementor_woocommerce_checkout_login_user', [ $this, 'elementor_woocommerce_checkout_login_user' ] );
 		add_action( 'wp_ajax_nopriv_elementor_woocommerce_checkout_login_user', [ $this, 'elementor_woocommerce_checkout_login_user' ] );
 
+		add_action( 'wp_ajax_elementor_menu_cart_fragments', [ $this, 'menu_cart_fragments' ] );
+		add_action( 'wp_ajax_nopriv_elementor_menu_cart_fragments', [ $this, 'menu_cart_fragments' ] );
+
 		add_filter( 'elementor/theme/need_override_location', [ $this, 'theme_template_include' ], 10, 2 );
 
 		add_filter( 'elementor_pro/frontend/localize_settings', [ $this, 'localized_settings_frontend' ] );
@@ -1094,7 +1206,6 @@ class Module extends Module_Base {
 		}
 
 		if ( $this->use_mini_cart_template ) {
-			add_filter( 'woocommerce_add_to_cart_fragments', [ $this, 'menu_cart_fragments' ] );
 			add_filter( 'woocommerce_locate_template', [ $this, 'woocommerce_locate_template' ], 10, 3 );
 		}
 

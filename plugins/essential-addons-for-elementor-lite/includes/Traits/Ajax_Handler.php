@@ -66,6 +66,9 @@ trait Ajax_Handler {
 			add_action( 'wp_ajax_clear_cache_files_with_ajax', array( $this, 'clear_cache_files' ) );
 			add_action( 'wp_ajax_eael_admin_promotion', array( $this, 'eael_admin_promotion' ) );
 		}
+
+		add_action( 'wp_ajax_eael_get_token', [ $this, 'eael_get_token' ] );
+		add_action( 'wp_ajax_nopriv_eael_get_token', [ $this, 'eael_get_token' ] );
 	}
 
 	/**
@@ -91,7 +94,7 @@ trait Ajax_Handler {
 			return false;
 		}
 
-		if ( ! wp_verify_nonce( $_POST['nonce'], 'load_more' ) ) {
+		if ( ! wp_verify_nonce( $_POST['nonce'], 'load_more' ) && ! wp_verify_nonce( $_POST['nonce'], 'essential-addons-elementor' ) ) {
 			$err_msg = __( 'Security token did not match', 'essential-addons-for-elementor-lite' );
 			if ( $ajax ) {
 				wp_send_json_error( $err_msg );
@@ -296,7 +299,8 @@ trait Ajax_Handler {
 		if ( empty( $settings ) ) {
 			wp_send_json_error( [ 'message' => __( 'Widget settings are not found. Did you save the widget before using load more??', 'essential-addons-for-elementor-lite' ) ] );
 		}
-		$settings['eael_page_id'] = $page_id;
+		$settings['eael_page_id']   = $page_id;
+		$settings['eael_widget_id'] = $widget_id;
 		wp_parse_str( $_REQUEST['args'], $args );
 
 		$paginationNumber = absint( $_POST['number'] );
@@ -924,5 +928,19 @@ trait Ajax_Handler {
 		}
 
 		update_option( 'eael_admin_promotion', self::EAEL_PROMOTION_FLAG );
+	}
+
+	/**
+	 * Get nonce token through ajax request
+	 *
+	 * @since 5.1.13
+	 * @return void
+	 */
+	public function eael_get_token() {
+		$nonce = wp_create_nonce( 'essential-addons-elementor' );
+		if ( $nonce ) {
+			wp_send_json_success( [ 'nonce' => $nonce ] );
+		}
+		wp_send_json_error( __( 'you are not allowed to do this action', 'essential-addons-for-elementor-lite' ) );
 	}
 }

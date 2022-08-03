@@ -1,48 +1,5 @@
-/*! elementor-pro - v3.7.0 - 08-05-2022 */
+/*! elementor-pro - v3.7.3 - 31-07-2022 */
 (self["webpackChunkelementor_pro"] = self["webpackChunkelementor_pro"] || []).push([["frontend"],{
-
-/***/ "../node_modules/@babel/runtime/helpers/defineProperty.js":
-/*!****************************************************************!*\
-  !*** ../node_modules/@babel/runtime/helpers/defineProperty.js ***!
-  \****************************************************************/
-/***/ ((module) => {
-
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-module.exports = _defineProperty;
-module.exports.default = module.exports, module.exports.__esModule = true;
-
-/***/ }),
-
-/***/ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js":
-/*!***********************************************************************!*\
-  !*** ../node_modules/@babel/runtime/helpers/interopRequireDefault.js ***!
-  \***********************************************************************/
-/***/ ((module) => {
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    "default": obj
-  };
-}
-
-module.exports = _interopRequireDefault;
-module.exports.default = module.exports, module.exports.__esModule = true;
-
-/***/ }),
 
 /***/ "../assets/dev/js/frontend/frontend.js":
 /*!*********************************************!*\
@@ -101,8 +58,8 @@ class ElementorProFrontend extends elementorModules.ViewModule {
     }); // TODO: BC Since 2.9.0
 
     this.modules.linkActions = {
-      addAction: (...args) => {
-        elementorFrontend.utils.urlActions.addAction(...args);
+      addAction: function () {
+        elementorFrontend.utils.urlActions.addAction(...arguments);
       }
     };
   }
@@ -143,7 +100,7 @@ __webpack_require__.p = ElementorProFrontendConfig.urls.assets + 'js/';
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class _default extends elementorModules.Module {
   constructor() {
@@ -153,7 +110,7 @@ class _default extends elementorModules.Module {
 
 }
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -171,7 +128,7 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _handler = _interopRequireDefault(__webpack_require__(/*! ./handler */ "../modules/motion-fx/assets/js/frontend/handler.js"));
 
@@ -183,7 +140,7 @@ class _default extends elementorModules.Module {
 
 }
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -201,13 +158,13 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _motionFx = _interopRequireDefault(__webpack_require__(/*! ./motion-fx/motion-fx */ "../modules/motion-fx/assets/js/frontend/motion-fx/motion-fx.js"));
 
 class _default extends elementorModules.frontend.handlers.Base {
-  __construct(...args) {
-    super.__construct(...args);
+  __construct() {
+    super.__construct(...arguments);
 
     this.toggle = elementorFrontend.debounce(this.toggle, 200);
   }
@@ -469,7 +426,7 @@ class _default extends elementorModules.frontend.handlers.Base {
 
 }
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -485,7 +442,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class _default extends elementorModules.Module {
   getMovePointFromPassedPercents(movableRange, passedPercents) {
@@ -698,7 +655,7 @@ class _default extends elementorModules.Module {
     return value;
   }
 
-  runAction(actionName, actionData, passedPercents, ...args) {
+  runAction(actionName, actionData, passedPercents) {
     if (actionData.affectedRange) {
       if (actionData.affectedRange.start > passedPercents) {
         passedPercents = actionData.affectedRange.start;
@@ -707,6 +664,10 @@ class _default extends elementorModules.Module {
       if (actionData.affectedRange.end < passedPercents) {
         passedPercents = actionData.affectedRange.end;
       }
+    }
+
+    for (var _len = arguments.length, args = new Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
+      args[_key - 3] = arguments[_key];
     }
 
     this[actionName](actionData, passedPercents, ...args);
@@ -730,7 +691,7 @@ class _default extends elementorModules.Module {
 
 }
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -748,13 +709,13 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
 
 class _default extends elementorModules.ViewModule {
-  constructor(...args) {
-    super(...args);
+  constructor() {
+    super(...arguments);
     (0, _defineProperty2.default)(this, "onInsideViewport", () => {
       this.run();
       this.animationFrameRequest = requestAnimationFrame(this.onInsideViewport);
@@ -784,9 +745,9 @@ class _default extends elementorModules.ViewModule {
     this.intersectionObserver.observe(observedElement);
   }
 
-  runCallback(...args) {
+  runCallback() {
     const callback = this.getSettings('callback');
-    callback(...args);
+    callback(...arguments);
   }
 
   removeIntersectionObserver() {
@@ -812,7 +773,7 @@ class _default extends elementorModules.ViewModule {
 
 }
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -830,7 +791,7 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _base = _interopRequireDefault(__webpack_require__(/*! ./base */ "../modules/motion-fx/assets/js/frontend/motion-fx/interactions/base.js"));
 
@@ -866,7 +827,7 @@ class MouseMoveInteraction extends _base.default {
 
 }
 
-exports.default = MouseMoveInteraction;
+exports["default"] = MouseMoveInteraction;
 MouseMoveInteraction.mousePosition = {};
 
 MouseMoveInteraction.updateMousePosition = event => {
@@ -892,7 +853,7 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _base = _interopRequireDefault(__webpack_require__(/*! ./base */ "../modules/motion-fx/assets/js/frontend/motion-fx/interactions/base.js"));
 
@@ -940,7 +901,7 @@ class _default extends _base.default {
 
 }
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -958,7 +919,7 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _scroll = _interopRequireDefault(__webpack_require__(/*! ./interactions/scroll */ "../modules/motion-fx/assets/js/frontend/motion-fx/interactions/scroll.js"));
 
@@ -1089,14 +1050,20 @@ class _default extends elementorModules.ViewModule {
   }
 
   runInteractions() {
+    var _this = this;
+
     const settings = this.getSettings();
     this.actions.setCSSTransformVariables(settings.elementSettings);
     this.prepareSpecialActions();
     jQuery.each(settings.interactions, (interactionName, actions) => {
       this.interactions[interactionName] = new this.interactionsTypes[interactionName]({
         motionFX: this,
-        callback: (...args) => {
-          jQuery.each(actions, (actionName, actionData) => this.actions.runAction(actionName, actionData, ...args));
+        callback: function () {
+          for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+          }
+
+          jQuery.each(actions, (actionName, actionData) => _this.actions.runAction(actionName, actionData, ...args));
         }
       });
       this.interactions[interactionName].run();
@@ -1159,7 +1126,7 @@ class _default extends elementorModules.ViewModule {
 
 }
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -1175,7 +1142,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class _default extends elementorModules.Module {
   constructor() {
@@ -1186,7 +1153,7 @@ class _default extends elementorModules.Module {
 
 }
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -1202,7 +1169,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class _default extends elementorModules.Module {
   constructor() {
@@ -1212,7 +1179,7 @@ class _default extends elementorModules.Module {
 
 }
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -1230,7 +1197,7 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _sticky = _interopRequireDefault(__webpack_require__(/*! ./handlers/sticky */ "../modules/sticky/assets/js/frontend/handlers/sticky.js"));
 
@@ -1244,7 +1211,7 @@ class _default extends elementorModules.Module {
 
 }
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -1260,7 +1227,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _default = elementorModules.frontend.handlers.Base.extend({
   currentConfig: {},
@@ -1313,7 +1280,11 @@ var _default = elementorModules.frontend.handlers.Base.extend({
         stickyActive: 'elementor-sticky--active elementor-section--handles-inside',
         stickyEffects: 'elementor-sticky--effects',
         spacer: 'elementor-sticky__spacer'
-      }
+      },
+      isRTL: elementorFrontend.config.is_rtl,
+      // In edit mode, since the preview is an iframe, the scrollbar is on the left. The scrollbar width is
+      // compensated for in this case.
+      handleScrollbarWidth: elementorFrontend.isEditMode()
     },
           $wpAdminBar = elementorFrontend.elements.$wpAdminBar;
 
@@ -1323,6 +1294,12 @@ var _default = elementorModules.frontend.handlers.Base.extend({
 
     if ($wpAdminBar.length && 'top' === elementSettings.sticky && 'fixed' === $wpAdminBar.css('position')) {
       stickyOptions.offset += $wpAdminBar.height();
+    }
+
+    if (this.$element[0].parentElement?.classList.contains('e-container')) {
+      stickyOptions.relativeTarget = 'document';
+    } else {
+      stickyOptions.relativeTarget = 'parent';
     }
 
     return stickyOptions;
@@ -1429,7 +1406,7 @@ var _default = elementorModules.frontend.handlers.Base.extend({
 
 });
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -1445,15 +1422,16 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = void 0;
+exports["default"] = void 0;
 
 class _default extends elementorModules.Module {
   constructor() {
     super();
     elementorFrontend.hooks.addAction('frontend/element_ready/video-playlist.default', $element => {
-      __webpack_require__.e(/*! import() | video-playlist */ "video-playlist").then(__webpack_require__.bind(__webpack_require__, /*! ./handler */ "../modules/video-playlist/assets/js/frontend/handler.js")).then(({
-        default: dynamicHandler
-      }) => {
+      __webpack_require__.e(/*! import() | video-playlist */ "video-playlist").then(__webpack_require__.bind(__webpack_require__, /*! ./handler */ "../modules/video-playlist/assets/js/frontend/handler.js")).then(_ref => {
+        let {
+          default: dynamicHandler
+        } = _ref;
         elementorFrontend.elementsHandler.addHandler(dynamicHandler, {
           $element,
           toggleSelf: false
@@ -1464,14 +1442,53 @@ class _default extends elementorModules.Module {
 
 }
 
-exports.default = _default;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../node_modules/@babel/runtime/helpers/defineProperty.js":
+/*!****************************************************************!*\
+  !*** ../node_modules/@babel/runtime/helpers/defineProperty.js ***!
+  \****************************************************************/
+/***/ ((module) => {
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+module.exports = _defineProperty, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js":
+/*!***********************************************************************!*\
+  !*** ../node_modules/@babel/runtime/helpers/interopRequireDefault.js ***!
+  \***********************************************************************/
+/***/ ((module) => {
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    "default": obj
+  };
+}
+
+module.exports = _interopRequireDefault, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ })
 
 },
 /******/ __webpack_require__ => { // webpackRuntimeModules
-/******/ "use strict";
-/******/ 
 /******/ var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
 /******/ var __webpack_exports__ = (__webpack_exec__("../assets/dev/js/frontend/frontend.js"));
 /******/ }

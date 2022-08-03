@@ -1473,15 +1473,7 @@ class Flip_Box extends Widget_Base
                 if ($settings['flipbox_link_type'] == 'box') {
                     $flipbox_if_html_tag = 'a';
 
-                    $this->add_render_attribute('flipbox-container', 'href', esc_url($settings['flipbox_link']['url']));
-
-                    if ($settings['flipbox_link']['is_external']) {
-                        $this->add_render_attribute('flipbox-container', 'target', '_blank');
-                    }
-
-                    if ($settings['flipbox_link']['nofollow']) {
-                        $this->add_render_attribute('flipbox-container', 'rel', 'nofollow');
-                    }
+	                $this->add_link_attributes( 'flipbox-container', $settings['flipbox_link'] );
                 } elseif ($settings['flipbox_link_type'] == 'title') {
                     $flipbox_if_html_title_tag = 'a';
 
@@ -1489,33 +1481,19 @@ class Flip_Box extends Widget_Base
                         'flipbox-title-container',
                         [
                             'class' => 'flipbox-linked-title',
-                            'href'  => $settings['flipbox_link']['url'],
                         ]
                     );
 
-                    if ($settings['flipbox_link']['is_external']) {
-                        $this->add_render_attribute('flipbox-title-container', 'target', '_blank');
-                    }
-
-                    if ($settings['flipbox_link']['nofollow']) {
-                        $this->add_render_attribute('flipbox-title-container', 'rel', 'nofollow');
-                    }
+	                $this->add_link_attributes( 'flipbox-title-container', $settings['flipbox_link'] );
                 } elseif ($settings['flipbox_link_type'] == 'button') {
                     $this->add_render_attribute(
                         'flipbox-button-container',
                         [
                             'class' => 'flipbox-button',
-                            'href'  => $settings['flipbox_link']['url'],
                         ]
                     );
 
-                    if ($settings['flipbox_link']['is_external']) {
-                        $this->add_render_attribute('flipbox-button-container', 'target', '_blank');
-                    }
-
-                    if ($settings['flipbox_link']['nofollow']) {
-                        $this->add_render_attribute('flipbox-button-container', 'rel', 'nofollow');
-                    }
+	                $this->add_link_attributes( 'flipbox-button-container', $settings['flipbox_link'] );
                 }
             }
         }
@@ -1569,7 +1547,9 @@ class Flip_Box extends Widget_Base
                                             <img class="eael-flipbox-image-as-icon" src="<?php echo esc_url($flipbox_image_url); ?>" alt="<?php echo esc_attr(get_post_meta($flipbox_image['id'], '_wp_attachment_image_alt', true)); ?>">
                                         <?php endif; ?>
                                     </div>
+                                    <?php if ( !empty( $settings['eael_flipbox_front_title'] ) ): ?>
                                     <<?php echo Helper::eael_validate_html_tag($settings['eael_flipbox_front_title_tag']); ?> class="eael-elements-flip-box-heading"><?php echo esc_html__($settings['eael_flipbox_front_title'], 'essential-addons-for-elementor-lite'); ?></<?php echo Helper::eael_validate_html_tag($settings['eael_flipbox_front_title_tag']); ?>>
+                                    <?php endif; ?>
                                     <div class="eael-elements-flip-box-content">
                                         <p><?php echo __($settings['eael_flipbox_front_text'], 'essential-addons-for-elementor-lite'); ?></p>
                                     </div>
@@ -1599,8 +1579,9 @@ class Flip_Box extends Widget_Base
                                             } ?>
                                         </div>
                                     <?php } ?>
-
+                                    <?php if ( !empty( $settings['eael_flipbox_back_title'] ) ): ?>
                                     <<?php echo $flipbox_if_html_title_tag, ' ', $this->get_render_attribute_string('flipbox-title-container'); ?>><?php echo esc_html__($settings['eael_flipbox_back_title'], 'essential-addons-for-elementor-lite'); ?></<?php echo $flipbox_if_html_title_tag; ?>>
+                                    <?php endif; ?>
                                     <div class="eael-elements-flip-box-content">
                                         <p><?php echo __($settings['eael_flipbox_back_text'], 'essential-addons-for-elementor-lite'); ?></p>
                                     </div>

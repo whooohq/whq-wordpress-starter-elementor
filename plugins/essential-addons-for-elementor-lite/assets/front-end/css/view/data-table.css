@@ -217,7 +217,6 @@ table.eael-data-table thead .sorting:after {
     overflow-x: scroll !important;
     padding-bottom: 5px;
   }
-
   .th-mobile-screen {
     display: inline-block;
     padding: 0 0.6em;
@@ -231,42 +230,35 @@ table.eael-data-table thead .sorting:after {
     -ms-flex-preferred-size: 100px;
         flex-basis: 100px;
   }
-
   .th-mobile-screen .eael-data-table-th-img {
     margin: 0 auto 15px auto;
     display: block;
   }
-
   .th-mobile-screen .data-header-icon {
     margin: 0 auto 15px auto;
     display: block;
   }
-
   .td-content-wrapper {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     width: 100%;
   }
-
   .td-content {
     width: 100%;
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
   }
-
   .td-content > p {
     width: 100%;
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
   }
-
   .custom-responsive-option-enable .eael-data-table thead {
     display: none;
   }
-
   .custom-responsive-option-enable .eael-data-table tbody tr td {
     float: none;
     clear: left;
@@ -279,7 +271,6 @@ table.eael-data-table thead .sorting:after {
         -ms-flex-align: center;
             align-items: center;
   }
-
   .eael-data-table .td-content {
     -webkit-box-align: center;
         -ms-flex-align: center;
@@ -288,19 +279,16 @@ table.eael-data-table thead .sorting:after {
     display: -ms-flexbox;
     display: flex;
   }
-
   .eael-dt-td-align-mobile-left .td-content {
     -webkit-box-pack: start;
         -ms-flex-pack: start;
             justify-content: flex-start;
   }
-
   .eael-dt-td-align-mobile-center .td-content {
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
   }
-
   .eael-dt-td-align-mobile-right .td-content {
     -webkit-box-pack: end;
         -ms-flex-pack: end;
@@ -394,22 +382,18 @@ table.eael-data-table .sorting_asc.sorting-none:after {
   .eael-dt-td-align-tablet-left .eael-data-table tbody tr td {
     text-align: left;
   }
-
   .eael-dt-td-align-tablet-center .eael-data-table tbody tr td {
     text-align: center;
   }
-
   .eael-dt-td-align-tablet-right .eael-data-table tbody tr td {
     text-align: right;
   }
-
   .eael-dt-th-align-tablet-left .eael-data-table thead tr th {
     text-align: left;
   }
   .eael-dt-th-align-tablet-left .eael-data-table .th-mobile-screen {
     text-align: left;
   }
-
   .eael-dt-th-align-tablet-right .eael-data-table thead tr th {
     text-align: right;
     padding-right: 30px;
@@ -417,7 +401,6 @@ table.eael-data-table .sorting_asc.sorting-none:after {
   .eael-dt-th-align-tablet-right .eael-data-table .th-mobile-screen {
     text-align: right;
   }
-
   .eael-dt-th-align-tablet-center .eael-data-table thead tr th {
     text-align: center;
   }
@@ -430,22 +413,18 @@ table.eael-data-table .sorting_asc.sorting-none:after {
   .eael-dt-td-align-mobile-left .eael-data-table tbody tr td {
     text-align: left;
   }
-
   .eael-dt-td-align-mobile-center .eael-data-table tbody tr td {
     text-align: center;
   }
-
   .eael-dt-td-align-mobile-right .eael-data-table tbody tr td {
     text-align: right;
   }
-
   .eael-dt-th-align-mobile-left .eael-data-table thead tr th {
     text-align: left;
   }
   .eael-dt-th-align-mobile-left .eael-data-table .th-mobile-screen {
     text-align: left;
   }
-
   .eael-dt-th-align-mobile-right .eael-data-table thead tr th {
     text-align: right;
     padding-right: 30px;
@@ -453,7 +432,6 @@ table.eael-data-table .sorting_asc.sorting-none:after {
   .eael-dt-th-align-mobile-right .eael-data-table .th-mobile-screen {
     text-align: right;
   }
-
   .eael-dt-th-align-mobile-center .eael-data-table thead tr th {
     text-align: center;
   }

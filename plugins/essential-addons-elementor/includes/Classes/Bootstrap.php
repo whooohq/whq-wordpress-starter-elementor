@@ -115,6 +115,7 @@ class Bootstrap
         add_action('eael/login-register/after-general-controls', [$this, 'lr_init_content_ajax_controls']);
         add_action('eael/login-register/after-login-controls-section', [$this, 'lr_init_content_social_login_controls']);
         add_action('eael/login-register/after-login-footer', [$this, 'lr_print_social_login']);
+        add_action('eael/login-register/after-register-footer', [$this, 'lr_print_social_login_on_register']);
         add_action('eael/login-register/after-style-controls', [$this, 'lr_init_style_social_controls']);
         add_action('eael/login-register/after-style-controls', [$this, 'lr_init_style_pass_strength_controls']);
         add_action('eael/login-register/after-register-options-controls', [$this, 'lr_init_content_pass_strength_controls']);

@@ -79,7 +79,12 @@ trait Elements
                 }
             }
 
-            $widgets_manager->register_widget_type(new $this->registered_elements[$active_element]['class']);
+	        if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.5.0', '>=' ) ) {
+		        $widgets_manager->register( new $this->registered_elements[ $active_element ]['class'] );
+	        } else {
+		        $widgets_manager->register_widget_type( new $this->registered_elements[ $active_element ]['class'] );
+	        }
+
         }
     }
 
@@ -433,6 +438,8 @@ trait Elements
                 $page_offset = !empty($settings_data['eael_ext_toc_main_page_offset']) ? $settings_data['eael_ext_toc_main_page_offset']['size'] : 0 ;
                 $close_bt_text_style = $settings_data['eael_ext_toc_close_button_text_style'];
                 $auto_collapse = $settings_data['eael_ext_toc_auto_collapse'];
+                $auto_highlight = !empty($settings_data['eael_ext_toc_auto_highlight']) ? $settings_data['eael_ext_toc_auto_highlight'] : '';
+                $auto_highlight_single_item_only = !empty($settings_data['eael_ext_toc_auto_highlight_single_item_only']) ? $settings_data['eael_ext_toc_auto_highlight_single_item_only'] : '';
                 $title_to_url = $settings_data['eael_ext_toc_use_title_in_url'];
                 $toc_style = $settings_data['eael_ext_table_of_content_list_style'];
                 $toc_word_wrap = $settings_data['eael_ext_toc_word_wrap'];
@@ -454,6 +461,8 @@ trait Elements
                 $toc_style_class .= ($toc_collapse == 'yes') ? ' eael-toc-collapse' : ' ';
                 $toc_style_class .= ($list_icon == 'number') ? ' eael-toc-number' : ' eael-toc-bullet';
                 $toc_style_class .= ($toc_word_wrap == 'yes') ? ' eael-toc-word-wrap' : ' ';
+                $toc_style_class .= ($auto_highlight == 'yes') ? ' eael-toc-auto-highlight' : ' ';
+                $toc_style_class .= ($auto_highlight == 'yes' && $auto_highlight_single_item_only == 'yes') ? ' eael-toc-highlight-single-item' : ' ';
                 $title_url = ($title_to_url == 'yes') ? 'true' : 'false';
 
                 if (!empty($icon_check['value'])) {
@@ -523,8 +532,21 @@ trait Elements
                 } else {
                     $scroll_to_top_icon_html = "<i class='$scroll_to_top_icon_image'></i>";
                 }
-
+    
                 $scroll_to_top_html = "<div class='eael-ext-scroll-to-top-wrap scroll-to-top-hide'><span class='eael-ext-scroll-to-top-button'>$scroll_to_top_icon_html</span></div>";
+
+                $scroll_to_top_global_display_condition = isset($settings_data_scroll_to_top['eael_ext_scroll_to_top_global_display_condition']) ? $settings_data_scroll_to_top['eael_ext_scroll_to_top_global_display_condition'] : 'all';
+                
+                if(isset($settings_data_scroll_to_top['post_id']) && $settings_data_scroll_to_top['post_id'] != get_the_ID()){
+                    if (get_post_status($settings_data_scroll_to_top['post_id']) != 'publish') {
+                        $scroll_to_top_html = '';
+                    } else if ($scroll_to_top_global_display_condition == 'pages' && !is_page()) {
+                            $scroll_to_top_html = '';                    
+                    } else if ($scroll_to_top_global_display_condition == 'posts' && !is_single()) {
+                            $scroll_to_top_html = '';
+                    }
+                }
+                
                 if (!empty($scroll_to_top_html)) {
                     wp_enqueue_script('eael-scroll-to-top');
                     wp_enqueue_style('eael-scroll-to-top');

@@ -1738,7 +1738,7 @@ class Dynamic_Filterable_Gallery extends Widget_Base
                     if (!empty($taxonomy['terms'])) {
                         foreach ($taxonomy['terms'] as $term_id) {
                             $term = get_term($term_id, $taxonomy['taxonomy']);
-                            echo '<li class="control dynamic-gallery-category " data-termid="' . esc_attr($term->term_id) . '" data-taxonomy="' . esc_attr($term->taxonomy) . '" data-filter=".' . esc_attr($term->slug) . '">' . ucfirst($term->name) . '</li>';
+                            echo '<li class="control dynamic-gallery-category " data-termid="' . esc_attr($term->term_id) . '" data-taxonomy="' . esc_attr($term->taxonomy) . '" data-filter=".' . esc_attr(urldecode($term->slug)) . '">' . ucfirst($term->name) . '</li>';
                         }
                     }
                 }

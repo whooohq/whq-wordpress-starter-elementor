@@ -125,8 +125,8 @@
   margin-right: auto;
   cursor: pointer;
 }
-.lr-social-login-container .eael-social-button.eael-google {
-  width: 175px;
+.lr-social-login-container .eael-social-button.eael-gis iframe {
+  margin: 0 !important;
 }
 .lr-social-login-container .eael-social-button.eael-facebook {
   width: 190px;

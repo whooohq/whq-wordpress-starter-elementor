@@ -259,6 +259,7 @@ class Logo_Carousel extends Widget_Base {
 				'default'        => [ 'size' => 3 ],
 				'tablet_default' => [ 'size' => 2 ],
 				'mobile_default' => [ 'size' => 1 ],
+				'frontend_available' => true,
 				'range'          => [
 					'px' => [
 						'min'  => 1,

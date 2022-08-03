@@ -335,6 +335,10 @@
   line-height: 1.6;
 }
 
+.eael-content-timeline-content img {
+  margin: 1em 0 0;
+}
+
 .eael-content-timeline-content .eael-read-more {
   float: right;
   display: inline-block;

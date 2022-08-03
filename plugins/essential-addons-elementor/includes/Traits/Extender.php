@@ -1768,14 +1768,14 @@ endif;
         $arg = [
           'google_sheet_api_key' => $settings['ea_adv_data_table_source_google_api_key'],
           'google_sheet_id' => $settings['ea_adv_data_table_source_google_sheet_id'],
-          'calendar_id' => $settings['ea_adv_data_table_source_google_table_range'],
+          'table_range' => $settings['ea_adv_data_table_source_google_table_range'],
           'cache_time' => $settings['ea_adv_data_table_data_cache_limit'],
         ];
 
         $thead = '';
         $tbody = '';
 
-        $transient_key = 'ea_adv_data_table_source_google_' . md5(implode('', $arg));
+        $transient_key = 'ea_adv_data_table_source_google_sheet_' . md5(implode('', $arg));
 
         $results = get_transient( $transient_key );
 
@@ -1785,8 +1785,46 @@ endif;
 		    if ( ! is_wp_error( $connection ) ) {
 			    $connection = json_decode( wp_remote_retrieve_body( $connection ), true );
 			    if ( isset( $connection['sheets'][0]['data'][0]['rowData'] ) ) {
-				    $results = [];
-				    $results['rowData'] = $connection['sheets'][0]['data'][0]['rowData'];
+				    $results                = [];
+				    $results['rowData']     = $connection['sheets'][0]['data'][0]['rowData'];
+				    $results['startRow']    = empty( $connection['sheets'][0]['data'][0]['startRow'] ) ? 0 : $connection['sheets'][0]['data'][0]['startRow'];
+				    $results['startColumn'] = empty( $connection['sheets'][0]['data'][0]['startColumn'] ) ? 0 : $connection['sheets'][0]['data'][0]['startColumn'];
+
+				    $table_range     = explode( ':', $arg['table_range'] );
+
+				    if ( empty( $table_range[1] ) ) {
+					    if ( count( $connection['namedRanges'] ) === 1 ) {
+						    $endRow    = $connection['namedRanges'][0]['range']['endRowIndex'];
+						    $endColumn = $connection['namedRanges'][0]['range']['endColumnIndex'];
+					    } else {
+						    foreach ( $connection['namedRanges'] as $range ) {
+							    if ( $range['name'] === $arg['table_range'] ) {
+								    $endRow    = $range['range']['endRowIndex'];
+								    $endColumn = $range['range']['endColumnIndex'];
+							    }
+						    }
+					    }
+				    } else {
+					    $table_range     = strrev( $table_range[1] . '1' ); // Added extra 1 digit in last so that after flip the number pattern will ok. ex: 20 flip is 02 but 201 flip is 102
+					    $table_range     = sscanf( $table_range, '%d%s' );
+					    $table_range     = array_map( 'strrev', $table_range ); // Flip again to get exact value
+					    $endRow          = substr( $table_range[0], 0, - 1 ); // Remove the extra last digit
+					    $endColumn       = strtoupper( $table_range[1] );
+					    $alphabet_to_int = array_flip( range( 'A', 'Z' ) );
+
+					    if ( strlen( $endColumn ) === 1 ) {
+						    $endColumn = $alphabet_to_int[ $endColumn ] + 1;
+					    } else {
+						    $sum = 0;
+						    for ( $i = 0; $i < strlen( $endColumn ); $i ++ ) {
+							    $sum = $sum * 26 + $alphabet_to_int[ $endColumn[ $i ] ] + 1;
+						    }
+						    $endColumn = $sum;
+					    }
+				    }
+
+				    $results['rowCount']    = $endRow - $results['startRow'];
+				    $results['columnCount'] = $endColumn - $results['startColumn'];
 
 				    if ( isset( $connection['sheets'][0]['merges'] ) && is_array( $connection['sheets'][0]['merges'] ) ) {
 					    $results['mergeData'] = $connection['sheets'][0]['merges'];
@@ -1814,7 +1852,9 @@ endif;
 					    $attrs['colSpan'] = "colspan='{$col_span}'";
 				    }
 
-				    $cell                     = "{$merge_data['startRowIndex']}-{$merge_data['startColumnIndex']}";
+				    $startRowIndex            = $merge_data['startRowIndex'] - $results['startRow'];
+				    $startColumnIndex         = $merge_data['startColumnIndex'] - $results['startColumn'];
+				    $cell                     = "{$startRowIndex}-{$startColumnIndex}";
 				    $merge_data_cell[ $cell ] = $attrs;
 
 				    for ( $row = 0; $row < $row_span; $row ++ ) {
@@ -1822,8 +1862,8 @@ endif;
 						    if ( $row == 0 && $col == 0 ) {
 							    continue;
 						    }
-						    $rowindex = $merge_data['startRowIndex'] + $row;
-						    $colindex = $merge_data['startColumnIndex'] + $col;
+						    $rowindex = $startRowIndex + $row;
+						    $colindex = $startColumnIndex + $col;
 
 						    $merge_data_cell["{$rowindex}-{$colindex}"] = true;
 					    }
@@ -1833,27 +1873,38 @@ endif;
 
 		    foreach ( $results['rowData'] as $tr_key => $tr ) {
 
-                if (isset($tr['values'])) {
-                    $tr = $tr['values'];
-                } else {
-                    continue;
-                }
+			    if ( isset( $tr['values'] ) ) {
+				    $tr = $tr['values'];
+			    } else {
+				    if ( $tr_key == 0 ) {
+					    $thead .= '<tr>' . str_repeat( '<th>&nbsp;</th>', $results['columnCount'] ) . '</tr>';
+				    } else {
+					    $tbody .= '<tr>' . str_repeat( '<td>&nbsp;</td>', $results['columnCount'] ) . '</tr>';
+				    }
+				    continue;
+			    }
 
                 if ($tr_key == 0) {
                     $thead .= '<tr>';
                     foreach ($tr as $key => $th) {
 	                    $cell = "{$tr_key}-{$key}";
 	                    if ( ! empty( $merge_data_cell[ $cell ] ) && $merge_data_cell[ $cell ] === true ) {
-		                    continue;
+		                    goto empty_th_cell;
 	                    }
 
-	                    $style      = isset( $settings['ea_adv_data_table_dynamic_th_width'] ) && isset( $settings['ea_adv_data_table_dynamic_th_width'][ $key ] ) ? ' style="width:' . $settings['ea_adv_data_table_dynamic_th_width'][ $key ] . '"' : '';
-	                    $th         = isset( $th['hyperlink'] ) ? '<a href="' . $th['hyperlink'] . '" target="_blank">' . $th['formattedValue'] . '</a>' : $th['formattedValue'];
-	                    $row_span   = empty( $merge_data_cell[ $cell ]['rowSpan'] ) ? '' : $merge_data_cell[ $cell ]['rowSpan'];
-	                    $col_span   = empty( $merge_data_cell[ $cell ]['colSpan'] ) ? '' : $merge_data_cell[ $cell ]['colSpan'];
-	                    $merge_attr = " {$row_span} {$col_span}";
+	                    $style          = isset( $settings['ea_adv_data_table_dynamic_th_width'] ) && isset( $settings['ea_adv_data_table_dynamic_th_width'][ $key ] ) ? ' style="width:' . $settings['ea_adv_data_table_dynamic_th_width'][ $key ] . '"' : '';
+	                    $formattedValue = empty( $th['formattedValue'] ) ? '' : $th['formattedValue'];
+	                    $th             = isset( $th['hyperlink'] ) ? '<a href="' . $th['hyperlink'] . '" target="_blank">' . $formattedValue . '</a>' : $formattedValue;
+	                    $row_span       = empty( $merge_data_cell[ $cell ]['rowSpan'] ) ? '' : $merge_data_cell[ $cell ]['rowSpan'];
+	                    $col_span       = empty( $merge_data_cell[ $cell ]['colSpan'] ) ? '' : $merge_data_cell[ $cell ]['colSpan'];
+	                    $merge_attr     = " {$row_span} {$col_span}";
 
 	                    $thead .= '<th' . $style . $merge_attr . '>' . $th . '</th>';
+
+	                    empty_th_cell:
+	                    if ( count( $tr ) < $results['columnCount'] && count( $tr ) === $key + 1 ) {
+		                    $thead .= str_repeat( '<th>&nbsp;</th>', $results['columnCount'] - count( $tr ) );
+	                    }
                     }
                     $thead .= '</tr>';
                 } else {
@@ -1862,19 +1913,29 @@ endif;
                     foreach ($tr as $key => $td) {
 	                    $cell = "{$tr_key}-{$key}";
 	                    if ( ! empty( $merge_data_cell[ $cell ] ) && $merge_data_cell[ $cell ] === true ) {
-		                    continue;
+		                    goto empty_td_cell;
 	                    }
 
-	                    $row_span   = empty( $merge_data_cell[ $cell ]['rowSpan'] ) ? '' : $merge_data_cell[ $cell ]['rowSpan'];
-	                    $col_span   = empty( $merge_data_cell[ $cell ]['colSpan'] ) ? '' : $merge_data_cell[ $cell ]['colSpan'];
-	                    $merge_attr = " {$row_span} {$col_span}";
-	                    $td         = isset( $td['hyperlink'] ) ? '<a href="' . $td['hyperlink'] . '" target="_blank">' . $td['formattedValue'] . '</a>' : $td['formattedValue'];
+	                    $row_span       = empty( $merge_data_cell[ $cell ]['rowSpan'] ) ? '' : $merge_data_cell[ $cell ]['rowSpan'];
+	                    $col_span       = empty( $merge_data_cell[ $cell ]['colSpan'] ) ? '' : $merge_data_cell[ $cell ]['colSpan'];
+	                    $merge_attr     = " {$row_span} {$col_span}";
+	                    $formattedValue = empty( $td['formattedValue'] ) ? '' : $td['formattedValue'];
+	                    $td             = isset( $td['hyperlink'] ) ? '<a href="' . $td['hyperlink'] . '" target="_blank">' . $formattedValue . '</a>' : $formattedValue;
 
 	                    $tbody .= '<td' . $merge_attr . '>' . $td . '</td>';
+
+	                    empty_td_cell:
+	                    if ( count( $tr ) < $results['columnCount'] && count( $tr ) === $key + 1 ) {
+		                    $tbody .= str_repeat( '<td>&nbsp;</td>', $results['columnCount'] - count( $tr ) );
+	                    }
                     }
 
                     $tbody .= '</tr>';
                 }
+
+			    if ( count( $results['rowData'] ) < $results['rowCount'] && count( $results['rowData'] ) === $tr_key + 1 ) {
+				    $tbody .= str_repeat( '<tr>' . str_repeat( '<td>&nbsp;</td>', $results['columnCount'] ) . '</tr>', $results['rowCount'] - count( $results['rowData'] ) );
+			    }
             }
 
             return '<thead>' . $thead . '</thead><tbody>' . $tbody . '</tbody>';
@@ -2006,11 +2067,20 @@ endif;
                     $end = date($date_format, $event['event_end_unix']);
                 }
 
+                $start = date($date_format, $event['event_start_unix']);
+                
+                if( !empty( $settings['eael_old_events_hide'] ) && 'yes' === $settings['eael_old_events_hide'] ){
+                    $is_old_event = $this->is_old_event_pro($start);
+                    if($is_old_event) {
+                        continue;
+                    }
+                }
+
                 $data[] = [
                     'id' => $event_id,
                     'title' => !empty($event['event_title']) ? html_entity_decode($event['event_title'], ENT_QUOTES) : __('No Title', 'essential-addons-for-elementor'),
                     'description' => $content = get_post_field('post_content', $event_id),
-                    'start' => date($date_format, $event['event_start_unix']),
+                    'start' => $start,
                     'end' => $end,
                     'borderColor' => '#6231FF',
                     'textColor' => $settings['eael_event_global_text_color'],
@@ -2026,6 +2096,21 @@ endif;
         }
 
         return $data;
+    }
+
+    /**
+     * Event Calendar: EventOn
+     * 
+     * @since 5.1.2
+     */
+    public function is_old_event_pro($start_date){
+        $today    = strtotime(current_time( 'Y-m-d' ));
+        $start_date_timestamp = strtotime($start_date);
+
+        if($start_date_timestamp < $today){
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -2723,18 +2808,6 @@ endif;
                 ],
             ]);
         }
-        $lr->add_control('google_login_text', [
-            'label' => __('Text for Google Button', 'essential-addons-elementor'),
-            'type' => Controls_Manager::TEXT,
-            'dynamic' => [
-                'active' => true,
-            ],
-            'default' => __('Login with Google', 'essential-addons-elementor'),
-            'placeholder' => __('Login with Google', 'essential-addons-elementor'),
-            'condition' => [
-                'enable_google_login' => 'yes',
-            ],
-        ]);
         $lr->add_control('enable_fb_login', [
             'label' => __('Enable Login with Facebook', 'essential-addons-elementor'),
             'type' => Controls_Manager::SWITCHER,
@@ -2761,6 +2834,12 @@ endif;
             'condition' => [
                 'enable_fb_login' => 'yes',
             ],
+        ]);
+
+        $lr->add_control('enable_social_login_on_register_form', [
+            'label' => __('Show on Register Form', 'essential-addons-elementor'),
+            'type' => Controls_Manager::SWITCHER,
+            'render_type' => 'template',
         ]);
 
         $lr->add_control('show_separator', [
@@ -2815,16 +2894,15 @@ endif;
      *
      * @param Login_Register $lr
      */
-    public function lr_print_social_login($lr)
+    public function lr_print_social_login($lr, $form_type = 'login')
     {
+        $form_type = in_array($form_type, ['login', 'register']) ? $form_type : 'login';
+
         $should_print_google = $should_print_fb = false;
-        $gbtn_text = $gclient = $app_id = $fbtn_text = '';
+        $gclient = $app_id = $fbtn_text = '';
         if ('yes' === $lr->get_settings_for_display('enable_google_login')) {
             $gclient = get_option('eael_g_client_id');
             $should_print_google = true;
-
-            $gbtn_text = apply_filters('eael/login-register/google-button-text', $lr->get_settings_for_display('google_login_text'));
-
         }
 
         if ('yes' === $lr->get_settings_for_display('enable_fb_login')) {
@@ -2854,10 +2932,10 @@ if ('yes' === $show_sep) {?>
                 <div class="lr-social-buttons-container">
 					<?php
 if ($should_print_google) {
-            $this->lr_print_google_button($gclient, $lr, $gbtn_text);
+            $this->lr_print_google_button($gclient, $lr, $form_type);
         }
             if ($should_print_fb) {
-                $this->lr_print_facebook_button($app_id, $lr, $fbtn_text);
+                $this->lr_print_facebook_button($app_id, $lr, $fbtn_text, $form_type);
             }
             ?>
                 </div>
@@ -2867,41 +2945,39 @@ if ($should_print_google) {
     }
 
     /**
+     * It prints Social Login related markup
+     *
+     * @param Login_Register $lr
+     */
+    public function lr_print_social_login_on_register($lr) {
+        if ('yes' === $lr->get_settings_for_display('enable_social_login_on_register_form')) {
+            $this->lr_print_social_login($lr, 'register');
+        }
+    }
+
+    /**
      * It prints google login button
      *
      * @param string         $client_id
      * @param Login_Register $lr
-     * @param string         $btn_text
      */
-    public function lr_print_google_button($client_id, $lr, $btn_text = '')
+    public function lr_print_google_button($client_id, $lr, $form_type = 'login')
     {
-        ?>
-        <div class="eael-social-button eael-google"
-             id="eael-google-login-btn-<?php echo esc_attr($lr->get_id()); ?>"
-             data-g-client-id="<?php echo esc_attr($client_id); ?>">
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 width="18px"
-                 height="18px"
-                 viewBox="0 0 48 48"
-                 class="eael-gicon-svg">
-                <g>
-                    <path fill="#EA4335"
-                          d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
-                    <path fill="#4285F4"
-                          d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
-                    <path fill="#FBBC05"
-                          d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
-                    <path fill="#34A853"
-                          d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
-                    <path fill="none"
-                          d="M0 0h48v48H0z"></path>
-                </g>
-            </svg>
-			<?php
-if ($btn_text) {
-            printf("<span class='eael-gbtn-text'>%s</span>", esc_html($btn_text));
-        }
-        ?>
+	    $form_type      = in_array( $form_type, [ 'login', 'register' ] ) ? $form_type : 'login';
+	    $type           = $lr->get_settings_for_display( 'eael_sl_gis_btn_type' );
+	    $theme          = $lr->get_settings_for_display( 'eael_sl_gis_btn_theme' );
+	    $size           = $lr->get_settings_for_display( 'eael_sl_gis_btn_size' );
+	    $text           = $lr->get_settings_for_display( 'eael_sl_gis_btn_text' );
+	    $shape          = $lr->get_settings_for_display( 'eael_sl_gis_btn_shape' );
+	    $logo_alignment = $lr->get_settings_for_display( 'eael_sl_gis_btn_logo_alignment' );
+	    $locale         = $lr->get_settings_for_display( 'eael_sl_gis_btn_locale' );
+	    $width          = $lr->get_settings_for_display( 'eael_sl_gis_btn_width' );
+	    $width          = empty( $width['size'] ) ? '185px' : $width['size'] . 'px';
+	    ?>
+        <div class="eael-social-button eael-gis" id="eael-google-<?php echo esc_attr( $form_type ); ?>-btn-<?php echo esc_attr( $lr->get_id() ); ?>"
+             data-g-client-id="<?php echo esc_attr( $client_id ); ?>" data-type="<?php echo esc_attr( $type ); ?>" data-theme="<?php echo esc_attr( $theme ); ?>"
+             data-size="<?php echo esc_attr( $size ); ?>" data-text="<?php echo esc_attr( $text ); ?>" data-shape="<?php echo esc_attr( $shape ); ?>"
+             data-logo_alignment="<?php echo esc_attr( $logo_alignment ); ?>" data-width="<?php echo esc_attr( $width ); ?>" data-locale="<?php echo esc_attr( $locale ); ?>">
         </div>
 		<?php
 }
@@ -2913,11 +2989,13 @@ if ($btn_text) {
      * @param Login_Register $lr
      * @param string         $btn_text
      */
-    public function lr_print_facebook_button($app_id, $lr, $btn_text = '')
+    public function lr_print_facebook_button($app_id, $lr, $btn_text = '', $form_type = 'login')
     {
+        $form_type = in_array($form_type, ['login', 'register']) ? $form_type : 'login';
+
         ?>
         <div class="eael-social-button eael-facebook"
-             id="eael-fb-login-btn-<?php echo esc_attr($lr->get_id()); ?>"
+             id="eael-fb-<?php echo esc_attr($form_type); ?>-btn-<?php echo esc_attr($lr->get_id()); ?>"
              data-fb-appid="<?php echo esc_attr($app_id); ?>">
             <svg xmlns="http://www.w3.org/2000/svg"
                  width="18px"
@@ -2949,8 +3027,6 @@ if ($btn_text) {
 		if ( ! empty( $_POST['eael-google-submit'] ) ) {
 			$client_id     = get_option( 'eael_g_client_id' );
 			$id_token      = ! empty( $_POST['id_token'] ) ? sanitize_text_field( $_POST['id_token'] ) : '';
-			$name          = isset( $_POST['full_name'] ) ? sanitize_text_field( $_POST['full_name'] ) : '';
-			$email         = isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : '';
 			$verified_data = $this->lr_verify_google_user_data( $id_token, $client_id );
 
 			if ( empty( $verified_data ) ) {
@@ -2962,7 +3038,7 @@ if ($btn_text) {
 			$v_client_id = isset( $verified_data['aud'] ) ? $verified_data['aud'] : '';
 
 			// Check if email is verified with Google.
-			if ( ( $client_id !== $v_client_id ) || ( $email !== $v_email ) || ( $name !== $v_name ) ) {
+			if ( ( $client_id !== $v_client_id ) ) {
 				wp_send_json_error( __( 'User data was not verified by Google', 'essential-addons-elementor' ) );
 			}
 
@@ -3352,11 +3428,190 @@ if ($btn_text) {
 			],
 		] );
 		//Social Buttons
-		$this->lr_init_style_social_btn_controls( $lr, 'google' );
+		$this->lr_social_gis_btn_controlls( $lr );
 		$this->lr_init_style_social_btn_controls( $lr, 'facebook' );
 		// Separator
 		$this->lr_init_style_social_separator_controls( $lr );
 		$lr->end_controls_section();
+	}
+
+	/**
+     * GIS button new controllers
+     *
+	 * @param Login_Register $lr
+	 *
+	 * @return void
+	 */
+	public function lr_social_gis_btn_controlls( Login_Register $lr ) {
+		$lr->add_control( "eael_sl_gis_btn_pot", [
+			'label'        => __( 'Google Button', 'essential-addons-elementor' ),
+			'type'         => Controls_Manager::POPOVER_TOGGLE,
+			'label_off'    => __( 'Default', 'essential-addons-elementor' ),
+			'label_on'     => __( 'Custom', 'essential-addons-elementor' ),
+			'return_value' => 'yes',
+			'separator'    => 'before',
+			'condition'    => [ 'enable_google_login' => 'yes' ],
+		] );
+
+		$lr->start_popover();
+
+		$lr->add_control( "eael_sl_gis_btn_heading", [
+			'label'     => __( 'Button Style', 'essential-addons-elementor' ),
+			'type'      => Controls_Manager::HEADING,
+			'separator' => 'before',
+		] );
+
+		$lr->add_control( "eael_sl_gis_btn_type", [
+			'label'   => __( 'Type', 'essential-addons-elementor' ),
+			'type'    => Controls_Manager::SELECT,
+			'options' => [
+				'standard' => __( 'Standard', 'essential-addons-elementor' ),
+				'icon'     => __( 'Icon', 'essential-addons-elementor' ),
+			],
+			'default' => 'standard',
+		] );
+
+		$lr->add_control( "eael_sl_gis_btn_theme", [
+			'label'   => __( 'Theme', 'essential-addons-elementor' ),
+			'type'    => Controls_Manager::SELECT,
+			'options' => [
+				'outline'      => __( 'Outline', 'essential-addons-elementor' ),
+				'filled_blue'  => __( 'Filled Blue', 'essential-addons-elementor' ),
+				'filled_black' => __( 'Filled Black', 'essential-addons-elementor' ),
+			],
+			'default' => 'outline',
+		] );
+
+		$lr->add_control( "eael_sl_gis_btn_size", [
+			'label'   => __( 'Size', 'essential-addons-elementor' ),
+			'type'    => Controls_Manager::SELECT,
+			'options' => [
+				'large'  => __( 'Large', 'essential-addons-elementor' ),
+				'medium' => __( 'Medium', 'essential-addons-elementor' ),
+				'small'  => __( 'Small', 'essential-addons-elementor' ),
+			],
+			'default' => 'large',
+		] );
+
+		$lr->add_control( "eael_sl_gis_btn_text", [
+			'label'   => __( 'Text', 'essential-addons-elementor' ),
+			'type'    => Controls_Manager::SELECT,
+			'options' => [
+				'signin_with'   => __( 'Sign in with Google', 'essential-addons-elementor' ),
+				'signup_with'   => __( 'Sign up with Google', 'essential-addons-elementor' ),
+				'continue_with' => __( 'Continue with Google', 'essential-addons-elementor' ),
+				'signin'        => __( 'Sign in', 'essential-addons-elementor' ),
+			],
+			'default' => 'signin_with',
+		] );
+
+		$lr->add_control( "eael_sl_gis_btn_shape", [
+			'label'   => __( 'Shape', 'essential-addons-elementor' ),
+			'type'    => Controls_Manager::SELECT,
+			'options' => [
+				'rectangular' => __( 'Rectangular', 'essential-addons-elementor' ),
+				'pill'        => __( 'Pill', 'essential-addons-elementor' ),
+				'circle'      => __( 'Circle', 'essential-addons-elementor' ),
+				'square'      => __( 'Square', 'essential-addons-elementor' ),
+			],
+			'default' => 'rectangular',
+		] );
+
+		$lr->add_control( "eael_sl_gis_btn_logo_alignment", [
+			'label'     => __( 'Logo Alignment', 'essential-addons-elementor' ),
+			'type'      => Controls_Manager::SELECT,
+			'options'   => [
+				'left'   => __( 'Left', 'essential-addons-elementor' ),
+				'center' => __( 'Center', 'essential-addons-elementor' ),
+			],
+			'default'   => 'left',
+			'condition' => [ 'eael_sl_gis_btn_type' => 'standard' ],
+		] );
+
+		$lr->add_control( "eael_sl_gis_btn_width", [
+			'label'      => esc_html__( 'Width', 'essential-addons-elementor' ),
+			'type'       => Controls_Manager::SLIDER,
+			'size_units' => [
+				'px',
+			],
+			'range'      => [
+				'px' => [
+					'min'  => 0,
+					'max'  => 280,
+					'step' => 5,
+				],
+			],
+			'default'    => [
+				'unit' => 'px',
+				'size' => 185,
+			],
+		] );
+
+		$lr->add_control( "eael_sl_gis_btn_locale", [
+			'label'   => __( 'Locale', 'essential-addons-elementor' ),
+			'type'    => Controls_Manager::SELECT2,
+			'options' => [
+				"am"    => "Amharic",
+				"ar"    => "Arabic",
+				"eu"    => "Basque",
+				"bn"    => "Bengali",
+				"en-GB" => "English (UK)",
+				"pt-BR" => "Portuguese (Brazil)",
+				"bg"    => "Bulgarian",
+				"ca"    => "Catalan",
+				"chr"   => "Cherokee",
+				"hr"    => "Croatian",
+				"cs"    => "Czech",
+				"da"    => "Danish",
+				"nl"    => "Dutch",
+				"en"    => "English (US)",
+				"et"    => "Estonian",
+				"fil"   => "Filipino",
+				"fi"    => "Finnish",
+				"fr"    => "French",
+				"de"    => "German",
+				"el"    => "Greek",
+				"gu"    => "Gujarati",
+				"iw"    => "Hebrew",
+				"hi"    => "Hindi",
+				"hu"    => "Hungarian",
+				"is"    => "Icelandic",
+				"id"    => "Indonesian",
+				"it"    => "Italian",
+				"ja"    => "Japanese",
+				"kn"    => "Kannada",
+				"ko"    => "Korean",
+				"lv"    => "Latvian",
+				"lt"    => "Lithuanian",
+				"ms"    => "Malay",
+				"ml"    => "Malayalam",
+				"mr"    => "Marathi",
+				"no"    => "Norwegian",
+				"pl"    => "Polish",
+				"pt-PT" => "Portuguese (Portugal)",
+				"ro"    => "Romanian",
+				"ru"    => "Russian",
+				"sr"    => "Serbian",
+				"zh-CN" => "Chinese (PRC)",
+				"sk"    => "Slovak",
+				"sl"    => "Slovenian",
+				"es"    => "Spanish",
+				"sw"    => "Swahili",
+				"sv"    => "Swedish",
+				"ta"    => "Tamil",
+				"te"    => "Telugu",
+				"th"    => "Thai",
+				"zh-TW" => "Chinese (Taiwan)",
+				"tr"    => "Turkish",
+				"ur"    => "Urdu",
+				"uk"    => "Ukrainian",
+				"vi"    => "Vietnamese",
+				"cy"    => "Welsh",
+			],
+			'default' => 'en',
+		] );
+
+		$lr->end_popover();
 	}
 
 	/**

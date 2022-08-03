@@ -1,3 +1,50 @@
+.eael-learndash-filter-control {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  padding: 0px;
+  margin: 0px;
+}
+.eael-learndash-filter-control ul {
+  margin: 0px 0px 20px 0px;
+  padding: 0px;
+  text-align: center;
+}
+.eael-learndash-filter-control ul li {
+  list-style: none;
+  display: inline-block;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 6px 15px;
+  cursor: pointer;
+  margin: 0 5px;
+  font-weight: normal;
+}
+.eael-learndash-filter-control ul li.control {
+  color: #444;
+  border-radius: 0px;
+}
+.eael-learndash-filter-control ul li.active {
+  color: #fff;
+}
+.eael-learndash-filter-control ul li.control.active {
+  background: #333;
+  border-radius: 0px;
+}
 .eael-learndash-wrapper {
   overflow: hidden;
 }
@@ -11,6 +58,37 @@
           box-shadow: 0px 10px 120px rgba(116, 83, 198, 0.15);
   margin: 15px;
   border-radius: 10px;
+  position: relative;
+}
+.eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner .eael_ld_course_list_ribbon {
+  background: #5cb85c;
+  -webkit-box-shadow: 0 1px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 1px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+  position: absolute;
+  font-size: 14px;
+  left: -8px;
+  top: 20px;
+  padding: 3px 10px;
+  z-index: 2;
+  font-weight: bold;
+}
+.eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner .eael_ld_course_list_ribbon:before {
+  border: 4px solid transparent;
+  border-top: 4px solid #348c34;
+  border-right: 4px solid #348c34;
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+}
+.eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner .eael_ld_course_list_ribbon.ribbon-enrolled {
+  background: #428bca;
+}
+.eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner .eael_ld_course_list_ribbon.ribbon-enrolled:before {
+  border-top: 4px solid #357ebd;
+  border-right: 4px solid #357ebd;
 }
 .eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner .eael-learn-dash-course-header {
   padding: 15px 35px 10px;

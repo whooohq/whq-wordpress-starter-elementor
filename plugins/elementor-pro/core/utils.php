@@ -8,6 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Utils {
+
 	public static function get_public_post_types( $args = [] ) {
 		$post_type_args = [
 			// Default is the value $public.
@@ -340,5 +341,21 @@ class Utils {
 		$value = get_user_option( $option, $user_id );
 
 		return ( false === $value ) ? $default : $value;
+	}
+
+	/**
+	 * TODO: Use core method instead (after merging PR of the original function in core).
+	 *  PR URL: https://github.com/elementor/elementor/pull/18670.
+	 *
+	 * @param $file
+	 * @param mixed ...$args
+	 * @return false|string
+	 */
+	public static function _unstable_file_get_contents( $file, ...$args ) {
+		if ( ! is_file( $file ) || ! is_readable( $file ) ) {
+			return false;
+		}
+
+		return file_get_contents( $file, ...$args );
 	}
 }

@@ -162,6 +162,7 @@ class LD_Course_List extends Widget_Base
                     'label'           => __('Show by course category', 'essential-addons-elementor'),
                     'description'     => __('Shows only courses in the specified LearnDash category. Use the category slug.', 'essential-addons-elementor'),
                     'type'            => Controls_Manager::SELECT2,
+                    'multiple'     => true,
                     'label_block'     => true,
                     'options'       => Helper::get_terms_list('ld_course_category', 'slug')
                 ]
@@ -173,6 +174,7 @@ class LD_Course_List extends Widget_Base
                     'label'           => __('Show by course tag', 'essential-addons-elementor'),
                     'description'     => __('Shows only courses tagged with the specified LearnDash tag. Use the tag slug.', 'essential-addons-elementor'),
                     'type'            => Controls_Manager::SELECT2,
+                    'multiple'     => true,
                     'label_block'     => true,
                     'options'       => Helper::get_terms_list('ld_course_tag', 'slug')
                 ]
@@ -212,7 +214,7 @@ class LD_Course_List extends Widget_Base
                     'options' => [
                         'true' => [
                             'title' => __('Show', 'essential-addons-elementor'),
-                            'icon' => 'fa fa-check',
+                            'icon' => 'eicon-check',
                         ],
                         'false' => [
                             'title' => __('Hide', 'essential-addons-elementor'),
@@ -235,7 +237,7 @@ class LD_Course_List extends Widget_Base
                     'options' => [
                         'true' => [
                             'title' => __('Show', 'essential-addons-elementor'),
-                            'icon' => 'fa fa-check',
+                            'icon' => 'eicon-check',
                         ],
                         'false' => [
                             'title' => __('Hide', 'essential-addons-elementor'),
@@ -258,7 +260,7 @@ class LD_Course_List extends Widget_Base
                     'options' => [
                         'true' => [
                             'title' => __('Show', 'essential-addons-elementor'),
-                            'icon' => 'fa fa-check',
+                            'icon' => 'eicon-check',
                         ],
                         'false' => [
                             'title' => __('Hide', 'essential-addons-elementor'),
@@ -281,7 +283,7 @@ class LD_Course_List extends Widget_Base
                     'options' => [
                         'true' => [
                             'title' => __('Show', 'essential-addons-elementor'),
-                            'icon' => 'fa fa-check',
+                            'icon' => 'eicon-check',
                         ],
                         'false' => [
                             'title' => __('Hide', 'essential-addons-elementor'),
@@ -304,7 +306,7 @@ class LD_Course_List extends Widget_Base
                     'options' => [
                         'true' => [
                             'title' => __('Show', 'essential-addons-elementor'),
-                            'icon' => 'fa fa-check',
+                            'icon' => 'eicon-check',
                         ],
                         'false' => [
                             'title' => __('Hide', 'essential-addons-elementor'),
@@ -327,7 +329,7 @@ class LD_Course_List extends Widget_Base
                     'options' => [
                         'true' => [
                             'title' => __('Show', 'essential-addons-elementor'),
-                            'icon' => 'fa fa-check',
+                            'icon' => 'eicon-check',
                         ],
                         'false' => [
                             'title' => __('Hide', 'essential-addons-elementor'),
@@ -359,7 +361,7 @@ class LD_Course_List extends Widget_Base
                     'options' => [
                         'true' => [
                             'title' => __('Show', 'essential-addons-elementor'),
-                            'icon' => 'fa fa-check',
+                            'icon' => 'eicon-check',
                         ],
                         'false' => [
                             'title' => __('Hide', 'essential-addons-elementor'),
@@ -381,7 +383,7 @@ class LD_Course_List extends Widget_Base
 			        'options' => [
 				        'true' => [
 					        'title' => __('Show', 'essential-addons-elementor'),
-					        'icon' => 'fa fa-check',
+					        'icon' => 'eicon-check',
 				        ],
 				        'false' => [
 					        'title' => __('Hide', 'essential-addons-elementor'),
@@ -417,7 +419,7 @@ class LD_Course_List extends Widget_Base
                     'options' => [
                         'true' => [
                             'title' => __('Show', 'essential-addons-elementor'),
-                            'icon' => 'fa fa-check',
+                            'icon' => 'eicon-check',
                         ],
                         'false' => [
                             'title' => __('Hide', 'essential-addons-elementor'),
@@ -432,12 +434,11 @@ class LD_Course_List extends Widget_Base
 		        'change_button_text',
 		        [
 			        'label'       => __('Change Button Text?', 'essential-addons-elementor'),
-			        'description' => __('Hide course enroll button.', 'essential-addons-elementor'),
 			        'type'        => Controls_Manager::CHOOSE,
 			        'options' => [
 				        'true' => [
 					        'title' => __('Show', 'essential-addons-elementor'),
-					        'icon' => 'fa fa-check',
+					        'icon' => 'eicon-check',
 				        ],
 				        'false' => [
 					        'title' => __('Hide', 'essential-addons-elementor'),
@@ -469,7 +470,7 @@ class LD_Course_List extends Widget_Base
                     'options' => [
                         'true' => [
                             'title' => __('Show', 'essential-addons-elementor'),
-                            'icon' => 'fa fa-check',
+                            'icon' => 'eicon-check',
                         ],
                         'false' => [
                             'title' => __('Hide', 'essential-addons-elementor'),
@@ -477,6 +478,39 @@ class LD_Course_List extends Widget_Base
                         ]
                     ],
                     'default'   => 'true'
+                ]
+            );
+
+            $this->add_control(
+                'eael_course_filter_show',
+                [
+                    'label'       => __('Enable Filter', 'essential-addons-elementor'),
+                    'description' => __('It displays tab items with the selcted categories and tags.', 'essential-addons-elementor'),
+                    'type'        => Controls_Manager::CHOOSE,
+                    'options' => [
+                        'true' => [
+                            'title' => __('Show', 'essential-addons-elementor'),
+                            'icon' => 'eicon-check',
+                        ],
+                        'false' => [
+                            'title' => __('Hide', 'essential-addons-elementor'),
+                            'icon' => 'eicon-ban',
+                        ]
+                    ],
+                    'default'   => 'false'
+                ]
+            );
+
+            $this->add_control(
+                'eael_course_filter_all_label_text',
+                [
+                    'label' => esc_html__('All Label', 'essential-addons-elementor'),
+                    'type' => Controls_Manager::TEXT,
+                    'dynamic'     => [ 'active' => true ],
+                    'default' => esc_html__('All', 'essential-addons-elementor'),
+                    'condition' => [
+                        'eael_course_filter_show' => 'true',
+                    ],
                 ]
             );
 
@@ -489,7 +523,7 @@ class LD_Course_List extends Widget_Base
                     'options' => [
                         'true' => [
                             'title' => __('Show', 'essential-addons-elementor'),
-                            'icon' => 'fa fa-check',
+                            'icon' => 'eicon-check',
                         ],
                         'false' => [
                             'title' => __('Hide', 'essential-addons-elementor'),
@@ -500,6 +534,99 @@ class LD_Course_List extends Widget_Base
                     'condition' => [
                         'template_skin' => ['default', 'layout__1']
                     ]
+                ]
+            );
+
+            $this->add_control(
+                'eael_learndash_ribbon_show',
+                [
+                    'label'       => __('Ribbon Text', 'essential-addons-elementor'),
+                    'description' => __('Hide show ribbon text from courses.', 'essential-addons-elementor'),
+                    'type'        => Controls_Manager::CHOOSE,
+                    'options' => [
+                        'true' => [
+                            'title' => __('Show', 'essential-addons-elementor'),
+                            'icon' => 'eicon-check',
+                        ],
+                        'false' => [
+                            'title' => __('Hide', 'essential-addons-elementor'),
+                            'icon' => 'eicon-ban',
+                        ]
+                    ],
+                    'default'   => 'false',
+                    'condition' => [
+                        // 'template_skin' => ['default', 'layout__1']
+                    ]
+                ]
+            );
+
+            $this->add_control(
+		        'change_ribbon_text',
+		        [
+			        'label'       => __('Change Ribbon Text?', 'essential-addons-elementor'),
+			        'type'        => Controls_Manager::CHOOSE,
+			        'options' => [
+				        'true' => [
+					        'title' => __('Show', 'essential-addons-elementor'),
+					        'icon' => 'eicon-check',
+				        ],
+				        'false' => [
+					        'title' => __('Hide', 'essential-addons-elementor'),
+					        'icon' => 'eicon-ban',
+				        ]
+			        ],
+			        'default'   => 'false',
+                    'condition' => [
+                        'eael_learndash_ribbon_show' => 'true'
+                    ]
+		        ]
+	        );
+
+            $this->add_control(
+                'eael_ribbon_enrolled_label_text',
+                [
+                    'label' => esc_html__('Enrolled Label', 'essential-addons-elementor'),
+                    'type' => Controls_Manager::TEXT,
+                    'dynamic'     => [ 'active' => true ],
+                    'default' => esc_html__('Enrolled', 'essential-addons-elementor'),
+                    'condition' => [
+                        'eael_learndash_ribbon_show' => 'true',
+                        'change_ribbon_text' => 'true'
+                    ],
+                ]
+            );
+
+            $this->add_control(
+                'eael_ribbon_completed_label_text',
+                [
+                    'label' => esc_html__('Completed Label', 'essential-addons-elementor'),
+                    'type' => Controls_Manager::TEXT,
+                    'dynamic'     => [ 'active' => true ],
+                    'default' => esc_html__('Completed', 'essential-addons-elementor'),
+                    'condition' => [
+                        'eael_learndash_ribbon_show' => 'true',
+                        'change_ribbon_text' => 'true'
+                    ],
+                ]
+            );
+
+            $this->add_control(
+                'show_course_duration',
+                [
+                    'label'       => __('Course Duration', 'essential-addons-elementor'),
+                    'description' => __('Hide show duration of courses.', 'essential-addons-elementor'),
+                    'type'        => Controls_Manager::CHOOSE,
+                    'options' => [
+                        'true' => [
+                            'title' => __('Show', 'essential-addons-elementor'),
+                            'icon' => 'eicon-check',
+                        ],
+                        'false' => [
+                            'title' => __('Hide', 'essential-addons-elementor'),
+                            'icon' => 'eicon-ban',
+                        ]
+                    ],
+                    'default'   => 'false',
                 ]
             );
 
@@ -1860,6 +1987,92 @@ class LD_Course_List extends Widget_Base
             );
 
             $this->end_controls_section();
+
+            $this->start_controls_section(
+                'ribbon_text_style_section',
+                [
+                    'label' => esc_html__('Ribbon', 'essential-addons-elementor'),
+                    'tab' => Controls_Manager::TAB_STYLE,
+                    'condition' => [
+                        'eael_learndash_ribbon_show' => 'true'
+                    ]
+                ]
+            );
+
+            $this->add_group_control(
+                Group_Control_Typography::get_type(),
+                [
+                    'name'                  => 'ribbon_text_label_typography',
+                    'label'                 => __('Typography', 'essential-addons-elementor'),
+                    'selector'              => '{{WRAPPER}} .eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner .eael_ld_course_list_ribbon',
+                ]
+            );
+
+            $this->add_control(
+                'ribbon_text_enrolled_style',
+                [
+                    'label'     => esc_html__('Ribbon - Enrolled', 'essential-addons-elementor'),
+                    'type'      => Controls_Manager::HEADING,
+                ]
+            );
+            $this->add_control(
+                'ribbon_text_enrolled_background_color',
+                [
+                    'label'     => esc_html__('Background Color', 'essential-addons-elementor'),
+                    'type'      => Controls_Manager::COLOR,
+                    'default'   => '#7453c6',
+                    'selectors' => [
+                        '{{WRAPPER}} .eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner .eael_ld_course_list_ribbon.ribbon-enrolled' => 'background: {{VALUE}};',
+                        '{{WRAPPER}} .eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner .eael_ld_course_list_ribbon.ribbon-enrolled:before' => 'border-top: 4px solid {{VALUE}};border-right: 4px solid {{VALUE}};',
+                    ],
+                ]
+            );
+
+            $this->add_control(
+                'ribbon_text_enrolled_label_color',
+                [
+                    'label'     => esc_html__('Text Color', 'essential-addons-elementor'),
+                    'type'      => Controls_Manager::COLOR,
+                    'default'   => '',
+                    'selectors' => [
+                        '{{WRAPPER}} .eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner .eael_ld_course_list_ribbon.ribbon-enrolled' => 'color: {{VALUE}};',
+                    ],
+                ]
+            );
+
+            $this->add_control(
+                'ribbon_text_completed_style',
+                [
+                    'label'     => esc_html__('Ribbon - Completed', 'essential-addons-elementor'),
+                    'type'      => Controls_Manager::HEADING,
+                ]
+            );
+            $this->add_control(
+                'ribbon_text_completed_background_color',
+                [
+                    'label'     => esc_html__('Background Color', 'essential-addons-elementor'),
+                    'type'      => Controls_Manager::COLOR,
+                    'default'   => '#5cb85c',
+                    'selectors' => [
+                        '{{WRAPPER}} .eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner .eael_ld_course_list_ribbon' => 'background: {{VALUE}};',
+                        '{{WRAPPER}} .eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner .eael_ld_course_list_ribbon:before' => 'border-top: 4px solid {{VALUE}};border-right: 4px solid {{VALUE}};',
+                    ],
+                ]
+            );
+
+            $this->add_control(
+                'ribbon_text_completed_label_color',
+                [
+                    'label'     => esc_html__('Text Color', 'essential-addons-elementor'),
+                    'type'      => Controls_Manager::COLOR,
+                    'default'   => '',
+                    'selectors' => [
+                        '{{WRAPPER}} .eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner .eael_ld_course_list_ribbon' => 'color: {{VALUE}};',
+                    ],
+                ]
+            );
+
+            $this->end_controls_section();
             # End of `Course meta section`
 
 
@@ -1916,7 +2129,7 @@ class LD_Course_List extends Widget_Base
             $query_args['tax_query'][] = [
                 'taxonomy' => 'ld_course_category',
                 'field'    => 'slug',
-                'terms'    => array($settings['course_category_name']),
+                'terms'    => is_array($settings['course_category_name']) ? $settings['course_category_name'] : array($settings['course_category_name']),
             ];
         }
 
@@ -1932,12 +2145,48 @@ class LD_Course_List extends Widget_Base
             $query_args['tax_query'][] = [
                 'taxonomy' => 'ld_course_tag',
                 'field'    => 'slug',
-                'terms'    => array($settings['course_tag']),
+                'terms'    => is_array($settings['course_tag']) ? $settings['course_tag'] : array($settings['course_tag']),
             ];
         }
         #end of course category & tag filter.
 
         return get_posts($query_args);
+    }
+
+    protected function get_course_filter_tabs($settings){
+        ob_start();
+        $all_text = !empty($settings['eael_course_filter_all_label_text']) ? Helper::eael_wp_kses($settings['eael_course_filter_all_label_text']) : esc_html__('All', 'essential-addons-elementor'); 
+        ?>
+        <div class="eael-learndash-filter-control">
+            <ul>
+                <?php 
+                    echo '<li class="control active all" data-filter="*" >' . $all_text . '</li>';
+
+                    if ( !empty($settings['course_category_name']) ) {
+                        $filter_tab_cats = is_array($settings['course_category_name']) ? $settings['course_category_name'] : array($settings['course_category_name']);
+
+                        foreach ( $filter_tab_cats as $filter_tab_slug ) {
+                            $course_cat_obj = get_term_by('slug', $filter_tab_slug, 'ld_course_category');
+                            $course_cat_name = isset($course_cat_obj->name) ? $course_cat_obj->name : '';
+                            echo '<li class="control cat-' . esc_attr($filter_tab_slug) . '" data-filter=".cat-' . esc_attr($filter_tab_slug) .'" >' . $course_cat_name . '</li>';
+                        }
+                    }
+
+                    if ( !empty($settings['course_tag']) ) {
+                        $filter_tab_tags = is_array($settings['course_tag']) ? $settings['course_tag'] : array($settings['course_tag']);
+                        foreach ( $filter_tab_tags as $filter_tab_slug ) {
+                            $course_tag_obj = get_term_by('slug', $filter_tab_slug, 'ld_course_tag');
+                            $course_tag_name = isset($course_tag_obj->name) ? $course_tag_obj->name : '';
+                            echo '<li class="control tag-' . esc_attr($filter_tab_slug) . '" data-filter=".tag-' . esc_attr($filter_tab_slug) .'" >' . $course_tag_name . '</li>';
+                        }
+                    }
+                ?>
+            </ul>
+        </div>
+        <?php 
+        $html = ob_get_clean();
+
+        return $html;
     }
 
     protected function get_enrolled_courses_only(array $data)
@@ -1961,6 +2210,117 @@ class LD_Course_List extends Widget_Base
         }
 
         return $desc;
+    }
+
+    protected function get_eael_ribbon_atts( $course, $settings = [] ){
+
+        $post_type = isset($course->post_type) ? $course->post_type : '';
+        $course_id = isset($course->ID) ? $course->ID : '';
+        $user_id   = get_current_user_id();
+
+        $course_options = get_post_meta( $course_id, "_sfwd-courses", true );
+
+        // For LD >= 3.0
+        $price = '';
+        $price_type = '';
+        if ( function_exists( 'learndash_get_course_price' ) && function_exists( 'learndash_get_group_price' ) ) {
+            if ( $post_type == 'sfwd-courses' ) {
+                $price_args = learndash_get_course_price( $course_id );
+            } elseif ( $post_type == 'groups' ) {
+                $price_args = learndash_get_group_price( $course_id );
+            }
+
+            if ( ! empty( $price_args ) ) {
+                $price      = $price_args['price'];
+                $price_type = $price_args['type'];
+            }
+        } else {
+            $price = $course_options && isset($course_options['sfwd-courses_course_price']) ? $course_options['sfwd-courses_course_price'] : __( 'Free', 'essential-addons-elementor' );
+            $price_type = $course_options && isset( $course_options['sfwd-courses_course_price_type'] ) ? $course_options['sfwd-courses_course_price_type'] : '';
+        }
+
+        $is_completed = false;
+        if ( $post_type == 'sfwd-courses' ) {
+            $has_access   = sfwd_lms_has_access( $course_id, $user_id );
+            $is_completed = learndash_course_completed( $user_id, $course_id );
+        } elseif ( $post_type == 'groups' ) {
+            $has_access = learndash_is_user_in_group( $user_id, $course_id );
+            $is_completed = learndash_get_user_group_completed_timestamp( $course_id, $user_id );
+        }
+
+        $legacy_meta = get_post_meta($course_id, '_sfwd-courses', true);
+        $price_text = isset( $legacy_meta['sfwd-courses_course_price'] ) ? $legacy_meta['sfwd-courses_course_price'] : 'Free';
+
+        $class       = 'eael_ld_course_list_ribbon';
+        $course_class = '';
+        $ribbon_text = '';
+        // $hide_ribbon_containing_price = false;
+        $enrolled_label_text = !empty($settings['eael_ribbon_enrolled_label_text']) ? Helper::eael_wp_kses($settings['eael_ribbon_enrolled_label_text']) : esc_html('Enrolled', 'essential-addons-elementor');
+        $completed_label_text = !empty($settings['eael_ribbon_completed_label_text']) ? Helper::eael_wp_kses($settings['eael_ribbon_completed_label_text']) : esc_html('Completed', 'essential-addons-elementor');
+        
+        if ( in_array( $post_type, [ 'sfwd-courses', 'groups' ] ) ) {
+            if ( $has_access && ! $is_completed && $price_type != 'open' && empty( $ribbon_text ) ) {
+                $class .= ' ribbon-enrolled';
+                $course_class .= ' learndash-available learndash-incomplete';
+                $ribbon_text = __( $enrolled_label_text, 'essential-addons-elementor' );
+            } elseif ( $has_access && $is_completed && $price_type != 'open' && empty( $ribbon_text ) ) {
+                $class .= '';
+                $course_class .= ' learndash-available learndash-complete';
+                $ribbon_text = __( $completed_label_text, 'essential-addons-elementor' );
+            } elseif ( $price_type == 'open' && empty( $ribbon_text ) ) {
+                if ( is_user_logged_in() && ! $is_completed ) {
+                    $class .= ' ribbon-enrolled';
+                    $course_class .= ' learndash-available learndash-incomplete';
+                    $ribbon_text = __( $enrolled_label_text, 'essential-addons-elementor' );
+                } elseif ( is_user_logged_in() && $is_completed ) {
+                    $class .= '';
+                    $course_class .= ' learndash-available learndash-complete';
+                    $ribbon_text = __( $completed_label_text, 'essential-addons-elementor' );
+                } else {
+                    $course_class .= ' learndash-available learndash-available';
+                    $class .= ' ribbon-enrolled';
+                    $ribbon_text = '';
+                }
+            } elseif ( $price_type == 'closed' && empty( $price ) ) {
+                $class .= ' ribbon-enrolled';
+                $course_class .= ' learndash-available learndash-available';
+
+                if ( $is_completed ) {
+                    $course_class .= ' learndash-complete learndash-complete';
+                } else {
+                    $course_class .= ' learndash-incomplete learndash-incomplete';
+                }
+
+                if ( is_numeric( $price ) ) {
+                    $ribbon_text = $price_text;
+                    // $hide_ribbon_containing_price = true;
+
+                } else {
+                    $ribbon_text = '';
+                }
+            } else {
+                if ( empty( $ribbon_text ) ) {
+                    $class .= ! empty( $course_options['sfwd-courses_course_price'] ) ? ' price_currency' : ' free';
+                    $course_class .= ' learndash-not-available learndash-incomplete';
+                    $ribbon_text = $price_text;
+                    // $hide_ribbon_containing_price = true;
+
+                } else {
+                    $class .= ' custom';
+                    $course_class .= ' learndash-not-available learndash-incomplete';
+                }
+            }
+        }
+
+        if ( '' == $ribbon_text ) {
+            $class = '';
+        }
+
+        return array(
+            'class' => $class,
+            'course_class' => $course_class,
+            'ribbon_text' => $ribbon_text,
+        );
     }
 
     protected function render()
@@ -1996,12 +2356,15 @@ class LD_Course_List extends Widget_Base
             $enrolled_course_only = $this->get_enrolled_courses_only($courses);
         }
 
+        $html = '';
+        if(!empty($settings['eael_course_filter_show']) && 'true' === $settings['eael_course_filter_show']){
+            $html = $this->get_course_filter_tabs($settings);
+        }
 
         ob_start();
-        $html = '<div ' . $this->get_render_attribute_string('eael-learn-dash-wrapper') . '>';
+        $html .= '<div ' . $this->get_render_attribute_string('eael-learn-dash-wrapper') . '>';
         if ($courses) {
             foreach ($courses as $course) {
-
                 if ($settings['mycourses'] === 'enrolled') {
                     // Get enrolled courses only
                     if (!in_array($course->ID, $enrolled_course_only)) continue;
@@ -2022,11 +2385,34 @@ class LD_Course_List extends Widget_Base
                 $image_alt = get_post_meta(get_post_thumbnail_id($course->ID), '_wp_attachment_image_alt', true);
 	            $access_list = count( $users );
                 $button_text = get_post_meta($course->ID, '_learndash_course_grid_custom_button_text', true);
-                $tags = wp_get_post_terms($course->ID, 'ld_course_tag');
                 $excerpt_length = $settings['excerpt_length'] ? $settings['excerpt_length'] : null;
+                
+                $tags = wp_get_post_terms($course->ID, 'ld_course_tag');
+	            $tags_as_string = '';
+	            if ( ! is_wp_error( $tags ) ) {
+		            $tags_with_prefix = array_map( function ( $tag ) {
+			            return 'tag-' . $tag->slug;
+		            }, $tags );
+		            $tags_as_string   = implode( ' ', $tags_with_prefix );
+	            }
+
                 $cats = wp_get_post_terms($course->ID, 'ld_course_category');
+	            $cats_as_string = '';
+	            if( ! is_wp_error( $cats ) ){
+		            $cats_with_prefix = array_map(function($cat) { return 'cat-' . $cat->slug; }, $cats);
+		            $cats_as_string = implode(' ', $cats_with_prefix);
+	            }
+
                 $price = $legacy_meta['sfwd-courses_course_price'] ? $legacy_meta['sfwd-courses_course_price'] : 'Free';
 
+                $duration_in_seconds = floatval( get_post_meta($course->ID, '_learndash_course_grid_duration', true) );
+                $duration_hours = floor($duration_in_seconds / 3600);
+                $duration_minutes = floor(floor($duration_in_seconds % 3600)/60);
+                
+                $ribbon_atts = array();
+                if( !empty( $settings['eael_learndash_ribbon_show'] ) && 'true' === $settings['eael_learndash_ribbon_show'] ) {
+                    $ribbon_atts = $this->get_eael_ribbon_atts($course, $settings);
+                }
                 // $ribbon_text = get_post_meta($course->ID, '_learndash_course_grid_custom_ribbon_text', true); // not using
 
                 //LearnDash Course Grid addon support
@@ -2096,11 +2482,52 @@ class LD_Course_List extends Widget_Base
                                     $ld_gallery.isotope("layout");
                                 });
                             }
+
+                            $scope.on("click", ".control", function (e) {
+                                e.preventDefault();
+                                let $this = $(this),
+                                    filterValue = $this.data("filter");
+
+                                $this.siblings().removeClass("active");
+                                $this.addClass("active");
+                                filterClass = filterValue.replace('.', '');
+
+                                if( filterClass != '*' ){
+                                    $('.eael-learn-dash-course', $scope).css('display', 'none');
+                                    $('.eael-learn-dash-course'+filterValue, $scope).css('display', 'block').css('clear', 'none');
+                                }else {
+                                    $('.eael-learn-dash-course', $scope).css('display', 'block');
+                                }
+
+                            });
+
                         });
                     });
                 </script>
-<?php
-            }
+            <?php
+            } else { ?>
+                <script type="text/javascript">
+                    jQuery(document).ready(function($) {
+                        $(".eael-learndash-wrapper").each(function() {
+                            var $node_id = "<?php echo $this->get_id(); ?>",
+                                $scope = $(".elementor-element-" + $node_id + ""),
+                                $this = $(this),
+                                $layout = $this.data('layout-mode');
+
+                            $scope.on("click", ".control", function (e) {
+                                e.preventDefault();
+                                let $this = $(this),
+                                    filterValue = $this.data("filter");
+
+                                $this.siblings().removeClass("active");
+                                $this.addClass("active");
+
+                                $(".eael-learndash-wrapper", $scope).isotope({ filter: filterValue });
+                            });
+                        });
+                    });
+                </script>  
+            <?php }
         } else {
             $html .= "<h4>" . __('No Courses Found!', 'essential-addons-elementor') . '</h4>';
         }

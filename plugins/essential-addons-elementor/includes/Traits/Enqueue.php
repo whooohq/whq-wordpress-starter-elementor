@@ -17,9 +17,9 @@ trait Enqueue
             );
         }
 
-        if (in_array('login-register', $widgets)) {
-            wp_enqueue_script('eael-google-api', 'https://apis.google.com/js/platform.js', array('jquery'), $version, true);
-        }
+	    if ( in_array( 'login-register', $widgets ) ) {
+		    wp_enqueue_script( 'eael-google-api', 'https://accounts.google.com/gsi/client', array( 'jquery' ), $version, true );
+	    }
     }
 
     public function script_localizer($object)

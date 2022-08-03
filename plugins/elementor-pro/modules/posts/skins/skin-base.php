@@ -10,8 +10,8 @@ use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Text_Stroke;
 use Elementor\Icons_Manager;
 use Elementor\Skin_Base as Elementor_Skin_Base;
-use Elementor\Widget_Base;
 use Elementor\Utils;
+use Elementor\Widget_Base;
 use ElementorPro\Modules\Posts\Traits\Button_Widget_Trait;
 use ElementorPro\Plugin;
 use ElementorPro\Modules\Posts\Widgets\Posts_Base;
@@ -1184,15 +1184,6 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			<?php the_author(); ?>
 		</span>
 		<?php
-	}
-
-	/**
-	 * @deprecated 3.0.0 Use `Skin_Base::render_date_by_type()` instead
-	 */
-	protected function render_date() {
-		Plugin::elementor()->modules_manager->get_modules( 'dev-tools' )->deprecation->deprecated_function( __METHOD__, '3.0.0', 'Skin_Base::render_date_by_type()' );
-
-		$this->render_date_by_type();
 	}
 
 	protected function render_date_by_type( $type = 'publish' ) {

@@ -41,6 +41,19 @@ trait Helper
             'LNAME' => !empty($settings['eael_mailchimp_lastname']) ? $settings['eael_mailchimp_lastname'] : '',
         );
 
+        $settings_tags_string = !empty($settings['eael_mailchimp_tags']) ? sanitize_text_field($settings['eael_mailchimp_tags']) : '';
+        if(!empty($settings_tags_string)){
+            $settings_tags_string = explode(',', $settings_tags_string);
+        }
+        $body_params = array(
+            'email_address' => $settings['eael_mailchimp_email'],
+            'status' => 'subscribed',
+            'merge_fields' => $merge_fields,
+        );
+
+        if(!empty($settings_tags_string)){
+            $body_params['tags'] = $settings_tags_string;
+        }
         $response = wp_remote_post(
             'https://' . substr($api_key, strpos(
                 $api_key,
@@ -52,11 +65,7 @@ trait Helper
                     'Content-Type' => 'application/json',
                     'Authorization' => 'Basic ' . base64_encode('user:' . $api_key),
                 ],
-                'body' => json_encode([
-                    'email_address' => $settings['eael_mailchimp_email'],
-                    'status' => 'subscribed',
-                    'merge_fields' => $merge_fields,
-                ]),
+                'body' => json_encode( $body_params ),
             ]
         );
 
@@ -400,6 +409,14 @@ trait Helper
 			}
 		}
 
+        if ( !empty( $_POST[ 'settings' ][ 'include' ] ) ) {
+            $post_args = $this->manage_include_exclude_category( $_POST[ 'settings' ][ 'include' ], $post_args );
+        }
+
+        if ( !empty( $_POST[ 'settings' ][ 'exclude' ] ) ) {
+            $post_args = $this->manage_include_exclude_category( $_POST[ 'settings' ][ 'exclude' ], $post_args, 'exclude' );
+        }
+
 		$query                   = new \WP_Query( $post_args );
 		$post_lists              = '';
 		$response[ 'more_data' ] = $query->post_count >= $post_args[ 'posts_per_page' ];
@@ -433,6 +450,26 @@ trait Helper
 
 	}
 
+    /**
+     * manage_include_exclude_category
+     * @param array $term_ids
+     * @param array $post_args
+     * @param string $type
+     * @retrun array
+     */
+    public function manage_include_exclude_category( $term_ids, $post_args, $type = 'include' ){
+        $operator = $type === 'include' ? 'IN' : 'NOT IN';
+
+        foreach ( $term_ids as $term_id ){
+            $term = get_term( $term_id );
+            $post_args['tax_query'][$term->taxonomy.'_'.$type]['taxonomy'] = $term->taxonomy;
+            $post_args['tax_query'][$term->taxonomy.'_'.$type]['field']    = 'term_id';
+            $post_args['tax_query'][$term->taxonomy.'_'.$type]['operator'] = $operator;
+            $post_args['tax_query'][$term->taxonomy.'_'.$type]['terms'][]  = $term->term_id;
+        }
+
+        return $post_args;
+    }
 	/**
 	 * manage_popular_keyword
 	 * @param string $key

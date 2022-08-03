@@ -181,11 +181,11 @@ class Twitter_Feed_Carousel extends Widget_Base
                 'default' => 10,
             ]
         );
-
+        
         $this->add_control(
-            'eael_twitter_feed_media',
+            'eael_twitter_feed_show_replies',
             [
-                'label' => esc_html__('Show Media Elements', 'essential-addons-elementor'),
+                'label' => esc_html__('Show Replies', 'essential-addons-elementor'),
                 'type' => Controls_Manager::SWITCHER,
                 'label_on' => __('yes', 'essential-addons-elementor'),
                 'label_off' => __('no', 'essential-addons-elementor'),
@@ -259,6 +259,18 @@ class Twitter_Feed_Carousel extends Widget_Base
             'eael_twitter_feed_show_icon',
             [
                 'label' => esc_html__('Show Icon', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => __('yes', 'essential-addons-elementor'),
+                'label_off' => __('no', 'essential-addons-elementor'),
+                'default' => 'true',
+                'return_value' => 'true',
+            ]
+        );
+
+        $this->add_control(
+            'eael_twitter_feed_media',
+            [
+                'label' => esc_html__('Show Media', 'essential-addons-elementor'),
                 'type' => Controls_Manager::SWITCHER,
                 'label_on' => __('yes', 'essential-addons-elementor'),
                 'label_off' => __('no', 'essential-addons-elementor'),
@@ -1432,19 +1444,19 @@ class Twitter_Feed_Carousel extends Widget_Base
     {
         $settings = $this->get_settings_for_display();
 
-        $this->add_render_attribute('eael-twitter-feed-carousel-wrap', [
-			'data-items' => $this->get_settings('items')['size'],
-			'data-items-tablet' => $this->get_settings('items_tablet')['size'],
-			'data-items-mobile' => $this->get_settings('items_mobile')['size'],
-			'data-margin' => $this->get_settings('margin')['size'],
-			'data-margin-tablet' => $this->get_settings('margin_tablet')['size'],
-			'data-margin-mobile' => $this->get_settings('margin_mobile')['size'],
-			'data-effect' => $settings['carousel_effect'],
-			'data-speed' => $settings['slider_speed']['size'],
-			'data-autoplay' => ($settings['autoplay'] == 'yes' && !empty($settings['autoplay_speed']['size'])) ? $settings['autoplay_speed']['size'] : '0',
-			'data-pause-on-hover' => ($settings['pause_on_hover'] == 'yes' ? 'true' : 'false'),
-			'data-dots' => '1',
-		]);
+	    $this->add_render_attribute( 'eael-twitter-feed-carousel-wrap', [
+		    'data-items'          => $this->get_settings( 'items' )['size'],
+		    'data-items-tablet'   => isset( $this->get_settings( 'items_tablet' )['size'] ) ? $this->get_settings( 'items_tablet' )['size'] : 2,
+		    'data-items-mobile'   => isset( $this->get_settings( 'items_mobile' )['size'] ) ? $this->get_settings( 'items_mobile' )['size'] : 1,
+		    'data-margin'         => $this->get_settings( 'margin' )['size'],
+		    'data-margin-tablet'  => isset( $this->get_settings( 'margin_tablet' )['size'] ) ? $this->get_settings( 'margin_tablet' )['size'] : 10,
+		    'data-margin-mobile'  => isset( $this->get_settings( 'margin_mobile' )['size'] ) ? $this->get_settings( 'margin_mobile' )['size'] : 10,
+		    'data-effect'         => $settings['carousel_effect'],
+		    'data-speed'          => $settings['slider_speed']['size'],
+		    'data-autoplay'       => ( $settings['autoplay'] == 'yes' && ! empty( $settings['autoplay_speed']['size'] ) ) ? $settings['autoplay_speed']['size'] : '0',
+		    'data-pause-on-hover' => ( $settings['pause_on_hover'] == 'yes' ? 'true' : 'false' ),
+		    'data-dots'           => '1',
+	    ] );
 
 		echo '<div class="eael-twitter-feed eael-twitter-feed-carousel swiper-container eael-twitter-feed-' . $this->get_id() . '" ' . $this->get_render_attribute_string('eael-twitter-feed-carousel-wrap') . '>
 			<div class="swiper-wrapper">

@@ -394,7 +394,7 @@ abstract class Theme_Document extends Library_Document {
 
 		// Only proceed if the inheriting document has optional wrapper HTML tags to replace 'div'
 		if ( $has_wrapper_tags ) {
-			$wrapper_tag = $settings['content_wrapper_html_tag'];
+			$wrapper_tag = Utils::validate_html_tag( $settings['content_wrapper_html_tag'] );
 		}
 
 		if ( ! $elements_data ) {

@@ -528,7 +528,7 @@ class Instagram_Feed extends Widget_Base {
                 'global' => [
                     'default' => Global_Typography::TYPOGRAPHY_SECONDARY,
                 ],
-                'selector' => '{{WRAPPER}} .eael-instafeed-caption',
+                'selector' => '{{WRAPPER}} .eael-instafeed-caption, {{WRAPPER}} .eael-instafeed-caption-text',
             ]
         );
 

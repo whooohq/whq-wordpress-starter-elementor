@@ -1711,6 +1711,7 @@ class Post_Carousel extends Widget_Base
 
 		$settings = [
 			'eael_show_image'                  => $settings['eael_show_image'],
+			'enable_post_carousel_image_ratio' => $settings['enable_post_carousel_image_ratio'],
 			'post_block_hover_animation'       => $settings['eael_post_block_hover_animation'],
 			'eael_post_grid_bg_hover_icon_new' => (isset($settings['__fa4_migrated']['eael_post_grid_bg_hover_icon_new']) || empty($settings['eael_post_grid_bg_hover_icon'])) ? $settings['eael_post_grid_bg_hover_icon_new']['value'] : $settings['eael_post_grid_bg_hover_icon'],
 			'image_size'                       => $settings['image_size'],

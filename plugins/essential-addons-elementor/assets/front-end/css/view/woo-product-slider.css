@@ -1268,3 +1268,24 @@
 .theme-woodmart .price del {
   color: inherit;
 }
+.theme-savoy .eael-woo-product-slider.woocommerce ul.products li.product .star-rating {
+  font-size: 12px;
+  letter-spacing: 2px;
+  width: 75px;
+}
+.theme-savoy .eael-woo-product-slider.woocommerce ul.products li.product .star-rating:before {
+  font-size: 12px;
+  letter-spacing: 2px;
+  line-height: 12px;
+  left: 0px;
+}
+.theme-savoy .eael-woo-product-slider.woocommerce ul.products li.product .star-rating span {
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+.theme-savoy .eael-woo-product-slider.woocommerce ul.products li.product .star-rating span:before {
+  font-size: 12px;
+  letter-spacing: 2px;
+  left: 0px;
+  line-height: 12px;
+}

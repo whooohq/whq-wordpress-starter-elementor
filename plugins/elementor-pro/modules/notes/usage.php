@@ -149,31 +149,35 @@ class Usage {
 	/**
 	 * Get the first user interaction with the Notes feature.
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	private function get_first_interaction() {
-		return Note::query()
+		$note = Note::query()
 			->with_trashed()
 			->select( [ 'created_at' ] )
 			->order_by( 'created_at' )
-			->first()
-			->created_at
-			->format( DATE_ISO8601 );
+			->first();
+
+		return $note && $note->created_at
+			? $note->created_at->format( 'Y-m-d\TH:i:sO' )
+			: null;
 	}
 
 	/**
 	 * Get the last user interaction with the Notes feature.
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	private function get_last_interaction() {
-		return Note::query()
+		$note = Note::query()
 			->with_trashed()
 			->select( [ 'last_activity_at' ] )
 			->order_by( 'last_activity_at', 'desc' )
-			->first()
-			->last_activity_at
-			->format( DATE_ISO8601 );
+			->first();
+
+		return $note && $note->last_activity_at
+			? $note->last_activity_at->format( 'Y-m-d\TH:i:sO' )
+			: null;
 	}
 
 	/**
@@ -236,6 +240,10 @@ class Usage {
 	 * @return array
 	 */
 	private function normalize_users_used( Collection $query_results ) {
+		if ( $query_results->is_empty() ) {
+			return [];
+		}
+
 		$results = $query_results->map_with_keys( function ( $row ) {
 			return [ $row['user_used_id'] => (int) $row['count'] ];
 		} );

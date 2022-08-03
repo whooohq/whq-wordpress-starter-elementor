@@ -6,8 +6,6 @@ use \Essential_Addons_Elementor\Classes\Helper;
  * Template Name: Preset 3
  */
 
-use Essential_Addons_Elementor\Elements\Woo_Product_slider;
-
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
@@ -75,9 +73,9 @@ if ( true === wc_get_loop_product_visibility( $product->get_id() ) || $product->
                     echo '<div class="eael-product-title">';
                     echo '<' . $settings['eael_product_slider_title_tag'] . '>';
                     if ( empty( $settings['eael_product_slider_title_length'] ) ) {
-                        echo $product->get_title();
+                        echo Helper::eael_wp_kses( $product->get_title() );
                     } else {
-                        echo implode( " ", array_slice( explode( " ", $product->get_title() ), 0, $settings['eael_product_slider_title_length'] ) );
+                        echo implode( " ", array_slice( explode( " ", Helper::eael_wp_kses( $product->get_title() ) ), 0, $settings['eael_product_slider_title_length'] ) );
                     }
                     echo '</' . $settings['eael_product_slider_title_tag'] . '>';
                     echo '</div>';

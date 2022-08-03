@@ -17,7 +17,7 @@ class Admin_Bar {
 	 */
 	public function register() {
 		add_action( 'admin_bar_menu', function ( \WP_Admin_Bar $wp_admin_bar ) {
-			if ( ! current_user_can( Capabilities::READ_NOTES ) ) {
+			if ( is_admin() || ! current_user_can( Capabilities::READ_NOTES ) ) {
 				return;
 			}
 

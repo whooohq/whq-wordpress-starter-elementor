@@ -2,31 +2,45 @@
 
 use Essential_Addons_Elementor\Pro\Classes\Helper;
 ?>
-<div class="eael-learn-dash-course eael-course-layout-2">
+<div class="eael-learn-dash-course eael-course-layout-2 <?php echo !empty($tags_as_string) ? esc_attr($tags_as_string) : ' '; ?>  <?php echo !empty($cats_as_string) ? esc_attr($cats_as_string) : ' '; ?>  ">
     <div class="eael-learn-dash-course-inner">
 
         <?php $this->_generate_tags($tags); ?>
 
 <!--        --><?php //if($image && $settings['show_thumbnail'] === 'true') : ?>
         <?php if($settings['show_thumbnail'] === 'true') : ?>
-        <a href="<?php echo esc_url(get_permalink($course->ID)); ?>" class="eael-learn-dash-course-thumbnail">
-            <?php if( 1 == $ld_course_grid_enable_video_preview && ! empty( $ld_course_grid_video_embed_code ) ) : ?>
-                <!-- .ld_course_grid_video_embed helps to load default css and js from learndash -->
-                <div class="ld_course_grid_video_embed">
-                    <?php echo $ld_course_grid_video_embed_code; ?>
+            <?php if ( ! empty( $ribbon_atts['ribbon_text'] ) ) : ?>
+                <div class="<?php echo !empty( $ribbon_atts['class'] ) ? esc_attr( $ribbon_atts['class'] ) : ''; ?>">
+                    <?php echo wp_kses_post( $ribbon_atts['ribbon_text'] ); ?>
                 </div>
-            <?php elseif( $image ) :?>
-                <img src="<?php echo esc_url($image[0]); ?>" alt="<?php echo $image_alt; ?>" />
-            <?php else : ?>
-                <img alt="" src="<?php echo \Elementor\Utils::get_placeholder_image_src(); ?>"/>
             <?php endif; ?>
-        </a>
+            
+            <a href="<?php echo esc_url(get_permalink($course->ID)); ?>" class="eael-learn-dash-course-thumbnail">
+                <?php if( 1 == $ld_course_grid_enable_video_preview && ! empty( $ld_course_grid_video_embed_code ) ) : ?>
+                    <!-- .ld_course_grid_video_embed helps to load default css and js from learndash -->
+                    <div class="ld_course_grid_video_embed">
+                        <?php echo $ld_course_grid_video_embed_code; ?>
+                    </div>
+                <?php elseif( $image ) :?>
+                    <img src="<?php echo esc_url($image[0]); ?>" alt="<?php echo $image_alt; ?>" />
+                <?php else : ?>
+                    <img alt="" src="<?php echo \Elementor\Utils::get_placeholder_image_src(); ?>"/>
+                <?php endif; ?>
+            </a>
         <?php endif; ?>
 
         <div class="eael-learn-deash-course-content-card">
             <<?php echo Helper::eael_pro_validate_html_tag($settings['title_tag']); ?> class="course-card-title">
                 <a href="<?php echo esc_url(get_permalink($course->ID)); ?>"><?php echo $course->post_title; ?></a>
             </<?php echo Helper::eael_pro_validate_html_tag($settings['title_tag']); ?>>
+
+            <?php if($settings['show_course_duration'] === 'true') : ?>
+                <?php if( !empty( $duration_hours ) || !empty( $duration_minutes ) ) : ?>
+                <div class="course-author-meta-inline course-duration-meta-inline">
+                    <span><?php esc_html_e($duration_hours . 'Hrs ' . $duration_minutes . 'Mins', 'essential-addons-elementor'); ?></span>
+                </div>
+                <?php endif; ?>
+            <?php endif; ?>
 
             <?php if($settings['show_course_meta'] === 'true') : ?>
             <div class="eael-learn-dash-course-meta-card">

@@ -314,7 +314,6 @@ class Custom_Icons extends  Assets_Base {
 				continue;
 			}
 			$icon_set_handler->handle_new_icon_set();
-			$name = $icon_set_handler->get_name();
 			$icon_set_handler->move_files( $this->current_post_id );
 			$config = $icon_set_handler->build_config();
 

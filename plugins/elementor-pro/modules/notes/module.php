@@ -70,7 +70,7 @@ class Module extends App {
 		wp_enqueue_style(
 			'elementor-pro-notes-frontend',
 			$this->get_css_assets_url( 'modules/notes/frontend' ),
-			[],
+			[ 'elementor-icons' ],
 			ELEMENTOR_PRO_VERSION
 		);
 	}

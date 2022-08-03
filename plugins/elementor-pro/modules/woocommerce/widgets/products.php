@@ -16,6 +16,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Products extends Products_Base {
 
+	private $product_query_types = [
+		'cross_sells',
+		'related_products',
+		'upsells',
+	];
+
+	private $controls_to_hide = [
+		'avoid_duplicates',
+		'date_after',
+		'date_before',
+		'exclude',
+		'exclude_authors',
+		'exclude_ids',
+		'exclude_term_ids',
+		'include',
+		'include_authors',
+		'include_term_ids',
+		'offset',
+		'query_exclude',
+		'query_include',
+		'select_date',
+	];
+
 	public function get_name() {
 		return 'woocommerce-products';
 	}
@@ -38,6 +61,9 @@ class Products extends Products_Base {
 		];
 	}
 
+	/**
+	 * @throws \Exception
+	 */
 	protected function register_query_controls() {
 		$this->start_controls_section(
 			'section_query',
@@ -49,61 +75,7 @@ class Products extends Products_Base {
 
 		$this->add_group_control(
 			Group_Control_Query::get_type(),
-			[
-				'name' => Products_Renderer::QUERY_CONTROL_NAME,
-				'post_type' => 'product',
-				'presets' => [ 'include', 'exclude', 'order' ],
-				'fields_options' => [
-					'post_type' => [
-						'default' => 'product',
-						'options' => [
-							'current_query' => esc_html__( 'Current Query', 'elementor-pro' ),
-							'product' => esc_html__( 'Latest Products', 'elementor-pro' ),
-							'sale' => esc_html__( 'Sale', 'elementor-pro' ),
-							'featured' => esc_html__( 'Featured', 'elementor-pro' ),
-							'by_id' => _x( 'Manual Selection', 'Posts Query Control', 'elementor-pro' ),
-							'related' => esc_html__( 'Related', 'elementor-pro' ),
-							'upsells' => esc_html__( 'Upsells', 'elementor-pro' ),
-							'cross_sells' => esc_html__( 'Cross-Sells', 'elementor-pro' ),
-						],
-					],
-					'orderby' => [
-						'default' => 'date',
-						'options' => [
-							'date' => esc_html__( 'Date', 'elementor-pro' ),
-							'title' => esc_html__( 'Title', 'elementor-pro' ),
-							'price' => esc_html__( 'Price', 'elementor-pro' ),
-							'popularity' => esc_html__( 'Popularity', 'elementor-pro' ),
-							'rating' => esc_html__( 'Rating', 'elementor-pro' ),
-							'rand' => esc_html__( 'Random', 'elementor-pro' ),
-							'menu_order' => esc_html__( 'Menu Order', 'elementor-pro' ),
-						],
-					],
-					'exclude' => [
-						'options' => [
-							'current_post' => esc_html__( 'Current Post', 'elementor-pro' ),
-							'manual_selection' => esc_html__( 'Manual Selection', 'elementor-pro' ),
-							'terms' => esc_html__( 'Term', 'elementor-pro' ),
-						],
-					],
-					'include' => [
-						'options' => [
-							'terms' => esc_html__( 'Term', 'elementor-pro' ),
-						],
-					],
-				],
-				'exclude' => [
-					'posts_per_page',
-					'exclude_authors',
-					'authors',
-					'offset',
-					'related_fallback',
-					'related_ids',
-					'query_id',
-					'avoid_duplicates',
-					'ignore_sticky_posts',
-				],
-			]
+			$this->build_products_control_args()
 		);
 
 		$this->add_control(
@@ -113,7 +85,7 @@ class Products extends Products_Base {
 				'raw' => esc_html__( 'Note: The Related Products Query is available when creating a Single Product template', 'elementor-pro' ),
 				'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
 				'condition' => [
-					Products_Renderer::QUERY_CONTROL_NAME . '_post_type' => 'related',
+					Products_Renderer::QUERY_CONTROL_NAME . '_post_type' => 'related_products',
 				],
 			]
 		);
@@ -178,7 +150,7 @@ class Products extends Products_Base {
 				'default' => '',
 				'condition' => [
 					Products_Renderer::QUERY_CONTROL_NAME . '_post_type!' => [
-						'related',
+						'related_products',
 						'upsells',
 						'cross_sells',
 					],
@@ -237,7 +209,7 @@ class Products extends Products_Base {
 						[
 							'name' => Products_Renderer::QUERY_CONTROL_NAME . '_post_type',
 							'operator' => '=',
-							'value' => 'related',
+							'value' => 'related_products',
 						],
 						[
 							'name' => Products_Renderer::QUERY_CONTROL_NAME . '_post_type',
@@ -268,7 +240,7 @@ class Products extends Products_Base {
 		);
 
 		$query_type_strings = [
-			'related' => esc_html__( 'Related Products', 'elementor-pro' ),
+			'related_products' => esc_html__( 'Related Products', 'elementor-pro' ),
 			'upsells' => esc_html__( 'You may also like...', 'elementor-pro' ),
 			'cross_sells' => esc_html__( 'You may be interested in...', 'elementor-pro' ),
 		];
@@ -345,7 +317,7 @@ class Products extends Products_Base {
 						[
 							'name' => Products_Renderer::QUERY_CONTROL_NAME . '_post_type',
 							'operator' => '=',
-							'value' => 'related',
+							'value' => 'related_products',
 						],
 						[
 							'name' => Products_Renderer::QUERY_CONTROL_NAME . '_post_type',
@@ -380,7 +352,7 @@ class Products extends Products_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'products_title_typography',
-				'selector' => '{{WRAPPER}}.products-heading-show .related > h2, {{WRAPPER}}.products-heading-show .upsells > h2, {{WRAPPER}}.products-heading-show .cross-sells > h2',
+				'selector' => '{{WRAPPER}}.products-heading-show .related-products > h2, {{WRAPPER}}.products-heading-show .upsells > h2, {{WRAPPER}}.products-heading-show .cross-sells > h2',
 				'global' => [
 					'default' => Global_Typography::TYPOGRAPHY_PRIMARY,
 				],
@@ -434,7 +406,7 @@ class Products extends Products_Base {
 			add_filter( 'woocommerce_loop_add_to_cart_link', [ $this, 'add_to_cart_wrapper' ], 10, 1 );
 		}
 
-		if ( 'related' === $post_type_setting ) {
+		if ( 'related_products' === $post_type_setting ) {
 			$content = Module::get_products_related_content( $settings );
 		} elseif ( 'upsells' === $post_type_setting ) {
 			$content = Module::get_upsells_content( $settings );
@@ -468,5 +440,86 @@ class Products extends Products_Base {
 
 	public function get_group_name() {
 		return 'woocommerce';
+	}
+
+	/**
+	 * @return array
+	 */
+	private function build_products_control_args() {
+		$args = [
+			'name' => Products_Renderer::QUERY_CONTROL_NAME,
+			'post_type' => 'product',
+			'presets' => [ 'include', 'exclude', 'order' ],
+			'fields_options' => [
+				'post_type' => [
+					'default' => 'product',
+					'options' => [
+						'current_query' => esc_html__( 'Current Query', 'elementor-pro' ),
+						'product' => esc_html__( 'Latest Products', 'elementor-pro' ),
+						'sale' => esc_html__( 'Sale', 'elementor-pro' ),
+						'featured' => esc_html__( 'Featured', 'elementor-pro' ),
+						'by_id' => _x( 'Manual Selection', 'Posts Query Control', 'elementor-pro' ),
+						'related_products' => esc_html__( 'Related Products', 'elementor-pro' ),
+						'upsells' => esc_html__( 'Upsells', 'elementor-pro' ),
+						'cross_sells' => esc_html__( 'Cross-Sells', 'elementor-pro' ),
+					],
+				],
+				'orderby' => [
+					'default' => 'date',
+					'options' => [
+						'date' => esc_html__( 'Date', 'elementor-pro' ),
+						'title' => esc_html__( 'Title', 'elementor-pro' ),
+						'price' => esc_html__( 'Price', 'elementor-pro' ),
+						'popularity' => esc_html__( 'Popularity', 'elementor-pro' ),
+						'rating' => esc_html__( 'Rating', 'elementor-pro' ),
+						'rand' => esc_html__( 'Random', 'elementor-pro' ),
+						'menu_order' => esc_html__( 'Menu Order', 'elementor-pro' ),
+					],
+				],
+				'exclude' => [
+					'options' => [
+						'current_post' => esc_html__( 'Current Post', 'elementor-pro' ),
+						'manual_selection' => esc_html__( 'Manual Selection', 'elementor-pro' ),
+						'terms' => esc_html__( 'Term', 'elementor-pro' ),
+					],
+				],
+				'include' => [
+					'options' => [
+						'terms' => esc_html__( 'Term', 'elementor-pro' ),
+					],
+				],
+			],
+			'exclude' => [
+				'posts_per_page',
+				'exclude_authors',
+				'authors',
+				'offset',
+				'related_fallback',
+				'related_ids',
+				'query_id',
+				'avoid_duplicates',
+				'ignore_sticky_posts',
+			],
+		];
+
+		$args['fields_options'] = array_merge( $args['fields_options'], $this->get_exclude_conditions() );
+		return $args;
+	}
+
+	private function get_exclude_conditions() {
+		$fields = [];
+		foreach ( $this->controls_to_hide as $control_name ) {
+			$fields = $this->add_not_supported_query_types( $control_name, $fields );
+		}
+
+		return $fields;
+	}
+
+	private function add_not_supported_query_types( $control_name, $fields ) {
+		foreach ( $this->product_query_types as $query_type ) {
+			$fields[ $control_name ]['condition']['post_type!'][] = $query_type;
+		}
+
+		return $fields;
 	}
 }

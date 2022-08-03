@@ -673,7 +673,7 @@ class Helper
 
     public static function get_dynamic_args(array $settings, array $args)
     {
-        if ($settings['post_type'] === 'source_dynamic' && is_archive()) {
+	    if ( $settings['post_type'] === 'source_dynamic' && ( is_archive() || is_search() ) ) {
             $data = get_queried_object();
 
             if (isset($data->post_type)) {
@@ -910,8 +910,8 @@ class Helper
 
 		$sale_badge_align  = isset( $settings['eael_product_sale_badge_alignment'] ) ? $settings['eael_product_sale_badge_alignment'] : '';
 		$sale_badge_preset = isset( $settings['eael_product_sale_badge_preset'] ) ? $settings['eael_product_sale_badge_preset'] : '';
-		$sale_text         = ! empty( $settings['eael_product_carousel_sale_text'] ) ? $settings['eael_product_carousel_sale_text'] : 'Sale!';
-		$stockout_text     = ! empty( $settings['eael_product_carousel_stockout_text'] ) ? $settings['eael_product_carousel_stockout_text'] : 'Stock Out';
+		$sale_text         = ! empty( $settings['eael_product_carousel_sale_text'] ) ? $settings['eael_product_carousel_sale_text'] : (! empty( $settings['eael_product_sale_text'] ) ? $settings['eael_product_sale_text'] :'Sale!');
+		$stockout_text     = ! empty( $settings['eael_product_carousel_stockout_text'] ) ? $settings['eael_product_carousel_stockout_text'] : (! empty( $settings['eael_product_stockout_text'] ) ? $settings['eael_product_stockout_text'] :'Stock Out');
 		$tag               = ! empty( $settings['eael_product_quick_view_title_tag'] ) ? self::eael_validate_html_tag( $settings['eael_product_quick_view_title_tag'] ) : 'h1';
         
         remove_action( 'eael_woo_single_product_summary', 'woocommerce_template_single_title', 5 );
@@ -1171,6 +1171,11 @@ class Helper
                 'class' => [],
                 'id' => [],
                 'style' => [],
+            ],
+            'center' => [
+	            'class' => [],
+	            'id'    => [],
+	            'style' => [],
             ],
         ];
     }

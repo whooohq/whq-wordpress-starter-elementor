@@ -3142,7 +3142,7 @@ class Woo_Product_Slider extends Widget_Base {
 		                 */
 
 		                if ($settings['image_dots'] === 'yes') {
-			                $this->render_image_dots($args);
+			                $this->render_image_dots($query);
 		                } else {
 			                $this->render_dots();
 		                }
@@ -3173,7 +3173,7 @@ class Woo_Product_Slider extends Widget_Base {
         <?php }
     }
 
-	protected function render_image_dots($args)
+	protected function render_image_dots($query)
 	{
 		$settings = $this->get_settings_for_display();
 
@@ -3192,13 +3192,16 @@ class Woo_Product_Slider extends Widget_Base {
 			'class' => ['swiper-container eael-woo-product-slider-gallary-pagination', $visibility]
 		]);
 
+		if ( $settings['direction'] == 'right' ) {
+			$this->add_render_attribute( 'eael_gallery_pagination_wrapper', 'dir', 'rtl' );
+		}
+
 
 		if ($settings['image_dots'] === 'yes') : ?>
 
             <div <?php echo $this->get_render_attribute_string('eael_gallery_pagination_wrapper'); ?>>
 
             <?php
-			$query = new \WP_Query( $args );
 			if ( $query->have_posts() ) {
 				echo '<div class="swiper-wrapper">';
 				while ( $query->have_posts() ) {

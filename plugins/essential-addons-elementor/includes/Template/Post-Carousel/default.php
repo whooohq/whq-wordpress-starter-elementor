@@ -12,6 +12,8 @@ if(isset($settings['title_tag'])){
 	$settings['title_tag'] = Helper::eael_pro_validate_html_tag($settings['title_tag']);
 }
 
+$enable_ratio = $settings['enable_post_carousel_image_ratio'] == 'yes' ? 'eael-image-ratio':'';
+
 echo '<div class="swiper-slide">';
 if ( $settings['eael_post_carousel_preset_style'] === 'two' ) {
     echo '<article class="eael-grid-post eael-post-grid-column">
@@ -36,7 +38,7 @@ if ( $settings['eael_post_carousel_preset_style'] === 'two' ) {
             echo '<a href="' . get_the_permalink() . '"' . $settings['image_link_nofollow'] . '' . $settings['image_link_target_blank'] . '></a></div>';
         }
         
-        echo '<div class="eael-entry-thumbnail">
+        echo '<div class="eael-entry-thumbnail '.$enable_ratio.'">
                 <img src="' . esc_url( wp_get_attachment_image_url( get_post_thumbnail_id(), $settings['image_size'] ) ) . '" alt="' . esc_attr( get_post_meta( get_post_thumbnail_id(), '_wp_attachment_image_alt', true ) ) . '">
                 <a href="' . get_the_permalink() . '"' . $settings['image_link_nofollow'] . '' . $settings['image_link_target_blank'] . '></a>
              </div>';
@@ -196,7 +198,7 @@ if ( $settings['eael_post_carousel_preset_style'] === 'two' ) {
             echo '<a href="' . get_the_permalink() . '"' . $settings['image_link_nofollow'] . '' . $settings['image_link_target_blank'] . '></a></div>';
         }
         
-        echo '<div class="eael-entry-thumbnail">
+        echo '<div class="eael-entry-thumbnail '.$enable_ratio.'">
                 <img src="' . esc_url( wp_get_attachment_image_url( get_post_thumbnail_id(), $settings['image_size'] ) ) . '" alt="' . esc_attr( get_post_meta( get_post_thumbnail_id(), '_wp_attachment_image_alt', true ) ) . '">
                 <a href="' . get_the_permalink() . '"></a>
             </div>';
@@ -279,7 +281,7 @@ if ( $settings['eael_post_carousel_preset_style'] === 'two' ) {
                 echo '<a href="' . get_the_permalink() . '"' . $settings['image_link_nofollow'] . '' . $settings['image_link_target_blank'] . '></a></div>';
             }
             
-            echo '<div class="eael-entry-thumbnail">
+            echo '<div class="eael-entry-thumbnail '.$enable_ratio.'">
                     <img src="' . esc_url( wp_get_attachment_image_url( get_post_thumbnail_id(), $settings['image_size'] ) ) . '" alt="' . esc_attr( get_post_meta( get_post_thumbnail_id(), '_wp_attachment_image_alt', true ) ) . '">
                     <a href="' . get_the_permalink() . '"></a>
                 </div>';

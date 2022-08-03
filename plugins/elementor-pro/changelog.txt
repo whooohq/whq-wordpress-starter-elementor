@@ -1,5 +1,28 @@
 # Elementor Pro - by Elementor.com
 
+#### 3.7.3 - 2022-07-31
+* Tweak: Improved license mechanism for correct validation
+* Fix: Sticky option causes unexpected results when using the Container ([#18357](https://github.com/elementor/elementor/issues/18357))
+* Fix: Price list, Portfolio, Flip Box and Gallery widgets disappear when the direction is set to column in Container ([#18880](https://github.com/elementor/elementor/issues/18880))
+* Fix: Quotes characher is showing up as `&quot;` when editing a note in Notes
+
+#### 3.7.2 - 2022-06-15
+
+* Tweak: Applied optimized file handling in various modules
+* Fix: Related posts query options are missing in Posts widget ([#18633](https://github.com/elementor/elementor/issues/18633), [#18641](https://github.com/elementor/elementor/issues/18641))
+* Fix: Menu Cart Icon is not being displayed on all browsers when Inline Font Icons Experiment is active ([#17705](https://github.com/elementor/elementor/issues/17705))
+* Fix: Gallery widget is not working as expected in Container element ([#18408](https://github.com/elementor/elementor/issues/18408))
+* Fix: Flip box is not visible when the direction is set to Row in Container element ([#18413](https://github.com/elementor/elementor/issues/18413))
+* Fix: Portfolio widget is not visible when dragged into "Row" direction Container element ([#17653](https://github.com/elementor/elementor/issues/17653))
+* Fix: Menu cart is open automatically in Cart widget ([#18629](https://github.com/elementor/elementor/issues/18629))
+* Fix: PHP error is being shown the license is expired in License screen
+
+#### 3.7.1 - 2022-05-16
+
+* Fix: Notes icon appears as an empty square in admin top bar for users with permissions lower than Editor
+* Fix: Notes experiment causes a PHP fatal error on some cases
+* Fix: UI glitches in Notes feature
+
 #### 3.7.0 - 2022-05-10
 
 * New: Introducing Notes - Work collaboratively directly within Elementor

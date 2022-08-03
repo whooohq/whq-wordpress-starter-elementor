@@ -1,8 +1,8 @@
 === Essential Addons for Elementor - Pro ===
 Contributors: wpdevteam, re_enter_rupok, Asif2BD, priyomukul, manzurahammed
 Tags: elementor, elements, widgets, page builder, builder, visual editor, wordpress page builder
-Tested up to: 5.9
-Stable tag: 5.1.1
+Tested up to: 6.0
+Stable tag: 5.1.6
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
@@ -88,6 +88,51 @@ List of Extensions :
 * Conditional Display
 
 == Changelog ==
+
+= 5.1.6 - 01/08/2022 =
+
+- Fixed: EA Smart Post List | Filters not working on responsive devices
+- Fixed: EA LearnDash Course List | Undefined index error on legacy mode
+- Fixed EA LearnDash Course List | Throwing Invalid taxonomy error
+- Few minor bug fixes & improvements
+
+= 5.1.5 - 05/07/2022 =
+
+- Fixed: EA Login/Register Form | Google Login not working
+- Few minor bug fixes & improvements
+
+= 5.1.4 - 27/06/2022 =
+
+- Fixed: EA Post Block & EA Post Carousel | Image Sizes being Changed because of the image ratio option
+- Few minor bug fixes & improvements
+
+= 5.1.3 - 14/06/2022 =
+
+- Improved: EA LearnDash Course List | Added option to display categories, tags and enrolled labels
+- Improved: EA Content Timeline | Added option to display feature images for dynamic posts
+- Improved: EA advanced Search | Added option to "include" a certain category
+- Improved: EA MailChimp | Added tags option in the MailChimp form
+- Improved: EA Post Block | Added option to display Post Terms
+- Fixed: EA Advanced Search | Search functionality is not working on mobile devices
+- Fixed: EA Content Timeline | Content not showing if different characters such as % is used
+- Fixed: EA Post Block | Throwing PHP Notice
+- Fixed: EA Testimonial Slider | Description not being translatable
+- Fixed: EA Dynamic Gallery | Category filters not loading properly
+- Fixed: EA Image Hotspots | Link not removing from Tooltip hover
+- Fixed: EA Twitter Feed Carousel | Replies being displayed in tweets
+- Few minor bug fixes & improvements
+
+= 5.1.2 - 25/05/2022 =
+
+- Added: WordPress 6.0 Compatibility
+- Improved: EA Team Member Carousel | Added Custom URL option to make images clickable for each team members
+- Fixed: EA Logo Carousel | Responsive Breakpoints not working
+- Fixed: EA Advanced Search | The border radius not working for search field style 2 or 3
+- Fixed: EA Lightbox & Modal | Responsive settings not working properly
+- Fixed: EA Image Hotspots | Throwing error notice when hotspot type is text or blank
+- Fixed: EA Lightbox & Modal | Customized Height not working properly
+- Fixed: EA Post Block | Title Tag not changing properly
+- Few minor bug fixes & improvements
 
 = 5.1.1 - 10/05/2022 =
 

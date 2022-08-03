@@ -184,6 +184,15 @@ class Team_Member_Carousel extends Widget_Base
 		);
 
 		$repeater->add_control(
+			'team_member_image_hyperlink',
+			[
+				'label' => esc_html__( 'Link', 'essential-addons-elementor'),
+				'type' => Controls_Manager::URL,
+				'description' => esc_html__( 'Link image with custom URL', 'essential-addons-elementor' )
+			]
+		);
+
+		$repeater->add_control(
 			'social_links_heading',
 			[
 				'label'     => __('Social Links', 'essential-addons-elementor'),
@@ -2392,12 +2401,40 @@ class Team_Member_Carousel extends Widget_Base
                             <div class="eael-tm">
                                 <div class="eael-tm-image">
 									<?php
+									if ( isset( $item['team_member_image_hyperlink'] ) && '' != $item['team_member_image_hyperlink']['url'] ) {
+										$this->add_render_attribute( 'eael-team-member-img-link-'.$item['_id'], 'href', esc_url( $item['team_member_image_hyperlink']['url'] )
+										);
+
+										if ($item['team_member_image_hyperlink']['is_external']) {
+										    $this->add_render_attribute('eael-team-member-img-link-'.$item['_id'], 'target', '_blank');
+										}
+
+										if ($item['team_member_image_hyperlink']['nofollow']) {
+										    $this->add_render_attribute('eael-team-member-img-link-'.$item['_id'], 'rel', 'nofollow');
+										}
+
+										if ( '' != $item['team_member_image_hyperlink']['custom_attributes'] ) {
+											$attributes = explode(',', $item['team_member_image_hyperlink']['custom_attributes'] );
+											if ( count( $attributes ) > 0 ) {
+												foreach ( $attributes as $_attribute ) {
+													$attribute = explode( '|', $_attribute );
+													if ( isset( $attribute[1] ) ) {
+														$this->add_render_attribute('eael-team-member-img-link-'.$item['_id'], esc_attr( $attribute[0] ), esc_attr( $attribute[1] ));
+													}
+												}
+											}
+										}
+										echo "<a " . $this->get_render_attribute_string('eael-team-member-img-link-'.$item['_id']) . ">";
+									}
 									$image_url = Group_Control_Image_Size::get_attachment_image_src( $item['team_member_image']['id'], 'image_size', $settings );
 
 									if ( $image_url ) {
 										echo $image_html = '<img src="' . esc_url( $image_url ) . '"alt="' . esc_attr(get_post_meta($item['team_member_image']['id'], '_wp_attachment_image_alt', true)) . '">';
 									} else {
 										echo $image_html = '<img src="' . esc_url( $item['team_member_image']['url'] ) .'">';
+									}
+									if ( isset( $item['team_member_image_hyperlink'] ) && $item['team_member_image_hyperlink']['url'] != '' ) {
+										echo "</a>";
 									}
 									?>
 									<?php if ($settings['overlay_content'] !== 'none') : ?>

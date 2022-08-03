@@ -928,7 +928,10 @@ class Image_Hot_Spots extends Widget_Base
                 <?php
                 $i = 1;
                 foreach ($settings['hot_spots'] as $index => $item) :
-                    $icon = ((isset($item['__fa4_migrated']['hotspot_icon_new']) || empty($item['hotspot_icon'])) ? $item['hotspot_icon_new']['value'] : $item['hotspot_icon']);
+	                if ( $item['hotspot_type'] === 'icon' ) {
+		                $icon = ( ( isset( $item['__fa4_migrated']['hotspot_icon_new'] ) || empty( $item['hotspot_icon'] ) ) ? $item['hotspot_icon_new']['value'] : $item['hotspot_icon'] );
+	                }
+
                     $this->add_render_attribute('hotspot' . $i, 'class', 'eael-hot-spot-wrap elementor-repeater-item-' . esc_attr($item['_id']));
 
                     if ($item['tooltip'] == 'yes' && $item['tooltip_content'] != '') {
@@ -937,9 +940,8 @@ class Image_Hot_Spots extends Widget_Base
                     }
 
                     $this->add_render_attribute('hotspot' . $i, 'data-tooltip-position-global', $settings['tooltip_position']);
-
-	                if ( $item['hotspot_link'] != '#' && $item['hotspot_link'] != '' ) {
-		                $eael_wp_allowed_tags = Helper::eael_wp_allowed_tags( array( 'viber' ) );
+                    if ( isset( $item['hotspot_link']['url'] ) && $item['hotspot_link']['url'] != '' ) {
+                        $eael_wp_allowed_tags = Helper::eael_wp_allowed_tags( array( 'viber' ) );
 		                $this->add_render_attribute( 'hotspot' . $i, 'data-link', esc_url( $item['hotspot_link']['url'], $eael_wp_allowed_tags ) );
 
 		                $this->add_render_attribute( 'hotspot' . $i, 'href', esc_url( $item['hotspot_link']['url'] ) );

@@ -8,6 +8,7 @@ if (!defined('ABSPATH')) {
 
 use \Elementor\Controls_Manager;
 use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
+use Elementor\Core\Schemes\Typography;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
@@ -670,6 +671,50 @@ class Post_Block extends Widget_Base
 
         $this->end_controls_section();
 
+        /**
+         * Style tab: terms style
+         */
+        $this->start_controls_section(
+            'section_meta_terms_style',
+            [
+                'label' => __('Terms Style', 'essential-addons-elementor'),
+                'tab' => Controls_Manager::TAB_STYLE,
+            ]
+        );
+        $this->add_control(
+            'eael_post_block_terms_color',
+            [
+                'label' => __('Terms Color', 'essential-addons-elementor'),
+                'type' => Controls_Manager::COLOR,
+                'default' => '',
+                'selectors' => [
+                    '{{WRAPPER}} .post-meta-categories li, {{WRAPPER}} .post-meta-categories li a' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Typography::get_type(),
+            [
+                'name' => 'eael_post_block_terms_typography',
+                'label' => __('Meta Typography', 'essential-addons-elementor'),
+                'scheme' => Typography::TYPOGRAPHY_3,
+                'selector' => '{{WRAPPER}} .post-meta-categories li, {{WRAPPER}} .post-meta-categories li a',
+            ]
+        );
+
+        $this->add_control(
+            'eael_post_carousel_terms_margin',
+            [
+                'label' => __('Margin', 'essential-addons-elementor'),
+                'type' => Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em'],
+                'selectors' => [
+                    '{{WRAPPER}} .post-meta-categories' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+        $this->end_controls_section();
 
         /**
          * Read More Button Style Controls
@@ -791,7 +836,7 @@ class Post_Block extends Widget_Base
 
         $settings ['post_block_hover_animation'] = $settings['eael_post_block_hover_animation'];
         $settings ['show_read_more_button'] = $settings['eael_show_read_more_button'];
-        $settings ['eael_post_block_bg_hover_icon'] = (isset($settings['__fa4_migrated']['eael_post_block_bg_hover_icon_new']) || empty($settings['eael_post_block_bg_hover_icon'])) ? $settings['eael_post_block_bg_hover_icon_new']['value'] : $settings['eael_post_block_bg_hover_icon'];
+	    $settings ['eael_post_block_bg_hover_icon'] = $settings['eael_post_block_hover_animation'] == 'none' ? '' : ( ( isset( $settings['__fa4_migrated']['eael_post_block_bg_hover_icon_new'] ) || empty( $settings['eael_post_block_bg_hover_icon'] ) ) ? $settings['eael_post_block_bg_hover_icon_new']['value'] : $settings['eael_post_block_bg_hover_icon'] );
         $settings ['expanison_indicator'] = $settings['excerpt_expanison_indicator'];
 
         $link_settings = [

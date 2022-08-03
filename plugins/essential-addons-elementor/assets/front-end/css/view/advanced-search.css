@@ -240,7 +240,6 @@
 
 .eael-advanced-search-widget .eael-advanced-search-form.eael-advanced-search-form-style-2 .eael-advanced-search-wrap .eael-advanced-search {
   border-right: 1px solid #E0E5F8;
-  border-radius: 0;
 }
 
 .eael-advanced-search-widget .eael-advanced-search-form.eael-advanced-search-form-style-2 .eael-advance-search-select {
@@ -281,6 +280,23 @@
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
   margin-left: 0;
+}
+
+@media screen and (max-width: 600px) {
+  .eael-advanced-search-widget .eael-advanced-search-form {
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+  }
+  .eael-advanced-search-widget .eael-advanced-search-form .eael-advance-search-select,
+.eael-advanced-search-widget .eael-advanced-search-form .eael-advanced-search-button {
+    width: 100%;
+    margin-left: 0;
+  }
+  .eael-advanced-search-widget .eael-advanced-search-form .eael-advanced-search-wrap {
+    -webkit-box-flex: unset;
+        -ms-flex: unset;
+            flex: unset;
+  }
 }
 
 .eael-advanced-search-widget .eael-advanced-search-result {
@@ -492,7 +508,7 @@
   margin-bottom: 1px !important;
 }
 
-.eael-advanced-search-widget .eael-advanced-search-not-found h3 {
+.eael-advanced-search-widget .eael-advanced-search-not-found p {
   font-size: 20px;
   text-align: center;
 }

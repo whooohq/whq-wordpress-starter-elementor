@@ -21,7 +21,7 @@ $titleTarget = $settings['title_link_target_blank'] ? 'target="_blank"' : '';
 $readMoreTarget = $settings['read_more_link_target_blank'] ? 'target="_blank"' : '';
 
 if ($settings['eael_fg_grid_style'] == 'eael-hoverer') {
-        echo '<div class="dynamic-gallery-item ' . esc_attr(implode(' ', $classes)) . '">
+        echo '<div class="dynamic-gallery-item ' . esc_attr(urldecode(implode(' ', $classes))) . '">
             <div class="dynamic-gallery-item-inner" data-itemid=" ' . esc_attr( get_the_ID() ) . ' ">
                 <div class="dynamic-gallery-thumbnail">';
 

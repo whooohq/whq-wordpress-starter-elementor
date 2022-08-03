@@ -1396,37 +1396,19 @@ class Content_Timeline extends Widget_Base
 				]
 			]
 		);
-
-?>
-
+		$template = $this->get_template($this->get_settings('eael_dynamic_template_Layout'));
+		?>
 		<div <?php echo $this->get_render_attribute_string('timeline-wrapper'); ?>>
 			<div class="eael-content-timeline-container">
 				<div class="eael-content-timeline-container">
 					<?php
 					if ('dynamic' === $settings['eael_content_timeline_choose']) :
-						$settings = [
-							'eael_show_image_or_icon'           => $settings['eael_show_image_or_icon'],
-							'eael_content_timeline_circle_icon' => (isset($settings['__fa4_migrated']['eael_content_timeline_circle_icon_new']) || empty($settings['eael_content_timeline_circle_icon']) ? $settings['eael_content_timeline_circle_icon_new']['value'] : $settings['eael_content_timeline_circle_icon']),
-							'eael_show_title'                   => $settings['eael_show_title'],
-							'eael_show_excerpt'                 => $settings['eael_show_excerpt'],
-							'eael_excerpt_length'               => $settings['eael_excerpt_length'],
-							'eael_show_read_more'               => $settings['eael_show_read_more'],
-							'eael_read_more_text'               => $settings['eael_read_more_text'],
-							'eael_icon_image'                   => $settings['eael_icon_image'],
-							'expanison_indicator'       		=> $settings['excerpt_expanison_indicator'],
-							'title_tag'							=> $settings['title_tag'],
-							'title_link_nofollow'   			=> $settings['title_link_nofollow'] ? 'rel="nofollow"' : '',
-							'title_link_target_blank'			=> $settings['title_link_target_blank'] ? 'target="_blank"' : '',
-							'read_more_link_nofollow'			=> $settings['read_more_link_nofollow'] ? 'rel="nofollow"' : '',
-							'read_more_link_target_blank'		=> $settings['read_more_link_target_blank'] ? 'target="_blank"' : '',
-						];
-
-						$template = $this->get_template($this->get_settings('eael_dynamic_template_Layout'));
 						if (file_exists($template)) {
 							$query = new \WP_Query($args);
 							if ($query->have_posts()) {
 								while ($query->have_posts()) {
 									$query->the_post();
+									$content = $this->dynamic_content_manager( $query->ID, $settings ) ;
 									include($template);
 								}
 							} else {
@@ -1437,65 +1419,100 @@ class Content_Timeline extends Widget_Base
 							_e('<p class="no-posts-found">No layout found!</p>', 'essential-addons-elementor');
 						}
 
-					elseif ('custom' === $settings['eael_content_timeline_choose']) : ?>
-
-						<?php foreach ($settings['eael_coustom_content_posts'] as $custom_content) : ?>
-							<?php
-							// button url
-							$url = isset($custom_content['eael_read_more_text_link']['url'])?$custom_content['eael_read_more_text_link']['url']:'';
-							$target   = !empty($custom_content['eael_read_more_text_link']['is_external']) ? 'target="_blank"' : '';
-							$nofollow = !empty($custom_content['eael_read_more_text_link']['nofollow']) ? 'rel="nofollow"' : '';
-
-							$icon_migrated = isset($settings['__fa4_migrated']['eael_custom_content_timeline_circle_icon_new']);
-							$icon_is_new = empty($settings['eael_custom_content_timeline_circle_icon']);
-							?>
-							<div class="eael-content-timeline-block">
-								<div class="eael-content-timeline-line">
-									<div class="eael-content-timeline-inner"></div>
-								</div>
-								<div class="eael-content-timeline-img eael-picture <?php if ('bullet' === $settings['eael_show_image_or_icon']) : echo 'eael-content-timeline-bullet';
-																					endif; ?>">
-									<?php if ('img' === $custom_content['eael_show_custom_image_or_icon']) : ?>
-										<img src="<?php echo esc_url($custom_content['eael_custom_icon_image']['url']); ?>" style="width: <?php echo $custom_content['eael_custom_icon_image_size']; ?>px;" alt="<?php echo esc_attr(get_post_meta($custom_content['eael_custom_icon_image']['id'], '_wp_attachment_image_alt', true)); ?>">
-									<?php endif; ?>
-									<?php if ('icon' === $custom_content['eael_show_custom_image_or_icon']) : ?>
-										<?php if ($icon_migrated || $icon_is_new) { ?>
-											<?php if (isset($custom_content['eael_custom_content_timeline_circle_icon_new']['value']['url'])) : ?>
-												<img class="content-timeline-bullet-svg" src="<?php echo esc_attr($custom_content['eael_custom_content_timeline_circle_icon_new']['value']['url']); ?>" alt="<?php echo esc_attr(get_post_meta($custom_content['eael_custom_content_timeline_circle_icon_new']['value']['id'], '_wp_attachment_image_alt', true)); ?>" />
-											<?php else : ?>
-												<i class="<?php echo esc_attr($custom_content['eael_custom_content_timeline_circle_icon_new']['value']); ?>"></i>
-											<?php endif; ?>
-										<?php } else { ?>
-											<i class="<?php echo esc_attr($custom_content['eael_custom_content_timeline_circle_icon']); ?>"></i>
-										<?php } ?>
-									<?php endif; ?>
-								</div>
-
-								<div class="eael-content-timeline-content">
-									<?php if ('yes' == $settings['eael_show_title']) : ?>
-										<<?php echo Helper::eael_pro_validate_html_tag($settings['title_tag']); ?> class="eael-timeline-title">
-											<?php if (!empty($url)) : ?><a href="<?php echo esc_url($url); ?>" <?php echo $target; ?> <?php echo $nofollow; ?>><?php endif; ?>
-												<?php echo $custom_content['eael_custom_title']; ?>
-												<?php if (!empty($url)) : ?></a><?php endif; ?>
-										</<?php echo Helper::eael_pro_validate_html_tag($settings['title_tag']); ?>>
-									<?php endif; ?>
-									<?php if ('yes' == $settings['eael_show_excerpt']) : ?>
-										<p><?php echo wp_kses_post($custom_content['eael_custom_excerpt']); ?></p>
-									<?php endif; ?>
-									<?php if ('1' == $custom_content['eael_show_custom_read_more'] && !empty($custom_content['eael_show_custom_read_more_text'])) : ?>
-										<a href="<?php echo esc_url($custom_content['eael_read_more_text_link']['url']); ?>" class="eael-read-more" <?php echo $target; ?> <?php echo $nofollow; ?>><?php echo esc_html__($custom_content['eael_show_custom_read_more_text'], 'essential-addons-elementor'); ?></a>
-									<?php endif; ?>
-									<?php if (!empty($custom_content['eael_custom_post_date'])) : ?>
-										<span class="eael-date"><?php echo $custom_content['eael_custom_post_date']; ?></span>
-									<?php endif; ?>
-								</div>
-							</div>
-						<?php endforeach; ?>
-					<?php endif; ?>
+					elseif ('custom' === $settings['eael_content_timeline_choose']) :
+						if (file_exists($template)) :
+							foreach ($settings['eael_coustom_content_posts'] as $custom_content) : ?>
+								<?php
+								$content = $this->custom_content_manager( $custom_content, $settings );
+								include($template);
+							endforeach; 
+						endif;
+					endif; ?>
 				</div>
 			</div>
 		</div>
+	<?php
+	}
 
-<?php
+	protected function dynamic_content_manager( $post_ID, $settings )
+	{
+		$excerpt      = get_the_excerpt( $post_ID );
+		$the_content  = get_the_content( $post_ID );
+		$nofollow     = $settings['read_more_link_nofollow'] ? 'rel="nofollow"' : '';
+		$target_blank = $settings['read_more_link_target_blank'] ? 'target="_blank"' : '';
+		$circle_icon  = $settings['eael_show_image_or_icon'] !== 'icon' ? '' : ( isset( $settings['__fa4_migrated']['eael_content_timeline_circle_icon_new'] ) || empty( $settings['eael_content_timeline_circle_icon'] ) ? $settings['eael_content_timeline_circle_icon_new']['value'] : $settings['eael_content_timeline_circle_icon'] );
+
+		$content = [
+			'title'          => get_the_title( $post_ID ),
+			'permalink'      => get_the_permalink( $post_ID ),
+			'date'           => get_the_date(),
+			'excerpt'        => empty( $settings['eael_excerpt_length'] ) ? '<p>' . strip_shortcodes( $excerpt ? $excerpt : $the_content ) . '</p>' : '<p>' . wp_trim_words( strip_shortcodes( $excerpt ? $excerpt : $the_content ), $settings['eael_excerpt_length'], $settings['excerpt_expanison_indicator'] ) . '</p>',
+			'image'          => '',
+			'read_more_btn'  => '',
+			'nofollow'       => $settings['title_link_nofollow'] ? 'rel="nofollow"' : '',
+			'target_blank'   => $settings['title_link_target_blank'] ? 'target="_blank"' : '',
+			'post_thumbnail' => $settings['eael_show_image'] == 'yes' ? get_the_post_thumbnail( $post_ID, $settings['image_size'] ) : '',
+		];
+
+		if( "img" === $settings["eael_show_image_or_icon"] ) {
+		    $content['image'] = '<img src="'. esc_url( $settings['eael_icon_image']['url'] ).'" alt="'.esc_attr(get_post_meta($settings['eael_icon_image']['id'], '_wp_attachment_image_alt', true)).'">';
+		}
+
+		if( 'icon' === $settings['eael_show_image_or_icon'] ) {
+		    if( isset($circle_icon['url'])) {
+		        $content['image'] = '<img class="content-timeline-bullet-svg" src="'.esc_attr( $circle_icon['url'] ).'" alt="'.esc_attr(get_post_meta($circle_icon['id'], '_wp_attachment_image_alt', true)).'"/>';
+		    }else {
+		        $content['image'] = '<i class="'.esc_attr( $circle_icon ).'"></i>';
+		    }
+		}
+
+		if( 'yes' == $settings['eael_show_read_more'] && !empty( $settings['eael_read_more_text'] ) ) {
+		    $content['read_more_btn'] = '<a href="'.esc_url( $content['permalink'] ).'" class="eael-read-more"' . $nofollow . '' . $target_blank .'>'.esc_html__( $settings['eael_read_more_text'], 'essential-addons-elementor' ).'</a>';
+		}
+
+		return $content;
+	}
+
+	protected function custom_content_manager( $custom_content, $settings )
+	{
+		// button url
+		$url = isset($custom_content['eael_read_more_text_link']['url'])?$custom_content['eael_read_more_text_link']['url']:'';
+
+		$icon_migrated = isset($settings['__fa4_migrated']['eael_custom_content_timeline_circle_icon_new']);
+		$icon_is_new = empty($settings['eael_custom_content_timeline_circle_icon']);
+		$content = [
+			'title'          => $custom_content['eael_custom_title'],
+			'permalink'      => isset( $custom_content['eael_read_more_text_link']['url'] ) ? $custom_content['eael_read_more_text_link']['url'] : '',
+			'date'           => $custom_content['eael_custom_post_date'],
+			'excerpt'        => $custom_content['eael_custom_excerpt'],
+			'image'          => '',
+			'read_more_btn'  => '',
+			'nofollow'       => ! empty( $custom_content['eael_read_more_text_link']['nofollow'] ) ? 'rel="nofollow"' : '',
+			'target_blank'   => ! empty( $custom_content['eael_read_more_text_link']['is_external'] ) ? 'target="_blank"' : '',
+			'post_thumbnail' => '',
+		];
+
+		if ('img' === $custom_content['eael_show_custom_image_or_icon']) :
+			$content['image'] = '<img src="'. esc_url($custom_content['eael_custom_icon_image']['url']) .'" style="width: '.$custom_content['eael_custom_icon_image_size'].'px;" alt="
+			'.esc_attr(get_post_meta($custom_content['eael_custom_icon_image']['id'], '_wp_attachment_image_alt', true)) .'">';
+		endif;
+
+		if ('icon' === $custom_content['eael_show_custom_image_or_icon']) :
+			if ($icon_migrated || $icon_is_new) {
+					if (isset($custom_content['eael_custom_content_timeline_circle_icon_new']['value']['url'])) :
+					$content['image'] = '<img class="content-timeline-bullet-svg" src="'. esc_attr($custom_content['eael_custom_content_timeline_circle_icon_new']['value']['url']) .'" alt="'. esc_attr(get_post_meta($custom_content['eael_custom_content_timeline_circle_icon_new']['value']['id'], '_wp_attachment_image_alt', true)) .'" />';
+				else :
+					$content['image'] = '<i class="'. esc_attr($custom_content['eael_custom_content_timeline_circle_icon_new']['value']) .'"></i>';
+				endif;
+			} else {
+				$content['image'] = '<i class="'. esc_attr($custom_content['eael_custom_content_timeline_circle_icon']) .'"></i>';
+			}
+		endif;
+		
+		if ('1' == $custom_content['eael_show_custom_read_more'] && !empty($custom_content['eael_show_custom_read_more_text'])) :
+			$content['read_more_btn'] = '<a href="'. esc_url($custom_content['eael_read_more_text_link']['url']) .'" class="eael-read-more" '. $content['target_blank'] .' '. $content['nofollow'] .'>'. esc_html__($custom_content['eael_show_custom_read_more_text'], 'essential-addons-elementor') .'</a>';
+		endif;
+
+		return $content;
 	}
 }

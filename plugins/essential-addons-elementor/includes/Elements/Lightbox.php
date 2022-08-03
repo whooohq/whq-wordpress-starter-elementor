@@ -157,6 +157,10 @@ class Lightbox extends Widget_Base
 					'size'      => '550',
 					'unit'      => 'px',
 				],
+				'mobile_default' => [
+					'size' => 325,
+					'unit' => 'px',
+				],
 				'range'                 => [
 					'px'        => [
 						'min'   => 0,
@@ -205,11 +209,16 @@ class Lightbox extends Widget_Base
 						'max'   => 1000,
 						'step'  => 1,
 					],
+					'em'        => [
+						'min'   => 0,
+						'max'   => 50,
+						'step'  => 0.1,
+					],
 				],
-				'size_units'            => ['px', '%'],
+				'size_units'            => ['px', 'em'],
 				'selectors'             => [
 					'.eael-lightbox-popup-window-{{ID}} .eael-lightbox-container' => 'height: {{SIZE}}{{UNIT}}',
-					'.eael-lightbox-popup-window-{{ID}}.lightbox_type_image .eael-lightbox-container img' => 'max-height: 100%;',
+					'.eael-lightbox-popup-window.eael-lightbox-popup-window-{{ID}}.lightbox_type_image .eael-lightbox-container img' => 'max-height: 100%;',
 				],
 				'condition'             => [
 					'auto_height!' => 'yes',

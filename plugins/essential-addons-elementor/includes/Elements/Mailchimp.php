@@ -152,6 +152,47 @@ class Mailchimp extends Widget_Base
                 ],
             ]
         );
+        $this->add_control(
+            'eael_mailchimp_tags_show',
+            [
+                'label' => esc_html__('Enable Tags', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SWITCHER,
+                'default' => '',
+                'return_value' => 'yes',
+            ]
+        );
+        $this->add_control(
+            'eael_mailchimp_tags_label_text',
+            [
+                'label' => esc_html__('Tags Label', 'essential-addons-elementor'),
+                'type' => Controls_Manager::TEXT,
+                'dynamic' => [
+                    'active' => true,
+                ],
+                'label_block' => false,
+                'default' => 'Tags',
+                'condition' => [
+                    'eael_mailchimp_tags_show' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'eael_mailchimp_tags_placeholder_text',
+            [
+                'label' => esc_html__('Tags Placeholder', 'essential-addons-elementor'),
+                'type' => Controls_Manager::TEXT,
+                'dynamic' => [
+                    'active' => true,
+                ],
+                'label_block' => false,
+                'default' => 'Tags (comma separated)',
+                'condition' => [
+                    'eael_mailchimp_tags_show' => 'yes',
+                ],
+            ]
+        );
+
         $this->end_controls_section();
 
         /**
@@ -837,6 +878,14 @@ class Mailchimp extends Widget_Base
 								<input type="text" name="eael_mailchimp_lastname" class="eael-mailchimp-input" placeholder="<?php echo esc_html__('Last Name', 'essential-addons-elementor'); ?>">
 							</div>
 						<?php endif; ?>
+
+                        <?php if (!empty( $settings['eael_mailchimp_tags_show'] ) && 'yes' == $settings['eael_mailchimp_tags_show']) : ?>
+							<div class="eael-field-group eael-mailchimp-tags">
+								<label for="<?php echo esc_attr($settings['eael_mailchimp_tags_label_text'], 'essential-addons-elementor'); ?>"><?php echo esc_html__($settings['eael_mailchimp_tags_label_text'], 'essential-addons-elementor'); ?></label>
+								<input type="text" name="eael_mailchimp_tags" class="eael-mailchimp-input" placeholder="<?php echo esc_attr($settings['eael_mailchimp_tags_placeholder_text'], 'essential-addons-elementor'); ?>">
+							</div>
+						<?php endif; ?>
+
 						<div class="eael-field-group eael-mailchimp-submit-btn">
 							<button type="submit" id="eael-subscribe-<?php echo esc_attr($this->get_id()); ?>" class="eael-button eael-mailchimp-subscribe">
 								<div class="eael-btn-loader button__loader"></div>

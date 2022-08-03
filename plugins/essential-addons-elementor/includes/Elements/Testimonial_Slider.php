@@ -1559,7 +1559,7 @@ class Testimonial_Slider extends Widget_Base
 
 	protected function _render_user_description($item)
 	{
-		echo '<div class="eael-testimonial-text">' . wpautop($item["eael_testimonial_description"]) . '</div>';
+		echo '<div class="eael-testimonial-text">' . __( wpautop($item["eael_testimonial_description"]), 'essential-addons-elementor') . '</div>';
 	}
 
 

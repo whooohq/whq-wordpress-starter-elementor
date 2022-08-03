@@ -13,12 +13,13 @@
 <div style="background-color: #E5E5E5; text-align: center; padding: 60px 0; direction: <?php echo is_rtl() ? 'rtl' : 'ltr'; ?>; font-family: 'Roboto', Arial, Helvetica, sans-serif;">
 	<div style="
 		box-sizing: border-box;
-		width: 640px;
+		width: 90%;
+		max-width: 640px;
 		padding: 60px;
 		margin: auto;
 		background-color: #FFF;
 	">
-		<h1 style="padding: 0; margin: 0 0 40px 0; font-weight: normal; font-size: 25px;">
+		<h1 style="padding: 0; margin: 0 0 40px 0; font-weight: normal; font-size: 25px; line-height: 1.35;">
 			<?php
 
 			echo sprintf(
@@ -50,6 +51,7 @@
 				display: inline-block;
 				font-weight: bold;
 				font-size: 18px;
+				line-height: 1.35;
 				border-radius: 3px;
 				text-decoration: none;
 				padding: 12px 20px;
@@ -62,7 +64,8 @@
 
 	<div style="
 		box-sizing: border-box;
-		width: 640px;
+		width: 90%;
+		max-width: 640px;
 		padding: 60px;
 		margin: 1px auto 0 auto;
 		background-color: #FFF;
@@ -95,10 +98,16 @@
 			?>
 		</p>
 
-		<img
-			src="<?php echo esc_url( ELEMENTOR_PRO_MODULES_URL . 'notes/assets/images/elementor-logo-orange.png' ); ?>"
-			alt="<?php echo esc_attr__( 'Elementor Logo', 'elementor-pro' ); ?>"
-			style="width: 114px;"
-		/>
+		<a
+			href="https://elementor.com/"
+			target="_blank"
+			rel="noreferrer"
+		>
+			<img
+				src="<?php echo esc_url( ELEMENTOR_PRO_MODULES_URL . 'notes/assets/images/elementor-logo-orange.png' ); ?>"
+				alt="<?php echo esc_attr__( 'Elementor Logo', 'elementor-pro' ); ?>"
+				style="width: 114px;"
+			/>
+		</a>
 	</div>
 </div>

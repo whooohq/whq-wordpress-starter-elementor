@@ -114,20 +114,50 @@ class Advanced_Search extends Widget_Base {
 				'default'      => 'no',
 			]
 		);
-		$this->add_control(
-			'exclude_category_list',
-			[
-				'label'       => esc_html__( 'Exclude Category From List', 'essential-addons-for-elementor-lite' ),
-				'type'        => 'eael-select2',
-				'source_name' => 'taxonomy',
-				'source_type' => 'all',
-				'label_block' => true,
-				'multiple'    => true,
-				'condition'   => [
-					'show_category_list' => 'yes'
-				],
-			]
-		);
+
+        $this->add_control(
+            'use_include_exclude_in_result',
+            [
+                'label'        => esc_html__( 'Use Include & Exclude for Result', 'essential-addons-for-elementor-lite' ),
+                'type'         => Controls_Manager::SWITCHER,
+                'label_on'     => __( 'Show', 'essential-addons-for-elementor-lite' ),
+                'label_off'    => __( 'Hide', 'essential-addons-for-elementor-lite' ),
+                'return_value' => 'yes',
+                'default'      => 'no',
+                'condition'   => [
+                    'show_category_list' => 'yes'
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'include_category_list',
+            [
+                'label'       => esc_html__( 'Include Category To List', 'essential-addons-for-elementor-lite' ),
+                'type'        => 'eael-select2',
+                'source_name' => 'taxonomy',
+                'source_type' => 'all',
+                'label_block' => true,
+                'multiple'    => true,
+                'condition'   => [
+                    'show_category_list' => 'yes'
+                ],
+            ]
+        );
+        $this->add_control(
+            'exclude_category_list',
+            [
+                'label'       => esc_html__( 'Exclude Category From List', 'essential-addons-for-elementor-lite' ),
+                'type'        => 'eael-select2',
+                'source_name' => 'taxonomy',
+                'source_type' => 'all',
+                'label_block' => true,
+                'multiple'    => true,
+                'condition'   => [
+                    'show_category_list' => 'yes'
+                ],
+            ]
+        );
 
 		$this->add_control(
 			'show_category_search_result',
@@ -156,10 +186,11 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'total_number_of_popular_search',
 			[
-				'label'     => esc_html__( 'Total Number of Popular Keywords', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Popular Keywords', 'essential-addons-for-elementor-lite' ),
 				'type'      => Controls_Manager::NUMBER,
 				'min'       => 1,
 				'default'   => 5,
+                'description' => esc_html__( 'Number of popular searches to display.',  'essential-addons-for-elementor-lite' ),
 				'condition' => [
 					'show_popular_keyword' => 'yes',
 				]
@@ -169,9 +200,9 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'show_popular_keyword_rank',
 			[
-				'label'       => esc_html__( 'Minimum amount of Keywords Search', 'essential-addons-for-elementor-lite' ),
+				'label'       => esc_html__( 'Keywords Search', 'essential-addons-for-elementor-lite' ),
 				'type'        => Controls_Manager::NUMBER,
-				'description' => esc_html__( 'For a keyword to be considered as a Popular search, you can set a minimum amount of Search', 'essential-addons-for-elementor-lite' ),
+				'description' => esc_html__( 'Minimum number of searches for a keyword to be considered a popular search.', 'essential-addons-for-elementor-lite' ),
 				'default'     => 5,
 				'min'         => 1,
 				'condition'   => [
@@ -419,7 +450,7 @@ class Advanced_Search extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'field_search_field_height',
 			[
 				'label'      => esc_html__( 'Height', 'essential-addons-for-elementor-lite' ),
@@ -441,23 +472,27 @@ class Advanced_Search extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'field_search_field_width',
 			[
 				'label'      => esc_html__( 'Width', 'essential-addons-for-elementor-lite' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ '%' ],
+				'size_units' => [ 'px', '%' ],
 				'range'      => [
-					'px' => [
-						'max' => 100,
-					],
+                    'px' => [
+                        'max' => 1000,
+                    ],
+                    '%' => [
+                        'min' => 0,
+                        'max' => 100,
+                    ],
 				],
-				'default'    => [
+				'desktop_default'    => [
 					'unit' => '%',
 					'size' => 100,
 				],
 				'selectors'  => [
-					'{{WRAPPER}} .eael-advanced-search-wrap' => 'max-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .eael-advanced-search-wrap' => 'width: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -565,21 +600,29 @@ class Advanced_Search extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'category_field_width',
 			[
 				'label'      => esc_html__( 'Width', 'essential-addons-for-elementor-lite' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px' ],
+				'size_units' => [ 'px', '%' ],
 				'range'      => [
 					'px' => [
 						'max' => 1000,
 					],
+                    '%' => [
+                        'min' => 0,
+                        'max' => 100,
+                    ],
 				],
-				'default'    => [
-					'unit' => 'px',
-					'size' => 200,
-				],
+                'desktop_default'    => [
+                    'unit' => 'px',
+                    'size' => 200,
+                ],
+                'mobile_default'    => [
+                    'unit' => '%',
+                    'size' => 100,
+                ],
 				'selectors'  => [
 					'{{WRAPPER}} .eael-advance-search-select' => 'width: {{SIZE}}{{UNIT}};',
 				],
@@ -619,21 +662,29 @@ class Advanced_Search extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'search_button_width',
 			[
 				'label'      => esc_html__( 'Width', 'essential-addons-for-elementor-lite' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px' ],
+				'size_units' => [ 'px', '%' ],
 				'range'      => [
-					'px' => [
-						'max' => 1000,
-					],
+                    'px' => [
+                        'max' => 1000,
+                    ],
+                    '%' => [
+                        'min' => 0,
+                        'max' => 100,
+                    ],
 				],
-				'default'    => [
-					'unit' => 'px',
-					'size' => 200,
-				],
+                'default'    => [
+                    'unit' => 'px',
+                    'size' => 200,
+                ],
+                'mobile_default'    => [
+                    'unit' => '%',
+                    'size' => 100,
+                ],
 				'selectors'  => [
 					'{{WRAPPER}} .eael-advanced-search-button' => 'width: {{SIZE}}{{UNIT}};',
 				],
@@ -1528,7 +1579,7 @@ class Advanced_Search extends Widget_Base {
 				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .eael-advanced-search-not-found h3' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .eael-advanced-search-not-found p' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -1537,7 +1588,7 @@ class Advanced_Search extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'not_found_typography',
-				'selector' => '{{WRAPPER}} .eael-advanced-search-not-found h3'
+				'selector' => '{{WRAPPER}} .eael-advanced-search-not-found p'
 			]
 		);
 
@@ -1562,7 +1613,7 @@ class Advanced_Search extends Widget_Base {
 				],
 				'default'   => '',
 				'selectors' => [
-					'{{WRAPPER}} .eael-advanced-search-not-found h3' => 'text-align: {{VALUE}};',
+					'{{WRAPPER}} .eael-advanced-search-not-found p' => 'text-align: {{VALUE}};',
 				],
 			]
 		);
@@ -1587,6 +1638,7 @@ class Advanced_Search extends Widget_Base {
 	}
 
 	public function get_post_term_list( $post_list = [] ) {
+        $settings = $this->get_settings_for_display();
 
 		$args = [
 			'hide_empty' => true
@@ -1599,6 +1651,14 @@ class Advanced_Search extends Widget_Base {
 			}
 			$args[ 'taxonomy' ] = $taxonomies;
 		}
+
+        if ( isset( $settings['exclude_category_list'] ) && !empty( $settings['exclude_category_list'] ) ){
+            $args['exclude'] = $settings['exclude_category_list'];
+        }
+        if ( isset( $settings['include_category_list'] ) && !empty( $settings['include_category_list'] ) ){
+            $args['include'] = $settings['include_category_list'];
+        }
+
 		$terms = get_terms( $args );
 		if ( !empty( $terms ) ) {
 			foreach ( $terms as $term ) {
@@ -1622,6 +1682,15 @@ class Advanced_Search extends Widget_Base {
 			$args[ 'show_popular_keyword_rank' ]      = $settings[ 'show_popular_keyword_rank' ];
 			$args[ 'total_number_of_popular_search' ] = $settings[ 'total_number_of_popular_search' ];
 		}
+
+        if ( isset( $settings['use_include_exclude_in_result'] ) && $settings['use_include_exclude_in_result'] == 'yes' ){
+            if ( isset( $settings['exclude_category_list'] ) && !empty( $settings['exclude_category_list'] ) ){
+                $args['exclude'] = $settings['exclude_category_list'];
+            }
+            if ( isset( $settings['include_category_list'] ) && !empty( $settings['include_category_list'] ) ){
+                $args['include'] = $settings['include_category_list'];
+            }
+        }
 
 		if ( !empty( $settings[ 'eael_adv_search_post_list' ] ) ) {
 			$args[ 'post_type' ] = $settings[ 'eael_adv_search_post_list' ];
@@ -1691,11 +1760,6 @@ class Advanced_Search extends Widget_Base {
 		$markup    = sprintf( "<option value=''>%s</option>", esc_html( $settings[ 'category_list_text' ] ) );
 		if ( !empty( $cat_lists ) ) {
 			foreach ( $cat_lists as $key => $item ) {
-
-				if ( in_array( $key, (array) $settings['exclude_category_list'] ) ) {
-					continue;
-				}
-
 				$markup .= sprintf( "<option value='%d'>%s</option>", $key, $item );
 			}
 		}
@@ -1718,7 +1782,7 @@ class Advanced_Search extends Widget_Base {
             <div class="eael-advanced-search-content <?php echo $content_style; ?>">
             </div>
             <div class="eael-advanced-search-not-found">
-                <h3><?php echo esc_html( $settings[ 'not_found_text' ] ); ?></h3></div>
+                <p><?php echo esc_html( $settings[ 'not_found_text' ] ); ?></p></div>
             <div class="eael-advanced-search-load-more"><a class="eael-advanced-search-load-more-button"
                                                            href="#"><?php echo esc_html( $settings[ 'load_more_text' ] ); ?></a>
             </div>

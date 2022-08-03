@@ -116,7 +116,6 @@ class Elementor_Post_Query {
 			 *
 			 * @param array $current_query_vars Current query variables.
 			 */
-			$current_query_vars = apply_filters_deprecated( 'elementor_pro/query_control/get_query_args/current_query', [ $current_query_vars ], '2.5.0', 'elementor/query/get_query_args/current_query' );
 			$current_query_vars = apply_filters( 'elementor/query/get_query_args/current_query', $current_query_vars );
 			$this->query_args = $current_query_vars;
 			return $current_query_vars;
