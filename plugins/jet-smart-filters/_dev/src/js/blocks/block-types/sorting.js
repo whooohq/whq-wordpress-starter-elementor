@@ -41,6 +41,7 @@ registerBlockType('jet-smart-filters/sorting', {
 		sorting_label: attributes.sorting_label,
 		sorting_placeholder: attributes.sorting_placeholder,
 		sorting_list: attributes.sorting_list,
+		query_id: attributes.query_id,
 	},
 	className: 'jet-smart-filters-sorting',
 	edit: class extends wp.element.Component {

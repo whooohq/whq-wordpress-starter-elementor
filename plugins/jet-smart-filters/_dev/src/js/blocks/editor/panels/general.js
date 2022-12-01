@@ -109,6 +109,17 @@ export default props => {
 					}}
 				/>
 			)}
+			{attributes.query_id !== undefined && !disabledControls.query_id && (
+				<TextControl
+					type="text"
+					label={__('Query ID')}
+					help={__('Set unique query ID if you use multiple blocks of same provider on the page. Same ID you need to set for filtered block.')}
+					value={attributes.query_id}
+					onChange={newValue => {
+						setAttributes({ query_id: newValue });
+					}}
+				/>
+			)}
 			{props.children}
 		</PanelBody>
 	)

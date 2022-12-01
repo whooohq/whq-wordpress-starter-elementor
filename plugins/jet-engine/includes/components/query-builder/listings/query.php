@@ -59,10 +59,11 @@ class Query {
 
 		$request = array( 'query_id' => $query_id );
 		$request = $this->maybe_add_load_more_query_args( $request, $query, $settings );
+		$request = apply_filters( 'jet-engine/listing/grid/query-args', $request, $widget, $settings, $query );
 
 		$widget->query_vars['page']    = $query->get_current_items_page();
 		$widget->query_vars['pages']   = $query->get_items_pages_count();
-		$widget->query_vars['request'] = apply_filters( 'jet-engine/listing/grid/query-args', $request, $widget, $settings, $query );
+		$widget->query_vars['request'] = $request;
 
 		return $query->get_items();
 
@@ -75,6 +76,17 @@ class Query {
 		}
 
 		if ( empty( $_REQUEST['handler'] ) || 'listing_load_more' !== $_REQUEST['handler'] ) {
+			return;
+		}
+
+		if ( empty( $_REQUEST['query'] ) || empty( $_REQUEST['query']['query_id'] ) ) {
+			return;
+		}
+
+		$l_query_id = intval( $_REQUEST['query']['query_id'] );
+		$query_id   = intval( $query->id );
+
+		if ( $l_query_id !== $query_id ) {
 			return;
 		}
 

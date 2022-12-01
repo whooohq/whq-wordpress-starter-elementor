@@ -32,13 +32,11 @@ if ( ! class_exists( 'Jet_Woo_Builder_Ajax_Handlers' ) ) {
 		 * Init Handler
 		 */
 		public function __construct() {
-			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-				add_action( 'wp_ajax_jet_woo_builder_get_layout', [ $this, 'get_switcher_template' ] );
-				add_action( 'wp_ajax_nopriv_jet_woo_builder_get_layout', [ $this, 'get_switcher_template' ] );
+			add_action( 'wp_ajax_jet_woo_builder_get_layout', [ $this, 'get_switcher_template' ] );
+			add_action( 'wp_ajax_nopriv_jet_woo_builder_get_layout', [ $this, 'get_switcher_template' ] );
 
-				add_action( 'wp_ajax_jet_woo_builder_add_cart_single_product', [ $this, 'add_cart_single_product_ajax' ] );
-				add_action( 'wp_ajax_nopriv_jet_woo_builder_add_cart_single_product', [ $this, 'add_cart_single_product_ajax' ] );
-			}
+			add_action( 'wp_ajax_jet_woo_builder_add_cart_single_product', [ $this, 'add_cart_single_product_ajax' ] );
+			add_action( 'wp_ajax_nopriv_jet_woo_builder_add_cart_single_product', [ $this, 'add_cart_single_product_ajax' ] );
 		}
 
 		/**
@@ -50,7 +48,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Ajax_Handlers' ) ) {
 			$args['post_status'] = 'publish';
 			$layout              = isset( $_POST['layout'] ) ? absint( $_POST['layout'] ) : '';
 			$filters_query       = ! empty( $_POST['filters'] ) ? $_POST['filters'] : [];
-			$response            = array();
+			$response            = [];
 
 			switch ( $args['orderby'] ) {
 				case 'price' :
@@ -58,18 +56,21 @@ if ( ! class_exists( 'Jet_Woo_Builder_Ajax_Handlers' ) ) {
 					$args['orderby']  = 'meta_value_num';
 
 					break;
+
 				case 'rating':
 					$args['meta_key'] = '_wc_average_rating';
 					$args['orderby']  = 'meta_value_num';
 					$args['order']    = 'DESC';
 
 					break;
+
 				case 'popularity':
-					$default_query['meta_key'] = 'total_sales';
-					$default_query['orderby']  = 'meta_value_num ID';
-					$default_query['order']    = 'ASC';
+					$args['meta_key'] = 'total_sales';
+					$args['orderby']  = 'meta_value_num ID';
+					$args['order']    = 'DESC';
 
 					break;
+
 				default:
 					break;
 			}
@@ -96,8 +97,8 @@ if ( ! class_exists( 'Jet_Woo_Builder_Ajax_Handlers' ) ) {
 
 			query_posts( $args );
 
-			jet_woo_builder_integration_woocommerce()->products_loop_template_rewrite = true;
-			jet_woo_builder_integration_woocommerce()->current_template_archive       = $layout;
+			jet_woo_builder()->woocommerce->products_loop_template_rewrite = true;
+			jet_woo_builder()->woocommerce->current_template_archive       = $layout;
 
 			Elementor\Jet_Woo_Builder_Products_Loop::products_loop();
 

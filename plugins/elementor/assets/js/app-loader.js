@@ -1,4 +1,4 @@
-/*! elementor - v3.6.8 - 27-07-2022 */
+/*! elementor - v3.8.1 - 13-11-2022 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -1839,6 +1839,325 @@ function createListenerMiddleware(middlewareOptions) {
 
 /***/ }),
 
+/***/ "../app/assets/js/loader/commands/close.js":
+/*!*************************************************!*\
+  !*** ../app/assets/js/loader/commands/close.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Close = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Close = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Close, _$e$modules$CommandBa);
+
+  var _super = _createSuper(Close);
+
+  function Close() {
+    (0, _classCallCheck2.default)(this, Close);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Close, [{
+    key: "apply",
+    value: function apply() {
+      if (!this.component.close()) {
+        return false;
+      }
+
+      this.component.iframe.remove();
+      this.component.iframe = null;
+      return true;
+    }
+  }]);
+  return Close;
+}($e.modules.CommandBase);
+
+exports.Close = Close;
+var _default = Close;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../app/assets/js/loader/commands/index.js":
+/*!*************************************************!*\
+  !*** ../app/assets/js/loader/commands/index.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "Close", ({
+  enumerable: true,
+  get: function get() {
+    return _close.Close;
+  }
+}));
+Object.defineProperty(exports, "Load", ({
+  enumerable: true,
+  get: function get() {
+    return _load.Load;
+  }
+}));
+Object.defineProperty(exports, "Open", ({
+  enumerable: true,
+  get: function get() {
+    return _open.Open;
+  }
+}));
+
+var _close = __webpack_require__(/*! ./close */ "../app/assets/js/loader/commands/close.js");
+
+var _load = __webpack_require__(/*! ./load */ "../app/assets/js/loader/commands/load.js");
+
+var _open = __webpack_require__(/*! ./open */ "../app/assets/js/loader/commands/open.js");
+
+/***/ }),
+
+/***/ "../app/assets/js/loader/commands/load.js":
+/*!************************************************!*\
+  !*** ../app/assets/js/loader/commands/load.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Load = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Load = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Load, _$e$modules$CommandBa);
+
+  var _super = _createSuper(Load);
+
+  function Load() {
+    (0, _classCallCheck2.default)(this, Load);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Load, [{
+    key: "apply",
+    value: function apply(args) {
+      var component = this.component;
+
+      if (!component.iframe) {
+        component.iframe = document.createElement('iframe');
+        component.iframe.className = 'elementor-app-iframe';
+        component.iframe.style.cssText = '' + 'display: none;' + 'width: 100%;' + 'height: 100%;' + 'position: fixed;' + 'top: 0;' + 'left: 0;' + 'z-index: 99999; /* Over WP Admin Bar */' + 'background-color: rgba(0, 0, 0, 0.8);';
+        document.body.appendChild(component.iframe);
+      }
+
+      if (args.url === component.iframe.src) {
+        return;
+      }
+
+      component.iframe.src = args.url;
+    }
+  }]);
+  return Load;
+}($e.modules.CommandBase);
+
+exports.Load = Load;
+var _default = Load;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../app/assets/js/loader/commands/open.js":
+/*!************************************************!*\
+  !*** ../app/assets/js/loader/commands/open.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Open = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Open = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Open, _$e$modules$CommandBa);
+
+  var _super = _createSuper(Open);
+
+  function Open() {
+    (0, _classCallCheck2.default)(this, Open);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Open, [{
+    key: "apply",
+    value: function apply(args) {
+      $e.route('app', args);
+      return true;
+    }
+  }]);
+  return Open;
+}($e.modules.CommandBase);
+
+exports.Open = Open;
+var _default = Open;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../app/assets/js/loader/component.js":
+/*!********************************************!*\
+  !*** ../app/assets/js/loader/component.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/component-base */ "../modules/web-cli/assets/js/modules/component-base.js"));
+
+var commands = _interopRequireWildcard(__webpack_require__(/*! ./commands/ */ "../app/assets/js/loader/commands/index.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Component = /*#__PURE__*/function (_ComponentModalBase) {
+  (0, _inherits2.default)(Component, _ComponentModalBase);
+
+  var _super = _createSuper(Component);
+
+  function Component() {
+    (0, _classCallCheck2.default)(this, Component);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Component, [{
+    key: "getNamespace",
+    value: function getNamespace() {
+      return 'app';
+    }
+  }, {
+    key: "defaultRoutes",
+    value: function defaultRoutes() {
+      var _this = this;
+
+      return {
+        '': function _(args) {
+          args.url = args.url || elementorAppConfig.menu_url;
+          $e.run('app/load', args);
+          _this.iframe.style.display = '';
+          document.body.style.overflow = 'hidden';
+        }
+      };
+    }
+  }, {
+    key: "defaultCommands",
+    value: function defaultCommands() {
+      return this.importCommands(commands);
+    }
+  }, {
+    key: "defaultShortcuts",
+    value: function defaultShortcuts() {
+      return {
+        '': {
+          keys: 'ctrl+shift+e'
+        },
+        close: {
+          keys: 'esc',
+          scopes: [this.getNamespace()]
+        }
+      };
+    }
+  }]);
+  return Component;
+}(_componentBase.default);
+
+exports["default"] = Component;
+
+/***/ }),
+
 /***/ "../assets/dev/js/editor/utils/is-instanceof.js":
 /*!******************************************************!*\
   !*** ../assets/dev/js/editor/utils/is-instanceof.js ***!
@@ -1969,7 +2288,7 @@ var ArgsObject = /*#__PURE__*/function (_InstanceType) {
     value: function requireArgument(property) {
       var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.args;
 
-      if (!args.hasOwnProperty(property)) {
+      if (!Object.prototype.hasOwnProperty.call(args, property)) {
         throw Error("".concat(property, " is required."));
       }
     }
@@ -2366,331 +2685,6 @@ module.exports = Module;
 
 /***/ }),
 
-/***/ "../core/app/assets/js/loader/commands/close.js":
-/*!******************************************************!*\
-  !*** ../core/app/assets/js/loader/commands/close.js ***!
-  \******************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = exports.Close = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
-
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-var Close = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Close, _CommandBase);
-
-  var _super = _createSuper(Close);
-
-  function Close() {
-    (0, _classCallCheck2.default)(this, Close);
-    return _super.apply(this, arguments);
-  }
-
-  (0, _createClass2.default)(Close, [{
-    key: "apply",
-    value: function apply() {
-      if (!this.component.close()) {
-        return false;
-      }
-
-      this.component.iframe.remove();
-      this.component.iframe = null;
-      return true;
-    }
-  }]);
-  return Close;
-}(_commandBase.default);
-
-exports.Close = Close;
-var _default = Close;
-exports["default"] = _default;
-
-/***/ }),
-
-/***/ "../core/app/assets/js/loader/commands/index.js":
-/*!******************************************************!*\
-  !*** ../core/app/assets/js/loader/commands/index.js ***!
-  \******************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-Object.defineProperty(exports, "Close", ({
-  enumerable: true,
-  get: function get() {
-    return _close.Close;
-  }
-}));
-Object.defineProperty(exports, "Load", ({
-  enumerable: true,
-  get: function get() {
-    return _load.Load;
-  }
-}));
-Object.defineProperty(exports, "Open", ({
-  enumerable: true,
-  get: function get() {
-    return _open.Open;
-  }
-}));
-
-var _close = __webpack_require__(/*! ./close */ "../core/app/assets/js/loader/commands/close.js");
-
-var _load = __webpack_require__(/*! ./load */ "../core/app/assets/js/loader/commands/load.js");
-
-var _open = __webpack_require__(/*! ./open */ "../core/app/assets/js/loader/commands/open.js");
-
-/***/ }),
-
-/***/ "../core/app/assets/js/loader/commands/load.js":
-/*!*****************************************************!*\
-  !*** ../core/app/assets/js/loader/commands/load.js ***!
-  \*****************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = exports.Load = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
-
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-var Load = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Load, _CommandBase);
-
-  var _super = _createSuper(Load);
-
-  function Load() {
-    (0, _classCallCheck2.default)(this, Load);
-    return _super.apply(this, arguments);
-  }
-
-  (0, _createClass2.default)(Load, [{
-    key: "apply",
-    value: function apply(args) {
-      var component = this.component;
-
-      if (!component.iframe) {
-        component.iframe = document.createElement('iframe');
-        component.iframe.className = 'elementor-app-iframe';
-        component.iframe.style.cssText = '' + 'display: none;' + 'width: 100%;' + 'height: 100%;' + 'position: fixed;' + 'top: 0;' + 'left: 0;' + 'z-index: 99999; /* Over WP Admin Bar */' + 'background-color: rgba(0, 0, 0, 0.8);';
-        document.body.appendChild(component.iframe);
-      }
-
-      if (args.url === component.iframe.src) {
-        return;
-      }
-
-      component.iframe.src = args.url;
-    }
-  }]);
-  return Load;
-}(_commandBase.default);
-
-exports.Load = Load;
-var _default = Load;
-exports["default"] = _default;
-
-/***/ }),
-
-/***/ "../core/app/assets/js/loader/commands/open.js":
-/*!*****************************************************!*\
-  !*** ../core/app/assets/js/loader/commands/open.js ***!
-  \*****************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = exports.Open = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
-
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-var Open = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Open, _CommandBase);
-
-  var _super = _createSuper(Open);
-
-  function Open() {
-    (0, _classCallCheck2.default)(this, Open);
-    return _super.apply(this, arguments);
-  }
-
-  (0, _createClass2.default)(Open, [{
-    key: "apply",
-    value: function apply(args) {
-      $e.route('app', args);
-      return true;
-    }
-  }]);
-  return Open;
-}(_commandBase.default);
-
-exports.Open = Open;
-var _default = Open;
-exports["default"] = _default;
-
-/***/ }),
-
-/***/ "../core/app/assets/js/loader/component.js":
-/*!*************************************************!*\
-  !*** ../core/app/assets/js/loader/component.js ***!
-  \*************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
-
-var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/component-base */ "../modules/web-cli/assets/js/modules/component-base.js"));
-
-var commands = _interopRequireWildcard(__webpack_require__(/*! ./commands/ */ "../core/app/assets/js/loader/commands/index.js"));
-
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-var Component = /*#__PURE__*/function (_ComponentModalBase) {
-  (0, _inherits2.default)(Component, _ComponentModalBase);
-
-  var _super = _createSuper(Component);
-
-  function Component() {
-    (0, _classCallCheck2.default)(this, Component);
-    return _super.apply(this, arguments);
-  }
-
-  (0, _createClass2.default)(Component, [{
-    key: "getNamespace",
-    value: function getNamespace() {
-      return 'app';
-    }
-  }, {
-    key: "defaultRoutes",
-    value: function defaultRoutes() {
-      var _this = this;
-
-      return {
-        '': function _(args) {
-          args.url = args.url || elementorAppConfig.menu_url;
-          $e.run('app/load', args);
-          _this.iframe.style.display = '';
-          document.body.style.overflow = 'hidden';
-        }
-      };
-    }
-  }, {
-    key: "defaultCommands",
-    value: function defaultCommands() {
-      return this.importCommands(commands);
-    }
-  }, {
-    key: "defaultShortcuts",
-    value: function defaultShortcuts() {
-      return {
-        '': {
-          keys: 'ctrl+shift+e'
-        },
-        close: {
-          keys: 'esc',
-          scopes: [this.getNamespace()]
-        }
-      };
-    }
-  }]);
-  return Component;
-}(_componentBase.default);
-
-exports["default"] = Component;
-
-/***/ }),
-
 /***/ "../modules/web-cli/assets/js/modules/command-base.js":
 /*!************************************************************!*\
   !*** ../modules/web-cli/assets/js/modules/command-base.js ***!
@@ -2707,17 +2701,9 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports["default"] = void 0;
 
-var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "../node_modules/@babel/runtime/regenerator/index.js"));
-
-var _typeof2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js"));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "../node_modules/@babel/runtime/helpers/asyncToGenerator.js"));
-
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
 
 var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
-var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ "../node_modules/@babel/runtime/helpers/assertThisInitialized.js"));
 
 var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
 
@@ -2725,76 +2711,90 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _commandInfra = _interopRequireDefault(__webpack_require__(/*! ./command-infra */ "../modules/web-cli/assets/js/modules/command-infra.js"));
 
-var _argsObject = _interopRequireDefault(__webpack_require__(/*! elementor-assets-js/modules/imports/args-object */ "../assets/dev/js/modules/imports/args-object.js"));
-
-var _helpers = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/helpers */ "../modules/web-cli/assets/js/utils/helpers.js"));
-
-var _forceMethodImplementation = _interopRequireDefault(__webpack_require__(/*! ../utils/force-method-implementation */ "../modules/web-cli/assets/js/utils/force-method-implementation.js"));
+var _deprecation = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/deprecation */ "../modules/web-cli/assets/js/utils/deprecation.js"));
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 /**
- * @typedef {import('../modules/component-base')} ComponentBase
+ * @name $e.modules.CommandBase
  */
-
-/**
- * @typedef {{}} Component
- */
-var CommandBase = /*#__PURE__*/function (_ArgsObject) {
-  (0, _inherits2.default)(CommandBase, _ArgsObject);
+var CommandBase = /*#__PURE__*/function (_CommandInfra) {
+  (0, _inherits2.default)(CommandBase, _CommandInfra);
 
   var _super = _createSuper(CommandBase);
 
-  /**
-   * Function constructor().
-   *
-   * Create Commands Base.
-   *
-   * @param {*} [args={}]
-   * @param {*} [commandsAPI={}]
-   */
-  function CommandBase(args) {
-    var _this;
-
-    var commandsAPI = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : $e.commands;
+  function CommandBase() {
     (0, _classCallCheck2.default)(this, CommandBase);
-    _this = _super.call(this, args); // Acknowledge self about which command it run.
-
-    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "component", void 0);
-    _this.currentCommand = commandsAPI.getCurrentLast(); // Assign instance of current component.
-
-    _this.component = commandsAPI.getComponent(_this.currentCommand); // Who ever need do something before without `super` the constructor can use `initialize` method.
-
-    _this.initialize(args); // Refresh args, maybe the changed via `initialize`.
-
-
-    args = _this.args; // Validate args before run.
-
-    _this.validateArgs(args);
-
-    return _this;
+    return _super.apply(this, arguments);
   }
-  /**
-   * Function requireContainer().
-   *
-   * Validate `arg.container` & `arg.containers`.
-   *
-   * @param {{}} args
-   *
-   * @throws {Error}
-   */
-
 
   (0, _createClass2.default)(CommandBase, [{
+    key: "onBeforeRun",
+    value: function onBeforeRun() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      $e.hooks.runUIBefore(this.command, args);
+    }
+  }, {
+    key: "onAfterRun",
+    value: function onAfterRun() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var result = arguments.length > 1 ? arguments[1] : undefined;
+      $e.hooks.runUIAfter(this.command, args, result);
+    }
+  }, {
+    key: "onBeforeApply",
+    value: function onBeforeApply() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      $e.hooks.runDataDependency(this.command, args);
+    }
+  }, {
+    key: "onAfterApply",
+    value: function onAfterApply() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var result = arguments.length > 1 ? arguments[1] : undefined;
+      $e.hooks.runDataAfter(this.command, args, result);
+    }
+  }, {
+    key: "onCatchApply",
+    value: function onCatchApply(e) {
+      this.runCatchHooks(e);
+    }
+    /**
+     * Run all the catch hooks.
+     *
+     * @param {Error} e
+     */
+
+  }, {
+    key: "runCatchHooks",
+    value: function runCatchHooks(e) {
+      $e.hooks.runDataCatch(this.command, this.args, e);
+      $e.hooks.runUICatch(this.command, this.args, e);
+    }
+    /**
+     * TODO - Remove - Backwards compatibility.
+     *
+     * Function requireContainer().
+     *
+     * Validate `arg.container` & `arg.containers`.
+     *
+     * @param {{}} args
+     *
+     * @throws {Error}
+     */
+
+  }, {
     key: "requireContainer",
     value: function requireContainer() {
-      var _this2 = this;
+      var _this = this;
 
       var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.args;
+
+      _deprecation.default.deprecated('requireContainer', '3.7.0', 'Extend `$e.modules.editor.CommandContainerBase` or `$e.modules.editor.CommandContainerInternalBase`');
 
       if (!args.container && !args.containers) {
         throw Error('container or containers are required.');
@@ -2806,19 +2806,194 @@ var CommandBase = /*#__PURE__*/function (_ArgsObject) {
 
       var containers = args.containers || [args.container];
       containers.forEach(function (container) {
-        _this2.requireArgumentInstance('container', elementorModules.editor.Container, {
+        _this.requireArgumentInstance('container', elementorModules.editor.Container, {
           container: container
         });
       });
     }
+  }], [{
+    key: "getInstanceType",
+    value: function getInstanceType() {
+      return 'CommandBase';
+    }
+  }]);
+  return CommandBase;
+}(_commandInfra.default);
+
+exports["default"] = CommandBase;
+
+/***/ }),
+
+/***/ "../modules/web-cli/assets/js/modules/command-callback-base.js":
+/*!*********************************************************************!*\
+  !*** ../modules/web-cli/assets/js/modules/command-callback-base.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _commandBase = _interopRequireDefault(__webpack_require__(/*! ./command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+/**
+ * To support pure callbacks in the API(commands.js), to ensure they have registered with the proper context.
+ */
+var CommandCallbackBase = /*#__PURE__*/function (_CommandBase) {
+  (0, _inherits2.default)(CommandCallbackBase, _CommandBase);
+
+  var _super = _createSuper(CommandCallbackBase);
+
+  function CommandCallbackBase() {
+    (0, _classCallCheck2.default)(this, CommandCallbackBase);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(CommandCallbackBase, [{
+    key: "apply",
+    value: function apply() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      return this.constructor.getCallback()(args);
+    }
+  }], [{
+    key: "getInstanceType",
+    value: function getInstanceType() {
+      return 'CommandCallbackBase';
+    }
     /**
-     * Function initialize().
+     * Get original callback of the command.
      *
-     * Initialize command, called after construction.
+     * Support pure callbacks ( Non command-base ).
      *
-     * @param {*} [args={}]
+     * @return {()=>{}} Command Results.
      */
 
+  }, {
+    key: "getCallback",
+    value: function getCallback() {
+      return this.registerConfig.callback;
+    }
+  }]);
+  return CommandCallbackBase;
+}(_commandBase.default);
+
+exports["default"] = CommandCallbackBase;
+
+/***/ }),
+
+/***/ "../modules/web-cli/assets/js/modules/command-infra.js":
+/*!*************************************************************!*\
+  !*** ../modules/web-cli/assets/js/modules/command-infra.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+
+var _argsObject = _interopRequireDefault(__webpack_require__(/*! elementor-assets-js/modules/imports/args-object */ "../assets/dev/js/modules/imports/args-object.js"));
+
+var _deprecation = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/deprecation */ "../modules/web-cli/assets/js/utils/deprecation.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+/**
+ * @typedef {import('../modules/component-base')} ComponentBase
+ */
+var CommandInfra = /*#__PURE__*/function (_ArgsObject) {
+  (0, _inherits2.default)(CommandInfra, _ArgsObject);
+
+  var _super = _createSuper(CommandInfra);
+
+  /**
+   * Function constructor().
+   *
+   * Create Commands Base.
+   *
+   * @param {{}} args
+   */
+  function CommandInfra() {
+    var _this;
+
+    var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    (0, _classCallCheck2.default)(this, CommandInfra);
+    _this = _super.call(this, args);
+
+    if (!_this.constructor.registerConfig) {
+      throw RangeError('Doing it wrong: Each command type should have `registerConfig`.');
+    } // Acknowledge self about which command it run.
+
+
+    _this.command = _this.constructor.getCommand(); // Assign instance of current component.
+
+    _this.component = _this.constructor.getComponent(); // Who ever need do something before without `super` the constructor can use `initialize` method.
+
+    _this.initialize(args); // Refresh args, maybe the changed via `initialize`.
+
+
+    args = _this.args; // Validate args before run.
+
+    _this.validateArgs(args);
+
+    return _this;
+  }
+  /**
+   * Function initialize().
+   *
+   * Initialize command, called after construction.
+   *
+   * @param {{}} args
+   */
+
+
+  (0, _createClass2.default)(CommandInfra, [{
+    key: "currentCommand",
+    get: // TODO - Remove backwards compatibility.
+    function get() {
+      _deprecation.default.deprecated('this.currentCommand', '3.7.0', 'this.command');
+
+      return this.command;
+    }
   }, {
     key: "initialize",
     value: function initialize() {
@@ -2830,7 +3005,7 @@ var CommandBase = /*#__PURE__*/function (_ArgsObject) {
      *
      * Validate command arguments.
      *
-     * @param {*} [args={}]
+     * @param {{}} args
      */
 
   }, {
@@ -2838,29 +3013,16 @@ var CommandBase = /*#__PURE__*/function (_ArgsObject) {
     value: function validateArgs() {
       var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     } // eslint-disable-line no-unused-vars
-
-    /**
-     * Function isDataChanged().
-     *
-     * Whether the editor needs to set change flag on/off.
-     *
-     * @return {boolean} Whether the editor needs to set change flag on/off.
-     */
-
-  }, {
-    key: "isDataChanged",
-    value: function isDataChanged() {
-      return false;
-    } // eslint-disable-next-line jsdoc/require-returns-check
+    // eslint-disable-next-line jsdoc/require-returns-check
 
     /**
      * Function apply().
      *
      * Do the actual command.
      *
-     * @param {*} [args={}]
+     * @param {{}} args
      *
-     * @return {*} callback
+     * @return {*} Command results.
      */
 
   }, {
@@ -2868,170 +3030,42 @@ var CommandBase = /*#__PURE__*/function (_ArgsObject) {
     value: function apply() {
       var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       // eslint-disable-line no-unused-vars
-      (0, _forceMethodImplementation.default)();
+      elementorModules.ForceMethodImplementation();
     }
     /**
      * Function run().
      *
      * Run command with history & hooks.
      *
-     * @return {*} run results
+     * @return {*} Command results.
      */
 
   }, {
     key: "run",
     value: function run() {
-      var result; // For UI Hooks.
-
-      this.onBeforeRun(this.args);
-
-      try {
-        // For Data hooks.
-        this.onBeforeApply(this.args);
-        result = this.apply(this.args);
-      } catch (e) {
-        this.onCatchApply(e); // Catch 'Hook-Break' that comes from hooks base.
-
-        if (e instanceof $e.modules.HookBreak) {
-          // Bypass.
-          return false;
-        }
-      }
-
-      return this.runAfter(result);
-    }
-  }, {
-    key: "runAfter",
-    value: function runAfter(result) {
-      var _this3 = this;
-
-      var onAfter = function onAfter(_result) {
-        // Run Data hooks.
-        _this3.onAfterApply(_this3.args, _result); // TODO: Create Command-Base for Command-Document and apply it on after.
-
-
-        if (_this3.isDataChanged()) {
-          $e.internal('document/save/set-is-modified', {
-            status: true
-          });
-        } // For UI hooks.
-
-
-        _this3.onAfterRun(_this3.args, _result);
-      },
-          asyncOnAfter = /*#__PURE__*/function () {
-        var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(_result) {
-          var results, promises;
-          return _regenerator.default.wrap(function _callee$(_context) {
-            while (1) {
-              switch (_context.prev = _context.next) {
-                case 0:
-                  // Run Data hooks.
-                  results = _this3.onAfterApply(_this3.args, _result), promises = Array.isArray(results) ? results.flat().filter(function (filtered) {
-                    return filtered instanceof Promise;
-                  }) : [];
-
-                  if (!promises.length) {
-                    _context.next = 4;
-                    break;
-                  }
-
-                  _context.next = 4;
-                  return Promise.all(promises);
-
-                case 4:
-                  if (_this3.isDataChanged()) {
-                    // TODO: Create Command-Base for Command-Document and apply it on after.
-                    $e.internal('document/save/set-is-modified', {
-                      status: true
-                    });
-                  } // For UI hooks.
-
-
-                  _this3.onAfterRun(_this3.args, _result);
-
-                case 6:
-                case "end":
-                  return _context.stop();
-              }
-            }
-          }, _callee);
-        }));
-
-        return function asyncOnAfter(_x) {
-          return _ref.apply(this, arguments);
-        };
-      }(); // TODO: Temp code determine if it's a jQuery deferred object.
-
-
-      if (result && 'object' === (0, _typeof2.default)(result) && result.promise && result.then && result.fail) {
-        result.fail(this.onCatchApply.bind(this));
-        result.done(onAfter);
-      } else if (result instanceof Promise) {
-        // Override initial result ( promise ) to await onAfter promises, first!.
-        return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2() {
-          return _regenerator.default.wrap(function _callee2$(_context2) {
-            while (1) {
-              switch (_context2.prev = _context2.next) {
-                case 0:
-                  _context2.next = 2;
-                  return result.catch(_this3.onCatchApply.bind(_this3));
-
-                case 2:
-                  _context2.next = 4;
-                  return result.then(function (_result) {
-                    return asyncOnAfter(_result);
-                  });
-
-                case 4:
-                  return _context2.abrupt("return", result);
-
-                case 5:
-                case "end":
-                  return _context2.stop();
-              }
-            }
-          }, _callee2);
-        }))();
-      } else {
-        onAfter(result);
-      }
-
-      return result;
-    }
-    /**
-     * Run all the catch hooks.
-     *
-     * @param {Error} e
-     */
-
-  }, {
-    key: "runCatchHooks",
-    value: function runCatchHooks(e) {
-      $e.hooks.runDataCatch(this.currentCommand, this.args, e);
-      $e.hooks.runUICatch(this.currentCommand, this.args, e);
+      return this.apply(this.args);
     }
     /**
      * Function onBeforeRun.
      *
      * Called before run().
      *
-     * @param {*} [args={}]
+     * @param {{}} args
      */
 
   }, {
     key: "onBeforeRun",
     value: function onBeforeRun() {
       var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      $e.hooks.runUIBefore(this.currentCommand, args);
-    }
+    } // eslint-disable-line no-unused-vars
+
     /**
      * Function onAfterRun.
      *
      * Called after run().
      *
-     * @param {*} [args={}]
-     * @param {*} [result={*}]
+     * @param {{}} args
+     * @param {*}  result
      */
 
   }, {
@@ -3039,29 +3073,29 @@ var CommandBase = /*#__PURE__*/function (_ArgsObject) {
     value: function onAfterRun() {
       var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       var result = arguments.length > 1 ? arguments[1] : undefined;
-      $e.hooks.runUIAfter(this.currentCommand, args, result);
-    }
+    } // eslint-disable-line no-unused-vars
+
     /**
      * Function onBeforeApply.
      *
      * Called before apply().
      *
-     * @param {*} [args={}]
+     * @param {{}} args
      */
 
   }, {
     key: "onBeforeApply",
     value: function onBeforeApply() {
       var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      $e.hooks.runDataDependency(this.currentCommand, args);
-    }
+    } // eslint-disable-line no-unused-vars
+
     /**
      * Function onAfterApply.
      *
      * Called after apply().
      *
-     * @param {*} [args={}]
-     * @param {*} [result={*}]
+     * @param {{}} args
+     * @param {*}  result
      */
 
   }, {
@@ -3069,8 +3103,8 @@ var CommandBase = /*#__PURE__*/function (_ArgsObject) {
     value: function onAfterApply() {
       var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       var result = arguments.length > 1 ? arguments[1] : undefined;
-      return $e.hooks.runDataAfter(this.currentCommand, args, result);
-    }
+    } // eslint-disable-line no-unused-vars
+
     /**
      * Function onCatchApply.
      *
@@ -3081,22 +3115,21 @@ var CommandBase = /*#__PURE__*/function (_ArgsObject) {
 
   }, {
     key: "onCatchApply",
-    value: function onCatchApply(e) {
-      this.runCatchHooks(e);
+    value: function onCatchApply(e) {} // eslint-disable-line no-unused-vars
 
-      _helpers.default.consoleError(e);
-    }
   }], [{
     key: "getInstanceType",
-    value: function getInstanceType() {
-      return 'CommandBase';
+    value:
+    /**
+     * @type {Object}
+     */
+    function getInstanceType() {
+      return 'CommandInfra';
     }
     /**
      * Get info of command.
      *
-     * Use to provide 'extra' information about the command.
-     *
-     * @return {Object} info of command
+     * @return {Object} Extra information about the command.
      */
 
   }, {
@@ -3105,16 +3138,34 @@ var CommandBase = /*#__PURE__*/function (_ArgsObject) {
       return {};
     }
     /**
-     * Current component.
-     *
-     * @type {Component}
+     * @return {string} Self command name.
      */
 
+  }, {
+    key: "getCommand",
+    value: function getCommand() {
+      return this.registerConfig.command;
+    }
+    /**
+     * @return {ComponentBase} Self component
+     */
+
+  }, {
+    key: "getComponent",
+    value: function getComponent() {
+      return this.registerConfig.component;
+    }
+  }, {
+    key: "setRegisterConfig",
+    value: function setRegisterConfig(config) {
+      this.registerConfig = Object.freeze(config);
+    }
   }]);
-  return CommandBase;
+  return CommandInfra;
 }(_argsObject.default);
 
-exports["default"] = CommandBase;
+exports["default"] = CommandInfra;
+(0, _defineProperty2.default)(CommandInfra, "registerConfig", null);
 
 /***/ }),
 
@@ -3148,11 +3199,15 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
+var _commandCallbackBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-callback-base */ "../modules/web-cli/assets/js/modules/command-callback-base.js"));
+
 var _toolkit = __webpack_require__(/*! @reduxjs/toolkit */ "../node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 
-var _module = _interopRequireDefault(__webpack_require__(/*! elementor-assets-js/modules/imports/module.js */ "../assets/dev/js/modules/imports/module.js"));
+var _module = _interopRequireDefault(__webpack_require__(/*! elementor/assets/dev/js/modules/imports/module.js */ "../assets/dev/js/modules/imports/module.js"));
 
 var _forceMethodImplementation = _interopRequireDefault(__webpack_require__(/*! ../utils/force-method-implementation */ "../modules/web-cli/assets/js/utils/force-method-implementation.js"));
+
+var _deprecation = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/deprecation */ "../modules/web-cli/assets/js/utils/deprecation.js"));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
@@ -3163,10 +3218,8 @@ function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflec
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 /**
+ * @typedef {import('./command-infra')} CommandInfra
  * @typedef {import('./hook-base')} HookBase
- */
-
-/**
  * @typedef {import('../core/states/ui-state-base')} UiStateBase
  */
 var ComponentBase = /*#__PURE__*/function (_Module) {
@@ -3264,8 +3317,19 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
   }, {
     key: "getRootContainer",
     value: function getRootContainer() {
-      var parts = this.getNamespace().split('/');
-      return parts[0];
+      _deprecation.default.deprecated('getRootContainer()', '3.7.0', 'getServiceName()');
+
+      return this.getServiceName();
+    }
+  }, {
+    key: "getServiceName",
+    value: function getServiceName() {
+      return this.getNamespace().split('/')[0];
+    }
+  }, {
+    key: "store",
+    get: function get() {
+      return $e.store.get(this.getNamespace());
     }
   }, {
     key: "defaultTabs",
@@ -3386,10 +3450,65 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
     value: function getData() {
       return this.data;
     }
+    /**
+     * @param {string}                      command
+     * @param {(()=>{}|CommandInfra)}       context
+     * @param {'default'|'internal'|'data'} commandsType
+     */
+
   }, {
     key: "registerCommand",
-    value: function registerCommand(command, callback) {
-      $e.commands.register(this, command, callback);
+    value: function registerCommand(command, context) {
+      var commandsType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'default';
+      var commandsManager;
+
+      switch (commandsType) {
+        case 'default':
+          commandsManager = $e.commands;
+          break;
+
+        case 'internal':
+          commandsManager = $e.commandsInternal;
+          break;
+
+        case 'data':
+          commandsManager = $e.data;
+          break;
+
+        default:
+          throw new Error("Invalid commands type: '".concat(command, "'"));
+      }
+
+      var fullCommand = this.getNamespace() + '/' + command,
+          instanceType = context.getInstanceType ? context.getInstanceType() : false,
+          registerConfig = {
+        command: fullCommand,
+        component: this
+      }; // Support pure callback.
+
+      if (!instanceType) {
+        if ($e.devTools) {
+          $e.devTools.log.warn("Attach command-callback-base, on command: '".concat(fullCommand, "', context is unknown type."));
+        }
+
+        registerConfig.callback = context; // Unique class.
+
+        context = /*#__PURE__*/function (_CommandCallbackBase) {
+          (0, _inherits2.default)(context, _CommandCallbackBase);
+
+          var _super2 = _createSuper(context);
+
+          function context() {
+            (0, _classCallCheck2.default)(this, context);
+            return _super2.apply(this, arguments);
+          }
+
+          return (0, _createClass2.default)(context);
+        }(_commandCallbackBase.default);
+      }
+
+      context.setRegisterConfig(registerConfig);
+      commandsManager.register(this, command, context);
     }
     /**
      * @param {HookBase} instance
@@ -3399,6 +3518,11 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
     key: "registerHook",
     value: function registerHook(instance) {
       return instance.register();
+    }
+  }, {
+    key: "registerCommandInternal",
+    value: function registerCommandInternal(command, context) {
+      this.registerCommand(command, context, 'internal');
     }
     /**
      * Register a UI state.
@@ -3432,19 +3556,14 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
       $e.store.register(id, slice);
     }
   }, {
-    key: "registerCommandInternal",
-    value: function registerCommandInternal(command, callback) {
-      $e.commandsInternal.register(this, command, callback);
-    }
-  }, {
     key: "registerRoute",
     value: function registerRoute(route, callback) {
       $e.routes.register(this, route, callback);
     }
   }, {
     key: "registerData",
-    value: function registerData(command, callback) {
-      $e.data.register(this, command, callback);
+    value: function registerData(command, context) {
+      this.registerCommand(command, context, 'data');
     }
   }, {
     key: "unregisterRoute",
@@ -3480,7 +3599,7 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
       this.isOpen = false;
       this.inactivate();
       $e.routes.clearCurrent(this.getNamespace());
-      $e.routes.clearHistory(this.getRootContainer());
+      $e.routes.clearHistory(this.getServiceName());
       return true;
     }
   }, {
@@ -3605,6 +3724,11 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
         return (offset > 0 ? '-' : '') + match.toLowerCase();
       });
     }
+    /**
+     * @param {{}} commandsFromImport
+     * @return {{}} imported commands
+     */
+
   }, {
     key: "importCommands",
     value: function importCommands(commandsFromImport) {
@@ -3619,13 +3743,7 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
 
         var command = _this5.normalizeCommandName(className);
 
-        commands[command] = function (args) {
-          return new Class(args).run();
-        }; // TODO: Temporary code, remove after merge with 'require-commands-base' branch.
-        // should not return callback, but Class or Instance without run ( gain performance ).
-
-
-        $e.commands.classes[_this5.getNamespace() + '/' + command] = Class;
+        commands[command] = Class;
       });
       return commands;
     }
@@ -3685,13 +3803,244 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
   }, {
     key: "toggleHistoryClass",
     value: function toggleHistoryClass() {
-      document.body.classList.toggle('e-routes-has-history', !!$e.routes.getHistory(this.getRootContainer()).length);
+      document.body.classList.toggle('e-routes-has-history', !!$e.routes.getHistory(this.getServiceName()).length);
     }
   }]);
   return ComponentBase;
 }(_module.default);
 
 exports["default"] = ComponentBase;
+
+/***/ }),
+
+/***/ "../modules/web-cli/assets/js/utils/console.js":
+/*!*****************************************************!*\
+  !*** ../modules/web-cli/assets/js/utils/console.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var Console = /*#__PURE__*/function () {
+  function Console() {
+    (0, _classCallCheck2.default)(this, Console);
+  }
+
+  (0, _createClass2.default)(Console, null, [{
+    key: "error",
+    value: function error(message) {
+      // Show an error if devTools is available.
+      if ($e.devTools) {
+        $e.devTools.log.error(message);
+      } // If not a 'Hook-Break' then show error.
+
+
+      if (!(message instanceof $e.modules.HookBreak)) {
+        // eslint-disable-next-line no-console
+        console.error(message);
+      }
+    }
+  }, {
+    key: "warn",
+    value: function warn() {
+      var _console;
+
+      var style = "font-size: 12px; background-image: url(\"".concat(elementorWebCliConfig.urls.assets, "images/logo-icon.png\"); background-repeat: no-repeat; background-size: contain;");
+
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      args.unshift('%c  %c', style, '');
+
+      (_console = console).warn.apply(_console, args); // eslint-disable-line no-console
+
+    }
+  }]);
+  return Console;
+}();
+
+exports["default"] = Console;
+
+/***/ }),
+
+/***/ "../modules/web-cli/assets/js/utils/deprecation.js":
+/*!*********************************************************!*\
+  !*** ../modules/web-cli/assets/js/utils/deprecation.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _console = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/console */ "../modules/web-cli/assets/js/utils/console.js"));
+
+// Copied from `modules/dev-tools/assets/js/deprecation.js`
+
+/**
+ * @typedef {Object} Version
+ * @property {number} major1 The first number
+ * @property {number} major2 The second number
+ * @property {number} minor  The third number
+ * @property {string} build  The fourth number
+ */
+var softDeprecated = function softDeprecated(name, version, replacement) {
+  if (elementorWebCliConfig.isDebug) {
+    deprecatedMessage('soft', name, version, replacement);
+  }
+};
+
+var hardDeprecated = function hardDeprecated(name, version, replacement) {
+  deprecatedMessage('hard', name, version, replacement);
+};
+
+var deprecatedMessage = function deprecatedMessage(type, name, version, replacement) {
+  var message = "`".concat(name, "` is ").concat(type, " deprecated since ").concat(version);
+
+  if (replacement) {
+    message += " - Use `".concat(replacement, "` instead");
+  }
+
+  _console.default.warn(message);
+};
+
+var Deprecation = /*#__PURE__*/function () {
+  function Deprecation() {
+    (0, _classCallCheck2.default)(this, Deprecation);
+  }
+
+  (0, _createClass2.default)(Deprecation, null, [{
+    key: "deprecated",
+    value: function deprecated(name, version, replacement) {
+      if (this.isHardDeprecated(version)) {
+        hardDeprecated(name, version, replacement);
+      } else {
+        softDeprecated(name, version, replacement);
+      }
+    }
+    /**
+     * @param {string} version
+     *
+     * @return {Version}
+     */
+
+  }, {
+    key: "parseVersion",
+    value: function parseVersion(version) {
+      var versionParts = version.split('.');
+
+      if (versionParts.length < 3 || versionParts.length > 4) {
+        throw new RangeError('Invalid Semantic Version string provided');
+      }
+
+      var _versionParts = (0, _slicedToArray2.default)(versionParts, 4),
+          major1 = _versionParts[0],
+          major2 = _versionParts[1],
+          minor = _versionParts[2],
+          _versionParts$ = _versionParts[3],
+          build = _versionParts$ === void 0 ? '' : _versionParts$;
+
+      return {
+        major1: parseInt(major1),
+        major2: parseInt(major2),
+        minor: parseInt(minor),
+        build: build
+      };
+    }
+    /**
+     * Get total of major.
+     *
+     * Since `get_total_major` cannot determine how much really versions between 2.9.0 and 3.3.0 if there is 2.10.0 version for example,
+     * versions with major2 more then 9 will be added to total.
+     *
+     * @param {Version} versionObj
+     *
+     * @return {number}
+     */
+
+  }, {
+    key: "getTotalMajor",
+    value: function getTotalMajor(versionObj) {
+      var total = parseInt("".concat(versionObj.major1).concat(versionObj.major2, "0"));
+      total = Number((total / 10).toFixed(0));
+
+      if (versionObj.major2 > 9) {
+        total = versionObj.major2 - 9;
+      }
+
+      return total;
+    }
+    /**
+     * @param {string} version1
+     * @param {string} version2
+     *
+     * @return {number}
+     */
+
+  }, {
+    key: "compareVersion",
+    value: function compareVersion(version1, version2) {
+      var _this = this;
+
+      return [this.parseVersion(version1), this.parseVersion(version2)].map(function (versionObj) {
+        return _this.getTotalMajor(versionObj);
+      }).reduce(function (acc, major) {
+        return acc - major;
+      });
+    }
+    /**
+     * @param {string} version
+     *
+     * @return {boolean}
+     */
+
+  }, {
+    key: "isSoftDeprecated",
+    value: function isSoftDeprecated(version) {
+      var total = this.compareVersion(version, elementorWebCliConfig.version);
+      return total <= 4;
+    }
+    /**
+     * @param {string} version
+     * @return {boolean}
+     */
+
+  }, {
+    key: "isHardDeprecated",
+    value: function isHardDeprecated(version) {
+      var total = this.compareVersion(version, elementorWebCliConfig.version);
+      return total < 0 || total >= 8;
+    }
+  }]);
+  return Deprecation;
+}();
+
+exports["default"] = Deprecation;
 
 /***/ }),
 
@@ -3770,118 +4119,6 @@ var _default = function _default() {
 };
 
 exports["default"] = _default;
-
-/***/ }),
-
-/***/ "../modules/web-cli/assets/js/utils/helpers.js":
-/*!*****************************************************!*\
-  !*** ../modules/web-cli/assets/js/utils/helpers.js ***!
-  \*****************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
-// TODO: Copied from `core/common/assets/js/utils/helpers.js` and modified into static functions.
-var Helpers = /*#__PURE__*/function () {
-  function Helpers() {
-    (0, _classCallCheck2.default)(this, Helpers);
-  }
-
-  (0, _createClass2.default)(Helpers, null, [{
-    key: "softDeprecated",
-    value: function softDeprecated(name, version, replacement) {
-      if (elementorWebCliConfig.isDebug) {
-        this.deprecatedMessage('soft', name, version, replacement);
-      }
-    }
-  }, {
-    key: "hardDeprecated",
-    value: function hardDeprecated(name, version, replacement) {
-      this.deprecatedMessage('hard', name, version, replacement);
-    }
-  }, {
-    key: "deprecatedMessage",
-    value: function deprecatedMessage(type, name, version, replacement) {
-      var message = "`".concat(name, "` is ").concat(type, " deprecated since ").concat(version);
-
-      if (replacement) {
-        message += " - Use `".concat(replacement, "` instead");
-      }
-
-      this.consoleWarn(message);
-    }
-  }, {
-    key: "consoleWarn",
-    value: function consoleWarn() {
-      var _console;
-
-      var style = "font-size: 12px; background-image: url(\"".concat(elementorWebCliConfig.urls.assets, "images/logo-icon.png\"); background-repeat: no-repeat; background-size: contain;");
-
-      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      args.unshift('%c  %c', style, '');
-
-      (_console = console).warn.apply(_console, args); // eslint-disable-line no-console
-
-    }
-  }, {
-    key: "consoleError",
-    value: function consoleError(message) {
-      // TODO: function is part of $e.
-      // Show an error if devTools is available.
-      if ($e.devTools) {
-        $e.devTools.log.error(message);
-      } // If not a 'Hook-Break' then show error.
-
-
-      if (!(message instanceof $e.modules.HookBreak)) {
-        // eslint-disable-next-line no-console
-        console.error(message);
-      }
-    }
-  }, {
-    key: "deprecatedMethod",
-    value: function deprecatedMethod(methodName, version, replacement) {
-      this.deprecatedMessage('hard', methodName, version, replacement); // This itself is deprecated.
-
-      this.softDeprecated('Helpers.deprecatedMethod', '2.8.0', 'Helpers.softDeprecated || Helpers.hardDeprecated');
-    }
-  }, {
-    key: "cloneObject",
-    value: function cloneObject(object) {
-      return JSON.parse(JSON.stringify(object));
-    }
-  }, {
-    key: "upperCaseWords",
-    value: function upperCaseWords(string) {
-      return (string + '').replace(/^(.)|\s+(.)/g, function ($1) {
-        return $1.toUpperCase();
-      });
-    }
-  }, {
-    key: "getUniqueId",
-    value: function getUniqueId() {
-      return Math.random().toString(16).substr(2, 7);
-    }
-  }]);
-  return Helpers;
-}();
-
-exports["default"] = Helpers;
 
 /***/ }),
 
@@ -5033,52 +5270,6 @@ module.exports = _assertThisInitialized, module.exports.__esModule = true, modul
 
 /***/ }),
 
-/***/ "../node_modules/@babel/runtime/helpers/asyncToGenerator.js":
-/*!******************************************************************!*\
-  !*** ../node_modules/@babel/runtime/helpers/asyncToGenerator.js ***!
-  \******************************************************************/
-/***/ ((module) => {
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
-
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
-
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
-
-module.exports = _asyncToGenerator, module.exports.__esModule = true, module.exports["default"] = module.exports;
-
-/***/ }),
-
 /***/ "../node_modules/@babel/runtime/helpers/classCallCheck.js":
 /*!****************************************************************!*\
   !*** ../node_modules/@babel/runtime/helpers/classCallCheck.js ***!
@@ -5390,369 +5581,6 @@ module.exports = _possibleConstructorReturn, module.exports.__esModule = true, m
 
 /***/ }),
 
-/***/ "../node_modules/@babel/runtime/helpers/regeneratorRuntime.js":
-/*!********************************************************************!*\
-  !*** ../node_modules/@babel/runtime/helpers/regeneratorRuntime.js ***!
-  \********************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var _typeof = (__webpack_require__(/*! ./typeof.js */ "../node_modules/@babel/runtime/helpers/typeof.js")["default"]);
-
-function _regeneratorRuntime() {
-  "use strict";
-  /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
-
-  module.exports = _regeneratorRuntime = function _regeneratorRuntime() {
-    return exports;
-  }, module.exports.__esModule = true, module.exports["default"] = module.exports;
-  var exports = {},
-      Op = Object.prototype,
-      hasOwn = Op.hasOwnProperty,
-      $Symbol = "function" == typeof Symbol ? Symbol : {},
-      iteratorSymbol = $Symbol.iterator || "@@iterator",
-      asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator",
-      toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-
-  function define(obj, key, value) {
-    return Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: !0,
-      configurable: !0,
-      writable: !0
-    }), obj[key];
-  }
-
-  try {
-    define({}, "");
-  } catch (err) {
-    define = function define(obj, key, value) {
-      return obj[key] = value;
-    };
-  }
-
-  function wrap(innerFn, outerFn, self, tryLocsList) {
-    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator,
-        generator = Object.create(protoGenerator.prototype),
-        context = new Context(tryLocsList || []);
-    return generator._invoke = function (innerFn, self, context) {
-      var state = "suspendedStart";
-      return function (method, arg) {
-        if ("executing" === state) throw new Error("Generator is already running");
-
-        if ("completed" === state) {
-          if ("throw" === method) throw arg;
-          return doneResult();
-        }
-
-        for (context.method = method, context.arg = arg;;) {
-          var delegate = context.delegate;
-
-          if (delegate) {
-            var delegateResult = maybeInvokeDelegate(delegate, context);
-
-            if (delegateResult) {
-              if (delegateResult === ContinueSentinel) continue;
-              return delegateResult;
-            }
-          }
-
-          if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) {
-            if ("suspendedStart" === state) throw state = "completed", context.arg;
-            context.dispatchException(context.arg);
-          } else "return" === context.method && context.abrupt("return", context.arg);
-          state = "executing";
-          var record = tryCatch(innerFn, self, context);
-
-          if ("normal" === record.type) {
-            if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue;
-            return {
-              value: record.arg,
-              done: context.done
-            };
-          }
-
-          "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg);
-        }
-      };
-    }(innerFn, self, context), generator;
-  }
-
-  function tryCatch(fn, obj, arg) {
-    try {
-      return {
-        type: "normal",
-        arg: fn.call(obj, arg)
-      };
-    } catch (err) {
-      return {
-        type: "throw",
-        arg: err
-      };
-    }
-  }
-
-  exports.wrap = wrap;
-  var ContinueSentinel = {};
-
-  function Generator() {}
-
-  function GeneratorFunction() {}
-
-  function GeneratorFunctionPrototype() {}
-
-  var IteratorPrototype = {};
-  define(IteratorPrototype, iteratorSymbol, function () {
-    return this;
-  });
-  var getProto = Object.getPrototypeOf,
-      NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-  NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype);
-  var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype);
-
-  function defineIteratorMethods(prototype) {
-    ["next", "throw", "return"].forEach(function (method) {
-      define(prototype, method, function (arg) {
-        return this._invoke(method, arg);
-      });
-    });
-  }
-
-  function AsyncIterator(generator, PromiseImpl) {
-    function invoke(method, arg, resolve, reject) {
-      var record = tryCatch(generator[method], generator, arg);
-
-      if ("throw" !== record.type) {
-        var result = record.arg,
-            value = result.value;
-        return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) {
-          invoke("next", value, resolve, reject);
-        }, function (err) {
-          invoke("throw", err, resolve, reject);
-        }) : PromiseImpl.resolve(value).then(function (unwrapped) {
-          result.value = unwrapped, resolve(result);
-        }, function (error) {
-          return invoke("throw", error, resolve, reject);
-        });
-      }
-
-      reject(record.arg);
-    }
-
-    var previousPromise;
-
-    this._invoke = function (method, arg) {
-      function callInvokeWithMethodAndArg() {
-        return new PromiseImpl(function (resolve, reject) {
-          invoke(method, arg, resolve, reject);
-        });
-      }
-
-      return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
-    };
-  }
-
-  function maybeInvokeDelegate(delegate, context) {
-    var method = delegate.iterator[context.method];
-
-    if (undefined === method) {
-      if (context.delegate = null, "throw" === context.method) {
-        if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel;
-        context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method");
-      }
-
-      return ContinueSentinel;
-    }
-
-    var record = tryCatch(method, delegate.iterator, context.arg);
-    if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel;
-    var info = record.arg;
-    return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel);
-  }
-
-  function pushTryEntry(locs) {
-    var entry = {
-      tryLoc: locs[0]
-    };
-    1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry);
-  }
-
-  function resetTryEntry(entry) {
-    var record = entry.completion || {};
-    record.type = "normal", delete record.arg, entry.completion = record;
-  }
-
-  function Context(tryLocsList) {
-    this.tryEntries = [{
-      tryLoc: "root"
-    }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0);
-  }
-
-  function values(iterable) {
-    if (iterable) {
-      var iteratorMethod = iterable[iteratorSymbol];
-      if (iteratorMethod) return iteratorMethod.call(iterable);
-      if ("function" == typeof iterable.next) return iterable;
-
-      if (!isNaN(iterable.length)) {
-        var i = -1,
-            next = function next() {
-          for (; ++i < iterable.length;) {
-            if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next;
-          }
-
-          return next.value = undefined, next.done = !0, next;
-        };
-
-        return next.next = next;
-      }
-    }
-
-    return {
-      next: doneResult
-    };
-  }
-
-  function doneResult() {
-    return {
-      value: undefined,
-      done: !0
-    };
-  }
-
-  return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) {
-    var ctor = "function" == typeof genFun && genFun.constructor;
-    return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name));
-  }, exports.mark = function (genFun) {
-    return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun;
-  }, exports.awrap = function (arg) {
-    return {
-      __await: arg
-    };
-  }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () {
-    return this;
-  }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) {
-    void 0 === PromiseImpl && (PromiseImpl = Promise);
-    var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl);
-    return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) {
-      return result.done ? result.value : iter.next();
-    });
-  }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () {
-    return this;
-  }), define(Gp, "toString", function () {
-    return "[object Generator]";
-  }), exports.keys = function (object) {
-    var keys = [];
-
-    for (var key in object) {
-      keys.push(key);
-    }
-
-    return keys.reverse(), function next() {
-      for (; keys.length;) {
-        var key = keys.pop();
-        if (key in object) return next.value = key, next.done = !1, next;
-      }
-
-      return next.done = !0, next;
-    };
-  }, exports.values = values, Context.prototype = {
-    constructor: Context,
-    reset: function reset(skipTempReset) {
-      if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) {
-        "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined);
-      }
-    },
-    stop: function stop() {
-      this.done = !0;
-      var rootRecord = this.tryEntries[0].completion;
-      if ("throw" === rootRecord.type) throw rootRecord.arg;
-      return this.rval;
-    },
-    dispatchException: function dispatchException(exception) {
-      if (this.done) throw exception;
-      var context = this;
-
-      function handle(loc, caught) {
-        return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught;
-      }
-
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i],
-            record = entry.completion;
-        if ("root" === entry.tryLoc) return handle("end");
-
-        if (entry.tryLoc <= this.prev) {
-          var hasCatch = hasOwn.call(entry, "catchLoc"),
-              hasFinally = hasOwn.call(entry, "finallyLoc");
-
-          if (hasCatch && hasFinally) {
-            if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0);
-            if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
-          } else if (hasCatch) {
-            if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0);
-          } else {
-            if (!hasFinally) throw new Error("try statement without catch or finally");
-            if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
-          }
-        }
-      }
-    },
-    abrupt: function abrupt(type, arg) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-
-        if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) {
-          var finallyEntry = entry;
-          break;
-        }
-      }
-
-      finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null);
-      var record = finallyEntry ? finallyEntry.completion : {};
-      return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record);
-    },
-    complete: function complete(record, afterLoc) {
-      if ("throw" === record.type) throw record.arg;
-      return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel;
-    },
-    finish: function finish(finallyLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel;
-      }
-    },
-    "catch": function _catch(tryLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-
-        if (entry.tryLoc === tryLoc) {
-          var record = entry.completion;
-
-          if ("throw" === record.type) {
-            var thrown = record.arg;
-            resetTryEntry(entry);
-          }
-
-          return thrown;
-        }
-      }
-
-      throw new Error("illegal catch attempt");
-    },
-    delegateYield: function delegateYield(iterable, resultName, nextLoc) {
-      return this.delegate = {
-        iterator: values(iterable),
-        resultName: resultName,
-        nextLoc: nextLoc
-      }, "next" === this.method && (this.arg = undefined), ContinueSentinel;
-    }
-  }, exports;
-}
-
-module.exports = _regeneratorRuntime, module.exports.__esModule = true, module.exports["default"] = module.exports;
-
-/***/ }),
-
 /***/ "../node_modules/@babel/runtime/helpers/setPrototypeOf.js":
 /*!****************************************************************!*\
   !*** ../node_modules/@babel/runtime/helpers/setPrototypeOf.js ***!
@@ -5903,31 +5731,6 @@ function _wrapNativeSuper(Class) {
 }
 
 module.exports = _wrapNativeSuper, module.exports.__esModule = true, module.exports["default"] = module.exports;
-
-/***/ }),
-
-/***/ "../node_modules/@babel/runtime/regenerator/index.js":
-/*!***********************************************************!*\
-  !*** ../node_modules/@babel/runtime/regenerator/index.js ***!
-  \***********************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-// TODO(Babel 8): Remove this file.
-
-var runtime = __webpack_require__(/*! ../helpers/regeneratorRuntime */ "../node_modules/@babel/runtime/helpers/regeneratorRuntime.js")();
-module.exports = runtime;
-
-// Copied from https://github.com/facebook/regenerator/blob/main/packages/runtime/runtime.js#L736=
-try {
-  regeneratorRuntime = runtime;
-} catch (accidentalStrictMode) {
-  if (typeof globalThis === "object") {
-    globalThis.regeneratorRuntime = runtime;
-  } else {
-    Function("r", "regeneratorRuntime = r")(runtime);
-  }
-}
-
 
 /***/ }),
 
@@ -6099,9 +5902,9 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-/*!*******************************************!*\
-  !*** ../core/app/assets/js/app-loader.js ***!
-  \*******************************************/
+/*!**************************************!*\
+  !*** ../app/assets/js/app-loader.js ***!
+  \**************************************/
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
@@ -6112,7 +5915,7 @@ var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtim
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
 
-var _component = _interopRequireDefault(__webpack_require__(/*! ./loader/component */ "../core/app/assets/js/loader/component.js"));
+var _component = _interopRequireDefault(__webpack_require__(/*! ./loader/component */ "../app/assets/js/loader/component.js"));
 
 var AppLoader = /*#__PURE__*/function () {
   function AppLoader() {

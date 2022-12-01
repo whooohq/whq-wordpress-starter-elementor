@@ -88,6 +88,12 @@
 						}
 					]"
 				></cx-vui-select>
+				<cx-vui-switcher
+					label="<?php _e( 'Hide field names', 'jet-engine' ); ?>"
+					description="<?php _e( 'Hide field names on option page', 'jet-engine' ); ?>"
+					:wrapper-css="[ 'equalwidth' ]"
+					v-model="generalSettings.hide_field_names"
+				></cx-vui-switcher>
 			</div>
 		</cx-vui-collapse>
 		<jet-meta-fields v-model="fieldsList" :hide-options="[ 'quick_editable' ]"></jet-meta-fields>

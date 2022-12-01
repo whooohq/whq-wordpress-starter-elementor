@@ -29,10 +29,12 @@ if ( ! class_exists( 'Jet_Woo_Builder_Shop_Settings' ) ) {
 		 * Constructor for the class
 		 */
 		public function init() {
+
 			add_filter( 'woocommerce_get_settings_pages', array( $this, 'register_woo_settings_page' ) );
 
 			add_action( 'woocommerce_admin_field_jet_woo_select_template', array( $this, 'select_template_field' ) );
 			add_action( 'woocommerce_admin_field_jet_woo_select_render_method_field', array( $this, 'select_render_method_field' ) );
+
 		}
 
 		/**
@@ -62,12 +64,12 @@ if ( ! class_exists( 'Jet_Woo_Builder_Shop_Settings' ) ) {
 		 */
 		public function select_template_field( $value ) {
 
-			$doc_type       = isset( $value['doc_type'] ) ? $value['doc_type'] : 'single';
+			$doc_type       = $value['doc_type'] ?? 'single';
 			$templates      = jet_woo_builder_post_type()->get_templates_list( $doc_type );
 			$options        = get_option( $this->options_key );
 			$current_option = str_replace( array( $this->options_key, '[', ']' ), '', $value['id'] );
-
 			?>
+
 			<tr valign="top" class="single_select_page">
 				<th scope="row" class="titledesc"><?php echo esc_html( $value['title'] ); ?></th>
 				<td class="forminp">
@@ -81,6 +83,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Shop_Settings' ) ) {
 					</select><?php printf( '<br><span class="description">%s</span>', $value['desc'] ); ?>
 				</td>
 			</tr>
+
 			<?php
 		}
 
@@ -95,10 +98,10 @@ if ( ! class_exists( 'Jet_Woo_Builder_Shop_Settings' ) ) {
 
 			$options        = get_option( $this->options_key );
 			$current_option = str_replace( array( $this->options_key, '[', ']' ), '', $value['id'] );
-			$default        = isset( $value['default'] ) ? $value['default'] : '';
-			$option_val     = isset( $options[ $current_option ] ) ? $options[ $current_option ] : $default;
-
+			$default        = $value['default'] ?? '';
+			$option_val     = $options[ $current_option ] ?? $default;
 			?>
+
 			<tr valign="top" class="render_method">
 				<th scope="row" class="titledesc"><?php echo esc_html( $value['title'] ); ?></th>
 				<td class="forminp">
@@ -111,6 +114,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Shop_Settings' ) ) {
 					<?php printf( '<br><span class="description">%s</span>', $value['desc'] ); ?>
 				</td>
 			</tr>
+
 			<?php
 		}
 
@@ -124,6 +128,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Shop_Settings' ) ) {
 		public function register_woo_settings_page( $settings ) {
 
 			require jet_woo_builder()->plugin_path( 'includes/settings/class-jet-woo-builder-shop-settings-page.php' );
+
 			$settings[ $this->key ] = new Jet_Woo_Builder_Shop_Settings_Page();
 
 			return $settings;
@@ -144,6 +149,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Shop_Settings' ) ) {
 			}
 
 			return self::$instance;
+
 		}
 	}
 

@@ -101,6 +101,10 @@ export default {
 			order: 'DESC'
 		}],
 	},
+	query_id: {
+		type: 'string',
+		default: '',
+	},
 	// Indexer
 	apply_indexer: {
 		type: 'boolean',
@@ -147,6 +151,10 @@ export default {
 	pages_end_offset: {
 		type: 'number',
 		default: 0,
+	},
+	autoscroll: {
+		type: 'boolean',
+		default: true,
 	},
 	provider_top_offset: {
 		type: 'number',

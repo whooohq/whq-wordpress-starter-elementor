@@ -6,7 +6,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Rewrite_Rules' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Rewrite_Rules class
 	 */
@@ -14,15 +13,11 @@ if ( ! class_exists( 'Jet_Smart_Filters_Rewrite_Rules' ) ) {
 
 		/**
 		 * Jet Smart Filters query pattern
-		 *
-		 * @var string
 		 */
 		private $pattern = 'jsf/(.*)/?$';
 
 		/**
 		 * Jet Smart Filters query variable
-		 *
-		 * @var string
 		 */
 		private $query_var = 'jsf';
 
@@ -50,16 +45,14 @@ if ( ! class_exists( 'Jet_Smart_Filters_Rewrite_Rules' ) ) {
 			add_action( 'updated_option', array( $this, 'rewrite_rules_after_updated_option' ), 10, 3 );
 			add_action( 'parse_request', array( $this, 'store_queried_filter' ), 9999 );
 			add_action( 'parse_query', array( $this, 'restore_queried_filter_var' ), -1 );
-
 		}
 
 		/**
 		 * Save qurrently quried filter.
 		 * Also unset filters query variable from $wp object to avoid static front page and custom permalinks bugs
-		 *
-		 * @param [type] &$wp [description]
 		 */
 		public function store_queried_filter( &$wp ) {
+
 			if ( ! empty( $wp->query_vars[ $this->query_var ] ) ) {
 				$this->queried_filter = $wp->query_vars[ $this->query_var ];
 				unset( $wp->query_vars[ $this->query_var ] );
@@ -69,11 +62,9 @@ if ( ! class_exists( 'Jet_Smart_Filters_Rewrite_Rules' ) ) {
 		/**
 		 * Restore queried filters variable
 		 * This hook is required to fix front page redirect bug
-		 *
-		 * @param  [type] &$wp_query [description]
-		 * @return [type]            [description]
 		 */
 		public function restore_queried_filter_var( &$wp_query ) {
+
 			if ( null !== $this->queried_filter ) {
 				remove_action( 'template_redirect', 'redirect_canonical' );
 				remove_action( 'parse_query', array( $this, 'restore_queried_filter_var' ) );
@@ -138,7 +129,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Rewrite_Rules' ) ) {
 			}
 
 			return array_merge( $rewrites, $rules );
-
 		}
 
 		public function register_variables( $vars ) {
@@ -146,7 +136,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Rewrite_Rules' ) ) {
 			$vars[] = $this->query_var;
 
 			return $vars;
-
 		}
 
 		public function rewrite_rules_after_updated_option( $option, $old_value, $value ) {
@@ -167,8 +156,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Rewrite_Rules' ) ) {
 			if ( $update_permalinks ) {
 				flush_rewrite_rules();
 			}
-
 		}
-
 	}
 }

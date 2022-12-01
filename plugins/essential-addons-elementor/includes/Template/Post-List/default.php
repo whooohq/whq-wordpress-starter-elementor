@@ -17,7 +17,7 @@ if ( $settings['post_type'] === 'product' ) {
 
 $cat_name = $cat_id = null;
 $show_cat = ($settings['eael_post_list_post_cat'] != '');
-if ( !is_wp_error($category) && !empty($category[0])) {
+if ( !is_wp_error($category) && !empty($category[0]) ) {
     $cat_id = isset($category[0]->term_id) ? $category[0]->term_id : null;
     $cat_name = isset($category[0]->name) ? $category[0]->name : null;
 }

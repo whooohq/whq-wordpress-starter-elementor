@@ -8,6 +8,7 @@ export default class CheckboxControl extends Filter {
 		this.$checkboxesList = $container.find('.jet-checkboxes-list');
 		this.relationalOperator = this.$filter.data('relational-operator');
 		this.canDeselect = this.$filter.data('can-deselect');
+		this.hasGroups = Boolean(this.$checkboxesList.find('.jet-list-tree').length);
 		this.inputNotEmptyClass = 'jet-input-not-empty';
 
 		this.processData();
@@ -15,7 +16,10 @@ export default class CheckboxControl extends Filter {
 	}
 
 	addFilterChangeEvent() {
-		this.$checkboxes.on('change', () => {
+		this.$checkboxes.on('change', (item) => {
+			if (this.relationalOperator === 'AND' && this.hasGroups)
+				this.uncheckGroup(item.target);
+
 			this.processData();
 			this.emitFiterChange();
 		});
@@ -26,7 +30,7 @@ export default class CheckboxControl extends Filter {
 
 				if ($checkboxItem.val() === this.dataValue)
 					$checkboxItem.prop('checked', false).trigger('change');
-			})
+			});
 		}
 	}
 
@@ -46,7 +50,7 @@ export default class CheckboxControl extends Filter {
 
 			$checked.each(index => {
 				dataValue.push($checked.get(index).value);
-			})
+			});
 
 			if (this.relationalOperator)
 				dataValue.push('operator_' + this.relationalOperator);
@@ -125,5 +129,27 @@ export default class CheckboxControl extends Filter {
 
 	getValueLabel(value) {
 		return this.$checkboxes.filter('[value="' + value + '"]').data('label');
+	}
+
+	// unchecked group items for intersection relational operator
+	uncheckGroup(item) {
+		const $item = $(item);
+		const isChildren = Boolean($item.closest('.jet-list-tree__children').length);
+		const isParent = !isChildren ? Boolean($item.closest('.jet-list-tree__parent').length) : false;
+
+		if (!isParent && !isChildren)
+			return;
+
+		if (isChildren) {
+			//top nesting
+			$item.parents('.jet-list-tree__children').prev('.jet-list-tree__parent').find('.jet-checkboxes-list__input').prop('checked', false);
+
+			// bottom nesting
+			$item.parent().parent('.jet-list-tree__parent').next('.jet-list-tree__children').find('.jet-checkboxes-list__input').prop('checked', false);
+		}
+
+		if (isParent) {
+			$item.closest('.jet-list-tree__parent').next('.jet-list-tree__children').find('.jet-checkboxes-list__input').prop('checked', false);
+		}
 	}
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_Archive_Sale_Badge
- * Name: Sale Badge
+ * Name: Archive Sale Badge
  * Slug: jet-woo-builder-archive-sale-badge
  */
 
@@ -20,7 +20,7 @@ class Jet_Woo_Builder_Archive_Sale_Badge extends Widget_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Sale Badge', 'jet-woo-builder' );
+		return __( 'Archive Sale Badge', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
@@ -51,32 +51,30 @@ class Jet_Woo_Builder_Archive_Sale_Badge extends Widget_Base {
 
 		$this->start_controls_section(
 			'section_badge_content',
-			array(
-				'label'      => esc_html__( 'Content', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_CONTENT,
-				'show_label' => false,
-			)
+			[
+				'label' => __( 'Sale Badge', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_CONTENT,
+			]
 		);
 
 		$this->add_control(
 			'archive_badge_text',
-			array(
-				'type'        => 'text',
-				'label'       => esc_html__( 'Sale Badge Text', 'jet-woo-builder' ),
-				'default'     => 'Sale!',
-				'description' => esc_html__( 'Use %percentage_sale% and %numeric_sale% macros to display a withdrawal of discounts as a percentage or numeric of the initial price.', 'jet-woo-builder' ),
-			)
+			[
+				'type'        => Controls_Manager::TEXT,
+				'label'       => __( 'Label', 'jet-woo-builder' ),
+				'default'     => __( 'Sale!', 'jet-woo-builder' ),
+				'description' => __( 'Use %percentage_sale% and %numeric_sale% macros to display a withdrawal of discounts as a percentage or numeric of the initial price.', 'jet-woo-builder' ),
+			]
 		);
 
 		$this->end_controls_section();
 
 		$this->start_controls_section(
 			'section_archive_badge_style',
-			array(
-				'label'      => esc_html__( 'General', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
+			[
+				'label' => __( 'Sale Badge', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
 		);
 
 		$this->add_control(
@@ -141,18 +139,6 @@ class Jet_Woo_Builder_Archive_Sale_Badge extends Widget_Base {
 		);
 
 		$this->add_responsive_control(
-			'archive_badge_content_padding',
-			array(
-				'label'      => __( 'Padding', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['badge'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
-		);
-
-		$this->add_responsive_control(
 			'archive_badge_content_margin',
 			array(
 				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
@@ -160,6 +146,18 @@ class Jet_Woo_Builder_Archive_Sale_Badge extends Widget_Base {
 				'size_units' => array( 'px', '%' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['badge'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_responsive_control(
+			'archive_badge_content_padding',
+			array(
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%' ),
+				'selectors'  => array(
+					'{{WRAPPER}} ' . $css_scheme['badge'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -182,36 +180,41 @@ class Jet_Woo_Builder_Archive_Sale_Badge extends Widget_Base {
 	}
 
 	/**
-	 * Returns CSS selector for nested element
+	 * CSS selector.
 	 *
-	 * @param null $el
+	 * Returns CSS selector for nested element.
+	 *
+	 * @since  1.2.0
+	 * @access public
+	 *
+	 * @param null $el Selector.
 	 *
 	 * @return string
 	 */
 	public function css_selector( $el = null ) {
-		return sprintf( '{{WRAPPER}} .%1$s %2$s', $this->get_name(), $el );
+		return sprintf( '{{WRAPPER}} .%1$s%2$s', $this->get_name(), $el );
 	}
 
-	public static function render_callback( $settings = array() ) {
+	public static function render_callback( $settings = [] ) {
 
-		$badge_text    = jet_woo_builder()->macros->do_macros( $settings['archive_badge_text'] );
-		$badge_content = jet_woo_builder_template_functions()->get_product_sale_flash( esc_html__( $badge_text, 'jet-woo-builder' ), $settings );
+		$label = jet_woo_builder()->macros->do_macros( $settings['label'] );
+		$badge = jet_woo_builder_template_functions()->get_product_sale_flash( $label, $settings );
 
-		if ( null !== $badge_content ) {
-			echo '<div class="jet-woo-builder-archive-product-sale-badge">';
-			echo $badge_content;
-			echo '</div>';
+		if ( ! $badge ) {
+			return;
 		}
+
+		printf( '<div class="jet-woo-builder-archive-product-sale-badge">%s</div>', $badge );
 
 	}
 
 
 	protected function render() {
 
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		$macros_settings = apply_filters( 'jet-woo-builder/jet-woo-builder-archive-sale-badge/macros-settings', [
-			'archive_badge_text' => wp_kses_post( $settings['archive_badge_text'] ),
+			'label' => isset( $settings['archive_badge_text'] ) && ! empty( $settings['archive_badge_text'] ) ? esc_html__( $settings['archive_badge_text'], 'jet-woo-builder' ) : __( 'Sale!', 'jet-woo-builder' ),
 		], $settings );
 
 		if ( jet_woo_builder_tools()->is_builder_content_save() ) {

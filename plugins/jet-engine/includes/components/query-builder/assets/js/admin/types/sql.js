@@ -12,6 +12,7 @@
 		data: function() {
 			return {
 				tablesList: window.jet_query_component_sql.tables,
+				castObjectsList: window.jet_query_component_sql.cast_objects,
 				operators: window.JetEngineQueryConfig.operators_list,
 				dataTypes: window.JetEngineQueryConfig.data_types,
 				query: {},

@@ -23,8 +23,26 @@ if ( ! class_exists( 'Jet_Woo_Builder_Post_Type' ) ) {
 		 */
 		private static $instance = null;
 
+		/**
+		 * Post type slug.
+		 *
+		 * @var string
+		 */
 		protected $post_type = 'jet-woo-builder';
-		protected $meta_key  = 'jet-woo-builder-item';
+
+		/**
+		 * Post type meta key.
+		 *
+		 * @var string
+		 */
+		protected $meta_key = 'jet-woo-builder-item';
+
+		/**
+		 * Template type arg for URL.
+		 *
+		 * @var string
+		 */
+		public $type_tax = 'jet_woo_library_type';
 
 		/**
 		 * Constructor for the class
@@ -38,8 +56,10 @@ if ( ! class_exists( 'Jet_Woo_Builder_Post_Type' ) ) {
 				add_action( 'admin_menu', array( $this, 'add_templates_page' ), 22 );
 			}
 
-			add_action( 'manage_' . $this->post_type . '_posts_columns', array( $this, 'admin_columns_headers' ) );
-			add_action( 'manage_' . $this->post_type . '_posts_custom_column', array( $this, 'admin_columns_content' ), 10, 2 );
+			add_action( 'manage_' . $this->slug() . '_posts_columns', array( $this, 'admin_columns_headers' ) );
+			add_action( 'manage_' . $this->slug() . '_posts_custom_column', array( $this, 'admin_columns_content' ), 10, 2 );
+
+			add_filter( 'views_edit-' . $this->slug(), [ $this, 'print_templates_type_tabs' ] );
 
 			add_filter( 'option_elementor_cpt_support', array( $this, 'set_option_support' ) );
 			add_filter( 'default_option_elementor_cpt_support', array( $this, 'set_option_support' ) );
@@ -58,6 +78,24 @@ if ( ! class_exists( 'Jet_Woo_Builder_Post_Type' ) ) {
 		}
 
 		/**
+		 * Returns post type slug.
+		 *
+		 * @return string
+		 */
+		public function slug() {
+			return $this->post_type;
+		}
+
+		/**
+		 * Returns JetWooBuilder meta key.
+		 *
+		 * @return string
+		 */
+		public function meta_key() {
+			return $this->meta_key;
+		}
+
+		/**
 		 * Remove permalink html
 		 *
 		 * @param $return
@@ -70,11 +108,12 @@ if ( ! class_exists( 'Jet_Woo_Builder_Post_Type' ) ) {
 		 */
 		public function remove_permalink_action( $return, $post_id, $new_title, $new_slug, $post ) {
 
-			if ( $this->post_type === $post->post_type ) {
+			if ( $this->slug() === $post->post_type ) {
 				return '';
 			}
 
 			return $return;
+
 		}
 
 		/**
@@ -87,7 +126,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Post_Type' ) ) {
 		 */
 		public function remove_view_action( $actions, $post ) {
 
-			if ( $this->post_type === $post->post_type ) {
+			if ( $this->slug() === $post->post_type ) {
 				unset( $actions['view'] );
 			}
 
@@ -96,7 +135,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Post_Type' ) ) {
 		}
 
 		/**
-		 * Create new template
+		 * Create new template.
 		 *
 		 * @return void
 		 */
@@ -104,33 +143,38 @@ if ( ! class_exists( 'Jet_Woo_Builder_Post_Type' ) ) {
 
 			if ( ! current_user_can( 'edit_posts' ) ) {
 				wp_die(
-					esc_html__( 'You don\'t have permissions to do this', 'jet-woo-builder' ),
-					esc_html__( 'Error', 'jet-woo-builder' )
+					__( 'You don\'t have permissions to do this', 'jet-woo-builder' ),
+					__( 'Error', 'jet-woo-builder' )
 				);
 			}
 
-			$doc_types     = jet_woo_builder()->documents->get_document_types();
-			$default_type  = $doc_types['single']['slug'];
-			$type          = isset( $_REQUEST['template_type'] ) ? $_REQUEST['template_type'] : $default_type;
-			$name          = isset( $_REQUEST['template_name'] ) ? $_REQUEST['template_name'] : '';
-			$documents     = Elementor\Plugin::instance()->documents;
-			$doc_type      = $documents->get_document_type( $type );
-			$template_data = '';
-			$templates     = array();
+			$doc_types = jet_woo_builder()->documents->get_document_types();
+			$type      = isset( $_REQUEST['template_type'] ) ? $_REQUEST['template_type'] : $doc_types['single']['slug'];
+			$documents = Elementor\Plugin::instance()->documents;
+			$doc_type  = $documents->get_document_type( $type );
 
+			if ( ! $doc_type ) {
+				wp_die(
+					__( 'Incorrect template type. Please try again.', 'jet-woo-builder' ),
+					__( 'Error', 'jet-woo-builder' )
+				);
+			}
+
+			$template_data = '';
+			$templates     = [];
 
 			if ( $type === $doc_types['single']['slug'] ) {
 				$template  = isset( $_REQUEST['template_single'] ) ? $_REQUEST['template_single'] : '';
-				$templates = $this->predesigned_single_templates();
+				$templates = $this->predesigned_templates( 'single', 8 );
 			} else if ( $type === $doc_types['archive']['slug'] ) {
 				$template  = isset( $_REQUEST['template_archive'] ) ? $_REQUEST['template_archive'] : '';
-				$templates = $this->predesigned_archive_templates();
+				$templates = $this->predesigned_templates( 'archive' );
 			} else if ( $type === $doc_types['category']['slug'] ) {
 				$template  = isset( $_REQUEST['template_category'] ) ? $_REQUEST['template_category'] : '';
-				$templates = $this->predesigned_category_templates();
+				$templates = $this->predesigned_templates( 'category' );
 			} else if ( $type === $doc_types['shop']['slug'] ) {
 				$template  = isset( $_REQUEST['template_shop'] ) ? $_REQUEST['template_shop'] : '';
-				$templates = $this->predesigned_shop_templates();
+				$templates = $this->predesigned_templates( 'shop' );
 			} else {
 				$template = '';
 			}
@@ -138,8 +182,8 @@ if ( ! class_exists( 'Jet_Woo_Builder_Post_Type' ) ) {
 			if ( $template ) {
 				if ( ! isset( $templates[ $template ] ) ) {
 					wp_die(
-						esc_html__( 'This template not registered', 'jet-woo-builder' ),
-						esc_html__( 'Error', 'jet-woo-builder' )
+						__( 'This template not registered', 'jet-woo-builder' ),
+						__( 'Error', 'jet-woo-builder' )
 					);
 				}
 
@@ -151,22 +195,26 @@ if ( ! class_exists( 'Jet_Woo_Builder_Post_Type' ) ) {
 				include $content;
 
 				$template_data = ob_get_clean();
-
 			}
 
-			$meta_input = array(
+			$meta_input = [
 				'_elementor_edit_mode'   => 'builder',
 				$doc_type::TYPE_META_KEY => esc_attr( $type ),
-			);
+			];
 
 			if ( ! empty( $template_data ) ) {
 				$meta_input['_elementor_data'] = wp_slash( $template_data );
 			}
 
-			$post_data = array(
+			$post_data = [
 				'post_type'  => $this->slug(),
 				'meta_input' => $meta_input,
-			);
+				'tax_input'  => [
+					$this->type_tax => $type,
+				],
+			];
+
+			$name = isset( $_REQUEST['template_name'] ) ? $_REQUEST['template_name'] : '';
 
 			if ( $name ) {
 				$post_data['post_title'] = esc_attr( $name );
@@ -176,19 +224,14 @@ if ( ! class_exists( 'Jet_Woo_Builder_Post_Type' ) ) {
 
 			if ( ! $template_id ) {
 				wp_die(
-					esc_html__( 'Can\'t create template. Please try again', 'jet-woo-builder' ),
-					esc_html__( 'Error', 'jet-woo-builder' )
+					__( 'Can\'t create template. Please try again', 'jet-woo-builder' ),
+					__( 'Error', 'jet-woo-builder' )
 				);
 			}
 
-			if ( version_compare( ELEMENTOR_VERSION, '2.6.0', '<' ) ) {
-				$redirect = Elementor\Utils::get_edit_link( $template_id );
-			} else {
-				$redirect = Elementor\Plugin::$instance->documents->get( $template_id )->get_edit_url();
-			}
+			$redirect = Elementor\Plugin::$instance->documents->get( $template_id )->get_edit_url();
 
 			wp_redirect( $redirect );
-
 			die();
 
 		}
@@ -228,142 +271,33 @@ if ( ! class_exists( 'Jet_Woo_Builder_Post_Type' ) ) {
 		}
 
 		/**
-		 * Returns predesigned templates for single product
+		 * Predesigned templates.
 		 *
-		 * @return array
-		 */
-		public function predesigned_single_templates() {
-
-			$base_url = jet_woo_builder()->plugin_url( 'includes/templates/single/' );
-			$base_dir = jet_woo_builder()->plugin_path( 'includes/templates/single/' );
-
-			return apply_filters( 'jet-woo-builder/predesigned-single-templates', array(
-				'layout-1' => array(
-					'content' => $base_dir . 'layout-1/template.json',
-					'thumb'   => $base_url . 'layout-1/thumbnail.png',
-				),
-				'layout-2' => array(
-					'content' => $base_dir . 'layout-2/template.json',
-					'thumb'   => $base_url . 'layout-2/thumbnail.png',
-				),
-				'layout-3' => array(
-					'content' => $base_dir . 'layout-3/template.json',
-					'thumb'   => $base_url . 'layout-3/thumbnail.png',
-				),
-				'layout-4' => array(
-					'content' => $base_dir . 'layout-4/template.json',
-					'thumb'   => $base_url . 'layout-4/thumbnail.png',
-				),
-				'layout-5' => array(
-					'content' => $base_dir . 'layout-5/template.json',
-					'thumb'   => $base_url . 'layout-5/thumbnail.png',
-				),
-				'layout-6' => array(
-					'content' => $base_dir . 'layout-6/template.json',
-					'thumb'   => $base_url . 'layout-6/thumbnail.png',
-				),
-				'layout-7' => array(
-					'content' => $base_dir . 'layout-7/template.json',
-					'thumb'   => $base_url . 'layout-7/thumbnail.png',
-				),
-				'layout-8' => array(
-					'content' => $base_dir . 'layout-8/template.json',
-					'thumb'   => $base_url . 'layout-8/thumbnail.png',
-				),
-			) );
-
-		}
-
-		/**
-		 * Returns predesigned templates for archive product
+		 * Return template presets while creating new template.
 		 *
-		 * @return array
-		 */
-		public function predesigned_archive_templates() {
-
-			$base_url = jet_woo_builder()->plugin_url( 'includes/templates/archive/' );
-			$base_dir = jet_woo_builder()->plugin_path( 'includes/templates/archive/' );
-
-			return apply_filters( 'jet-woo-builder/predesigned-archive-templates', array(
-				'layout-1' => array(
-					'content' => $base_dir . 'layout-1/template.json',
-					'thumb'   => $base_url . 'layout-1/thumbnail.png',
-				),
-				'layout-2' => array(
-					'content' => $base_dir . 'layout-2/template.json',
-					'thumb'   => $base_url . 'layout-2/thumbnail.png',
-				),
-				'layout-3' => array(
-					'content' => $base_dir . 'layout-3/template.json',
-					'thumb'   => $base_url . 'layout-3/thumbnail.png',
-				),
-				'layout-4' => array(
-					'content' => $base_dir . 'layout-4/template.json',
-					'thumb'   => $base_url . 'layout-4/thumbnail.png',
-				),
-			) );
-
-		}
-
-		/**
-		 * Returns predesigned templates for category product
+		 * @since  1.13.0
+		 * @access public
 		 *
-		 * @return array
-		 */
-		public function predesigned_category_templates() {
-
-			$base_url = jet_woo_builder()->plugin_url( 'includes/templates/category/' );
-			$base_dir = jet_woo_builder()->plugin_path( 'includes/templates/category/' );
-
-			return apply_filters( 'jet-woo-builder/predesigned-category-templates', array(
-				'layout-1' => array(
-					'content' => $base_dir . 'layout-1/template.json',
-					'thumb'   => $base_url . 'layout-1/thumbnail.png',
-				),
-				'layout-2' => array(
-					'content' => $base_dir . 'layout-2/template.json',
-					'thumb'   => $base_url . 'layout-2/thumbnail.png',
-				),
-				'layout-3' => array(
-					'content' => $base_dir . 'layout-3/template.json',
-					'thumb'   => $base_url . 'layout-3/thumbnail.png',
-				),
-				'layout-4' => array(
-					'content' => $base_dir . 'layout-4/template.json',
-					'thumb'   => $base_url . 'layout-4/thumbnail.png',
-				),
-			) );
-
-		}
-
-		/**
-		 * Returns predesigned templates for shop product
+		 * @param string $type  Template type.
+		 * @param int    $count Layout number.
 		 *
-		 * @return array
+		 * @return array An array of template types presets.
 		 */
-		public function predesigned_shop_templates() {
+		public function predesigned_templates( $type = 'single', $count = 4 ) {
 
-			$base_url = jet_woo_builder()->plugin_url( 'includes/templates/shop/' );
-			$base_dir = jet_woo_builder()->plugin_path( 'includes/templates/shop/' );
+			$url = jet_woo_builder()->plugin_url( 'templates/presets/' . $type . '/' );
+			$dir = jet_woo_builder()->plugin_path( 'templates/presets/' . $type . '/' );
 
-			return apply_filters( 'jet-woo-builder/predesigned-shop-templates', array(
-				'layout-1' => array(
-					'content' => $base_dir . 'layout-1/template.json',
-					'thumb'   => $base_url . 'layout-1/thumbnail.png',
-				),
-				'layout-2' => array(
-					'content' => $base_dir . 'layout-2/template.json',
-					'thumb'   => $base_url . 'layout-2/thumbnail.png',
-				),
-				'layout-3' => array(
-					'content' => $base_dir . 'layout-3/template.json',
-					'thumb'   => $base_url . 'layout-3/thumbnail.png',
-				),
-				'layout-4' => array(
-					'content' => $base_dir . 'layout-4/template.json',
-					'thumb'   => $base_url . 'layout-4/thumbnail.png',
-				),
-			) );
+			$presets = [];
+
+			for ( $i = 1; $i <= $count; $i++ ) {
+				$presets[ 'layout-' . $i ] = [
+					'content' => $dir . 'layout-' . $i . '/template.json',
+					'thumb'   => $url . 'layout-' . $i . '/thumbnail.png',
+				];
+			}
+
+			return apply_filters( 'jet-woo-builder/predesigned-' . $type . '-templates', $presets );
 
 		}
 
@@ -379,6 +313,9 @@ if ( ! class_exists( 'Jet_Woo_Builder_Post_Type' ) ) {
 			if ( 'edit-jet-woo-builder' !== $current_screen->id ) {
 				return false;
 			}
+
+			$doc_types = jet_woo_builder()->documents->get_document_types();
+			$selected  = isset( $_GET[ $this->type_tax ] ) ? $_GET[ $this->type_tax ] : '';
 
 			$create_action = add_query_arg(
 				[
@@ -466,96 +403,82 @@ if ( ! class_exists( 'Jet_Woo_Builder_Post_Type' ) ) {
 		}
 
 		/**
-		 * Set required post columns
+		 * Post type custom columns.
 		 *
-		 * @param array $posts_columns
+		 * Set required JetWooBuilder templates post columns.
+		 *
+		 * @param array $columns
 		 *
 		 * @return array
 		 */
-		public function admin_columns_headers( $posts_columns ) {
+		public function admin_columns_headers( $columns ) {
 
-			$offset        = 2;
-			$posts_columns = array_slice( $posts_columns, 0, $offset, true ) +
-				[ 'type' => esc_html__( 'Type', 'jet-woo-builder' ), ] +
-				array_slice( $posts_columns, $offset, null, true );
+			unset( $columns['date'] );
 
-			$offset        = 3;
-			$posts_columns = array_slice( $posts_columns, 0, $offset, true ) +
-				[ 'condition' => esc_html__( 'Active Condition', 'jet-woo-builder' ), ] +
-				array_slice( $posts_columns, $offset, null, true );
+			$columns['type']       = __( 'Type', 'jet-woo-builder' );
+			$columns['conditions'] = __( 'Active Conditions', 'jet-woo-builder' );
+			$columns['date']       = __( 'Date', 'jet-woo-builder' );
 
-			return $posts_columns;
+			return $columns;
 
 		}
 
 		/**
-		 * Set required post columns content
+		 * Post type custom columns content.
 		 *
-		 * @param string $column_name
+		 * Set required JetWooBuilder templates post columns content.
+		 *
+		 * @param string $column
 		 * @param number $post_id
 		 *
 		 * @return mixed
 		 */
-		public function admin_columns_content( $column_name, $post_id ) {
+		public function admin_columns_content( $column, $post_id ) {
 
-			$post_id = absint( $post_id );
+			$doc_types = jet_woo_builder()->documents->get_document_types();
+			$doc_type  = get_post_meta( $post_id, '_elementor_template_type', true );
 
-			if ( ! $post_id || ! get_post( $post_id ) ) {
-				return false;
-			}
-
-			$template_types = jet_woo_builder()->documents->get_document_types();
-			$doc_type_slug  = get_post_meta( $post_id, '_elementor_template_type', true );
-
-			foreach ( $template_types as $template => $template_type ) {
-				if ( ! isset( $template ) ) {
+			foreach ( $doc_types as $key => $type ) {
+				if ( ! isset( $key ) ) {
 					continue;
 				}
 
-				if ( $doc_type_slug === $template_type['slug'] ) {
-					switch ( $column_name ) {
+				if ( $doc_type === $type['slug'] ) {
+					switch ( $column ) {
 						case 'type':
-							printf( '<div class="jet-woo-builder-template-type">%s</div>', $template_type['name'] );
-							break;
-						case 'condition';
-							$active_templates = [];
-							$template_options = get_option( 'jet_woo_builder' );
+							$link = add_query_arg( [
+								$this->type_tax => $type['slug'],
+							] );
 
-							if ( $template_options || ! empty( $template_options ) ) {
-								foreach ( $template_options as $option => $value ) {
+							printf( '<div class="jet-woo-builder-template-type"><a href="%s">%s</a></div>', $link, $type['name'] );
+
+							break;
+
+						case 'conditions';
+							$active_conditions = [];
+							$templates_options = get_option( 'jet_woo_builder' );
+
+							if ( $templates_options ) {
+								foreach ( $templates_options as $option => $value ) {
 									if ( $post_id === absint( $value ) ) {
 										$option = str_replace( '_', ' ', $option );
 										$option = ucwords( $option );
 
-										array_push( $active_templates, $option );
+										array_push( $active_conditions, $option );
 									}
 								}
 							}
 
-							printf( '<div class="jet-woo-builder-active-conditions">%1$s</div>', implode( ', ', $active_templates ) );
+							printf( '<div class="jet-woo-builder-active-conditions">%1$s</div>', implode( ', ', $active_conditions ) );
+
+							break;
+
+						default:
 							break;
 					}
 				}
 			}
 
-		}
-
-		/**
-		 * Returns post type slug
-		 *
-		 * @return string
-		 */
-		public function slug() {
-			return $this->post_type;
-		}
-
-		/**
-		 * Returns JetWooBuilder meta key
-		 *
-		 * @return string
-		 */
-		public function meta_key() {
-			return $this->meta_key;
 		}
 
 		/**
@@ -576,43 +499,42 @@ if ( ! class_exists( 'Jet_Woo_Builder_Post_Type' ) ) {
 		}
 
 		/**
-		 * Register post type
+		 * Register templates post type.
 		 *
 		 * @return void
 		 */
 		public function register_post_type() {
 
-			$labels = array(
-				'name'          => esc_html__( 'JetWooBuilder Templates', 'jet-woo-builder' ),
-				'singular_name' => esc_html__( 'JetWooBuilder Template', 'jet-woo-builder' ),
-				'add_new'       => esc_html__( 'Create New Template', 'jet-woo-builder' ),
-				'add_new_item'  => esc_html__( 'Create New Template', 'jet-woo-builder' ),
-				'edit_item'     => esc_html__( 'Edit Template', 'jet-woo-builder' ),
-				'menu_name'     => esc_html__( 'JetWooBuilder Templates', 'jet-woo-builder' ),
-			);
+			$labels = [
+				'name'          => __( 'JetWooBuilder Templates', 'jet-woo-builder' ),
+				'singular_name' => __( 'JetWooBuilder Template', 'jet-woo-builder' ),
+				'add_new'       => __( 'Create New Template', 'jet-woo-builder' ),
+				'add_new_item'  => __( 'Create New Template', 'jet-woo-builder' ),
+				'edit_item'     => __( 'Edit Template', 'jet-woo-builder' ),
+				'menu_name'     => __( 'JetWooBuilder Templates', 'jet-woo-builder' ),
+			];
 
-			$args = array(
+			$args = [
 				'labels'              => $labels,
-				'hierarchical'        => false,
-				'description'         => 'description',
-				'taxonomies'          => array(),
 				'public'              => true,
 				'show_ui'             => true,
 				'show_in_menu'        => false,
 				'show_in_admin_bar'   => true,
-				'menu_position'       => null,
-				'menu_icon'           => null,
 				'show_in_nav_menus'   => false,
 				'publicly_queryable'  => true,
 				'exclude_from_search' => true,
-				'has_archive'         => false,
-				'query_var'           => true,
-				'can_export'          => true,
 				'rewrite'             => false,
-				'capability_type'     => 'post',
-				'supports'            => array( 'title' ),
-			);
+			];
 
+			$tax_args = [
+				'label'     => __( 'Type', 'jet-woo-builder' ),
+				'public'    => false,
+				'rewrite'   => false,
+				'show_ui'   => true,
+				'query_var' => is_admin(),
+			];
+
+			register_taxonomy( $this->type_tax, $this->slug(), $tax_args );
 			register_post_type( $this->slug(), $args );
 
 		}
@@ -647,7 +569,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Post_Type' ) ) {
 		}
 
 		/**
-		 * Return products list
+		 * Return products list.
 		 *
 		 * @return array
 		 */
@@ -765,6 +687,38 @@ if ( ! class_exists( 'Jet_Woo_Builder_Post_Type' ) ) {
 			}
 
 			return $default + wp_list_pluck( $templates, 'post_title', 'ID' );
+
+		}
+
+		/**
+		 * Template type tabs.
+		 *
+		 * Print Woo Page builder template types tabs.
+		 *
+		 * @param $edit_links
+		 *
+		 * @return mixed
+		 */
+		public function print_templates_type_tabs( $edit_links ) {
+
+			$doc_types = jet_woo_builder()->documents->get_document_types();
+			$tabs      = [];
+
+			foreach ( $doc_types as $doc_type ) {
+				$tabs[ $doc_type['slug'] ] = $doc_type['name'];
+			}
+
+			$tabs       = array_merge( [ 'all' => __( 'All', 'jet-woo-builder' ) ], $tabs );
+			$active_tab = isset( $_GET[ $this->type_tax ] ) ? $_GET[ $this->type_tax ] : 'all';
+			$page_link  = admin_url( 'edit.php?post_type=' . $this->slug() );
+
+			if ( ! array_key_exists( $active_tab, $tabs ) ) {
+				$active_tab = 'all';
+			}
+
+			include jet_woo_builder()->get_template( 'admin/template-types-tabs.php' );
+
+			return $edit_links;
 
 		}
 

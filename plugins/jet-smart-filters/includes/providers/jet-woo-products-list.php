@@ -10,7 +10,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Woo_List' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Provider_Jet_Woo_List class
 	 */
@@ -24,7 +23,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Woo_List' ) ) {
 		public function __construct() {
 
 			if ( ! jet_smart_filters()->query->is_ajax_filter() ) {
-
 				add_filter( 'shortcode_atts_jet-woo-products-list', array( $this, 'store_default_atts' ), 0, 2 );
 
 				// Add provider and query ID to query
@@ -43,24 +41,19 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Woo_List' ) ) {
 					array( $this, 'store_default_settings' ),
 					0
 				);
-
 			}
-
 		}
 
 		/**
 		 * Returns widget name
-		 * @return [type] [description]
 		 */
 		public function widget_name() {
+
 			return 'jet-woo-products-list';
 		}
 
 		/**
 		 * Store default query args
-		 *
-		 * @param  array  $args Query arguments.
-		 * @return array
 		 */
 		public function store_default_atts( $atts = array() ) {
 
@@ -75,14 +68,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Woo_List' ) ) {
 			jet_smart_filters()->providers->add_provider_settings( $this->get_id(), $atts, $query_id );
 
 			return $atts;
-
 		}
 
 		/**
 		 * Save default widget settings
-		 *
-		 * @param  [type] $widget [description]
-		 * @return [type]         [description]
 		 */
 		public function store_default_settings( $widget ) {
 
@@ -114,14 +103,13 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Woo_List' ) ) {
 			$default_settings['_widget_id'] = $widget->get_id();
 
 			jet_smart_filters()->providers->store_provider_settings( $this->get_id(), $default_settings, $query_id );
-
 		}
 
 		/**
 		 * Returns settings to store list
-		 * @return [type] [description]
 		 */
-		public function settings_to_store(){
+		public function settings_to_store() {
+
 			return apply_filters( 'jet-smart-filters/providers/jet-woo-products-list/settings-list', [
 				'show_compare',
 				'compare_button_order',
@@ -167,19 +155,17 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Woo_List' ) ) {
 
 		/**
 		 * Get provider name
-		 *
-		 * @return string
 		 */
 		public function get_name() {
+
 			return __( 'JetWooBuilder Products List', 'jet-smart-filters' );
 		}
 
 		/**
 		 * Get provider ID
-		 *
-		 * @return string
 		 */
 		public function get_id() {
+
 			return 'jet-woo-products-list';
 		}
 
@@ -207,7 +193,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Woo_List' ) ) {
 			}
 			
 			if( 'yes' === $query->get( 'jet_use_current_query' ) && $query->get( 'wc_query' ) ){
-
 				$default_query = array(
 					'post_type'         => $query->get( 'post_type' ),
 					'wc_query'          => $query->get( 'wc_query' ),
@@ -230,9 +215,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Woo_List' ) ) {
 				}
 				
 				jet_smart_filters()->query->store_provider_default_query( $this->get_id(), $default_query, $this->_query_id );
-
 			} else {
-				
 				$provider = $query->get( 'jet_smart_filters' );
 				$provider_args = jet_smart_filters()->query->decode_provider_data( $provider );
 				
@@ -257,17 +240,12 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Woo_List' ) ) {
 					}
 
 					jet_smart_filters()->query->store_provider_default_query( $this->get_id(), $default_query, $this->_query_id );
-
 				}
-				
 			}
-
 		}
 
 		/**
 		 * Get filtered provider content
-		 *
-		 * @return string
 		 */
 		public function ajax_get_content() {
 
@@ -295,24 +273,21 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Woo_List' ) ) {
 			$shortcode->set_settings( $attributes );
 
 			echo $shortcode->do_shortcode( $attributes );
-
 		}
 
 		/**
 		 * Get provider wrapper selector
-		 *
-		 * @return string
 		 */
 		public function get_wrapper_selector() {
+
 			return '.elementor-jet-woo-products-list.jet-woo-builder';
 		}
 
 		/**
 		 * If added unique ID this paramter will determine - search selector inside this ID, or is the same element
-		 *
-		 * @return bool
 		 */
 		public function in_depth() {
+
 			return true;
 		}
 
@@ -334,13 +309,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Woo_List' ) ) {
 			);
 
 			add_filter( 'pre_get_posts', array( $this, 'add_query_args' ), 10 );
-
 		}
 
 		/**
 		 * Add custom query arguments
-		 *
-		 * @param array $args [description]
 		 */
 		public function add_query_args( $query ) {
 
@@ -365,8 +337,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Woo_List' ) ) {
 					$query->set( $query_var, $value );
 				}
 			}
-
 		}
 	}
-
 }

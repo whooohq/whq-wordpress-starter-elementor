@@ -10,19 +10,16 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Archive' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Provider_EPro_Archive class
 	 */
 	class Jet_Smart_Filters_Provider_EPro_Archive extends Jet_Smart_Filters_Provider_Base {
-
 		/**
 		 * Watch for default query
 		 */
 		public function __construct() {
 
 			if ( ! jet_smart_filters()->query->is_ajax_filter() ) {
-
 				add_filter(
 					'elementor/theme/posts_archive/query_posts/query_vars',
 					array( $this, 'store_default_query' ),
@@ -30,33 +27,30 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Archive' ) ) {
 				);
 
 				add_action( 'elementor/widget/before_render_content', array( $this, 'store_default_settings' ), 0 );
-
 			}
-
 		}
 
 		/**
 		 * Hook apply query function
-		 *
-		 * @return [type] [description]
 		 */
 		public function hook_apply_query() {
+
 			add_filter( 'elementor/theme/posts_archive/query_posts/query_vars', array( $this, 'add_query_args' ), 10 );
 		}
 
 		/**
 		 * Returns Elementor Pro apropriate widget name
-		 * @return [type] [description]
 		 */
 		public function widget_name() {
+
 			return 'archive-posts';
 		}
 
 		/**
 		 * Returns settings to store list
-		 * @return [type] [description]
 		 */
 		public function settings_to_store() {
+
 			return array(
 				'_skin',
 				'archive_custom_skin_template',
@@ -111,9 +105,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Archive' ) ) {
 
 		/**
 		 * Save default widget settings
-		 *
-		 * @param  [type] $widget [description]
-		 * @return [type]         [description]
 		 */
 		public function store_default_settings( $widget ) {
 
@@ -138,19 +129,15 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Archive' ) ) {
 			$default_settings['_el_widget_id'] = $widget->get_id();
 
 			jet_smart_filters()->providers->store_provider_settings( $this->get_id(), $default_settings, $query_id );
-
 		}
 
 		/**
 		 * Save default query
-		 *
-		 * @param  [type] $query [description]
-		 * @return [type]        [description]
 		 */
 		public function store_default_query( $query ) {
 
 			$default_query = array(
-				'post_type'      => get_post_type(),
+				//'post_type'    => get_post_type(), - removed to filter taxonomy with multiple post types
 				'paged'          => ! empty( $query['paged'] ) ? $query['paged'] : 1,
 				'posts_per_page' => ! empty( $query['posts_per_page'] ) ? $query['posts_per_page'] : 10,
 				'post_status'    => 'publish'
@@ -182,25 +169,22 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Archive' ) ) {
 
 		/**
 		 * Get provider name
-		 *
-		 * @return string
 		 */
 		public function get_name() {
+
 			return __( 'Elementor Pro Archive', 'jet-smart-filters' );
 		}
 
 		/**
 		 * Get provider ID
-		 *
-		 * @return string
 		 */
 		public function get_id() {
+
 			return 'epro-archive';
 		}
 
 		/**
 		 * Ensure all settings are passed
-		 * @return [type] [description]
 		 */
 		public function ensure_settings( $settings ) {
 
@@ -215,13 +199,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Archive' ) ) {
 			}
 
 			return $settings;
-
 		}
 
 		/**
 		 * Get filtered provider content
-		 *
-		 * @return string
 		 */
 		public function ajax_get_content() {
 
@@ -257,33 +238,29 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Archive' ) ) {
 			} else {
 				echo '<div class="elementor-widget-container"></div>';
 			}
-
 		}
 
 		/**
 		 * Get provider wrapper selector
-		 *
-		 * @return string
 		 */
 		public function get_wrapper_selector() {
+
 			return '.elementor-widget-archive-posts .elementor-widget-container';
 		}
 
 		/**
 		 * Action for wrapper selector - 'insert' into it or 'replace'
-		 *
-		 * @return string
 		 */
 		public function get_wrapper_action() {
+
 			return 'replace';
 		}
 
 		/**
 		 * If added unique ID this paramter will determine - search selector inside this ID, or is the same element
-		 *
-		 * @return bool
 		 */
 		public function in_depth() {
+
 			return false;
 		}
 
@@ -299,13 +276,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Archive' ) ) {
 			}
 
 			$this->hook_apply_query();
-
 		}
 
 		/**
 		 * Add custom query arguments
-		 *
-		 * @param array $args [description]
 		 */
 		public function add_query_args( $query ) {
 
@@ -316,8 +290,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Archive' ) ) {
 			$query['jet_smart_filters'] = $this->get_id() . '/default';
 
 			return $query;
-
 		}
 	}
-
 }

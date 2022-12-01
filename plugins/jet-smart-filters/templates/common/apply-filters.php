@@ -22,5 +22,6 @@ if ( empty( $apply_button_text ) ) {
 	<button
 		type="button"
 		class="apply-filters__button"
+		<?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>
 	><?php echo $apply_button_text; ?></button>
 </div>

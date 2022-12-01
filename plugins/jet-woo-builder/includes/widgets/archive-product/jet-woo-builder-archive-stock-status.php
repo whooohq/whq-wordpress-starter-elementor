@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_Archive_Stock_Status
- * Name: Stock Status
+ * Name: Archive Stock Status
  * Slug: jet-woo-builder-archive-stock-status
  */
 
@@ -20,7 +20,7 @@ class Jet_Woo_Builder_Archive_Stock_Status extends Widget_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Stock Status', 'jet-woo-builder' );
+		return __( 'Archive Stock Status', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
@@ -52,20 +52,18 @@ class Jet_Woo_Builder_Archive_Stock_Status extends Widget_Base {
 
 		$this->start_controls_section(
 			'section_stock_style',
-			array(
-				'label'      => esc_html__( 'Stock Status', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
+			[
+				'label' => __( 'Stock Status', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
 		);
 
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
-			array(
+			[
 				'name'     => 'stock_typography',
-				'scheme'   => Typography::TYPOGRAPHY_1,
 				'selector' => '{{WRAPPER}} ' . $css_scheme['stock'],
-			)
+			]
 		);
 
 		$this->start_controls_tabs( 'stock_style_tabs' );
@@ -79,13 +77,13 @@ class Jet_Woo_Builder_Archive_Stock_Status extends Widget_Base {
 
 		$this->add_control(
 			'in_stock_color',
-			array(
-				'label'     => esc_html__( 'In Stock Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
+				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['in_stock'] => 'color: {{VALUE}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->end_controls_tab();
@@ -99,13 +97,13 @@ class Jet_Woo_Builder_Archive_Stock_Status extends Widget_Base {
 
 		$this->add_control(
 			'out_of_stock_color',
-			array(
-				'label'     => esc_html__( 'Out Of Stock Color', 'jet-woo-builder' ),
+			[
+				'label'     => esc_html__( 'Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
+				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['out_of_stock'] => 'color: {{VALUE}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->end_controls_tab();
@@ -131,14 +129,19 @@ class Jet_Woo_Builder_Archive_Stock_Status extends Widget_Base {
 	}
 
 	/**
-	 * Returns CSS selector for nested element
+	 * CSS selector.
 	 *
-	 * @param null $el
+	 * Returns CSS selector for nested element.
+	 *
+	 * @since  1.2.0
+	 * @access public
+	 *
+	 * @param null $el Selector.
 	 *
 	 * @return string
 	 */
 	public function css_selector( $el = null ) {
-		return sprintf( '{{WRAPPER}} .%1$s %2$s', $this->get_name(), $el );
+		return sprintf( '{{WRAPPER}} .%1$s%2$s', $this->get_name(), $el );
 	}
 
 	public static function render_callback() {

@@ -14,11 +14,11 @@ class User_Geolocation extends \Elementor\Jet_Smart_Filters_Base_Widget {
 	}
 
 	public function get_title() {
-		return __( 'User Geolcation', 'jet-engine' );
+		return __( 'User Geolocation', 'jet-engine' );
 	}
 
 	public function get_icon() {
-		return 'jet-smart-filters-icon-active-filters';
+		return 'jet-engine-icon-user-geolocation';
 	}
 
 	public function get_help_url() {}

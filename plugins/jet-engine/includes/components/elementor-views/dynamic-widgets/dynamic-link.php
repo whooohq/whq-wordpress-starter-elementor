@@ -5,7 +5,7 @@ use Elementor\Group_Control_Typography;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class Jet_Listing_Dynamic_Link_Widget extends Widget_Base {
+class Jet_Listing_Dynamic_Link_Widget extends \Jet_Listing_Dynamic_Widget {
 
 	public function get_name() {
 		return 'jet-listing-dynamic-link';
@@ -110,6 +110,9 @@ class Jet_Listing_Dynamic_Link_Widget extends Widget_Base {
 				'default'     => '',
 				'label_block' => true,
 				'description' => __( 'If empty will redirect to home page', 'jet-engine' ),
+				'dynamic'     => array(
+					'active' => true,
+				),
 				'condition'   => array(
 					'dynamic_link_source' => 'delete_post_link',
 				),

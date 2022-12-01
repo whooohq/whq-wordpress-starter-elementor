@@ -10,12 +10,10 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Engine_Calendar' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Provider_Jet_Engine_Calendar class
 	 */
 	class Jet_Smart_Filters_Provider_Jet_Engine_Calendar extends Jet_Smart_Filters_Provider_Base {
-
 		/**
 		 * Watch for default query
 		 */
@@ -26,48 +24,29 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Engine_Calendar' ) ) {
 			}
 
 			if ( $this->is_month_request() ) {
-				add_filter( 'jet-smart-filters/query/allowed-ajax-actions', array( $this, 'allow_month_action' ) );
 				add_filter( 'jet-engine/listing/grid/custom-settings', array( $this, 'add_month_settings' ), 10, 2 );
 				add_filter( 'jet-engine/listing/grid/posts-query-args', array( $this, 'add_query_args' ), 10, 2 );
 			}
-
-		}
-
-		/**
-		 * Allow month action
-		 *
-		 * @return array
-		 */
-		public function allow_month_action( $allowed_actions = array() ) {
-
-			$allowed_actions[] = 'jet_engine_calendar_get_month';
-			return $allowed_actions;
-
 		}
 
 		/**
 		 * Check if get month request is processed
-		 *
-		 * @return boolean [description]
 		 */
 		public function is_month_request() {
 
-			if ( ! wp_doing_ajax() ) {
-				return false;
+			if ( isset( $_REQUEST['action'] ) && 'jet_engine_calendar_get_month' === $_REQUEST['action'] ) {
+				return true;
 			}
 
-			if ( ! isset( $_REQUEST['action'] ) || 'jet_engine_calendar_get_month' !== $_REQUEST['action'] ) {
-				return false;
+			if ( isset( $_REQUEST['jet_engine_action'] ) && 'jet_engine_calendar_get_month' === $_REQUEST['jet_engine_action'] ) {
+				return true;
 			}
 
-			return true;
-
+			return false;
 		}
 
 		/**
 		 * Add widget settings
-		 *
-		 * @return array
 		 */
 		public function add_month_settings( $settings, $widget ) {
 
@@ -80,14 +59,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Engine_Calendar' ) ) {
 			} else {
 				return $settings;
 			}
-
 		}
 
 		/**
 		 * Store default query args
-		 *
-		 * @param  [type] $args [description]
-		 * @return [type]       [description]
 		 */
 		public function store_default_query( $args, $widget ) {
 
@@ -139,26 +114,22 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Engine_Calendar' ) ) {
 
 		/**
 		 * Get provider name
-		 *
-		 * @return string
 		 */
 		public function get_name() {
+
 			return __( 'JetEngine Calendar', 'jet-smart-filters' );
 		}
 
 		/**
 		 * Get provider ID
-		 *
-		 * @return string
 		 */
 		public function get_id() {
+
 			return 'jet-engine-calendar';
 		}
 
 		/**
 		 * Get filtered provider content
-		 *
-		 * @return string
 		 */
 		public function ajax_get_content() {
 
@@ -197,15 +168,13 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Engine_Calendar' ) ) {
 			), array() );
 
 			$widget->render_posts();
-
 		}
 
 		/**
 		 * Get provider wrapper selector
-		 *
-		 * @return string
 		 */
 		public function get_wrapper_selector() {
+
 			return '.elementor-widget-jet-listing-calendar > .elementor-widget-container';
 		}
 
@@ -233,13 +202,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Engine_Calendar' ) ) {
 			}
 
 			add_filter( 'jet-engine/listing/grid/posts-query-args', array( $this, 'add_query_args' ), 10, 2 );
-
 		}
 
 		/**
 		 * Add custom query arguments
-		 *
-		 * @param array $args [description]
 		 */
 		public function add_query_args( $args, $widget ) {
 
@@ -272,5 +238,4 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Engine_Calendar' ) ) {
 			return array_merge( $args, jet_smart_filters()->query->get_query_args() );
 		}
 	}
-
 }

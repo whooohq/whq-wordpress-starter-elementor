@@ -69,11 +69,13 @@ class Module {
 		require_once $this->module_path( 'forms/create-form.php' );
 		require_once $this->module_path( 'forms/create-jfb-form.php' );
 		require_once $this->module_path( 'forms/preset-jfb.php' );
+		require_once $this->module_path( 'forms/fields-jfb.php' );
 
 		$this->form_preset = new Forms\Preset();
 		new Forms\Create_Form();
 		new Forms\Create_Jfb_Form();
 		new Forms\Preset_Jfb();
+		new Forms\Fields_Jfb();
 
 		if ( jet_engine()->modules->is_module_active( 'data-stores' ) ) {
 			require_once $this->module_path( 'data-stores/manager.php' );

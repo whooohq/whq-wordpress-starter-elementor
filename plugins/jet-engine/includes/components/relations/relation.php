@@ -22,6 +22,8 @@ if ( ! defined( 'WPINC' ) ) {
  * 'child_control'  => true - register or not control for related parents on the children objects edit page
  * 'parent_manager' => true - allow to create new objects of children type from parent object edit page
  * 'child_manager'  => true - allow to create new objects of parent type from children objects edit page
+ * 'parent_allow_delete' => true - allow to delete objects of children type from parent object edit page
+ * 'child_allow_delete'  => true - allow to delete objects of parent type from children objects edit page
  * 'parent_table' => array( 'image' => array( 'enable' => true, 'callback' => '', 'name' => 'Image' ) ) - additional table columns for parent object edit page control
  * 'child_table'  => array( 'image' => array( 'enable' => true, 'callback' => '', 'name' => 'Image' ) ) - additional table columns for child object edit page control
  * 'meta_fields'    => array() - list of meta fields for relation
@@ -554,7 +556,7 @@ class Relation {
 
 	/**
 	 * Returns related items for given object
-	 * Automtically detects - we need to get children or parent items by object.
+	 * Automatically detects - we need to get children or parent items by object.
 	 *
 	 * @param  [type] $object [description]
 	 * @return [type]         [description]

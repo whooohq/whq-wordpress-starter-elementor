@@ -13,10 +13,11 @@ class Query {
 	public function add_query_args( $args, $render, $settings ) {
 
 		if ( jet_engine()->listings->is_listing_ajax() && ! empty( $_REQUEST['query'] ) ) {
-			$args = $_REQUEST['query'];
 			remove_filter( 'jet-engine/listing/grid/posts-query-args', array( $this, 'add_query_args' ), 10 );
 
-			if ( ! empty( $args['is_front_store'] ) ) {
+			if ( ! empty( $_REQUEST['query']['is_front_store'] ) ) {
+				$args = $_REQUEST['query'];
+
 				add_filter( 'jet-engine/listing/grid/add-query-data', array( $this, 'add_query_data_trigger' ) );
 				unset( $args['is_front_store'] );
 			}

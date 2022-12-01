@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_Checkout_Billing
- * Name: Billing Form
+ * Name: Checkout Billing Form
  * Slug: jet-checkout-billing
  */
 
@@ -20,7 +20,7 @@ class Jet_Woo_Builder_Checkout_Billing extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return __( 'Billing Form', 'jet-woo-builder' );
+		return __( 'Checkout Billing Form', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
@@ -61,7 +61,7 @@ class Jet_Woo_Builder_Checkout_Billing extends Jet_Woo_Builder_Base {
 
 		jet_woo_builder_common_controls()->register_wc_style_warning( $this );
 
-		jet_woo_builder_common_controls()->register_checkout_forms_manage_fields_controls( $this, 'billing' );
+		jet_woo_builder_common_controls()->register_checkout_forms_manage_fields_controls( $this, 'billing', $css_scheme );
 
 		$this->end_controls_section();
 
@@ -111,7 +111,8 @@ class Jet_Woo_Builder_Checkout_Billing extends Jet_Woo_Builder_Base {
 				],
 				'default'    => [ 'px' => 0 ],
 				'selectors'  => [
-					'{{WRAPPER}} ' . $css_scheme['field'] => 'padding-left: calc( {{SIZE}}{{UNIT}}/2 ); padding-right: calc( {{SIZE}}{{UNIT}}/2 ); margin-left: calc( -{{SIZE}}{{UNIT}}/2 ); margin-right: calc( -{{SIZE}}{{UNIT}}/2 );',
+					'{{WRAPPER}} ' . $css_scheme['field']                    => 'padding-left: calc( {{SIZE}}{{UNIT}}/2 ); padding-right: calc( {{SIZE}}{{UNIT}}/2 );',
+					'{{WRAPPER}} .woocommerce-billing-fields__field-wrapper' => 'margin-left: calc( -{{SIZE}}{{UNIT}}/2 ); margin-right: calc( -{{SIZE}}{{UNIT}}/2 );',
 				],
 			]
 		);
@@ -153,12 +154,15 @@ class Jet_Woo_Builder_Checkout_Billing extends Jet_Woo_Builder_Base {
 				$priority = 10;
 
 				foreach ( $settings['field_list'] as $key => $field ) {
-					$field_key = 'billing_' . $field['field_key'];
+					$field_key     = 'billing_' . $field['field_key'];
+					$field_classes = is_array( $field['field_class'] ) ? $field['field_class'] : explode( ' ', $field['field_class'] );
+
+					$field_classes[] = 'elementor-repeater-item-' . $field['_id'];
 
 					$items[ $field_key ] = [
 						'label'       => $field['field_label'],
 						'required'    => filter_var( $field['field_required'], FILTER_VALIDATE_BOOLEAN ),
-						'class'       => is_array( $field['field_class'] ) ? $field['field_class'] : explode( ' ', $field['field_class'] ),
+						'class'       => $field_classes,
 						'default'     => $field['field_default_value'],
 						'placeholder' => $field['field_placeholder'],
 						'validate'    => $field['field_validation'],

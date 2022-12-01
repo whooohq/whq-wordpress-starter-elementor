@@ -253,12 +253,7 @@ if ( ! class_exists( 'Jet_Engine_Listings' ) ) {
 		 * @return array
 		 */
 		public function get_post_types_for_options() {
-
-			$args = array(
-				'public' => true,
-			);
-
-			$post_types = get_post_types( $args, 'objects', 'and' );
+			$post_types = get_post_types( array(), 'objects', 'and' );
 			$post_types = wp_list_pluck( $post_types, 'label', 'name' );
 
 			if ( isset( $post_types[ jet_engine()->post_type->slug() ] ) ) {
@@ -544,6 +539,7 @@ if ( ! class_exists( 'Jet_Engine_Listings' ) ) {
 						'dynamic_field_filter' => 'yes',
 						'filter_callback'      => array( 'date', 'date_i18n' ),
 					),
+					'has_html'    => true,
 					'description' => sprintf( '<a href="https://wordpress.org/support/article/formatting-date-and-time/" target="_blank">%s</a>', __( 'Documentation on date and time formatting', 'jet-engine' ) ),
 				),
 				'num_dec_point' => array(
@@ -595,7 +591,7 @@ if ( ! class_exists( 'Jet_Engine_Listings' ) ) {
 					'max'         => 10,
 					'step'        => 1,
 					'default'     => 3,
-					'description' => __( 'Digit places number needs to be to not have zeros added', 'jet-engine' ),
+					'description' => __( 'Digit place numbers need not to have zeros added', 'jet-engine' ),
 					'condition'   => array(
 						'dynamic_field_filter' => 'yes',
 						'filter_callback'      => array( 'zeroise' ),

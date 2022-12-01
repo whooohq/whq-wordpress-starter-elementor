@@ -35,15 +35,19 @@ if ( ! class_exists( 'Jet_Woo_Builder_Template_Functions' ) ) {
 
 			global $product;
 
-			$injection = apply_filters( 'jet-woo-builder/template-functions/product_sale_flash/injection', false, $settings );
+			if ( ! is_a( $product, 'WC_Product' ) ) {
+				return '';
+			}
 
-			if ( ! is_a( $product, 'WC_Product' ) || ( ! $product->is_on_sale() && ! $injection ) ) {
-				return null;
+			$on_sale = apply_filters( 'jet-woo-builder/template-functions/product-sale-flash/on-sale', $product->is_on_sale(), $product, $settings );
+
+			if ( ! $on_sale ) {
+				return '';
 			}
 
 			$html = sprintf( '<div class="jet-woo-product-badge jet-woo-product-badge__sale">%s</div>', $badge_text );
 
-			return apply_filters( 'jet-woo-builder/template-functions/product_sale_flash', $html, $settings );
+			return apply_filters( 'jet-woo-builder/template-functions/product-sale-flash', $html, $product, $settings );
 
 		}
 
@@ -65,11 +69,16 @@ if ( ! class_exists( 'Jet_Woo_Builder_Template_Functions' ) ) {
 		}
 
 		/**
-		 * Returns custom stock status html
+		 * Get custom product stock status.
 		 *
-		 * @param string $in_stock
-		 * @param string $on_backorder
-		 * @param string $out_of_stock
+		 * Returns custom stock status html markup.
+		 *
+		 * @since 1.7.5
+		 * @since 2.0.4 Updated variable values.
+		 *
+		 * @param string $in_stock     In stock status label.
+		 * @param string $on_backorder On backorder status label.
+		 * @param string $out_of_stock Out of stock status label.
 		 *
 		 * @return string
 		 */
@@ -83,13 +92,13 @@ if ( ! class_exists( 'Jet_Woo_Builder_Template_Functions' ) ) {
 
 			if ( $product->is_on_backorder() ) {
 				$stock_status = 'on-backorder';
-				$status_label = ! empty( $on_backorder ) ? $on_backorder : '';
+				$status_label = $on_backorder;
 			} elseif ( $product->is_in_stock() ) {
 				$stock_status = 'in-stock';
-				$status_label = ! empty( $in_stock ) ? $in_stock : '';
+				$status_label = $in_stock;
 			} else {
 				$stock_status = 'out-of-stock';
-				$status_label = ! empty( $out_of_stock ) ? $out_of_stock : '';
+				$status_label = $out_of_stock;
 			}
 
 			$html = ! empty( $status_label ) ? sprintf( '<div class="jet-woo-product-stock-status__%s">%s</div>', $stock_status, $status_label ) : '';
@@ -99,13 +108,18 @@ if ( ! class_exists( 'Jet_Woo_Builder_Template_Functions' ) ) {
 		}
 
 		/**
-		 * Returns product thumbnail.
+		 * Product thumbnails.
 		 *
-		 * @param string $image_size
-		 * @param bool   $use_thumb_effect
-		 * @param array  $attr
+		 * Retrieves a product thumbnail or placeholder image to represent an attachment.
 		 *
-		 * @return mixed|string|void
+		 * @since  1.13.0
+		 * @access public
+		 *
+		 * @param string $image_size       Image size.
+		 * @param bool   $use_thumb_effect Thumbnail hover effect availability.
+		 * @param array  $attr             Attributes for the image markup.
+		 *
+		 * @return mixed
 		 */
 		public function get_product_thumbnail( $image_size = 'thumbnail_size', $use_thumb_effect = false, $attr = [] ) {
 
@@ -115,9 +129,17 @@ if ( ! class_exists( 'Jet_Woo_Builder_Template_Functions' ) ) {
 				return null;
 			}
 
-			$thumbnail_id        = get_post_thumbnail_id( $product->get_id() );
-			$enable_thumb_effect = filter_var( jet_woo_builder_settings()->get( 'enable_product_thumb_effect' ), FILTER_VALIDATE_BOOLEAN );
-			$placeholder_src     = apply_filters( 'jet-woo-builder/template-functions/placeholder-thumbnail-src', Elementor\Utils::get_placeholder_image_src() );
+			$thumbnail_id      = get_post_thumbnail_id( $product->get_id() );
+			$thumb_effect      = filter_var( jet_woo_builder_settings()->get( 'enable_product_thumb_effect' ), FILTER_VALIDATE_BOOLEAN );
+			$placeholder_image = get_option( 'woocommerce_placeholder_image', 0 );
+
+			if ( ! empty( $placeholder_image ) ) {
+				$placeholder_src = wc_placeholder_img_src( $image_size );
+			} else {
+				$placeholder_src = Elementor\Utils::get_placeholder_image_src();
+			}
+
+			$placeholder_src = apply_filters( 'jet-woo-builder/template-functions/placeholder-thumbnail-src', $placeholder_src );
 
 			if ( empty( $thumbnail_id ) ) {
 				$placeholder_html = sprintf( '<img src="%s" alt="">', $placeholder_src );
@@ -125,12 +147,16 @@ if ( ! class_exists( 'Jet_Woo_Builder_Template_Functions' ) ) {
 				return apply_filters( 'jet-woo-builder/template-functions/placeholder-thumbnail', $placeholder_html, $image_size, $use_thumb_effect, $attr, $this );
 			}
 
-			if ( $use_thumb_effect && $enable_thumb_effect ) {
-				$attr = [ 'data-no-lazy' => '1', 'loading' => 'auto' ];
+			if ( $thumb_effect && $use_thumb_effect ) {
+				$attr = [
+					'data-no-lazy' => '1',
+					'loading'      => 'auto',
+				];
+
 				$html = wp_get_attachment_image( $thumbnail_id, $image_size, false, $attr );
 				$html = $this->add_thumb_effect( $html, $product, $image_size, $attr );
 			} else {
-				$html = wp_get_attachment_image( $thumbnail_id, $image_size, false );
+				$html = wp_get_attachment_image( $thumbnail_id, $image_size, false, $attr );
 			}
 
 			return apply_filters( 'jet-woo-builder/template-functions/product-thumbnail', $html, $image_size, $use_thumb_effect, $attr, $this );
@@ -254,11 +280,18 @@ if ( ! class_exists( 'Jet_Woo_Builder_Template_Functions' ) ) {
 		}
 
 		/**
+		 * Products rating.
+		 *
 		 * Returns product rating.
+		 *
+		 * @since  2.0.0
+		 * @access public
+		 *
+		 * @param bool $show_empty Empty rating visibility.
 		 *
 		 * @return string
 		 */
-		public function get_product_rating() {
+		public function get_product_rating( $show_empty ) {
 
 			global $product;
 
@@ -266,16 +299,24 @@ if ( ! class_exists( 'Jet_Woo_Builder_Template_Functions' ) ) {
 				return null;
 			}
 
-			$format = '<span class="product-rating__stars">%s</span>';
-			$rating = $product->get_average_rating();
-			$html   = 0 < $rating ? sprintf( $format, wc_get_star_rating_html( $rating ) ) : '';
+			$rating      = $product->get_average_rating();
+			$rating_html = '';
 
-			return apply_filters( 'jet-woo-builder/template-functions/product-rating', $html );
+			if ( 0 < $rating || $show_empty ) {
+				$rating_html = sprintf( '<span class="product-rating__stars">%s</span>', wc_get_star_rating_html( $rating ) );
+			}
+
+			return apply_filters( 'jet-woo-builder/template-functions/product-rating', $rating_html );
 
 		}
 
 		/**
+		 * Product custom rating.
+		 *
 		 * Returns custom product rating.
+		 *
+		 * @since  2.0.0
+		 * @access public
 		 *
 		 * @param string $icon
 		 * @param false  $show_empty_rating
@@ -288,6 +329,10 @@ if ( ! class_exists( 'Jet_Woo_Builder_Template_Functions' ) ) {
 
 			if ( ! is_a( $product, 'WC_Product' ) || 'no' === get_option( 'woocommerce_enable_review_rating' ) ) {
 				return;
+			}
+
+			if ( jet_woo_builder()->elementor_views->in_elementor() ) {
+				$show_empty_rating = true;
 			}
 
 			$format      = '<span class="product-star-rating">%s<span class="product-star-rating__rated" style="%s">%s</span></span>';
@@ -392,13 +437,47 @@ if ( ! class_exists( 'Jet_Woo_Builder_Template_Functions' ) ) {
 				$args = wp_parse_args( $args, $defaults );
 
 				if ( $quantity ) {
-					add_filter( 'woocommerce_loop_add_to_cart_link', array( jet_woo_builder_integration_woocommerce(), 'quantity_inputs_for_woocommerce_loop_add_to_cart_link' ), 10, 3 );
+					add_filter( 'woocommerce_loop_add_to_cart_link', [ $this, 'qty_for_woocommerce_loop_add_to_cart_link' ], 10, 3 );
 				}
 
 				wc_get_template( 'loop/add-to-cart.php', $args );
 
-				remove_filter( 'woocommerce_loop_add_to_cart_link', array( jet_woo_builder_integration_woocommerce(), 'quantity_inputs_for_woocommerce_loop_add_to_cart_link' ) );
+				if ( $quantity ) {
+					remove_filter( 'woocommerce_loop_add_to_cart_link', [ $this, 'qty_for_woocommerce_loop_add_to_cart_link' ] );
+				}
 			}
+
+		}
+
+		/**
+		 * Quantity for woocommerce loop add to cart.
+		 *
+		 * Override loop template and show quantities next to add to cart buttons.
+		 *
+		 * @since  1.13.0
+		 * @access public
+		 *
+		 * @param string $html    Link html.
+		 * @param object $product Product instance.
+		 * @param array  $args    Link arguments.
+		 *
+		 * @return string
+		 */
+		public function qty_for_woocommerce_loop_add_to_cart_link( $html, $product, $args ) {
+
+			if ( $product && ( $product->is_type( 'simple' ) || $product->is_type( 'variation' ) ) && $product->is_purchasable() && $product->is_in_stock() && ! $product->is_sold_individually() ) {
+				$quantity = esc_attr( isset( $args['quantity'] ) ? $args['quantity'] : 1 );
+
+				$html = '<form action="' . esc_url( $product->add_to_cart_url() ) . '" class="cart" method="post" enctype="multipart/form-data">';
+				$html .= woocommerce_quantity_input( [
+					'min_value' => $product->get_min_purchase_quantity(),
+					'max_value' => $product->get_max_purchase_quantity(),
+				], $product, false );
+				$html .= '<button type="submit" class="alt ' . $args['class'] . '" data-product_id="' . $product->get_id() . '" data-quantity="' . $quantity . '">' . esc_html( $product->add_to_cart_text() ) . '</button>';
+				$html .= '</form>';
+			}
+
+			return $html;
 
 		}
 
@@ -461,7 +540,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Template_Functions' ) ) {
 				$order_received_id = $wp->query_vars['order-received'];
 			}
 
-			if ( jet_woo_builder_integration()->in_elementor() ) {
+			if ( jet_woo_builder()->elementor_views->in_elementor() ) {
 				$order_received_id = $this->get_last_received_order();
 			}
 
@@ -529,7 +608,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Template_Functions' ) ) {
 		public function get_cart_table_custom_field_value( $product, $settings ) {
 
 			if ( ! $product ) {
-				return;
+				return '';
 			}
 
 			$field_key = ! empty( $settings['cart_table_custom_field'] ) ? $settings['cart_table_custom_field'] : false;
@@ -538,7 +617,13 @@ if ( ! class_exists( 'Jet_Woo_Builder_Template_Functions' ) ) {
 				return '';
 			}
 
-			$field_value = get_post_meta( $product->get_id(), $field_key, true );
+			if ( is_a( $product, 'WC_Product_Variation' ) ) {
+				$product_id = $product->get_parent_id();
+			} else {
+				$product_id = $product->get_id();
+			}
+
+			$field_value = get_post_meta( $product_id, $field_key, true );
 
 			if ( empty( $field_value ) ) {
 				$field_value = ! empty( $settings['cart_table_custom_field_fallback'] ) ? $settings['cart_table_custom_field_fallback'] : $field_value;

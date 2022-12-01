@@ -9,7 +9,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Block_Pagination class
 	 */
@@ -17,13 +16,14 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 
 		/**
 		 * Returns block namepagination
-		 *
-		 * @return string
 		 */
 		public function get_name() {
+
 			return 'pagination';
 		}
-	public function set_css_scheme(){
+
+		public function set_css_scheme() {
+
 			$this->css_scheme = apply_filters(
 				'jet-smart-filters/widgets/pagination/css-scheme',
 				[
@@ -36,7 +36,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 			);
 		}
 
-		public function add_style_manager_options(){
+		public function add_style_manager_options() {
 
 			$this->controls_manager->start_section(
 				'style_controls',
@@ -114,6 +114,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 					'title' => esc_html__( 'Normal', 'jet-smart-filters' ),
 				]
 			);
+
 			$this->controls_manager->add_control([
 				'id'           => 'pagination_items_color',
 				'type'         => 'color-picker',
@@ -123,6 +124,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 					'{{WRAPPER}} ' . $this->css_scheme['pagination-dots'] => 'color: {{VALUE}}',
 				),
 			]);
+
 			$this->controls_manager->add_control([
 				'id'           => 'pagination_items_bg_color',
 				'type'         => 'color-picker',
@@ -132,6 +134,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 					'{{WRAPPER}} ' . $this->css_scheme['pagination-dots'] => 'background-color: {{VALUE}}',
 				),
 			]);
+
 			$this->controls_manager->end_tab();
 
 			$this->controls_manager->start_tab(
@@ -141,6 +144,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 					'title' => esc_html__( 'Hover', 'jet-smart-filters' ),
 				]
 			);
+
 			$this->controls_manager->add_control([
 				'id'           => 'pagination_items_color_hover',
 				'type'         => 'color-picker',
@@ -149,6 +153,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 					'{{WRAPPER}} ' . $this->css_scheme['pagination-link'] . ':hover' => 'color: {{VALUE}}',
 				),
 			]);
+
 			$this->controls_manager->add_control([
 				'id'           => 'pagination_items_bg_color_hover',
 				'type'         => 'color-picker',
@@ -157,6 +162,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 					'{{WRAPPER}} ' . $this->css_scheme['pagination-link'] . ':hover' => 'background-color: {{VALUE}}',
 				),
 			]);
+
 			$this->controls_manager->add_control([
 				'id'           => 'pagination_items_hover_border_color',
 				'type'         => 'color-picker',
@@ -165,6 +171,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 					'{{WRAPPER}} ' . $this->css_scheme['pagination-link'] . ':hover' => 'border-color: {{VALUE}};',
 				),
 			]);
+
 			$this->controls_manager->end_tab();
 
 			$this->controls_manager->start_tab(
@@ -174,6 +181,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 					'title' => esc_html__( 'Current', 'jet-smart-filters' ),
 				]
 			);
+
 			$this->controls_manager->add_control([
 				'id'           => 'pagination_items_bg_color_active',
 				'type'         => 'color-picker',
@@ -182,6 +190,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 					'{{WRAPPER}} ' . $this->css_scheme['pagination-link-current'] => 'color: {{VALUE}}',
 				),
 			]);
+
 			$this->controls_manager->add_control([
 				'id'           => 'pagination_items_color_active',
 				'type'         => 'color-picker',
@@ -190,6 +199,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 					'{{WRAPPER}} ' . $this->css_scheme['pagination-link-current'] => 'background-color: {{VALUE}}',
 				),
 			]);
+
 			$this->controls_manager->add_control([
 				'id'           => 'pagination_items_active_border_color',
 				'type'         => 'color-picker',
@@ -198,6 +208,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 					'{{WRAPPER}} ' . $this->css_scheme['pagination-link-current'] => 'border-color: {{VALUE}};',
 				),
 			]);
+
 			$this->controls_manager->end_tab();
 
 			$this->controls_manager->start_tab(
@@ -207,6 +218,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 					'title' => esc_html__( 'Dots', 'jet-smart-filters' ),
 				]
 			);
+
 			$this->controls_manager->add_control([
 				'id'           => 'pagination_items_color_dots',
 				'type'         => 'color-picker',
@@ -215,6 +227,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 					'{{WRAPPER}} ' . $this->css_scheme['pagination-dots'] => 'color: {{VALUE}}',
 				),
 			]);
+
 			$this->controls_manager->add_control([
 				'id'           => 'pagination_items_bg_color_dots',
 				'type'         => 'color-picker',
@@ -223,6 +236,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 					'{{WRAPPER}} ' . $this->css_scheme['pagination-dots'] => 'background-color: {{VALUE}}',
 				),
 			]);
+
 			$this->controls_manager->add_control([
 				'id'           => 'pagination_items_dots_border_color',
 				'type'         => 'color-picker',
@@ -231,6 +245,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 					'{{WRAPPER}} ' . $this->css_scheme['pagination-item'] . ' ' . $this->css_scheme['pagination-dots'] => 'border-color: {{VALUE}};',
 				),
 			]);
+
 			$this->controls_manager->end_tab();
 
 			$this->controls_manager->end_tabs();
@@ -245,6 +260,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 					'{{WRAPPER}} ' . $this->css_scheme['pagination-dots'] => 'padding: {{TOP}} {{RIGHT}} {{BOTTOM}} {{LEFT}};',
 				),
 			]);
+
 			$this->controls_manager->add_control([
 				'id'        => 'pagination_items_horizontal_gap',
 				'type'      => 'range',
@@ -271,6 +287,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 					],
 				],
 			]);
+
 			$this->controls_manager->add_control([
 				'id'        => 'pagination_items_vertical_gap',
 				'type'      => 'range',
@@ -297,6 +314,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 					],
 				],
 			]);
+
 			$this->controls_manager->add_control([
 				'id'         => 'pagination_items_border',
 				'type'       => 'border',
@@ -342,8 +360,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 
 		/**
 		 * Return callback
-		 *
-		 * @return html
 		 */
 		public function render_callback( $settings = array() ) {
 
@@ -355,7 +371,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 
 			$base_class = 'jet-smart-filters-' . $this->get_name();
 			$provider   = $settings['content_provider'];
-			$query_id   = 'default';
+			$query_id   = ! empty( $settings['query_id'] ) ? $settings['query_id'] : 'default';
 			$apply_type = $settings['apply_type'];
 
 			$controls_enabled = isset( $settings['enable_prev_next'] ) ? $settings['enable_prev_next'] : '';
@@ -370,14 +386,18 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 				$controls['nav'] = false;
 			}
 
-			$controls['pages_mid_size']  = ! empty( $settings['pages_center_offset'] ) ? absint( $settings['pages_center_offset'] ) : 0;
-			$controls['pages_end_size']  =  ! empty( $settings['pages_end_offset'] ) ? absint( $settings['pages_end_offset'] ) : 0;
+			$controls['pages_mid_size'] = ! empty( $settings['pages_center_offset'] ) ? absint( $settings['pages_center_offset'] ) : 0;
+			$controls['pages_end_size'] = ! empty( $settings['pages_end_offset'] ) ? absint( $settings['pages_end_offset'] ) : 0;
+
+			if ( $settings['autoscroll'] ) {
+				$controls['provider_top_offset'] = ! empty( $settings['provider_top_offset'] ) ? absint( $settings['provider_top_offset'] ) : 0;
+			}
 
 			ob_start();
 
 			printf(
 				'<div
-					class="%1$s"
+					class="%1$s jet-filter"
 					data-apply-provider="%2$s"
 					data-content-provider="%2$s"
 					data-query-id="%3$s"
@@ -401,9 +421,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Pagination' ) ) {
 			$filter_layout = ob_get_clean();
 
 			return $filter_layout;
-
 		}
-
 	}
-
 }

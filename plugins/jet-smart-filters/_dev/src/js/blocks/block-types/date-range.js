@@ -30,6 +30,7 @@ registerBlockType('jet-smart-filters/date-range', {
 		hide_apply_button: attributes.hide_apply_button,
 		apply_button_text: attributes.apply_button_text,
 		show_label: attributes.show_label,
+		query_id: attributes.query_id,
 	},
 	className: 'jet-smart-filters-date-range',
 	edit: class extends wp.element.Component {

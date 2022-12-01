@@ -2,16 +2,9 @@
 * Jet products
 */
 .jet-woo-products {
-	.jet-compare-button__link,
-	.jet-wishlist-button__link {
+	.jet-wishlist-button__container,
+	.jet-compare-button__container {
 		margin: 5px 10px;
-	}
-
-	.jet-woo-product-thumbnail {
-		img {
-			width: 100%;
-			vertical-align: middle;
-		}
 	}
 
 	.jet-woo-products__item {
@@ -46,21 +39,6 @@
 				visibility: visible;
 			}
 		}
-
-		.jet-woo-item-overlay-wrap {
-			position: relative;
-			cursor: pointer;
-		}
-
-		.jet-woo--item-overlay-link {
-			position: absolute;
-			top: 0;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			z-index: -1;
-		}
-
 	}
 
 	&--preset-2,
@@ -562,9 +540,15 @@
 		overflow: hidden;
 		transform: translate3d(0, 0, 0);
 		transition: all .2s linear;
+
+		img {
+			width: 100%;
+			vertical-align: middle;
+		}
 	}
-	
+
 	.jet-woo-product-badges {
+		line-height: normal;
 		position: absolute;
 		top: 0;
 		right: 0;
@@ -574,12 +558,11 @@
 	.jet-woo-product-badge {
 		align-items: center;
 		font-size: 12px;
-		line-height: 1;
 		padding: 5px;
-	}
-	
-	.jet-woo-product-badge__sale {
-		background-color: #fd6d75;
+
+		&__sale {
+			background-color: #fd6d75;
+		}
 	}
 	
 	.jet-woo-product-price {
@@ -608,35 +591,17 @@
 	
 	.jet-woo-product-button {
 		margin: 10px 0 10px 0;
+		
+		.button {
+			text-align: center;
+		}
 
 		.quantity .qty {
 			width: 100% !important;
 		}
 		
 		&.is--default {
-			.ajax_add_to_cart {
-				&.loading {
-					position: relative;
-					opacity: 0.25;
-					padding-right: 30px !important;
-					
-					&::after {
-						font-family: WooCommerce;
-						content: '\e01c';
-						vertical-align: top;
-						position: absolute;
-						margin-left: 10px;
-						animation: spin 2s linear infinite;
-					}
-				}
-
-				&.added::after {
-					font-family: WooCommerce;
-					content: '\e017';
-					margin-left: 10px;
-					font-weight: 400;
-				}
-			}
+			@include ajax-add-to-cart();
 		}
 	}
 	
@@ -644,6 +609,7 @@
 	.jet-woo-product-categories {
 		ul {
 			margin: 0;
+			padding: 0;
 			list-style: none;
 			
 			> li {

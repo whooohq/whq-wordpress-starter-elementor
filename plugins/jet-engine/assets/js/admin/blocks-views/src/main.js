@@ -15,3 +15,4 @@ import './blocks/container';
 import './blocks/section';
 
 import './common/styles';
+import './hooks';

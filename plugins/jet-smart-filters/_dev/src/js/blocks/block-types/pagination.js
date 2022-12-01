@@ -30,12 +30,14 @@ registerBlockType('jet-smart-filters/pagination', {
 		// General
 		content_provider: attributes.content_provider,
 		apply_type: attributes.apply_type,
+		query_id: attributes.query_id,
 		// Pagination Controls
 		enable_prev_next: attributes.enable_prev_next,
 		prev_text: attributes.prev_text,
 		next_text: attributes.next_text,
 		pages_center_offset: attributes.pages_center_offset,
 		pages_end_offset: attributes.pages_end_offset,
+		autoscroll: attributes.autoscroll,
 		provider_top_offset: attributes.provider_top_offset
 	},
 	className: 'jet-smart-filters-pagination',
@@ -100,16 +102,25 @@ registerBlockType('jet-smart-filters/pagination', {
 									props.setAttributes({ pages_end_offset: parseInt(newValue) });
 								}}
 							/>
-							<TextControl
-								type="number"
-								label={__('Provider top offset')}
-								min={`0`}
-								max={`300`}
-								value={props.attributes.provider_top_offset}
+							<ToggleControl
+								label={__('Enable autoscroll')}
+								checked={props.attributes.autoscroll}
 								onChange={newValue => {
-									props.setAttributes({ provider_top_offset: parseInt(newValue) });
+									props.setAttributes({ autoscroll: newValue });
 								}}
 							/>
+							{props.attributes.autoscroll && (
+								<TextControl
+									type="number"
+									label={__('Provider top offset')}
+									min={`0`}
+									max={`300`}
+									value={props.attributes.provider_top_offset}
+									onChange={newValue => {
+										props.setAttributes({ provider_top_offset: parseInt(newValue) });
+									}}
+								/>
+							)}
 						</PanelBody>
 					</InspectorControls>
 				),

@@ -20,7 +20,6 @@ trait Tax_Query_Trait {
 					if ( isset( $row['taxonomy'] ) && isset( $existing_row['taxonomy'] ) && $existing_row['taxonomy'] === $row['taxonomy'] ) {
 						$this->final_query['tax_query'][ $index ] = $row;
 						$replaced_rows[] = $row_index;
-						return;
 					}
 				}
 			}

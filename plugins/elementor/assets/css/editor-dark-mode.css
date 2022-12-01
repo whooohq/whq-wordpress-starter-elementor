@@ -1,4 +1,8 @@
-/*! elementor - v3.6.8 - 27-07-2022 */
+/*! elementor - v3.8.1 - 13-11-2022 */
+:root {
+  color-scheme: dark;
+}
+
 body {
   color: #E0E1E3;
 }
@@ -379,7 +383,7 @@ a.elementor-responsive-switcher:hover {
   background-image: -o-linear-gradient(45deg, #34383C 25%, transparent 0, transparent 75%, #34383C 0, #34383C), -o-linear-gradient(45deg, #34383C 25%, transparent 0, transparent 75%, #34383C 0, #34383C);
   background-image: linear-gradient(45deg, #34383C 25%, transparent 0, transparent 75%, #34383C 0, #34383C), linear-gradient(45deg, #34383C 25%, transparent 0, transparent 75%, #34383C 0, #34383C);
   background-size: 12px 12px;
-  background-position: 0 0, 6px 6px;
+  background-position: 0 0, calc( 12px / 2 ) calc( 12px / 2 );
   background-color: #64666A;
 }
 
@@ -387,7 +391,7 @@ a.elementor-responsive-switcher:hover {
   color: #B4B5B7;
 }
 
-.elementor-control-type-media .elementor-control-media__preview {
+.elementor-control-type-media .elementor-control-media-area .elementor-control-media__preview {
   background-color: #34383C;
 }
 

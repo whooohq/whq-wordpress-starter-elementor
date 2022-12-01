@@ -1,0 +1,25 @@
+.rtl {
+	.jet-tricks-text-align-control {
+		--jet-search-text-align-control-border-color: #d5dadf;
+
+		@media (prefers-color-scheme: dark) {
+			--jet-search-text-align-control-border-color: #64666a;
+		}
+
+		.elementor-choices {
+			flex-direction: row-reverse;
+
+			.elementor-choices-label {
+				&:nth-child(2) {
+					border-left: 1px solid var( --jet-search-text-align-control-border-color );
+					border-radius: 3px 0 0 3px;
+				}
+
+				&:last-child {
+					border-left: none;
+					border-radius: 0 3px 3px 0;
+				}
+			}
+		}
+	}
+}

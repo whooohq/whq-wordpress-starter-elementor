@@ -2,8 +2,8 @@
 
 	"use strict";
 
-	window.addEventListener( 'DOMContentLoaded', ( e ) => {
-	
+	const initGeolocationFilter = function() {
+
 		window.JetSmartFilters.filtersList.JetEngineUserGeolocation = 'jet-smart-filters-user-geolocation';
 		window.JetSmartFilters.filters.JetEngineUserGeolocation = class JetEngineUserGeolocation extends window.JetSmartFilters.filters.Search {
 
@@ -36,6 +36,16 @@
 
 		};
 
-	});
+	}
+
+	if ( window.JetMapListingGeolocationFilterData && 'jet-smart-filters/before-init' === window.JetMapListingGeolocationFilterData.initEvent ) {
+		document.addEventListener( 'jet-smart-filters/before-init', ( e ) => {
+			initGeolocationFilter();
+		});
+	} else {
+		window.addEventListener( 'DOMContentLoaded', ( e ) => {
+			initGeolocationFilter();
+		});
+	}
 
 }( jQuery ) );

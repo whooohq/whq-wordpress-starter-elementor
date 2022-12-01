@@ -7,6 +7,7 @@ if (!defined('ABSPATH')) {
 } // Exit if accessed directly
 
 use \Elementor\Controls_Manager;
+use Elementor\Icons_Manager;
 use \Elementor\Utils;
 use Elementor\Plugin;
 
@@ -32,6 +33,40 @@ class Helper
 		'section',
 		'span',
 	];
+
+    /**
+     * It stores all faqs data for all ea elements
+     * @since 5.1.9
+     */
+    public static $eael_advanced_accordion_faq = [];
+    
+    /**
+     * Returns all the faqs in one instance
+     *
+     * @since 5.1.9
+     * @return array
+     */
+    public static function get_eael_advanced_accordion_faq(){
+        $json = [];
+        if( count( self::$eael_advanced_accordion_faq ) ) {
+            $json = [
+                '@context' => 'https://schema.org',
+                '@type' => 'FAQPage',
+                'mainEntity' => self::$eael_advanced_accordion_faq,
+            ];
+        }
+        
+        return $json;
+    }
+
+    /**
+     * Adds faq to the faq list
+     * @since 5.1.9
+     * @param array $faq single faq data - question and answer
+     */
+    public static function set_eael_advanced_accordion_faq( $faq ){
+        return self::$eael_advanced_accordion_faq[] = $faq;
+    }
 
     /**
      * Include a file with variables
@@ -1177,6 +1212,21 @@ class Helper
 	            'id'    => [],
 	            'style' => [],
             ],
+            'ul' => [
+	            'class' => [],
+	            'id'    => [],
+	            'style' => [],
+            ],
+            'ol' => [
+	            'class' => [],
+	            'id'    => [],
+	            'style' => [],
+            ],
+            'li' => [
+	            'class' => [],
+	            'id'    => [],
+	            'style' => [],
+            ],
         ];
     }
 
@@ -1199,4 +1249,77 @@ class Helper
 
         return $color;
     }
+
+	/**
+	 * Get Render Icon
+	 *
+	 * Used to get render Icon for \Elementor\Controls_Manager::ICONS
+	 * @param array $icon             Icon Type, Icon value
+	 * @param array $attributes       Icon HTML Attributes
+	 * @param string $tag             Icon HTML tag, defaults to <i>
+	 *
+	 * @return mixed|string
+	 */
+	public static function get_render_icon( $icon, $attributes = [], $tag = 'i' ) {
+		if ( empty( $icon['library'] ) ) {
+			return false;
+		}
+
+		$output = '';
+
+		/**
+		 * When the library value is svg it means that it's a SVG media attachment uploaded by the user.
+		 * Otherwise, it's the name of the font family that the icon belongs to.
+		 */
+		if ( 'svg' === $icon['library'] ) {
+			$output = method_exists( 'Elementor\Icons_Manager', 'render_uploaded_svg_icon' ) ? Icons_Manager::render_uploaded_svg_icon( $icon['value'] ) : '';
+		} else {
+			$output = method_exists( 'Elementor\Icons_Manager', 'render_font_icon' ) ? Icons_Manager::render_font_icon( $icon, $attributes, $tag ) : '';
+		}
+
+		return $output;
+	}
+    
+    /**
+     * Get product image src and Product gallery's first image src
+     * 
+     * @since 5.1.9
+     * @return array 
+     */
+    public static function eael_get_woo_product_gallery_image_srcs( $product, $image_size ){
+        $image_id = $product->get_image_id();
+        $image_gallery_ids = $product->get_gallery_image_ids();
+
+        $src = function_exists('wc_placeholder_img_src') ? wc_placeholder_img_src() : '';
+
+        if ( $image_id ) {
+            $src = wp_get_attachment_image_src( $image_id, $image_size );
+            $src = is_array($src) ? $src[0] : $src;
+        }
+
+        $src_hover = count( $image_gallery_ids ) ? wp_get_attachment_image_src( $image_gallery_ids[0], $image_size ) : '';
+        $src_hover = is_array($src_hover) ? $src_hover[0] : $src_hover;
+        
+        return [
+            'src' => $src,
+            'src_hover' => $src_hover,
+        ];
+    }
+
+	/**
+	 * Sanitize a 'relation' operator.
+	 *
+	 * @param string $relation Raw relation key from the query argument.
+	 *
+	 * @return string Sanitized relation ('AND' or 'OR').
+	 * @since 5.3.2
+	 *
+	 */
+	public static function eael_sanitize_relation( $relation ) {
+		if ( 'OR' === strtoupper( $relation ) ) {
+			return 'OR';
+		} else {
+			return 'AND';
+		}
+	}
 }

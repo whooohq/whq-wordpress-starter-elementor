@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_Archive_Category_Thumbnail
- * Name: Thumbnail
+ * Name: Archive Category Thumbnail
  * Slug: jet-woo-builder-archive-category-thumbnail
  */
 
@@ -20,7 +20,7 @@ class Jet_Woo_Builder_Archive_Category_Thumbnail extends Widget_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Thumbnail', 'jet-woo-builder' );
+		return __( 'Archive Category Thumbnail', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
@@ -41,41 +41,26 @@ class Jet_Woo_Builder_Archive_Category_Thumbnail extends Widget_Base {
 
 	protected function register_controls() {
 
-		$css_scheme = apply_filters(
-			'jet-woo-builder/jet-archive-category-thumbnail/css-scheme',
-			array(
-				'thumbnail-wrapper' => '.jet-woo-builder-archive-category-thumbnail__wrapper',
-				'thumbnail'         => '.jet-woo-builder-archive-category-thumbnail',
-			)
-		);
-
 		$this->start_controls_section(
 			'section_general',
-			array(
-				'label' => esc_html__( 'Content', 'jet-woo-builder' ),
-			)
+			[
+				'label' => __( 'Thumbnail', 'jet-woo-builder' ),
+			]
 		);
 
 		$this->add_control(
 			'is_linked',
-			array(
-				'label'        => esc_html__( 'Add link to thumbnail', 'jet-woo-builder' ),
-				'type'         => Controls_Manager::SWITCHER,
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => '',
-			)
+			[
+				'label' => __( 'Enable Permalink', 'jet-woo-builder' ),
+				'type'  => Controls_Manager::SWITCHER,
+			]
 		);
 
 		$this->add_control(
 			'open_new_tab',
 			[
-				'label'     => esc_html__( 'Open in new window', 'jet-woo-builder' ),
+				'label'     => __( 'Open in New Window', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::SWITCHER,
-				'label_on'  => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off' => esc_html__( 'No', 'jet-woo-builder' ),
-				'default'   => '',
 				'condition' => [
 					'is_linked' => 'yes',
 				],
@@ -96,75 +81,74 @@ class Jet_Woo_Builder_Archive_Category_Thumbnail extends Widget_Base {
 
 		$this->start_controls_section(
 			'section_archive_category_thumbnail_style',
-			array(
-				'label'      => esc_html__( 'Thumbnail', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
+			[
+				'label' => __( 'Thumbnail', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
 		);
 
 		$this->add_control(
 			'archive_category_thumbnail_background_color',
-			array(
-				'label'     => esc_html__( 'Background Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Background Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['thumbnail'] => 'background-color: {{VALUE}};',
-				),
-			)
+				'selectors' => [
+					$this->css_selector() => 'background-color: {{VALUE}};',
+				],
+			]
 		);
 
 		$this->add_group_control(
 			Group_Control_Border::get_type(),
-			array(
+			[
 				'name'     => 'archive_category_thumbnail_border',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['thumbnail'],
-			)
+				'selector' => $this->css_selector(),
+			]
 		);
 
 		$this->add_control(
 			'archive_category_thumbnail_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['thumbnail'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; overflow:hidden;',
-				),
-			)
+				'size_units' => [ 'px', '%' ],
+				'selectors'  => [
+					$this->css_selector() => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; overflow:hidden;',
+				],
+			]
 		);
 
 		$this->add_group_control(
 			Group_Control_Box_Shadow::get_type(),
-			array(
+			[
 				'name'     => 'archive_category_thumbnail_box_shadow',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['thumbnail'],
-			)
+				'selector' => $this->css_selector(),
+			]
 		);
 
 		$this->add_responsive_control(
 			'archive_category_thumbnail_margin',
-			array(
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
+			[
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['thumbnail-wrapper'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				'size_units' => [ 'px', '%' ],
+				'selectors'  => [
+					$this->css_selector( '__wrapper' ) => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'archive_category_thumbnail_alignment',
-			array(
-				'label'     => esc_html__( 'Alignment', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Alignment', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::CHOOSE,
 				'options'   => jet_woo_builder_tools()->get_available_h_align_types(),
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['thumbnail-wrapper'] => 'text-align: {{VALUE}};',
-				),
+				'selectors' => [
+					$this->css_selector( '__wrapper' ) => 'text-align: {{VALUE}};',
+				],
 				'classes'   => 'elementor-control-align',
-			)
+			]
 		);
 
 		$this->end_controls_section();
@@ -172,24 +156,29 @@ class Jet_Woo_Builder_Archive_Category_Thumbnail extends Widget_Base {
 	}
 
 	/**
-	 * Returns CSS selector for nested element
+	 * CSS selector.
 	 *
-	 * @param null $el
+	 * Returns CSS selector for nested element.
+	 *
+	 * @since  1.3.0
+	 * @access public
+	 *
+	 * @param null $el Selector.
 	 *
 	 * @return string
 	 */
 	public function css_selector( $el = null ) {
-		return sprintf( '{{WRAPPER}} .%1$s %2$s', $this->get_name(), $el );
+		return sprintf( '{{WRAPPER}} .%1$s%2$s', $this->get_name(), $el );
 	}
 
 	public static function render_callback( $settings = [], $args = [] ) {
 
 		$category    = ! empty( $args ) ? $args['category'] : get_queried_object();
+		$target_attr = $settings['open_new_tab'] ? 'target="_blank"' : '';
 		$open_link   = '';
 		$close_link  = '';
-		$target_attr = 'yes' === $settings['open_new_tab'] ? 'target="_blank"' : '';
 
-		if ( 'yes' === $settings['is_linked'] ) {
+		if ( $settings['enable_permalink'] ) {
 			$open_link  = '<a href="' . jet_woo_builder_tools()->get_term_permalink( $category->term_id ) . '" ' . $target_attr . '>';
 			$close_link = '</a>';
 		}
@@ -197,10 +186,7 @@ class Jet_Woo_Builder_Archive_Category_Thumbnail extends Widget_Base {
 		echo '<div class="jet-woo-builder-archive-category-thumbnail__wrapper">';
 		echo '<div class="jet-woo-builder-archive-category-thumbnail">';
 		echo $open_link;
-		echo jet_woo_builder_template_functions()->get_category_thumbnail(
-			$category->term_id,
-			$settings['archive_category_thumbnail_size']
-		);
+		echo jet_woo_builder_template_functions()->get_category_thumbnail( $category->term_id, $settings['thumbnail_size'] );
 		echo $close_link;
 		echo '</div>';
 		echo '</div>';
@@ -209,18 +195,18 @@ class Jet_Woo_Builder_Archive_Category_Thumbnail extends Widget_Base {
 
 	protected function render() {
 
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
-		$macros_settings = array(
-			'is_linked'                       => $settings['is_linked'],
-			'open_new_tab'                    => $settings['open_new_tab'],
-			'archive_category_thumbnail_size' => $settings['archive_category_thumbnail_size'],
-		);
+		$macros_settings = [
+			'enable_permalink' => isset( $settings['is_linked'] ) ? filter_var( $settings['is_linked'], FILTER_VALIDATE_BOOLEAN ) : false,
+			'open_new_tab'     => isset( $settings['open_new_tab'] ) ? filter_var( $settings['open_new_tab'], FILTER_VALIDATE_BOOLEAN ) : false,
+			'thumbnail_size'   => isset( $settings['archive_category_thumbnail_size'] ) ? $settings['archive_category_thumbnail_size'] : 'woocommerce_thumbnail',
+		];
 
 		if ( jet_woo_builder_tools()->is_builder_content_save() ) {
 			echo jet_woo_builder()->parser->get_macros_string( $this->get_name(), $macros_settings );
 		} else {
-			echo self::render_callback( $macros_settings, jet_woo_builder_integration_woocommerce()->get_current_args() );
+			echo self::render_callback( $macros_settings, jet_woo_builder()->woocommerce->get_current_args() );
 		}
 
 	}

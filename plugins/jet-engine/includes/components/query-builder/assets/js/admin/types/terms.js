@@ -45,9 +45,9 @@
 
 			this.presetMeta();
 
-			if ( undefined === this.query.hide_empty ) {
-				this.$set( this.query, 'hide_empty', true );
-			}
+			// if ( undefined === this.query.hide_empty ) {
+			// 	this.$set( this.query, 'hide_empty', true );
+			// }
 
 		},
 	} );

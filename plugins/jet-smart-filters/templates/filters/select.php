@@ -44,6 +44,7 @@ $current = $this->get_current_filter_value( $args );
 		<select
 			class="<?php echo implode( ' ', $classes ); ?>"
 			name="<?php echo $query_var; ?>"
+			<?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>
 		>
 		<?php if ( ! empty( $args['placeholder'] ) ) { ?>
 			<option value=""><?php echo $args['placeholder']; ?></option>

@@ -21,15 +21,11 @@ class Jet_Woo_Builder_Single_Rating extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Single Rating', 'jet-woo-builder' );
+		return __( 'Single Rating', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
 		return 'jet-woo-builder-icon-rating';
-	}
-
-	public function get_script_depends() {
-		return array();
 	}
 
 	public function get_jet_help_url() {
@@ -54,46 +50,141 @@ class Jet_Woo_Builder_Single_Rating extends Jet_Woo_Builder_Base {
 				'reviews_link'   => '.elementor-jet-single-rating .woocommerce-review-link',
 			]
 		);
-
 		$this->start_controls_section(
-			'section_rating_styles',
-			array(
-				'label'      => esc_html__( 'Rating', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
+			'section_rating_content',
+			[
+				'label' => __( 'Product Rating', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_CONTENT,
+			]
 		);
 
 		$this->add_control(
 			'show_single_empty_rating',
 			[
-				'label'   => __( 'Show Rating if Empty', 'jet-woo-builder' ),
+				'label'     => __( 'Empty Rating', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::SWITCHER,
+				'label_on'  => __( 'Show', 'jet-woo-builder' ),
+				'label_off' => __( 'Hide', 'jet-woo-builder' ),
+			]
+		);
+
+		$this->add_control(
+			'edit_single_rating_link',
+			[
+				'label'   => __( 'Edit Link', 'jet-woo-builder' ),
 				'type'    => Controls_Manager::SWITCHER,
-				'default' => '',
+				'default' => 'yes',
+			]
+		);
+
+		$this->add_control(
+			'single_rating_reviews_link_url',
+			[
+				'label'     => __( 'URL', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::TEXT,
+				'default'   => '#reviews',
+				'dynamic'   => [
+					'active' => true,
+				],
+				'condition' => [
+					'edit_single_rating_link!' => '',
+				],
+			]
+		);
+
+		$this->add_control(
+			'single_rating_reviews_link_caption_single',
+			[
+				'label'       => __( 'Singular Caption', 'jet-woo-builder' ),
+				'type'        => Controls_Manager::TEXT,
+				'default'     => __( ' customer review', 'jet-woo-builder' ),
+				'placeholder' => __( 'customer review', 'jet-woo-builder' ),
+				'dynamic'     => [
+					'active' => true,
+				],
+				'condition'   => [
+					'edit_single_rating_link!' => '',
+				],
+			]
+		);
+
+		$this->add_control(
+			'single_rating_reviews_link_caption_plural',
+			[
+				'label'       => __( 'Plural Caption', 'jet-woo-builder' ),
+				'type'        => Controls_Manager::TEXT,
+				'default'     => __( ' customer reviews', 'jet-woo-builder' ),
+				'placeholder' => __( 'customer reviews', 'jet-woo-builder' ),
+				'dynamic'     => [
+					'active' => true,
+				],
+				'condition'   => [
+					'edit_single_rating_link!' => '',
+				],
+			]
+		);
+
+		$this->add_control(
+			'single_rating_reviews_link_before_caption',
+			[
+				'label'     => __( 'Before Caption', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::TEXT,
+				'default'   => '(',
+				'dynamic'   => [
+					'active' => true,
+				],
+				'condition' => [
+					'edit_single_rating_link!' => '',
+				],
+			]
+		);
+
+		$this->add_control(
+			'single_rating_reviews_link_after_caption',
+			[
+				'label'     => __( 'After Caption', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::TEXT,
+				'default'   => ')',
+				'dynamic'   => [
+					'active' => true,
+				],
+				'condition' => [
+					'edit_single_rating_link!' => '',
+				],
+			]
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_rating_styles',
+			[
+				'label' => __( 'Product Rating', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
 
 		$this->add_control(
 			'rating_icon',
-			array(
-				'label'   => esc_html__( 'Rating Icon', 'jet-woo-builder' ),
+			[
+				'label'   => __( 'Stars Type', 'jet-woo-builder' ),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'jetwoo-front-icon-rating-1',
 				'options' => jet_woo_builder_tools()->get_available_rating_icons_list(),
-			)
+			]
 		);
 
 		$this->add_control(
 			'rating_direction',
-			array(
-				'label'     => esc_html__( 'Elements display', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Display Type', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::SELECT,
 				'default'   => 'row',
-				'options'   => jet_woo_builder_tools()->get_available_flex_directions_types(),
-				'selectors' => array(
+				'options'   => jet_woo_builder_tools()->get_available_flex_directions_types( true ),
+				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['rating_wrapper'] => 'flex-direction: {{VALUE}}',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
@@ -108,7 +199,7 @@ class Jet_Woo_Builder_Single_Rating extends Jet_Woo_Builder_Base {
 				],
 				'classes'   => 'elementor-control-align',
 				'condition' => [
-					'rating_direction' => 'row',
+					'rating_direction' => [ 'row', 'row-reverse' ],
 				],
 			]
 		);
@@ -124,7 +215,7 @@ class Jet_Woo_Builder_Single_Rating extends Jet_Woo_Builder_Base {
 					'{{WRAPPER}} ' . $css_scheme['rating_wrapper'] => 'align-items: {{VALUE}};',
 				],
 				'condition' => [
-					'rating_direction' => 'column',
+					'rating_direction' => [ 'column', 'column-reverse' ],
 				],
 			]
 		);
@@ -136,6 +227,50 @@ class Jet_Woo_Builder_Single_Rating extends Jet_Woo_Builder_Base {
 				'type'      => Controls_Manager::HEADING,
 				'separator' => 'before',
 			)
+		);
+
+		$this->add_responsive_control(
+			'stars_font_size',
+			[
+				'label'      => __( 'Size', 'jet-woo-builder' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'range'      => [
+					'px' => [
+						'min' => 0,
+						'max' => 60,
+					],
+				],
+				'default'    => [
+					'unit' => 'px',
+					'size' => 16,
+				],
+				'selectors'  => [
+					'{{WRAPPER}} ' . $css_scheme['stars'] . ' .product-rating__icon' => 'font-size: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'stars_space_between',
+			[
+				'label'      => __( 'Space Between', 'jet-woo-builder' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'range'      => [
+					'px' => [
+						'min' => 0,
+						'max' => 20,
+					],
+				],
+				'default'    => [
+					'unit' => 'px',
+					'size' => 2,
+				],
+				'selectors'  => [
+					'{{WRAPPER}} ' . $css_scheme['stars'] . ' .product-rating__icon + .product-rating__icon' => 'margin-left: {{SIZE}}{{UNIT}};',
+				],
+			]
 		);
 
 		$this->start_controls_tabs( 'tabs_stars_styles' );
@@ -182,62 +317,42 @@ class Jet_Woo_Builder_Single_Rating extends Jet_Woo_Builder_Base {
 
 		$this->end_controls_tab();
 
+		$this->start_controls_tab(
+			'tab_stars_empty',
+			[
+				'label'     => __( 'Empty', 'jet-woo-builder' ),
+				'condition' => [
+					'show_single_empty_rating' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'stars_color_empty',
+			[
+				'label'     => __( 'Color', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .empty .product-star-rating .product-rating__icon' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
 		$this->end_controls_tabs();
 
 		$this->add_responsive_control(
-			'stars_font_size',
-			array(
-				'label'      => esc_html__( 'Font Size (px)', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px' ),
-				'range'      => array(
-					'px' => array(
-						'min' => 0,
-						'max' => 60,
-					),
-				),
-				'default'    => array(
-					'unit' => 'px',
-					'size' => 16,
-				),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['stars'] . ' .product-rating__icon' => 'font-size: {{SIZE}}{{UNIT}};',
-				),
-			)
-		);
-
-		$this->add_responsive_control(
-			'stars_space_between',
-			array(
-				'label'      => esc_html__( 'Space Between Stars (px)', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px' ),
-				'range'      => array(
-					'px' => array(
-						'min' => 0,
-						'max' => 20,
-					),
-				),
-				'default'    => array(
-					'unit' => 'px',
-					'size' => 2,
-				),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['stars'] . ' .product-rating__icon + .product-rating__icon' => 'margin-left: {{SIZE}}{{UNIT}};',
-				),
-			)
-		);
-
-		$this->add_responsive_control(
 			'stars_margin',
-			array(
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
+			[
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'size_units' => [ 'px', '%' ],
+				'separator'  => 'before',
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['stars'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_control(
@@ -316,14 +431,15 @@ class Jet_Woo_Builder_Single_Rating extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'reviews_link_margin',
-			array(
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
+			[
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'size_units' => [ 'px', '%' ],
+				'separator'  => 'before',
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['reviews_link'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->end_controls_section();
@@ -331,15 +447,14 @@ class Jet_Woo_Builder_Single_Rating extends Jet_Woo_Builder_Base {
 	}
 
 	protected function render() {
-		if ( true === $this->__set_editor_product() ) {
-
+		if ( $this->__set_editor_product() ) {
 			$this->__open_wrap();
 
 			include $this->get_template( 'single-product/rating.php' );
 
 			$this->__close_wrap();
 
-			if ( jet_woo_builder_integration()->in_elementor() ) {
+			if ( jet_woo_builder()->elementor_views->in_elementor() ) {
 				$this->__reset_editor_product();
 			}
 		}

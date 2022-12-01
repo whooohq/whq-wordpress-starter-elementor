@@ -1,4 +1,4 @@
-/*! elementor - v3.6.8 - 27-07-2022 */
+/*! elementor - v3.8.1 - 13-11-2022 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -31,7 +31,7 @@ isSafari = /^((?!chrome|android).)*safari/i.test(userAgent) || /constructor/i.te
 }(!window.safari || typeof safari !== 'undefined' && safari.pushNotification),
     // Internet Explorer 6-11
 isIE = /Trident|MSIE/.test(userAgent) && (
-/*@cc_on!@*/
+/* @cc_on!@*/
  false || !!document.documentMode),
     // Edge 20+
 isEdge = !isIE && !!window.StyleMedia || matchUserAgent('Edg'),

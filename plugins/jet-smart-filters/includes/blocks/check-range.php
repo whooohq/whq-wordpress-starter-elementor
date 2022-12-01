@@ -9,22 +9,22 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Block_Check_Range' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Block_Check_Range class
 	 */
 	class Jet_Smart_Filters_Block_Check_Range extends Jet_Smart_Filters_Block_Base {
-
 		/**
 		 * Returns block name
 		 *
 		 * @return string
 		 */
 		public function get_name() {
+
 			return 'check-range';
 		}
 
-		public function set_css_scheme(){
+		public function set_css_scheme() {
+
 			$this->css_scheme =  apply_filters(
 			'jet-smart-filters/widgets/check-range/css-scheme',
 				array(
@@ -47,7 +47,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Check_Range' ) ) {
 			);
 		}
 
-		public function add_style_manager_options(){
+		public function add_style_manager_options() {
 
 			$this->controls_manager->start_section(
 				'style_controls',
@@ -263,7 +263,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Check_Range' ) ) {
 				),
 			]);
 
-
 			$this->controls_manager->add_control([
 				'id'       => 'item_checked_background_color',
 				'type'     => 'color-picker',
@@ -307,7 +306,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Check_Range' ) ) {
 					'{{WRAPPER}} ' . $this->css_scheme['disable_button'] => 'color: {{VALUE}}',
 				),
 			]);
-
 
 			$this->controls_manager->add_control([
 				'id'       => 'item_disable_background_color',
@@ -892,6 +890,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Check_Range' ) ) {
 					],
 				],
 			]);
+
 			$this->controls_manager->add_control([
 				'id'           => 'counter_padding',
 				'type'         => 'dimensions',
@@ -919,5 +918,4 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Check_Range' ) ) {
 			include jet_smart_filters()->plugin_path( 'includes/blocks/common-controls/additional-filter-style.php' );
 		}
 	}
-
 }

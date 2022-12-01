@@ -20,7 +20,8 @@ class DynamicCustomControl extends wp.element.Component {
 			setValue,
 			supports,
 			control,
-			prefix
+			prefix,
+			condition
 		} = this.props;
 
 		var controlName = control.name;
@@ -32,6 +33,11 @@ class DynamicCustomControl extends wp.element.Component {
 		return <CustomControl
 			control={ control }
 			value={ getValue( controlName, attr, attributes ) }
+			attr={ attr }
+			attributes={ attributes }
+			getValue={ getValue }
+			prefix={ prefix }
+			condition={ condition }
 			onChange={ newValue => {
 				setValue( newValue, controlName, attr, attributes, setAttributes, supports );
 			} }

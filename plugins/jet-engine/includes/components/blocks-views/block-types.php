@@ -88,6 +88,21 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Types' ) ) {
 
 		}
 
+		public function get_blocks_with_id_attr() {
+
+			$result = array();
+
+			foreach ( $this->_types as $type ) {
+				$attributes = $type->get_attributes();
+
+				if ( isset( $attributes['_element_id'] ) ) {
+					$result[] = $type->get_block_name();
+				}
+			}
+
+			return $result;
+		}
+
 		public function get_allowed_callbacks_atts() {
 
 			$atts       = array();

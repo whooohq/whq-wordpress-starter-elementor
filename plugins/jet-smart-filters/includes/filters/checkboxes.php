@@ -9,44 +9,52 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Checkboxes_Filter' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Checkboxes_Filter class
 	 */
 	class Jet_Smart_Filters_Checkboxes_Filter extends Jet_Smart_Filters_Filter_Base {
-
 		/**
 		 * Get provider name
-		 *
-		 * @return string
 		 */
 		public function get_name() {
+
 			return __( 'Checkboxes list', 'jet-smart-filters' );
 		}
 
 		/**
 		 * Get provider ID
-		 *
-		 * @return string
 		 */
 		public function get_id() {
+
 			return 'checkboxes';
 		}
 
 		/**
+		 * Get icon URL
+		 */
+		public function get_icon_url() {
+
+			return jet_smart_filters()->plugin_url( 'admin/assets/img/filter-types/checkboxes.png' );
+		}
+
+		/**
+		 * Get info
+		 */
+		public function get_info() {
+
+			return jet_smart_filters()->utils->get_file_content( jet_smart_filters()->plugin_path( 'admin/templates/filter-info/checkboxes.php' ) );
+		}
+
+		/**
 		 * Get provider wrapper selector
-		 *
-		 * @return string
 		 */
 		public function get_scripts() {
+
 			return false;
 		}
 
 		/**
 		 * Prepare filter template argumnets
-		 *
-		 * @param  [type] $args [description]
-		 * @return [type]       [description]
 		 */
 		public function prepare_args( $args ) {
 
@@ -55,13 +63,13 @@ if ( ! class_exists( 'Jet_Smart_Filters_Checkboxes_Filter' ) ) {
 			$additional_providers = isset( $args['additional_providers'] ) ? $args['additional_providers'] : false;
 			$apply_type           = isset( $args['apply_type'] ) ? $args['apply_type'] : false;
 			$search_enabled       = isset( $args['search_enabled'] ) ? $args['search_enabled'] : false;
-			$search_placeholder   = isset( $args['search_placeholder'] ) ?  $args['search_placeholder'] : false;
+			$search_placeholder   = isset( $args['search_placeholder'] ) ? $args['search_placeholder'] : __( 'Search...', 'jet-smart-filters' );
 			$less_items_count     = isset( $args['less_items_count'] ) ? $args['less_items_count'] : false;
 			$more_text            = isset( $args['more_text'] ) ? $args['more_text'] : __( 'More', 'jet-smart-filters' );
 			$less_text            = isset( $args['less_text'] ) ? $args['less_text'] : __( 'Less', 'jet-smart-filters' );
 			$scroll_height        = isset( $args['scroll_height'] ) ? $args['scroll_height'] : false;
 			$dropdown_enabled     = isset( $args['dropdown_enabled'] ) ? filter_var( $args['dropdown_enabled'], FILTER_VALIDATE_BOOLEAN ) : false;
-			$dropdown_placeholder = isset( $args['dropdown_placeholder'] ) ? $args['dropdown_placeholder'] : false;
+			$dropdown_placeholder = isset( $args['dropdown_placeholder'] ) ? $args['dropdown_placeholder'] : __( 'Select some options', 'jet-smart-filters' );
 
 			if ( ! $filter_id ) {
 				return false;
@@ -79,7 +87,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Checkboxes_Filter' ) ) {
 
 			switch ( $source ) {
 				case 'taxonomies':
-
 					$tax                 = get_post_meta( $filter_id, '_source_taxonomy', true );
 					$only_child          = filter_var( get_post_meta( $filter_id, '_only_child', true ), FILTER_VALIDATE_BOOLEAN );
 					$show_empty_terms    = filter_var( get_post_meta( $filter_id, '_show_empty_terms', true ), FILTER_VALIDATE_BOOLEAN );
@@ -116,7 +123,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Checkboxes_Filter' ) ) {
 					break;
 
 				case 'posts':
-
 					$post_type = get_post_meta( $filter_id, '_source_post_type', true );
 					$args      = array(
 						'post_type' => $post_type,
@@ -202,9 +208,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Checkboxes_Filter' ) ) {
 			}
 
 			return $result;
-
 		}
-
 	}
-
 }

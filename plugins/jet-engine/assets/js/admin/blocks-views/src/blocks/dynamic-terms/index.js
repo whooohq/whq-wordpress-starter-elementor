@@ -76,6 +76,10 @@ registerBlockType( 'jet-engine/dynamic-terms', {
 			type: 'boolean',
 			default: false,
 		},
+		object_context: {
+			type: 'string',
+			default: 'default_object',
+		},
 	},
 	className: 'jet-listing-dynamic-terms',
 	usesContext: [ 'postId', 'postType', 'queryId' ],
@@ -83,9 +87,10 @@ registerBlockType( 'jet-engine/dynamic-terms', {
 
 		render() {
 
-			const props      = this.props;
-			const attributes = props.attributes;
-			const taxList    = window.JetEngineListingData.taxonomies;
+			const props              = this.props;
+			const attributes         = props.attributes;
+			const taxList            = window.JetEngineListingData.taxonomies;
+			const allowedContextList = window.JetEngineListingData.allowedContextList;
 
 			var object = window.JetEngineListingData.object_id;
 			var listing = window.JetEngineListingData.settings;
@@ -224,6 +229,17 @@ registerBlockType( 'jet-engine/dynamic-terms', {
 								} }
 							/>
 
+							<SelectControl
+								label={ 'Context' }
+								options={ allowedContextList }
+								value={ attributes.object_context }
+								onChange={ newValue => {
+									props.setAttributes({
+										object_context: newValue
+									});
+								} }
+							/>
+							
 						</PanelBody>
 					</InspectorControls>
 				),

@@ -123,6 +123,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax_Page_Edit' ) ) {
 					'edit_button_label' => $button_label,
 					'is_built_in'       => $is_built_in,
 					'redirect'          => $redirect,
+					'slug_error'        => __( 'Maximum 32 characters length', 'jet-engine' ),
 					'help_links'        => array(
 						array(
 							'url'   => 'https://crocoblock.com/knowledge-base/articles/creating-custom-taxonomy-with-jetengine/?utm_source=jetengine&utm_medium=taxonomies-page&utm_campaign=need-help',

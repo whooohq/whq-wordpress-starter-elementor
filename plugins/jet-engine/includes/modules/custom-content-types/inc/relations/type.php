@@ -140,7 +140,11 @@ class Type extends \Jet_Engine\Relations\Types\Base {
 		$args        = $relation->get_args( 'cct', array() );
 		$full_name   = jet_engine()->relations->types_helper->type_name_by_parts( 'cct', $object_name );
 		$title_field = ! empty( $args[ $full_name ]['title_field'] ) ? $args[ $full_name ]['title_field'] : false;
-		$item        = $content_type->db->get_item( $item_id );
+
+		$flag = \ARRAY_A;
+		$content_type->db->set_format_flag( $flag );
+
+		$item = $content_type->db->get_item( $item_id );
 
 		if ( $item && $title_field && isset( $item[ $title_field ] ) ) {
 			$title = $item[ $title_field ] . ' (' . $title . ')';
@@ -221,6 +225,7 @@ class Type extends \Jet_Engine\Relations\Types\Base {
 
 		$cct_edit_page = $content_type->admin_pages->get_edit_page_instance( array(), false );
 		$cct_edit_page->set_blocks_flag();
+		$cct_edit_page->setup_page_fields();
 		$all_fields = $cct_edit_page->get_prepared_fields();
 
 		foreach ( $create_fields as $field_name ) {

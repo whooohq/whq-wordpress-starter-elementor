@@ -11,6 +11,7 @@ use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
 use \Elementor\Utils;
 use \Elementor\Widget_Base;
+use Essential_Addons_Elementor\Pro\Classes\Helper as HelperClass;
 
 if (!defined('ABSPATH')) exit; // If this file is called directly, abort.
 
@@ -445,6 +446,53 @@ class Testimonial_Slider extends Widget_Base
 				],
 			]
 		);
+
+		$this->add_control(
+			'eael_testimonial_enable_read_more',
+			[
+				'label' => esc_html__( 'Show Read More Button', 'essential-addons-elementor' ),
+				'type' => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'default' => 'no',
+			]
+		);
+
+		$this->add_control(
+			'eael_testimonial_desc_word_count',
+			[
+				'label' => esc_html__( 'Word Count', 'essential-addons-elementor' ),
+				'type' => Controls_Manager::NUMBER,
+				'default' => 8,
+				'condition' => [
+					'eael_testimonial_enable_read_more' => 'yes'
+				]
+			]
+		);
+
+		$this->add_control(
+			'eael_testimonial_read_more_expansion',
+			[
+				'label' => esc_html__( 'Expansion Indicator', 'essential-addons-elementor' ),
+				'type' => Controls_Manager::TEXT,
+				'default' => esc_html__( '...', 'essential-addons-elementor' ),
+				'condition' => [
+					'eael_testimonial_enable_read_more' => 'yes'
+				]
+			]
+		);
+
+		$this->add_control(
+			'eael_testimonial_read_more_btn_text',
+			[
+				'label' => esc_html__( 'Button Text', 'essential-addons-elementor' ),
+				'type' => Controls_Manager::TEXT,
+				'default' => esc_html__( 'Read More', 'essential-addons-elementor' ),
+				'condition' => [
+					'eael_testimonial_enable_read_more' => 'yes'
+				]
+			]
+		);
+
 		$this->end_controls_section();
 
 		/**
@@ -946,6 +994,203 @@ class Testimonial_Slider extends Widget_Base
 				'selector' => '{{WRAPPER}} .eael-testimonial-quote',
 			]
 		);
+
+		$this->add_control(
+			'eael_testimonial_read_more_btn_heading',
+			[
+				'label' => __('Read More Button', 'essential-addons-elementor'),
+				'type' => Controls_Manager::HEADING,
+				'condition' => [
+					'eael_testimonial_enable_read_more' => 'yes'
+				]
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name' => 'eael_testimonial_read_more_btn_typography',
+				'selector' => '{{WRAPPER}} .eael-testimonial-content .eael-testimonial-read-more-btn',
+				'condition' => [
+					'eael_testimonial_enable_read_more' => 'yes'
+				]
+			]
+		);
+
+		$this->add_responsive_control(
+			'eael_testimonial_read_more_btn_margin',
+			[
+				'label' => esc_html__('Margin', 'essential-addons-elementor'),
+				'type' => Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', '%'],
+				'selectors' => [
+					'{{WRAPPER}} .eael-testimonial-content .eael-testimonial-read-more-btn' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+				'condition' => [
+					'eael_testimonial_enable_read_more' => 'yes'
+				]
+			]
+		);
+
+		$this->add_responsive_control(
+			'eael_testimonial_read_more_btn_padding',
+			[
+				'label' => esc_html__('Padding', 'essential-addons-elementor'),
+				'type' => Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', '%', 'em'],
+				'selectors' => [
+					'{{WRAPPER}} .eael-testimonial-content .eael-testimonial-read-more-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+				'condition' => [
+					'eael_testimonial_enable_read_more' => 'yes'
+				]
+			]
+		);
+
+        $this->add_control(
+            'eael_testimonial_read_more_btn_use_gradient_background',
+            [
+                'label'        => __('Use Gradient Background', 'essential-addons-for-elementor-lite'),
+                'type'         => Controls_Manager::SWITCHER,
+                'return_value' => 'yes',
+                'default'      => '',
+                'condition' => [
+					'eael_testimonial_enable_read_more' => 'yes'
+				]
+            ]
+        );
+
+        $this->start_controls_tabs(
+        	'eael_testimonial_read_more_btn_tabs',
+        	[
+	        	'condition' => [
+					'eael_testimonial_enable_read_more' => 'yes'
+				]
+        	]
+        );
+
+        $this->start_controls_tab('normal', ['label' => esc_html__('Normal', 'essential-addons-for-elementor-lite')]);
+
+        $this->add_control(
+            'eael_testimonial_read_more_btn_text_color',
+            [
+                'label'     => esc_html__('Text Color', 'essential-addons-for-elementor-lite'),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                	'{{WRAPPER}} .eael-testimonial-content .eael-testimonial-read-more-btn' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'eael_testimonial_read_more_btn_background_color',
+            [
+                'label'     => esc_html__('Background Color', 'essential-addons-for-elementor-lite'),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .eael-testimonial-content .eael-testimonial-read-more-btn' => 'background-color: {{VALUE}};',
+                ],
+                'condition' => [
+                    'eael_testimonial_read_more_btn_use_gradient_background' => '',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Background::get_type(),
+            [
+                'name'      => 'eael_testimonial_read_more_btn_gradient_background',
+                'types'     => ['gradient', 'classic'],
+                'selector'  => '
+					{{WRAPPER}} .eael-testimonial-content .eael-testimonial-read-more-btn
+				',
+                'condition' => [
+                    'eael_testimonial_read_more_btn_use_gradient_background' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Border::get_type(),
+            [
+                'name'     => 'eael_testimonial_read_more_btn_border',
+                'selector' => '{{WRAPPER}} .eael-testimonial-content .eael-testimonial-read-more-btn',
+            ]
+        );
+
+        $this->add_control(
+            'eael_testimonial_read_more_btn_border_radius',
+            [
+                'label'     => esc_html__('Border Radius', 'essential-addons-for-elementor-lite'),
+                'type'      => Controls_Manager::SLIDER,
+                'range'     => [
+                    'px' => [
+                        'max' => 100,
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .eael-testimonial-content .eael-testimonial-read-more-btn'         => 'border-radius: {{SIZE}}px;',
+                ],
+            ]
+        );
+
+        $this->end_controls_tab();
+
+        $this->start_controls_tab('eael_testimonial_read_more_btn_hover', ['label' => esc_html__('Hover', 'essential-addons-for-elementor-lite')]);
+
+        $this->add_control(
+            'eael_testimonial_read_more_btn_hover_text_color',
+            [
+                'label'     => esc_html__('Text Color', 'essential-addons-for-elementor-lite'),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .eael-testimonial-content .eael-testimonial-read-more-btn:hover' => 'color: {{VALUE}};'
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'eael_testimonial_read_more_btn_hover_background_color',
+            [
+                'label'     => esc_html__('Background Color', 'essential-addons-for-elementor-lite'),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .eael-testimonial-content .eael-testimonial-read-more-btn:hover' => 'background-color: {{VALUE}};',
+                ],
+                'condition' => [
+                    'eael_testimonial_read_more_btn_use_gradient_background' => '',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Background::get_type(),
+            [
+                'name'      => 'eael_testimonial_read_more_btn_hover_gradient_background',
+                'types'     => ['gradient', 'classic'],
+                'selector'  => '
+					{{WRAPPER}} .eael-testimonial-content .eael-testimonial-read-more-btn:hover
+				',
+                'condition' => [
+                    'eael_testimonial_read_more_btn_use_gradient_background' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'eael_testimonial_read_more_btn_hover_border_color',
+            [
+                'label'     => esc_html__('Border Color', 'essential-addons-for-elementor-lite'),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .eael-testimonial-content .eael-testimonial-read-more-btn:hover' => 'border-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->end_controls_tab();
+
+        $this->end_controls_tabs();
 
 
 		$this->end_controls_section();
@@ -1517,8 +1762,8 @@ class Testimonial_Slider extends Widget_Base
 		$settings = $this->get_settings_for_display();
 		ob_start();
 		?>
-        <p class="eael-testimonial-user" <?php if (!empty($settings['eael_testimonial_user_display_block'])) : ?> style="display: block; float: none;" <?php endif; ?>><?php echo esc_attr($item['eael_testimonial_name']); ?></p>
-        <p class="eael-testimonial-user-company"><?php echo esc_attr($item['eael_testimonial_company_title']); ?></p>
+        <p class="eael-testimonial-user" <?php if (!empty($settings['eael_testimonial_user_display_block'])) : ?> style="display: block; float: none;" <?php endif; ?>><?php echo HelperClass::eael_wp_kses($item['eael_testimonial_name']); ?></p>
+        <p class="eael-testimonial-user-company"><?php echo HelperClass::eael_wp_kses($item['eael_testimonial_company_title']); ?></p>
 		<?php
 		echo ob_get_clean();
 	}
@@ -1557,9 +1802,14 @@ class Testimonial_Slider extends Widget_Base
 		echo ob_get_clean();
 	}
 
-	protected function _render_user_description($item)
+	protected function _render_user_description($item, $settings)
 	{
-		echo '<div class="eael-testimonial-text">' . __( wpautop($item["eael_testimonial_description"]), 'essential-addons-elementor') . '</div>';
+		$class = '';
+		if ( isset( $settings['eael_testimonial_enable_read_more'] ) && 'yes' == $settings['eael_testimonial_enable_read_more'] ) {
+			echo '<div class="eael-testimonial-text eael-testimonial-text-excerpt">' . wp_trim_words( $item["eael_testimonial_description"], absint( $settings['eael_testimonial_desc_word_count'] ), esc_html( $settings['eael_testimonial_read_more_expansion'] ) . '<button class="eael-testimonial-read-more-btn">' . esc_html( $settings['eael_testimonial_read_more_btn_text'] ) . '</button>' ) . '</div>';
+			$class = 'eael-testimonial-text-full-text';
+		}
+		echo '<div class="eael-testimonial-text ' . $class . '">' . HelperClass::eael_wp_kses( $item["eael_testimonial_description"] ) . '</div>';
 	}
 
 
@@ -1687,7 +1937,7 @@ class Testimonial_Slider extends Widget_Base
 									<?php $this->_render_quote(); ?>
                                     <div class="testimonial-classic-style-content">
 										<?php
-										$this->_render_user_description($item);
+										$this->_render_user_description($item, $settings);
 										$this->_render_user_ratings($item);
 										$this->_render_user_meta($item);
 										?>
@@ -1704,7 +1954,7 @@ class Testimonial_Slider extends Widget_Base
                                 <div <?php echo $this->get_render_attribute_string('testimonial-content-wrapper' . $i); ?>>
 									<?php
 									$this->_render_quote();
-									$this->_render_user_description($item);
+									$this->_render_user_description($item, $settings);
 									?>
 									<?php $this->_render_user_avatar($item); ?>
                                     <div class="middle-style-content">
@@ -1725,7 +1975,7 @@ class Testimonial_Slider extends Widget_Base
                                 <div <?php echo $this->get_render_attribute_string('testimonial-content-wrapper' . $i); ?>>
 									<?php
 									$this->_render_quote();
-									$this->_render_user_description($item);
+									$this->_render_user_description($item, $settings);
 									$this->_render_user_ratings($item);
 									$this->_render_user_meta($item);
 									?>
@@ -1740,7 +1990,7 @@ class Testimonial_Slider extends Widget_Base
                                 <div <?php echo $this->get_render_attribute_string('testimonial-content-wrapper' . $i); ?>>
 									<?php
 									$this->_render_quote();
-									$this->_render_user_description($item);
+									$this->_render_user_description($item, $settings);
 									$this->_render_user_ratings($item);
 									$this->_render_user_meta($item);
 									?>
@@ -1757,7 +2007,7 @@ class Testimonial_Slider extends Widget_Base
                                 <div <?php echo $this->get_render_attribute_string('testimonial-content-wrapper' . $i); ?>>
 									<?php
 									$this->_render_quote();
-									$this->_render_user_description($item);
+									$this->_render_user_description($item, $settings);
 									?>
                                     <div class="testimonial-inline-style">
 										<?php
@@ -1784,7 +2034,7 @@ class Testimonial_Slider extends Widget_Base
                                     </div>
 									<?php
 									$this->_render_quote();
-									$this->_render_user_description($item);
+									$this->_render_user_description($item, $settings);
 									?>
                                 </div>
                             </div>
@@ -1801,7 +2051,7 @@ class Testimonial_Slider extends Widget_Base
 									?>
                                     <div class="default-style-testimonial-content">
 										<?php
-										$this->_render_user_description($item);
+										$this->_render_user_description($item, $settings);
 										$this->_render_user_ratings($item);
 										$this->_render_user_meta($item);
 										?>

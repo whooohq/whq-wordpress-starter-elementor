@@ -71,6 +71,9 @@ function init() {
 		eproCompat.addSubscribers();
 	}
 
+	const beforeInitEvent = new Event('jet-smart-filters/before-init');
+	document.dispatchEvent(beforeInitEvent);
+
 	// before initialization
 	preloader.init();
 
@@ -132,6 +135,9 @@ function init() {
 			filterGroups[filterGroupKey] = new FilterGroup(splittedKeys[0], splittedKeys[1], filterGroups[filterGroupKey], prevQueries[filterGroupKey]);
 		}
 	}
+
+	const initedEvent = new Event('jet-smart-filters/inited');
+	document.dispatchEvent(initedEvent);
 }
 
 function findFilters(container = $('html')) {

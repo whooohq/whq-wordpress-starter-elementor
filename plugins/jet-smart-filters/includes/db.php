@@ -37,7 +37,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_DB' ) ) {
 					"
 				)
 			);
-
 		}
 
 		/**
@@ -48,7 +47,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_DB' ) ) {
 			$tables = self::tables();
 
 			return isset( $tables[$table_name] ) ? $tables[$table_name] : false;
-
 		}
 
 		/**
@@ -59,7 +57,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_DB' ) ) {
 			$tables = self::tables();
 
 			return isset( $tables[$table_name]['name'] ) ? $tables[$table_name]['name'] : false;
-
 		}
 
 		/**
@@ -74,7 +71,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_DB' ) ) {
 			foreach ( array_keys( self::tables() ) as $table_name ) {
 				self::create_table( $table_name );
 			}
-
 		}
 
 		/**
@@ -85,14 +81,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_DB' ) ) {
 			foreach ( array_keys( self::tables() ) as $table_name ) {
 				self::drop( $table_name );
 			}
-
 		}
 
 		/**
 		 * Check if table is exists
-		 *
-		 * @param  string  $table_name Table name.
-		 * @return boolean
 		 */
 		public static function is_table_exists( $table_name ) {
 
@@ -104,13 +96,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_DB' ) ) {
 			}
 
 			return ( strtolower( $table_full_name ) === strtolower( $wpdb->get_var( "SHOW TABLES LIKE '$table_full_name'" ) ) );
-
 		}
 
 		/**
 		 * Create table if allowed
-		 * @param string $table_name
-		 * @param string $table_query
 		 */
 		public static function create_table( $table_name ) {
 
@@ -128,13 +117,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_DB' ) ) {
 
 				dbDelta( $sql );
 			}
-
 		}
 
 		/**
 		 * Clear table data
-		 *
-		 * @param string $table_name Table name.
 		 */
 		public static function clear_table( $table_name ) {
 
@@ -146,13 +132,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_DB' ) ) {
 			}
 
 			$wpdb->query( "TRUNCATE TABLE {$table_full_name}" );
-
 		}
 
 		/**
 		 * Drop table data
-		 *
-		 * @param string $table_name Table name.
 		 */
 		public static function drop( $table_name ) {
 
@@ -164,9 +147,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_DB' ) ) {
 			}
 
 			$wpdb->query( "DROP TABLE IF EXISTS {$table_full_name}" );
-
 		}
-
 	}
-
 }

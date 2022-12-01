@@ -17,11 +17,11 @@ $wc_data = new WC_Structured_Data;
 
 $wc_data->generate_product_data();
 
-$template                 = jet_woo_builder_integration_woocommerce()->get_current_shop_template();
-$taxonomy_custom_template = get_term_meta( get_queried_object_id(), 'jet_woo_builder_template', true );
+$template          = jet_woo_builder()->woocommerce->get_custom_shop_template();
+$taxonomy_template = get_term_meta( get_queried_object_id(), 'jet_woo_builder_template', true );
 
-if ( is_product_taxonomy() && ! empty( $taxonomy_custom_template ) ) {
-	$template = jet_woo_builder_integration_woocommerce()->get_current_taxonomy_template();
+if ( is_product_taxonomy() && ! empty( $taxonomy_template ) ) {
+	$template = jet_woo_builder()->woocommerce->get_custom_product_taxonomy_template();
 }
 
 $template = apply_filters( 'jet-woo-builder/current-template/template-id', $template );

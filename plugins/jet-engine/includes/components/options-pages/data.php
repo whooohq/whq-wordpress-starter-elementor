@@ -179,14 +179,19 @@ if ( ! class_exists( 'Jet_Engine_Options_Data' ) ) {
 
 			$args         = array();
 			$regular_args = array(
-				'parent'     => '',
-				'icon'       => 'dashicons-admin-generic',
-				'capability' => 'manage_options',
-				'position'   => '',
+				'parent'           => '',
+				'icon'             => 'dashicons-admin-generic',
+				'capability'       => 'manage_options',
+				'position'         => '',
+				'hide_field_names' => false,
 			);
 
 			foreach ( $regular_args as $key => $default ) {
-				$args[ $key ] = ! empty( $request[ $key ] ) ? $request[ $key ] : $default;
+				if ( in_array( $key, array( 'hide_field_names' ) ) ) {
+					$args[ $key ] = ! empty( $request[ $key ] ) ? filter_var( $request[ $key ], FILTER_VALIDATE_BOOLEAN ) : $default;
+				} else {
+					$args[ $key ] = ! empty( $request[ $key ] ) ? $request[ $key ] : $default;
+				}
 			}
 
 			/**

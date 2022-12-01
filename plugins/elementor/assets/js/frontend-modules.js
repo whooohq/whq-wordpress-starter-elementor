@@ -1,4 +1,4 @@
-/*! elementor - v3.6.8 - 27-07-2022 */
+/*! elementor - v3.8.1 - 13-11-2022 */
 (self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["frontend-modules"],{
 
 /***/ "../assets/dev/js/editor/utils/is-instanceof.js":
@@ -91,7 +91,7 @@ class _default extends elementorModules.ViewModule {
   }
 
   runElementsHandlers() {
-    this.elements.$elements.each((index, element) => elementorFrontend.elementsHandler.runReadyTrigger(element));
+    this.elements.$elements.each((index, element) => setTimeout(() => elementorFrontend.elementsHandler.runReadyTrigger(element)));
   }
 
   onInit() {
@@ -221,7 +221,8 @@ module.exports = elementorModules.ViewModule.extend({
   findElement(selector) {
     var $mainElement = this.$element;
     return $mainElement.find(selector).filter(function () {
-      return jQuery(this).closest('.elementor-element').is($mainElement);
+      // Start `closest` from parent since self can be `.elementor-element`.
+      return jQuery(this).parent().closest('.elementor-element').is($mainElement);
     });
   },
 
@@ -288,7 +289,8 @@ module.exports = elementorModules.ViewModule.extend({
             return;
           }
 
-          self.onEditSettingsChange(Object.keys(changedModel.changed)[0]);
+          const propName = Object.keys(changedModel.changed)[0];
+          self.onEditSettingsChange(propName, changedModel.changed[propName]);
         }
 
       });
@@ -496,7 +498,7 @@ module.exports = elementorModules.ViewModule.extend({
         $container;
 
     try {
-      $container = jQuery(containerSelector);
+      $container = jQuery(containerSelector); // eslint-disable-next-line no-empty
     } catch (e) {}
 
     if (!$container || !$container.length) {
@@ -602,7 +604,7 @@ class ArgsObject extends _instanceType.default {
   requireArgument(property) {
     let args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.args;
 
-    if (!args.hasOwnProperty(property)) {
+    if (!Object.prototype.hasOwnProperty.call(args, property)) {
       throw Error(`${property} is required.`);
     }
   }
@@ -702,7 +704,14 @@ __webpack_require__(/*! core-js/modules/es.array.includes.js */ "../node_modules
 class ForceMethodImplementation extends Error {
   constructor() {
     let info = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    super(`${info.isStatic ? 'static ' : ''}${info.fullName}() should be implemented, please provide '${info.functionName || info.fullName}' functionality.`);
+    let args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    super(`${info.isStatic ? 'static ' : ''}${info.fullName}() should be implemented, please provide '${info.functionName || info.fullName}' functionality.`, args); // Allow to pass custom properties to the error.
+
+    if (Object.keys(args).length) {
+      // eslint-disable-next-line no-console
+      console.error(args);
+    }
+
     Error.captureStackTrace(this, ForceMethodImplementation);
   }
 
@@ -710,7 +719,7 @@ class ForceMethodImplementation extends Error {
 
 exports.ForceMethodImplementation = ForceMethodImplementation;
 
-var _default = () => {
+var _default = args => {
   const stack = Error().stack,
         caller = stack.split('\n')[2].trim(),
         callerName = caller.startsWith('at new') ? 'constructor' : caller.split(' ')[1],
@@ -726,7 +735,7 @@ var _default = () => {
     info.isStatic = true;
   }
 
-  throw new ForceMethodImplementation(info);
+  throw new ForceMethodImplementation(info, args);
 };
 
 exports["default"] = _default;
@@ -788,6 +797,10 @@ class InstanceType {
     return result;
   }
 
+  static getInstanceType() {
+    elementorModules.ForceMethodImplementation();
+  }
+
   constructor() {
     // Since anonymous classes sometimes do not get validated by babel, do it manually.
     let target = new.target;
@@ -799,10 +812,6 @@ class InstanceType {
     }
 
     prototypes.reverse().forEach(proto => this instanceof proto);
-  }
-
-  static getInstanceType() {
-    elementorModules.ForceMethodImplementation();
   }
 
 }
@@ -1024,16 +1033,21 @@ module.exports = Module;
 /*!*********************************************************!*\
   !*** ../assets/dev/js/modules/imports/utils/masonry.js ***!
   \*********************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
 var _viewModule = _interopRequireDefault(__webpack_require__(/*! ../view-module */ "../assets/dev/js/modules/imports/view-module.js"));
 
-module.exports = _viewModule.default.extend({
+var _default = _viewModule.default.extend({
   getDefaultSettings() {
     return {
       container: null,
@@ -1076,6 +1090,8 @@ module.exports = _viewModule.default.extend({
   }
 
 });
+
+exports["default"] = _default;
 
 /***/ }),
 
@@ -1197,16 +1213,21 @@ exports["default"] = Scroll;
 /*!*******************************************************!*\
   !*** ../assets/dev/js/modules/imports/view-module.js ***!
   \*******************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
 var _module = _interopRequireDefault(__webpack_require__(/*! ./module */ "../assets/dev/js/modules/imports/module.js"));
 
-module.exports = _module.default.extend({
+var _default = _module.default.extend({
   elements: null,
 
   getDefaultElements() {
@@ -1225,6 +1246,8 @@ module.exports = _module.default.extend({
   }
 
 });
+
+exports["default"] = _default;
 
 /***/ }),
 
@@ -2969,10 +2992,10 @@ var store = __webpack_require__(/*! ../internals/shared-store */ "../node_module
 (module.exports = function (key, value) {
   return store[key] || (store[key] = value !== undefined ? value : {});
 })('versions', []).push({
-  version: '3.23.4',
+  version: '3.24.1',
   mode: IS_PURE ? 'pure' : 'global',
   copyright: '© 2014-2022 Denis Pushkarev (zloirock.ru)',
-  license: 'https://github.com/zloirock/core-js/blob/v3.23.4/LICENSE',
+  license: 'https://github.com/zloirock/core-js/blob/v3.24.1/LICENSE',
   source: 'https://github.com/zloirock/core-js'
 });
 

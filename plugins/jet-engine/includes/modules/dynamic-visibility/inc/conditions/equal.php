@@ -29,14 +29,26 @@ class Equal extends Base {
 	public function check( $args = array() ) {
 
 		$type          = ! empty( $args['type'] ) ? $args['type'] : 'show';
+		$data_type     = ! empty( $args['data_type'] ) ? $args['data_type'] : 'chars';
 		$current_value = $this->get_current_value( $args );
+		$value         = $args['value'];
+		$values        = $this->adjust_values_type( $current_value, $value, $data_type );
 
 		if ( 'hide' === $type ) {
-			return $current_value != $args['value'];
+			return $values['current'] != $values['compare'];
 		} else {
-			return $current_value == $args['value'];
+			return $values['current'] == $values['compare'];
 		}
 
+	}
+
+	/**
+	 * This condition is required data type detection
+	 *
+	 * @return boolean
+	 */
+	public function need_type_detect() {
+		return true;
 	}
 
 }

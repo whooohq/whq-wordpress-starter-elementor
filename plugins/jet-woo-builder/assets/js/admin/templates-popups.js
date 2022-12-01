@@ -6,14 +6,12 @@
 
 		init: function() {
 
-			let self = this;
-
-			self.initPopups();
+			JetWooTemplatesPopups.initPopups();
 
 			$( document )
-				.on( 'change.JetWooTemplatesPopups', '#template_type', self.predesignedTemplates )
-				.on( 'click.JetWooTemplatesPopups', '.jet-woo-builder-create-form__item-uncheck', self.uncheckItem )
-				.on( 'click.JetWooTemplatesPopups', '.jet-woo-builder-create-form__label', self.isCheckedItem );
+				.on( 'change.JetWooTemplatesPopups', '#template_type', JetWooTemplatesPopups.predesignedTemplates )
+				.on( 'click.JetWooTemplatesPopups', '.jet-woo-builder-create-form__item-uncheck', JetWooTemplatesPopups.uncheckItem )
+				.on( 'click.JetWooTemplatesPopups', '.jet-woo-builder-create-form__label', JetWooTemplatesPopups.isCheckedItem );
 
 		},
 
@@ -29,8 +27,15 @@
 			$( '#wpbody-content' ).find( '.page-title-action:last' ).after( $importButton );
 
 			$createButton.on( 'click', function( event ) {
+
 				event.preventDefault();
+
 				JetWooTemplatesPopups.uncheckAll();
+
+				setTimeout( () => {
+					JetWooTemplatesPopups.predesignedTemplates();
+				}, 0 );
+
 			} );
 
 			let tippyProps = {
@@ -57,8 +62,8 @@
 
 		predesignedTemplates: function() {
 
-			let $this = $( this ),
-				value = $this.find( 'option:selected' ).val(),
+			let $select = $( '#template_type' ),
+				value = $select.find( 'option:selected' ).val(),
 				$subheading = $( '.jet-woo-builder-create-form__subheading' );
 
 			if ( '' !== value ) {

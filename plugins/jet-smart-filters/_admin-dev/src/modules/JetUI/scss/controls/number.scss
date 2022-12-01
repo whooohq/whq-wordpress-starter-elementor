@@ -1,0 +1,11 @@
+@import "../mixins.scss";
+
+.jet-ui_number {
+	input#{&}-input {
+		@include input();
+		@include input-placeholder();
+		@include input-focus();
+	}
+
+	@include control-disabled();
+}

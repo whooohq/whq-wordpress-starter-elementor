@@ -28,10 +28,6 @@ class Jet_Woo_Builder_Products_Result_Count extends Jet_Woo_Builder_Base {
 		return 'jet-woo-builder-icon-shop-result-count';
 	}
 
-	public function get_script_depends() {
-		return array();
-	}
-
 	public function get_jet_help_url() {
 		return 'https://crocoblock.com/knowledge-base/articles/jetwoobuilder-how-to-create-and-set-a-shop-page-template/';
 	}
@@ -60,17 +56,18 @@ class Jet_Woo_Builder_Products_Result_Count extends Jet_Woo_Builder_Base {
 				'tab'   => Controls_Manager::TAB_STYLE,
 			)
 		);
+
 		$this->add_control(
 			'result_count_text_color',
-			array(
+			[
 				'label'     => __( 'Text Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'default'   => '',
-				'selectors' => array(
+				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['result_count'] => 'color: {{VALUE}};',
-				),
-			)
+				],
+			]
 		);
+
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			array(
@@ -78,6 +75,7 @@ class Jet_Woo_Builder_Products_Result_Count extends Jet_Woo_Builder_Base {
 				'selector' => '{{WRAPPER}} ' . $css_scheme['result_count'],
 			)
 		);
+
 		$this->add_responsive_control(
 			'result_count_align',
 			array(
@@ -92,11 +90,10 @@ class Jet_Woo_Builder_Products_Result_Count extends Jet_Woo_Builder_Base {
 		);
 
 		$this->end_controls_section();
+
 	}
 
 	protected function render() {
-
-		$this->__context = 'render';
 
 		$this->__open_wrap();
 
@@ -105,4 +102,5 @@ class Jet_Woo_Builder_Products_Result_Count extends Jet_Woo_Builder_Base {
 		$this->__close_wrap();
 
 	}
+
 }

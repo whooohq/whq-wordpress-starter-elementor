@@ -2,6 +2,7 @@
 namespace Essential_Addons_Elementor\Pro\Elements;
 
 use \Elementor\Controls_Manager;
+use Elementor\Plugin;
 use \Elementor\Widget_Base;
 use \Essential_Addons_Elementor\Pro\Classes\Helper;
 use \Essential_Addons_Elementor\Pro\Skins\Skin_Default;
@@ -115,58 +116,90 @@ class Advanced_Menu extends Widget_Base
         );
 
         $this->add_control(
-          'eael_advanced_menu_hamburger_disable_selected_menu',
-          [
-            'label' => esc_html__('Disable Selected Menu', 'essential-addons-elementor'),
-            'type' => \Elementor\Controls_Manager::SWITCHER,
-            'label_on' => __( 'Yes', 'essential-addons-elementor' ),
-            'label_off' => __( 'No', 'essential-addons-elementor' ),
-            'return_value' => 'hide',
-            'default' => 'no',
-            'prefix_class' => 'eael_advanced_menu_hamburger_disable_selected_menu_',
-          ]
+            'eael_advanced_menu_hamburger_disable_selected_menu',
+            [
+                'label' => esc_html__('Disable Selected Menu', 'essential-addons-elementor'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => __( 'Yes', 'essential-addons-elementor' ),
+                'label_off' => __( 'No', 'essential-addons-elementor' ),
+                'return_value' => 'hide',
+                'default' => 'no',
+                'prefix_class' => 'eael_advanced_menu_hamburger_disable_selected_menu_',
+            ]
         );
 
         $this->add_control(
-          'eael_advanced_menu_hamburger_alignment',
-          [
-              'label' => __('Hamburger Alignment', 'essential-addons-elementor'),
-              'type' => Controls_Manager::CHOOSE,
-              'options' => [
-                  'left' => [
-                      'title' => __('Left', 'essential-addons-elementor'),
-                      'icon' => 'eicon-text-align-left',
-                  ],
-                  'center' => [
-                      'title' => __('Center', 'essential-addons-elementor'),
-                      'icon' => 'eicon-text-align-center',
-                  ],
-                  'right' => [
-                      'title' => __('Right', 'essential-addons-elementor'),
-                      'icon' => 'eicon-text-align-right',
-                  ],
-              ],
-              'default' => 'eael-advanced-menu-hamburger-align-right',
-              'prefix_class' => 'eael-advanced-menu-hamburger-align-',
-              'condition' => [
-                'eael_advanced_menu_hamburger_disable_selected_menu' => 'hide',
-              ],
-          ]
-      );
+            'eael_advanced_menu_hamburger_alignment',
+            [
+                'label' => __('Hamburger Alignment', 'essential-addons-elementor'),
+                'type' => Controls_Manager::CHOOSE,
+                'options' => [
+                    'left' => [
+                        'title' => __('Left', 'essential-addons-elementor'),
+                        'icon' => 'eicon-text-align-left',
+                    ],
+                    'center' => [
+                        'title' => __('Center', 'essential-addons-elementor'),
+                        'icon' => 'eicon-text-align-center',
+                    ],
+                    'right' => [
+                        'title' => __('Right', 'essential-addons-elementor'),
+                        'icon' => 'eicon-text-align-right',
+                    ],
+                ],
+                'default' => 'right',
+                'prefix_class' => 'eael-advanced-menu-hamburger-align-',
+            ]
+        );
 
-      $this->add_control(
-        'eael_advanced_menu_full_width',
-        [
-          'label' => __( 'Full Width', 'essential-addons-elementor' ),
-          'type' => Controls_Manager::SWITCHER,
-          'description' => __( 'Stretch the dropdown of the menu to full width.', 'essential-addons-elementor' ),
-          'label_on' => __( 'Yes', 'essential-addons-elementor' ),
-          'label_off' => __( 'No', 'essential-addons-elementor' ),
-          'return_value' => 'stretch',
-          'default' => 'no',
-          'prefix_class' => 'eael-advanced-menu--',
-        ]
-      );
+        $this->add_control(
+            'eael_advanced_menu_full_width',
+            [
+            'label' => __( 'Full Width', 'essential-addons-elementor' ),
+            'type' => Controls_Manager::SWITCHER,
+            'description' => __( 'Stretch the dropdown of the menu to full width.', 'essential-addons-elementor' ),
+            'label_on' => __( 'Yes', 'essential-addons-elementor' ),
+            'label_off' => __( 'No', 'essential-addons-elementor' ),
+            'return_value' => 'stretch',
+            'default' => 'no',
+            'prefix_class' => 'eael-advanced-menu--',
+            ]
+        );
+
+        $this->add_control(
+            'eael_advanced_menu_hamburger_icon',
+            [
+                'label'       => esc_html__('Icon', 'essential-addons-elementor'),
+                'type'        => Controls_Manager::ICONS,
+                'default'     => [
+                    'value'   => 'fas fa-bars',
+                    'library' => 'fa-solid',
+                ],
+            ]
+        );
+
+        $this->add_control(
+			'eael_advanced_menu_heading_mobile_dropdown',
+			[
+				'label' => esc_html__( 'Mobile Dropdown', 'essential-addons-elementor' ),
+				'type' => Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+        $default_value = 'tablet';
+		$dropdown_options = Helper::get_breakpoint_dropdown_options();
+        
+		$this->add_control(
+			'eael_advanced_menu_dropdown',
+			[
+				'label' => esc_html__( 'Breakpoint', 'essential-addons-elementor' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => esc_html( $default_value ),
+				'options' => $dropdown_options,
+				'prefix_class' => 'eael-hamburger--',
+			]
+		);
 
         $this->end_controls_section();
 
@@ -207,17 +240,79 @@ class Advanced_Menu extends Widget_Base
         );
 
         $this->add_control(
-            'eael_advanced_menu_hamburger_icon',
+		    'eael_advanced_menu_hamburger_size',
+		    [
+			    'label' => esc_html__( 'Icon Size', 'essential-addons-elementor' ),
+			    'type' => Controls_Manager::SLIDER,
+			    'range' => [
+				    'px' => [
+					    'max' => 30,
+				    ],
+			    ],
+			    'selectors' => [
+				    '{{WRAPPER}} .eael-advanced-menu-container .eael-advanced-menu-toggle i' => 'font-size: {{SIZE}}{{UNIT}};',
+				    '{{WRAPPER}} .eael-advanced-menu-container .eael-advanced-menu-toggle svg' => 'width: {{SIZE}}{{UNIT}};',
+			    ],
+		    ]
+	    );
+
+	    $this->add_control(
+            'eael_advanced_menu_hamburger_icon_color',
             [
-                'label' => __('Icon Color', 'essential-addons-elementor'),
-                'type' => Controls_Manager::COLOR,
-                'default' => '#ffffff',
+                'label'     => __('Icon Color', 'essential-addons-elementor'),
+                'type'      => Controls_Manager::COLOR,
+                'default'   => '#ffffff',
                 'selectors' => [
-                    '{{WRAPPER}} .eael-advanced-menu-container .eael-advanced-menu-toggle .eicon-menu-bar' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-advanced-menu-container .eael-advanced-menu-toggle i' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-advanced-menu-container .eael-advanced-menu-toggle svg' => 'fill: {{VALUE}}',
                 ],
 
             ]
         );
+
+        $this->add_control(
+		    'eael_advanced_menu_hamburger_item_heading',
+		    [
+			    'label'     => __('Items', 'essential-addons-elementor'),
+			    'type'      => Controls_Manager::HEADING,
+			    'separator' => 'before',
+		    ]
+	    );
+
+        $this->add_control(
+		    'eael_advanced_menu_hamburger_menu_item_alignment',
+		    [
+			    'label'     => __('Alignment', 'essential-addons-elementor'),
+			    'type'      => Controls_Manager::CHOOSE,
+			    'options'   => [
+				    'eael-hamburger-left'   => [
+					    'title' => __('Left', 'essential-addons-elementor'),
+					    'icon'  => 'eicon-text-align-left',
+				    ],
+				    'eael-hamburger-center' => [
+					    'title' => __('Center', 'essential-addons-elementor'),
+					    'icon'  => 'eicon-text-align-center',
+				    ],
+				    'eael-hamburger-right'  => [
+					    'title' => __('Right', 'essential-addons-elementor'),
+					    'icon'  => 'eicon-text-align-right',
+				    ],
+			    ],
+		    ]
+	    );
+
+        // $this->add_control(
+        //     'eael_advanced_menu_hamburger_icon',
+        //     [
+        //         'label' => __('Icon Color', 'essential-addons-elementor'),
+        //         'type' => Controls_Manager::COLOR,
+        //         'default' => '#ffffff',
+        //         'selectors' => [
+        //             '{{WRAPPER}} .eael-advanced-menu-container .eael-advanced-menu-toggle .eicon-menu-bar' => 'color: {{VALUE}}',
+        //         ],
+
+        //     ]
+        // );
 
         $this->end_controls_section();
 

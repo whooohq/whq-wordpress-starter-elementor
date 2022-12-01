@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_ThankYou_Customer_Address_Details
- * Name: Customer Address Details
+ * Name: Thank You Customer Address Details
  * Slug: jet-thankyou-customer-address-details
  */
 
@@ -22,7 +22,7 @@ class Jet_Woo_Builder_ThankYou_Customer_Address_Details extends Jet_Woo_Builder_
 	}
 
 	public function get_title() {
-		return __( 'Customer Address Details', 'jet-woo-builder' );
+		return __( 'Thank You Customer Address Details', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {

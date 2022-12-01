@@ -1,6 +1,7 @@
 import AdditionalFilters from 'modules/AdditionalFilters';
 import CustomProvider from 'modules/CustomProvider';
 import Indexer from 'modules/Indexer';
+import TabIndex from 'modules/TabIndex';
 import eventBus from 'includes/event-bus';
 import request from 'includes/request';
 import preloader from 'includes/preloader';
@@ -33,6 +34,7 @@ export default class FilterGroup {
 		this.additionalFilters = new AdditionalFilters(this);
 		this.customProvider = new CustomProvider(this);
 		this.initIndexer();
+		this.initTabIndex();
 
 		this.urlType = getNesting(JetSmartFilterSettings, 'misc', 'url_type') || 'plain';
 		this.baseUrl = window.location.pathname.replace(/jsf\/.*?$/, '');
@@ -101,11 +103,11 @@ export default class FilterGroup {
 		this.apply(applyType);
 	}
 
-	paginationСhangeHandler(applyType, topOffset = 0) {
+	paginationСhangeHandler(applyType, topOffset = false) {
 		this.apply(applyType);
 
 		// scroll to provider
-		if (applyType !== 'reload')
+		if (applyType !== 'reload' && (topOffset || topOffset === 0))
 			$('html, body').stop().animate({ scrollTop: this.$provider.offset().top - topOffset }, 500);
 	}
 
@@ -273,7 +275,8 @@ export default class FilterGroup {
 
 	setFiltersData(data = this.currentQuery) {
 		this.filters.forEach(filter => {
-			if (filter.isHierarchy && (filter.singleTax || data['hc']))
+			//if (filter.isHierarchy && (filter.singleTax || data['hc']))
+			if (filter.isHierarchy)
 				return;
 
 			const key = filter.queryKey,
@@ -539,6 +542,18 @@ export default class FilterGroup {
 		});
 	}
 
+	initTabIndex() {
+		const use_tabindex = getNesting(JetSmartFilterSettings, 'plugin_settings', 'use_tabindex');
+
+		if (use_tabindex !== 'true')
+			return;
+
+		this.filters.forEach(filter => {
+			// Init TabIndex Class
+			new TabIndex(filter);
+		});
+	}
+
 	// emitters
 	emitActiveItems() {
 		eventBus.publish('activeItems/change', this.activeItems, this.provider, this.queryId);
@@ -564,9 +579,6 @@ export default class FilterGroup {
 		const query = {};
 
 		this.filters.forEach(filter => {
-			if (filter.disabled)
-				return;
-
 			const data = filter.data,
 				key = filter.queryKey;
 
@@ -577,7 +589,7 @@ export default class FilterGroup {
 				query[key] = mergeData(query[key], data, 'operator_AND');
 			} else {
 				if (filter.isHierarchy && filter.hierarchicalСhain)
-					query['hc'] = filter.hierarchicalСhain;
+					query['hc_' + filter.queryVar] = filter.hierarchicalСhain;
 
 				query[key] = data;
 			}
@@ -606,9 +618,20 @@ export default class FilterGroup {
 	}
 
 	get activeItems() {
-		return this.filters.filter(filter => {
-			return filter.data && filter.reset && !filter.disabled && !this.activeItemsExceptions.includes(filter.name);
+		const activeItems = [];
+
+		this.filters.forEach(filter => {
+			if (
+				!filter.data || !filter.reset
+				|| this.activeItemsExceptions.includes(filter.name)
+				|| activeItems.some(activeItem => filter.filterId === activeItem.filterId)
+			)
+				return;
+
+			activeItems.push(filter);
 		});
+
+		return activeItems;
 	}
 
 	get hierarchyFilters() {

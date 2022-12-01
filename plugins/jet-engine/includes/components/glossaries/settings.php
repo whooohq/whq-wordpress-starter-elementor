@@ -5,6 +5,7 @@ class Settings {
 
 	public $items = false;
 	public $nonce_key = 'jet-engine-glossaries';
+	public $order_option_name = 'jet_engine_glossaries_orders';
 
 	/**
 	 * Constructor for the class
@@ -15,6 +16,7 @@ class Settings {
 		add_action( 'jet-engine/dashboard/assets', array( $this, 'register_settings_js' ) );
 		add_action( 'wp_ajax_jet_engine_glossary_save', array( $this, 'save_item' ) );
 		add_action( 'wp_ajax_jet_engine_glossary_delete', array( $this, 'delete_item' ) );
+		add_action( 'wp_ajax_jet_engine_glossary_save_orders', array( $this, 'save_orders' ) );
 
 	}
 
@@ -104,6 +106,33 @@ class Settings {
 
 	}
 
+	public function save_orders() {
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Access denied', 'jet-engine' ) ) );
+		}
+
+		$nonce = ! empty( $_REQUEST['nonce'] ) ? $_REQUEST['nonce'] : false;
+
+		if ( ! $nonce || ! wp_verify_nonce( $nonce, $this->nonce_key ) ) {
+			wp_send_json_error( array( 'message' => __( 'Nonce validation failed', 'jet-engine' ) ) );
+		}
+
+		$orders = ! empty( $_REQUEST['orders'] ) ? $_REQUEST['orders'] : array();
+		$done   = update_option( $this->order_option_name, $orders );
+
+		if ( ! empty( $done ) ) {
+			wp_send_json_success( array(
+				'message' => __( 'Order of items updated', 'jet-engine' ),
+			) );
+		} else {
+			wp_send_json_error( array(
+				'message' => __( 'Items orders not updated', 'jet-engine' ),
+			) );
+		}
+
+	}
+
 	/**
 	 * Register settings JS file
 	 *
@@ -119,9 +148,17 @@ class Settings {
 		);
 
 		wp_enqueue_script(
+			'vue-slicksort',
+			jet_engine()->plugin_url( 'assets/lib/vue-slicksort/vue-slicksort.min.js' ),
+			array(),
+			jet_engine()->get_version(),
+			true
+		);
+
+		wp_enqueue_script(
 			'jet-engine-glossaries',
 			jet_engine()->glossaries->component_url( 'assets/js/admin/settings.js' ),
-			array( 'cx-vue-ui' ),
+			array( 'cx-vue-ui', 'vue-slicksort' ),
 			jet_engine()->get_version(),
 			true
 		);
@@ -159,19 +196,31 @@ class Settings {
 						<a href="https://crocoblock.com/knowledge-base/articles/jetengine-glossaries-functionality-overview/?utm_source=jetengine&utm_medium=glossaries&utm_campaign=need-help" target="_blank" class="jet-engine-dash-help-link">
 							<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.4413 7.39906C10.9421 6.89828 11.1925 6.29734 11.1925 5.59624C11.1925 4.71987 10.8795 3.9687 10.2535 3.34272C9.62754 2.71674 8.87637 2.40376 8 2.40376C7.12363 2.40376 6.37246 2.71674 5.74648 3.34272C5.1205 3.9687 4.80751 4.71987 4.80751 5.59624H6.38498C6.38498 5.17058 6.54773 4.79499 6.87324 4.46948C7.19875 4.14398 7.57434 3.98122 8 3.98122C8.42566 3.98122 8.80125 4.14398 9.12676 4.46948C9.45227 4.79499 9.61502 5.17058 9.61502 5.59624C9.61502 6.02191 9.45227 6.3975 9.12676 6.723L8.15024 7.73709C7.52426 8.41315 7.21127 9.16432 7.21127 9.99061V10.4038H8.78873C8.78873 9.57747 9.10172 8.82629 9.7277 8.15024L10.4413 7.39906ZM8.78873 13.5962V12.0188H7.21127V13.5962H8.78873ZM2.32864 2.3662C3.9061 0.788732 5.79656 0 8 0C10.2034 0 12.0814 0.788732 13.6338 2.3662C15.2113 3.91862 16 5.79656 16 8C16 10.2034 15.2113 12.0939 13.6338 13.6714C12.0814 15.2238 10.2034 16 8 16C5.79656 16 3.9061 15.2238 2.32864 13.6714C0.776213 12.0939 0 10.2034 0 8C0 5.79656 0.776213 3.91862 2.32864 2.3662Z" fill="#007CBA"></path></svg>
 							What is this and how it works?
-						<a>
+						</a>
 					</div>
 				</div>
 				<div class="cx-vui-inner-panel">
 					<div tabindex="0" class="cx-vui-repeater">
-						<div class="cx-vui-repeater__items">
-							<div :class="{ 'cx-vui-repeater-item': true, 'cx-vui-panel': true, 'cx-vui-repeater-item--is-collpased': editID !== item.id }" v-for="( item, index ) in items" :key="item.id">
+						<slick-list lockAxis="y" :use-drag-handle="true" v-model="items" class="cx-vui-repeater__items">
+							<slick-item
+								:class="{
+									'cx-vui-repeater-item': true,
+									'cx-vui-panel': true,
+									'cx-vui-repeater-item--is-collpased': editID !== item.id
+								}"
+								v-for="( item, index ) in items"
+								:index="index"
+								:key="item.id"
+							>
 								<div :class="{ 'cx-vui-repeater-item__heading': true, 'cx-vui-repeater-item__heading--is-collpased': editID !== item.id }">
 									<div class="cx-vui-repeater-item__heading-start" @click="setEdit( item.id )">
+										<div v-handle class="cx-vui-repeater-item__handle">
+											<svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="2" y1="3" x2="14" y2="3" stroke-width="2"/><line x1="2" y1="11" x2="14" y2="11" stroke-width="2"/><line x1="2" y1="7" x2="14" y2="7" stroke-width="2"/></svg>
+										</div>
 										<svg v-if="editID !== item.id" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="cx-vui-repeater-item__collapse cx-vui-repeater-item__collapse--is-collpased"><rect width="14" height="14" transform="matrix(1 0 0 -1 0 14)" fill="white"></rect><path d="M13 5.32911L7 11L1 5.32911L2.40625 4L7 8.34177L11.5938 4L13 5.32911Z"></path></svg>
 										<svg v-else width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="cx-vui-repeater-item__collapse"><rect width="14" height="14" transform="matrix(1 0 0 -1 0 14)" fill="white"></rect><path d="M13 5.32911L7 11L1 5.32911L2.40625 4L7 8.34177L11.5938 4L13 5.32911Z"></path></svg>
 										<div class="cx-vui-repeater-item__title">{{ item.name }}</div>
-										<div class="cx-vui-repeater-item__subtitle">{{ item.slug }}</div>
+										<div class="cx-vui-repeater-item__subtitle">ID: {{ item.id }}</div>
 									</div>
 									<div class="cx-vui-repeater-item__heading-end">
 										<div class="cx-vui-repeater-item__clean" @click="deleteID = item.id">
@@ -186,8 +235,9 @@ class Settings {
 								<div :class="{ 'cx-vui-repeater-item__content': true, 'cx-vui-repeater-item__content--is-collpased': editID !== item.id }">
 									<jet-engine-glossary :value="item"/>
 								</div>
-							</div>
-						</div>
+							</slick-item>
+						</slick-list>
+
 						<div class="cx-vui-repeater__actions">
 							<cx-vui-button
 								button-style="accent-border"
@@ -363,14 +413,53 @@ class Settings {
 				}
 			}
 
-			usort( $this->items, function( $a, $b ) {
+			$orders = get_option( $this->order_option_name, array() );
 
-				if ( $a['id'] === $b['id'] ) {
-					return 0;
+			if ( empty( $orders ) ) {
+
+				usort( $this->items, function( $a, $b ) {
+
+					if ( $a['id'] === $b['id'] ) {
+						return 0;
+					}
+
+					return ( $a['id'] < $b['id'] ) ? -1 : 1;
+				} );
+
+			} else {
+
+				$items_ids = wp_list_pluck( $this->items, 'id'  );
+				$diff_ids  = array_diff( $items_ids, $orders );
+				$orders    = array_flip( $orders );
+
+				if ( empty( $diff_ids ) ) {
+
+					usort( $this->items, function ( $a, $b ) use ( $orders ) {
+						return $orders[ $a['id'] ] - $orders[ $b['id'] ];
+					} );
+
+				} else {
+
+					$items           = array_combine( $items_ids, $this->items );
+					$intersect_items = array_intersect_key( $items, $orders );
+					$diff_items      = array_diff_key( $items, $orders );
+
+					usort( $intersect_items, function ( $a, $b ) use ( $orders ) {
+						return $orders[ $a['id'] ] - $orders[ $b['id'] ];
+					} );
+
+					usort( $diff_items, function( $a, $b ) {
+
+						if ( $a['id'] === $b['id'] ) {
+							return 0;
+						}
+
+						return ( $a['id'] < $b['id'] ) ? -1 : 1;
+					} );
+
+					$this->items = array_merge( $intersect_items, $diff_items );
 				}
-
-				return ( $a['id'] < $b['id'] ) ? -1 : 1;
-			} );
+			}
 
 		}
 

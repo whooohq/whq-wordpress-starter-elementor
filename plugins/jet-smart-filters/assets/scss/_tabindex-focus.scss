@@ -1,0 +1,86 @@
+// Mixins
+@mixin outline() {
+	outline: 1px solid var(--tabindex-color);
+	box-shadow: 0px 0px 0px 3px var(--tabindex-shadow-color);
+}
+@mixin focus-visible() {
+	&:focus-visible {
+		@include outline();
+	}
+}
+
+label[tabindex],
+.jet-active-filter[tabindex],
+.jet-active-tag[tabindex],
+.jet-filters-pagination__item[tabindex],
+.jet-select__control[tabindex],
+.jet-sorting-select[tabindex],
+.jet-filter-items-dropdown__label[tabindex],
+.jet-filter-items-moreless[tabindex],
+.apply-filters__button[tabindex],
+.jet-remove-all-filters__button[tabindex] {
+	@include focus-visible();
+}
+
+.jet-range {
+	&__slider {
+		& &__input[tabindex] {
+			&:focus-visible::-webkit-slider-thumb {
+				@include outline();
+			}
+			&:focus-visible::-moz-range-thumb {
+				@include outline();
+			}
+			&:focus-visible::-ms-thumb {
+				@include outline();
+			}
+		}
+	}
+	&__inputs__group {
+		input[tabindex] {
+			@include focus-visible();
+		}
+	}
+}
+
+.jet-date-range {
+	input[tabindex],
+	button[tabindex] {
+		@include focus-visible();
+	}
+}
+
+.jet-date-period {
+	&__datepicker-button[tabindex],
+	&__prev[tabindex],
+	&__next[tabindex] {
+		@include focus-visible();
+	}
+}
+
+.jet-search-filter {
+	&__input[tabindex],
+	button[tabindex] {
+		@include focus-visible();
+	}
+}
+
+.jet-filter-items-scroll {
+	.jet-filter-row {
+		[tabindex] {
+			margin-left: 3px;
+		}
+
+		&:first-child {
+			[tabindex] {
+				margin-top: 3px;
+			}
+		}
+
+		&:last-child {
+			[tabindex] {
+				margin-bottom: 3px;
+			}
+		}
+	}
+}

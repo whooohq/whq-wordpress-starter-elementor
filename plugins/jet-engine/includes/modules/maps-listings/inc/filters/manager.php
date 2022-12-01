@@ -9,8 +9,13 @@ class Manager {
 		
 		add_action( 'jet-smart-filters/providers/register', array( $this, 'register_filters_provider' ) );
 		add_action( 'jet-smart-filters/filter-types/register', array( $this, 'register_filter_types' ) );
-		
-		add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_widgets' ), 20 );
+
+		if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.5.0', '>=' ) ) {
+			add_action( 'elementor/widgets/register', array( $this, 'register_widgets' ), 20 );
+		} else {
+			add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_widgets' ), 20 );
+		}
+
 		add_action( 'enqueue_block_editor_assets', array( $this, 'register_blocks_assets' ), 9 );
 		add_action( 'init', array( $this, 'register_blocks_types' ), 999 );
 		add_action( 'jet-smart-filters/blocks/localized-data', array( $this, 'modify_filters_localized_data' ) );
@@ -51,11 +56,20 @@ class Manager {
 			jet_engine()->get_version(),
 			true
 		);
+
+		wp_localize_script( 'jet-maps-listings-user-geolocation', 'JetMapListingGeolocationFilterData', array(
+			'initEvent' => version_compare( jet_smart_filters()->get_version(), '3.0.0', '>' ) ? 'jet-smart-filters/before-init' : 'DOMContentLoaded',
+		) );
 	}
 
 	public function register_widgets( $widgets_manager ) {
 		require jet_engine()->modules->modules_path( 'maps-listings/inc/filters/elementor-widgets/user-geolocation.php' );
-		$widgets_manager->register_widget_type( new Elementor_Widgets\User_Geolocation() );
+
+		if ( method_exists( $widgets_manager, 'register' ) ) {
+			$widgets_manager->register( new Elementor_Widgets\User_Geolocation() );
+		} else {
+			$widgets_manager->register_widget_type( new Elementor_Widgets\User_Geolocation() );
+		}
 	}
 
 	public function register_filter_types( $types_manager ) {

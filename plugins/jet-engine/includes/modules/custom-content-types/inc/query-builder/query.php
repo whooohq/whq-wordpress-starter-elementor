@@ -303,4 +303,91 @@ class CCT_Query extends \Jet_Engine\Query_Builder\Queries\Base_Query {
 
 	}
 
+	/**
+	 * Adds date range query arguments to given query parameters.
+	 * Required to allow ech query to ensure compatibility with Dynamic Calendar
+	 * 
+	 * @param array $args [description]
+	 */
+	public function add_date_range_args( $args = array(), $dates_range = array(), $settings = array() ) {
+
+		$group_by = $settings['group_by'];
+
+		if ( empty( $args['args'] ) ) {
+			$args['args'] = array();
+		}
+
+		switch ( $group_by ) {
+
+			case 'item_date':
+
+				$args['args'][] = array(
+					'field'    => 'cct_created',
+					'operator' => 'BETWEEN',
+					'value'    => array( date( 'Y-m-d H:i:s', $dates_range['start'] ), date( 'Y-m-d H:i:s', $dates_range['end'] ) ),
+				);
+
+				break;
+
+			case 'meta_date':
+
+				if ( $settings['group_by_key'] ) {
+					$meta_key = esc_attr( $settings['group_by_key'] );
+				}
+				
+				$calendar_query = array();
+
+				if ( $meta_key ) {
+
+					$calendar_query = array_merge( $calendar_query, array(
+						array(
+							'field'    => $meta_key,
+							'operator' => 'BETWEEN',
+							'value'    => array( $dates_range['start'], $dates_range['end'] ),
+						),
+					) );
+
+				}
+
+				if ( ! empty( $settings['allow_multiday'] ) && ! empty( $settings['end_date_key'] ) ) {
+
+					$calendar_query = array_merge( $calendar_query, array(
+						array(
+							'field'    => esc_attr( $settings['end_date_key'] ),
+							'value'    => array( $dates_range['start'], $dates_range['end'] ),
+							'operator' => 'BETWEEN',
+						),
+						array(
+							'relation' => 'AND',
+							array(
+								'field'    => $meta_key,
+								'value'    => $dates_range['start'],
+								'operator' => '<'
+							),
+							array(
+								'field'    => esc_attr( $settings['end_date_key'] ),
+								'value'    => $dates_range['end'],
+								'operator' => '>'
+							)
+						),
+					) );
+
+					$calendar_query['relation'] = 'OR';
+
+				}
+
+				if ( 1 === count( $calendar_query ) ) {
+					$args['args'][] = $calendar_query[0];
+				} else {
+					$args['args'][] = $calendar_query;
+				}
+
+				break;
+
+		}
+
+		return $args;
+
+	}
+
 }

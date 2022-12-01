@@ -10,12 +10,10 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Archive' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Provider_WooCommerce_Archive class
 	 */
 	class Jet_Smart_Filters_Provider_WooCommerce_Archive extends Jet_Smart_Filters_Provider_Base {
-
 		/**
 		 * Watch for default query
 		 */
@@ -27,14 +25,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Archive' ) ) {
 				add_filter( 'woocommerce_shop_loop', array( $this, 'set_loop_props' ) );
 				add_action( 'elementor/widget/before_render_content', array( $this, 'store_default_settings' ), 0 );
 			}
-
 		}
 
 		/**
 		 * Save default widget settings
-		 *
-		 * @param  $widget
-		 * @return void
 		 */
 		public function store_default_settings( $widget ) {
 
@@ -63,20 +57,18 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Archive' ) ) {
 			$default_settings['_el_widget_id'] = $widget->get_id();
 
 			jet_smart_filters()->providers->store_provider_settings( $this->get_id(), $default_settings, $query_id );
-
 		}
 
 		/**
 		 * Returns Products loop appropriate widget name
-		 * @return string
 		 */
 		public function widget_name() {
+
 			return 'jet-woo-builder-products-loop';
 		}
 
 		/**
 		 * Returns settings to store list
-		 * @return array
 		 */
 		public function settings_to_store() {
 
@@ -90,15 +82,13 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Archive' ) ) {
 				'secondary_layout_switcher_icon',
 				'archive_item_layout'
 			);
-
 		}
 
 		/**
 		 * WooCommerce loop properties to store
-		 *
-		 * @return array
 		 */
 		public function wc_loop_props() {
+
 			return apply_filters( 'jet-smart-filters/providers/' . $this->get_id() . '/wc-loop-props', array(
 				'columns',
 				'name',
@@ -119,16 +109,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Archive' ) ) {
 			foreach ( $props as $prop ) {
 				jet_smart_filters()->query->add_prop( $this->get_id(), $prop, wc_get_loop_prop( $prop ) );
 			}
-
 		}
 
 		/**
 		 * Store default query args
-		 *
-		 * @param  array  $args       Query arguments.
-		 * @param  array  $attributes Shortcode attributes.
-		 * @param  string $type       Shortcode type.
-		 * @return array
 		 */
 		public function store_archive_query( $query ) {
 
@@ -177,31 +161,26 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Archive' ) ) {
 			jet_smart_filters()->query->store_provider_default_query( $this->get_id(), $default_query );
 
 			$query->set( 'jet_smart_filters', $this->get_id() );
-
 		}
 
 		/**
 		 * Get provider name
-		 *
-		 * @return string
 		 */
 		public function get_name() {
+
 			return __( 'WooCommerce Archive (by JetWooBuilder)', 'jet-smart-filters' );
 		}
 
 		/**
 		 * Get provider ID
-		 *
-		 * @return string
 		 */
 		public function get_id() {
+
 			return 'woocommerce-archive';
 		}
 
 		/**
 		 * Get filtered provider content
-		 *
-		 * @return string
 		 */
 		public function ajax_get_content() {
 
@@ -259,12 +238,14 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Archive' ) ) {
 				$default_layout = absint( $settings['archive_item_layout'] );
 			}
 
-			if ( function_exists( 'jet_woo_builder_integration_woocommerce' ) && $switcher_enable && $layout ) {
-				jet_woo_builder_integration_woocommerce()->products_loop_template_rewrite = true;
-				jet_woo_builder_integration_woocommerce()->current_template_archive       = $layout;
-			} elseif ( function_exists( 'jet_woo_builder_integration_woocommerce' ) && $default_layout ) {
-				jet_woo_builder_integration_woocommerce()->products_loop_template_rewrite = true;
-				jet_woo_builder_integration_woocommerce()->current_template_archive       = $default_layout;
+			if ( class_exists( 'Jet_Woo_Builder_Woocommerce' ) ) {
+				if ( $switcher_enable && $layout ) {
+					jet_woo_builder()->woocommerce->products_loop_template_rewrite = true;
+					jet_woo_builder()->woocommerce->current_template_archive       = $layout;
+				} elseif ( $default_layout ) {
+					jet_woo_builder()->woocommerce->products_loop_template_rewrite = true;
+					jet_woo_builder()->woocommerce->current_template_archive       = $default_layout;
+				}
 			}
 
 			Elementor\Jet_Woo_Builder_Products_Loop::products_loop();
@@ -272,7 +253,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Archive' ) ) {
 			remove_action( 'woocommerce_before_shop_loop', array( $this, 'add_loop_data' ), 0 );
 
 			do_action( 'jet-smart-filters/providers/woocommerce-archive/after-ajax-content' );
-
 		}
 
 		/**
@@ -288,15 +268,13 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Archive' ) ) {
 					wc_set_loop_prop( $prop, $query_props[ $prop ] );
 				}
 			}
-
 		}
 
 		/**
 		 * Store query ptoperties
-		 *
-		 * @return [type] [description]
 		 */
 		public function store_props() {
+
 			global $woocommerce_loop;
 
 			jet_smart_filters()->query->set_props(
@@ -311,10 +289,9 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Archive' ) ) {
 
 		/**
 		 * Get provider wrapper selector
-		 *
-		 * @return string
 		 */
 		public function get_wrapper_selector() {
+
 			return '.jet-woo-products-wrapper';
 		}
 
@@ -322,6 +299,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Archive' ) ) {
 		 * Add custom settings for AJAX request
 		 */
 		public function add_settings( $settings ) {
+
 			return jet_smart_filters()->query->get_query_settings();
 		}
 
@@ -337,13 +315,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Archive' ) ) {
 			}
 
 			add_filter( 'pre_get_posts', array( $this, 'add_query_args' ), 10 );
-
 		}
 
 		/**
 		 * Add custom query arguments
-		 *
-		 * @param array $args [description]
 		 */
 		public function add_query_args( $query ) {
 
@@ -352,10 +327,18 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Archive' ) ) {
 			}
 
 			foreach ( jet_smart_filters()->query->get_query_args() as $query_var => $value ) {
-				$query->set( $query_var, $value );
-			}
+				if ( in_array( $query_var, array( 'tax_query', 'meta_query' ) ) ) {
+					$current = $query->get( $query_var );
 
+					if ( ! empty( $current ) ) {
+						$value = array_merge( $current, $value );
+					}
+
+					$query->set( $query_var, $value );
+				} else {
+					$query->set( $query_var, $value );
+				}
+			}
 		}
 	}
-
 }

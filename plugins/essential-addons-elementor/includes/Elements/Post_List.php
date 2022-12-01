@@ -221,17 +221,44 @@ class Post_List extends Widget_Base
             ]
         );
 
+	    $this->add_control(
+		    'eael_post_list_featured_area',
+		    [
+			    'label'        => __( 'Show Featured Post', 'essential-addons-elementor' ),
+			    'type'         => Controls_Manager::SWITCHER,
+			    'default'      => 'yes',
+			    'label_on'     => __( 'Yes', 'essential-addons-elementor' ),
+			    'label_off'    => __( 'No', 'essential-addons-elementor' ),
+			    'return_value' => 'yes',
+			    'condition'    => [
+				    'eael_post_list_layout_type!' => 'advanced',
+			    ],
+		    ]
+	    );
+
+	    $this->add_control(
+		    'eael_post_list_scroll_on_pagination',
+		    [
+			    'label'        => __( 'Scroll to Top', 'essential-addons-elementor' ),
+			    'description'  => __( 'Enabling it allows the widget to scroll to top when navigating to the next page through pagination.', 'essential-addons-elementor' ),
+			    'type'         => Controls_Manager::SWITCHER,
+			    'default'      => 'no',
+			    'label_on'     => __( 'Yes', 'essential-addons-elementor' ),
+			    'label_off'    => __( 'No', 'essential-addons-elementor' ),
+			    'return_value' => 'yes',
+		    ]
+	    );
+
         $this->add_control(
-            'eael_post_list_featured_area',
+            'eael_post_list_scroll_offset',
             [
-                'label' => __('Show Featured Post', 'essential-addons-elementor'),
-                'type' => Controls_Manager::SWITCHER,
-                'default' => 'yes',
-                'label_on' => __('Yes', 'essential-addons-elementor'),
-                'label_off' => __('No', 'essential-addons-elementor'),
-                'return_value' => 'yes',
-	            'condition' => [
-                    'eael_post_list_layout_type' => ['default','preset-2','preset-3'],
+                'label' => __('Scroll Top Offset', 'essential-addons-elementor'),
+                'type' => Controls_Manager::NUMBER,
+                'default' => '100',
+                'min' => '0',
+                'max' => '500',
+                'condition' => [
+                    'eael_post_list_scroll_on_pagination' => 'yes',
                 ],
             ]
         );
@@ -254,7 +281,7 @@ class Post_List extends Widget_Base
                 'label' => __('Featured Post Settings', 'essential-addons-elementor'),
                 'condition' => [
                     'eael_post_list_featured_area' => 'yes',
-                    'eael_post_list_layout_type' => ['default','preset-2','preset-3'],
+                    'eael_post_list_layout_type!' => 'advanced',
                 ],
             ]
         );
@@ -331,7 +358,7 @@ class Post_List extends Widget_Base
                 ],
                 'condition' => [
                     'eael_post_list_post_equal_height' => 'yes',
-                    'eael_post_list_layout_type' => ['default','preset-2','preset-3'],
+                    'eael_post_list_layout_type!' => 'advanced',
                 ]
             ]
         );
@@ -1074,7 +1101,7 @@ class Post_List extends Widget_Base
 			    ],
 			    'selectors' => [
 				    '{{WRAPPER}} .post-list-pagination .btn-next-post i, {{WRAPPER}} .post-list-pagination .btn-prev-post i' => 'font-size: {{SIZE}}px;',
-				    '{{WRAPPER}} .post-list-pagination .btn-prev-post svg, {{WRAPPER}} .post-list-pagination .btn-next-post svg' => 'width: {{SIZE}}px;',
+				    '{{WRAPPER}} .post-list-pagination .btn-prev-post svg, {{WRAPPER}} .post-list-pagination .btn-next-post svg' => 'width: {{SIZE}}px;height: {{SIZE}}px;line-height: {{SIZE}}px;',
 			    ],
 		    ]
 	    );
@@ -1113,7 +1140,9 @@ class Post_List extends Widget_Base
                 'default' => '#fff',
                 'selectors' => [
                     '{{WRAPPER}} .post-list-pagination .btn-next-post:hover' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .post-list-pagination .btn-next-post:hover svg' => 'fill: {{VALUE}}',
                     '{{WRAPPER}} .post-list-pagination .btn-prev-post:hover' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .post-list-pagination .btn-prev-post:hover svg' => 'fill: {{VALUE}}',
                 ],
             ]
         );
@@ -1180,7 +1209,7 @@ class Post_List extends Widget_Base
                 'label' => __('Featured Post Style', 'essential-addons-elementor'),
                 'tab' => Controls_Manager::TAB_STYLE,
                 'condition' => [
-                    'eael_post_list_layout_type' => ['default','preset-2','preset-3'],
+                    'eael_post_list_layout_type!' => 'advanced',
                 ],
             ]
         );
@@ -1204,7 +1233,7 @@ class Post_List extends Widget_Base
 				    '{{WRAPPER}} .eael-post-list-featured-wrap .eael-post-list-featured-inner img'=> 'border-radius: {{SIZE}}px {{SIZE}}px 0 0;',
 			    ],
                 'condition' => [
-                    'eael_post_list_layout_type' => ['default','preset-2','preset-3'],
+                    'eael_post_list_layout_type!' => 'advanced',
                 ],
             ]
         );
@@ -1214,7 +1243,7 @@ class Post_List extends Widget_Base
                 'name' => 'eael_post_list_featured_box_shadow',
                 'selector' => '{{WRAPPER}} .eael-post-list-featured-wrap .eael-post-list-featured-inner',
                 'condition' => [
-                    'eael_post_list_layout_type' => ['default','preset-2','preset-3'],
+                    'eael_post_list_layout_type!' => 'advanced',
                 ],
             ]
         );
@@ -1420,7 +1449,7 @@ class Post_List extends Widget_Base
 				    '{{WRAPPER}} .eael-post-list-container .eael-post-list-thumbnail' => 'border-radius: {{SIZE}}px;',
 			    ],
 			    'condition' => [
-                    'eael_post_list_layout_type' => ['default','preset-2','preset-3'],
+                    'eael_post_list_layout_type!' => 'advanced',
 			    ],
 		    ]
 	    );
@@ -1430,7 +1459,7 @@ class Post_List extends Widget_Base
                 'name' => 'eael_post_list_box_shadow',
                 'selector' => '{{WRAPPER}} .eael-post-list-container.layout-default .eael-post-list-posts-wrap .eael-post-list-post, {{WRAPPER}} .eael-post-list-container.layout-preset-2 .eael-post-list-posts-wrap .eael-post-list-post, {{WRAPPER}} .eael-post-list-container.layout-preset-3 .eael-post-list-posts-wrap .eael-post-list-post',
                 'condition' => [
-                    'eael_post_list_layout_type' => ['default','preset-2','preset-3'],
+                    'eael_post_list_layout_type!' => 'advanced',
                 ],
             ]
         );
@@ -1925,7 +1954,7 @@ class Post_List extends Widget_Base
             'post_list_category_tabs',
             [
                 'condition' => [
-                    'eael_post_list_layout_type' => ['default','preset-2','preset-3'],
+                    'eael_post_list_layout_type!' => 'advanced',
                 ],
             ]
         );
@@ -2148,6 +2177,9 @@ class Post_List extends Widget_Base
             'read_more_link_target_blank' => $settings['read_more_link_target_blank'] ? 'target="_blank"' : '',
         ];
 
+        $eael_post_list_scroll_on_pagination = ! empty( $settings['eael_post_list_scroll_on_pagination'] ) && 'yes' === $settings['eael_post_list_scroll_on_pagination'] ? 1 : 0;
+        $eael_post_list_scroll_offset = ! empty( $settings['eael_post_list_scroll_offset'] ) ? intval( $settings['eael_post_list_scroll_offset'] ) : 100;
+
         $this->add_render_attribute(
             'post-list-wrapper-attribute',
             [
@@ -2171,7 +2203,7 @@ class Post_List extends Widget_Base
             if ($settings['eael_post_list_terms'] === 'yes') {
 	            $template = $this->get_template($this->get_settings('eael_post_list_layout_type'));
 	            $dir_name = method_exists( $this, 'get_temp_dir_name' ) ? $this->get_temp_dir_name( $this->get_filename_only($template) ) : "pro";
-                echo '<div class="post-categories" data-nonce="'.wp_create_nonce( 'load_more' ).'" data-page-id="'.$this->page_id.'" data-widget-id="'.$this->get_id().'" data-template=' . json_encode(['dir'   => $dir_name, 'file_name' => $this->get_filename_only($template), 'name' => $this->process_directory_name()], 1) . ' data-widget="' . $this->get_id() . '" data-class="' . get_class($this) . '" data-args="' . http_build_query($args) . '" data-settings="' . http_build_query($data_settings) . '" data-page="1">
+                echo '<div class="post-categories" data-nonce="'.wp_create_nonce( 'load_more' ).'" data-page-id="'.$this->page_id.'" data-widget-id="'.$this->get_id().'" data-template=' . json_encode(['dir'   => $dir_name, 'file_name' => $this->get_filename_only($template), 'name' => $this->process_directory_name()], 1) . ' data-widget="' . $this->get_id() . '" data-class="' . get_class($this) . '" data-args="' . http_build_query($args) . '" data-settings="' . http_build_query($data_settings) . '" data-page="1" data-scroll-on-pagination="' . esc_attr( $eael_post_list_scroll_on_pagination ) . '" data-scroll-offset="' . esc_attr( $eael_post_list_scroll_offset ) . '" >
                             <a href="javascript:;" data-taxonomy="all" data-id="" class="active post-list-filter-item post-list-cat-' . $this->get_id() . '">' . __($settings['eael_post_list_topbar_term_all_text'], 'essential-addons-elementor') . '</a>';
 
                 if (!empty($args['tax_query'])) {
@@ -2318,7 +2350,7 @@ class Post_List extends Widget_Base
             $eael_post_list_pagination_prev_icon = (isset($settings['__fa4_migrated']['eael_post_list_pagination_prev_icon_new']) || empty($settings['eael_post_list_pagination_prev_icon']) ? $settings['eael_post_list_pagination_prev_icon_new']['value'] : $settings['eael_post_list_pagination_prev_icon']);
             $eael_post_list_pagination_next_icon = (isset($settings['__fa4_migrated']['eael_post_list_pagination_next_icon_new']) || empty($settings['eael_post_list_pagination_next_icon']) ? $settings['eael_post_list_pagination_next_icon_new']['value'] : $settings['eael_post_list_pagination_next_icon']);
 	        $dir_name = method_exists( $this, 'get_temp_dir_name' ) ? $this->get_temp_dir_name( $this->get_filename_only($template) ) : "pro";
-            echo '<div class="post-list-pagination"  data-nonce="'.wp_create_nonce( 'load_more' ).'" data-page-id="'.$this->page_id.'" data-widget-id="'.$this->get_id().'" data-template=' . json_encode(['dir'   => $dir_name, 'file_name' => $this->get_filename_only($template), 'name' => $this->process_directory_name()], 1) . ' data-widget="' . $this->get_id() . '" data-class="' . get_class($this) . '" data-args="' . http_build_query($args) . '" data-settings="' . http_build_query($data_settings) . '" data-page="1">
+            echo '<div class="post-list-pagination"  data-nonce="'.wp_create_nonce( 'load_more' ).'" data-page-id="'.$this->page_id.'" data-widget-id="'.$this->get_id().'" data-template=' . json_encode(['dir'   => $dir_name, 'file_name' => $this->get_filename_only($template), 'name' => $this->process_directory_name()], 1) . ' data-widget="' . $this->get_id() . '" data-class="' . get_class($this) . '" data-args="' . http_build_query($args) . '" data-settings="' . http_build_query($data_settings) . '" data-page="1" data-scroll-on-pagination="' . esc_attr( $eael_post_list_scroll_on_pagination ) . '" data-scroll-offset="' . esc_attr( $eael_post_list_scroll_offset ) . '" >
                 <button class="btn btn-prev-post" id="post-nav-prev-' . $this->get_id() . '" disabled="true">';
                     if (isset($settings['__fa4_migrated']['eael_post_list_pagination_prev_icon_new']) || empty($settings['eael_post_list_pagination_prev_icon'])) {
                         Icons_Manager::render_icon( $settings['eael_post_list_pagination_prev_icon_new'], [ 'aria-hidden' => 'true' ] );

@@ -230,8 +230,14 @@
 
 					if ( hidden ) {
 						$selector.addClass( 'cx-control-hidden' );
+						$selector.find( '[required]' )
+								.removeAttr( 'required' )
+								.attr( 'data-required', 1 );
 					} else {
 						$selector.removeClass( 'cx-control-hidden' );
+						$selector.find( '[data-required="1"]' )
+								.removeAttr( 'data-required' )
+								.attr( 'required', true );
 					}
 				} );
 			},

@@ -53,7 +53,7 @@ class Manager {
 		add_filter(
 			'jet-engine/listings/dynamic-image/custom-image',
 			array( $this, 'custom_image_renderer' ),
-			10, 3
+			10, 4
 		);
 
 		add_filter(
@@ -254,7 +254,7 @@ class Manager {
 	 *
 	 * @return [type] [description]
 	 */
-	public function custom_image_renderer( $result = false, $settings = array(), $size = 'full' ) {
+	public function custom_image_renderer( $result = false, $settings = array(), $size = 'full', $render = null ) {
 
 		$image = $this->get_custom_value_by_setting( 'dynamic_image_source', $settings );
 
@@ -277,18 +277,17 @@ class Manager {
 
 		ob_start();
 
+		$current_object = jet_engine()->listings->data->get_current_object();
+
+		$alt = apply_filters(
+			'jet-engine/rest-api-listings/image-alt/',
+			false,
+			$current_object
+		);
+
 		if ( filter_var( $image, FILTER_VALIDATE_URL ) ) {
-			printf( '<img src="%1$s" alt="%2$s">', $image, '' );
+			$render->print_image_html_by_src( $image, $alt );
 		} else {
-
-			$current_object = jet_engine()->listings->data->get_current_object();
-
-			$alt = apply_filters(
-				'jet-engine/rest-api-listings/image-alt/',
-				false,
-				$current_object
-			);
-
 			echo wp_get_attachment_image( $image, $size, false, array( 'alt' => $alt ) );
 		}
 

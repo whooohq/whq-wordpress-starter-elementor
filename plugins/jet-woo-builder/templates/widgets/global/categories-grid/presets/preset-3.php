@@ -1,6 +1,8 @@
 <?php
 /**
  * JetWooBuilder Categories Grid widget loop item layout 3 template.
+ *
+ * This template can be overridden by copying it to yourtheme/jet-woo-builder/widgets/global/categories-grid/presets/preset-3.php.
  */
 
 include $this->get_template( 'item-thumb' );

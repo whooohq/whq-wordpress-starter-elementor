@@ -42,9 +42,17 @@ class Elementor {
 	 */
 	public function __construct() {
 
+		if ( ! jet_menu_tools()->has_elementor() ) {
+			return;
+		}
+
 		add_action( 'elementor/init', array( $this, 'register_category' ) );
 
-		add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_addons' ), 10 );
+		if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.5.0', '>=' ) ) {
+			add_action( 'elementor/widgets/register', array( $this, 'register_addons' ), 10 );
+		} else {
+			add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_addons' ), 10 );
+		}
 
 		//add_action( 'elementor/documents/register', array( $this, 'register_document_types' ) );
 
@@ -59,6 +67,8 @@ class Elementor {
 		add_action( 'elementor/frontend/before_enqueue_scripts', array( $this, 'enqueue_elementor_widget_scripts' ) );
 
 		add_action( 'wp_footer', array( $this, 'init_elementor_frontend_assets' ), 9 );
+
+		add_filter( 'jet-menu/admin/content-type-options', array( $this, 'modify_content_type_options' ), 10, 2 );
 
 	}
 
@@ -94,7 +104,12 @@ class Elementor {
 		require $file;
 
 		if ( class_exists( $class ) ) {
-			$widgets_manager->register_widget_type( new $class );
+
+			if ( method_exists( $widgets_manager, 'register' ) ) {
+				$widgets_manager->register( new $class );
+			} else {
+				$widgets_manager->register_widget_type( new $class );
+			}
 		}
 	}
 
@@ -107,14 +122,14 @@ class Elementor {
 
 		$elements_manager = \Elementor\Plugin::instance()->elements_manager;
 		$existing         = $elements_manager->get_categories();
-		$cherry_cat       = 'cherry';
+		$cherry_cat       = 'jet-menu';
 
 		if ( array_key_exists( $cherry_cat, $existing ) ) {
 			return;
 		}
 
 		$elements_manager->add_category( $cherry_cat, array(
-			'title' => esc_html__( 'JetElements', 'jet-menu' ),
+			'title' => esc_html__( 'Jet Menu', 'jet-menu' ),
 			'icon'  => 'font',
 		), 1 );
 	}
@@ -202,6 +217,20 @@ class Elementor {
 			\Elementor\Plugin::$instance->frontend->enqueue_styles();
 			\Elementor\Plugin::$instance->frontend->enqueue_scripts();
 		}
+	}
+
+	/**
+	 * @param $options
+	 *
+	 * @return mixed
+	 */
+	public function modify_content_type_options( $options ) {
+		$options[] = [
+			'label' => __( 'Elementor', 'jet-menu' ),
+			'value' => 'elementor',
+		];
+
+		return $options;
 	}
 
 }

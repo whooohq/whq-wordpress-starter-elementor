@@ -24,18 +24,18 @@ echo '</div>';
 
 echo '<div class="eael-content-timeline-content">';
 if ( 'yes' == $settings['eael_show_title'] ) {
-	echo '<' . Helper::eael_pro_validate_html_tag( $settings['title_tag'] ) . ' class="eael-timeline-title"><a href="' . esc_url( $content['permalink'] ) . '"' . $content['nofollow'] . '' . $content['target_blank'] . '>' . $content['title'] . '</a></' . Helper::eael_pro_validate_html_tag( $settings['title_tag'] ) . '>';
+	echo '<' . Helper::eael_pro_validate_html_tag( $settings['title_tag'] ) . ' class="eael-timeline-title"><a href="' . esc_url( $content['permalink'] ) . '"' . $content['nofollow'] . '' . $content['target_blank'] . '>' . esc_html( $content['title'] ) . '</a></' . Helper::eael_pro_validate_html_tag( $settings['title_tag'] ) . '>';
 }
 
-printf( $content['post_thumbnail'] );
+printf( '%s', $content['post_thumbnail'] );
 
 if ( 'yes' == $settings['eael_show_excerpt'] ) {
-	printf( '%s', $content['excerpt'] );
+	echo Helper::eael_wp_kses( $content['excerpt'] );
 }
 
 printf( '%s', $content['read_more_btn'] );
 
 echo '<span class="eael-date">';
-printf( '%s', $content['date'] );
+echo esc_html( $content['date'] );
 echo '</span>';
 echo '</div></div>';

@@ -1,0 +1,64 @@
+@import "./mixins.scss";
+
+.jet_filters-trash {
+	&-restore-all,
+	&-delete-all {
+		padding: 6px 12px 4px;
+
+		svg {
+			vertical-align: text-top;
+			margin-right: 2px;
+		}
+	}
+
+	&-restore-all {
+		margin-left: auto;
+		@include active-secondary-button();
+
+		svg path {
+			fill: $color-accent;
+		}
+	}
+
+	&-delete-all {
+		margin-left: 12px;
+		@include remove-secondary-button();
+
+		svg path {
+			fill: $color-error;
+		}
+	}
+
+	// Active head actions
+	.jet_filters-list-active-head-actions {
+		display: flex;
+		flex-basis: content;
+
+		&-restore {
+			@include active-transparent-button();
+			font-size: 14px;
+		}
+
+		&-delete-permanently {
+			@include remove-transparent-button();
+			margin-left: 20px;
+			font-size: 14px;
+		}
+	}
+
+	// Row actions
+	.jet_filters-list-row-actions {
+		&-restore {
+			@include active-transparent-button();
+		}
+
+		&-delete-permanently {
+			@include remove-transparent-button();
+		}
+
+		&-restore,
+		&-delete-permanently {
+			font-weight: 400;
+		}
+	}
+}

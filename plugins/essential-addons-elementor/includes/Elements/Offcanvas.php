@@ -704,7 +704,6 @@ class Offcanvas extends Widget_Base
             [
                 'name' => 'text_typography',
                 'label' => __('Typography', 'essential-addons-elementor'),
-                'scheme' => Typography::TYPOGRAPHY_4,
                 'selector' => '.eael-offcanvas-content-{{ID}} .eael-offcanvas-body, .eael-offcanvas-content-{{ID}} .eael-offcanvas-body *:not(.fas):not(.eicon):not(.fab):not(.far):not(.fa)',
                 'condition' => [
                     'content_type' => ['sidebar', 'custom'],
@@ -756,7 +755,6 @@ class Offcanvas extends Widget_Base
             [
                 'name' => 'links_typography',
                 'label' => __('Typography', 'essential-addons-elementor'),
-                'scheme' => Typography::TYPOGRAPHY_4,
                 'selector' => '.eael-offcanvas-content-{{ID}} .eael-offcanvas-body a',
                 'condition' => [
                     'content_type' => ['sidebar', 'custom'],
@@ -826,7 +824,6 @@ class Offcanvas extends Widget_Base
             [
                 'name' => 'eael_offcanvas_title_typography',
                 'label' => __('Typography', 'essential-addons-elementor'),
-                'scheme' => Typography::TYPOGRAPHY_4,
                 'selector' => '.eael-offcanvas-content-{{ID}} .eael-offcanvas-title h3',
             ]
         );
@@ -990,6 +987,7 @@ class Offcanvas extends Widget_Base
                 'size_units' => ['px', '%'],
                 'selectors' => [
                     '{{WRAPPER}} .eael-offcanvas-toggle-wrap .eael-offcanvas-toggle-icon' => 'font-size: {{SIZE}}{{UNIT}}',
+                    '{{WRAPPER}} .eael-offcanvas-toggle-wrap svg.eael-offcanvas-toggle-icon' => 'height: {{SIZE}}{{UNIT}};width: {{SIZE}}{{UNIT}};line-height: {{SIZE}}{{UNIT}};',
                     '{{WRAPPER}} .eael-offcanvas-toggle-wrap .eael-offcanvas-toggle-icon.eael-offcanvas-toggle-svg-icon' => 'width: {{SIZE}}{{UNIT}};',
                 ],
             ]
@@ -1047,6 +1045,7 @@ class Offcanvas extends Widget_Base
                 'default' => '',
                 'selectors' => [
                     '{{WRAPPER}} .eael-offcanvas-toggle' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-offcanvas-toggle svg.eael-offcanvas-toggle-icon' => 'fill: {{VALUE}}',
                 ],
             ]
         );
@@ -1133,6 +1132,7 @@ class Offcanvas extends Widget_Base
                 'default' => '',
                 'selectors' => [
                     '{{WRAPPER}} .eael-offcanvas-toggle:hover' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-offcanvas-toggle:hover svg.eael-offcanvas-toggle-icon' => 'fill: {{VALUE}}',
                 ],
             ]
         );
@@ -1210,6 +1210,7 @@ class Offcanvas extends Widget_Base
                 'default' => '',
                 'selectors' => [
                     '.eael-offcanvas-close-{{ID}}' => 'color: {{VALUE}}',
+                    '.eael-offcanvas-close-{{ID}} svg' => 'fill: {{VALUE}}',
                 ],
                 'condition' => [
                     'close_button' => 'yes',
@@ -1236,6 +1237,7 @@ class Offcanvas extends Widget_Base
                 'size_units' => ['px', '%'],
                 'selectors' => [
                     '.eael-offcanvas-content-{{ID}} .eael-offcanvas-close-{{ID}}' => 'font-size: {{SIZE}}{{UNIT}}',
+                    '.eael-offcanvas-content-{{ID}} .eael-offcanvas-close-{{ID}} svg' => 'width: {{SIZE}}{{UNIT}};height: {{SIZE}}{{UNIT}};line-width: {{SIZE}}{{UNIT}}',
                     '.eael-offcanvas-content-{{ID}} .eael-offcanvas-close-{{ID}} .eael-offcanvas-close-svg-icon' => 'width: {{SIZE}}{{UNIT}};',
                 ],
                 'condition' => [
@@ -1325,9 +1327,9 @@ class Offcanvas extends Widget_Base
                 <?php if (isset($settings['__fa4_migrated']['close_button_icon_new']) || empty($settings['close_button_icon'])) {?>
                     <?php if (isset($settings['close_button_icon_new']['value']['url'])): ?>
                         <img class="eael-offcanvas-close-svg-icon" src="<?php echo esc_url($settings['close_button_icon_new']['value']['url']); ?>" alt="<?php echo esc_attr(get_post_meta($settings['close_button_icon_new']['value']['id'], '_wp_attachment_image_alt', true)); ?>">
-                    <?php else: ?>
-                        <span class="<?php echo esc_attr($settings['close_button_icon_new']['value']); ?>"></span>
-                    <?php endif;?>
+                    <?php else:
+                        \Elementor\Icons_Manager::render_icon( $settings['close_button_icon_new'], [ 'aria-hidden' => 'true' ] );
+                        endif;?>
                 <?php } else {?>
                     <span class="<?php echo esc_attr($settings['close_button_icon']); ?>"></span>
                 <?php }?>
@@ -1447,9 +1449,9 @@ class Offcanvas extends Widget_Base
                     <?php if (isset($settings['__fa4_migrated']['button_icon_new']) || empty($settings['button_icon'])) {?>
                         <?php if (isset($settings['button_icon_new']['value']['url'])): ?>
                             <img class="eael-offcanvas-toggle-icon eael-offcanvas-toggle-svg-icon" src="<?php echo esc_url($settings['button_icon_new']['value']['url']); ?>" alt="<?php echo esc_attr(get_post_meta($settings['button_icon_new']['value']['id'], '_wp_attachment_image_alt', true)); ?>">
-                        <?php else: ?>
-                            <span class="eael-offcanvas-toggle-icon <?php echo esc_attr($settings['button_icon_new']['value']); ?>"></span>
-                        <?php endif;?>
+                        <?php else:
+                            \Elementor\Icons_Manager::render_icon( $settings['button_icon_new'], [ 'aria-hidden' => 'true', 'class' => 'eael-offcanvas-toggle-icon' ] );
+                        endif;?>
                     <?php } else {?>
                         <span class="eael-offcanvas-toggle-icon <?php echo esc_attr($settings['button_icon']); ?>"></span>
                     <?php }?>

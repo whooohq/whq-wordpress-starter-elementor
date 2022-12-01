@@ -1,0 +1,228 @@
+body.rtl {
+	#jet-smart-filters-admin-app {
+		margin-right: 0;
+		margin-left: 20px;
+	}
+
+	// Table
+	.jet_table {
+		&-thead-checkbox,
+		&-tbody-checkbox {
+			padding-right: 30px;
+			padding-left: 10px;
+		}
+	}
+
+	// Filters list
+	.jet_filters-list {
+		&-add-new-btn {
+			margin-right: 15px;
+			margin-left: 20px;
+		}
+
+		&-settings-link {
+			margin-right: auto;
+			margin-left: 0;
+
+			svg {
+				margin-right: 0;
+				margin-left: 2px;
+			}
+		}
+
+		&-indexer-button {
+			margin-left: 0;
+			margin-right: 16px;
+		}
+
+		// Subnav
+		&-subnav {
+			&-filters,
+			&-trash {
+				margin-right: 0;
+				margin-left: 10px;
+			}
+		}
+
+		// Filtration
+		&-filtration {
+			&-search,
+			&-by-type,
+			&-by-source,
+			&-sort-by {
+				margin-right: 0;
+				margin-left: 20px;
+			}
+		}
+
+		// Navigation
+		&-navigation {
+			&-perpage {
+				.jet-ui_number {
+					margin-left: 0;
+					margin-right: 13px;
+				}
+			}
+		}
+
+		// Row
+		&-row {
+			// Type
+			&-type {
+				img {
+					margin-right: 0;
+					margin-left: 8px;
+				}
+			}
+		}
+	}
+
+	// Trash list
+	.jet_filters-trash {
+		&-restore-all,
+		&-delete-all {
+			svg {
+				margin-right: 0;
+				margin-left: 2px;
+			}
+		}
+	}
+
+	// Filter
+	.jet_filter {
+		&-title {
+			margin: 0 0 0 50px;
+		}
+
+		&-settings {
+			margin-right: 0;
+			margin-left: 20px;
+		}
+
+		&-update {
+			margin-left: initial;
+			margin-right: auto;
+		}
+
+		// Help block
+		&-help-block {
+			&-list {
+				&-item {
+					padding: 12px 38px 12px 12px;
+
+					svg {
+						left: initial;
+						right: 10px;
+						margin-right: 0;
+						margin-left: 8px;
+					}
+				}
+			}
+		}
+	}
+
+	// Popup
+	.jet-popup {
+		left: 0;
+		right: 160px;
+
+		@media only screen and (max-width: 960px) {
+			left: 0;
+			right: 36px;
+		}
+	}
+
+	// Jet UI
+	.jet-ui {
+		&_select {
+			&-caret {
+				margin-left: 0;
+				margin-right: auto;
+			}
+		}
+
+		&_pagination {
+			&-prev,
+			&-next {
+				svg {
+					transform: rotate(180deg);
+				}
+			}
+		}
+
+		&_date-input {
+			&-month {
+				margin-right: 0;
+				margin-left: 6px;
+			}
+
+			.jet-ui_select {
+				&-caret {
+					margin-left: -5px;
+				}
+			}
+		}
+
+		&_date {
+			&-value {
+				&-label {
+					margin-left: 4px;
+
+					svg {
+						margin-right: 0;
+						margin-left: 3px;
+					}
+				}
+				&-month {
+					margin-right: 0;
+					margin-left: 3px;
+				}
+				&-minute {
+					margin-right: 0;
+				}
+			}
+			&-edit {
+				&-actions {
+					&-apply-button {
+						margin-left: 0;
+						margin-right: 8px;
+					}
+				}
+			}
+		}
+
+		&_repeater {
+			&-item {
+				&-clone {
+					margin-left: 0;
+					margin-right: 10px;
+				}
+
+				&-remove {
+					margin-right: 0;
+					margin-left: 10px;
+				}
+			}
+		}
+
+		&_сolorpicker {
+			&-text {
+				margin-left: 0;
+				margin-right: 10px;
+			}
+
+			.picker-popup {
+				direction: ltr !important;
+				left: initial !important;
+				right: 0 !important;
+			}
+		}
+
+		&_upload-button {
+			svg {
+				margin-right: 0px;
+				margin-left: 6px;
+			}
+		}
+	}
+}

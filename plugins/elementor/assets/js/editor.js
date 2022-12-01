@@ -1,4 +1,4 @@
-/*! elementor - v3.6.8 - 27-07-2022 */
+/*! elementor - v3.8.1 - 13-11-2022 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -1839,6 +1839,263 @@ function createListenerMiddleware(middlewareOptions) {
 
 /***/ }),
 
+/***/ "../app/assets/js/utils/utils.js":
+/*!***************************************!*\
+  !*** ../app/assets/js/utils/utils.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.stringToRemValues = exports.rgbToHex = exports.pxToRem = exports.isOneOf = exports.arrayToObjectByKey = exports.arrayToClassName = void 0;
+
+var _typeof2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js"));
+
+var pxToRem = function pxToRem(pixels) {
+  if (!pixels) {
+    return;
+  } else if ('string' !== typeof pixels) {
+    pixels = pixels.toString();
+  }
+
+  return pixels.split(' ').map(function (value) {
+    return "".concat(value * 0.0625, "rem");
+  }).join(' ');
+};
+
+exports.pxToRem = pxToRem;
+
+var arrayToClassName = function arrayToClassName(array, action) {
+  return array.filter(function (item) {
+    return 'object' === (0, _typeof2.default)(item) ? Object.entries(item)[0][1] : item;
+  }).map(function (item) {
+    var value = 'object' === (0, _typeof2.default)(item) ? Object.entries(item)[0][0] : item;
+    return action ? action(value) : value;
+  }).join(' ');
+};
+
+exports.arrayToClassName = arrayToClassName;
+
+var stringToRemValues = function stringToRemValues(string) {
+  return string.split(' ').map(function (value) {
+    return pxToRem(value);
+  }).join(' ');
+};
+
+exports.stringToRemValues = stringToRemValues;
+
+var rgbToHex = function rgbToHex(r, g, b) {
+  return '#' + [r, g, b].map(function (x) {
+    var hex = x.toString(16);
+    return 1 === hex.length ? '0' + hex : hex;
+  }).join('');
+};
+
+exports.rgbToHex = rgbToHex;
+
+var isOneOf = function isOneOf(filetype, filetypeOptions) {
+  return filetypeOptions.some(function (type) {
+    return filetype.includes(type);
+  });
+};
+
+exports.isOneOf = isOneOf;
+
+var arrayToObjectByKey = function arrayToObjectByKey(array, key) {
+  var finalObject = {};
+  array.forEach(function (item) {
+    return finalObject[item[key]] = item;
+  });
+  return finalObject;
+};
+
+exports.arrayToObjectByKey = arrayToObjectByKey;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/command-bases/command-container-base.js":
+/*!***********************************************************************!*\
+  !*** ../assets/dev/js/editor/command-bases/command-container-base.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+/**
+ * @name $e.modules.editor.CommandContainerBase
+ */
+var CommandContainerBase = /*#__PURE__*/function (_CommandBase) {
+  (0, _inherits2.default)(CommandContainerBase, _CommandBase);
+
+  var _super = _createSuper(CommandContainerBase);
+
+  function CommandContainerBase() {
+    (0, _classCallCheck2.default)(this, CommandContainerBase);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(CommandContainerBase, [{
+    key: "requireContainer",
+    value:
+    /**
+     * Function requireContainer().
+     *
+     * Validate `arg.container` & `arg.containers`.
+     *
+     * @param {{}} args
+     *
+     * @throws {Error}
+     */
+    function requireContainer() {
+      var _this = this;
+
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.args;
+
+      if (!args.container && !args.containers) {
+        throw Error('container or containers are required.');
+      }
+
+      if (args.container && args.containers) {
+        throw Error('container and containers cannot go together please select one of them.');
+      }
+
+      var containers = args.containers || [args.container];
+      containers.forEach(function (container) {
+        _this.requireArgumentInstance('container', elementorModules.editor.Container, {
+          container: container
+        });
+      });
+    }
+  }], [{
+    key: "getInstanceType",
+    value: function getInstanceType() {
+      return 'CommandContainerBase';
+    }
+  }]);
+  return CommandContainerBase;
+}(_commandBase.default);
+
+exports["default"] = CommandContainerBase;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/components/browser-import/commands-internal/index.js":
+/*!************************************************************************************!*\
+  !*** ../assets/dev/js/editor/components/browser-import/commands-internal/index.js ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "Validate", ({
+  enumerable: true,
+  get: function get() {
+    return _validate.Validate;
+  }
+}));
+
+var _validate = __webpack_require__(/*! ./validate */ "../assets/dev/js/editor/components/browser-import/commands-internal/validate.js");
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/components/browser-import/commands-internal/validate.js":
+/*!***************************************************************************************!*\
+  !*** ../assets/dev/js/editor/components/browser-import/commands-internal/validate.js ***!
+  \***************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Validate = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Validate = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Validate, _$e$modules$CommandBa);
+
+  var _super = _createSuper(Validate);
+
+  function Validate() {
+    (0, _classCallCheck2.default)(this, Validate);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Validate, [{
+    key: "apply",
+    value:
+    /**
+     * @inheritDoc
+     */
+    function apply(args) {
+      var input = args.input,
+          _args$options = args.options,
+          options = _args$options === void 0 ? {} : _args$options;
+      return this.component.manager.createSession(input, elementor.getPreviewContainer(), options).then(function (session) {
+        return session.validate();
+      });
+    }
+  }]);
+  return Validate;
+}($e.modules.CommandBase);
+
+exports.Validate = Validate;
+var _default = Validate;
+exports["default"] = _default;
+
+/***/ }),
+
 /***/ "../assets/dev/js/editor/components/browser-import/commands/import.js":
 /*!****************************************************************************!*\
   !*** ../assets/dev/js/editor/components/browser-import/commands/import.js ***!
@@ -1869,14 +2126,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Import = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Import, _CommandBase);
+var Import = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Import, _$e$modules$CommandBa);
 
   var _super = _createSuper(Import);
 
@@ -1944,7 +2199,7 @@ var Import = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Import;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Import = Import;
 var _default = Import;
@@ -1970,82 +2225,8 @@ Object.defineProperty(exports, "Import", ({
     return _import.Import;
   }
 }));
-Object.defineProperty(exports, "Validate", ({
-  enumerable: true,
-  get: function get() {
-    return _validate.Validate;
-  }
-}));
 
 var _import = __webpack_require__(/*! ./import */ "../assets/dev/js/editor/components/browser-import/commands/import.js");
-
-var _validate = __webpack_require__(/*! ./validate */ "../assets/dev/js/editor/components/browser-import/commands/validate.js");
-
-/***/ }),
-
-/***/ "../assets/dev/js/editor/components/browser-import/commands/validate.js":
-/*!******************************************************************************!*\
-  !*** ../assets/dev/js/editor/components/browser-import/commands/validate.js ***!
-  \******************************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = exports.Validate = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
-
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-var Validate = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Validate, _CommandBase);
-
-  var _super = _createSuper(Validate);
-
-  function Validate() {
-    (0, _classCallCheck2.default)(this, Validate);
-    return _super.apply(this, arguments);
-  }
-
-  (0, _createClass2.default)(Validate, [{
-    key: "apply",
-    value:
-    /**
-     * @inheritDoc
-     */
-    function apply(args) {
-      var input = args.input,
-          _args$options = args.options,
-          options = _args$options === void 0 ? {} : _args$options;
-      return this.component.manager.createSession(input, elementor.getPreviewContainer(), options).then(function (session) {
-        return session.validate();
-      });
-    }
-  }]);
-  return Validate;
-}(_commandBase.default);
-
-exports.Validate = Validate;
-var _default = Validate;
-exports["default"] = _default;
 
 /***/ }),
 
@@ -2079,6 +2260,8 @@ var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/run
 
 var commands = _interopRequireWildcard(__webpack_require__(/*! ./commands */ "../assets/dev/js/editor/components/browser-import/commands/index.js"));
 
+var commandsInternal = _interopRequireWildcard(__webpack_require__(/*! ./commands-internal */ "../assets/dev/js/editor/components/browser-import/commands-internal/index.js"));
+
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -2106,6 +2289,11 @@ var Component = /*#__PURE__*/function (_$e$modules$Component) {
     key: "defaultCommands",
     value: function defaultCommands() {
       return this.importCommands(commands);
+    }
+  }, {
+    key: "defaultCommandsInternal",
+    value: function defaultCommandsInternal() {
+      return this.importCommands(commandsInternal);
     }
   }]);
   return Component;
@@ -2168,7 +2356,8 @@ var ContainerFactory = /*#__PURE__*/function () {
         id: model.get('id'),
         type: model.get('elType'),
         settings: model.get('settings'),
-        model: model
+        model: model,
+        parent: false
       });
     }
   }, {
@@ -3558,7 +3747,7 @@ var Json = /*#__PURE__*/function (_FileReaderBase) {
   }, {
     key: "mimeTypes",
     get: function get() {
-      return ['application\/json'];
+      return ['application/json'];
     }
     /**
      * @inheritDoc
@@ -5027,14 +5216,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Close = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Close, _CommandBase);
+var Close = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Close, _$e$modules$CommandBa);
 
   var _super = _createSuper(Close);
 
@@ -5182,7 +5369,7 @@ var Close = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Close;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Close = Close;
 var _default = Close;
@@ -5263,14 +5450,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandInternalBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-internal-base */ "../modules/web-cli/assets/js/modules/command-internal-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var AttachPreview = /*#__PURE__*/function (_CommandInternalBaseB) {
-  (0, _inherits2.default)(AttachPreview, _CommandInternalBaseB);
+var AttachPreview = /*#__PURE__*/function (_$e$modules$CommandIn) {
+  (0, _inherits2.default)(AttachPreview, _$e$modules$CommandIn);
 
   var _super = _createSuper(AttachPreview);
 
@@ -5280,14 +5465,27 @@ var AttachPreview = /*#__PURE__*/function (_CommandInternalBaseB) {
   }
 
   (0, _createClass2.default)(AttachPreview, [{
+    key: "validateArgs",
+    value: function validateArgs() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      if (args.selector) {
+        this.requireArgumentType('selector', 'string');
+
+        if (0 === elementor.$previewContents.find(args.selector).length) {
+          throw new Error('Invalid argument. The `selector` argument must be existed selector.');
+        }
+      }
+    }
+  }, {
     key: "apply",
-    value: function apply() {
+    value: function apply(args) {
       var _this = this;
 
       var document = elementor.documents.getCurrent();
       return $e.data.get('globals/index').then(function () {
         elementor.trigger('globals:loaded');
-        return _this.attachDocumentToPreview(document);
+        return _this.attachDocumentToPreview(document, args);
       }).then(function () {
         elementor.toggleDocumentCssFiles(document, false);
         elementor.onEditModeSwitched();
@@ -5300,7 +5498,11 @@ var AttachPreview = /*#__PURE__*/function (_CommandInternalBaseB) {
     }
   }, {
     key: "attachDocumentToPreview",
-    value: function attachDocumentToPreview(document) {
+    value: function attachDocumentToPreview(document, args) {
+      var _args$selector = args.selector,
+          selector = _args$selector === void 0 ? '.elementor-' + document.id : _args$selector,
+          _args$shouldScroll = args.shouldScroll,
+          shouldScroll = _args$shouldScroll === void 0 ? true : _args$shouldScroll;
       return new Promise(function (resolve, reject) {
         // Not yet loaded.
         if (!document) {
@@ -5311,7 +5513,7 @@ var AttachPreview = /*#__PURE__*/function (_CommandInternalBaseB) {
           return resolve();
         }
 
-        document.$element = elementor.$previewContents.find('.elementor-' + document.id);
+        document.$element = elementor.$previewContents.find(selector);
 
         if (!document.$element.length) {
           elementor.onPreviewElNotFound();
@@ -5324,18 +5526,25 @@ var AttachPreview = /*#__PURE__*/function (_CommandInternalBaseB) {
           elementor.$previewElementorEl.addClass('elementor-embedded-editor');
         }
 
-        elementor.initElements();
+        $e.internal('document/elements/populate', {
+          document: document,
+          elements: JSON.parse(JSON.stringify(document.config.elements))
+        });
         elementor.initPreviewView(document);
         document.container.view = elementor.getPreviewView();
         document.container.model.attributes.elements = elementor.elements;
-        elementor.helpers.scrollToView(document.$element);
+
+        if (shouldScroll) {
+          elementor.helpers.scrollToView(document.$element);
+        }
+
         document.$element.addClass('elementor-edit-area-active').removeClass('elementor-editor-preview');
         resolve();
       });
     }
   }]);
   return AttachPreview;
-}(_commandInternalBase.default);
+}($e.modules.CommandInternalBase);
 
 exports.AttachPreview = AttachPreview;
 var _default = AttachPreview;
@@ -5408,8 +5617,6 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandInternalBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-internal-base */ "../modules/web-cli/assets/js/modules/command-internal-base.js"));
-
 var _document = _interopRequireDefault(__webpack_require__(/*! ../../document */ "../assets/dev/js/editor/components/documents/document.js"));
 
 var _heartbeat = _interopRequireDefault(__webpack_require__(/*! elementor-editor-utils/heartbeat */ "../assets/dev/js/editor/utils/heartbeat.js"));
@@ -5418,8 +5625,8 @@ function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflec
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Load = /*#__PURE__*/function (_CommandInternalBase) {
-  (0, _inherits2.default)(Load, _CommandInternalBase);
+var Load = /*#__PURE__*/function (_$e$modules$CommandIn) {
+  (0, _inherits2.default)(Load, _$e$modules$CommandIn);
 
   var _super = _createSuper(Load);
 
@@ -5437,7 +5644,9 @@ var Load = /*#__PURE__*/function (_CommandInternalBase) {
   }, {
     key: "apply",
     value: function apply(args) {
-      var config = args.config;
+      var config = args.config,
+          _args$shouldScroll = args.shouldScroll,
+          shouldScroll = _args$shouldScroll === void 0 ? true : _args$shouldScroll;
 
       if (elementorCommon.config.experimentalFeatures.additional_custom_breakpoints) {
         // When the Responsive Optimization experiment is active, the responsive controls are generated on the
@@ -5468,7 +5677,9 @@ var Load = /*#__PURE__*/function (_CommandInternalBase) {
         // TODO: Find better solution - Fix issue when globals does not render after saving from kit.
         // The issue is that the css-parser is depends upon cache and cache is not available during this time.
         return $e.data.get('globals/index').then(function () {
-          return $e.internal('editor/documents/attach-preview');
+          return $e.internal('editor/documents/attach-preview', {
+            shouldScroll: shouldScroll
+          });
         });
       }
 
@@ -5476,7 +5687,7 @@ var Load = /*#__PURE__*/function (_CommandInternalBase) {
     }
   }]);
   return Load;
-}(_commandInternalBase.default);
+}($e.modules.CommandInternalBase);
 
 exports.Load = Load;
 var _default = Load;
@@ -5510,16 +5721,14 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandInternalBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-internal-base */ "../modules/web-cli/assets/js/modules/command-internal-base.js"));
-
 var _document = _interopRequireDefault(__webpack_require__(/*! ../../document */ "../assets/dev/js/editor/components/documents/document.js"));
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Unload = /*#__PURE__*/function (_CommandInternalBase) {
-  (0, _inherits2.default)(Unload, _CommandInternalBase);
+var Unload = /*#__PURE__*/function (_$e$modules$CommandIn) {
+  (0, _inherits2.default)(Unload, _$e$modules$CommandIn);
 
   var _super = _createSuper(Unload);
 
@@ -5561,7 +5770,7 @@ var Unload = /*#__PURE__*/function (_CommandInternalBase) {
     }
   }]);
   return Unload;
-}(_commandInternalBase.default);
+}($e.modules.CommandInternalBase);
 
 exports.Unload = Unload;
 var _default = Unload;
@@ -5595,14 +5804,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Open = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Open, _CommandBase);
+var Open = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Open, _$e$modules$CommandBa);
 
   var _super = _createSuper(Open);
 
@@ -5620,6 +5827,9 @@ var Open = /*#__PURE__*/function (_CommandBase) {
     key: "apply",
     value: function apply(args) {
       var id = args.id,
+          selector = args.selector,
+          _args$shouldScroll = args.shouldScroll,
+          shouldScroll = _args$shouldScroll === void 0 ? true : _args$shouldScroll,
           currentDocument = elementor.documents.getCurrent(); // Already opened.
 
       if (currentDocument && id === currentDocument.id) {
@@ -5635,7 +5845,9 @@ var Open = /*#__PURE__*/function (_CommandBase) {
         elementorCommon.elements.$body.addClass("elementor-editor-".concat(config.type)); // Tell the editor to load the document.
 
         return $e.internal('editor/documents/load', {
-          config: config
+          config: config,
+          selector: selector,
+          shouldScroll: shouldScroll
         });
       }).always(function () {
         // TODO: move to $e.hooks.ui.
@@ -5646,7 +5858,7 @@ var Open = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Open;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Open = Open;
 var _default = Open;
@@ -5684,14 +5896,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Preview = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Preview, _CommandBase);
+var Preview = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Preview, _$e$modules$CommandBa);
 
   var _super = _createSuper(Preview);
 
@@ -5748,7 +5958,7 @@ var Preview = /*#__PURE__*/function (_CommandBase) {
     }()
   }]);
   return Preview;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Preview = Preview;
 var _default = Preview;
@@ -5782,14 +5992,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Switch = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Switch, _CommandBase);
+var Switch = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Switch, _$e$modules$CommandBa);
 
   var _super = _createSuper(Switch);
 
@@ -5808,20 +6016,25 @@ var Switch = /*#__PURE__*/function (_CommandBase) {
     value: function apply(args) {
       var id = args.id,
           mode = args.mode,
-          onClose = args.onClose;
+          onClose = args.onClose,
+          _args$shouldScroll = args.shouldScroll,
+          shouldScroll = _args$shouldScroll === void 0 ? true : _args$shouldScroll;
       return $e.run('editor/documents/close', {
         id: elementor.documents.getCurrentId(),
         mode: mode,
         onClose: onClose
       }).then(function () {
         return $e.run('editor/documents/open', {
-          id: id
+          id: id,
+          shouldScroll: shouldScroll
         });
+      }).then(function () {
+        elementor.getPanelView().getPages('menu').view.addExitItem();
       });
     }
   }]);
   return Switch;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Switch = Switch;
 var _default = Switch;
@@ -6424,7 +6637,7 @@ module.exports = Marionette.Behavior.extend({
       },
       actionButton: {
         url: hasProAndNotConnected ? elementorProEditorConfig.urls.connect : elementor.config.dynamicPromotionURL.replace('%s', this.view.model.get('name')),
-        text: hasProAndNotConnected ? __('Connect & Activate', 'elementor') : __('See it in Action', 'elementor')
+        text: hasProAndNotConnected ? __('Connect & Activate', 'elementor') : __('Upgrade', 'elementor')
       }
     };
     elementor.promotion.showDialog(dialogOptions);
@@ -6633,7 +6846,7 @@ module.exports = elementorModules.Module.extend({
     return '[elementor-tag id="' + tagID + '" name="' + tagName + '" settings="' + tagSettings + '"]';
   },
   tagContainerToTagText: function tagContainerToTagText(
-  /**Container*/
+  /** Container*/
   container) {
     return elementor.dynamicTags.tagDataToTagText(container.view.getOption('id'), container.view.getOption('name'), container.view.model);
   },
@@ -7257,13 +7470,13 @@ var _default = /*#__PURE__*/function () {
 
       if (libraryConfig.url) {
         elementor.helpers.enqueueEditorStylesheet(libraryConfig.url);
-      } //already saved an stored
+      } // Already saved an stored
 
 
       if (store.isValid(libraryConfig)) {
         var data = store.get(store.getKey(libraryConfig));
         return _this.normalizeIconList(data);
-      } // comes with icons
+      } // Comes with icons
 
 
       if (libraryConfig.icons && libraryConfig.icons.length) {
@@ -8630,7 +8843,7 @@ var _default = /*#__PURE__*/function (_elementorModules$Mod) {
 
       if ('svg' === selected.library) {
         activeTab = icons[0].name;
-      } // selected Library exists
+      } // Selected Library exists
 
 
       if (!Object.keys(icons).some(function (library) {
@@ -8640,7 +8853,7 @@ var _default = /*#__PURE__*/function (_elementorModules$Mod) {
       } // Show recommended tab if selected from it
 
 
-      if (iconManagerConfig.recommended && '' !== selected.library && '' !== selected.value && iconManagerConfig.recommended.hasOwnProperty(selected.library)) {
+      if (iconManagerConfig.recommended && '' !== selected.library && '' !== selected.value && Object.prototype.hasOwnProperty.call(iconManagerConfig.recommended, selected.library)) {
         var iconLibrary = icons.filter(function (library) {
           return selected.library === library.name;
         });
@@ -8755,6 +8968,169 @@ var _default = /*#__PURE__*/function (_BaseModalLayout) {
 }(_layout.default);
 
 exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/components/preview/commands/drop.js":
+/*!*******************************************************************!*\
+  !*** ../assets/dev/js/editor/components/preview/commands/drop.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.Drop = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Drop = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Drop, _$e$modules$CommandBa);
+
+  var _super = _createSuper(Drop);
+
+  function Drop() {
+    (0, _classCallCheck2.default)(this, Drop);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Drop, [{
+    key: "validateArgs",
+    value: function validateArgs() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      this.requireContainer(args);
+      this.requireArgumentType('model', 'object', args);
+    }
+  }, {
+    key: "apply",
+    value: function apply() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var _args$containers = args.containers,
+          containers = _args$containers === void 0 ? [args.container] : _args$containers,
+          _args$options = args.options,
+          options = _args$options === void 0 ? {} : _args$options,
+          result = [];
+      containers.forEach(function (container) {
+        result.push(container.view.createElementFromModel(args.model, options));
+      });
+
+      if (1 === containers.length) {
+        return result[0];
+      }
+
+      return result;
+    }
+  }]);
+  return Drop;
+}($e.modules.CommandBase);
+
+exports.Drop = Drop;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/components/preview/commands/index.js":
+/*!********************************************************************!*\
+  !*** ../assets/dev/js/editor/components/preview/commands/index.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "Drop", ({
+  enumerable: true,
+  get: function get() {
+    return _drop.Drop;
+  }
+}));
+
+var _drop = __webpack_require__(/*! ./drop */ "../assets/dev/js/editor/components/preview/commands/drop.js");
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/components/preview/component.js":
+/*!***************************************************************!*\
+  !*** ../assets/dev/js/editor/components/preview/component.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var commands = _interopRequireWildcard(__webpack_require__(/*! ./commands/ */ "../assets/dev/js/editor/components/preview/commands/index.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Component = /*#__PURE__*/function (_$e$modules$Component) {
+  (0, _inherits2.default)(Component, _$e$modules$Component);
+
+  var _super = _createSuper(Component);
+
+  function Component() {
+    (0, _classCallCheck2.default)(this, Component);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Component, [{
+    key: "getNamespace",
+    value: function getNamespace() {
+      return 'preview';
+    }
+  }, {
+    key: "defaultCommands",
+    value: function defaultCommands() {
+      return this.importCommands(commands);
+    }
+  }]);
+  return Component;
+}($e.modules.ComponentBase);
+
+exports["default"] = Component;
 
 /***/ }),
 
@@ -9070,6 +9446,12 @@ exports["default"] = Manager;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "../node_modules/@babel/runtime/regenerator/index.js"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "../node_modules/@babel/runtime/helpers/asyncToGenerator.js"));
+
 var ControlsCSSParser = __webpack_require__(/*! elementor-editor-utils/controls-css-parser */ "../assets/dev/js/editor/utils/controls-css-parser.js");
 
 module.exports = elementorModules.ViewModule.extend({
@@ -9099,23 +9481,30 @@ module.exports = elementorModules.ViewModule.extend({
       }
     });
   },
-  getContainerId: function getContainerId() {
+  getContainerType: function getContainerType() {
     return this.getSettings('name') + '_settings';
+  },
+  getContainerId: function getContainerId() {
+    elementorDevTools.deprecation.deprecated('getContainerId', '3.7.0', 'getContainerType');
+    return this.getContainerType();
   },
   // Emulate an element view/model structure with the parts needed for a container.
   getEditedView: function getEditedView() {
-    var id = this.getContainerId(),
-        editModel = new Backbone.Model({
-      id: id,
-      elType: id,
+    var documentElementType = elementor.elementsManager.getElementTypeClass('document'),
+        ModelClass = documentElementType.getModel(),
+        type = this.getContainerType(),
+        editModel = new ModelClass({
+      id: type,
+      elType: type,
       settings: this.model
     });
     var container = new elementorModules.editor.Container({
-      type: id,
-      id: editModel.id,
+      type: type,
+      id: type,
       model: editModel,
       settings: editModel.get('settings'),
       view: false,
+      parent: false,
       label: this.getSettings('panelPage').title,
       controls: this.model.controls,
       document: this.getDocument(),
@@ -9128,7 +9517,8 @@ module.exports = elementorModules.ViewModule.extend({
       getEditModel: function getEditModel() {
         return editModel;
       },
-      model: editModel
+      model: editModel,
+      container: container
     };
   },
   getDocument: function getDocument() {
@@ -9180,42 +9570,54 @@ module.exports = elementorModules.ViewModule.extend({
     return data;
   },
   save: function save(callback) {
-    var self = this;
+    var _this = this;
 
-    if (!self.hasChange) {
-      return;
-    }
+    return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
+      var self, settings, data;
+      return _regenerator.default.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              self = _this;
 
-    var settings = this.model.toJSON({
-      remove: ['default']
-    }),
-        data = this.getDataToSave({
-      data: settings
-    });
+              if (self.hasChange) {
+                _context.next = 3;
+                break;
+              }
 
-    if (!elementorCommonConfig.isTesting) {
-      NProgress.start();
-    }
+              return _context.abrupt("return");
 
-    elementorCommon.ajax.addRequest('save_' + this.getSettings('name') + '_settings', {
-      data: data,
-      success: function success() {
-        if (!elementorCommonConfig.isTesting) {
-          NProgress.done();
+            case 3:
+              settings = _this.model.toJSON({
+                remove: ['default']
+              }), data = _this.getDataToSave({
+                data: settings
+              });
+              NProgress.start();
+              return _context.abrupt("return", elementorCommon.ajax.addRequest('save_' + _this.getSettings('name') + '_settings', {
+                data: data,
+                success: function success() {
+                  NProgress.done();
+                  self.setSettings('settings', settings);
+                  self.hasChange = false;
+
+                  if (callback) {
+                    callback.apply(self, arguments);
+                  }
+                },
+                error: function error() {
+                  // eslint-disable-next-line no-alert
+                  alert('An error occurred');
+                }
+              }));
+
+            case 6:
+            case "end":
+              return _context.stop();
+          }
         }
-
-        self.setSettings('settings', settings);
-        self.hasChange = false;
-
-        if (callback) {
-          callback.apply(self, arguments);
-        }
-      },
-      error: function error() {
-        // eslint-disable-next-line no-alert
-        alert('An error occurred');
-      }
-    });
+      }, _callee);
+    }))();
   },
   onInit: function onInit() {
     this.initModel();
@@ -9523,7 +9925,13 @@ exports["default"] = Component;
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
 
+var _construct2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/construct */ "../node_modules/@babel/runtime/helpers/construct.js"));
+
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "../node_modules/@babel/runtime/helpers/toConsumableArray.js"));
+
 var _component = _interopRequireDefault(__webpack_require__(/*! ./component */ "../assets/dev/js/editor/components/settings/page/component.js"));
+
+var _childrenArray = _interopRequireDefault(__webpack_require__(/*! elementor-editor/container/model/children-array */ "../assets/dev/js/editor/container/model/children-array.js"));
 
 var BaseSettings = __webpack_require__(/*! elementor-editor/components/settings/base/manager */ "../assets/dev/js/editor/components/settings/base/manager.js");
 
@@ -9550,21 +9958,24 @@ module.exports = BaseSettings.extend({
       return this.editedView;
     }
 
-    var id = this.getContainerId(),
-        editModel = new Backbone.Model({
-      id: id,
-      elType: id,
+    var documentElementType = elementor.elementsManager.getElementTypeClass('document'),
+        ModelClass = documentElementType.getModel(),
+        type = this.getContainerType(),
+        editModel = new ModelClass({
+      id: type,
+      elType: type,
       settings: this.model,
       elements: elementor.elements
-    });
-    var container = new elementorModules.editor.Container({
-      type: id,
+    }),
+        container = new elementorModules.editor.Container({
+      type: type,
       id: editModel.id,
       model: editModel,
       settings: editModel.get('settings'),
       label: elementor.config.document.panel.title,
       controls: this.model.controls,
-      children: elementor.elements,
+      children: (0, _construct2.default)(_childrenArray.default, (0, _toConsumableArray2.default)(elementor.elements || [])),
+      parent: false,
       // Emulate a view that can render the style.
       renderer: {
         view: {
@@ -9587,12 +9998,17 @@ module.exports = BaseSettings.extend({
       getEditModel: function getEditModel() {
         return editModel;
       },
-      model: editModel
+      model: editModel,
+      container: container
     };
     return this.editedView;
   },
-  getContainerId: function getContainerId() {
+  getContainerType: function getContainerType() {
     return 'document';
+  },
+  getContainerId: function getContainerId() {
+    elementorDevTools.deprecation.deprecated('getContainerId', '3.7.0', 'getContainerType');
+    return this.getContainerType();
   }
 });
 
@@ -9656,6 +10072,7 @@ InsertTemplateHandler = Marionette.Behavior.extend({
     var args = {
       model: this.view.model
     };
+    this.ui.insertButton.addClass('elementor-disabled');
 
     if ('remote' === args.model.get('source') && !elementor.config.library_connect.is_connected) {
       $e.route('library/connect', args);
@@ -9737,14 +10154,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandData = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-data */ "../modules/web-cli/assets/js/modules/command-data.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Templates = /*#__PURE__*/function (_CommandData) {
-  (0, _inherits2.default)(Templates, _CommandData);
+var Templates = /*#__PURE__*/function (_$e$modules$CommandDa) {
+  (0, _inherits2.default)(Templates, _$e$modules$CommandDa);
 
   var _super = _createSuper(Templates);
 
@@ -9760,7 +10175,7 @@ var Templates = /*#__PURE__*/function (_CommandData) {
     }
   }]);
   return Templates;
-}(_commandData.default);
+}($e.modules.CommandData);
 
 exports.Templates = Templates;
 var _default = Templates;
@@ -9825,14 +10240,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var InsertTemplate = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(InsertTemplate, _CommandBase);
+var InsertTemplate = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(InsertTemplate, _$e$modules$CommandBa);
 
   var _super = _createSuper(InsertTemplate);
 
@@ -9848,7 +10261,7 @@ var InsertTemplate = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return InsertTemplate;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.InsertTemplate = InsertTemplate;
 var _default = InsertTemplate;
@@ -9882,14 +10295,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Open = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Open, _CommandBase);
+var Open = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Open, _$e$modules$CommandBa);
 
   var _super = _createSuper(Open);
 
@@ -9905,7 +10316,7 @@ var Open = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Open;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Open = Open;
 var _default = Open;
@@ -10192,7 +10603,11 @@ var Component = /*#__PURE__*/function (_ComponentModalBase) {
         initDialog: function initDialog(model) {
           InsertTemplateHandler.dialog = elementorCommon.dialogsManager.createWidget('confirm', {
             id: 'elementor-insert-template-settings-dialog',
+
+            /* Translators: %s is the type content */
             headerMessage: __('Apply the settings of this %s too?', 'elementor').replace('%s', elementor.translate(model.attributes.type)),
+
+            /* Translators: %s is the type content */
             message: __('This will override the design, layout, and other settings of the %s you’re working on.', 'elementor').replace('%s', elementor.documents.getCurrent().container.label),
             strings: {
               confirm: __('Apply', 'elementor'),
@@ -10302,7 +10717,7 @@ TemplateLibraryManager = function TemplateLibraryManager() {
     jQuery.each(translationMap, function (type, title) {
       var safeData = jQuery.extend(true, {}, data, {
         saveDialog: {
-          /* translators: %s: Template type. */
+          /* Translators: %s: Template type. */
           title: sprintf(__('Save Your %s to Library', 'elementor'), title)
         }
       });
@@ -10384,7 +10799,7 @@ TemplateLibraryManager = function TemplateLibraryManager() {
 
   this.importTemplate = function (model) {
     var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    elementorCommon.helpers.softDeprecated('importTemplate', '2.8.0', "$e.run( 'library/insert-template' )");
+    elementorDevTools.deprecation.deprecated('importTemplate', '2.8.0', "$e.run( 'library/insert-template' )");
     args.model = model;
     $e.run('library/insert-template', args);
   };
@@ -10780,7 +11195,7 @@ module.exports = Marionette.ItemView.extend({
         } else {
           $e.run('library/close');
           elementor.notifications.showToast({
-            message: __('Connected successfully', 'elementor')
+            message: __('Connected successfully.', 'elementor')
           });
         }
       },
@@ -11752,6 +12167,180 @@ module.exports = Validator.extend({
 
 /***/ }),
 
+/***/ "../assets/dev/js/editor/container/model/children-array.js":
+/*!*****************************************************************!*\
+  !*** ../assets/dev/js/editor/container/model/children-array.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _wrapNativeSuper2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/wrapNativeSuper */ "../node_modules/@babel/runtime/helpers/wrapNativeSuper.js"));
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+/**
+ * @typedef {import('../container')} Container
+ */
+var ChildrenArray = /*#__PURE__*/function (_Array) {
+  (0, _inherits2.default)(ChildrenArray, _Array);
+
+  var _super = _createSuper(ChildrenArray);
+
+  function ChildrenArray() {
+    (0, _classCallCheck2.default)(this, ChildrenArray);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(ChildrenArray, [{
+    key: "clear",
+    value: function clear() {
+      this.length = 0;
+    }
+    /**
+     * Function findRecursive().
+     *
+     * Will run over children recursively and pass the children to the callback till the callback returns positive value.
+     *
+     * @param {function(Container) : *} callback
+     *
+     * @return {Container|false} child
+     */
+
+  }, {
+    key: "findRecursive",
+    value: function findRecursive(callback) {
+      var _iterator = _createForOfIteratorHelper(this),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var container = _step.value;
+
+          if (callback(container)) {
+            return container;
+          }
+
+          if (container.children.length) {
+            var foundChildren = container.children.findRecursive(callback);
+
+            if (foundChildren) {
+              return foundChildren;
+            }
+          }
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+
+      return false;
+    }
+    /**
+     * Function forEachRecursive().
+     *
+     * Will run over children recursively.
+     *
+     * @param {function(Container) : *} callback
+     *
+     * @return {void}
+     */
+
+  }, {
+    key: "forEachRecursive",
+    value: function forEachRecursive(callback) {
+      var _iterator2 = _createForOfIteratorHelper(this),
+          _step2;
+
+      try {
+        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+          var container = _step2.value;
+          callback(container);
+
+          if (container.children.length) {
+            container.children.forEachRecursive(callback);
+          }
+        }
+      } catch (err) {
+        _iterator2.e(err);
+      } finally {
+        _iterator2.f();
+      }
+    }
+    /**
+     * Function someRecursive().
+     *
+     * Will run over children recursively, breaks if the callback return true.
+     *
+     * @param {function(Container) : *} callback
+     *
+     */
+
+  }, {
+    key: "someRecursive",
+    value: function someRecursive(callback) {
+      var _iterator3 = _createForOfIteratorHelper(this),
+          _step3;
+
+      try {
+        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+          var _container$children;
+
+          var container = _step3.value;
+
+          if (callback(container)) {
+            return true;
+          }
+
+          if ((_container$children = container.children) !== null && _container$children !== void 0 && _container$children.length) {
+            if (container.children.someRecursive(callback)) {
+              return true;
+            }
+          }
+        }
+      } catch (err) {
+        _iterator3.e(err);
+      } finally {
+        _iterator3.f();
+      }
+
+      return false;
+    }
+  }]);
+  return ChildrenArray;
+}( /*#__PURE__*/(0, _wrapNativeSuper2.default)(Array));
+
+exports["default"] = ChildrenArray;
+
+/***/ }),
+
 /***/ "../assets/dev/js/editor/controls/base-data.js":
 /*!*****************************************************!*\
   !*** ../assets/dev/js/editor/controls/base-data.js ***!
@@ -11957,7 +12546,7 @@ ControlBaseDataView = ControlBaseView.extend({
     var parent = this.model.get('parent');
 
     try {
-      return parent && this.container.panel.getControlView(parent);
+      return parent && this.container.panel.getControlView(parent); // eslint-disable-next-line no-empty
     } catch (e) {}
   },
 
@@ -11978,7 +12567,8 @@ ControlBaseDataView = ControlBaseView.extend({
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
           var child = _step.value;
           views.push(this.container.panel.getControlView(child));
-        }
+        } // eslint-disable-next-line no-empty
+
       } catch (err) {
         _iterator.e(err);
       } finally {
@@ -12350,7 +12940,7 @@ ControlBaseMultipleItemView = ControlBaseDataView.extend({
   // Static methods
   getStyleValue: function getStyleValue(placeholder, controlValue) {
     if (!_.isObject(controlValue)) {
-      return ''; // invalid
+      return ''; // Invalid
     }
 
     return controlValue[placeholder.toLowerCase()];
@@ -12532,6 +13122,7 @@ ControlBaseView = Marionette.CompositeView.extend({
               settings: settingsModel,
               label: label,
               view: false,
+              parent: false,
               renderer: false,
               controls: settingsModel.options.controls
             });
@@ -12544,7 +13135,7 @@ ControlBaseView = Marionette.CompositeView.extend({
 
     Object.defineProperty(this, 'elementSettingsModel', {
       get: function get() {
-        elementorCommon.helpers.softDeprecated('elementSettingsModel', '2.8.0', 'container.settings');
+        elementorDevTools.deprecation.deprecated('elementSettingsModel', '2.8.0', 'container.settings');
         return options.container ? options.container.settings : options.elementSettingsModel;
       }
     });
@@ -12589,6 +13180,263 @@ ControlBaseView = Marionette.CompositeView.extend({
   }
 });
 module.exports = ControlBaseView;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/controls/behaviors/scrubbing.js":
+/*!***************************************************************!*\
+  !*** ../assets/dev/js/editor/controls/behaviors/scrubbing.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ "../node_modules/@babel/runtime/helpers/assertThisInitialized.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+
+var _uiStates = __webpack_require__(/*! elementor-document/ui-states */ "../assets/dev/js/editor/document/ui-states/index.js");
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var SCRUB_REGULAR = 'UPDATE-VALUE';
+var SCRUB_ENHANCED = 'UPDATE-VALUE-ENHANCED';
+var SKIP_SCRUB = 'SKIP-UPDATE-VALUE';
+
+var Scrubbing = /*#__PURE__*/function (_Marionette$Behavior) {
+  (0, _inherits2.default)(Scrubbing, _Marionette$Behavior);
+
+  var _super = _createSuper(Scrubbing);
+
+  function Scrubbing() {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, Scrubbing);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _super.call.apply(_super, [this].concat(args));
+    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "checkIntentTimeout", null);
+    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "skipperCount", 0);
+    var userOptions = _this.getOption('scrubSettings') || {};
+    _this.scrubSettings = _objectSpread({
+      intentTime: 600,
+      skipperSteps: 10,
+      enhancedNumber: 10,
+      scrubbingActiveClass: 'e-scrubbing--active',
+      scrubbingOverClass: 'e-scrubbing-over'
+    }, userOptions);
+    return _this;
+  }
+
+  (0, _createClass2.default)(Scrubbing, [{
+    key: "ui",
+    value: function ui() {
+      return {
+        input: 'input[type=number]',
+        label: 'label[for^="elementor-control-"]'
+      };
+    }
+  }, {
+    key: "events",
+    value: function events() {
+      return {
+        'mousedown @ui.input': 'onMouseDownInput',
+        'mousedown @ui.label': 'onMouseDownLabel',
+        'mouseenter @ui.label': 'onMouseEnterLabel',
+        'mouseleave @ui.label': 'onMouseLeaveLabel'
+      };
+    }
+  }, {
+    key: "scrub",
+    value: function scrub(input, movementEvent) {
+      var movementType = this.getMovementType(movementEvent);
+
+      if (SKIP_SCRUB === movementType) {
+        return;
+      }
+
+      switch (movementType) {
+        case SCRUB_REGULAR:
+          input.value = +input.value + movementEvent.movementX;
+          break;
+
+        case SCRUB_ENHANCED:
+          input.value = +input.value + movementEvent.movementX * this.scrubSettings.enhancedNumber;
+          break;
+
+        default:
+          break;
+      } // Fire an input event so other behaviors/validators can handle the new input
+
+
+      input.dispatchEvent(new Event('input', {
+        bubbles: true
+      }));
+    }
+  }, {
+    key: "getMovementType",
+    value: function getMovementType(movementEvent) {
+      if (movementEvent.altKey) {
+        this.skipperCount++; // When ALT key is pressed, skipping x times before updating input value.
+        // 'skipperSteps' defines the exact times to skip, can be changed to any number.
+
+        if (this.skipperCount <= this.scrubSettings.skipperSteps) {
+          return SKIP_SCRUB;
+        }
+
+        this.skipperCount = 0;
+        return SCRUB_REGULAR;
+      }
+
+      return movementEvent.ctrlKey || movementEvent.metaKey ? SCRUB_ENHANCED : SCRUB_REGULAR;
+    }
+  }, {
+    key: "isInputValidForScrubbing",
+    value: function isInputValidForScrubbing(input) {
+      return input && !input.disabled && 'number' === input.type;
+    }
+    /**
+     * @param {HTMLElement[]} elements
+     */
+
+  }, {
+    key: "setActive",
+    value: function setActive(elements) {
+      var _this2 = this;
+
+      elements.forEach(function (element) {
+        element.classList.add(_this2.scrubSettings.scrubbingActiveClass);
+      });
+    }
+    /**
+     * @param {HTMLElement[]} elements
+     */
+
+  }, {
+    key: "setInactive",
+    value: function setInactive(elements) {
+      var _this3 = this;
+
+      elements.forEach(function (element) {
+        element.classList.remove(_this3.scrubSettings.scrubbingActiveClass);
+      });
+    }
+  }, {
+    key: "onMouseDownInput",
+    value: function onMouseDownInput(e) {
+      var _this4 = this;
+
+      var input = e.target;
+
+      if (!this.isInputValidForScrubbing(input)) {
+        return;
+      }
+
+      var trackMovement = function trackMovement(movementEvent) {
+        _this4.scrub(input, movementEvent);
+      }; // For input, scrubbing effect works only after X time the mouse is down.
+
+
+      var checkIntentTimeout = setTimeout(function () {
+        clearTimeout(checkIntentTimeout);
+        document.addEventListener('mousemove', trackMovement);
+        $e.uiStates.set('document/scrubbing-mode', _uiStates.ScrubbingMode.ON);
+
+        _this4.setActive([input]);
+      }, this.scrubSettings.intentTime);
+      document.addEventListener('mouseup', function () {
+        document.removeEventListener('mousemove', trackMovement);
+        clearTimeout(checkIntentTimeout);
+        $e.uiStates.remove('document/scrubbing-mode');
+
+        _this4.setInactive([input]);
+      }, {
+        once: true
+      });
+    }
+  }, {
+    key: "onMouseDownLabel",
+    value: function onMouseDownLabel(e) {
+      var _this5 = this;
+
+      var label = e.target;
+      var input = e.target.control;
+
+      if (!this.isInputValidForScrubbing(input)) {
+        return;
+      }
+
+      $e.uiStates.set('document/scrubbing-mode', _uiStates.ScrubbingMode.ON);
+      this.setActive([input, label]);
+
+      var trackMovement = function trackMovement(movementEvent) {
+        _this5.scrub(input, movementEvent);
+      };
+
+      document.addEventListener('mousemove', trackMovement);
+      document.addEventListener('mouseup', function () {
+        document.removeEventListener('mousemove', trackMovement);
+        $e.uiStates.remove('document/scrubbing-mode');
+
+        _this5.setInactive([input, label]);
+      }, {
+        once: true
+      });
+    }
+  }, {
+    key: "onMouseEnterLabel",
+    value: function onMouseEnterLabel(e) {
+      var input = e.target.control;
+
+      if (!this.isInputValidForScrubbing(input)) {
+        return;
+      }
+
+      e.target.classList.add(this.scrubSettings.scrubbingOverClass);
+    }
+  }, {
+    key: "onMouseLeaveLabel",
+    value: function onMouseLeaveLabel(e) {
+      var input = e.target.control;
+
+      if (!this.isInputValidForScrubbing(input)) {
+        return;
+      }
+
+      e.target.classList.remove(this.scrubSettings.scrubbingOverClass);
+    }
+  }]);
+  return Scrubbing;
+}(Marionette.Behavior);
+
+exports["default"] = Scrubbing;
 
 /***/ }),
 
@@ -13353,10 +14201,22 @@ exports["default"] = _default;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _scrubbing = _interopRequireDefault(__webpack_require__(/*! ./behaviors/scrubbing */ "../assets/dev/js/editor/controls/behaviors/scrubbing.js"));
+
 var ControlBaseUnitsItemView = __webpack_require__(/*! elementor-controls/base-units */ "../assets/dev/js/editor/controls/base-units.js"),
     ControlDimensionsItemView;
 
 ControlDimensionsItemView = ControlBaseUnitsItemView.extend({
+  behaviors: {
+    Scrubbing: {
+      behaviorClass: _scrubbing.default,
+      scrubSettings: {
+        intentTime: 800
+      }
+    }
+  },
   ui: function ui() {
     var ui = ControlBaseUnitsItemView.prototype.ui.apply(this, arguments);
     ui.controls = '.elementor-control-dimension > input:enabled';
@@ -13454,6 +14314,8 @@ ControlDimensionsItemView = ControlBaseUnitsItemView.extend({
     this.updateDimensionsValue();
   },
   onInputChange: function onInputChange(event) {
+    var _event$originalEvent;
+
     var inputSetting = event.target.dataset.setting;
 
     if ('unit' === inputSetting) {
@@ -13461,6 +14323,15 @@ ControlDimensionsItemView = ControlBaseUnitsItemView.extend({
     }
 
     if (!_.contains(this.getPossibleDimensions(), inputSetting)) {
+      return;
+    } // When using input with type="number" and the user starts typing `-`, the actual value (`event.target.value`) is
+    // an empty string. Since the user probably has the intention to insert a negative value, the methods below will
+    // not be triggered. This will prevent updating the input again with an empty string.
+
+
+    var hasIntentionForNegativeNumber = '-' === (event === null || event === void 0 ? void 0 : (_event$originalEvent = event.originalEvent) === null || _event$originalEvent === void 0 ? void 0 : _event$originalEvent.data) && !event.target.value;
+
+    if (hasIntentionForNegativeNumber) {
       return;
     }
 
@@ -13516,7 +14387,7 @@ module.exports = ControlSelect2View.extend({
     var self = this;
     this.ui.select.select2(this.getSelect2Options());
     this.ui.select.on('select2:open', function () {
-      self.$previewContainer = jQuery('.select2-results__options[role="tree"]:visible'); // load initial?
+      self.$previewContainer = jQuery('.select2-results__options[role="tree"]:visible'); // Load initial?
 
       setTimeout(function () {
         self.enqueueFontsInView();
@@ -13651,7 +14522,7 @@ ControlMediaItemView = ControlBaseDataView.extend({
     this.$el.toggleClass('elementor-gallery-has-images', hasImages).toggleClass('elementor-gallery-empty', !hasImages);
     var $galleryThumbnails = this.ui.galleryThumbnails;
     $galleryThumbnails.empty();
-    /* translators: %s: Selected images count. */
+    /* Translators: %s: Selected images count. */
 
     this.ui.status.text(hasImages ? sprintf(__('%s Images Selected', 'elementor'), imagesCount) : __('No Images Selected', 'elementor'));
 
@@ -13715,7 +14586,7 @@ ControlMediaItemView = ControlBaseDataView.extend({
     var oldExtensions = _wpPluploadSettings.defaults.filters.mime_types[0].extensions;
     this.frame.on('ready', function () {
       _wpPluploadSettings.defaults.filters.mime_types[0].extensions = oldExtensions + ',svg';
-    }); // restore allowed upload extensions
+    }); // Restore allowed upload extensions
 
     this.frame.on('close', function () {
       _wpPluploadSettings.defaults.filters.mime_types[0].extensions = oldExtensions;
@@ -14072,7 +14943,7 @@ var ControlIconsView = /*#__PURE__*/function (_ControlMultipleBaseI) {
     value: function onReady() {
       var _this2 = this;
 
-      // is migration allowed from fa4
+      // Is migration allowed from fa4
       if (!this.isMigrationAllowed()) {
         var migrationPopupTrigger = 'media' === this.model.get('skin') ? this.ui.previewContainer[0] : this.ui.inlineIconContainer[0];
         migrationPopupTrigger.addEventListener('click', function (event) {
@@ -14151,7 +15022,7 @@ var ControlIconsView = /*#__PURE__*/function (_ControlMultipleBaseI) {
         _wpPluploadSettings.defaults.filters.mime_types[0].extensions = ext;
       });
       this.frame.on('close', function () {
-        // restore allowed upload extensions
+        // Restore allowed upload extensions
         _wpPluploadSettings.defaults.filters.mime_types[0].extensions = oldExtensions;
       });
     }
@@ -14333,10 +15204,22 @@ module.exports = ControlIconsView;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _scrubbing = _interopRequireDefault(__webpack_require__(/*! ./behaviors/scrubbing */ "../assets/dev/js/editor/controls/behaviors/scrubbing.js"));
+
 var ControlMultipleBaseItemView = __webpack_require__(/*! elementor-controls/base-multiple */ "../assets/dev/js/editor/controls/base-multiple.js"),
     ControlImageDimensionsItemView;
 
 ControlImageDimensionsItemView = ControlMultipleBaseItemView.extend({
+  behaviors: {
+    Scrubbing: {
+      behaviorClass: _scrubbing.default,
+      scrubSettings: {
+        intentTime: 800
+      }
+    }
+  },
   ui: function ui() {
     return {
       inputWidth: 'input[data-setting="width"]',
@@ -14620,10 +15503,30 @@ module.exports = ControlMediaItemView;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+
+var _scrubbing = _interopRequireDefault(__webpack_require__(/*! ./behaviors/scrubbing */ "../assets/dev/js/editor/controls/behaviors/scrubbing.js"));
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
 var ControlBaseDataView = __webpack_require__(/*! elementor-controls/base-data */ "../assets/dev/js/editor/controls/base-data.js"),
     ControlNumberItemView;
 
 ControlNumberItemView = ControlBaseDataView.extend({
+  behaviors: function behaviors() {
+    return _objectSpread(_objectSpread({}, ControlBaseDataView.prototype.behaviors.apply(this)), {}, {
+      Scrubbing: {
+        behaviorClass: _scrubbing.default,
+        scrubSettings: {
+          intentTime: 800
+        }
+      }
+    });
+  },
   registerValidators: function registerValidators() {
     ControlBaseDataView.prototype.registerValidators.apply(this, arguments);
     var validationTerms = {},
@@ -14746,6 +15649,15 @@ var ControlPopoverStarterView = /*#__PURE__*/function (_ControlChooseView) {
         'click @ui.popoverToggle': 'onPopoverToggleClick',
         'click @ui.resetInput': 'onResetInputClick'
       });
+    }
+  }, {
+    key: "onShow",
+    value: function onShow() {
+      var $popover = this.$el.next('.elementor-controls-popover'); // Attach the current control as a toggle of its popover.
+
+      if ($popover.length) {
+        $popover[0].dataset.popoverToggle = "elementor-control-default-".concat(this.model.cid);
+      }
     }
   }, {
     key: "onResetInputClick",
@@ -14995,7 +15907,7 @@ module.exports = Marionette.CompositeView.extend({
     }
 
     if (!title) {
-      /* translators: %s: Item Index (number). */
+      /* Translators: %s: Item Index (number). */
       title = sprintf(__('Item #%s', 'elementor'), this.getOption('itemIndex'));
     }
 
@@ -15203,13 +16115,13 @@ ControlRepeaterItemView = ControlBaseDataView.extend({
     });
 
     if (!isInChildren.length) {
-      elementorCommon.helpers.softDeprecated('Don\'t add models directly to the repeater.', '3.0.0', '$e.run( \'document/repeater/insert\' )');
+      elementorDevTools.deprecation.deprecated('Don\'t add models directly to the repeater.', '3.0.0', '$e.run( \'document/repeater/insert\' )');
       this.options.container.addRepeaterItem(this.model.get('name'), model, model.collection.indexOf(model));
     }
   },
   // BC since 3.0.0, ensure a container children are reset on collection reset.
   resetContainer: function resetContainer() {
-    elementorCommon.helpers.softDeprecated('Don\'t reset repeater collection directly.', '3.0.0', '$e.run( \'document/repeater/remove\' )');
+    elementorDevTools.deprecation.deprecated('Don\'t reset repeater collection directly.', '3.0.0', '$e.run( \'document/repeater/remove\' )');
     this.options.container.repeaters[this.model.get('name')].children = [];
   },
   getDefaults: function getDefaults() {
@@ -15428,7 +16340,23 @@ ControlSelect2ItemView = ControlBaseDataView.extend({
     }
   },
   onReady: function onReady() {
-    elementorCommon.helpers.softDeprecated('onReady', '3.0.0');
+    elementorDevTools.deprecation.deprecated('onReady', '3.0.0');
+  },
+
+  /**
+   * Get Input Value
+   *
+   * This method is an override of the base method. It is needed because when clearing the Select2 value in single
+   * value mode, the library sets that value to `null`, and an empty string is the system's default empty value.
+   *
+   * @param {*} input current control input
+   * @return {*} potentially modified input value
+   */
+  getInputValue: function getInputValue(input) {
+    var _ControlBaseDataView$;
+
+    // eslint-disable-line no-unused-vars
+    return (_ControlBaseDataView$ = ControlBaseDataView.prototype.getInputValue.apply(this, arguments)) !== null && _ControlBaseDataView$ !== void 0 ? _ControlBaseDataView$ : '';
   },
   onBaseInputChange: function onBaseInputChange() {
     ControlBaseDataView.prototype.onBaseInputChange.apply(this, arguments);
@@ -16060,10 +16988,10 @@ module.exports = ControlWysiwygItemView;
 
 /***/ }),
 
-/***/ "../assets/dev/js/editor/document/commands/base/command-history-debounce.js":
-/*!**********************************************************************************!*\
-  !*** ../assets/dev/js/editor/document/commands/base/command-history-debounce.js ***!
-  \**********************************************************************************/
+/***/ "../assets/dev/js/editor/data/globals/base/create-base.js":
+/*!****************************************************************!*\
+  !*** ../assets/dev/js/editor/data/globals/base/create-base.js ***!
+  \****************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -16074,7 +17002,409 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.getDefaultDebounceDelay = exports["default"] = exports.DEFAULT_DEBOUNCE_DELAY = void 0;
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var CreateBase = /*#__PURE__*/function (_$e$modules$editor$Co) {
+  (0, _inherits2.default)(CreateBase, _$e$modules$editor$Co);
+
+  var _super = _createSuper(CreateBase);
+
+  function CreateBase() {
+    (0, _classCallCheck2.default)(this, CreateBase);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(CreateBase, [{
+    key: "validateArgs",
+    value: function validateArgs() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      this.requireContainer(args);
+      this.requireArgumentType('setting', 'string', args);
+      this.requireArgumentType('title', 'string', args);
+    }
+  }]);
+  return CreateBase;
+}($e.modules.editor.CommandContainerBase);
+
+exports["default"] = CreateBase;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/data/globals/colors/commands/create.js":
+/*!**********************************************************************!*\
+  !*** ../assets/dev/js/editor/data/globals/colors/commands/create.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.Create = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _createBase = _interopRequireDefault(__webpack_require__(/*! elementor-editor/data/globals/base/create-base */ "../assets/dev/js/editor/data/globals/base/create-base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Create = /*#__PURE__*/function (_CreateBase) {
+  (0, _inherits2.default)(Create, _CreateBase);
+
+  var _super = _createSuper(Create);
+
+  function Create() {
+    (0, _classCallCheck2.default)(this, Create);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Create, [{
+    key: "apply",
+    value: function apply() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var container = args.container,
+          setting = args.setting,
+          title = args.title,
+          controls = container.controls;
+      var result = false;
+
+      if (!controls[setting]) {
+        throw new Error("Invalid setting: control '".concat(setting, "', not found."));
+      } // `args.id` used by tests.
+
+
+      var id = args.id || elementorCommon.helpers.getUniqueId();
+      result = $e.data.create("globals/colors?id=".concat(id), {
+        title: title,
+        value: container.settings.get(setting)
+      });
+      return result;
+    }
+  }]);
+  return Create;
+}(_createBase.default);
+
+exports.Create = Create;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/data/globals/colors/commands/index.js":
+/*!*********************************************************************!*\
+  !*** ../assets/dev/js/editor/data/globals/colors/commands/index.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "Create", ({
+  enumerable: true,
+  get: function get() {
+    return _create.Create;
+  }
+}));
+
+var _create = __webpack_require__(/*! ./create */ "../assets/dev/js/editor/data/globals/colors/commands/create.js");
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/data/globals/colors/component.js":
+/*!****************************************************************!*\
+  !*** ../assets/dev/js/editor/data/globals/colors/component.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/component-base */ "../modules/web-cli/assets/js/modules/component-base.js"));
+
+var commands = _interopRequireWildcard(__webpack_require__(/*! ./commands/ */ "../assets/dev/js/editor/data/globals/colors/commands/index.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Component = /*#__PURE__*/function (_ComponentBase) {
+  (0, _inherits2.default)(Component, _ComponentBase);
+
+  var _super = _createSuper(Component);
+
+  function Component() {
+    (0, _classCallCheck2.default)(this, Component);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Component, [{
+    key: "getNamespace",
+    value: function getNamespace() {
+      return 'globals/colors';
+    }
+  }, {
+    key: "defaultCommands",
+    value: function defaultCommands() {
+      return this.importCommands(commands);
+    }
+  }]);
+  return Component;
+}(_componentBase.default);
+
+exports["default"] = Component;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/data/globals/commands/data/colors.js":
+/*!********************************************************************!*\
+  !*** ../assets/dev/js/editor/data/globals/commands/data/colors.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Colors = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Colors = /*#__PURE__*/function (_$e$modules$CommandDa) {
+  (0, _inherits2.default)(Colors, _$e$modules$CommandDa);
+
+  var _super = _createSuper(Colors);
+
+  function Colors() {
+    (0, _classCallCheck2.default)(this, Colors);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Colors, null, [{
+    key: "getEndpointFormat",
+    value: function getEndpointFormat() {
+      return 'globals/colors/{id}';
+    }
+  }]);
+  return Colors;
+}($e.modules.CommandData);
+
+exports.Colors = Colors;
+var _default = Colors;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/data/globals/commands/data/index.js":
+/*!*******************************************************************!*\
+  !*** ../assets/dev/js/editor/data/globals/commands/data/index.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "Colors", ({
+  enumerable: true,
+  get: function get() {
+    return _colors.Colors;
+  }
+}));
+exports.Index = void 0;
+Object.defineProperty(exports, "Typography", ({
+  enumerable: true,
+  get: function get() {
+    return _typography.Typography;
+  }
+}));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _colors = __webpack_require__(/*! ./colors */ "../assets/dev/js/editor/data/globals/commands/data/colors.js");
+
+var _typography = __webpack_require__(/*! ./typography */ "../assets/dev/js/editor/data/globals/commands/data/typography.js");
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+// TODO: Remove - Move to into base, Possible to handle using ComponentData.
+var Index = /*#__PURE__*/function (_$e$modules$CommandDa) {
+  (0, _inherits2.default)(Index, _$e$modules$CommandDa);
+
+  var _super = _createSuper(Index);
+
+  function Index() {
+    (0, _classCallCheck2.default)(this, Index);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Index, null, [{
+    key: "getEndpointFormat",
+    value: function getEndpointFormat() {
+      // Format 'globals/index' to 'globals'.
+      return 'globals';
+    }
+  }]);
+  return Index;
+}($e.modules.CommandData);
+
+exports.Index = Index;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/data/globals/commands/data/typography.js":
+/*!************************************************************************!*\
+  !*** ../assets/dev/js/editor/data/globals/commands/data/typography.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Typography = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Typography = /*#__PURE__*/function (_$e$modules$CommandDa) {
+  (0, _inherits2.default)(Typography, _$e$modules$CommandDa);
+
+  var _super = _createSuper(Typography);
+
+  function Typography() {
+    (0, _classCallCheck2.default)(this, Typography);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Typography, null, [{
+    key: "getEndpointFormat",
+    value: function getEndpointFormat() {
+      return 'globals/typography/{id}';
+    }
+  }]);
+  return Typography;
+}($e.modules.CommandData);
+
+exports.Typography = Typography;
+var _default = Typography;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/data/globals/component.js":
+/*!*********************************************************!*\
+  !*** ../assets/dev/js/editor/data/globals/component.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
 
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
 
@@ -16088,134 +17418,277 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/component-base */ "../modules/web-cli/assets/js/modules/component-base.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
+var _component = _interopRequireDefault(__webpack_require__(/*! ./typography/component */ "../assets/dev/js/editor/data/globals/typography/component.js"));
 
-var _commandHistory = _interopRequireDefault(__webpack_require__(/*! ./command-history */ "../assets/dev/js/editor/document/commands/base/command-history.js"));
+var _component2 = _interopRequireDefault(__webpack_require__(/*! ./colors/component */ "../assets/dev/js/editor/data/globals/colors/component.js"));
+
+var commandsData = _interopRequireWildcard(__webpack_require__(/*! ./commands/data/ */ "../assets/dev/js/editor/data/globals/commands/data/index.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var DEFAULT_DEBOUNCE_DELAY = 800;
-/**
- * Function getDefaultDebounceDelay().
- *
- * Returns default debounce delay time, if exists in config override.
- *
- * @return {number} default debounce delay time
- */
+var Component = /*#__PURE__*/function (_ComponentBase) {
+  (0, _inherits2.default)(Component, _ComponentBase);
 
-exports.DEFAULT_DEBOUNCE_DELAY = DEFAULT_DEBOUNCE_DELAY;
+  var _super = _createSuper(Component);
 
-var getDefaultDebounceDelay = function getDefaultDebounceDelay() {
-  var result = DEFAULT_DEBOUNCE_DELAY;
-
-  if (elementor.config.document && undefined !== elementor.config.document.debounceDelay) {
-    result = elementor.config.document.debounceDelay;
-  }
-
-  return result;
-};
-
-exports.getDefaultDebounceDelay = getDefaultDebounceDelay;
-
-var CommandHistoryDebounce = /*#__PURE__*/function (_CommandHistory) {
-  (0, _inherits2.default)(CommandHistoryDebounce, _CommandHistory);
-
-  var _super = _createSuper(CommandHistoryDebounce);
-
-  function CommandHistoryDebounce() {
-    (0, _classCallCheck2.default)(this, CommandHistoryDebounce);
+  function Component() {
+    (0, _classCallCheck2.default)(this, Component);
     return _super.apply(this, arguments);
   }
 
-  (0, _createClass2.default)(CommandHistoryDebounce, [{
-    key: "initialize",
-    value: function initialize(args) {
-      var _args$options = args.options,
-          options = _args$options === void 0 ? {} : _args$options;
-      (0, _get2.default)((0, _getPrototypeOf2.default)(CommandHistoryDebounce.prototype), "initialize", this).call(this, args);
+  (0, _createClass2.default)(Component, [{
+    key: "__construct",
+    value: function __construct() {
+      var _this = this;
 
-      if (!this.constructor.debounce) {
-        this.constructor.debounce = _.debounce(function (fn) {
-          return fn();
-        }, getDefaultDebounceDelay());
-      } // If its head command, and not called within another command.
-
-
-      if (1 === $e.commands.currentTrace.length || options.debounce) {
-        this.isDebounceRequired = true;
-      }
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      (0, _get2.default)((0, _getPrototypeOf2.default)(Component.prototype), "__construct", this).call(this, args);
+      elementorCommon.elements.$window.on('elementor:loaded', function () {
+        return _this.refreshGlobalData();
+      });
     }
   }, {
-    key: "onBeforeRun",
-    value: function onBeforeRun(args) {
-      _commandBase.default.prototype.onBeforeRun.call(this, args);
-
-      if (this.history && this.isHistoryActive()) {
-        $e.internal('document/history/add-transaction', this.history);
-      }
+    key: "getNamespace",
+    value: function getNamespace() {
+      return 'globals';
     }
   }, {
-    key: "onAfterRun",
-    value: function onAfterRun(args, result) {
-      _commandBase.default.prototype.onAfterRun.call(this, args, result);
-
-      if (this.isHistoryActive()) {
-        if (this.isDebounceRequired) {
-          this.constructor.debounce(function () {
-            return $e.internal('document/history/end-transaction');
-          });
-        } else {
-          $e.internal('document/history/end-transaction');
-        }
-      }
+    key: "registerAPI",
+    value: function registerAPI() {
+      $e.components.register(new _component.default({
+        manager: this
+      }));
+      $e.components.register(new _component2.default({
+        manager: this
+      }));
+      (0, _get2.default)((0, _getPrototypeOf2.default)(Component.prototype), "registerAPI", this).call(this);
     }
   }, {
-    key: "onCatchApply",
-    value: function onCatchApply(e) {
-      _commandBase.default.prototype.onCatchApply.call(this, e); // Rollback history on failure.
-
-
-      if (e instanceof $e.modules.HookBreak && this.history) {
-        if (this.isDebounceRequired) {
-          // `clear-transaction` is under debounce, because it should `clear-transaction` after `end-transaction`.
-          this.constructor.debounce(function () {
-            return $e.internal('document/history/clear-transaction');
-          });
-        } else {
-          $e.internal('document/history/clear-transaction');
-        }
-      }
+    key: "defaultData",
+    value: function defaultData() {
+      return this.importCommands(commandsData);
     }
-  }], [{
-    key: "getInstanceType",
-    value:
-    /**
-     * Function debounce().
-     *
-     * Will debounce every function you pass in, at the same debounce flow.
-     *
-     * @param {Function}
-     */
-    function getInstanceType() {
-      return 'CommandHistoryDebounce';
+  }, {
+    key: "refreshGlobalData",
+    value: function refreshGlobalData() {
+      $e.data.deleteCache($e.components.get('globals'), 'globals/index');
     }
   }]);
-  return CommandHistoryDebounce;
-}(_commandHistory.default);
+  return Component;
+}(_componentBase.default);
 
-exports["default"] = CommandHistoryDebounce;
-(0, _defineProperty2.default)(CommandHistoryDebounce, "debounce", undefined);
+exports["default"] = Component;
 
 /***/ }),
 
-/***/ "../assets/dev/js/editor/document/commands/base/command-history.js":
+/***/ "../assets/dev/js/editor/data/globals/typography/commands/create.js":
+/*!**************************************************************************!*\
+  !*** ../assets/dev/js/editor/data/globals/typography/commands/create.js ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.Create = void 0;
+
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _createBase = _interopRequireDefault(__webpack_require__(/*! elementor-editor/data/globals/base/create-base */ "../assets/dev/js/editor/data/globals/base/create-base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Create = /*#__PURE__*/function (_CreateBase) {
+  (0, _inherits2.default)(Create, _CreateBase);
+
+  var _super = _createSuper(Create);
+
+  function Create() {
+    (0, _classCallCheck2.default)(this, Create);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Create, [{
+    key: "apply",
+    value: function apply() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var container = args.container,
+          setting = args.setting,
+          title = args.title,
+          controls = container.controls,
+          availableControls = {};
+      var result = false,
+          groupPrefix = '';
+
+      if (controls[setting] && controls[setting].groupPrefix) {
+        groupPrefix = controls[setting].groupPrefix;
+      } else {
+        throw new Error("Invalid setting: control '".concat(setting, "', not found."));
+      }
+
+      if (groupPrefix) {
+        Object.entries(controls).forEach(function (_ref) {
+          var _ref2 = (0, _slicedToArray2.default)(_ref, 1),
+              key = _ref2[0];
+
+          if (key.includes(groupPrefix)) {
+            // Get values but remove defaults.
+            var value = container.settings.get(key),
+                defaultValue = container.controls[key].default;
+
+            if (!_.isEqual(value, defaultValue)) {
+              availableControls[key.replace(groupPrefix, elementor.config.kit_config.typography_prefix)] = container.settings.get(key);
+            }
+          }
+        });
+      }
+
+      if (Object.values(availableControls).length) {
+        var id = elementorCommon.helpers.getUniqueId();
+        result = $e.data.create("globals/typography?id=".concat(id), {
+          title: title,
+          value: availableControls
+        });
+      }
+
+      return result;
+    }
+  }]);
+  return Create;
+}(_createBase.default);
+
+exports.Create = Create;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/data/globals/typography/commands/index.js":
 /*!*************************************************************************!*\
-  !*** ../assets/dev/js/editor/document/commands/base/command-history.js ***!
+  !*** ../assets/dev/js/editor/data/globals/typography/commands/index.js ***!
   \*************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "Create", ({
+  enumerable: true,
+  get: function get() {
+    return _create.Create;
+  }
+}));
+
+var _create = __webpack_require__(/*! ./create */ "../assets/dev/js/editor/data/globals/typography/commands/create.js");
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/data/globals/typography/component.js":
+/*!********************************************************************!*\
+  !*** ../assets/dev/js/editor/data/globals/typography/component.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/get */ "../node_modules/@babel/runtime/helpers/get.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/component-base */ "../modules/web-cli/assets/js/modules/component-base.js"));
+
+var commands = _interopRequireWildcard(__webpack_require__(/*! ./commands/ */ "../assets/dev/js/editor/data/globals/typography/commands/index.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Component = /*#__PURE__*/function (_ComponentBase) {
+  (0, _inherits2.default)(Component, _ComponentBase);
+
+  var _super = _createSuper(Component);
+
+  function Component() {
+    (0, _classCallCheck2.default)(this, Component);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Component, [{
+    key: "__construct",
+    value: function __construct() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      (0, _get2.default)((0, _getPrototypeOf2.default)(Component.prototype), "__construct", this).call(this, args);
+    }
+  }, {
+    key: "getNamespace",
+    value: function getNamespace() {
+      return 'globals/typography';
+    }
+  }, {
+    key: "defaultCommands",
+    value: function defaultCommands() {
+      return this.importCommands(commands);
+    }
+  }]);
+  return Component;
+}(_componentBase.default);
+
+exports["default"] = Component;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/command-bases/command-disable-enable.js":
+/*!********************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/command-bases/command-disable-enable.js ***!
+  \********************************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -16240,49 +17713,211 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
+var _commandHistoryBase = _interopRequireDefault(__webpack_require__(/*! ./command-history-base */ "../assets/dev/js/editor/document/command-bases/command-history-base.js"));
+
+var _settings = _interopRequireDefault(__webpack_require__(/*! elementor-document/elements/commands/settings */ "../assets/dev/js/editor/document/elements/commands/settings.js"));
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var CommandHistory = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(CommandHistory, _CommandBase);
+/**
+ * The class serve as base for commands who needs the 'enable/disable' behavior.
+ */
+var CommandDisableEnable = /*#__PURE__*/function (_CommandHistoryBase) {
+  (0, _inherits2.default)(CommandDisableEnable, _CommandHistoryBase);
 
-  var _super = _createSuper(CommandHistory);
+  var _super = _createSuper(CommandDisableEnable);
 
-  function CommandHistory(args) {
-    var _this;
+  function CommandDisableEnable() {
+    (0, _classCallCheck2.default)(this, CommandDisableEnable);
+    return _super.apply(this, arguments);
+  }
 
-    (0, _classCallCheck2.default)(this, CommandHistory);
-    _this = _super.call(this, args);
+  (0, _createClass2.default)(CommandDisableEnable, [{
+    key: "initialize",
+    value: function initialize(args) {
+      /**
+       * Which command is running.
+       *
+       * @type {string}
+       */
+      this.type = this.command === this.constructor.getEnableCommand() ? 'enable' : 'disable'; // Override default logic, since getHistory() depends on `this.type`.
+
+      (0, _get2.default)((0, _getPrototypeOf2.default)(CommandDisableEnable.prototype), "initialize", this).call(this, args);
+    }
+  }, {
+    key: "validateArgs",
+    value: function validateArgs(args) {
+      this.requireContainer(args);
+      this.requireArgumentConstructor('settings', Object, args);
+    }
+  }, {
+    key: "getHistory",
+    value: function getHistory(args) {
+      var settings = args.settings,
+          _args$containers = args.containers,
+          containers = _args$containers === void 0 ? [args.container] : _args$containers,
+          changes = {};
+      containers.forEach(function (container) {
+        var id = container.id;
+
+        if (!changes[id]) {
+          changes[id] = {};
+        }
+
+        changes[id] = settings;
+      });
+
+      var subTitle = elementor.translate(this.constructor.getName()) + ' ' + _settings.default.getSubTitle(args),
+          type = this.type;
+
+      return {
+        containers: containers,
+        subTitle: subTitle,
+        data: {
+          changes: changes,
+          command: this.command
+        },
+        type: type,
+        restore: this.constructor.restore
+      };
+    }
+  }], [{
+    key: "getName",
+    value: function getName() {
+      elementorModules.ForceMethodImplementation();
+    } // eslint-disable-next-line jsdoc/require-returns-check
+
     /**
-     * Get History from child command.
+     * @return {string} Full enable command.
+     */
+
+  }, {
+    key: "getEnableCommand",
+    value: function getEnableCommand() {
+      elementorModules.ForceMethodImplementation();
+    } // eslint-disable-next-line jsdoc/require-returns-check
+
+    /**
+     * @return {string} Full disable command.
+     */
+
+  }, {
+    key: "getDisableCommand",
+    value: function getDisableCommand() {
+      elementorModules.ForceMethodImplementation();
+    }
+  }, {
+    key: "restore",
+    value: function restore(historyItem, isRedo) {
+      var data = historyItem.get('data'),
+          CommandClass = $e.commands.getCommandClass(data.command); // Upon `disable` command toggle `isRedo`.
+
+      if (CommandClass.getDisableCommand() === data.command) {
+        isRedo = !isRedo;
+      }
+
+      historyItem.get('containers').forEach(function (container) {
+        var settings = data.changes[container.id],
+            toggle = isRedo ? CommandClass.getEnableCommand() : CommandClass.getDisableCommand();
+        $e.run(toggle, {
+          container: container,
+          settings: settings
+        });
+        container.panel.refresh();
+      });
+    }
+  }]);
+  return CommandDisableEnable;
+}(_commandHistoryBase.default);
+
+exports["default"] = CommandDisableEnable;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/command-bases/command-history-base.js":
+/*!******************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/command-bases/command-history-base.js ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/get */ "../node_modules/@babel/runtime/helpers/get.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _commandContainerBase = _interopRequireDefault(__webpack_require__(/*! elementor-editor/command-bases/command-container-base */ "../assets/dev/js/editor/command-bases/command-container-base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+/**
+ * @name $e.modules.editor.document.CommandHistoryBase
+ */
+var CommandHistoryBase = /*#__PURE__*/function (_CommandContainerBase) {
+  (0, _inherits2.default)(CommandHistoryBase, _CommandContainerBase);
+
+  var _super = _createSuper(CommandHistoryBase);
+
+  function CommandHistoryBase() {
+    (0, _classCallCheck2.default)(this, CommandHistoryBase);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(CommandHistoryBase, [{
+    key: "initialize",
+    value: function initialize() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var _args$options = args.options,
+          options = _args$options === void 0 ? {} : _args$options,
+          _options$useHistory = options.useHistory,
+          useHistory = _options$useHistory === void 0 ? true : _options$useHistory;
+
+      if (useHistory) {
+        /**
+         * Get History from child command.
+         *
+         * @type {{}|boolean}
+         */
+        this.history = this.getHistory(args);
+        /**
+         * @type {number|boolean}
+         */
+
+        this.historyId = false;
+      }
+    } // eslint-disable-next-line jsdoc/require-returns-check
+
+    /**
+     * Function getHistory().
      *
-     * @type {{}|boolean}
+     * Get history object from child, do nothing if it false.
+     *
+     * @param {*} [args={}]
+     *
+     * @return {({}|boolean)} history object
      */
 
-    _this.history = _this.getHistory(args);
-    /**
-     * @type {number|boolean}
-     */
-
-    _this.historyId = false;
-    return _this;
-  } // eslint-disable-next-line jsdoc/require-returns-check
-
-  /**
-   * Function getHistory().
-   *
-   * Get history object from child, do nothing if it false.
-   *
-   * @param {*} [args={}]
-   *
-   * @return {({}|boolean)} history object
-   */
-
-
-  (0, _createClass2.default)(CommandHistory, [{
+  }, {
     key: "getHistory",
     value: function getHistory() {
       var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -16305,7 +17940,7 @@ var CommandHistory = /*#__PURE__*/function (_CommandBase) {
   }, {
     key: "onBeforeRun",
     value: function onBeforeRun(args) {
-      (0, _get2.default)((0, _getPrototypeOf2.default)(CommandHistory.prototype), "onBeforeRun", this).call(this, args);
+      (0, _get2.default)((0, _getPrototypeOf2.default)(CommandHistoryBase.prototype), "onBeforeRun", this).call(this, args);
 
       if (this.history && this.isHistoryActive()) {
         this.historyId = $e.internal('document/history/start-log', this.history);
@@ -16314,7 +17949,7 @@ var CommandHistory = /*#__PURE__*/function (_CommandBase) {
   }, {
     key: "onAfterRun",
     value: function onAfterRun(args, result) {
-      (0, _get2.default)((0, _getPrototypeOf2.default)(CommandHistory.prototype), "onAfterRun", this).call(this, args, result);
+      (0, _get2.default)((0, _getPrototypeOf2.default)(CommandHistoryBase.prototype), "onAfterRun", this).call(this, args, result);
 
       if (this.history && this.isHistoryActive()) {
         $e.internal('document/history/end-log', {
@@ -16323,26 +17958,873 @@ var CommandHistory = /*#__PURE__*/function (_CommandBase) {
       }
     }
   }, {
+    key: "onAfterApply",
+    value: function onAfterApply() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var result = arguments.length > 1 ? arguments[1] : undefined;
+      (0, _get2.default)((0, _getPrototypeOf2.default)(CommandHistoryBase.prototype), "onAfterApply", this).call(this, args, result);
+
+      if (this.isDataChanged()) {
+        $e.internal('document/save/set-is-modified', {
+          status: true
+        });
+      }
+    }
+  }, {
     key: "onCatchApply",
     value: function onCatchApply(e) {
-      (0, _get2.default)((0, _getPrototypeOf2.default)(CommandHistory.prototype), "onCatchApply", this).call(this, e); // Rollback history on failure.
-
+      // Rollback history on failure.
       if (e instanceof $e.modules.HookBreak && this.historyId) {
         $e.internal('document/history/delete-log', {
           id: this.historyId
         });
       }
+
+      (0, _get2.default)((0, _getPrototypeOf2.default)(CommandHistoryBase.prototype), "onCatchApply", this).call(this, e);
+    }
+  }, {
+    key: "isDataChanged",
+    value: function isDataChanged() {
+      // All the commands who use history are commands that changing the data.
+      return true;
     }
   }], [{
     key: "getInstanceType",
     value: function getInstanceType() {
-      return 'CommandHistory';
+      return 'CommandHistoryBase';
     }
   }]);
-  return CommandHistory;
-}(_commandBase.default);
+  return CommandHistoryBase;
+}(_commandContainerBase.default);
 
-exports["default"] = CommandHistory;
+exports["default"] = CommandHistoryBase;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/component.js":
+/*!*****************************************************!*\
+  !*** ../assets/dev/js/editor/document/component.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/get */ "../node_modules/@babel/runtime/helpers/get.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/component-base */ "../modules/web-cli/assets/js/modules/component-base.js"));
+
+var components = _interopRequireWildcard(__webpack_require__(/*! ./ */ "../assets/dev/js/editor/document/index.js"));
+
+var hooks = _interopRequireWildcard(__webpack_require__(/*! ./hooks/ */ "../assets/dev/js/editor/document/hooks/index.js"));
+
+var uiStates = _interopRequireWildcard(__webpack_require__(/*! ./ui-states */ "../assets/dev/js/editor/document/ui-states/index.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Component = /*#__PURE__*/function (_ComponentBase) {
+  (0, _inherits2.default)(Component, _ComponentBase);
+
+  var _super = _createSuper(Component);
+
+  function Component() {
+    (0, _classCallCheck2.default)(this, Component);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Component, [{
+    key: "getNamespace",
+    value: function getNamespace() {
+      return 'document';
+    }
+  }, {
+    key: "registerAPI",
+    value: function registerAPI() {
+      Object.values(components).forEach(function (ComponentClass) {
+        return $e.components.register(new ComponentClass());
+      });
+      (0, _get2.default)((0, _getPrototypeOf2.default)(Component.prototype), "registerAPI", this).call(this);
+    }
+  }, {
+    key: "defaultCommands",
+    value: function defaultCommands() {
+      return {// Example: ( args ) => ( new Commands.Example( args ).run() ),
+      };
+    }
+  }, {
+    key: "defaultHooks",
+    value: function defaultHooks() {
+      return this.importHooks(hooks);
+    }
+  }, {
+    key: "defaultUiStates",
+    value: function defaultUiStates() {
+      return this.importUiStates(uiStates);
+    }
+  }, {
+    key: "defaultUtils",
+    value: function defaultUtils() {
+      var _this = this;
+
+      return {
+        findViewRecursive: function findViewRecursive(parent, key, value) {
+          var multiple = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+          var found = [];
+
+          for (var x in parent._views) {
+            var view = parent._views[x];
+
+            if (value === view.model.get(key)) {
+              found.push(view);
+
+              if (!multiple) {
+                return found;
+              }
+            }
+
+            if (view.children) {
+              var views = _this.utils.findViewRecursive(view.children, key, value, multiple);
+
+              if (views.length) {
+                found = found.concat(views);
+
+                if (!multiple) {
+                  return found;
+                }
+              }
+            }
+          }
+
+          return found;
+        },
+        findViewById: function findViewById(id) {
+          var elements = _this.utils.findViewRecursive(elementor.getPreviewView().children, 'id', id, false);
+
+          return elements ? elements[0] : false;
+        },
+        findContainerById: function findContainerById(id) {
+          var result = _this.utils.findViewById(id);
+
+          if (result) {
+            result = result.getContainer();
+          }
+
+          return result;
+        }
+      };
+    }
+  }]);
+  return Component;
+}(_componentBase.default);
+
+exports["default"] = Component;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/dynamic/commands/base/disable-enable.js":
+/*!********************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/dynamic/commands/base/disable-enable.js ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _commandDisableEnable = _interopRequireDefault(__webpack_require__(/*! elementor-document/command-bases/command-disable-enable */ "../assets/dev/js/editor/document/command-bases/command-disable-enable.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var DisableEnable = /*#__PURE__*/function (_CommandDisableEnable) {
+  (0, _inherits2.default)(DisableEnable, _CommandDisableEnable);
+
+  var _super = _createSuper(DisableEnable);
+
+  function DisableEnable() {
+    (0, _classCallCheck2.default)(this, DisableEnable);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(DisableEnable, [{
+    key: "getTitle",
+    value: function getTitle() {
+      return __('Dynamic');
+    }
+  }], [{
+    key: "getName",
+    value: function getName() {
+      return 'Dynamic';
+    }
+  }, {
+    key: "getEnableCommand",
+    value: function getEnableCommand() {
+      return 'document/dynamic/enable';
+    }
+  }, {
+    key: "getDisableCommand",
+    value: function getDisableCommand() {
+      return 'document/dynamic/disable';
+    }
+  }]);
+  return DisableEnable;
+}(_commandDisableEnable.default);
+
+exports["default"] = DisableEnable;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/dynamic/commands/disable.js":
+/*!********************************************************************!*\
+  !*** ../assets/dev/js/editor/document/dynamic/commands/disable.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Disable = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _disableEnable = _interopRequireDefault(__webpack_require__(/*! ./base/disable-enable */ "../assets/dev/js/editor/document/dynamic/commands/base/disable-enable.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Disable = /*#__PURE__*/function (_DisableEnable) {
+  (0, _inherits2.default)(Disable, _DisableEnable);
+
+  var _super = _createSuper(Disable);
+
+  function Disable() {
+    (0, _classCallCheck2.default)(this, Disable);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Disable, [{
+    key: "apply",
+    value: function apply(args) {
+      var settings = args.settings,
+          _args$containers = args.containers,
+          containers = _args$containers === void 0 ? [args.container] : _args$containers;
+      containers.forEach(function (container) {
+        container = container.lookup();
+        Object.keys(settings).forEach(function (setting) {
+          container.dynamic.unset(setting);
+        });
+        $e.internal('document/elements/set-settings', {
+          container: container,
+          settings: {
+            __dynamic__: container.dynamic.toJSON()
+          }
+        });
+      });
+    }
+  }]);
+  return Disable;
+}(_disableEnable.default);
+
+exports.Disable = Disable;
+var _default = Disable;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/dynamic/commands/enable.js":
+/*!*******************************************************************!*\
+  !*** ../assets/dev/js/editor/document/dynamic/commands/enable.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Enable = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _disableEnable = _interopRequireDefault(__webpack_require__(/*! ./base/disable-enable */ "../assets/dev/js/editor/document/dynamic/commands/base/disable-enable.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Enable = /*#__PURE__*/function (_DisableEnable) {
+  (0, _inherits2.default)(Enable, _DisableEnable);
+
+  var _super = _createSuper(Enable);
+
+  function Enable() {
+    (0, _classCallCheck2.default)(this, Enable);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Enable, [{
+    key: "apply",
+    value: function apply(args) {
+      var settings = args.settings,
+          _args$containers = args.containers,
+          containers = _args$containers === void 0 ? [args.container] : _args$containers;
+      containers.forEach(function (container) {
+        container = container.lookup();
+        container.dynamic.set(settings);
+        $e.internal('document/elements/set-settings', {
+          container: container,
+          settings: {
+            __dynamic__: container.dynamic.toJSON()
+          }
+        });
+      });
+    }
+  }]);
+  return Enable;
+}(_disableEnable.default);
+
+exports.Enable = Enable;
+var _default = Enable;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/dynamic/commands/index.js":
+/*!******************************************************************!*\
+  !*** ../assets/dev/js/editor/document/dynamic/commands/index.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "Disable", ({
+  enumerable: true,
+  get: function get() {
+    return _disable.Disable;
+  }
+}));
+Object.defineProperty(exports, "Enable", ({
+  enumerable: true,
+  get: function get() {
+    return _enable.Enable;
+  }
+}));
+Object.defineProperty(exports, "Settings", ({
+  enumerable: true,
+  get: function get() {
+    return _settings.Settings;
+  }
+}));
+
+var _disable = __webpack_require__(/*! ./disable */ "../assets/dev/js/editor/document/dynamic/commands/disable.js");
+
+var _enable = __webpack_require__(/*! ./enable */ "../assets/dev/js/editor/document/dynamic/commands/enable.js");
+
+var _settings = __webpack_require__(/*! ./settings */ "../assets/dev/js/editor/document/dynamic/commands/settings.js");
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/dynamic/commands/settings.js":
+/*!*********************************************************************!*\
+  !*** ../assets/dev/js/editor/document/dynamic/commands/settings.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Settings = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _settings = _interopRequireDefault(__webpack_require__(/*! elementor-document/elements/commands/settings */ "../assets/dev/js/editor/document/elements/commands/settings.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+/**
+ * The difference between 'document/elements/settings` and `document/dynamic/settings` is:
+ * that `document/elements/settings` apply settings to `container.settings` and `document/dynamic/settings` affect
+ * `container.settings.__dynamic__`, also clearing the dynamic if `args.settings` is empty.
+ */
+var Settings = /*#__PURE__*/function (_$e$modules$editor$do) {
+  (0, _inherits2.default)(Settings, _$e$modules$editor$do);
+
+  var _super = _createSuper(Settings);
+
+  function Settings() {
+    (0, _classCallCheck2.default)(this, Settings);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Settings, [{
+    key: "validateArgs",
+    value: function validateArgs(args) {
+      this.requireContainer(args);
+      this.requireArgumentConstructor('settings', Object, args);
+    }
+  }, {
+    key: "getHistory",
+    value: function getHistory(args) {
+      var settings = args.settings,
+          _args$containers = args.containers,
+          containers = _args$containers === void 0 ? [args.container] : _args$containers,
+          changes = {};
+      containers.forEach(function (container) {
+        var id = container.id;
+
+        if (!changes[id]) {
+          changes[id] = {};
+        }
+
+        changes[id] = {
+          old: container.dynamic.toJSON(),
+          new: settings
+        };
+      });
+
+      var subTitle = _settings.default.getSubTitle(args);
+
+      return {
+        containers: containers,
+        subTitle: subTitle,
+        data: {
+          changes: changes
+        },
+        type: 'change',
+        restore: this.constructor.restore
+      };
+    }
+  }, {
+    key: "apply",
+    value: function apply(args) {
+      var settings = args.settings,
+          _args$containers2 = args.containers,
+          containers = _args$containers2 === void 0 ? [args.container] : _args$containers2;
+      containers.forEach(function (container) {
+        container = container.lookup();
+
+        if (!Object.keys(settings).length) {
+          container.dynamic.clear();
+        } else {
+          container.dynamic.set(settings);
+        }
+
+        $e.internal('document/elements/set-settings', {
+          container: container,
+          settings: {
+            __dynamic__: container.dynamic.toJSON()
+          }
+        });
+      });
+    }
+  }], [{
+    key: "restore",
+    value: function restore(historyItem, isRedo) {
+      var data = historyItem.get('data');
+      historyItem.get('containers').forEach(function (container) {
+        var changes = data.changes[container.id];
+        $e.run('document/dynamic/settings', {
+          container: container,
+          settings: isRedo ? changes.new : changes.old
+        });
+        container.panel.refresh();
+      });
+    }
+  }]);
+  return Settings;
+}($e.modules.editor.document.CommandHistoryDebounceBase);
+
+exports.Settings = Settings;
+var _default = Settings;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/dynamic/component.js":
+/*!*************************************************************!*\
+  !*** ../assets/dev/js/editor/document/dynamic/component.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/component-base */ "../modules/web-cli/assets/js/modules/component-base.js"));
+
+var commands = _interopRequireWildcard(__webpack_require__(/*! ./commands/ */ "../assets/dev/js/editor/document/dynamic/commands/index.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Component = /*#__PURE__*/function (_ComponentBase) {
+  (0, _inherits2.default)(Component, _ComponentBase);
+
+  var _super = _createSuper(Component);
+
+  function Component() {
+    (0, _classCallCheck2.default)(this, Component);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Component, [{
+    key: "getNamespace",
+    value: function getNamespace() {
+      return 'document/dynamic';
+    }
+  }, {
+    key: "defaultCommands",
+    value: function defaultCommands() {
+      return this.importCommands(commands);
+    }
+  }]);
+  return Component;
+}(_componentBase.default);
+
+exports["default"] = Component;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/elements/commands-internal/index.js":
+/*!****************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/elements/commands-internal/index.js ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "Populate", ({
+  enumerable: true,
+  get: function get() {
+    return _populate.Populate;
+  }
+}));
+Object.defineProperty(exports, "SetSettings", ({
+  enumerable: true,
+  get: function get() {
+    return _setSettings.SetSettings;
+  }
+}));
+
+var _populate = __webpack_require__(/*! ./populate */ "../assets/dev/js/editor/document/elements/commands-internal/populate.js");
+
+var _setSettings = __webpack_require__(/*! ./set-settings */ "../assets/dev/js/editor/document/elements/commands-internal/set-settings.js");
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/elements/commands-internal/populate.js":
+/*!*******************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/elements/commands-internal/populate.js ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Populate = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _utils = __webpack_require__(/*! elementor-document/elements/utils */ "../assets/dev/js/editor/document/elements/utils.js");
+
+var _document = _interopRequireDefault(__webpack_require__(/*! elementor-editor/components/documents/document */ "../assets/dev/js/editor/components/documents/document.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Populate = /*#__PURE__*/function (_$e$modules$editor$Co) {
+  (0, _inherits2.default)(Populate, _$e$modules$editor$Co);
+
+  var _super = _createSuper(Populate);
+
+  function Populate() {
+    (0, _classCallCheck2.default)(this, Populate);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Populate, [{
+    key: "validateArgs",
+    value: function validateArgs() {
+      this.requireArgumentInstance('document', _document.default);
+    }
+  }, {
+    key: "apply",
+    value: function apply(args) {
+      var document = args.document,
+          elements = args.elements;
+      $e.store.dispatch(this.component.store.actions.populate({
+        documentId: document.id,
+        elements: elements
+      })); // TODO: BC for initializing Marionette views.
+
+      elementor.initElements();
+    }
+  }], [{
+    key: "reducer",
+    value: function reducer(state, _ref) {
+      var payload = _ref.payload;
+      var documentId = payload.documentId,
+          elements = payload.elements;
+      state[documentId] = {
+        document: {
+          id: 'document',
+          elements: []
+        }
+      };
+      (0, _utils.addElementToDocumentState)(elements, state[documentId]);
+    }
+  }]);
+  return Populate;
+}($e.modules.editor.CommandContainerInternalBase);
+
+exports.Populate = Populate;
+var _default = Populate;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/elements/commands-internal/set-settings.js":
+/*!***********************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/elements/commands-internal/set-settings.js ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.SetSettings = void 0;
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var SetSettings = /*#__PURE__*/function (_$e$modules$editor$Co) {
+  (0, _inherits2.default)(SetSettings, _$e$modules$editor$Co);
+
+  var _super = _createSuper(SetSettings);
+
+  function SetSettings() {
+    (0, _classCallCheck2.default)(this, SetSettings);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(SetSettings, [{
+    key: "validateArgs",
+    value: function validateArgs() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      this.requireContainer(args);
+      this.requireArgumentType('settings', 'object', args);
+
+      if ('undefined' !== typeof args.render && 'undefined' !== typeof args.renderUI) {
+        throw new Error('Args: `render` and `renderUI` cannot be applied together.');
+      }
+    }
+  }, {
+    key: "apply",
+    value: function apply() {
+      var _this = this;
+
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var _args$containers = args.containers,
+          containers = _args$containers === void 0 ? [args.container] : _args$containers,
+          settings = args.settings,
+          _args$options = args.options,
+          options = _args$options === void 0 ? {} : _args$options,
+          external = options.external,
+          _options$render = options.render,
+          render = _options$render === void 0 ? true : _options$render,
+          _options$renderUI = options.renderUI,
+          renderUI = _options$renderUI === void 0 ? false : _options$renderUI;
+      containers.forEach(function (container) {
+        if (external) {
+          container.settings.setExternalChange(settings);
+        } else {
+          container.settings.set(settings);
+        }
+
+        if (renderUI) {
+          container.renderUI();
+        } else if (render) {
+          container.render();
+        }
+
+        $e.store.dispatch(_this.component.store.actions.settings({
+          documentId: elementor.documents.getCurrentId(),
+          elementId: container.id,
+          settings: settings
+        }));
+      });
+    }
+  }], [{
+    key: "reducer",
+    value: function reducer(state, _ref) {
+      var _state$documentId;
+
+      var payload = _ref.payload;
+      var documentId = payload.documentId,
+          elementId = payload.elementId,
+          settings = payload.settings;
+
+      if ((_state$documentId = state[documentId]) !== null && _state$documentId !== void 0 && _state$documentId[elementId]) {
+        state[documentId][elementId].settings = _objectSpread(_objectSpread({}, state[documentId][elementId].settings), settings);
+      }
+    }
+  }]);
+  return SetSettings;
+}($e.modules.editor.CommandContainerInternalBase);
+
+exports.SetSettings = SetSettings;
+var _default = SetSettings;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -16372,14 +18854,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var CopyAll = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(CopyAll, _CommandBase);
+var CopyAll = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(CopyAll, _$e$modules$CommandBa);
 
   var _super = _createSuper(CopyAll);
 
@@ -16399,7 +18879,7 @@ var CopyAll = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return CopyAll;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.CopyAll = CopyAll;
 var _default = CopyAll;
@@ -16434,14 +18914,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Copy = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Copy, _CommandBase);
+var Copy = /*#__PURE__*/function (_$e$modules$editor$Co) {
+  (0, _inherits2.default)(Copy, _$e$modules$editor$Co);
 
   var _super = _createSuper(Copy);
 
@@ -16485,7 +18963,7 @@ var Copy = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Copy;
-}(_commandBase.default);
+}($e.modules.editor.CommandContainerBase);
 
 exports.Copy = Copy;
 var _default = Copy;
@@ -16519,14 +18997,14 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandHistory = _interopRequireDefault(__webpack_require__(/*! elementor-document/commands/base/command-history */ "../assets/dev/js/editor/document/commands/base/command-history.js"));
+var _utils = __webpack_require__(/*! elementor-document/elements/utils */ "../assets/dev/js/editor/document/elements/utils.js");
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Create = /*#__PURE__*/function (_CommandHistory) {
-  (0, _inherits2.default)(Create, _CommandHistory);
+var Create = /*#__PURE__*/function (_$e$modules$editor$do) {
+  (0, _inherits2.default)(Create, _$e$modules$editor$do);
 
   var _super = _createSuper(Create);
 
@@ -16587,6 +19065,13 @@ var Create = /*#__PURE__*/function (_CommandHistory) {
             }
           });
         }
+
+        $e.store.dispatch(_this.component.store.actions.create({
+          documentId: elementor.documents.getCurrentId(),
+          parentId: container.id,
+          elements: [createdContainer.model.toJSON()],
+          index: options.at
+        }));
       });
 
       if (1 === result.length) {
@@ -16594,11 +19079,6 @@ var Create = /*#__PURE__*/function (_CommandHistory) {
       }
 
       return result;
-    }
-  }, {
-    key: "isDataChanged",
-    value: function isDataChanged() {
-      return true;
     }
   }], [{
     key: "restore",
@@ -16623,9 +19103,29 @@ var Create = /*#__PURE__*/function (_CommandHistory) {
         });
       }
     }
+  }, {
+    key: "reducer",
+    value: function reducer(state, _ref) {
+      var payload = _ref.payload;
+      var parentId = payload.parentId,
+          documentId = payload.documentId,
+          elements = payload.elements,
+          index = payload.index;
+
+      if (!state[documentId]) {
+        state[documentId] = {
+          document: {
+            id: 'document',
+            elements: []
+          }
+        };
+      }
+
+      (0, _utils.addElementToDocumentState)(elements, state[documentId], parentId, index);
+    }
   }]);
   return Create;
-}(_commandHistory.default);
+}($e.modules.editor.document.CommandHistoryBase);
 
 exports.Create = Create;
 var _default = Create;
@@ -16659,14 +19159,14 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandHistory = _interopRequireDefault(__webpack_require__(/*! elementor-document/commands/base/command-history */ "../assets/dev/js/editor/document/commands/base/command-history.js"));
+var _utils = __webpack_require__(/*! elementor-document/elements/utils */ "../assets/dev/js/editor/document/elements/utils.js");
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Delete = /*#__PURE__*/function (_CommandHistory) {
-  (0, _inherits2.default)(Delete, _CommandHistory);
+var Delete = /*#__PURE__*/function (_$e$modules$editor$do) {
+  (0, _inherits2.default)(Delete, _$e$modules$editor$do);
 
   var _super = _createSuper(Delete);
 
@@ -16699,6 +19199,11 @@ var Delete = /*#__PURE__*/function (_CommandHistory) {
           containers = _args$containers2 === void 0 ? [args.container] : _args$containers2;
       containers.forEach(function (container) {
         container = container.lookup();
+        $e.store.dispatch(_this.component.store.actions.delete({
+          documentId: elementor.documents.getCurrentId(),
+          elementId: container.id,
+          parentId: container.parent.id
+        }));
 
         if (_this.isHistoryActive()) {
           $e.internal('document/history/log-sub-item', {
@@ -16723,11 +19228,6 @@ var Delete = /*#__PURE__*/function (_CommandHistory) {
 
       return containers;
     }
-  }, {
-    key: "isDataChanged",
-    value: function isDataChanged() {
-      return true;
-    }
   }], [{
     key: "restore",
     value: function restore(historyItem, isRedo) {
@@ -16748,9 +19248,21 @@ var Delete = /*#__PURE__*/function (_CommandHistory) {
         });
       }
     }
+  }, {
+    key: "reducer",
+    value: function reducer(state, _ref) {
+      var payload = _ref.payload;
+      var elementId = payload.elementId,
+          parentId = payload.parentId,
+          documentId = payload.documentId;
+
+      if (state[documentId]) {
+        (0, _utils.removeElementFromDocumentState)(elementId, parentId, state[documentId]);
+      }
+    }
   }]);
   return Delete;
-}(_commandHistory.default);
+}($e.modules.editor.document.CommandHistoryBase);
 
 exports.Delete = Delete;
 var _default = Delete;
@@ -16784,14 +19296,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var DeselectAll = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(DeselectAll, _CommandBase);
+var DeselectAll = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(DeselectAll, _$e$modules$CommandBa);
 
   var _super = _createSuper(DeselectAll);
 
@@ -16807,7 +19317,7 @@ var DeselectAll = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return DeselectAll;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.DeselectAll = DeselectAll;
 var _default = DeselectAll;
@@ -16841,14 +19351,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Deselect = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Deselect, _CommandBase);
+var Deselect = /*#__PURE__*/function (_$e$modules$editor$Co) {
+  (0, _inherits2.default)(Deselect, _$e$modules$editor$Co);
 
   var _super = _createSuper(Deselect);
 
@@ -16877,7 +19385,7 @@ var Deselect = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Deselect;
-}(_commandBase.default);
+}($e.modules.editor.CommandContainerBase);
 
 exports.Deselect = Deselect;
 var _default = Deselect;
@@ -16912,14 +19420,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandHistory = _interopRequireDefault(__webpack_require__(/*! elementor-document/commands/base/command-history */ "../assets/dev/js/editor/document/commands/base/command-history.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Duplicate = /*#__PURE__*/function (_CommandHistory) {
-  (0, _inherits2.default)(Duplicate, _CommandHistory);
+var Duplicate = /*#__PURE__*/function (_$e$modules$editor$do) {
+  (0, _inherits2.default)(Duplicate, _$e$modules$editor$do);
 
   var _super = _createSuper(Duplicate);
 
@@ -16982,7 +19488,7 @@ var Duplicate = /*#__PURE__*/function (_CommandHistory) {
     }
   }]);
   return Duplicate;
-}(_commandHistory.default);
+}($e.modules.editor.document.CommandHistoryBase);
 
 exports.Duplicate = Duplicate;
 var _default = Duplicate;
@@ -17017,14 +19523,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandHistory = _interopRequireDefault(__webpack_require__(/*! elementor-document/commands/base/command-history */ "../assets/dev/js/editor/document/commands/base/command-history.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Empty = /*#__PURE__*/function (_CommandHistory) {
-  (0, _inherits2.default)(Empty, _CommandHistory);
+var Empty = /*#__PURE__*/function (_$e$modules$editor$do) {
+  (0, _inherits2.default)(Empty, _$e$modules$editor$do);
 
   var _super = _createSuper(Empty);
 
@@ -17053,6 +19557,9 @@ var Empty = /*#__PURE__*/function (_CommandHistory) {
       if (args.force && elementor.elements) {
         elementor.elements.reset();
         elementor.getPreviewContainer().panel.closeEditor();
+        $e.store.dispatch(this.component.store.actions.empty({
+          documentId: elementor.documents.getCurrentId()
+        }));
         return;
       }
 
@@ -17061,9 +19568,7 @@ var Empty = /*#__PURE__*/function (_CommandHistory) {
   }, {
     key: "isDataChanged",
     value: function isDataChanged() {
-      if (this.args.force) {
-        return true;
-      }
+      return this.args.force;
     }
   }], [{
     key: "restore",
@@ -17077,6 +19582,10 @@ var Empty = /*#__PURE__*/function (_CommandHistory) {
 
         if (data) {
           elementor.getPreviewView().addChildModel(data);
+          $e.store.dispatch($e.store.get('document/elements').actions.populate({
+            documentId: elementor.documents.getCurrentId(),
+            elements: structuredClone(data)
+          }));
         }
 
         $e.internal('document/save/set-is-modified', {
@@ -17084,9 +19593,24 @@ var Empty = /*#__PURE__*/function (_CommandHistory) {
         });
       }
     }
+  }, {
+    key: "reducer",
+    value: function reducer(state, _ref) {
+      var payload = _ref.payload;
+      var documentId = payload.documentId;
+
+      if (state[documentId]) {
+        state[documentId] = {
+          document: {
+            id: 'document',
+            elements: []
+          }
+        };
+      }
+    }
   }]);
   return Empty;
-}(_commandHistory.default);
+}($e.modules.editor.document.CommandHistoryBase);
 
 exports.Empty = Empty;
 var _default = Empty;
@@ -17121,14 +19645,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandHistory = _interopRequireDefault(__webpack_require__(/*! elementor-document/commands/base/command-history */ "../assets/dev/js/editor/document/commands/base/command-history.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Import = /*#__PURE__*/function (_CommandHistory) {
-  (0, _inherits2.default)(Import, _CommandHistory);
+var Import = /*#__PURE__*/function (_$e$modules$editor$do) {
+  (0, _inherits2.default)(Import, _$e$modules$editor$do);
 
   var _super = _createSuper(Import);
 
@@ -17142,6 +19664,14 @@ var Import = /*#__PURE__*/function (_CommandHistory) {
     value: function validateArgs(args) {
       this.requireArgumentInstance('model', Backbone.Model, args);
       this.requireArgumentConstructor('data', Object, args);
+
+      if (args.containers) {
+        throw new TypeError('Multi containers are not supported');
+      }
+
+      if (args.container) {
+        this.requireContainer();
+      }
     }
   }, {
     key: "getHistory",
@@ -17159,13 +19689,14 @@ var Import = /*#__PURE__*/function (_CommandHistory) {
       var data = args.data,
           _args$options = args.options,
           options = _args$options === void 0 ? args.options || {} : _args$options,
-          previewContainer = elementor.getPreviewContainer(),
+          _args$container = args.container,
+          container = _args$container === void 0 ? args.container || elementor.getPreviewContainer() : _args$container,
           result = [];
-      var at = isNaN(options.at) ? previewContainer.view.collection.length : options.at; // Each `data.content`.
+      var at = isNaN(options.at) ? container.view.collection.length : options.at; // Each `data.content`.
 
       Object.values(data.content).forEach(function (model) {
         result.push($e.run('document/elements/create', {
-          container: elementor.getPreviewContainer(),
+          container: container,
           model: model,
           options: Object.assign(options, {
             at: at
@@ -17188,7 +19719,7 @@ var Import = /*#__PURE__*/function (_CommandHistory) {
     }
   }]);
   return Import;
-}(_commandHistory.default);
+}($e.modules.editor.document.CommandHistoryBase);
 
 exports.Import = Import;
 var _default = Import;
@@ -17381,14 +19912,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandHistory = _interopRequireDefault(__webpack_require__(/*! elementor-document/commands/base/command-history */ "../assets/dev/js/editor/document/commands/base/command-history.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Move = /*#__PURE__*/function (_CommandHistory) {
-  (0, _inherits2.default)(Move, _CommandHistory);
+var Move = /*#__PURE__*/function (_$e$modules$editor$do) {
+  (0, _inherits2.default)(Move, _$e$modules$editor$do);
 
   var _super = _createSuper(Move);
 
@@ -17431,7 +19960,7 @@ var Move = /*#__PURE__*/function (_CommandHistory) {
       var count = 0;
       reCreate.forEach(function (model) {
         // If multiple fix position.
-        if (options.hasOwnProperty('at') && reCreate.length > 1) {
+        if (Object.prototype.hasOwnProperty.call(options, 'at') && reCreate.length > 1) {
           if (0 !== count) {
             options.at += count;
           }
@@ -17447,7 +19976,7 @@ var Move = /*#__PURE__*/function (_CommandHistory) {
     }
   }]);
   return Move;
-}(_commandHistory.default);
+}($e.modules.editor.document.CommandHistoryBase);
 
 exports.Move = Move;
 var _default = Move;
@@ -17485,8 +20014,6 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandHistory = _interopRequireDefault(__webpack_require__(/*! elementor-document/commands/base/command-history */ "../assets/dev/js/editor/document/commands/base/command-history.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
@@ -17494,8 +20021,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 /**
  * @typedef {import('../../../container/container')} Container
  */
-var PasteStyle = /*#__PURE__*/function (_CommandHistory) {
-  (0, _inherits2.default)(PasteStyle, _CommandHistory);
+var PasteStyle = /*#__PURE__*/function (_$e$modules$editor$do) {
+  (0, _inherits2.default)(PasteStyle, _$e$modules$editor$do);
 
   var _super = _createSuper(PasteStyle);
 
@@ -17657,7 +20184,7 @@ var PasteStyle = /*#__PURE__*/function (_CommandHistory) {
     }
   }]);
   return PasteStyle;
-}(_commandHistory.default);
+}($e.modules.editor.document.CommandHistoryBase);
 
 exports.PasteStyle = PasteStyle;
 var _default = PasteStyle;
@@ -17692,14 +20219,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandHistory = _interopRequireDefault(__webpack_require__(/*! elementor-document/commands/base/command-history */ "../assets/dev/js/editor/document/commands/base/command-history.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Paste = /*#__PURE__*/function (_CommandHistory) {
-  (0, _inherits2.default)(Paste, _CommandHistory);
+var Paste = /*#__PURE__*/function (_$e$modules$editor$do) {
+  (0, _inherits2.default)(Paste, _$e$modules$editor$do);
 
   var _super = _createSuper(Paste);
 
@@ -17771,6 +20296,12 @@ var Paste = /*#__PURE__*/function (_CommandHistory) {
         data.forEach(function (model) {
           switch (model.elType) {
             case 'container':
+              {
+                // Push the cloned container to the 'document'.
+                result.push(_this.pasteTo([targetContainer], [model]));
+              }
+              break;
+
             case 'section':
               {
                 // If is inner create section for `inner-section`.
@@ -17808,7 +20339,7 @@ var Paste = /*#__PURE__*/function (_CommandHistory) {
                     elType: 'section'
                   },
                   columns: 0,
-                  // section with no columns.
+                  // Section with no columns.
                   options: {
                     at: ++index,
                     edit: false
@@ -17820,29 +20351,43 @@ var Paste = /*#__PURE__*/function (_CommandHistory) {
               break;
 
             default:
-              // In case it widget:
-              var target; // If you trying to paste widget on section, then paste should be at the first column.
+              {
+                // The 'default' case is widget.
+                var target;
 
-              if ('section' === targetContainer.model.get('elType')) {
-                target = [targetContainer.view.children.findByIndex(0).getContainer()];
-              } else {
-                // Else, create section with one column for element.
-                var _section2 = $e.run('document/elements/create', {
-                  container: targetContainer,
-                  model: {
-                    elType: 'section'
-                  },
-                  columns: 1,
-                  options: {
-                    at: ++index
-                  }
-                }); // Create the element in the column that just was created.
+                if ('section' === targetContainer.model.get('elType')) {
+                  // On trying to paste widget on section, the paste should be at the first column.
+                  target = [targetContainer.view.children.findByIndex(0).getContainer()];
+                } else if ('container' === targetContainer.model.get('elType')) {
+                  target = [targetContainer];
+                } else if (elementorCommon.config.experimentalFeatures.container) {
+                  // If the container experiment is active, create a new wrapper container.
+                  target = $e.run('document/elements/create', {
+                    container: targetContainer,
+                    model: {
+                      elType: 'container'
+                    }
+                  });
+                  target = [target];
+                } else {
+                  // Else, create section with one column for the element.
+                  var _section2 = $e.run('document/elements/create', {
+                    container: targetContainer,
+                    model: {
+                      elType: 'section'
+                    },
+                    columns: 1,
+                    options: {
+                      at: ++index
+                    }
+                  }); // Create the element inside the column that just was created.
 
 
-                target = [_section2.view.children.first().getContainer()];
+                  target = [_section2.view.children.first().getContainer()];
+                }
+
+                result.push(_this.pasteTo(target, [model]));
               }
-
-              result.push(_this.pasteTo(target, [model]));
           }
         });
       });
@@ -17877,7 +20422,7 @@ var Paste = /*#__PURE__*/function (_CommandHistory) {
     }
   }]);
   return Paste;
-}(_commandHistory.default);
+}($e.modules.editor.document.CommandHistoryBase);
 
 exports.Paste = Paste;
 var _default = Paste;
@@ -17913,14 +20458,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandHistory = _interopRequireDefault(__webpack_require__(/*! ../../commands/base/command-history */ "../assets/dev/js/editor/document/commands/base/command-history.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var ResetSettings = /*#__PURE__*/function (_CommandHistory) {
-  (0, _inherits2.default)(ResetSettings, _CommandHistory);
+var ResetSettings = /*#__PURE__*/function (_$e$modules$editor$do) {
+  (0, _inherits2.default)(ResetSettings, _$e$modules$editor$do);
 
   var _super = _createSuper(ResetSettings);
 
@@ -17982,7 +20525,7 @@ var ResetSettings = /*#__PURE__*/function (_CommandHistory) {
     }
   }]);
   return ResetSettings;
-}(_commandHistory.default);
+}($e.modules.editor.document.CommandHistoryBase);
 
 exports.ResetSettings = ResetSettings;
 var _default = ResetSettings;
@@ -18018,14 +20561,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandHistory = _interopRequireDefault(__webpack_require__(/*! elementor-document/commands/base/command-history */ "../assets/dev/js/editor/document/commands/base/command-history.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var ResetStyle = /*#__PURE__*/function (_CommandHistory) {
-  (0, _inherits2.default)(ResetStyle, _CommandHistory);
+var ResetStyle = /*#__PURE__*/function (_$e$modules$editor$do) {
+  (0, _inherits2.default)(ResetStyle, _$e$modules$editor$do);
 
   var _super = _createSuper(ResetStyle);
 
@@ -18082,7 +20623,7 @@ var ResetStyle = /*#__PURE__*/function (_CommandHistory) {
     }
   }]);
   return ResetStyle;
-}(_commandHistory.default);
+}($e.modules.editor.document.CommandHistoryBase);
 
 exports.ResetStyle = ResetStyle;
 var _default = ResetStyle;
@@ -18116,8 +20657,6 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -18128,8 +20667,8 @@ function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflec
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var SelectAll = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(SelectAll, _CommandBase);
+var SelectAll = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(SelectAll, _$e$modules$CommandBa);
 
   var _super = _createSuper(SelectAll);
 
@@ -18182,7 +20721,7 @@ var SelectAll = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return SelectAll;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.SelectAll = SelectAll;
 var _default = SelectAll;
@@ -18216,14 +20755,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Select = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Select, _CommandBase);
+var Select = /*#__PURE__*/function (_$e$modules$editor$Co) {
+  (0, _inherits2.default)(Select, _$e$modules$editor$Co);
 
   var _super = _createSuper(Select);
 
@@ -18248,7 +20785,7 @@ var Select = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Select;
-}(_commandBase.default);
+}($e.modules.editor.CommandContainerBase);
 
 exports.Select = Select;
 var _default = Select;
@@ -18284,8 +20821,6 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandHistoryDebounce = _interopRequireDefault(__webpack_require__(/*! elementor-document/commands/base/command-history-debounce */ "../assets/dev/js/editor/document/commands/base/command-history-debounce.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
@@ -18293,8 +20828,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 /**
  * @typedef {import('../../../container/container')} Container
  */
-var Settings = /*#__PURE__*/function (_CommandHistoryDeboun) {
-  (0, _inherits2.default)(Settings, _CommandHistoryDeboun);
+var Settings = /*#__PURE__*/function (_$e$modules$editor$do) {
+  (0, _inherits2.default)(Settings, _$e$modules$editor$do);
 
   var _super = _createSuper(Settings);
 
@@ -18386,11 +20921,6 @@ var Settings = /*#__PURE__*/function (_CommandHistoryDeboun) {
         });
       });
     }
-  }, {
-    key: "isDataChanged",
-    value: function isDataChanged() {
-      return true;
-    }
   }], [{
     key: "getSubTitle",
     value:
@@ -18448,7 +20978,7 @@ var Settings = /*#__PURE__*/function (_CommandHistoryDeboun) {
     }
   }]);
   return Settings;
-}(_commandHistoryDebounce.default);
+}($e.modules.editor.document.CommandHistoryDebounceBase);
 
 exports.Settings = Settings;
 var _default = Settings;
@@ -18482,14 +21012,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var ToggleSelection = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(ToggleSelection, _CommandBase);
+var ToggleSelection = /*#__PURE__*/function (_$e$modules$editor$Co) {
+  (0, _inherits2.default)(ToggleSelection, _$e$modules$editor$Co);
 
   var _super = _createSuper(ToggleSelection);
 
@@ -18516,11 +21044,971 @@ var ToggleSelection = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return ToggleSelection;
-}(_commandBase.default);
+}($e.modules.editor.CommandContainerBase);
 
 exports.ToggleSelection = ToggleSelection;
 var _default = ToggleSelection;
 exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/elements/component.js":
+/*!**************************************************************!*\
+  !*** ../assets/dev/js/editor/document/elements/component.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/component-base */ "../modules/web-cli/assets/js/modules/component-base.js"));
+
+var commands = _interopRequireWildcard(__webpack_require__(/*! ./commands/ */ "../assets/dev/js/editor/document/elements/commands/index.js"));
+
+var commandsInternal = _interopRequireWildcard(__webpack_require__(/*! ./commands-internal/ */ "../assets/dev/js/editor/document/elements/commands-internal/index.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Component = /*#__PURE__*/function (_ComponentBase) {
+  (0, _inherits2.default)(Component, _ComponentBase);
+
+  var _super = _createSuper(Component);
+
+  function Component() {
+    (0, _classCallCheck2.default)(this, Component);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Component, [{
+    key: "getNamespace",
+    value: function getNamespace() {
+      return 'document/elements';
+    }
+  }, {
+    key: "defaultCommands",
+    value: function defaultCommands() {
+      return this.importCommands(commands);
+    }
+  }, {
+    key: "defaultCommandsInternal",
+    value: function defaultCommandsInternal() {
+      return this.importCommands(commandsInternal);
+    }
+  }, {
+    key: "defaultStates",
+    value: function defaultStates() {
+      return {
+        '': {
+          initialState: {},
+          reducers: {
+            create: this.commands.create.reducer,
+            delete: this.commands.delete.reducer,
+            empty: this.commands.empty.reducer,
+            populate: this.commandsInternal.populate.reducer,
+            settings: this.commandsInternal['set-settings'].reducer
+          }
+        }
+      };
+    }
+  }, {
+    key: "defaultUtils",
+    value: function defaultUtils() {
+      var _this = this;
+
+      return {
+        isValidChild: function isValidChild(childModel, parentModel) {
+          return parentModel.isValidChild(childModel);
+        },
+        isValidGrandChild: function isValidGrandChild(childModel, targetContainer) {
+          var result;
+          var childElType = childModel.get('elType');
+
+          switch (targetContainer.model.get('elType')) {
+            case 'document':
+              result = true;
+              break;
+
+            case 'section':
+              result = 'widget' === childElType;
+              break;
+
+            default:
+              result = false;
+          }
+
+          return result;
+        },
+        isSameElement: function isSameElement(sourceModel, targetContainer) {
+          var targetElType = targetContainer.model.get('elType'),
+              sourceElType = sourceModel.get('elType');
+
+          if (targetElType !== sourceElType) {
+            return false;
+          }
+
+          if ('column' === targetElType && 'column' === sourceElType) {
+            return true;
+          }
+
+          return targetContainer.model.get('isInner') === sourceModel.get('isInner');
+        },
+        getPasteOptions: function getPasteOptions(sourceModel, targetContainer) {
+          var result = {};
+          result.isValidChild = targetContainer.model.isValidChild(sourceModel);
+          result.isSameElement = _this.utils.isSameElement(sourceModel, targetContainer);
+          result.isValidGrandChild = _this.utils.isValidGrandChild(sourceModel, targetContainer);
+          return result;
+        },
+        isPasteEnabled: function isPasteEnabled(targetContainer) {
+          var storage = elementorCommon.storage.get('clipboard'); // No storage? no paste.
+
+          if (!storage || !storage[0]) {
+            return false;
+          }
+
+          if (!(storage[0] instanceof Backbone.Model)) {
+            storage[0] = new Backbone.Model(storage[0]);
+          }
+
+          var pasteOptions = _this.utils.getPasteOptions(storage[0], targetContainer);
+
+          return Object.values(pasteOptions).some(function (opt) {
+            return !!opt;
+          });
+        }
+      };
+    }
+  }]);
+  return Component;
+}(_componentBase.default);
+
+exports["default"] = Component;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/elements/utils.js":
+/*!**********************************************************!*\
+  !*** ../assets/dev/js/editor/document/elements/utils.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.addElementToDocumentState = addElementToDocumentState;
+exports.removeElementFromDocumentState = removeElementFromDocumentState;
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+/**
+ * Add element to Redux state BY REFERENCE using Immer.
+ *
+ * @param {Object} element       - Element model data as JSON.
+ * @param {Object} documentState - Document state from Redux reducer.
+ * @param {string} parentId      - Parent element ID.
+ * @param {number} index         - New index to insert at.
+ */
+function addElementToDocumentState(element, documentState) {
+  var parentId = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'document';
+  var index = arguments.length > 3 ? arguments[3] : undefined;
+  var parent = documentState[parentId];
+
+  if (!parent) {
+    return;
+  }
+
+  if (Array.isArray(element)) {
+    element.forEach(function (el) {
+      return addElementToDocumentState(el, documentState, parentId, index);
+    });
+    return;
+  }
+
+  documentState[element.id] = _objectSpread(_objectSpread({}, element), {}, {
+    elements: []
+  });
+  documentState[parentId].elements.splice(index !== null && index !== void 0 ? index : parent.elements.length, 0, element.id);
+
+  if (element.elements) {
+    element.elements.forEach(function (child) {
+      return addElementToDocumentState(child, documentState, element.id);
+    });
+  }
+}
+/**
+ * Remove element from Redux state BY REFERENCE using Immer.
+ *
+ * @param {Object} elementId     - Element ID to remove.
+ * @param {string} parentId      - Parent element ID.
+ * @param {Object} documentState - Document state from Redux reducer.
+ */
+
+
+function removeElementFromDocumentState(elementId, parentId, documentState) {
+  var element = documentState[elementId],
+      parent = documentState[parentId];
+
+  if (!element || !parent) {
+    return;
+  }
+
+  element.elements.forEach(function (childId) {
+    return removeElementFromDocumentState(childId, elementId, documentState);
+  });
+  delete documentState[elementId];
+  parent.elements = parent.elements.filter(function (childId) {
+    return childId !== elementId;
+  });
+}
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/globals/commands/base/disable-enable.js":
+/*!********************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/globals/commands/base/disable-enable.js ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _commandDisableEnable = _interopRequireDefault(__webpack_require__(/*! elementor-document/command-bases/command-disable-enable */ "../assets/dev/js/editor/document/command-bases/command-disable-enable.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var DisableEnable = /*#__PURE__*/function (_CommandDisableEnable) {
+  (0, _inherits2.default)(DisableEnable, _CommandDisableEnable);
+
+  var _super = _createSuper(DisableEnable);
+
+  function DisableEnable() {
+    (0, _classCallCheck2.default)(this, DisableEnable);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(DisableEnable, [{
+    key: "getTitle",
+    value: function getTitle() {
+      return __('Global');
+    }
+  }], [{
+    key: "getName",
+    value: function getName() {
+      return 'Global';
+    }
+  }, {
+    key: "getEnableCommand",
+    value: function getEnableCommand() {
+      return 'document/globals/enable';
+    }
+  }, {
+    key: "getDisableCommand",
+    value: function getDisableCommand() {
+      return 'document/globals/disable';
+    }
+  }]);
+  return DisableEnable;
+}(_commandDisableEnable.default);
+
+exports["default"] = DisableEnable;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/globals/commands/disable.js":
+/*!********************************************************************!*\
+  !*** ../assets/dev/js/editor/document/globals/commands/disable.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Disable = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "../node_modules/@babel/runtime/regenerator/index.js"));
+
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "../node_modules/@babel/runtime/helpers/asyncToGenerator.js"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _disableEnable = _interopRequireDefault(__webpack_require__(/*! ./base/disable-enable */ "../assets/dev/js/editor/document/globals/commands/base/disable-enable.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+// TODO: Disable is the only command that extends DisableEnable which is async.
+var Disable = /*#__PURE__*/function (_DisableEnable) {
+  (0, _inherits2.default)(Disable, _DisableEnable);
+
+  var _super = _createSuper(Disable);
+
+  function Disable() {
+    (0, _classCallCheck2.default)(this, Disable);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Disable, [{
+    key: "apply",
+    value: function () {
+      var _apply = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(args) {
+        var settings, _args$containers, containers, _args$options, options, all;
+
+        return _regenerator.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                settings = args.settings, _args$containers = args.containers, containers = _args$containers === void 0 ? [args.container] : _args$containers, _args$options = args.options, options = _args$options === void 0 ? {} : _args$options;
+                all = containers.map( /*#__PURE__*/function () {
+                  var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(
+                  /* Container */
+                  container) {
+                    var promises;
+                    return _regenerator.default.wrap(function _callee2$(_context2) {
+                      while (1) {
+                        switch (_context2.prev = _context2.next) {
+                          case 0:
+                            container = container.lookup();
+                            promises = []; // TODO rename `options.restore` => `options.unlink`.
+
+                            if (!options.restore) {
+                              _context2.next = 6;
+                              break;
+                            }
+
+                            promises = Object.entries(container.globals.attributes).map( /*#__PURE__*/function () {
+                              var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(_ref2) {
+                                var _ref4, globalKey, globalValue;
+
+                                return _regenerator.default.wrap(function _callee$(_context) {
+                                  while (1) {
+                                    switch (_context.prev = _context.next) {
+                                      case 0:
+                                        _ref4 = (0, _slicedToArray2.default)(_ref2, 2), globalKey = _ref4[0], globalValue = _ref4[1];
+
+                                        if (globalValue) {
+                                          _context.next = 3;
+                                          break;
+                                        }
+
+                                        return _context.abrupt("return");
+
+                                      case 3:
+                                        return _context.abrupt("return", $e.run('document/globals/unlink', {
+                                          container: container,
+                                          options: {
+                                            external: true
+                                          },
+                                          globalValue: globalValue,
+                                          setting: globalKey
+                                        }));
+
+                                      case 4:
+                                      case "end":
+                                        return _context.stop();
+                                    }
+                                  }
+                                }, _callee);
+                              }));
+
+                              return function (_x3) {
+                                return _ref3.apply(this, arguments);
+                              };
+                            }());
+                            _context2.next = 6;
+                            return Promise.all(promises);
+
+                          case 6:
+                            // Clear globals.
+                            Object.keys(settings).forEach(function (setting) {
+                              return container.globals.set(setting, '');
+                            });
+                            $e.internal('document/elements/set-settings', {
+                              container: container,
+                              settings: {
+                                __globals__: container.globals.toJSON()
+                              },
+                              options: {
+                                renderUI: true
+                              }
+                            });
+
+                          case 8:
+                          case "end":
+                            return _context2.stop();
+                        }
+                      }
+                    }, _callee2);
+                  }));
+
+                  return function (_x2) {
+                    return _ref.apply(this, arguments);
+                  };
+                }());
+                _context3.next = 4;
+                return Promise.all(all);
+
+              case 4:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }));
+
+      function apply(_x) {
+        return _apply.apply(this, arguments);
+      }
+
+      return apply;
+    }()
+  }]);
+  return Disable;
+}(_disableEnable.default);
+
+exports.Disable = Disable;
+var _default = Disable;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/globals/commands/enable.js":
+/*!*******************************************************************!*\
+  !*** ../assets/dev/js/editor/document/globals/commands/enable.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Enable = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _disableEnable = _interopRequireDefault(__webpack_require__(/*! ./base/disable-enable */ "../assets/dev/js/editor/document/globals/commands/base/disable-enable.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+// Run when a global control value is chosen while the active value is custom.
+var Enable = /*#__PURE__*/function (_DisableEnable) {
+  (0, _inherits2.default)(Enable, _DisableEnable);
+
+  var _super = _createSuper(Enable);
+
+  function Enable() {
+    (0, _classCallCheck2.default)(this, Enable);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Enable, [{
+    key: "apply",
+    value: function apply(args) {
+      var settings = args.settings,
+          _args$containers = args.containers,
+          containers = _args$containers === void 0 ? [args.container] : _args$containers;
+      containers.forEach(function (container) {
+        container = container.lookup();
+        container.globals.set(settings);
+        $e.internal('document/elements/set-settings', {
+          container: container,
+          settings: {
+            __globals__: container.globals.toJSON()
+          },
+          options: {
+            renderUI: true
+          }
+        }); // Clear custom local settings.
+
+        Object.values(container.getGroupRelatedControls(settings)).forEach(function (control) {
+          container.settings.set(control.name, control.default);
+        });
+      });
+    }
+  }]);
+  return Enable;
+}(_disableEnable.default);
+
+exports.Enable = Enable;
+var _default = Enable;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/globals/commands/index.js":
+/*!******************************************************************!*\
+  !*** ../assets/dev/js/editor/document/globals/commands/index.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "Disable", ({
+  enumerable: true,
+  get: function get() {
+    return _disable.Disable;
+  }
+}));
+Object.defineProperty(exports, "Enable", ({
+  enumerable: true,
+  get: function get() {
+    return _enable.Enable;
+  }
+}));
+Object.defineProperty(exports, "Settings", ({
+  enumerable: true,
+  get: function get() {
+    return _settings.Settings;
+  }
+}));
+Object.defineProperty(exports, "Unlink", ({
+  enumerable: true,
+  get: function get() {
+    return _unlink.Unlink;
+  }
+}));
+
+var _disable = __webpack_require__(/*! ./disable */ "../assets/dev/js/editor/document/globals/commands/disable.js");
+
+var _enable = __webpack_require__(/*! ./enable */ "../assets/dev/js/editor/document/globals/commands/enable.js");
+
+var _settings = __webpack_require__(/*! ./settings */ "../assets/dev/js/editor/document/globals/commands/settings.js");
+
+var _unlink = __webpack_require__(/*! ./unlink */ "../assets/dev/js/editor/document/globals/commands/unlink.js");
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/globals/commands/settings.js":
+/*!*********************************************************************!*\
+  !*** ../assets/dev/js/editor/document/globals/commands/settings.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Settings = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _settings = _interopRequireDefault(__webpack_require__(/*! elementor-document/elements/commands/settings */ "../assets/dev/js/editor/document/elements/commands/settings.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Settings = /*#__PURE__*/function (_$e$modules$editor$do) {
+  (0, _inherits2.default)(Settings, _$e$modules$editor$do);
+
+  var _super = _createSuper(Settings);
+
+  function Settings() {
+    (0, _classCallCheck2.default)(this, Settings);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Settings, [{
+    key: "validateArgs",
+    value: function validateArgs(args) {
+      this.requireContainer(args);
+      this.requireArgumentConstructor('settings', Object, args);
+    }
+  }, {
+    key: "getHistory",
+    value: function getHistory(args) {
+      var settings = args.settings,
+          _args$containers = args.containers,
+          containers = _args$containers === void 0 ? [args.container] : _args$containers,
+          changes = {};
+      containers.forEach(function (container) {
+        var id = container.id;
+
+        if (!changes[id]) {
+          changes[id] = {};
+        }
+
+        changes[id] = {
+          old: container.globals.toJSON(),
+          new: settings
+        };
+      });
+
+      var subTitle = _settings.default.getSubTitle(args);
+
+      return {
+        containers: containers,
+        subTitle: subTitle,
+        data: {
+          changes: changes
+        },
+        type: 'change',
+        restore: this.constructor.restore
+      };
+    }
+  }, {
+    key: "apply",
+    value: function apply(args) {
+      var settings = args.settings,
+          _args$containers2 = args.containers,
+          containers = _args$containers2 === void 0 ? [args.container] : _args$containers2,
+          _args$options = args.options,
+          options = _args$options === void 0 ? {} : _args$options;
+      containers.forEach(function (container) {
+        container = container.lookup();
+
+        if (!Object.keys(settings).length) {
+          container.globals.clear();
+        } else {
+          container.globals.set(settings);
+        }
+
+        $e.internal('document/elements/set-settings', {
+          container: container,
+          options: options,
+          settings: {
+            __globals__: container.globals.toJSON()
+          }
+        });
+      });
+    }
+  }], [{
+    key: "restore",
+    value: function restore(historyItem, isRedo) {
+      var data = historyItem.get('data');
+      historyItem.get('containers').forEach(function (container) {
+        var changes = data.changes[container.id];
+        $e.run('document/globals/settings', {
+          container: container,
+          settings: isRedo ? changes.new : changes.old
+        });
+        container.panel.refresh();
+      });
+    }
+  }]);
+  return Settings;
+}($e.modules.editor.document.CommandHistoryDebounceBase);
+
+exports.Settings = Settings;
+var _default = Settings;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/globals/commands/unlink.js":
+/*!*******************************************************************!*\
+  !*** ../assets/dev/js/editor/document/globals/commands/unlink.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Unlink = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "../node_modules/@babel/runtime/regenerator/index.js"));
+
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "../node_modules/@babel/runtime/helpers/asyncToGenerator.js"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+// TODO: Add dev-tools CSS to see if widget have globals.
+var Unlink = /*#__PURE__*/function (_$e$modules$editor$Co) {
+  (0, _inherits2.default)(Unlink, _$e$modules$editor$Co);
+
+  var _super = _createSuper(Unlink);
+
+  function Unlink() {
+    (0, _classCallCheck2.default)(this, Unlink);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Unlink, [{
+    key: "validateArgs",
+    value: function validateArgs() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      this.requireContainer(args);
+      this.requireArgumentType('setting', 'string', args);
+      this.requireArgumentType('globalValue', 'string', args); // TODO: validate global value is command format.
+    }
+  }, {
+    key: "apply",
+    value: function () {
+      var _apply = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(args) {
+        var _args$containers, containers, setting, globalValue, _args$options, options, localSettings;
+
+        return _regenerator.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _args$containers = args.containers, containers = _args$containers === void 0 ? [args.container] : _args$containers, setting = args.setting, globalValue = args.globalValue, _args$options = args.options, options = _args$options === void 0 ? {} : _args$options, localSettings = {};
+                _context2.next = 3;
+                return Promise.all(containers.map( /*#__PURE__*/function () {
+                  var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(
+                  /* Container */
+                  container) {
+                    var result, _container$controls$s, value, groupPrefix;
+
+                    return _regenerator.default.wrap(function _callee$(_context) {
+                      while (1) {
+                        switch (_context.prev = _context.next) {
+                          case 0:
+                            _context.next = 2;
+                            return $e.data.get(globalValue);
+
+                          case 2:
+                            result = _context.sent;
+
+                            if (result) {
+                              // Prepare global value to mapping.
+                              value = result.data.value, groupPrefix = (_container$controls$s = container.controls[setting]) === null || _container$controls$s === void 0 ? void 0 : _container$controls$s.groupPrefix;
+
+                              if (groupPrefix) {
+                                Object.entries(value).forEach(function (_ref2) {
+                                  var _ref3 = (0, _slicedToArray2.default)(_ref2, 2),
+                                      dataKey = _ref3[0],
+                                      dataValue = _ref3[1];
+
+                                  dataKey = dataKey.replace(elementor.config.kit_config.typography_prefix, groupPrefix);
+                                  localSettings[dataKey] = dataValue;
+                                });
+                              } else {
+                                localSettings[setting] = value;
+                              }
+                            }
+
+                            return _context.abrupt("return", Promise.resolve());
+
+                          case 5:
+                          case "end":
+                            return _context.stop();
+                        }
+                      }
+                    }, _callee);
+                  }));
+
+                  return function (_x2) {
+                    return _ref.apply(this, arguments);
+                  };
+                }()));
+
+              case 3:
+                // Restore globals settings as custom local settings.
+                if (Object.keys(localSettings).length) {
+                  $e.run('document/elements/settings', {
+                    containers: containers,
+                    options: options,
+                    settings: localSettings
+                  });
+                }
+
+              case 4:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }));
+
+      function apply(_x) {
+        return _apply.apply(this, arguments);
+      }
+
+      return apply;
+    }()
+  }]);
+  return Unlink;
+}($e.modules.editor.CommandContainerBase);
+
+exports.Unlink = Unlink;
+var _default = Unlink;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/globals/component.js":
+/*!*************************************************************!*\
+  !*** ../assets/dev/js/editor/document/globals/component.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/component-base */ "../modules/web-cli/assets/js/modules/component-base.js"));
+
+var commands = _interopRequireWildcard(__webpack_require__(/*! ./commands/ */ "../assets/dev/js/editor/document/globals/commands/index.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Component = /*#__PURE__*/function (_ComponentBase) {
+  (0, _inherits2.default)(Component, _ComponentBase);
+
+  var _super = _createSuper(Component);
+
+  function Component() {
+    (0, _classCallCheck2.default)(this, Component);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Component, [{
+    key: "getNamespace",
+    value: function getNamespace() {
+      return 'document/globals';
+    }
+  }, {
+    key: "defaultCommands",
+    value: function defaultCommands() {
+      return this.importCommands(commands);
+    }
+  }]);
+  return Component;
+}(_componentBase.default);
+
+exports["default"] = Component;
 
 /***/ }),
 
@@ -18553,49 +22041,49 @@ var BackwardsCompatibility = /*#__PURE__*/function () {
     key: "findViewRecursive",
     value: function findViewRecursive(parent, key, value) {
       var multiple = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
-      elementorCommon.helpers.softDeprecated('findViewRecursive', '2.9.0', "$e.components.get( 'document' ).utils.findViewRecursive( parent, key, value, multiple )");
+      elementorDevTools.deprecation.deprecated('findViewRecursive', '2.9.0', "$e.components.get( 'document' ).utils.findViewRecursive( parent, key, value, multiple )");
       return $e.components.get('document').utils.findViewRecursive(parent, key, value, multiple);
     }
   }, {
     key: "findViewById",
     value: function findViewById(id) {
-      elementorCommon.helpers.softDeprecated('findViewById', '2.9.0', "$e.components.get( 'document' ).utils.findViewById( id )");
+      elementorDevTools.deprecation.deprecated('findViewById', '2.9.0', "$e.components.get( 'document' ).utils.findViewById( id )");
       return $e.components.get('document').utils.findViewById(id);
     }
   }, {
     key: "findContainerById",
     value: function findContainerById(id) {
-      elementorCommon.helpers.softDeprecated('findContainerById', '2.9.0', "$e.components.get( 'document' ).utils.findContainerById( id )");
+      elementorDevTools.deprecation.deprecated('findContainerById', '2.9.0', "$e.components.get( 'document' ).utils.findContainerById( id )");
       return $e.components.get('document').utils.findContainerById(id);
     }
   }, {
     key: "isValidChild",
     value: function isValidChild(childModel, parentModel) {
-      elementorCommon.helpers.softDeprecated('isValidChild', '3.4.0', "$e.components.get( 'document/elements' ).utils.isValidChild( childModel, parentModel )");
-      return $e.components.get('document/elements').utils.isValidChild(childModel, parentModel);
+      elementorDevTools.deprecation.deprecated('isValidChild', '3.4.0', 'parentModel.isValidChild( childModel )');
+      return parentModel.isValidChild(childModel);
     }
   }, {
     key: "isValidGrandChild",
     value: function isValidGrandChild(childModel, targetContainer) {
-      elementorCommon.helpers.softDeprecated('isValidGrandChild', '3.4.0', "$e.components.get( 'document/elements' ).utils.isValidGrandChild( childModel, targetContainer )");
+      elementorDevTools.deprecation.deprecated('isValidGrandChild', '3.4.0', "$e.components.get( 'document/elements' ).utils.isValidGrandChild( childModel, targetContainer )");
       return $e.components.get('document/elements').utils.isValidGrandChild(childModel, targetContainer);
     }
   }, {
     key: "isSameElement",
     value: function isSameElement(sourceModel, targetContainer) {
-      elementorCommon.helpers.softDeprecated('isSameElement', '3.4.0', "$e.components.get( 'document/elements' ).utils.isSameElement( sourceModel, targetContainer )");
+      elementorDevTools.deprecation.deprecated('isSameElement', '3.4.0', "$e.components.get( 'document/elements' ).utils.isSameElement( sourceModel, targetContainer )");
       return $e.components.get('document/elements').utils.isSameElement(sourceModel, targetContainer);
     }
   }, {
     key: "getPasteOptions",
     value: function getPasteOptions(sourceModel, targetContainer) {
-      elementorCommon.helpers.softDeprecated('getPasteOptions', '3.4.0', "$e.components.get( 'document/elements' ).utils.getPasteOptions( sourceModel, targetContainer )");
+      elementorDevTools.deprecation.deprecated('getPasteOptions', '3.4.0', "$e.components.get( 'document/elements' ).utils.getPasteOptions( sourceModel, targetContainer )");
       return $e.components.get('document/elements').utils.getPasteOptions(sourceModel, targetContainer);
     }
   }, {
     key: "isPasteEnabled",
     value: function isPasteEnabled(targetContainer) {
-      elementorCommon.helpers.softDeprecated('isPasteEnabled', '3.4.0', "$e.components.get( 'document/elements' ).utils.isPasteEnabled( targetContainer )");
+      elementorDevTools.deprecation.deprecated('isPasteEnabled', '3.4.0', "$e.components.get( 'document/elements' ).utils.isPasteEnabled( targetContainer )");
       return $e.components.get('document/elements').utils.isPasteEnabled(targetContainer);
     }
   }]);
@@ -18603,6 +22091,69 @@ var BackwardsCompatibility = /*#__PURE__*/function () {
 }();
 
 exports["default"] = BackwardsCompatibility;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/history/commands/base/command-history-internal-base.js":
+/*!***********************************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/history/commands/base/command-history-internal-base.js ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/get */ "../node_modules/@babel/runtime/helpers/get.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+/**
+ * @typedef {import ('elementor/modules/history/assets/js/module')} HistoryManager
+ */
+var CommandHistoryInternalBase = /*#__PURE__*/function (_$e$modules$editor$Co) {
+  (0, _inherits2.default)(CommandHistoryInternalBase, _$e$modules$editor$Co);
+
+  var _super = _createSuper(CommandHistoryInternalBase);
+
+  function CommandHistoryInternalBase() {
+    (0, _classCallCheck2.default)(this, CommandHistoryInternalBase);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(CommandHistoryInternalBase, [{
+    key: "initialize",
+    value: function initialize(args) {
+      (0, _get2.default)((0, _getPrototypeOf2.default)(CommandHistoryInternalBase.prototype), "initialize", this).call(this, args);
+      /**
+       * @type {HistoryManager}
+       */
+
+      this.history = elementor.documents.getCurrent().history;
+    }
+  }]);
+  return CommandHistoryInternalBase;
+}($e.modules.editor.CommandContainerInternalBase);
+
+exports["default"] = CommandHistoryInternalBase;
 
 /***/ }),
 
@@ -18632,14 +22183,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Do = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Do, _CommandBase);
+var Do = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Do, _$e$modules$CommandBa);
 
   var _super = _createSuper(Do);
 
@@ -18656,7 +22205,7 @@ var Do = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Do;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Do = Do;
 var _default = Do;
@@ -18711,6 +22260,601 @@ var _undoAll = __webpack_require__(/*! ./undo-all */ "../assets/dev/js/editor/do
 
 /***/ }),
 
+/***/ "../assets/dev/js/editor/document/history/commands/internal/add-transaction.js":
+/*!*************************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/history/commands/internal/add-transaction.js ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.AddTransaction = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/get */ "../node_modules/@babel/runtime/helpers/get.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _commandHistoryInternalBase = _interopRequireDefault(__webpack_require__(/*! ../base/command-history-internal-base */ "../assets/dev/js/editor/document/history/commands/base/command-history-internal-base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var AddTransaction = /*#__PURE__*/function (_CommandHistoryIntern) {
+  (0, _inherits2.default)(AddTransaction, _CommandHistoryIntern);
+
+  var _super = _createSuper(AddTransaction);
+
+  function AddTransaction() {
+    (0, _classCallCheck2.default)(this, AddTransaction);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(AddTransaction, [{
+    key: "initialize",
+    value: function initialize(args) {
+      (0, _get2.default)((0, _getPrototypeOf2.default)(AddTransaction.prototype), "initialize", this).call(this, args);
+      /**
+       * Debounce always send 'add-transaction' with title & subTitle, when the transaction
+       * already started, there is no need to save those args they are useless.
+       */
+
+      if (this.component.isTransactionStarted()) {
+        delete args.title;
+        delete args.subTitle;
+      }
+    }
+  }, {
+    key: "validateArgs",
+    value: function validateArgs(args) {
+      this.requireContainer();
+      this.requireArgumentType('type', 'string', args);
+    }
+  }, {
+    key: "apply",
+    value: function apply(args) {
+      var currentId = this.history.getCurrentId();
+
+      if (currentId) {
+        // If log already started chain his historyId.
+        args.id = currentId;
+      }
+
+      args = this.component.normalizeLogTitle(args);
+      this.component.transactions.push(args);
+    }
+  }]);
+  return AddTransaction;
+}(_commandHistoryInternalBase.default);
+
+exports.AddTransaction = AddTransaction;
+var _default = AddTransaction;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/history/commands/internal/clear-transaction.js":
+/*!***************************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/history/commands/internal/clear-transaction.js ***!
+  \***************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.ClearTransaction = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var ClearTransaction = /*#__PURE__*/function (_$e$modules$CommandIn) {
+  (0, _inherits2.default)(ClearTransaction, _$e$modules$CommandIn);
+
+  var _super = _createSuper(ClearTransaction);
+
+  function ClearTransaction() {
+    (0, _classCallCheck2.default)(this, ClearTransaction);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(ClearTransaction, [{
+    key: "apply",
+    value: function apply() {
+      this.component.transactions = [];
+    }
+  }]);
+  return ClearTransaction;
+}($e.modules.CommandInternalBase);
+
+exports.ClearTransaction = ClearTransaction;
+var _default = ClearTransaction;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/history/commands/internal/delete-log.js":
+/*!********************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/history/commands/internal/delete-log.js ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.DeleteLog = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _commandHistoryInternalBase = _interopRequireDefault(__webpack_require__(/*! ../base/command-history-internal-base */ "../assets/dev/js/editor/document/history/commands/base/command-history-internal-base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var DeleteLog = /*#__PURE__*/function (_CommandHistoryIntern) {
+  (0, _inherits2.default)(DeleteLog, _CommandHistoryIntern);
+
+  var _super = _createSuper(DeleteLog);
+
+  function DeleteLog() {
+    (0, _classCallCheck2.default)(this, DeleteLog);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(DeleteLog, [{
+    key: "apply",
+    value: function apply(args) {
+      if (args.id) {
+        this.history.deleteItem(args.id);
+      }
+    }
+  }]);
+  return DeleteLog;
+}(_commandHistoryInternalBase.default);
+
+exports.DeleteLog = DeleteLog;
+var _default = DeleteLog;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/history/commands/internal/end-log.js":
+/*!*****************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/history/commands/internal/end-log.js ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.EndLog = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _commandHistoryInternalBase = _interopRequireDefault(__webpack_require__(/*! ../base/command-history-internal-base */ "../assets/dev/js/editor/document/history/commands/base/command-history-internal-base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var EndLog = /*#__PURE__*/function (_CommandHistoryIntern) {
+  (0, _inherits2.default)(EndLog, _CommandHistoryIntern);
+
+  var _super = _createSuper(EndLog);
+
+  function EndLog() {
+    (0, _classCallCheck2.default)(this, EndLog);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(EndLog, [{
+    key: "apply",
+    value: function apply(args) {
+      if (args.id) {
+        this.history.endItem(args.id);
+      }
+    }
+  }]);
+  return EndLog;
+}(_commandHistoryInternalBase.default);
+
+exports.EndLog = EndLog;
+var _default = EndLog;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/history/commands/internal/end-transaction.js":
+/*!*************************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/history/commands/internal/end-transaction.js ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.EndTransaction = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _commandHistoryInternalBase = _interopRequireDefault(__webpack_require__(/*! ../base/command-history-internal-base */ "../assets/dev/js/editor/document/history/commands/base/command-history-internal-base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var EndTransaction = /*#__PURE__*/function (_CommandInternalBase) {
+  (0, _inherits2.default)(EndTransaction, _CommandInternalBase);
+
+  var _super = _createSuper(EndTransaction);
+
+  function EndTransaction() {
+    (0, _classCallCheck2.default)(this, EndTransaction);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(EndTransaction, [{
+    key: "apply",
+    value: function apply() {
+      if (!this.component.isTransactionStarted()) {
+        return;
+      }
+
+      var firstItem = this.component.transactions[0],
+          type = firstItem.type,
+          transactions = this.component.mergeTransactions(this.component.transactions);
+      var _firstItem$title = firstItem.title,
+          title = _firstItem$title === void 0 ? '' : _firstItem$title,
+          _firstItem$subTitle = firstItem.subTitle,
+          subTitle = _firstItem$subTitle === void 0 ? '' : _firstItem$subTitle; // 'elements' title for multiple containers.
+
+      if (transactions.length > 1) {
+        title = __('Elements', 'elementor');
+        subTitle = '';
+      }
+
+      var history = {
+        title: title,
+        subTitle: subTitle,
+        type: type
+      }; // If firstItem have id already it means that log already started for that transaction.
+
+      if (firstItem.id) {
+        history.id = firstItem.id;
+      }
+
+      var historyId = $e.internal('document/history/start-log', history);
+      Object.values(transactions).forEach(function (item) {
+        var itemArgs = item; // If log already started chain his historyId.
+
+        if (firstItem.id) {
+          itemArgs.id = firstItem.id;
+        }
+
+        $e.internal('document/history/log-sub-item', itemArgs);
+      });
+      $e.internal('document/history/end-log', {
+        id: historyId
+      }); // Clear transactions before leave.
+
+      $e.internal('document/history/clear-transaction');
+    }
+  }]);
+  return EndTransaction;
+}(_commandHistoryInternalBase.default);
+
+exports.EndTransaction = EndTransaction;
+var _default = EndTransaction;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/history/commands/internal/index.js":
+/*!***************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/history/commands/internal/index.js ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "AddTransaction", ({
+  enumerable: true,
+  get: function get() {
+    return _addTransaction.AddTransaction;
+  }
+}));
+Object.defineProperty(exports, "ClearTransaction", ({
+  enumerable: true,
+  get: function get() {
+    return _clearTransaction.ClearTransaction;
+  }
+}));
+Object.defineProperty(exports, "DeleteLog", ({
+  enumerable: true,
+  get: function get() {
+    return _deleteLog.DeleteLog;
+  }
+}));
+Object.defineProperty(exports, "EndLog", ({
+  enumerable: true,
+  get: function get() {
+    return _endLog.EndLog;
+  }
+}));
+Object.defineProperty(exports, "EndTransaction", ({
+  enumerable: true,
+  get: function get() {
+    return _endTransaction.EndTransaction;
+  }
+}));
+Object.defineProperty(exports, "LogSubItem", ({
+  enumerable: true,
+  get: function get() {
+    return _logSubItem.LogSubItem;
+  }
+}));
+Object.defineProperty(exports, "StartLog", ({
+  enumerable: true,
+  get: function get() {
+    return _startLog.StartLog;
+  }
+}));
+
+var _addTransaction = __webpack_require__(/*! ./add-transaction */ "../assets/dev/js/editor/document/history/commands/internal/add-transaction.js");
+
+var _clearTransaction = __webpack_require__(/*! ./clear-transaction */ "../assets/dev/js/editor/document/history/commands/internal/clear-transaction.js");
+
+var _deleteLog = __webpack_require__(/*! ./delete-log */ "../assets/dev/js/editor/document/history/commands/internal/delete-log.js");
+
+var _endLog = __webpack_require__(/*! ./end-log */ "../assets/dev/js/editor/document/history/commands/internal/end-log.js");
+
+var _endTransaction = __webpack_require__(/*! ./end-transaction */ "../assets/dev/js/editor/document/history/commands/internal/end-transaction.js");
+
+var _logSubItem = __webpack_require__(/*! ./log-sub-item */ "../assets/dev/js/editor/document/history/commands/internal/log-sub-item.js");
+
+var _startLog = __webpack_require__(/*! ./start-log */ "../assets/dev/js/editor/document/history/commands/internal/start-log.js");
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/history/commands/internal/log-sub-item.js":
+/*!**********************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/history/commands/internal/log-sub-item.js ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.LogSubItem = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _commandHistoryInternalBase = _interopRequireDefault(__webpack_require__(/*! ../base/command-history-internal-base */ "../assets/dev/js/editor/document/history/commands/base/command-history-internal-base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var LogSubItem = /*#__PURE__*/function (_CommandHistoryIntern) {
+  (0, _inherits2.default)(LogSubItem, _CommandHistoryIntern);
+
+  var _super = _createSuper(LogSubItem);
+
+  function LogSubItem() {
+    (0, _classCallCheck2.default)(this, LogSubItem);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(LogSubItem, [{
+    key: "apply",
+    value: function apply(args) {
+      if (!this.history.getActive()) {
+        return;
+      }
+
+      var id = args.id || this.history.getCurrentId();
+      args = this.component.normalizeLogTitle(args);
+      var items = this.history.getItems(),
+          item = items.findWhere({
+        id: id
+      });
+
+      if (!item) {
+        throw new Error('History item not found.');
+      }
+      /**
+       * Sometimes `args.id` passed to `LogSubItem`, to add sub item for specific id.
+       * this `id` should not be passed as sub-item.
+       */
+
+
+      if (args.id) {
+        delete args.id;
+      }
+
+      item.get('items').unshift(args);
+    }
+  }]);
+  return LogSubItem;
+}(_commandHistoryInternalBase.default);
+
+exports.LogSubItem = LogSubItem;
+var _default = LogSubItem;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/history/commands/internal/start-log.js":
+/*!*******************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/history/commands/internal/start-log.js ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.StartLog = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/get */ "../node_modules/@babel/runtime/helpers/get.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _commandHistoryInternalBase = _interopRequireDefault(__webpack_require__(/*! ../base/command-history-internal-base */ "../assets/dev/js/editor/document/history/commands/base/command-history-internal-base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var StartLog = /*#__PURE__*/function (_CommandHistoryIntern) {
+  (0, _inherits2.default)(StartLog, _CommandHistoryIntern);
+
+  var _super = _createSuper(StartLog);
+
+  function StartLog() {
+    (0, _classCallCheck2.default)(this, StartLog);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(StartLog, [{
+    key: "initialize",
+    value: function initialize(args) {
+      (0, _get2.default)((0, _getPrototypeOf2.default)(StartLog.prototype), "initialize", this).call(this, args);
+
+      if (this.history.isItemStarted() || args.id) {
+        this.isSubItem = true;
+        return;
+      }
+
+      this.args = this.component.normalizeLogTitle(args);
+    }
+  }, {
+    key: "validateArgs",
+    value: function validateArgs(args) {
+      if (!this.isSubItem) {
+        this.requireArgumentType('type', 'string', args);
+        this.requireArgumentType('title', 'string', args);
+      }
+    }
+  }, {
+    key: "apply",
+    value: function apply(args) {
+      if (this.isSubItem) {
+        $e.internal('document/history/log-sub-item', args);
+        return null;
+      }
+
+      return this.history.startItem(args);
+    }
+  }]);
+  return StartLog;
+}(_commandHistoryInternalBase.default);
+
+exports.StartLog = StartLog;
+var _default = StartLog;
+exports["default"] = _default;
+
+/***/ }),
+
 /***/ "../assets/dev/js/editor/document/history/commands/redo.js":
 /*!*****************************************************************!*\
   !*** ../assets/dev/js/editor/document/history/commands/redo.js ***!
@@ -18737,14 +22881,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Redo = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Redo, _CommandBase);
+var Redo = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Redo, _$e$modules$CommandBa);
 
   var _super = _createSuper(Redo);
 
@@ -18760,7 +22902,7 @@ var Redo = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Redo;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Redo = Redo;
 var _default = Redo;
@@ -18794,14 +22936,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var UndoAll = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(UndoAll, _CommandBase);
+var UndoAll = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(UndoAll, _$e$modules$CommandBa);
 
   var _super = _createSuper(UndoAll);
 
@@ -18818,7 +22958,7 @@ var UndoAll = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return UndoAll;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.UndoAll = UndoAll;
 var _default = UndoAll;
@@ -18852,14 +22992,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Undo = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Undo, _CommandBase);
+var Undo = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Undo, _$e$modules$CommandBa);
 
   var _super = _createSuper(Undo);
 
@@ -18875,11 +23013,153 @@ var Undo = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Undo;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Undo = Undo;
 var _default = Undo;
 exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/history/component.js":
+/*!*************************************************************!*\
+  !*** ../assets/dev/js/editor/document/history/component.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/get */ "../node_modules/@babel/runtime/helpers/get.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/component-base */ "../modules/web-cli/assets/js/modules/component-base.js"));
+
+var commands = _interopRequireWildcard(__webpack_require__(/*! ./commands/ */ "../assets/dev/js/editor/document/history/commands/index.js"));
+
+var commandsInternal = _interopRequireWildcard(__webpack_require__(/*! ./commands/internal/ */ "../assets/dev/js/editor/document/history/commands/internal/index.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Component = /*#__PURE__*/function (_ComponentBase) {
+  (0, _inherits2.default)(Component, _ComponentBase);
+
+  var _super = _createSuper(Component);
+
+  function Component() {
+    (0, _classCallCheck2.default)(this, Component);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Component, [{
+    key: "__construct",
+    value: function __construct(args) {
+      (0, _get2.default)((0, _getPrototypeOf2.default)(Component.prototype), "__construct", this).call(this, args);
+      /**
+       * Transactions holder.
+       *
+       * @type {Array}
+       */
+
+      this.transactions = [];
+    }
+  }, {
+    key: "getNamespace",
+    value: function getNamespace() {
+      return 'document/history';
+    }
+  }, {
+    key: "defaultCommands",
+    value: function defaultCommands() {
+      return this.importCommands(commands);
+    }
+  }, {
+    key: "defaultCommandsInternal",
+    value: function defaultCommandsInternal() {
+      return this.importCommands(commandsInternal);
+    }
+  }, {
+    key: "normalizeLogTitle",
+    value: function normalizeLogTitle(args) {
+      var _args$containers = args.containers,
+          containers = _args$containers === void 0 ? [args.container] : _args$containers;
+
+      if (!args.title && containers[0]) {
+        if (1 === containers.length) {
+          args.title = containers[0].label;
+        } else {
+          args.title = __('Elements', 'elementor');
+        }
+      }
+
+      return args;
+    }
+  }, {
+    key: "mergeTransactions",
+    value: function mergeTransactions(transactions) {
+      var result = {};
+      transactions.forEach(function (itemArgs) {
+        // If no containers at the current transaction.
+        if (!itemArgs.container && !itemArgs.containers) {
+          return;
+        }
+
+        var _itemArgs$containers = itemArgs.containers,
+            containers = _itemArgs$containers === void 0 ? [itemArgs.container] : _itemArgs$containers;
+
+        if (containers) {
+          containers.forEach(function (container) {
+            if (!itemArgs.data) {
+              return;
+            } // Replace new changes by current itemArgs.
+
+
+            if (result[container.id]) {
+              result[container.id].data.changes[container.id].new = itemArgs.data.changes[container.id].new;
+              return;
+            }
+
+            result[container.id] = itemArgs;
+          });
+        }
+      });
+      return result;
+    }
+  }, {
+    key: "isTransactionStarted",
+    value: function isTransactionStarted() {
+      return Boolean(this.transactions.length);
+    }
+  }]);
+  return Component;
+}(_componentBase.default);
+
+exports["default"] = Component;
 
 /***/ }),
 
@@ -18949,7 +23229,7 @@ var ResetLayoutBase = /*#__PURE__*/function (_After) {
       }
 
       containers.forEach(function (
-      /**Container*/
+      /** Container*/
       container) {
         return container.parent.view.resetLayout(false);
       });
@@ -19247,7 +23527,7 @@ var IsValidChild = /*#__PURE__*/function (_Dependency) {
       return containers.some(function (
       /* Container */
       container) {
-        return $e.components.get('document/elements').utils.isValidChild(modelToCreate, container.model);
+        return container.model.isValidChild(modelToCreate);
       });
     }
   }]);
@@ -19324,7 +23604,7 @@ var SectionColumnsLimit = /*#__PURE__*/function (_Dependency) {
           containers = _args$containers === void 0 ? [args.container] : _args$containers; // If one of the targets have maximum columns reached break the command.
 
       return !containers.some(function (
-      /**Container*/
+      /** Container*/
       container) {
         return container.view.isCollectionFilled();
       });
@@ -19532,7 +23812,7 @@ var CreateColumnForEmptySection = /*#__PURE__*/function (_After) {
       }
 
       containers.forEach(function (
-      /**Container*/
+      /** Container*/
       container) {
         var parent = container.parent; // If deleted the last column, should recreate it.
 
@@ -19686,7 +23966,7 @@ var Helper = /*#__PURE__*/function () {
     value: function createSectionColumns(containers, columns, options) {
       var structure = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
       containers.forEach(function (
-      /**Container*/
+      /** Container*/
       container) {
         for (var loopIndex = 0; loopIndex < columns; loopIndex++) {
           var model = {
@@ -19699,7 +23979,15 @@ var Helper = /*#__PURE__*/function () {
            * TODO: Try improve performance of using 'document/elements/create` instead of manual create.
            */
 
-          container.view.addChildModel(model);
+          var createdContainer = container.view.addElement(model, {
+            edit: false
+          }).getContainer();
+          $e.store.dispatch($e.store.get('document/elements').actions.create({
+            documentId: elementor.documents.getCurrentId(),
+            parentId: container.id,
+            elements: [createdContainer.model.toJSON()],
+            index: options.at
+          }));
           /**
            * Manual history & not using of `$e.run('document/elements/create')`
            * For performance reasons.
@@ -20023,7 +24311,7 @@ var HandleDynamic = /*#__PURE__*/function (_After) {
       var _args$containers = args.containers,
           containers = _args$containers === void 0 ? [args.container] : _args$containers;
       return containers.some(function (
-      /**Container*/
+      /** Container*/
       container) {
         return 'dynamic' === container.type;
       });
@@ -20034,7 +24322,7 @@ var HandleDynamic = /*#__PURE__*/function (_After) {
       var _args$containers2 = args.containers,
           containers = _args$containers2 === void 0 ? [args.container] : _args$containers2;
       containers.forEach(function (
-      /**Container*/
+      /** Container*/
       container) {
         if ('dynamic' === container.type) {
           var tagText = elementor.dynamicTags.tagContainerToTagText(container),
@@ -20174,7 +24462,7 @@ var ResizeColumnLimit = /*#__PURE__*/function (_Dependency) {
       var _args$containers = args.containers,
           containers = _args$containers === void 0 ? [args.container] : _args$containers;
       return containers.some(function (
-      /**Container*/
+      /** Container*/
       container) {
         var parentView = container.parent.view,
             columnView = container.view,
@@ -20293,7 +24581,7 @@ var ResizeColumn = /*#__PURE__*/function (_After) {
       var _args$containers = args.containers,
           containers = _args$containers === void 0 ? [args.container] : _args$containers;
       containers.forEach(function (
-      /**Container*/
+      /** Container*/
       container) {
         _this.resizeColumn(container, args.settings._inline_size);
       });
@@ -20425,7 +24713,7 @@ var SetStructure = /*#__PURE__*/function (_After) {
       var _args$containers = args.containers,
           containers = _args$containers === void 0 ? [args.container] : _args$containers;
       containers.forEach(function (
-      /**Container*/
+      /** Container*/
       container) {
         container.view.adjustColumns();
       });
@@ -20621,7 +24909,7 @@ var ColumnIsPopulated = /*#__PURE__*/function (_After) {
           containers = _args$containers === void 0 ? [args.container] : _args$containers; // If the created element, was created at column.
 
       return containers.some(function (
-      /**Container*/
+      /** Container*/
       container) {
         return 'column' === container.model.get('elType');
       });
@@ -20825,7 +25113,7 @@ var ColumnIsEmpty = /*#__PURE__*/function (_After) {
           containers = _args$containers === void 0 ? [args.container] : _args$containers; // If the deleted element, was deleted from column.
 
       return containers.some(function (
-      /**Container*/
+      /** Container*/
       container) {
         return 'column' === container.parent.model.get('elType');
       });
@@ -21056,7 +25344,7 @@ var MoveResizeableHandle = /*#__PURE__*/function (_After) {
           containers = _args$containers === void 0 ? [args.container] : _args$containers; // If the element was created in a Container.
 
       return containers.some(function (
-      /**Container*/
+      /** Container*/
       container) {
         return 'container' === container.model.get('elType');
       });
@@ -21393,6 +25681,83 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "../assets/dev/js/editor/document/hooks/ui/settings/exit-to.js":
+/*!*********************************************************************!*\
+  !*** ../assets/dev/js/editor/document/hooks/ui/settings/exit-to.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.ExitTo = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _after = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/hooks/ui/after */ "../modules/web-cli/assets/js/modules/hooks/ui/after.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var ExitTo = /*#__PURE__*/function (_After) {
+  (0, _inherits2.default)(ExitTo, _After);
+
+  var _super = _createSuper(ExitTo);
+
+  function ExitTo() {
+    (0, _classCallCheck2.default)(this, ExitTo);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(ExitTo, [{
+    key: "getCommand",
+    value: function getCommand() {
+      return 'document/elements/settings';
+    }
+  }, {
+    key: "getId",
+    value: function getId() {
+      return 'exit-to';
+    }
+  }, {
+    key: "getContainerType",
+    value: function getContainerType() {
+      return 'editorPreferences_settings';
+    }
+  }, {
+    key: "getConditions",
+    value: function getConditions(args) {
+      return undefined !== args.settings.exit_to;
+    }
+  }, {
+    key: "apply",
+    value: function apply() {
+      elementor.getPanelView().getPages('menu').view.addExitItem();
+    }
+  }]);
+  return ExitTo;
+}(_after.default);
+
+exports.ExitTo = ExitTo;
+var _default = ExitTo;
+exports["default"] = _default;
+
+/***/ }),
+
 /***/ "../assets/dev/js/editor/document/hooks/ui/settings/index.js":
 /*!*******************************************************************!*\
   !*** ../assets/dev/js/editor/document/hooks/ui/settings/index.js ***!
@@ -21423,6 +25788,12 @@ Object.defineProperty(exports, "Draggable", ({
     return _draggable.Draggable;
   }
 }));
+Object.defineProperty(exports, "ExitTo", ({
+  enumerable: true,
+  get: function get() {
+    return _exitTo.ExitTo;
+  }
+}));
 Object.defineProperty(exports, "ReloadPreview", ({
   enumerable: true,
   get: function get() {
@@ -21447,6 +25818,8 @@ var _changePostTitle = __webpack_require__(/*! ./change-post-title */ "../assets
 var _columnChangeSize = __webpack_require__(/*! ./column-change-size */ "../assets/dev/js/editor/document/hooks/ui/settings/column-change-size.js");
 
 var _draggable = __webpack_require__(/*! ./draggable */ "../assets/dev/js/editor/document/hooks/ui/settings/draggable.js");
+
+var _exitTo = __webpack_require__(/*! ./exit-to */ "../assets/dev/js/editor/document/hooks/ui/settings/exit-to.js");
 
 var _resizeable = __webpack_require__(/*! ./resizeable */ "../assets/dev/js/editor/document/hooks/ui/settings/resizeable.js");
 
@@ -21683,17 +26056,26 @@ var SetDirectionMode = /*#__PURE__*/function (_After) {
       return 'set-direction-mode--document/elements/settings';
     }
   }, {
+    key: "hasUiStates",
+    value: function hasUiStates(container) {
+      var _container$renderer, _container$renderer$v;
+
+      return !!((_container$renderer = container.renderer) !== null && _container$renderer !== void 0 && (_container$renderer$v = _container$renderer.view) !== null && _container$renderer$v !== void 0 && _container$renderer$v.getCurrentUiStates);
+    }
+  }, {
     key: "getConditions",
     value: function getConditions() {
-      var _args$container$rende, _args$container$rende2;
-
       var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      return !!((_args$container$rende = args.container.renderer) !== null && _args$container$rende !== void 0 && (_args$container$rende2 = _args$container$rende.view) !== null && _args$container$rende2 !== void 0 && _args$container$rende2.getCurrentUiStates);
+      var containers = args.container ? [args.container] : args.containers;
+      return containers.some(this.hasUiStates);
     }
   }, {
     key: "apply",
     value: function apply(args) {
-      SetDirectionMode.set(args.container);
+      var containers = args.container ? [args.container] : args.containers;
+      containers.filter(this.hasUiStates).forEach(function (container) {
+        return SetDirectionMode.set(container);
+      });
     }
     /**
      * Get the direction mode from the Container's view & set the UI state accordingly.
@@ -21728,6 +26110,956 @@ var SetDirectionMode = /*#__PURE__*/function (_After) {
 exports.SetDirectionMode = SetDirectionMode;
 var _default = SetDirectionMode;
 exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/index.js":
+/*!*************************************************!*\
+  !*** ../assets/dev/js/editor/document/index.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "DynamicComponent", ({
+  enumerable: true,
+  get: function get() {
+    return _component.default;
+  }
+}));
+Object.defineProperty(exports, "ElementsComponent", ({
+  enumerable: true,
+  get: function get() {
+    return _component2.default;
+  }
+}));
+Object.defineProperty(exports, "GlobalsComponent", ({
+  enumerable: true,
+  get: function get() {
+    return _component3.default;
+  }
+}));
+Object.defineProperty(exports, "HistoryComponent", ({
+  enumerable: true,
+  get: function get() {
+    return _component4.default;
+  }
+}));
+Object.defineProperty(exports, "RepeaterComponent", ({
+  enumerable: true,
+  get: function get() {
+    return _component5.default;
+  }
+}));
+Object.defineProperty(exports, "SaveComponent", ({
+  enumerable: true,
+  get: function get() {
+    return _component6.default;
+  }
+}));
+Object.defineProperty(exports, "UIComponent", ({
+  enumerable: true,
+  get: function get() {
+    return _component7.default;
+  }
+}));
+
+var _component = _interopRequireDefault(__webpack_require__(/*! ../document/dynamic/component */ "../assets/dev/js/editor/document/dynamic/component.js"));
+
+var _component2 = _interopRequireDefault(__webpack_require__(/*! ../document/elements/component */ "../assets/dev/js/editor/document/elements/component.js"));
+
+var _component3 = _interopRequireDefault(__webpack_require__(/*! ../document/globals/component */ "../assets/dev/js/editor/document/globals/component.js"));
+
+var _component4 = _interopRequireDefault(__webpack_require__(/*! ../document/history/component */ "../assets/dev/js/editor/document/history/component.js"));
+
+var _component5 = _interopRequireDefault(__webpack_require__(/*! ../document/repeater/component */ "../assets/dev/js/editor/document/repeater/component.js"));
+
+var _component6 = _interopRequireDefault(__webpack_require__(/*! ../document/save/component */ "../assets/dev/js/editor/document/save/component.js"));
+
+var _component7 = _interopRequireDefault(__webpack_require__(/*! ../document/ui/component */ "../assets/dev/js/editor/document/ui/component.js"));
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/repeater/commands/duplicate.js":
+/*!***********************************************************************!*\
+  !*** ../assets/dev/js/editor/document/repeater/commands/duplicate.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Duplicate = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Duplicate = /*#__PURE__*/function (_$e$modules$editor$do) {
+  (0, _inherits2.default)(Duplicate, _$e$modules$editor$do);
+
+  var _super = _createSuper(Duplicate);
+
+  function Duplicate() {
+    (0, _classCallCheck2.default)(this, Duplicate);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Duplicate, [{
+    key: "validateArgs",
+    value: function validateArgs(args) {
+      this.requireContainer(args);
+      this.requireArgumentType('name', 'string', args);
+      this.requireArgumentType('index', 'number', args);
+    }
+  }, {
+    key: "getHistory",
+    value: function getHistory(args) {
+      var _args$containers = args.containers,
+          containers = _args$containers === void 0 ? [args.container] : _args$containers;
+      return {
+        containers: containers,
+        type: 'duplicate',
+        subTitle: __('Item', 'elementor')
+      };
+    }
+  }, {
+    key: "apply",
+    value: function apply(args) {
+      var index = args.index,
+          name = args.name,
+          _args$options = args.options,
+          options = _args$options === void 0 ? {} : _args$options,
+          _args$containers2 = args.containers,
+          containers = _args$containers2 === void 0 ? [args.container] : _args$containers2,
+          result = [];
+      containers.forEach(function (container) {
+        var settingsModel = container.settings,
+            collection = settingsModel.get(name),
+            model = collection.at(index).toJSON(); // Let the insert handle it, do not use the duplicated id.
+
+        if (model._id) {
+          delete model._id;
+        }
+
+        result.push($e.run('document/repeater/insert', {
+          container: container,
+          name: name,
+          model: model,
+          options: Object.assign({
+            at: index + 1
+          }, options)
+        }));
+      });
+
+      if (1 === result.length) {
+        return result[0];
+      }
+
+      return result;
+    }
+  }]);
+  return Duplicate;
+}($e.modules.editor.document.CommandHistoryBase);
+
+exports.Duplicate = Duplicate;
+var _default = Duplicate;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/repeater/commands/index.js":
+/*!*******************************************************************!*\
+  !*** ../assets/dev/js/editor/document/repeater/commands/index.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "Duplicate", ({
+  enumerable: true,
+  get: function get() {
+    return _duplicate.Duplicate;
+  }
+}));
+Object.defineProperty(exports, "Insert", ({
+  enumerable: true,
+  get: function get() {
+    return _insert.Insert;
+  }
+}));
+Object.defineProperty(exports, "Move", ({
+  enumerable: true,
+  get: function get() {
+    return _move.Move;
+  }
+}));
+Object.defineProperty(exports, "Remove", ({
+  enumerable: true,
+  get: function get() {
+    return _remove.Remove;
+  }
+}));
+Object.defineProperty(exports, "Select", ({
+  enumerable: true,
+  get: function get() {
+    return _select.Select;
+  }
+}));
+
+var _duplicate = __webpack_require__(/*! ./duplicate */ "../assets/dev/js/editor/document/repeater/commands/duplicate.js");
+
+var _insert = __webpack_require__(/*! ./insert */ "../assets/dev/js/editor/document/repeater/commands/insert.js");
+
+var _move = __webpack_require__(/*! ./move */ "../assets/dev/js/editor/document/repeater/commands/move.js");
+
+var _remove = __webpack_require__(/*! ./remove */ "../assets/dev/js/editor/document/repeater/commands/remove.js");
+
+var _select = __webpack_require__(/*! ./select */ "../assets/dev/js/editor/document/repeater/commands/select.js");
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/repeater/commands/insert.js":
+/*!********************************************************************!*\
+  !*** ../assets/dev/js/editor/document/repeater/commands/insert.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Insert = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/get */ "../node_modules/@babel/runtime/helpers/get.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Insert = /*#__PURE__*/function (_$e$modules$editor$do) {
+  (0, _inherits2.default)(Insert, _$e$modules$editor$do);
+
+  var _super = _createSuper(Insert);
+
+  function Insert() {
+    (0, _classCallCheck2.default)(this, Insert);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Insert, [{
+    key: "initialize",
+    value: function initialize(args) {
+      (0, _get2.default)((0, _getPrototypeOf2.default)(Insert.prototype), "initialize", this).call(this, args);
+
+      if (!args.model._id) {
+        args.model._id = elementorCommon.helpers.getUniqueId();
+      }
+    }
+  }, {
+    key: "validateArgs",
+    value: function validateArgs(args) {
+      this.requireContainer(args);
+      this.requireArgumentType('model', 'object', args);
+      this.requireArgumentConstructor('name', String, args);
+    }
+  }, {
+    key: "getHistory",
+    value: function getHistory(args) {
+      var model = args.model,
+          name = args.name,
+          _args$options = args.options,
+          options = _args$options === void 0 ? {
+        at: null
+      } : _args$options,
+          _args$containers = args.containers,
+          containers = _args$containers === void 0 ? [args.container] : _args$containers;
+      return {
+        containers: containers,
+        type: 'add',
+        subTitle: __('Item', 'elementor'),
+        data: {
+          model: model,
+          name: name,
+          index: options.at
+        },
+        restore: this.constructor.restore
+      };
+    }
+  }, {
+    key: "apply",
+    value: function apply(args) {
+      var model = args.model,
+          name = args.name,
+          _args$options2 = args.options,
+          options = _args$options2 === void 0 ? {
+        at: null
+      } : _args$options2,
+          _args$containers2 = args.containers,
+          containers = _args$containers2 === void 0 ? [args.container] : _args$containers2,
+          result = [];
+      containers.forEach(function (container) {
+        container = container.lookup();
+        var collection = container.settings.get(name);
+        options.at = null === options.at ? collection.length : options.at; // On `collection.push` the renderer needs a container, the container needs a settingsModel.
+
+        var rowSettingsModel = collection._prepareModel(model),
+            repeaterContainer = container.addRepeaterItem(name, rowSettingsModel, options.at);
+
+        result.push(collection.push(rowSettingsModel, options)); // Trigger render on widget but with the settings of the control.
+
+        repeaterContainer.render();
+      });
+
+      if (1 === result.length) {
+        return result[0];
+      }
+
+      return result;
+    }
+  }], [{
+    key: "restore",
+    value: function restore(historyItem, isRedo) {
+      var containers = historyItem.get('containers'),
+          data = historyItem.get('data');
+
+      if (isRedo) {
+        $e.run('document/repeater/insert', {
+          containers: containers,
+          model: data.model,
+          name: data.name,
+          options: {
+            at: data.index
+          }
+        });
+      } else {
+        $e.run('document/repeater/remove', {
+          containers: containers,
+          name: data.name,
+          index: data.index
+        });
+      }
+    }
+  }]);
+  return Insert;
+}($e.modules.editor.document.CommandHistoryBase);
+
+exports.Insert = Insert;
+var _default = Insert;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/repeater/commands/move.js":
+/*!******************************************************************!*\
+  !*** ../assets/dev/js/editor/document/repeater/commands/move.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Move = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Move = /*#__PURE__*/function (_$e$modules$editor$do) {
+  (0, _inherits2.default)(Move, _$e$modules$editor$do);
+
+  var _super = _createSuper(Move);
+
+  function Move() {
+    (0, _classCallCheck2.default)(this, Move);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Move, [{
+    key: "validateArgs",
+    value: function validateArgs(args) {
+      this.requireContainer(args);
+      this.requireArgumentType('name', 'string', args);
+      this.requireArgumentType('sourceIndex', 'number', args);
+      this.requireArgumentType('targetIndex', 'number', args);
+    }
+  }, {
+    key: "getHistory",
+    value: function getHistory(args) {
+      var _args$containers = args.containers,
+          containers = _args$containers === void 0 ? [args.container] : _args$containers;
+      return {
+        containers: containers,
+        type: 'move',
+        subTitle: __('Item', 'elementor')
+      };
+    }
+  }, {
+    key: "apply",
+    value: function apply(args) {
+      var sourceIndex = args.sourceIndex,
+          targetIndex = args.targetIndex,
+          name = args.name,
+          _args$containers2 = args.containers,
+          containers = _args$containers2 === void 0 ? [args.container] : _args$containers2,
+          result = [];
+      containers.forEach(function (container) {
+        var collection = container.settings.get(name),
+            model = elementorCommon.helpers.cloneObject(collection.at(sourceIndex));
+        $e.run('document/repeater/remove', {
+          container: container,
+          name: name,
+          index: sourceIndex
+        });
+        result.push($e.run('document/repeater/insert', {
+          container: container,
+          name: name,
+          model: model,
+          options: {
+            at: targetIndex
+          }
+        }));
+      });
+
+      if (1 === result.length) {
+        return result[0];
+      }
+
+      return result;
+    }
+  }]);
+  return Move;
+}($e.modules.editor.document.CommandHistoryBase);
+
+exports.Move = Move;
+var _default = Move;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/repeater/commands/remove.js":
+/*!********************************************************************!*\
+  !*** ../assets/dev/js/editor/document/repeater/commands/remove.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Remove = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Remove = /*#__PURE__*/function (_$e$modules$editor$do) {
+  (0, _inherits2.default)(Remove, _$e$modules$editor$do);
+
+  var _super = _createSuper(Remove);
+
+  function Remove() {
+    (0, _classCallCheck2.default)(this, Remove);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Remove, [{
+    key: "validateArgs",
+    value: function validateArgs(args) {
+      this.requireContainer(args);
+      this.requireArgumentType('name', 'string', args);
+      this.requireArgument('index', args); // Sometimes null.
+    }
+  }, {
+    key: "getHistory",
+    value: function getHistory(args) {
+      var _args$containers = args.containers,
+          containers = _args$containers === void 0 ? [args.container] : _args$containers;
+      return {
+        containers: containers,
+        type: 'remove',
+        subTitle: __('Item', 'elementor')
+      };
+    }
+  }, {
+    key: "apply",
+    value: function apply(args) {
+      var _this = this;
+
+      var name = args.name,
+          _args$containers2 = args.containers,
+          containers = _args$containers2 === void 0 ? [args.container] : _args$containers2,
+          index = null === args.index ? -1 : args.index,
+          result = [];
+      containers.forEach(function (container) {
+        container = container.lookup();
+        var collection = container.settings.get(name),
+            model = collection.at(index),
+            repeaterContainer = container.repeaters[name];
+
+        if (_this.isHistoryActive()) {
+          $e.internal('document/history/log-sub-item', {
+            container: container,
+            data: {
+              name: name,
+              model: model,
+              index: index
+            },
+            restore: _this.constructor.restore
+          });
+        } // Remove from container and add to result.
+
+
+        result.push(repeaterContainer.children.splice(index, 1));
+        collection.remove(model); // Trigger render on widget but with the settings of the control.
+
+        repeaterContainer.render();
+      });
+
+      if (1 === result.length) {
+        return result[0];
+      }
+
+      return result;
+    }
+  }], [{
+    key: "restore",
+    value: function restore(historyItem, isRedo) {
+      var data = historyItem.get('data'),
+          container = historyItem.get('container');
+
+      if (isRedo) {
+        $e.run('document/repeater/remove', {
+          container: container,
+          name: data.name,
+          index: data.index
+        });
+      } else {
+        $e.run('document/repeater/insert', {
+          container: container,
+          model: data.model,
+          name: data.name,
+          options: {
+            at: data.index
+          }
+        });
+      }
+    }
+  }]);
+  return Remove;
+}($e.modules.editor.document.CommandHistoryBase);
+
+exports.Remove = Remove;
+var _default = Remove;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/repeater/commands/select.js":
+/*!********************************************************************!*\
+  !*** ../assets/dev/js/editor/document/repeater/commands/select.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Select = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+/**
+ * @typedef {import('elementor/assets/dev/js/editor/container/container')} Container
+ */
+
+/**
+ * Command used to select current working repeater item.
+ */
+var Select = /*#__PURE__*/function (_$e$modules$editor$do) {
+  (0, _inherits2.default)(Select, _$e$modules$editor$do);
+
+  var _super = _createSuper(Select);
+
+  function Select() {
+    (0, _classCallCheck2.default)(this, Select);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Select, [{
+    key: "validateArgs",
+    value: function validateArgs(args) {
+      this.requireContainer(args);
+      this.requireArgumentType('index', 'number', args); // When there multiple containers, then its not supported.
+
+      if (args.containers) {
+        throw new Error('Multiple containers are not supported.');
+      }
+    }
+  }, {
+    key: "getHistory",
+    value: function getHistory(args) {
+      var container = args.container,
+          index = args.index,
+          editSettings = container.model.get('editSettings'),
+          current = editSettings.get('activeItemIndex') || 1; // If the index is the same, then don't save a history item.
+
+      if (current === index) {
+        return false;
+      }
+
+      return {
+        container: container,
+        type: 'selected',
+        // Translators: %s is the current item index.
+        subTitle: wp.i18n.sprintf(__('Item #%d', 'elementor'), index),
+        restore: this.constructor.restore,
+        data: {
+          current: index,
+          prev: current
+        }
+      };
+    }
+    /**
+     * @param {{}}        args
+     * @param {Container} args.container
+     * @param {number}    args.index
+     */
+
+  }, {
+    key: "apply",
+    value: function apply(_ref) {
+      var container = _ref.container,
+          index = _ref.index;
+      var editSettings = container.model.get('editSettings');
+      editSettings.set('activeItemIndex', index);
+    }
+  }], [{
+    key: "restore",
+    value: function restore(historyItem, isRedo) {
+      var container = historyItem.get('container'),
+          data = historyItem.get('data');
+      $e.run('document/repeater/select', {
+        container: container,
+        index: isRedo ? data.current : data.prev
+      });
+    }
+  }]);
+  return Select;
+}($e.modules.editor.document.CommandHistoryBase);
+
+exports.Select = Select;
+var _default = Select;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/repeater/component.js":
+/*!**************************************************************!*\
+  !*** ../assets/dev/js/editor/document/repeater/component.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/component-base */ "../modules/web-cli/assets/js/modules/component-base.js"));
+
+var commands = _interopRequireWildcard(__webpack_require__(/*! ./commands/ */ "../assets/dev/js/editor/document/repeater/commands/index.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Component = /*#__PURE__*/function (_ComponentBase) {
+  (0, _inherits2.default)(Component, _ComponentBase);
+
+  var _super = _createSuper(Component);
+
+  function Component() {
+    (0, _classCallCheck2.default)(this, Component);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Component, [{
+    key: "getNamespace",
+    value: function getNamespace() {
+      return 'document/repeater';
+    }
+  }, {
+    key: "defaultCommands",
+    value: function defaultCommands() {
+      return this.importCommands(commands);
+    }
+  }]);
+  return Component;
+}(_componentBase.default);
+
+exports["default"] = Component;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/backwards-compatibility.js":
+/*!************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/backwards-compatibility.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/get */ "../node_modules/@babel/runtime/helpers/get.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/component-base */ "../modules/web-cli/assets/js/modules/component-base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var BackwardsCompatibility = /*#__PURE__*/function (_ComponentBase) {
+  (0, _inherits2.default)(BackwardsCompatibility, _ComponentBase);
+
+  var _super = _createSuper(BackwardsCompatibility);
+
+  function BackwardsCompatibility() {
+    (0, _classCallCheck2.default)(this, BackwardsCompatibility);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(BackwardsCompatibility, [{
+    key: "__construct",
+    value: function __construct() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      (0, _get2.default)((0, _getPrototypeOf2.default)(BackwardsCompatibility.prototype), "__construct", this).call(this, args);
+      Object.defineProperty(this, 'autoSaveTimer', {
+        get: function get() {
+          elementorDevTools.deprecation.deprecated('elementor.saver.autoSaveTimer', '2.9.0', "$e.components.get( 'editor/documents' ).autoSaveTimers");
+          return $e.components.get('editor/documents').autoSaveTimers;
+        },
+        set: function set(value) {
+          elementorDevTools.deprecation.deprecated('elementor.saver.autoSaveTimer', '2.9.0', "$e.components.get( 'editor/documents' ).autoSaveTimers[ documentId ]");
+          var documentId = elementor.documents.getCurrent();
+          $e.components.get('editor/documents').autoSaveTimers[documentId] = value;
+        }
+      });
+      var onOrig = this.on;
+
+      this.on = function (eventName, callback, context) {
+        elementorDevTools.deprecation.deprecated('elementor.saver.on', '2.9.0', '$e.hooks');
+        onOrig(eventName, callback, context);
+      };
+
+      elementor.on('document:loaded', function () {
+        if (elementor.channels.editor._events && elementor.channels.editor._events.saved) {
+          elementorDevTools.deprecation.deprecated("elementor.channels.editor.on( 'saved', ... )", '2.9.0', '$e.hooks');
+        }
+      });
+    }
+  }, {
+    key: "defaultSave",
+    value: function defaultSave() {
+      elementorDevTools.deprecation.deprecated('defaultSave', '2.9.0', "$e.run( 'document/save/default' )");
+      return $e.run('document/save/default');
+    }
+  }, {
+    key: "discard",
+    value: function discard() {
+      elementorDevTools.deprecation.deprecated('discard', '2.9.0', "$e.run( 'document/save/discard' )");
+      return $e.run('document/save/discard');
+    }
+  }, {
+    key: "doAutoSave",
+    value: function doAutoSave() {
+      elementorDevTools.deprecation.deprecated('doAutoSave', '2.9.0', "$e.run( 'document/save/auto' )");
+      return $e.run('document/save/auto');
+    }
+  }, {
+    key: "publish",
+    value: function publish(options) {
+      elementorDevTools.deprecation.deprecated('publish', '2.9.0', "$e.run( 'document/save/publish' )");
+      return $e.run('document/save/auto', {
+        options: options
+      });
+    }
+  }, {
+    key: "saveAutoSave",
+    value: function saveAutoSave(options) {
+      elementorDevTools.deprecation.deprecated('saveAutoSave', '2.9.0', "$e.run( 'document/save/auto', { force: true } )");
+      options.force = true;
+      return $e.run('document/save/auto', options);
+    }
+  }, {
+    key: "saveDraft",
+    value: function saveDraft() {
+      elementorDevTools.deprecation.deprecated('saveDraft', '2.9.0', "$e.run( 'document/save/draft' )");
+      return $e.run('document/save/draft');
+    }
+  }, {
+    key: "savePending",
+    value: function savePending() {
+      elementorDevTools.deprecation.deprecated('savePending', '2.9.0', "$e.run( 'document/save/pending' )");
+      return $e.run('document/save/pending');
+    }
+  }, {
+    key: "update",
+    value: function update(options) {
+      elementorDevTools.deprecation.deprecated('update', '2.9.0', "$e.run( 'document/save/update' )");
+      return $e.run('document/save/update', options);
+    }
+  }, {
+    key: "startTimer",
+    value: function startTimer() {
+      elementorDevTools.deprecation.deprecated('startTimer', '2.9.0', "$e.components.get( 'document/save' ).startAutoSave");
+      throw Error('Deprecated');
+    }
+  }, {
+    key: "saveEditor",
+    value: function saveEditor(options) {
+      elementorDevTools.deprecation.deprecated('saveEditor', '2.9.0', "$e.internal( 'document/save/save' )");
+      $e.internal('document/save/save', options);
+    }
+  }, {
+    key: "setFlagEditorChange",
+    value: function setFlagEditorChange(status) {
+      elementorDevTools.deprecation.deprecated('setFlagEditorChange', '2.9.0', "$e.internal( 'document/save/set-is-modified' )");
+      $e.internal('document/save/set-is-modified', {
+        status: status
+      });
+    }
+  }]);
+  return BackwardsCompatibility;
+}(_componentBase.default);
+
+exports["default"] = BackwardsCompatibility;
 
 /***/ }),
 
@@ -21931,6 +27263,2366 @@ module.exports = /*#__PURE__*/function (_Marionette$Behavior) {
 
 /***/ }),
 
+/***/ "../assets/dev/js/editor/document/save/commands/auto.js":
+/*!**************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/commands/auto.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Auto = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _base = _interopRequireDefault(__webpack_require__(/*! ./base/base */ "../assets/dev/js/editor/document/save/commands/base/base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Auto = /*#__PURE__*/function (_Base) {
+  (0, _inherits2.default)(Auto, _Base);
+
+  var _super = _createSuper(Auto);
+
+  function Auto() {
+    (0, _classCallCheck2.default)(this, Auto);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Auto, [{
+    key: "apply",
+    value: function apply(args) {
+      var _args$force = args.force,
+          force = _args$force === void 0 ? false : _args$force,
+          _args$document = args.document,
+          document = _args$document === void 0 ? this.document : _args$document;
+
+      if (!force && !document.container.isEditable()) {
+        return jQuery.Deferred().reject('Document is not editable');
+      }
+
+      if (!document.editor.isChanged) {
+        return jQuery.Deferred().resolve('Document is not changed');
+      }
+
+      args.status = 'autosave';
+      args.document = document;
+      return $e.internal('document/save/save', args);
+    }
+  }]);
+  return Auto;
+}(_base.default);
+
+exports.Auto = Auto;
+var _default = Auto;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/commands/base/base.js":
+/*!*******************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/commands/base/base.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/get */ "../node_modules/@babel/runtime/helpers/get.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Base = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Base, _$e$modules$CommandBa);
+
+  var _super = _createSuper(Base);
+
+  function Base() {
+    (0, _classCallCheck2.default)(this, Base);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Base, [{
+    key: "initialize",
+    value: function initialize(args) {
+      (0, _get2.default)((0, _getPrototypeOf2.default)(Base.prototype), "initialize", this).call(this, args);
+      var _args$document = args.document,
+          document = _args$document === void 0 ? elementor.documents.getCurrent() : _args$document;
+      this.document = document;
+    }
+  }]);
+  return Base;
+}($e.modules.CommandBase);
+
+exports["default"] = Base;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/commands/default.js":
+/*!*****************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/commands/default.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Default = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _base = _interopRequireDefault(__webpack_require__(/*! ./base/base */ "../assets/dev/js/editor/document/save/commands/base/base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Default = /*#__PURE__*/function (_Base) {
+  (0, _inherits2.default)(Default, _Base);
+
+  var _super = _createSuper(Default);
+
+  function Default() {
+    (0, _classCallCheck2.default)(this, Default);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Default, [{
+    key: "apply",
+    value: function apply() {
+      var document = this.document,
+          postStatus = document.container.settings.get('post_status');
+      var deferred;
+
+      switch (postStatus) {
+        case 'publish':
+        case 'future':
+        case 'private':
+          deferred = $e.run('document/save/update', {
+            document: document
+          });
+          break;
+
+        case 'draft':
+          if (document.config.user.can_publish) {
+            deferred = $e.run('document/save/publish', {
+              document: document
+            });
+          } else {
+            deferred = $e.run('document/save/pending', {
+              document: document
+            });
+          }
+
+          break;
+
+        case 'pending': // User cannot change post status
+
+        case undefined:
+          // TODO: as a contributor it's undefined instead of 'pending'.
+          if (document.config.user.can_publish) {
+            deferred = $e.run('document/save/publish', {
+              document: document
+            });
+          } else {
+            deferred = $e.run('document/save/update', {
+              document: document
+            });
+          }
+
+      }
+
+      return deferred;
+    }
+  }]);
+  return Default;
+}(_base.default);
+
+exports.Default = Default;
+var _default = Default;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/commands/discard.js":
+/*!*****************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/commands/discard.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Discard = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _base = _interopRequireDefault(__webpack_require__(/*! ./base/base */ "../assets/dev/js/editor/document/save/commands/base/base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Discard = /*#__PURE__*/function (_Base) {
+  (0, _inherits2.default)(Discard, _Base);
+
+  var _super = _createSuper(Discard);
+
+  function Discard() {
+    (0, _classCallCheck2.default)(this, Discard);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Discard, [{
+    key: "apply",
+    value: function apply(args) {
+      var _args$document = args.document,
+          document = _args$document === void 0 ? elementor.documents.getCurrent() : _args$document; // Start server request before undo, because the undo can take time.
+
+      var deferred = elementorCommon.ajax.addRequest('discard_changes');
+      $e.run('document/history/undo-all', {
+        document: document
+      }); // Discard autosave revision if exist.
+
+      return deferred;
+    }
+  }]);
+  return Discard;
+}(_base.default);
+
+exports.Discard = Discard;
+var _default = Discard;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/commands/draft.js":
+/*!***************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/commands/draft.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Draft = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _base = _interopRequireDefault(__webpack_require__(/*! ./base/base */ "../assets/dev/js/editor/document/save/commands/base/base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Draft = /*#__PURE__*/function (_Base) {
+  (0, _inherits2.default)(Draft, _Base);
+
+  var _super = _createSuper(Draft);
+
+  function Draft() {
+    (0, _classCallCheck2.default)(this, Draft);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Draft, [{
+    key: "apply",
+    value: function apply() {
+      var document = this.document,
+          postStatus = document.container.settings.get('post_status'); // If no changes - don't save but allow un-publish.
+
+      if (!document.editor.isChanged && 'draft' !== postStatus) {
+        return jQuery.Deferred().reject('Document is not editable');
+      }
+
+      var deferred;
+
+      switch (postStatus) {
+        case 'publish':
+        case 'private':
+          deferred = $e.run('document/save/auto', {
+            document: document
+          });
+          break;
+
+        default:
+          // Update and create a revision
+          deferred = $e.run('document/save/update', {
+            document: document
+          });
+      }
+
+      return deferred;
+    }
+  }]);
+  return Draft;
+}(_base.default);
+
+exports.Draft = Draft;
+var _default = Draft;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/commands/index.js":
+/*!***************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/commands/index.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "Auto", ({
+  enumerable: true,
+  get: function get() {
+    return _auto.Auto;
+  }
+}));
+Object.defineProperty(exports, "Default", ({
+  enumerable: true,
+  get: function get() {
+    return _default.Default;
+  }
+}));
+Object.defineProperty(exports, "Discard", ({
+  enumerable: true,
+  get: function get() {
+    return _discard.Discard;
+  }
+}));
+Object.defineProperty(exports, "Draft", ({
+  enumerable: true,
+  get: function get() {
+    return _draft.Draft;
+  }
+}));
+Object.defineProperty(exports, "Pending", ({
+  enumerable: true,
+  get: function get() {
+    return _pending.Pending;
+  }
+}));
+Object.defineProperty(exports, "Publish", ({
+  enumerable: true,
+  get: function get() {
+    return _publish.Publish;
+  }
+}));
+Object.defineProperty(exports, "Update", ({
+  enumerable: true,
+  get: function get() {
+    return _update.Update;
+  }
+}));
+
+var _auto = __webpack_require__(/*! ./auto */ "../assets/dev/js/editor/document/save/commands/auto.js");
+
+var _default = __webpack_require__(/*! ./default */ "../assets/dev/js/editor/document/save/commands/default.js");
+
+var _discard = __webpack_require__(/*! ./discard */ "../assets/dev/js/editor/document/save/commands/discard.js");
+
+var _draft = __webpack_require__(/*! ./draft */ "../assets/dev/js/editor/document/save/commands/draft.js");
+
+var _pending = __webpack_require__(/*! ./pending */ "../assets/dev/js/editor/document/save/commands/pending.js");
+
+var _publish = __webpack_require__(/*! ./publish */ "../assets/dev/js/editor/document/save/commands/publish.js");
+
+var _update = __webpack_require__(/*! ./update */ "../assets/dev/js/editor/document/save/commands/update.js");
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/commands/internal/index.js":
+/*!************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/commands/internal/index.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "Save", ({
+  enumerable: true,
+  get: function get() {
+    return _save.Save;
+  }
+}));
+Object.defineProperty(exports, "SetIsModified", ({
+  enumerable: true,
+  get: function get() {
+    return _setIsModified.SetIsModified;
+  }
+}));
+
+var _save = __webpack_require__(/*! ./save.js */ "../assets/dev/js/editor/document/save/commands/internal/save.js");
+
+var _setIsModified = __webpack_require__(/*! ./set-is-modified */ "../assets/dev/js/editor/document/save/commands/internal/set-is-modified.js");
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/commands/internal/save.js":
+/*!***********************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/commands/internal/save.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Save = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Save = /*#__PURE__*/function (_$e$modules$CommandIn) {
+  (0, _inherits2.default)(Save, _$e$modules$CommandIn);
+
+  var _super = _createSuper(Save);
+
+  function Save() {
+    (0, _classCallCheck2.default)(this, Save);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Save, [{
+    key: "apply",
+    value: function apply(args) {
+      var _this = this;
+
+      var _args$status = args.status,
+          status = _args$status === void 0 ? 'draft' : _args$status,
+          _args$force = args.force,
+          force = _args$force === void 0 ? false : _args$force,
+          _args$onSuccess = args.onSuccess,
+          onSuccess = _args$onSuccess === void 0 ? null : _args$onSuccess,
+          _args$document = args.document,
+          document = _args$document === void 0 ? elementor.documents.getCurrent() : _args$document;
+
+      if (!force && document.editor.isSaving) {
+        return jQuery.Deferred().reject('Document already in save progress');
+      }
+
+      var container = document.container,
+          settings = container.settings.toJSON({
+        remove: ['default']
+      }),
+          oldStatus = container.settings.get('post_status'); // TODO: Remove - Backwards compatibility.
+
+      elementor.saver.trigger('before:save', args).trigger('before:save:' + status, args);
+      document.editor.isSaving = true;
+      document.editor.isChangedDuringSave = false;
+      settings.post_status = status;
+      var elements = [];
+
+      if (elementor.config.document.panel.has_elements) {
+        elements = container.model.get('elements').toJSON({
+          remove: ['default', 'editSettings', 'defaultEditSettings']
+        });
+      }
+
+      var successArgs = {
+        status: status,
+        oldStatus: oldStatus,
+        elements: elements,
+        document: document,
+        currentHistoryId: document.history.currentItem.get('id')
+      };
+      var deferred = elementorCommon.ajax.addRequest('save_builder', {
+        data: {
+          status: status,
+          elements: elements,
+          settings: settings
+        },
+        error: function error(data) {
+          return _this.onSaveError(data, status, document);
+        }
+      }).then(function (data) {
+        return _this.onSaveSuccess(data, successArgs, onSuccess);
+      }); // TODO: Remove - Backwards compatibility
+
+      elementor.saver.trigger('save', args);
+      return deferred;
+    }
+  }, {
+    key: "onSaveSuccess",
+    value: function onSaveSuccess(data, args) {
+      var callback = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+      var status = args.status,
+          oldStatus = args.oldStatus,
+          elements = args.elements,
+          document = args.document,
+          currentHistoryId = args.currentHistoryId;
+      this.onAfterAjax(document);
+      document.editor.lastSaveHistoryId = currentHistoryId; // Remove document cache.
+
+      elementor.documents.invalidateCache(document.id);
+      var statusChanged = status !== oldStatus,
+          result = {
+        data: data,
+        statusChanged: statusChanged
+      }; // Document is switched during the save, do nothing.
+
+      if (document !== elementor.documents.getCurrent()) {
+        return result;
+      }
+
+      if (!document.editor.isChangedDuringSave) {
+        document.editor.isSaved = true;
+      } // TODO: Move to hook.
+
+
+      if ('autosave' !== status) {
+        if (statusChanged) {
+          $e.run('document/elements/settings', {
+            container: elementor.settings.page.getEditedView().getContainer(),
+            settings: {
+              post_status: status
+            },
+            options: {
+              external: true
+            }
+          });
+        } // Notice: Must be after update page.model.post_status to the new status.
+
+
+        if (!document.editor.isChangedDuringSave) {
+          $e.internal('document/save/set-is-modified', {
+            status: false
+          });
+        }
+      }
+
+      if (data.config) {
+        // TODO: Move to es6.
+        jQuery.extend(true, document.config, data.config.document);
+      }
+
+      if (document.config.elements) {
+        document.config.elements = elements;
+      } // TODO: Remove - Backwards compatibility
+
+
+      elementor.channels.editor.trigger('saved', data); // TODO: Remove - Backwards compatibility
+
+      elementor.saver.trigger('after:save', data).trigger('after:save:' + status, data); // TODO: Remove - Backwards compatibility
+
+      if (statusChanged) {
+        elementor.saver.trigger('page:status:change', status, oldStatus);
+      }
+
+      if (_.isFunction(callback)) {
+        callback.call(this, result);
+      }
+
+      return result;
+    }
+  }, {
+    key: "onSaveError",
+    value: function onSaveError(data, status, document) {
+      this.onAfterAjax(document); // TODO: Remove - Backwards compatibility
+
+      elementor.saver.trigger('after:saveError', data).trigger('after:saveError:' + status, data);
+      var message;
+
+      if (_.isString(data)) {
+        message = data;
+      } else if (data.statusText) {
+        message = elementor.createAjaxErrorMessage(data);
+
+        if (0 === data.readyState) {
+          message += ' ' + __('Saving has been disabled until you’re reconnected.', 'elementor');
+        }
+      } else if (data[0] && data[0].code) {
+        message = __('Server Error', 'elementor') + ' ' + data[0].code;
+      }
+
+      elementor.notifications.showToast({
+        message: message
+      });
+    }
+  }, {
+    key: "onAfterAjax",
+    value: function onAfterAjax(document) {
+      document.editor.isSaving = false;
+    }
+  }]);
+  return Save;
+}($e.modules.CommandInternalBase);
+
+exports.Save = Save;
+var _default = Save;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/commands/internal/set-is-modified.js":
+/*!**********************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/commands/internal/set-is-modified.js ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.SetIsModified = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var SetIsModified = /*#__PURE__*/function (_$e$modules$CommandIn) {
+  (0, _inherits2.default)(SetIsModified, _$e$modules$CommandIn);
+
+  var _super = _createSuper(SetIsModified);
+
+  function SetIsModified() {
+    (0, _classCallCheck2.default)(this, SetIsModified);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(SetIsModified, [{
+    key: "validateArgs",
+    value: function validateArgs(args) {
+      this.requireArgumentType('status', 'boolean', args);
+    }
+  }, {
+    key: "apply",
+    value: function apply(args) {
+      var status = args.status,
+          _args$document = args.document,
+          document = _args$document === void 0 ? elementor.documents.getCurrent() : _args$document; // Save document for hooks.
+
+      args.document = document;
+      document.editor.isChanged = status;
+
+      if (status && document.editor.isSaving) {
+        document.editor.isChangedDuringSave = true;
+      }
+
+      if (status) {
+        document.editor.isSaved = false;
+      } // TODO: BC.
+
+
+      elementor.channels.editor.reply('status', status).trigger('status:change', status);
+
+      if (document.editor.isChanged) {
+        this.component.startAutoSave(document);
+      }
+    }
+  }]);
+  return SetIsModified;
+}($e.modules.CommandInternalBase);
+
+exports.SetIsModified = SetIsModified;
+var _default = SetIsModified;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/commands/pending.js":
+/*!*****************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/commands/pending.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.Pending = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _base = _interopRequireDefault(__webpack_require__(/*! ./base/base */ "../assets/dev/js/editor/document/save/commands/base/base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Pending = /*#__PURE__*/function (_Base) {
+  (0, _inherits2.default)(Pending, _Base);
+
+  var _super = _createSuper(Pending);
+
+  function Pending() {
+    (0, _classCallCheck2.default)(this, Pending);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Pending, [{
+    key: "apply",
+    value: function apply(args) {
+      var _args$status = args.status,
+          status = _args$status === void 0 ? 'pending' : _args$status,
+          _args$document = args.document,
+          document = _args$document === void 0 ? this.document : _args$document;
+      return $e.internal('document/save/save', {
+        status: status,
+        document: document
+      });
+    }
+  }]);
+  return Pending;
+}(_base.default);
+
+exports.Pending = Pending;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/commands/publish.js":
+/*!*****************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/commands/publish.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.Publish = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _base = _interopRequireDefault(__webpack_require__(/*! ./base/base */ "../assets/dev/js/editor/document/save/commands/base/base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Publish = /*#__PURE__*/function (_Base) {
+  (0, _inherits2.default)(Publish, _Base);
+
+  var _super = _createSuper(Publish);
+
+  function Publish() {
+    (0, _classCallCheck2.default)(this, Publish);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Publish, [{
+    key: "apply",
+    value: function apply(args) {
+      var _args$status = args.status,
+          status = _args$status === void 0 ? 'publish' : _args$status,
+          _args$document = args.document,
+          document = _args$document === void 0 ? this.document : _args$document;
+      return $e.internal('document/save/save', {
+        status: status,
+        document: document
+      });
+    }
+  }]);
+  return Publish;
+}(_base.default);
+
+exports.Publish = Publish;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/commands/update.js":
+/*!****************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/commands/update.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.Update = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _base = _interopRequireDefault(__webpack_require__(/*! ./base/base */ "../assets/dev/js/editor/document/save/commands/base/base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Update = /*#__PURE__*/function (_Base) {
+  (0, _inherits2.default)(Update, _Base);
+
+  var _super = _createSuper(Update);
+
+  function Update() {
+    (0, _classCallCheck2.default)(this, Update);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Update, [{
+    key: "apply",
+    value: function apply(args) {
+      var _args$document = args.document,
+          document = _args$document === void 0 ? this.document : _args$document,
+          _args$status = args.status,
+          status = _args$status === void 0 ? document.container.settings.get('post_status') : _args$status;
+      return $e.internal('document/save/save', {
+        status: status,
+        document: document
+      });
+    }
+  }]);
+  return Update;
+}(_base.default);
+
+exports.Update = Update;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/component.js":
+/*!**********************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/component.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ "../node_modules/@babel/runtime/helpers/assertThisInitialized.js"));
+
+var _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/get */ "../node_modules/@babel/runtime/helpers/get.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+
+var _backwardsCompatibility = _interopRequireDefault(__webpack_require__(/*! ./backwards-compatibility */ "../assets/dev/js/editor/document/save/backwards-compatibility.js"));
+
+var commands = _interopRequireWildcard(__webpack_require__(/*! ./commands/ */ "../assets/dev/js/editor/document/save/commands/index.js"));
+
+var commandsInternal = _interopRequireWildcard(__webpack_require__(/*! ./commands/internal */ "../assets/dev/js/editor/document/save/commands/internal/index.js"));
+
+var hooks = _interopRequireWildcard(__webpack_require__(/*! ./hooks/ */ "../assets/dev/js/editor/document/save/hooks/index.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+/**
+ * @typedef {import('./behaviors/footer-saver')} FooterSaver
+ */
+var Component = /*#__PURE__*/function (_BackwardsCompatibili) {
+  (0, _inherits2.default)(Component, _BackwardsCompatibili);
+
+  var _super = _createSuper(Component);
+
+  function Component() {
+    var _this;
+
+    (0, _classCallCheck2.default)(this, Component);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _super.call.apply(_super, [this].concat(args));
+    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "footerSaver", void 0);
+    return _this;
+  }
+
+  (0, _createClass2.default)(Component, [{
+    key: "__construct",
+    value: function __construct() {
+      var _this2 = this;
+
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      (0, _get2.default)((0, _getPrototypeOf2.default)(Component.prototype), "__construct", this).call(this, args);
+      /**
+       * Auto save timer handlers.
+       *
+       * @type {Object}
+       */
+
+      this.autoSaveTimers = {};
+      /**
+       * Auto save interval.
+       *
+       * @type {number}
+       */
+
+      this.autoSaveInterval = elementor.config.autosave_interval * 1000;
+      elementorCommon.elements.$window.on('beforeunload', function () {
+        if (_this2.isEditorChanged()) {
+          // Returns a message to confirm dialog.
+          return __('Please note: All unsaved changes will be lost.', 'elementor');
+        }
+      });
+    }
+  }, {
+    key: "getNamespace",
+    value: function getNamespace() {
+      return 'document/save';
+    }
+    /**
+     * TODO: test
+     *
+     * @param {Document} document
+     */
+
+  }, {
+    key: "startAutoSave",
+    value: function startAutoSave(document) {
+      var _this3 = this;
+
+      this.stopAutoSave(document);
+      this.autoSaveTimers[document.id] = setTimeout(function () {
+        $e.run('document/save/auto', {
+          document: document
+        });
+        delete _this3.autoSaveTimers[document.id];
+      }, this.autoSaveInterval);
+    }
+    /**
+     * TODO: test
+     *
+     * @param {Document} document
+     */
+
+  }, {
+    key: "stopAutoSave",
+    value: function stopAutoSave(document) {
+      if (this.autoSaveTimers[document.id]) {
+        clearTimeout(this.autoSaveTimers[document.id]);
+        delete this.autoSaveTimers[document.id];
+      }
+    }
+  }, {
+    key: "defaultCommands",
+    value: function defaultCommands() {
+      return this.importCommands(commands);
+    }
+  }, {
+    key: "defaultCommandsInternal",
+    value: function defaultCommandsInternal() {
+      return this.importCommands(commandsInternal);
+    }
+  }, {
+    key: "defaultHooks",
+    value: function defaultHooks() {
+      return this.importHooks(hooks);
+    }
+  }, {
+    key: "isEditorChanged",
+    value: function isEditorChanged() {
+      return true === elementor.channels.editor.request('status');
+    }
+  }]);
+  return Component;
+}(_backwardsCompatibility.default);
+
+exports["default"] = Component;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/hooks/index.js":
+/*!************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/hooks/index.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var _ui = __webpack_require__(/*! ./ui/ */ "../assets/dev/js/editor/document/save/hooks/ui/index.js");
+
+Object.keys(_ui).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _ui[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _ui[key];
+    }
+  });
+});
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/hooks/ui/index.js":
+/*!***************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/hooks/ui/index.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var _save = __webpack_require__(/*! ./save/ */ "../assets/dev/js/editor/document/save/hooks/ui/save/index.js");
+
+Object.keys(_save).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _save[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _save[key];
+    }
+  });
+});
+
+var _setIsModified = __webpack_require__(/*! ./set-is-modified/ */ "../assets/dev/js/editor/document/save/hooks/ui/set-is-modified/index.js");
+
+Object.keys(_setIsModified).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _setIsModified[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _setIsModified[key];
+    }
+  });
+});
+
+var _settings = __webpack_require__(/*! ./settings */ "../assets/dev/js/editor/document/save/hooks/ui/settings/index.js");
+
+Object.keys(_settings).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _settings[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _settings[key];
+    }
+  });
+});
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/hooks/ui/save/after.js":
+/*!********************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/hooks/ui/save/after.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.FooterSaverAfterSave = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _after = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/hooks/ui/after */ "../modules/web-cli/assets/js/modules/hooks/ui/after.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var FooterSaverAfterSave = /*#__PURE__*/function (_HookUIAfter) {
+  (0, _inherits2.default)(FooterSaverAfterSave, _HookUIAfter);
+
+  var _super = _createSuper(FooterSaverAfterSave);
+
+  function FooterSaverAfterSave() {
+    (0, _classCallCheck2.default)(this, FooterSaverAfterSave);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(FooterSaverAfterSave, [{
+    key: "getCommand",
+    value: function getCommand() {
+      return 'document/save/save';
+    }
+  }, {
+    key: "getId",
+    value: function getId() {
+      return 'footer-saver-after-save';
+    }
+  }, {
+    key: "apply",
+    value: function apply(args, result) {
+      var status = args.status,
+          data = result.data,
+          _$e$components$get = $e.components.get('document/save'),
+          footerSaver = _$e$components$get.footerSaver;
+
+      NProgress.done();
+      footerSaver.ui.buttonPublish.removeClass('elementor-button-state');
+      footerSaver.ui.lastEditedWrapper.removeClass('elementor-state-active');
+      footerSaver.refreshWpPreview();
+      footerSaver.setLastEdited(data.config.document.last_edited);
+
+      if (result.statusChanged && 'publish' === status && elementor.config.document.urls.have_a_look) {
+        this.onPageStatusChange();
+      }
+    }
+  }, {
+    key: "onPageStatusChange",
+    value: function onPageStatusChange() {
+      var buttons = [];
+      buttons.push({
+        name: 'view_page',
+        text: __('Have a look', 'elementor'),
+        callback: function callback() {
+          open(elementor.config.document.urls.have_a_look);
+        }
+      });
+      elementor.notifications.showToast({
+        message: elementor.config.document.panel.messages.publish_notification,
+        buttons: buttons
+      });
+    }
+  }]);
+  return FooterSaverAfterSave;
+}(_after.default);
+
+exports.FooterSaverAfterSave = FooterSaverAfterSave;
+var _default = FooterSaverAfterSave;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/hooks/ui/save/before.js":
+/*!*********************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/hooks/ui/save/before.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.FooterSaverBeforeSave = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _before = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/hooks/ui/before */ "../modules/web-cli/assets/js/modules/hooks/ui/before.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var FooterSaverBeforeSave = /*#__PURE__*/function (_HookUIBefore) {
+  (0, _inherits2.default)(FooterSaverBeforeSave, _HookUIBefore);
+
+  var _super = _createSuper(FooterSaverBeforeSave);
+
+  function FooterSaverBeforeSave() {
+    (0, _classCallCheck2.default)(this, FooterSaverBeforeSave);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(FooterSaverBeforeSave, [{
+    key: "getCommand",
+    value: function getCommand() {
+      return 'document/save/save';
+    }
+  }, {
+    key: "getId",
+    value: function getId() {
+      return 'footer-saver-before-save';
+    }
+  }, {
+    key: "apply",
+    value: function apply(args) {
+      var status = args.status,
+          _$e$components$get = $e.components.get('document/save'),
+          footerSaver = _$e$components$get.footerSaver;
+
+      NProgress.start();
+
+      if ('autosave' === status) {
+        footerSaver.ui.lastEditedWrapper.addClass('elementor-state-active');
+      } else {
+        footerSaver.ui.buttonPublish.addClass('elementor-button-state');
+      }
+    }
+  }]);
+  return FooterSaverBeforeSave;
+}(_before.default);
+
+exports.FooterSaverBeforeSave = FooterSaverBeforeSave;
+var _default = FooterSaverBeforeSave;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/hooks/ui/save/catch.js":
+/*!********************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/hooks/ui/save/catch.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.FooterSaverCatchSave = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _catch = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/hooks/ui/catch */ "../modules/web-cli/assets/js/modules/hooks/ui/catch.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var FooterSaverCatchSave = /*#__PURE__*/function (_HookUICatch) {
+  (0, _inherits2.default)(FooterSaverCatchSave, _HookUICatch);
+
+  var _super = _createSuper(FooterSaverCatchSave);
+
+  function FooterSaverCatchSave() {
+    (0, _classCallCheck2.default)(this, FooterSaverCatchSave);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(FooterSaverCatchSave, [{
+    key: "getCommand",
+    value: function getCommand() {
+      return 'document/save/save';
+    }
+  }, {
+    key: "getId",
+    value: function getId() {
+      return 'footer-saver-catch-save';
+    }
+  }, {
+    key: "apply",
+    value: function apply() {
+      NProgress.done();
+      $e.components.get('document/save').footerSaver.ui.buttonPublish.removeClass('elementor-button-state');
+    }
+  }]);
+  return FooterSaverCatchSave;
+}(_catch.default);
+
+exports.FooterSaverCatchSave = FooterSaverCatchSave;
+var _default = FooterSaverCatchSave;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/hooks/ui/save/index.js":
+/*!********************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/hooks/ui/save/index.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "FooterSaverAfterSave", ({
+  enumerable: true,
+  get: function get() {
+    return _after.FooterSaverAfterSave;
+  }
+}));
+Object.defineProperty(exports, "FooterSaverBeforeSave", ({
+  enumerable: true,
+  get: function get() {
+    return _before.FooterSaverBeforeSave;
+  }
+}));
+Object.defineProperty(exports, "FooterSaverCatchSave", ({
+  enumerable: true,
+  get: function get() {
+    return _catch.FooterSaverCatchSave;
+  }
+}));
+
+var _after = __webpack_require__(/*! ./after */ "../assets/dev/js/editor/document/save/hooks/ui/save/after.js");
+
+var _before = __webpack_require__(/*! ./before */ "../assets/dev/js/editor/document/save/hooks/ui/save/before.js");
+
+var _catch = __webpack_require__(/*! ./catch */ "../assets/dev/js/editor/document/save/hooks/ui/save/catch.js");
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/hooks/ui/set-is-modified/after.js":
+/*!*******************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/hooks/ui/set-is-modified/after.js ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.FooterSaverActiveSaveButtons = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _after = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/hooks/ui/after */ "../modules/web-cli/assets/js/modules/hooks/ui/after.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var FooterSaverActiveSaveButtons = /*#__PURE__*/function (_HookUIAfter) {
+  (0, _inherits2.default)(FooterSaverActiveSaveButtons, _HookUIAfter);
+
+  var _super = _createSuper(FooterSaverActiveSaveButtons);
+
+  function FooterSaverActiveSaveButtons() {
+    (0, _classCallCheck2.default)(this, FooterSaverActiveSaveButtons);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(FooterSaverActiveSaveButtons, [{
+    key: "getCommand",
+    value: function getCommand() {
+      return 'document/save/set-is-modified';
+    }
+  }, {
+    key: "getId",
+    value: function getId() {
+      return 'footer-saver-activate-save-buttons';
+    }
+  }, {
+    key: "apply",
+    value: function apply(args) {
+      var status = args.status,
+          document = args.document;
+      $e.components.get('document/save').footerSaver.activateSaveButtons(document, status);
+    }
+  }]);
+  return FooterSaverActiveSaveButtons;
+}(_after.default);
+
+exports.FooterSaverActiveSaveButtons = FooterSaverActiveSaveButtons;
+var _default = FooterSaverActiveSaveButtons;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/hooks/ui/set-is-modified/index.js":
+/*!*******************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/hooks/ui/set-is-modified/index.js ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "FooterSaverActiveSaveButtons", ({
+  enumerable: true,
+  get: function get() {
+    return _after.FooterSaverActiveSaveButtons;
+  }
+}));
+
+var _after = __webpack_require__(/*! ./after */ "../assets/dev/js/editor/document/save/hooks/ui/set-is-modified/after.js");
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/save/hooks/ui/settings/index.js":
+/*!************************************************************************!*\
+  !*** ../assets/dev/js/editor/document/save/hooks/ui/settings/index.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.FooterSeverRefreshMenu = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _after = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/hooks/ui/after */ "../modules/web-cli/assets/js/modules/hooks/ui/after.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var FooterSeverRefreshMenu = /*#__PURE__*/function (_HookUIAfter) {
+  (0, _inherits2.default)(FooterSeverRefreshMenu, _HookUIAfter);
+
+  var _super = _createSuper(FooterSeverRefreshMenu);
+
+  function FooterSeverRefreshMenu() {
+    (0, _classCallCheck2.default)(this, FooterSeverRefreshMenu);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(FooterSeverRefreshMenu, [{
+    key: "getCommand",
+    value: function getCommand() {
+      return 'document/elements/settings';
+    }
+  }, {
+    key: "getId",
+    value: function getId() {
+      return 'footer-saver-refresh-menu';
+    }
+  }, {
+    key: "getContainerType",
+    value: function getContainerType() {
+      return 'document';
+    }
+  }, {
+    key: "getConditions",
+    value: function getConditions(args) {
+      return args.settings && 'undefined' !== typeof args.settings.post_status;
+    }
+  }, {
+    key: "apply",
+    value: function apply(args) {
+      var _$e$components$get = $e.components.get('document/save'),
+          footerSaver = _$e$components$get.footerSaver;
+
+      footerSaver.setMenuItems(args.container.document);
+      footerSaver.refreshWpPreview();
+    }
+  }]);
+  return FooterSeverRefreshMenu;
+}(_after.default);
+
+exports.FooterSeverRefreshMenu = FooterSeverRefreshMenu;
+var _default = FooterSeverRefreshMenu;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/ui-states/direction-mode.js":
+/*!********************************************************************!*\
+  !*** ../assets/dev/js/editor/document/ui-states/direction-mode.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.DirectionMode = exports.DIRECTION_ROW_REVERSE = exports.DIRECTION_ROW = exports.DIRECTION_COLUMN_REVERSE = exports.DIRECTION_COLUMN = void 0;
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _uiStateBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/core/states/ui-state-base */ "../modules/web-cli/assets/js/core/states/ui-state-base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var DIRECTION_ROW = 'row';
+exports.DIRECTION_ROW = DIRECTION_ROW;
+var DIRECTION_ROW_REVERSE = 'row-reverse';
+exports.DIRECTION_ROW_REVERSE = DIRECTION_ROW_REVERSE;
+var DIRECTION_COLUMN = 'column';
+exports.DIRECTION_COLUMN = DIRECTION_COLUMN;
+var DIRECTION_COLUMN_REVERSE = 'column-reverse';
+exports.DIRECTION_COLUMN_REVERSE = DIRECTION_COLUMN_REVERSE;
+
+var DirectionMode = /*#__PURE__*/function (_UiStateBase) {
+  (0, _inherits2.default)(DirectionMode, _UiStateBase);
+
+  var _super = _createSuper(DirectionMode);
+
+  function DirectionMode() {
+    (0, _classCallCheck2.default)(this, DirectionMode);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(DirectionMode, [{
+    key: "getId",
+    value: function getId() {
+      return 'direction-mode';
+    }
+  }, {
+    key: "getOptions",
+    value: function getOptions() {
+      var _ref;
+
+      return _ref = {}, (0, _defineProperty2.default)(_ref, DIRECTION_ROW, ''), (0, _defineProperty2.default)(_ref, DIRECTION_ROW_REVERSE, ''), (0, _defineProperty2.default)(_ref, DIRECTION_COLUMN, ''), (0, _defineProperty2.default)(_ref, DIRECTION_COLUMN_REVERSE, ''), _ref;
+    }
+  }, {
+    key: "getScopes",
+    value: function getScopes() {
+      return [window.document.body, elementor.$previewContents[0].body];
+    }
+  }]);
+  return DirectionMode;
+}(_uiStateBase.default);
+
+exports.DirectionMode = DirectionMode;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/ui-states/index.js":
+/*!***********************************************************!*\
+  !*** ../assets/dev/js/editor/document/ui-states/index.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "DirectionMode", ({
+  enumerable: true,
+  get: function get() {
+    return _directionMode.DirectionMode;
+  }
+}));
+Object.defineProperty(exports, "ScrubbingMode", ({
+  enumerable: true,
+  get: function get() {
+    return _scrubbingMode.ScrubbingMode;
+  }
+}));
+
+var _directionMode = __webpack_require__(/*! ./direction-mode */ "../assets/dev/js/editor/document/ui-states/direction-mode.js");
+
+var _scrubbingMode = __webpack_require__(/*! ./scrubbing-mode */ "../assets/dev/js/editor/document/ui-states/scrubbing-mode.js");
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/ui-states/scrubbing-mode.js":
+/*!********************************************************************!*\
+  !*** ../assets/dev/js/editor/document/ui-states/scrubbing-mode.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.ScrubbingMode = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+
+var _uiStateBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/core/states/ui-state-base */ "../modules/web-cli/assets/js/core/states/ui-state-base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var ScrubbingMode = /*#__PURE__*/function (_UiStateBase) {
+  (0, _inherits2.default)(ScrubbingMode, _UiStateBase);
+
+  var _super = _createSuper(ScrubbingMode);
+
+  function ScrubbingMode() {
+    (0, _classCallCheck2.default)(this, ScrubbingMode);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(ScrubbingMode, [{
+    key: "getId",
+    value: function getId() {
+      return 'scrubbing-mode';
+    }
+  }, {
+    key: "getOptions",
+    value: function getOptions() {
+      // When scrubbing mode is on, body gets class 'e-ui-state--document-scrubbing-mode__on'
+      return (0, _defineProperty2.default)({}, this.constructor.ON, '');
+    }
+  }, {
+    key: "getScopes",
+    value: function getScopes() {
+      return [window.document.body];
+    }
+  }]);
+  return ScrubbingMode;
+}(_uiStateBase.default);
+
+exports.ScrubbingMode = ScrubbingMode;
+(0, _defineProperty2.default)(ScrubbingMode, "ON", 'on');
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/ui/commands/copy.js":
+/*!************************************************************!*\
+  !*** ../assets/dev/js/editor/document/ui/commands/copy.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Copy = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Copy = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Copy, _$e$modules$CommandBa);
+
+  var _super = _createSuper(Copy);
+
+  function Copy() {
+    (0, _classCallCheck2.default)(this, Copy);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Copy, [{
+    key: "apply",
+    value: function apply() {
+      var selectedElements = elementor.selection.getElements();
+
+      if (selectedElements.length) {
+        return $e.run('document/elements/copy', {
+          containers: selectedElements
+        });
+      }
+
+      return false;
+    }
+  }]);
+  return Copy;
+}($e.modules.CommandBase);
+
+exports.Copy = Copy;
+var _default = Copy;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/ui/commands/delete.js":
+/*!**************************************************************!*\
+  !*** ../assets/dev/js/editor/document/ui/commands/delete.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Delete = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Delete = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Delete, _$e$modules$CommandBa);
+
+  var _super = _createSuper(Delete);
+
+  function Delete() {
+    (0, _classCallCheck2.default)(this, Delete);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Delete, [{
+    key: "apply",
+    value: function apply() {
+      var selectedElements = elementor.selection.getElements();
+
+      if (selectedElements.length) {
+        return $e.run('document/elements/delete', {
+          containers: selectedElements
+        });
+      }
+
+      return false;
+    }
+  }]);
+  return Delete;
+}($e.modules.CommandBase);
+
+exports.Delete = Delete;
+var _default = Delete;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/ui/commands/duplicate.js":
+/*!*****************************************************************!*\
+  !*** ../assets/dev/js/editor/document/ui/commands/duplicate.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Duplicate = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Duplicate = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Duplicate, _$e$modules$CommandBa);
+
+  var _super = _createSuper(Duplicate);
+
+  function Duplicate() {
+    (0, _classCallCheck2.default)(this, Duplicate);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Duplicate, [{
+    key: "apply",
+    value: function apply() {
+      var selectedElements = elementor.selection.getElements();
+
+      if (selectedElements.length) {
+        return $e.run('document/elements/duplicate', {
+          containers: selectedElements
+        });
+      }
+
+      return false;
+    }
+  }]);
+  return Duplicate;
+}($e.modules.CommandBase);
+
+exports.Duplicate = Duplicate;
+var _default = Duplicate;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/ui/commands/index.js":
+/*!*************************************************************!*\
+  !*** ../assets/dev/js/editor/document/ui/commands/index.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "Copy", ({
+  enumerable: true,
+  get: function get() {
+    return _copy.Copy;
+  }
+}));
+Object.defineProperty(exports, "Delete", ({
+  enumerable: true,
+  get: function get() {
+    return _delete.Delete;
+  }
+}));
+Object.defineProperty(exports, "Duplicate", ({
+  enumerable: true,
+  get: function get() {
+    return _duplicate.Duplicate;
+  }
+}));
+Object.defineProperty(exports, "Paste", ({
+  enumerable: true,
+  get: function get() {
+    return _paste.Paste;
+  }
+}));
+Object.defineProperty(exports, "PasteStyle", ({
+  enumerable: true,
+  get: function get() {
+    return _pasteStyle.PasteStyle;
+  }
+}));
+
+var _copy = __webpack_require__(/*! ./copy */ "../assets/dev/js/editor/document/ui/commands/copy.js");
+
+var _delete = __webpack_require__(/*! ./delete */ "../assets/dev/js/editor/document/ui/commands/delete.js");
+
+var _duplicate = __webpack_require__(/*! ./duplicate */ "../assets/dev/js/editor/document/ui/commands/duplicate.js");
+
+var _paste = __webpack_require__(/*! ./paste */ "../assets/dev/js/editor/document/ui/commands/paste.js");
+
+var _pasteStyle = __webpack_require__(/*! ./paste-style */ "../assets/dev/js/editor/document/ui/commands/paste-style.js");
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/ui/commands/paste-style.js":
+/*!*******************************************************************!*\
+  !*** ../assets/dev/js/editor/document/ui/commands/paste-style.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.PasteStyle = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var PasteStyle = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(PasteStyle, _$e$modules$CommandBa);
+
+  var _super = _createSuper(PasteStyle);
+
+  function PasteStyle() {
+    (0, _classCallCheck2.default)(this, PasteStyle);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(PasteStyle, [{
+    key: "apply",
+    value: function apply() {
+      var selectedElement = elementor.getCurrentElement();
+
+      if (selectedElement) {
+        return $e.run('document/elements/paste-style', {
+          container: selectedElement.getContainer()
+        });
+      }
+
+      return false;
+    }
+  }]);
+  return PasteStyle;
+}($e.modules.CommandBase);
+
+exports.PasteStyle = PasteStyle;
+var _default = PasteStyle;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/ui/commands/paste.js":
+/*!*************************************************************!*\
+  !*** ../assets/dev/js/editor/document/ui/commands/paste.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Paste = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/get */ "../node_modules/@babel/runtime/helpers/get.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Paste = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Paste, _$e$modules$CommandBa);
+
+  var _super = _createSuper(Paste);
+
+  function Paste() {
+    (0, _classCallCheck2.default)(this, Paste);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Paste, [{
+    key: "initialize",
+    value: function initialize(args) {
+      var _args$containers = args.containers,
+          containers = _args$containers === void 0 ? [args.container] : _args$containers;
+      (0, _get2.default)((0, _getPrototypeOf2.default)(Paste.prototype), "initialize", this).call(this, args);
+      this.storage = elementorCommon.storage.get('clipboard') || [];
+      this.storage = this.storage.map(function (model) {
+        return new Backbone.Model(model);
+      });
+
+      if (!containers[0]) {
+        this.target = elementor.getCurrentElement();
+        this.target = this.target ? [this.target.getContainer()] : null;
+      } else {
+        this.target = containers;
+      }
+    }
+  }, {
+    key: "apply",
+    value: function apply(args) {
+      var _this = this;
+
+      if (!this.target || 0 === this.storage.length) {
+        return false;
+      }
+
+      var result = [];
+      this.target.forEach(function (
+      /* Container */
+      container) {
+        var _args$options = args.options,
+            options = _args$options === void 0 ? {} : _args$options,
+            pasteOptions = $e.components.get('document/elements').utils.getPasteOptions(_this.storage[0], container);
+
+        if (!pasteOptions.isValidChild) {
+          if (pasteOptions.isSameElement) {
+            options.at = container.parent.model.get('elements').findIndex(container.model) + 1; // For same element always paste on his parent.
+
+            container = container.parent;
+          } else if (pasteOptions.isValidGrandChild) {
+            options.rebuild = true;
+          }
+        }
+
+        if (Object.values(pasteOptions).some(function (opt) {
+          return !!opt;
+        })) {
+          var commandArgs = {
+            container: container
+          };
+
+          if (undefined !== options.rebuild) {
+            commandArgs.rebuild = options.rebuild;
+          }
+
+          if (undefined !== options.at) {
+            commandArgs.at = options.at;
+          }
+
+          result.push($e.run('document/elements/paste', commandArgs));
+        }
+      });
+
+      if (0 === result.length) {
+        return false;
+      } else if (1 === result.length) {
+        return result[0];
+      }
+
+      return result;
+    }
+  }]);
+  return Paste;
+}($e.modules.CommandBase);
+
+exports.Paste = Paste;
+var _default = Paste;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/document/ui/component.js":
+/*!********************************************************!*\
+  !*** ../assets/dev/js/editor/document/ui/component.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/component-base */ "../modules/web-cli/assets/js/modules/component-base.js"));
+
+var commands = _interopRequireWildcard(__webpack_require__(/*! ./commands/ */ "../assets/dev/js/editor/document/ui/commands/index.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Component = /*#__PURE__*/function (_ComponentBase) {
+  (0, _inherits2.default)(Component, _ComponentBase);
+
+  var _super = _createSuper(Component);
+
+  function Component() {
+    (0, _classCallCheck2.default)(this, Component);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Component, [{
+    key: "getNamespace",
+    value: function getNamespace() {
+      return 'document/ui';
+    }
+  }, {
+    key: "defaultCommands",
+    value: function defaultCommands() {
+      return this.importCommands(commands);
+    }
+  }, {
+    key: "defaultShortcuts",
+    value: function defaultShortcuts() {
+      return {
+        copy: {
+          keys: 'ctrl+c',
+          exclude: ['input']
+        },
+        delete: {
+          keys: 'del',
+          exclude: ['input']
+        },
+        duplicate: {
+          keys: 'ctrl+d'
+        },
+        paste: {
+          keys: 'ctrl+v',
+          exclude: ['input']
+        },
+        'paste-style': {
+          keys: 'ctrl+shift+v',
+          exclude: ['input']
+        }
+      };
+    }
+  }]);
+  return Component;
+}(_componentBase.default);
+
+exports["default"] = Component;
+
+/***/ }),
+
 /***/ "../assets/dev/js/editor/editor-base.js":
 /*!**********************************************!*\
   !*** ../assets/dev/js/editor/editor-base.js ***!
@@ -21942,6 +29634,8 @@ module.exports = /*#__PURE__*/function (_Marionette$Behavior) {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _typeof3 = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
@@ -21974,6 +29668,8 @@ var _component = _interopRequireDefault(__webpack_require__(/*! ./components/doc
 
 var _environment = _interopRequireDefault(__webpack_require__(/*! elementor-common/utils/environment */ "../core/common/assets/js/utils/environment.js"));
 
+var _manager = _interopRequireDefault(__webpack_require__(/*! ./elements/manager */ "../assets/dev/js/editor/elements/manager.js"));
+
 var _module = _interopRequireDefault(__webpack_require__(/*! elementor/modules/favorites/assets/js/editor/module */ "../modules/favorites/assets/js/editor/module.js"));
 
 var _module2 = _interopRequireDefault(__webpack_require__(/*! elementor/modules/history/assets/js/module */ "../modules/history/assets/js/module.js"));
@@ -21982,13 +29678,15 @@ var _hotkeys = _interopRequireDefault(__webpack_require__(/*! ./components/hotke
 
 var _iconsManager = _interopRequireDefault(__webpack_require__(/*! ./components/icons-manager/icons-manager */ "../assets/dev/js/editor/components/icons-manager/icons-manager.js"));
 
-var _manager = _interopRequireDefault(__webpack_require__(/*! ./components/browser-import/manager */ "../assets/dev/js/editor/components/browser-import/manager.js"));
+var _manager2 = _interopRequireDefault(__webpack_require__(/*! ./components/browser-import/manager */ "../assets/dev/js/editor/components/browser-import/manager.js"));
+
+var _component2 = _interopRequireDefault(__webpack_require__(/*! ./components/preview/component */ "../assets/dev/js/editor/components/preview/component.js"));
 
 var _menu = _interopRequireDefault(__webpack_require__(/*! elementor-panel/pages/menu/menu */ "../assets/dev/js/editor/regions/panel/pages/menu/menu.js"));
 
 var _promotion = _interopRequireDefault(__webpack_require__(/*! ./utils/promotion */ "../assets/dev/js/editor/utils/promotion.js"));
 
-var _manager2 = _interopRequireDefault(__webpack_require__(/*! ../../../../core/kits/assets/js/manager.js */ "../core/kits/assets/js/manager.js"));
+var _manager3 = _interopRequireDefault(__webpack_require__(/*! ../../../../core/kits/assets/js/manager.js */ "../core/kits/assets/js/manager.js"));
 
 var _navigator = _interopRequireDefault(__webpack_require__(/*! ./regions/navigator/navigator */ "../assets/dev/js/editor/regions/navigator/navigator.js"));
 
@@ -22000,9 +29698,7 @@ var _popoverToggle = _interopRequireDefault(__webpack_require__(/*! elementor-co
 
 var _responsiveBar = _interopRequireDefault(__webpack_require__(/*! ./regions/responsive-bar/responsive-bar */ "../assets/dev/js/editor/regions/responsive-bar/responsive-bar.js"));
 
-var _manager3 = _interopRequireDefault(__webpack_require__(/*! ./components/selection/manager */ "../assets/dev/js/editor/components/selection/manager.js"));
-
-var _devTools = _interopRequireDefault(__webpack_require__(/*! elementor/modules/dev-tools/assets/js/editor/dev-tools */ "../modules/dev-tools/assets/js/editor/dev-tools.js"));
+var _manager4 = _interopRequireDefault(__webpack_require__(/*! ./components/selection/manager */ "../assets/dev/js/editor/components/selection/manager.js"));
 
 var _module3 = _interopRequireDefault(__webpack_require__(/*! elementor/modules/landing-pages/assets/js/editor/module */ "../modules/landing-pages/assets/js/editor/module.js"));
 
@@ -22011,6 +29707,20 @@ var _module4 = _interopRequireDefault(__webpack_require__(/*! elementor/modules/
 var _breakpoints = _interopRequireDefault(__webpack_require__(/*! elementor-utils/breakpoints */ "../assets/dev/js/utils/breakpoints.js"));
 
 var _events = _interopRequireDefault(__webpack_require__(/*! elementor-utils/events */ "../assets/dev/js/utils/events.js"));
+
+var _component3 = _interopRequireDefault(__webpack_require__(/*! ./document/component */ "../assets/dev/js/editor/document/component.js"));
+
+var _component4 = _interopRequireDefault(__webpack_require__(/*! ./data/globals/component */ "../assets/dev/js/editor/data/globals/component.js"));
+
+var _controlConditions = _interopRequireDefault(__webpack_require__(/*! ./utils/control-conditions */ "../assets/dev/js/editor/utils/control-conditions.js"));
+
+var elementTypes = _interopRequireWildcard(__webpack_require__(/*! ./elements/types */ "../assets/dev/js/editor/elements/types/index.js"));
+
+var _elementBase = _interopRequireDefault(__webpack_require__(/*! ./elements/types/base/element-base */ "../assets/dev/js/editor/elements/types/base/element-base.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof3(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
@@ -22049,7 +29759,7 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "presetsFactory", __webpack_require__(/*! elementor-editor-utils/presets-factory */ "../assets/dev/js/editor/utils/presets-factory.js"));
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "templates", __webpack_require__(/*! elementor-templates/manager */ "../assets/dev/js/editor/components/template-library/manager.js"));
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "ajax", elementorCommon.ajax);
-    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "conditions", __webpack_require__(/*! elementor-editor-utils/conditions */ "../assets/dev/js/editor/utils/conditions.js"));
+    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "conditions", new _controlConditions.default());
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "history", __webpack_require__(/*! elementor/modules/history/assets/js/module */ "../modules/history/assets/js/module.js"));
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "channels", {
       editor: Backbone.Radio.channel('ELEMENTOR:editor'),
@@ -22100,7 +29810,7 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "modules", {
       // TODO: Deprecated alias since 2.3.0
       get Module() {
-        elementorCommon.helpers.hardDeprecated('elementor.modules.Module', '2.3.0', 'elementorModules.Module');
+        elementorDevTools.deprecation.deprecated('elementor.modules.Module', '2.3.0', 'elementorModules.Module');
         return elementorModules.Module;
       },
 
@@ -22109,7 +29819,7 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
           views: {
             // TODO: Deprecated alias since 2.4.0
             get BaseModalLayout() {
-              elementorCommon.helpers.hardDeprecated('elementor.modules.components.templateLibrary.views.BaseModalLayout', '2.4.0', 'elementorModules.common.views.modal.Layout');
+              elementorDevTools.deprecation.deprecated('elementor.modules.components.templateLibrary.views.BaseModalLayout', '2.4.0', 'elementorModules.common.views.modal.Layout');
               return elementorModules.common.views.modal.Layout;
             }
 
@@ -22123,7 +29833,7 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
       },
       saver: {
         get footerBehavior() {
-          elementorCommon.helpers.softDeprecated('elementor.modules.saver.footerBehavior.', '2.9.0', 'elementor.modules.components.saver.behaviors.FooterSaver');
+          elementorDevTools.deprecation.deprecated('elementor.modules.saver.footerBehavior.', '2.9.0', 'elementor.modules.components.saver.behaviors.FooterSaver');
           return elementor.modules.components.saver.behaviors.FooterSaver;
         }
 
@@ -22167,16 +29877,21 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
         Wysiwyg: __webpack_require__(/*! elementor-controls/wysiwyg */ "../assets/dev/js/editor/controls/wysiwyg.js")
       },
       elements: {
+        types: _objectSpread({
+          Base: _elementBase.default
+        }, elementTypes),
         models: {
           // TODO: Deprecated alias since 2.4.0
           get BaseSettings() {
-            elementorCommon.helpers.hardDeprecated('elementor.modules.elements.models.BaseSettings', '2.4.0', 'elementorModules.editor.elements.models.BaseSettings');
+            elementorDevTools.deprecation.deprecated('elementor.modules.elements.models.BaseSettings', '2.4.0', 'elementorModules.editor.elements.models.BaseSettings');
             return elementorModules.editor.elements.models.BaseSettings;
           },
 
           Element: __webpack_require__(/*! elementor-elements/models/element */ "../assets/dev/js/editor/elements/models/element.js")
         },
         views: {
+          BaseElement: __webpack_require__(/*! elementor-elements/views/base */ "../assets/dev/js/editor/elements/views/base.js"),
+          BaseWidget: __webpack_require__(/*! elementor-elements/views/base-widget */ "../assets/dev/js/editor/elements/views/base-widget.js"),
           Widget: __webpack_require__(/*! elementor-elements/views/widget */ "../assets/dev/js/editor/elements/views/widget.js")
         }
       },
@@ -22198,7 +29913,7 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
       views: {
         // TODO: Deprecated alias since 2.4.0
         get ControlsStack() {
-          elementorCommon.helpers.hardDeprecated('elementor.modules.views.ControlsStack', '2.4.0', 'elementorModules.editor.views.ControlsStack');
+          elementorDevTools.deprecation.deprecated('elementor.modules.views.ControlsStack', '2.4.0', 'elementorModules.editor.views.ControlsStack');
           return elementorModules.editor.views.ControlsStack;
         }
 
@@ -22210,7 +29925,7 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
   (0, _createClass2.default)(EditorBase, [{
     key: "debug",
     get: function get() {
-      elementorCommon.helpers.softDeprecated('elementor.debug', '3.0.0', 'elementorCommon.debug');
+      elementorDevTools.deprecation.deprecated('elementor.debug', '3.0.0', 'elementorCommon.debug');
       return elementorCommon.debug;
     }
   }, {
@@ -22343,13 +30058,14 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
           Settings = __webpack_require__(/*! elementor-editor/components/settings/settings */ "../assets/dev/js/editor/components/settings/settings.js"),
           Notifications = __webpack_require__(/*! elementor-editor-utils/notifications */ "../assets/dev/js/editor/utils/notifications.js");
 
+      this.elementsManager = new _manager.default();
       this.hooks = new EventManager();
-      this.selection = new _manager3.default();
+      this.selection = new _manager4.default();
       this.settings = new Settings();
       this.dynamicTags = new DynamicTags();
       this.initDialogsManager();
       this.notifications = new Notifications();
-      this.kitManager = new _manager2.default();
+      this.kitManager = new _manager3.default();
       this.hotkeysScreen = new _hotkeys.default();
       this.iconManager = new _iconsManager.default();
       this.noticeBar = new _noticeBar.default();
@@ -22360,8 +30076,7 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
 
       this.history = new _module2.default();
       this.promotion = new _promotion.default();
-      this.devTools = new _devTools.default();
-      this.browserImport = new _manager.default();
+      this.browserImport = new _manager2.default();
       this.documents = $e.components.register(new _component.default()); // Adds the Landing Page tab to the Template library modal when editing Landing Pages.
 
       if (elementorCommon.config.experimentalFeatures['landing-pages']) {
@@ -22370,7 +30085,14 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
 
       if (elementorCommon.config.experimentalFeatures['elements-color-picker']) {
         this.modules.elementsColorPicker = new _module4.default();
-      }
+      } // TODO: Move to elementor:init-data-components
+
+
+      $e.components.register(new _component4.default());
+      $e.components.register(new _component3.default());
+      $e.components.register(new _component2.default()); // TODO: Remove, BC Since 2.9.0.
+
+      elementor.saver = $e.components.get('document/save');
 
       _events.default.dispatch(elementorCommon.elements.$window, 'elementor/init-components', null, 'elementor:init-components');
     }
@@ -22508,7 +30230,7 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
       // eslint-disable-next-line @wordpress/no-global-active-element
       var isPreview = -1 !== ['BODY', 'IFRAME'].indexOf(document.activeElement.tagName) && 'BODY' === elementorFrontend.elements.window.document.activeElement.tagName;
 
-      if (!isPreview && !elementorCommonConfig.isTesting) {
+      if (!isPreview) {
         return false;
       }
 
@@ -23022,6 +30744,10 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
         success: function success(data) {
           _this6.addWidgetsCache(data);
 
+          if (elementor.config.locale !== elementor.config.user.locale) {
+            _this6.translateControlsDefaults(elementor.config.locale);
+          }
+
           if (_this6.loaded) {
             _this6.kitManager.renderGlobalsDefaultCSS();
 
@@ -23033,6 +30759,20 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
           }
         }
       });
+    }
+  }, {
+    key: "translateControlsDefaults",
+    value: function translateControlsDefaults(locale) {
+      var _this7 = this;
+
+      elementorCommon.ajax.addRequest('get_widgets_default_value_translations', {
+        data: {
+          locale: locale
+        },
+        success: function success(data) {
+          _this7.addWidgetsCache(data);
+        }
+      }, true);
     }
   }, {
     key: "getPreferences",
@@ -23053,7 +30793,7 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
   }, {
     key: "onStart",
     value: function onStart() {
-      var _this7 = this;
+      var _this8 = this;
 
       this.config = this.getConfig();
       Backbone.Radio.DEBUG = false;
@@ -23088,7 +30828,7 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
       }).then(function () {
         _events.default.dispatch(elementorCommon.elements.$window, 'elementor/init', null, 'elementor:init');
 
-        _this7.initNavigator();
+        _this8.initNavigator();
       });
       this.logSite();
     }
@@ -23134,7 +30874,7 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
 
       $e.shortcuts.bindListener(elementorFrontend.elements.$window);
       this.trigger('preview:loaded', !this.loaded
-      /* isFirst */
+      /* IsFirst */
       );
       $e.internal('editor/documents/attach-preview').then(function () {
         return jQuery('#elementor-loading, #elementor-preview-loading').fadeOut(600);
@@ -23162,7 +30902,7 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
   }, {
     key: "onEnvNotCompatible",
     value: function onEnvNotCompatible() {
-      var _this8 = this;
+      var _this9 = this;
 
       this.showFatalErrorDialog({
         headerMessage: __('Your browser isn\'t compatible', 'elementor'),
@@ -23174,7 +30914,7 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
           onButtonClick: true
         },
         onConfirm: function onConfirm() {
-          return _this8.hide();
+          return _this9.hide();
         }
       });
     }
@@ -23197,7 +30937,7 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
   }, {
     key: "onPreviewLoadingError",
     value: function onPreviewLoadingError() {
-      var _this9 = this;
+      var _this10 = this;
 
       var debugUrl = this.config.document.urls.preview + '&preview-debug',
           previewDebugLinkText = __('Click here for preview debug', 'elementor'),
@@ -23218,10 +30958,10 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
       }
 
       jQuery.get(debugUrl, function () {
-        _this9.showFatalErrorDialog(dialogOptions);
+        _this10.showFatalErrorDialog(dialogOptions);
       }).fail(function (response) {
-        //Iframe can't be loaded
-        _this9.showFatalErrorDialog({
+        // Iframe can't be loaded
+        _this10.showFatalErrorDialog({
           className: 'elementor-preview-loading-error',
           headerMessage: debugData.header,
           message: response.statusText + ' ' + response.status + ' ' + previewDebugLink,
@@ -23284,22 +31024,22 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
   }, {
     key: "addWidgetsCache",
     value: function addWidgetsCache(widgets) {
-      var _this10 = this;
+      var _this11 = this;
 
       jQuery.each(widgets, function (widgetName, widgetConfig) {
         if (elementorCommon.config.experimentalFeatures.additional_custom_breakpoints) {
           // When the Responsive Optimization experiment is active, the responsive controls are generated on the
           // JS side instead of the PHP.
-          widgetConfig.controls = _this10.generateResponsiveControls(widgetConfig.controls);
+          widgetConfig.controls = _this11.generateResponsiveControls(widgetConfig.controls);
         }
 
-        _this10.widgetsCache[widgetName] = jQuery.extend(true, {}, _this10.widgetsCache[widgetName], widgetConfig);
+        _this11.widgetsCache[widgetName] = jQuery.extend(true, {}, _this11.widgetsCache[widgetName], widgetConfig);
       });
     }
   }, {
     key: "generateResponsiveControls",
     value: function generateResponsiveControls(controls) {
-      var _this11 = this;
+      var _this12 = this;
 
       var activeBreakpoints = this.config.responsive.activeBreakpoints,
           devices = this.breakpoints.getActiveBreakpointsList({
@@ -23316,7 +31056,7 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
         var responsiveControlName, controlDevices; // Handle repeater controls.
 
         if ('object' === (0, _typeof2.default)(controlConfig.fields)) {
-          controlConfig.fields = _this11.generateResponsiveControls(controlConfig.fields);
+          controlConfig.fields = _this12.generateResponsiveControls(controlConfig.fields);
         } // Only handle responsive controls in this loop.
 
 
@@ -23353,7 +31093,7 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
           controlConfig.desktop_default = controlConfig.default;
         }
 
-        var multipleDefaultValue = _this11.config.controls[controlConfig.type].default_value;
+        var multipleDefaultValue = _this12.config.controls[controlConfig.type].default_value;
         var deleteControlDefault = true; // For multiple controls that implement get_default_value() in the control class, make sure the duplicated
         // controls receive that default value.
 
@@ -23460,18 +31200,18 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
   }, {
     key: "generateResponsiveControlsForElements",
     value: function generateResponsiveControlsForElements() {
-      var _this12 = this;
+      var _this13 = this;
 
       // Handle the default config for section and column.
       var elementNames = Object.keys(this.config.elements);
       elementNames.forEach(function (elementName) {
-        _this12.config.elements[elementName].controls = _this12.generateResponsiveControls(_this12.config.elements[elementName].controls);
+        _this13.config.elements[elementName].controls = _this13.generateResponsiveControls(_this13.config.elements[elementName].controls);
       });
     }
   }, {
     key: "populateActiveBreakpointsConfig",
     value: function populateActiveBreakpointsConfig() {
-      var _this13 = this;
+      var _this14 = this;
 
       this.config.responsive.activeBreakpoints = {};
       Object.entries(this.config.responsive.breakpoints).forEach(function (_ref) {
@@ -23480,14 +31220,14 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
             breakpointData = _ref2[1];
 
         if (breakpointData.is_enabled) {
-          _this13.config.responsive.activeBreakpoints[breakpointKey] = breakpointData;
+          _this14.config.responsive.activeBreakpoints[breakpointKey] = breakpointData;
         }
       });
     }
   }, {
     key: "addDeprecatedConfigProperties",
     value: function addDeprecatedConfigProperties() {
-      var _this14 = this;
+      var _this15 = this;
 
       var map = {
         data: {
@@ -23523,34 +31263,34 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
       };
       jQuery.each(map, function (key, data) {
         // Use `defineProperty` because `get property()` fails during the `Marionette...extend`.
-        Object.defineProperty(_this14.config, key, {
+        Object.defineProperty(_this15.config, key, {
           get: function get() {
             var replacement = data.replacement ? 'elementor.config.document.' + data.replacement : '';
-            elementorCommon.helpers.softDeprecated('elementor.config.' + key, '2.9.0', replacement); // return from current document.
+            elementorDevTools.deprecation.deprecated('elementor.config.' + key, '2.9.0', replacement); // Return from current document.
 
             return data.value();
           },
           set: function set() {
-            elementorCommon.helpers.softDeprecated('elementor.config.' + key, '2.9.0', 'elementor.config.document.' + data.replacement);
+            elementorDevTools.deprecation.deprecated('elementor.config.' + key, '2.9.0', 'elementor.config.document.' + data.replacement);
             throw Error('Deprecated');
           }
         });
       });
       Object.defineProperty(this.config.settings, 'page', {
         get: function get() {
-          elementorCommon.helpers.softDeprecated('elementor.config.settings.page', '2.9.0', 'elementor.config.document.settings');
+          elementorDevTools.deprecation.deprecated('elementor.config.settings.page', '2.9.0', 'elementor.config.document.settings');
           return elementor.config.document.settings;
         }
       });
       Object.defineProperty(this.config, 'widgets', {
         get: function get() {
-          elementorCommon.helpers.softDeprecated('elementor.config.widgets', '2.9.0', 'elementor.widgetsCache');
+          elementorDevTools.deprecation.deprecated('elementor.config.widgets', '2.9.0', 'elementor.widgetsCache');
           return elementor.widgetsCache;
         }
       });
       Object.defineProperty(this, '$previewElementorEl', {
         get: function get() {
-          elementorCommon.helpers.softDeprecated('elementor.$previewElementorEl', '2.9.4', 'elementor.documents.getCurrent().$element');
+          elementorDevTools.deprecation.deprecated('elementor.$previewElementorEl', '2.9.4', 'elementor.documents.getCurrent().$element');
           return elementor.documents.getCurrent().$element;
         }
       });
@@ -23582,7 +31322,9 @@ exports["default"] = EditorBase;
 "use strict";
 
 
-var ElementModel = __webpack_require__(/*! elementor-elements/models/element */ "../assets/dev/js/editor/elements/models/element.js");
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _elementTypeNotFound = _interopRequireDefault(__webpack_require__(/*! elementor-editor/errors/element-type-not-found */ "../assets/dev/js/editor/errors/element-type-not-found.js"));
 
 var ElementsCollection = Backbone.Collection.extend({
   add: function add(models, options, isCorrectSet) {
@@ -23596,7 +31338,14 @@ var ElementsCollection = Backbone.Collection.extend({
     var ModelClass = Backbone.Model;
 
     if (attrs.elType) {
-      ModelClass = elementor.hooks.applyFilters('element/model', ElementModel, attrs);
+      var elementType = attrs.widgetType || attrs.elType,
+          elementTypeClass = elementor.elementsManager.getElementTypeClass(elementType);
+
+      if (!elementTypeClass) {
+        throw new _elementTypeNotFound.default(elementType);
+      }
+
+      ModelClass = elementor.hooks.applyFilters('element/model', elementTypeClass.getModel(), attrs);
     }
 
     return new ModelClass(attrs, options);
@@ -23612,6 +31361,197 @@ var ElementsCollection = Backbone.Collection.extend({
 });
 ElementsCollection.prototype.sync = ElementsCollection.prototype.fetch = ElementsCollection.prototype.save = _.noop;
 module.exports = ElementsCollection;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/elements/manager.js":
+/*!***************************************************!*\
+  !*** ../assets/dev/js/editor/elements/manager.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+
+var _elementBase = _interopRequireDefault(__webpack_require__(/*! ./types/base/element-base */ "../assets/dev/js/editor/elements/types/base/element-base.js"));
+
+var elementsTypes = _interopRequireWildcard(__webpack_require__(/*! ./types/ */ "../assets/dev/js/editor/elements/types/index.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+var ElementsManager = /*#__PURE__*/function () {
+  /**
+   * Registered elements types.
+   *
+   * @type {Object.<ElementBase>}
+   */
+  function ElementsManager() {
+    (0, _classCallCheck2.default)(this, ElementsManager);
+    (0, _defineProperty2.default)(this, "elementTypes", {});
+    this.registerElements();
+  }
+  /**
+   * Function getElementTypeClass().
+   *
+   * @param {string} type
+   *
+   * @return {ElementBase} Element type class.
+   */
+
+
+  (0, _createClass2.default)(ElementsManager, [{
+    key: "getElementTypeClass",
+    value: function getElementTypeClass(type) {
+      var typeClass = this.elementTypes[type]; // When exact widget is not registered, return widget base instead.
+
+      if (!typeClass && elementor.widgetsCache[type]) {
+        typeClass = this.elementTypes.widget;
+      }
+
+      return typeClass;
+    }
+    /**
+     * Function registerElementType().
+     *
+     * @param {ElementBase} element
+     */
+
+  }, {
+    key: "registerElementType",
+    value: function registerElementType(element) {
+      // Validate instanceOf `element`.
+      if (!(element instanceof _elementBase.default)) {
+        throw new TypeError('The element argument must be an instance of ElementBase.');
+      }
+
+      var type = element.getType();
+
+      if (this.elementTypes[type]) {
+        throw new Error('Element type already registered');
+      }
+
+      this.elementTypes[type] = element;
+    }
+    /**
+     * Function registerElements().
+     *
+     * Register all base elements types.
+     */
+
+  }, {
+    key: "registerElements",
+    value: function registerElements() {
+      var _this = this;
+
+      Object.values(elementsTypes).forEach(function (ElementClass) {
+        var element = new ElementClass();
+
+        _this.registerElementType(element);
+      }); // TODO: Find better place, since container is not module.
+
+      if (elementorCommon.config.experimentalFeatures.container) {
+        var ContainerClass = (__webpack_require__(/*! ./types/container */ "../assets/dev/js/editor/elements/types/container.js")["default"]);
+
+        this.registerElementType(new ContainerClass());
+      }
+    }
+  }]);
+  return ElementsManager;
+}();
+
+exports["default"] = ElementsManager;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/elements/models/base-element-model.js":
+/*!*********************************************************************!*\
+  !*** ../assets/dev/js/editor/elements/models/base-element-model.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+/**
+ * @typedef {import('elementor/assets/lib/backbone/backbone.marionette')} Backbone
+ */
+
+/**
+ * The class purpose is to share the common methods and properties between all available models.
+ */
+var BaseElementModel = /*#__PURE__*/function (_Backbone$Model) {
+  (0, _inherits2.default)(BaseElementModel, _Backbone$Model);
+
+  var _super = _createSuper(BaseElementModel);
+
+  function BaseElementModel() {
+    (0, _classCallCheck2.default)(this, BaseElementModel);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(BaseElementModel, [{
+    key: "isValidChild",
+    value: // eslint-disable-next-line jsdoc/require-returns-check
+
+    /**
+     * Function isValidChild().
+     *
+     * Validates if `childModel` can be added to this model as a child.
+     * Each model should have its own implementation of this method against all possible child models.
+     *
+     * @param {Backbone.Model} childModel
+     *
+     * @return {boolean} Whether the child model is valid or not.
+     */
+    function isValidChild(childModel) {
+      // eslint-disable-line no-unused-vars
+      elementorModules.ForceMethodImplementation({
+        attributes: this.attributes
+      });
+    }
+  }]);
+  return BaseElementModel;
+}(Backbone.Model);
+
+exports["default"] = BaseElementModel;
 
 /***/ }),
 
@@ -23632,6 +31572,196 @@ module.exports = elementorModules.editor.elements.models.BaseSettings.extend({
 
 /***/ }),
 
+/***/ "../assets/dev/js/editor/elements/models/column.js":
+/*!*********************************************************!*\
+  !*** ../assets/dev/js/editor/elements/models/column.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _element = _interopRequireDefault(__webpack_require__(/*! ./element */ "../assets/dev/js/editor/elements/models/element.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+/**
+ * @typedef {import('../../../editor/elements/models/base-element-model')} BaseModel
+ */
+var Column = /*#__PURE__*/function (_Element) {
+  (0, _inherits2.default)(Column, _Element);
+
+  var _super = _createSuper(Column);
+
+  function Column() {
+    (0, _classCallCheck2.default)(this, Column);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Column, [{
+    key: "isValidChild",
+    value:
+    /**
+     * Allow only widget, container and inner-section.
+     *
+     * @param {BaseModel} childModel
+     */
+    function isValidChild(childModel) {
+      var childElType = childModel.get('elType');
+
+      if ('section' === childElType && childModel.get('isInner')) {
+        return true;
+      }
+
+      return ['widget', 'container'].includes(childElType);
+    }
+  }]);
+  return Column;
+}(_element.default);
+
+exports["default"] = Column;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/elements/models/container.js":
+/*!************************************************************!*\
+  !*** ../assets/dev/js/editor/elements/models/container.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _element = _interopRequireDefault(__webpack_require__(/*! ./element */ "../assets/dev/js/editor/elements/models/element.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Container = /*#__PURE__*/function (_ElementModel) {
+  (0, _inherits2.default)(Container, _ElementModel);
+
+  var _super = _createSuper(Container);
+
+  function Container() {
+    (0, _classCallCheck2.default)(this, Container);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Container, [{
+    key: "isValidChild",
+    value:
+    /**
+     * Do not allow section or column be placed in the container.
+     *
+     * @param {*} childModel
+     */
+    function isValidChild(childModel) {
+      // Get elType.
+      var elType = childModel.get('elType');
+      return 'section' !== elType && 'column' !== elType;
+    }
+  }]);
+  return Container;
+}(_element.default);
+
+exports["default"] = Container;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/elements/models/document.js":
+/*!***********************************************************!*\
+  !*** ../assets/dev/js/editor/elements/models/document.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _baseElementModel = _interopRequireDefault(__webpack_require__(/*! ./base-element-model */ "../assets/dev/js/editor/elements/models/base-element-model.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Document = /*#__PURE__*/function (_BaseElementModel) {
+  (0, _inherits2.default)(Document, _BaseElementModel);
+
+  var _super = _createSuper(Document);
+
+  function Document() {
+    (0, _classCallCheck2.default)(this, Document);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Document, [{
+    key: "isValidChild",
+    value: function isValidChild(childModel) {
+      var childElType = childModel.get('elType'); // Valid children.
+
+      return ['section', 'container'].includes(childElType);
+    }
+  }]);
+  return Document;
+}(_baseElementModel.default);
+
+exports["default"] = Document;
+
+/***/ }),
+
 /***/ "../assets/dev/js/editor/elements/models/element.js":
 /*!**********************************************************!*\
   !*** ../assets/dev/js/editor/elements/models/element.js ***!
@@ -23645,10 +31775,16 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 
 var _typeof2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js"));
 
+var _baseElementModel = _interopRequireDefault(__webpack_require__(/*! ./base-element-model */ "../assets/dev/js/editor/elements/models/base-element-model.js"));
+
 var ColumnSettingsModel = __webpack_require__(/*! elementor-elements/models/column-settings */ "../assets/dev/js/editor/elements/models/column-settings.js"),
     ElementModel;
+/**
+ * @name ElementModel
+ */
 
-ElementModel = Backbone.Model.extend({
+
+ElementModel = _baseElementModel.default.extend({
   defaults: {
     id: '',
     elType: '',
@@ -23705,7 +31841,14 @@ ElementModel = Backbone.Model.extend({
     }
 
     settings.elType = elType;
-    settings.isInner = this.get('isInner');
+    settings.isInner = this.get('isInner'); // Allow passing custom `_title` from model.
+
+    var customTitle = this.get('_title');
+
+    if (customTitle) {
+      settings._title = customTitle;
+    }
+
     settings = new SettingsModel(settings, {
       controls: elementor.getElementControls(this)
     });
@@ -23863,6 +32006,806 @@ module.exports = ElementModel;
 
 /***/ }),
 
+/***/ "../assets/dev/js/editor/elements/models/section.js":
+/*!**********************************************************!*\
+  !*** ../assets/dev/js/editor/elements/models/section.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _element = _interopRequireDefault(__webpack_require__(/*! ./element */ "../assets/dev/js/editor/elements/models/element.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+/**
+ * @typedef {import('../../../editor/elements/models/base-element-model')} BaseModel
+ */
+var Section = /*#__PURE__*/function (_ElementModel) {
+  (0, _inherits2.default)(Section, _ElementModel);
+
+  var _super = _createSuper(Section);
+
+  function Section() {
+    (0, _classCallCheck2.default)(this, Section);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Section, [{
+    key: "isValidChild",
+    value:
+    /**
+     * Allow only column.
+     *
+     * @param {BaseModel} childModel
+     */
+    function isValidChild(childModel) {
+      return 'column' === childModel.get('elType');
+    }
+  }]);
+  return Section;
+}(_element.default);
+
+exports["default"] = Section;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/elements/models/widget.js":
+/*!*********************************************************!*\
+  !*** ../assets/dev/js/editor/elements/models/widget.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _element = _interopRequireDefault(__webpack_require__(/*! ./element */ "../assets/dev/js/editor/elements/models/element.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Widget = /*#__PURE__*/function (_ElementModel) {
+  (0, _inherits2.default)(Widget, _ElementModel);
+
+  var _super = _createSuper(Widget);
+
+  function Widget() {
+    (0, _classCallCheck2.default)(this, Widget);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Widget, [{
+    key: "isValidChild",
+    value: function isValidChild() {
+      // By default widget cannot contain any element.
+      return false;
+    }
+  }]);
+  return Widget;
+}(_element.default);
+
+exports["default"] = Widget;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/elements/types/base/element-base.js":
+/*!*******************************************************************!*\
+  !*** ../assets/dev/js/editor/elements/types/base/element-base.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+/* eslint-disable jsdoc/require-returns-check */
+
+/**
+ * @typedef {import('elementor/assets/lib/backbone/backbone.marionette')} Marionette
+ * @typedef {import('../../../elements/models/base-element-model')} BaseModel
+ */
+var ElementBase = /*#__PURE__*/function () {
+  function ElementBase() {
+    (0, _classCallCheck2.default)(this, ElementBase);
+  }
+
+  (0, _createClass2.default)(ElementBase, [{
+    key: "getType",
+    value:
+    /**
+     * @return {string} Element Type.
+     */
+    function getType() {
+      elementorModules.ForceMethodImplementation();
+    }
+    /**
+     * @return {Marionette.View} Element Marionette View.
+     */
+
+  }, {
+    key: "getView",
+    value: function getView() {
+      elementorModules.ForceMethodImplementation();
+    }
+    /**
+     * @return {React.Component} React Component.
+     */
+
+  }, {
+    key: "getEmptyView",
+    value: function getEmptyView() {
+      elementorModules.ForceMethodImplementation();
+    }
+    /**
+     * @return {BaseModel} Element Model.
+     */
+
+  }, {
+    key: "getModel",
+    value: function getModel() {
+      elementorModules.ForceMethodImplementation();
+    }
+  }]);
+  return ElementBase;
+}();
+
+exports["default"] = ElementBase;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/elements/types/column.js":
+/*!********************************************************!*\
+  !*** ../assets/dev/js/editor/elements/types/column.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _elementBase = _interopRequireDefault(__webpack_require__(/*! ../types/base/element-base */ "../assets/dev/js/editor/elements/types/base/element-base.js"));
+
+var _column = _interopRequireDefault(__webpack_require__(/*! elementor-elements/models/column */ "../assets/dev/js/editor/elements/models/column.js"));
+
+var _column2 = _interopRequireDefault(__webpack_require__(/*! elementor-elements/views/column */ "../assets/dev/js/editor/elements/views/column.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Column = /*#__PURE__*/function (_Base) {
+  (0, _inherits2.default)(Column, _Base);
+
+  var _super = _createSuper(Column);
+
+  function Column() {
+    (0, _classCallCheck2.default)(this, Column);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Column, [{
+    key: "getType",
+    value: function getType() {
+      return 'column';
+    }
+  }, {
+    key: "getView",
+    value: function getView() {
+      return _column2.default;
+    }
+  }, {
+    key: "getModel",
+    value: function getModel() {
+      return _column.default;
+    }
+  }]);
+  return Column;
+}(_elementBase.default);
+
+exports["default"] = Column;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/elements/types/container.js":
+/*!***********************************************************!*\
+  !*** ../assets/dev/js/editor/elements/types/container.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _elementBase = _interopRequireDefault(__webpack_require__(/*! ../types/base/element-base */ "../assets/dev/js/editor/elements/types/base/element-base.js"));
+
+var _emptyComponent = _interopRequireDefault(__webpack_require__(/*! elementor-elements/views/container/empty-component */ "../assets/dev/js/editor/elements/views/container/empty-component.js"));
+
+var _container = _interopRequireDefault(__webpack_require__(/*! elementor-elements/models/container */ "../assets/dev/js/editor/elements/models/container.js"));
+
+var _container2 = _interopRequireDefault(__webpack_require__(/*! elementor-elements/views/container */ "../assets/dev/js/editor/elements/views/container.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Container = /*#__PURE__*/function (_Base) {
+  (0, _inherits2.default)(Container, _Base);
+
+  var _super = _createSuper(Container);
+
+  function Container() {
+    (0, _classCallCheck2.default)(this, Container);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Container, [{
+    key: "getType",
+    value: function getType() {
+      return 'container';
+    }
+  }, {
+    key: "getView",
+    value: function getView() {
+      return _container2.default;
+    }
+  }, {
+    key: "getEmptyView",
+    value: function getEmptyView() {
+      return _emptyComponent.default;
+    }
+  }, {
+    key: "getModel",
+    value: function getModel() {
+      return _container.default;
+    }
+  }]);
+  return Container;
+}(_elementBase.default);
+
+exports["default"] = Container;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/elements/types/document.js":
+/*!**********************************************************!*\
+  !*** ../assets/dev/js/editor/elements/types/document.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _elementBase = _interopRequireDefault(__webpack_require__(/*! ../types/base/element-base */ "../assets/dev/js/editor/elements/types/base/element-base.js"));
+
+var _document = _interopRequireDefault(__webpack_require__(/*! elementor-elements/models/document */ "../assets/dev/js/editor/elements/models/document.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Document = /*#__PURE__*/function (_Base) {
+  (0, _inherits2.default)(Document, _Base);
+
+  var _super = _createSuper(Document);
+
+  function Document() {
+    (0, _classCallCheck2.default)(this, Document);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Document, [{
+    key: "getType",
+    value: function getType() {
+      return 'document';
+    }
+  }, {
+    key: "getModel",
+    value: function getModel() {
+      return _document.default;
+    }
+  }]);
+  return Document;
+}(_elementBase.default);
+
+exports["default"] = Document;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/elements/types/index.js":
+/*!*******************************************************!*\
+  !*** ../assets/dev/js/editor/elements/types/index.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "Column", ({
+  enumerable: true,
+  get: function get() {
+    return _column.default;
+  }
+}));
+Object.defineProperty(exports, "Document", ({
+  enumerable: true,
+  get: function get() {
+    return _document.default;
+  }
+}));
+Object.defineProperty(exports, "InnerSection", ({
+  enumerable: true,
+  get: function get() {
+    return _innerSection.default;
+  }
+}));
+Object.defineProperty(exports, "Section", ({
+  enumerable: true,
+  get: function get() {
+    return _section.default;
+  }
+}));
+Object.defineProperty(exports, "Widget", ({
+  enumerable: true,
+  get: function get() {
+    return _widget.default;
+  }
+}));
+
+var _column = _interopRequireDefault(__webpack_require__(/*! ./column */ "../assets/dev/js/editor/elements/types/column.js"));
+
+var _document = _interopRequireDefault(__webpack_require__(/*! ./document */ "../assets/dev/js/editor/elements/types/document.js"));
+
+var _innerSection = _interopRequireDefault(__webpack_require__(/*! ./inner-section */ "../assets/dev/js/editor/elements/types/inner-section.js"));
+
+var _section = _interopRequireDefault(__webpack_require__(/*! ./section */ "../assets/dev/js/editor/elements/types/section.js"));
+
+var _widget = _interopRequireDefault(__webpack_require__(/*! ./widget */ "../assets/dev/js/editor/elements/types/widget.js"));
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/elements/types/inner-section.js":
+/*!***************************************************************!*\
+  !*** ../assets/dev/js/editor/elements/types/inner-section.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _section = _interopRequireDefault(__webpack_require__(/*! ./section */ "../assets/dev/js/editor/elements/types/section.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var InnerSection = /*#__PURE__*/function (_Section) {
+  (0, _inherits2.default)(InnerSection, _Section);
+
+  var _super = _createSuper(InnerSection);
+
+  function InnerSection() {
+    (0, _classCallCheck2.default)(this, InnerSection);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(InnerSection, [{
+    key: "getType",
+    value: function getType() {
+      return 'inner-section';
+    }
+  }]);
+  return InnerSection;
+}(_section.default);
+
+exports["default"] = InnerSection;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/elements/types/section.js":
+/*!*********************************************************!*\
+  !*** ../assets/dev/js/editor/elements/types/section.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _elementBase = _interopRequireDefault(__webpack_require__(/*! ../types/base/element-base */ "../assets/dev/js/editor/elements/types/base/element-base.js"));
+
+var _section = _interopRequireDefault(__webpack_require__(/*! elementor-elements/models/section */ "../assets/dev/js/editor/elements/models/section.js"));
+
+var _section2 = _interopRequireDefault(__webpack_require__(/*! elementor-elements/views/section */ "../assets/dev/js/editor/elements/views/section.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Section = /*#__PURE__*/function (_Base) {
+  (0, _inherits2.default)(Section, _Base);
+
+  var _super = _createSuper(Section);
+
+  function Section() {
+    (0, _classCallCheck2.default)(this, Section);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Section, [{
+    key: "getType",
+    value: function getType() {
+      return 'section';
+    }
+  }, {
+    key: "getView",
+    value: function getView() {
+      return _section2.default;
+    }
+  }, {
+    key: "getModel",
+    value: function getModel() {
+      return _section.default;
+    }
+  }]);
+  return Section;
+}(_elementBase.default);
+
+exports["default"] = Section;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/elements/types/widget.js":
+/*!********************************************************!*\
+  !*** ../assets/dev/js/editor/elements/types/widget.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _elementBase = _interopRequireDefault(__webpack_require__(/*! ../types/base/element-base */ "../assets/dev/js/editor/elements/types/base/element-base.js"));
+
+var _widget = _interopRequireDefault(__webpack_require__(/*! elementor-elements/models/widget */ "../assets/dev/js/editor/elements/models/widget.js"));
+
+var _widget2 = _interopRequireDefault(__webpack_require__(/*! elementor-elements/views/widget */ "../assets/dev/js/editor/elements/views/widget.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Widget = /*#__PURE__*/function (_Base) {
+  (0, _inherits2.default)(Widget, _Base);
+
+  var _super = _createSuper(Widget);
+
+  function Widget() {
+    (0, _classCallCheck2.default)(this, Widget);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Widget, [{
+    key: "getType",
+    value: function getType() {
+      return 'widget';
+    }
+  }, {
+    key: "getView",
+    value: function getView() {
+      return _widget2.default;
+    }
+  }, {
+    key: "getModel",
+    value: function getModel() {
+      return _widget.default;
+    }
+  }]);
+  return Widget;
+}(_elementBase.default);
+
+exports["default"] = Widget;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/elements/views/base-widget.js":
+/*!*************************************************************!*\
+  !*** ../assets/dev/js/editor/elements/views/base-widget.js ***!
+  \*************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var sprintf = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["sprintf"];
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/get */ "../node_modules/@babel/runtime/helpers/get.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var BaseElementView = __webpack_require__(/*! elementor-elements/views/base */ "../assets/dev/js/editor/elements/views/base.js");
+/**
+ * @augments BaseElementView
+ */
+
+
+var BaseWidgetView = /*#__PURE__*/function (_BaseElementView) {
+  (0, _inherits2.default)(BaseWidgetView, _BaseElementView);
+
+  var _super = _createSuper(BaseWidgetView);
+
+  function BaseWidgetView() {
+    (0, _classCallCheck2.default)(this, BaseWidgetView);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(BaseWidgetView, [{
+    key: "initialize",
+    value: function initialize(options) {
+      var _this = this;
+
+      (0, _get2.default)((0, _getPrototypeOf2.default)(BaseWidgetView.prototype), "initialize", this).call(this, options);
+      var editModel = this.getEditModel();
+      editModel.on({
+        'before:remote:render': this.onModelBeforeRemoteRender.bind(this),
+        'remote:render': this.onModelRemoteRender.bind(this),
+        'settings:loaded': function settingsLoaded() {
+          return setTimeout(_this.render.bind(_this));
+        }
+      });
+
+      if ('remote' === this.getTemplateType() && !this.getEditModel().getHtmlCache()) {
+        editModel.renderRemoteServer();
+      }
+
+      var onRenderMethod = this.onRender;
+      this.render = _.throttle(this.render, 300);
+
+      this.onRender = function () {
+        _.defer(onRenderMethod.bind(this));
+      };
+    }
+  }, {
+    key: "className",
+    value: function className() {
+      var baseClasses = (0, _get2.default)((0, _getPrototypeOf2.default)(BaseWidgetView.prototype), "className", this).call(this);
+      return baseClasses + ' elementor-widget ' + elementor.getElementData(this.getEditModel()).html_wrapper_class;
+    }
+  }, {
+    key: "getTemplate",
+    value: function getTemplate() {
+      var editModel = this.getEditModel();
+
+      if ('remote' !== this.getTemplateType()) {
+        return Marionette.TemplateCache.get('#tmpl-elementor-' + editModel.get('widgetType') + '-content');
+      }
+
+      return _.template('');
+    }
+  }, {
+    key: "getEditButtons",
+    value: function getEditButtons() {
+      var elementData = elementor.getElementData(this.model),
+          editTools = {};
+      editTools.edit = {
+        /* Translators: %s: Element name. */
+        title: sprintf(__('Edit %s', 'elementor'), elementData.title),
+        icon: 'edit'
+      };
+
+      if (elementor.getPreferences('edit_buttons')) {
+        editTools.duplicate = {
+          /* Translators: %s: Element name. */
+          title: sprintf(__('Duplicate %s', 'elementor'), elementData.title),
+          icon: 'clone'
+        };
+      }
+
+      return editTools;
+    }
+  }, {
+    key: "getRepeaterSettingKey",
+    value: function getRepeaterSettingKey(settingKey, repeaterKey, repeaterItemIndex) {
+      return [repeaterKey, repeaterItemIndex, settingKey].join('.');
+    }
+  }, {
+    key: "onModelBeforeRemoteRender",
+    value: function onModelBeforeRemoteRender() {
+      this.$el.addClass('elementor-loading');
+    }
+  }, {
+    key: "onModelRemoteRender",
+    value: function onModelRemoteRender() {
+      if (this.isDestroyed) {
+        return;
+      }
+
+      this.$el.removeClass('elementor-loading'); // If container document has been changed during the remote request, don't render.
+
+      if (this.getContainer().document.id !== elementor.documents.getCurrent().id) {
+        return;
+      }
+
+      this.render();
+    }
+  }, {
+    key: "onBeforeDestroy",
+    value: function onBeforeDestroy() {
+      // Remove old style from the DOM.
+      elementor.$previewContents.find('#elementor-style-' + this.model.get('id')).remove();
+    }
+  }]);
+  return BaseWidgetView;
+}(BaseElementView);
+
+module.exports = BaseWidgetView;
+
+/***/ }),
+
 /***/ "../assets/dev/js/editor/elements/views/base.js":
 /*!******************************************************!*\
   !*** ../assets/dev/js/editor/elements/views/base.js ***!
@@ -23882,10 +32825,29 @@ var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/
 
 var _environment = _interopRequireDefault(__webpack_require__(/*! elementor-common/utils/environment */ "../core/common/assets/js/utils/environment.js"));
 
+var _elementTypeNotFound = _interopRequireDefault(__webpack_require__(/*! elementor-editor/errors/element-type-not-found */ "../assets/dev/js/editor/errors/element-type-not-found.js"));
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 var ControlsCSSParser = __webpack_require__(/*! elementor-editor-utils/controls-css-parser */ "../assets/dev/js/editor/utils/controls-css-parser.js"),
     Validator = __webpack_require__(/*! elementor-validator/base */ "../assets/dev/js/editor/components/validator/base.js"),
     BaseContainer = __webpack_require__(/*! elementor-views/base-container */ "../assets/dev/js/editor/views/base-container.js"),
     BaseElementView;
+/**
+ * @typedef {{}} DataBinding
+ * @property {DOMStringMap} dataset The dataset of the element.
+ * @property {HTMLElement}  el      The element.
+ */
+
+/**
+ * @name BaseElementView
+ * @augments {BaseContainer}
+ */
+
 
 BaseElementView = BaseContainer.extend({
   tagName: 'div',
@@ -23950,28 +32912,14 @@ BaseElementView = BaseContainer.extend({
     return elementor.helpers.getElementChildType(this.getElementType());
   },
   getChildView: function getChildView(model) {
-    var ChildView;
-    var elType = model.get('elType');
+    var elementType = model.get('widgetType') || model.get('elType'),
+        elementTypeClass = elementor.elementsManager.getElementTypeClass(elementType);
 
-    switch (elType) {
-      case 'section':
-        ChildView = __webpack_require__(/*! elementor-elements/views/section */ "../assets/dev/js/editor/elements/views/section.js");
-        break;
-
-      case 'column':
-        ChildView = __webpack_require__(/*! elementor-elements/views/column */ "../assets/dev/js/editor/elements/views/column.js");
-        break;
-
-      case 'container':
-        ChildView = __webpack_require__(/*! elementor-elements/views/container */ "../assets/dev/js/editor/elements/views/container.js");
-        break;
-
-      default:
-        ChildView = elementor.modules.elements.views.Widget;
-        break;
+    if (!elementTypeClass) {
+      throw new _elementTypeNotFound.default(elementType);
     }
 
-    return elementor.hooks.applyFilters('element/view', ChildView, model, this);
+    return elementor.hooks.applyFilters('element/view', elementTypeClass.getView(), model, this);
   },
   getTemplateType: function getTemplateType() {
     return 'js';
@@ -23988,7 +32936,7 @@ BaseElementView = BaseContainer.extend({
         model: this.model,
         settings: settingsModel,
         view: this,
-        parent: this._parent ? this._parent.getContainer() : {},
+        parent: this._parent ? this._parent.getContainer() : false,
         label: elementor.helpers.getModelLabel(this.model),
         controls: settingsModel.options.controls
       });
@@ -24006,7 +32954,7 @@ BaseElementView = BaseContainer.extend({
         name: 'edit',
         icon: 'eicon-edit',
 
-        /* translators: %s: Element Name. */
+        /* Translators: %s: Element Name. */
         title: function title() {
           return sprintf(__('Edit %s', 'elementor'), elementor.selection.isMultiple() ? '' : _this.options.model.getTitle());
         },
@@ -24106,7 +33054,12 @@ BaseElementView = BaseContainer.extend({
         name: 'delete',
         icon: 'eicon-trash',
         title: function title() {
-          return elementor.selection.isMultiple() ? sprintf(__('Delete %d items', 'elementor'), elementor.selection.getElements().length) : __('Delete', 'elementor');
+          if (elementor.selection.isMultiple()) {
+            // Translators: %d: Elements count.
+            return sprintf(__('Delete %d items', 'elementor'), elementor.selection.getElements().length);
+          }
+
+          return __('Delete', 'elementor');
         },
         shortcut: '⌦',
         callback: function callback() {
@@ -24122,28 +33075,21 @@ BaseElementView = BaseContainer.extend({
     return {};
   },
   initialize: function initialize() {
-    var _this2 = this;
-
     BaseContainer.prototype.initialize.apply(this, arguments);
     var editModel = this.getEditModel();
 
     if (this.collection && this.onCollectionChanged) {
-      elementorCommon.helpers.softDeprecated('onCollectionChanged', '2.8.0', '$e.hooks');
+      elementorDevTools.deprecation.deprecated('onCollectionChanged', '2.8.0', '$e.hooks');
       this.listenTo(this.collection, 'add remove reset', this.onCollectionChanged, this);
     }
 
     if (this.onSettingsChanged) {
-      elementorCommon.helpers.softDeprecated('onSettingsChanged', '2.8.0', '$e.hooks');
+      elementorDevTools.deprecation.deprecated('onSettingsChanged', '2.8.0', '$e.hooks');
       this.listenTo(editModel.get('settings'), 'change', this.onSettingsChanged);
     }
 
     this.listenTo(editModel.get('editSettings'), 'change', this.onEditSettingsChanged).listenTo(this.model, 'request:edit', this.onEditRequest).listenTo(this.model, 'request:toggleVisibility', this.toggleVisibility);
     this.initControlsCSSParser();
-
-    _.defer(function () {
-      // Init container. Defer - in order to init the container after the element is fully initialized, and properties like `_parent` are available.
-      _this2.getContainer();
-    });
   },
   getHandlesOverlay: function getHandlesOverlay() {
     var elementType = this.getElementType(),
@@ -24186,7 +33132,7 @@ BaseElementView = BaseContainer.extend({
 
     if ('section' === elementType || editButtonsEnabled) {
       editButtons.remove = {
-        /* translators: %s: Element Name. */
+        /* Translators: %s: Element Name. */
         title: sprintf(__('Delete %s', 'elementor'), elementData.title),
         icon: 'close'
       };
@@ -24439,12 +33385,8 @@ BaseElementView = BaseContainer.extend({
       editModel.renderRemoteServer();
     }
   },
-  renderOnChange: function renderOnChange(settings) {
-    if (!this.allowRender) {
-      return;
-    } // Make sure is correct model
-
-
+  renderChanges: function renderChanges(settings) {
+    // Make sure is correct model
     if (settings instanceof elementorModules.editor.elements.models.BaseSettings) {
       var hasChanged = settings.hasChanged();
       var isContentChanged = !hasChanged,
@@ -24485,10 +33427,159 @@ BaseElementView = BaseContainer.extend({
         this.renderUI();
         return;
       }
-    } // Re-render the template
-
+    }
 
     this.renderHTML();
+  },
+
+  /**
+   * Function linkDataBindings().
+   *
+   * Link data to allow partial render, instead of full re-render
+   *
+   * How to use?
+   *  If the element which should be rendered for a setting key is known in advance, it's possible to add the following attributes to the element to avoid full re-render:
+   *  Example for repeater item:
+   * 'data-binding-type': 'repeater-item',               // Type of binding (to know how to behave).
+   * 'data-binding-setting': 'tab_title',                // Setting key that effect the binding.
+   * 'data-binding-index': tabCount,                     // Index is required for repeater items.
+   *
+   * Example for content:
+   * 'data-binding-type': 'content',                     // Type of binding.
+   * 'data-binding-setting': 'testimonial_content',      // Setting change to capture, the value will replace the link.
+   *
+   * By adding the following example attributes inside the widget the element innerHTML will be linked to the 'testimonial_content' setting value.
+   *
+   * Current Limitation:
+   * Not working with dynamics, will required full re-render.
+   */
+  linkDataBindings: function linkDataBindings() {
+    var _this2 = this;
+
+    /**
+     * @type {Array.<DataBinding>}
+     */
+    this.dataBindings = [];
+    var id = this.$el.data('id');
+
+    if (!id) {
+      return;
+    }
+
+    var $dataBinding = this.$el.find('[data-binding-type]');
+
+    if (!$dataBinding.length) {
+      return;
+    }
+
+    $dataBinding.each(function (index, current) {
+      // To support nested data-binding bypass nested data-binding that are not part of the current.
+      if (jQuery(current).closest('.elementor-element').data('id') === id) {
+        if (current.dataset.bindingType) {
+          _this2.dataBindings.push({
+            el: current,
+            dataset: current.dataset
+          });
+        }
+      }
+    });
+  },
+
+  /**
+   * Function renderDataBindings().
+   *
+   * Render linked data.
+   *
+   * @param {Object}              settings
+   * @param {Array.<DataBinding>} dataBindings
+   *
+   * @return {boolean} - false on fail.
+   */
+  renderDataBindings: function renderDataBindings(settings, dataBindings) {
+    var _this$dataBindings;
+
+    if (!((_this$dataBindings = this.dataBindings) !== null && _this$dataBindings !== void 0 && _this$dataBindings.length)) {
+      return false;
+    }
+
+    var changed = false;
+
+    var renderDataBinding = function renderDataBinding(dataBinding) {
+      var change = settings.changed[dataBinding.dataset.bindingSetting];
+
+      if (change !== undefined) {
+        dataBinding.el.innerHTML = change;
+        return true;
+      }
+
+      return false;
+    };
+
+    var _iterator = _createForOfIteratorHelper(dataBindings),
+        _step;
+
+    try {
+      for (_iterator.s(); !(_step = _iterator.n()).done;) {
+        var dataBinding = _step.value;
+
+        switch (dataBinding.dataset.bindingType) {
+          case 'repeater-item':
+            {
+              var _container$parent;
+
+              var repeater = this.container.repeaters[dataBinding.dataset.bindingRepeaterName];
+
+              if (!repeater) {
+                break;
+              }
+
+              var container = repeater.children.find(function (i) {
+                return i.id === settings.attributes._id;
+              });
+
+              if ((container === null || container === void 0 ? void 0 : (_container$parent = container.parent) === null || _container$parent === void 0 ? void 0 : _container$parent.children.indexOf(container)) + 1 === parseInt(dataBinding.dataset.bindingIndex)) {
+                changed = renderDataBinding(dataBinding);
+              }
+            }
+            break;
+
+          case 'content':
+            {
+              changed = renderDataBinding(dataBinding);
+            }
+            break;
+        }
+
+        if (changed) {
+          break;
+        }
+      }
+    } catch (err) {
+      _iterator.e(err);
+    } finally {
+      _iterator.f();
+    }
+
+    return changed;
+  },
+
+  /**
+   * Function renderOnChange().
+   *
+   * Render the changes in the settings according to the current situation.
+   *
+   * @param {Object} settings
+   */
+  renderOnChange: function renderOnChange(settings) {
+    if (!this.allowRender) {
+      return;
+    }
+
+    if (this.renderDataBindings(settings, this.dataBindings)) {
+      return;
+    }
+
+    this.renderChanges(settings);
   },
   getDynamicParsingSettings: function getDynamicParsingSettings() {
     var self = this;
@@ -24515,9 +33606,14 @@ BaseElementView = BaseContainer.extend({
   onBeforeRender: function onBeforeRender() {
     this.renderAttributes = {};
   },
+  render: function render() {
+    this.getContainer();
+    BaseContainer.prototype.render.apply(this, arguments);
+  },
   onRender: function onRender() {
     var _this3 = this;
 
+    this.linkDataBindings();
     this.renderUI();
     this.runReadyTrigger();
 
@@ -24609,6 +33705,10 @@ BaseElementView = BaseContainer.extend({
     elementorFrontend.elements.window.document.activeElement.blur();
   },
   onDestroy: function onDestroy() {
+    if (this.dataBindings) {
+      delete this.dataBindings;
+    }
+
     this.controlsCSSParser.removeStyleFromDocument();
     this.getEditModel().get('settings').validators = {};
     elementor.channels.data.trigger('element:destroy', this.model);
@@ -24650,7 +33750,7 @@ BaseElementView = BaseContainer.extend({
     var _this4 = this;
 
     // Init the draggable only for Containers and their children.
-    if (!this.$el.hasClass('.e-container') && !this.$el.parents('.e-container').length) {
+    if (!this.$el.hasClass('.e-con') && !this.$el.parents('.e-con').length) {
       return;
     }
 
@@ -24903,7 +34003,7 @@ module.exports = Marionette.Behavior.extend({
     modal.setSettings('iframe', iframe);
   },
   onContextMenuHide: function onContextMenuHide() {
-    // enable sortable when context menu closed
+    // Enable sortable when context menu closed
     // TODO: Should be in UI hook when the context menu will move to command
     if (this.view._parent) {
       this.view._parent.triggerMethod('toggleSortMode', true);
@@ -26084,19 +35184,19 @@ ColumnView = BaseElementView.extend({
     var elementData = elementor.getElementData(this.model),
         editTools = {};
     editTools.edit = {
-      /* translators: %s: Element name. */
+      /* Translators: %s: Element name. */
       title: sprintf(__('Edit %s', 'elementor'), elementData.title),
       icon: 'column'
     };
 
     if (elementor.getPreferences('edit_buttons')) {
       editTools.duplicate = {
-        /* translators: %s: Element name. */
+        /* Translators: %s: Element name. */
         title: sprintf(__('Duplicate %s', 'elementor'), elementData.title),
         icon: 'clone'
       };
       editTools.add = {
-        /* translators: %s: Element name. */
+        /* Translators: %s: Element name. */
         title: sprintf(__('Add %s', 'elementor'), elementData.title),
         icon: 'plus'
       };
@@ -26294,10 +35394,12 @@ var BaseElementView = __webpack_require__(/*! elementor-elements/views/base */ "
 var ContainerView = BaseElementView.extend({
   template: Marionette.TemplateCache.get('#tmpl-elementor-container-content'),
   emptyView: ColumnEmptyView,
-  // Child view is empty in order to use the parent element.
-  childViewContainer: '',
+  getChildViewContainer: function getChildViewContainer() {
+    this.childViewContainer = 'boxed' === this.getContainer().settings.get('content_width') ? '> .e-con-inner' : '';
+    return Marionette.CompositeView.prototype.getChildViewContainer.apply(this, arguments);
+  },
   className: function className() {
-    return "".concat(BaseElementView.prototype.className.apply(this), " e-container");
+    return "".concat(BaseElementView.prototype.className.apply(this), " e-con");
   },
   tagName: function tagName() {
     return this.model.getSetting('html_tag') || 'div';
@@ -26378,9 +35480,10 @@ var ContainerView = BaseElementView.extend({
   getDroppableOptions: function getDroppableOptions() {
     var _this = this;
 
+    var items = 'boxed' === this.getContainer().settings.get('content_width') ? '> .elementor-widget, > .e-con-full, > .e-con > .e-con-inner, > .elementor-empty-view > .elementor-first-add' : '> .elementor-element, > .elementor-empty-view .elementor-first-add';
     return {
       axis: this.getDroppableAxis(),
-      items: '> .elementor-element, > .elementor-empty-view .elementor-first-add',
+      items: items,
       groups: ['elementor-element'],
       horizontalThreshold: 5,
       // TODO: Stop the magic.
@@ -26396,15 +35499,17 @@ var ContainerView = BaseElementView.extend({
 
         elementor.getPreviewView().onPanelElementDragEnd();
         var draggedView = elementor.channels.editor.request('element:dragged'),
-            draggingInSameParent = (draggedView === null || draggedView === void 0 ? void 0 : draggedView.parent) === _this;
-        var $elements = jQuery(event.currentTarget.parentElement).find('> .elementor-element'); // Exclude the dragged element from the indexing calculations.
+            draggingInSameParent = (draggedView === null || draggedView === void 0 ? void 0 : draggedView.parent) === _this,
+            hasInnerContainer = jQuery(event.currentTarget).hasClass('e-con-inner'),
+            containerSelector = hasInnerContainer ? event.currentTarget.parentElement.parentElement : event.currentTarget.parentElement;
+        var $elements = jQuery(containerSelector).find('> .elementor-element'); // Exclude the dragged element from the indexing calculations.
 
         if (draggingInSameParent) {
           $elements = $elements.not(draggedView.$el);
         }
 
         var widgetsArray = Object.values($elements);
-        var newIndex = widgetsArray.indexOf(event.currentTarget); // Plus one in order to insert it after the current target element.
+        var newIndex = hasInnerContainer ? widgetsArray.indexOf(event.currentTarget.parentElement) : widgetsArray.indexOf(event.currentTarget); // Plus one in order to insert it after the current target element.
 
         if (['bottom', 'right'].includes(side)) {
           newIndex++;
@@ -26412,7 +35517,19 @@ var ContainerView = BaseElementView.extend({
 
 
         if (draggedView) {
-          // Reset the dragged element cache.
+          // Prevent the user from dragging a parent container into its own child container
+          var draggedId = draggedView.getContainer().id;
+          var currentTargetParentContainer = _this.container;
+
+          while (currentTargetParentContainer) {
+            if (currentTargetParentContainer.id === draggedId) {
+              return;
+            }
+
+            currentTargetParentContainer = currentTargetParentContainer.parent;
+          } // Reset the dragged element cache.
+
+
           elementor.channels.editor.reply('element:dragged', null);
           $e.run('document/elements/move', {
             container: draggedView.getContainer(),
@@ -26444,6 +35561,28 @@ var ContainerView = BaseElementView.extend({
   },
 
   /**
+   * Insert a new container inside an existing container.
+   *
+   * @since 3.7.0
+   *
+   * @return {void}
+   */
+  addNewContainer: function addNewContainer() {
+    /* Check if the current container has a parent container */
+    var containerAncestry = this.getContainer().getParentAncestry(),
+        targetContainer = 'container' !== containerAncestry[1].type ? this.getContainer() : this.getContainer().parent;
+    $e.run('document/elements/create', {
+      model: {
+        elType: 'container',
+        settings: {
+          content_width: 'full'
+        }
+      },
+      container: targetContainer
+    });
+  },
+
+  /**
    * Add a `Save as Template` button to the context menu.
    *
    * @return {Object} groups
@@ -26451,15 +35590,27 @@ var ContainerView = BaseElementView.extend({
    */
   getContextMenuGroups: function getContextMenuGroups() {
     var groups = BaseElementView.prototype.getContextMenuGroups.apply(this, arguments),
-        transferGroupIndex = groups.indexOf(_.findWhere(groups, {
+        transferGroupClipboardIndex = groups.indexOf(_.findWhere(groups, {
       name: 'clipboard'
+    })),
+        transferGroupGeneralIndex = groups.indexOf(_.findWhere(groups, {
+      name: 'general'
     }));
-    groups.splice(transferGroupIndex + 1, 0, {
+    groups.splice(transferGroupClipboardIndex + 1, 0, {
       name: 'save',
       actions: [{
         name: 'save',
         title: __('Save as Template', 'elementor'),
         callback: this.saveAsTemplate.bind(this)
+      }]
+    });
+    groups.splice(transferGroupGeneralIndex + 1, 0, {
+      name: 'newContainerGroup',
+      actions: [{
+        name: 'newContainer',
+        icon: 'eicon-plus',
+        title: __('Add New Container', 'elementor'),
+        callback: this.addNewContainer.bind(this)
       }]
     });
     return groups;
@@ -26491,26 +35642,26 @@ var ContainerView = BaseElementView.extend({
     var elementData = elementor.getElementData(this.model),
         editTools = {};
     editTools.add = {
-      /* translators: %s: Element Name. */
+      /* Translators: %s: Element Name. */
       title: sprintf(__('Add %s', 'elementor'), elementData.title),
       icon: 'plus'
     };
     editTools.edit = {
-      /* translators: %s: Element Name. */
+      /* Translators: %s: Element Name. */
       title: sprintf(__('Edit %s', 'elementor'), elementData.title),
       icon: 'handle'
     };
 
     if (elementor.getPreferences('edit_buttons')) {
       editTools.duplicate = {
-        /* translators: %s: Element Name. */
+        /* Translators: %s: Element Name. */
         title: sprintf(__('Duplicate %s', 'elementor'), elementData.title),
         icon: 'clone'
       };
     }
 
     editTools.remove = {
-      /* translators: %s: Element Name. */
+      /* Translators: %s: Element Name. */
       title: sprintf(__('Delete %s', 'elementor'), elementData.title),
       icon: 'close'
     };
@@ -26553,22 +35704,22 @@ var ContainerView = BaseElementView.extend({
       _this2.nestingLevel = _this2.getNestingLevel();
       _this2.$el[0].dataset.nestingLevel = _this2.nestingLevel;
 
-      _this2.$el.html5Droppable(_this2.getDroppableOptions());
+      _this2.droppableInitialize(_this2.container.settings);
     });
   },
   renderOnChange: function renderOnChange(settings) {
-    BaseElementView.prototype.renderOnChange.apply(this, arguments); // Re-initialize the droppable in order to make sure the axis works properly.
+    BaseElementView.prototype.renderOnChange.apply(this, arguments);
 
-    if (!!settings.changed.flex_direction) {
-      this.$el.html5Droppable('destroy');
-      this.$el.html5Droppable(this.getDroppableOptions());
+    if (settings.changed.flex_direction || settings.changed.content_width) {
+      this.droppableDestroy();
+      this.droppableInitialize(settings);
     }
   },
   onDragStart: function onDragStart() {
-    this.$el.html5Droppable('destroy');
+    this.droppableDestroy();
   },
   onDragEnd: function onDragEnd() {
-    this.$el.html5Droppable(this.getDroppableOptions());
+    this.droppableInitialize(this.container.settings);
   },
   // TODO: Copied from `views/column.js`.
   attachElContent: function attachElContent() {
@@ -26607,9 +35758,54 @@ var ContainerView = BaseElementView.extend({
     if (this.ui.percentsTooltip) {
       this.ui.percentsTooltip.hide();
     }
+  },
+  droppableDestroy: function droppableDestroy() {
+    this.$el.html5Droppable('destroy');
+    this.$el.find('> .e-con-inner').html5Droppable('destroy');
+  },
+  droppableInitialize: function droppableInitialize(settings) {
+    if ('boxed' === settings.get('content_width')) {
+      this.$el.find('> .e-con-inner').html5Droppable(this.getDroppableOptions());
+    } else {
+      this.$el.html5Droppable(this.getDroppableOptions());
+    }
   }
 });
 module.exports = ContainerView;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/elements/views/container/empty-component.js":
+/*!***************************************************************************!*\
+  !*** ../assets/dev/js/editor/elements/views/container/empty-component.js ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = EmptyComponent;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+function EmptyComponent() {
+  return /*#__PURE__*/_react.default.createElement("div", {
+    className: "elementor-first-add"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "elementor-icon eicon-plus",
+    onClick: function onClick() {
+      return $e.route('panel/elements/categories');
+    }
+  }));
+}
 
 /***/ }),
 
@@ -26647,13 +35843,13 @@ var SectionView = BaseElementView.extend({
   addSectionView: null,
   _checkIsFull: function _checkIsFull() {
     this.toggleSectionIsFull();
-    elementorCommon.helpers.softDeprecated('_checkIsFull', '2.9.0', 'toggleSectionIsFull()');
+    elementorDevTools.deprecation.deprecated('_checkIsFull', '2.9.0', 'toggleSectionIsFull()');
   },
   toggleSectionIsFull: function toggleSectionIsFull() {
     this.$el.toggleClass('elementor-section-filled', this.isCollectionFilled());
   },
   addChildModel: function addChildModel(model) {
-    /// TODO: maybe should be part of $e.hooks.
+    // TODO: maybe should be part of $e.hooks.
     var isModelInstance = model instanceof Backbone.Model,
         isInner = this.isInner();
 
@@ -26696,21 +35892,21 @@ var SectionView = BaseElementView.extend({
 
     if (!this.isInner()) {
       editTools.add = {
-        /* translators: %s: Element name. */
+        /* Translators: %s: Element name. */
         title: sprintf(__('Add %s', 'elementor'), elementData.title),
         icon: 'plus'
       };
     }
 
     editTools.edit = {
-      /* translators: %s: Element name. */
+      /* Translators: %s: Element name. */
       title: sprintf(__('Edit %s', 'elementor'), elementData.title),
       icon: 'handle'
     };
 
     if (elementor.getPreferences('edit_buttons')) {
       editTools.duplicate = {
-        /* translators: %s: Element name. */
+        /* Translators: %s: Element name. */
         title: sprintf(__('Duplicate %s', 'elementor'), elementData.title),
         icon: 'clone'
       };
@@ -26924,7 +36120,6 @@ module.exports.DEFAULT_MAX_COLUMNS = DEFAULT_MAX_COLUMNS;
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-/* provided dependency */ var sprintf = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["sprintf"];
 /* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
 
 
@@ -26934,32 +36129,21 @@ var _widgetDraggable = _interopRequireDefault(__webpack_require__(/*! ./behavior
 
 var _widgetResizeable = _interopRequireDefault(__webpack_require__(/*! ./behaviors/widget-resizeable */ "../assets/dev/js/editor/elements/views/behaviors/widget-resizeable.js"));
 
-var BaseElementView = __webpack_require__(/*! elementor-elements/views/base */ "../assets/dev/js/editor/elements/views/base.js"),
-    WidgetView;
+var _baseWidget = _interopRequireDefault(__webpack_require__(/*! ./base-widget */ "../assets/dev/js/editor/elements/views/base-widget.js"));
 
-WidgetView = BaseElementView.extend({
+var BaseElementView = __webpack_require__(/*! elementor-elements/views/base */ "../assets/dev/js/editor/elements/views/base.js");
+
+var WidgetView = _baseWidget.default.extend({
   _templateType: null,
   toggleEditTools: true,
-  getTemplate: function getTemplate() {
-    var editModel = this.getEditModel();
-
-    if ('remote' !== this.getTemplateType()) {
-      return Marionette.TemplateCache.get('#tmpl-elementor-' + editModel.get('widgetType') + '-content');
-    }
-
-    return _.template('');
-  },
-  className: function className() {
-    var baseClasses = BaseElementView.prototype.className.apply(this, arguments);
-    return baseClasses + ' elementor-widget ' + elementor.getElementData(this.getEditModel()).html_wrapper_class;
-  },
   events: function events() {
-    var events = BaseElementView.prototype.events.apply(this, arguments);
+    var events = _baseWidget.default.prototype.events.apply(this, arguments);
+
     events.click = 'onClickEdit';
     return events;
   },
   behaviors: function behaviors() {
-    var behaviors = BaseElementView.prototype.behaviors.apply(this, arguments);
+    var behaviors = _baseWidget.default.prototype.behaviors.apply(this, arguments);
 
     _.extend(behaviors, {
       InlineEditing: {
@@ -26976,56 +36160,14 @@ WidgetView = BaseElementView.extend({
 
     return elementor.hooks.applyFilters('elements/widget/behaviors', behaviors, this);
   },
-  getEditButtons: function getEditButtons() {
-    var elementData = elementor.getElementData(this.model),
-        editTools = {};
-    editTools.edit = {
-      /* translators: %s: Element name. */
-      title: sprintf(__('Edit %s', 'elementor'), elementData.title),
-      icon: 'edit'
-    };
-
-    if (elementor.getPreferences('edit_buttons')) {
-      editTools.duplicate = {
-        /* translators: %s: Element name. */
-        title: sprintf(__('Duplicate %s', 'elementor'), elementData.title),
-        icon: 'clone'
-      };
-    }
-
-    return editTools;
-  },
-  initialize: function initialize() {
+  getContextMenuGroups: function getContextMenuGroups() {
     var _this = this;
 
-    BaseElementView.prototype.initialize.apply(this, arguments);
-    var editModel = this.getEditModel();
-    editModel.on({
-      'before:remote:render': this.onModelBeforeRemoteRender.bind(this),
-      'remote:render': this.onModelRemoteRender.bind(this),
-      'settings:loaded': function settingsLoaded() {
-        return setTimeout(_this.render.bind(_this));
-      }
-    });
-
-    if ('remote' === this.getTemplateType() && !this.getEditModel().getHtmlCache()) {
-      editModel.renderRemoteServer();
-    }
-
-    var onRenderMethod = this.onRender;
-    this.render = _.throttle(this.render, 300);
-
-    this.onRender = function () {
-      _.defer(onRenderMethod.bind(this));
-    };
-  },
-  getContextMenuGroups: function getContextMenuGroups() {
-    var _this2 = this;
-
-    var groups = BaseElementView.prototype.getContextMenuGroups.apply(this, arguments),
+    var groups = _baseWidget.default.prototype.getContextMenuGroups.apply(this, arguments),
         transferGroupIndex = groups.indexOf(_.findWhere(groups, {
       name: 'clipboard'
     }));
+
     groups.splice(transferGroupIndex + 1, 0, {
       name: 'save',
       actions: [{
@@ -27035,7 +36177,7 @@ WidgetView = BaseElementView.extend({
           class: 'eicon-pro-icon'
         }),
         isEnabled: function isEnabled() {
-          return 'global' !== _this2.options.model.get('widgetType') && !elementor.selection.isMultiple();
+          return 'global' !== _this.options.model.get('widgetType') && !elementor.selection.isMultiple();
         }
       }]
     });
@@ -27048,11 +36190,11 @@ WidgetView = BaseElementView.extend({
       return;
     }
 
-    if (elementorCommonConfig.isTesting && this.isDestroyed) {
+    if (this.isDestroyed) {
       return;
     }
 
-    Marionette.CompositeView.prototype.render.apply(this, arguments);
+    BaseElementView.prototype.render.apply(this, arguments);
   },
   handleEmptyWidget: function handleEmptyWidget() {
     this.$el.addClass('elementor-widget-empty').append('<i class="elementor-widget-empty-icon ' + this.getEditModel().getIcon() + '"></i>');
@@ -27071,12 +36213,12 @@ WidgetView = BaseElementView.extend({
     return htmlCache || html;
   },
   attachElContent: function attachElContent(html) {
-    var _this3 = this;
+    var _this2 = this;
 
     _.defer(function () {
-      elementorFrontend.elements.window.jQuery(_this3.el).empty().append(_this3.getHandlesOverlay(), _this3.getHTMLContent(html));
+      elementorFrontend.elements.window.jQuery(_this2.el).empty().append(_this2.getHandlesOverlay(), _this2.getHTMLContent(html));
 
-      _this3.bindUIElements(); // Build again the UI elements since the content attached just now
+      _this2.bindUIElements(); // Build again the UI elements since the content attached just now
 
     });
 
@@ -27094,39 +36236,22 @@ WidgetView = BaseElementView.extend({
       });
     }
   },
-  getRepeaterSettingKey: function getRepeaterSettingKey(settingKey, repeaterKey, repeaterItemIndex) {
-    return [repeaterKey, repeaterItemIndex, settingKey].join('.');
-  },
-  onModelBeforeRemoteRender: function onModelBeforeRemoteRender() {
-    this.$el.addClass('elementor-loading');
-  },
-  onBeforeDestroy: function onBeforeDestroy() {
-    // Remove old style from the DOM.
-    elementor.$previewContents.find('#elementor-style-' + this.model.get('id')).remove();
-  },
-  onModelRemoteRender: function onModelRemoteRender() {
-    if (this.isDestroyed) {
-      return;
-    }
-
-    this.$el.removeClass('elementor-loading'); // If container document has been changed during the remote request, don't render.
-
-    if (this.getContainer().document.id !== elementor.documents.getCurrent().id) {
-      return;
-    }
-
-    this.render();
-  },
   onRender: function onRender() {
     var self = this;
-    BaseElementView.prototype.onRender.apply(self, arguments);
+
+    _baseWidget.default.prototype.onRender.apply(self, arguments);
+
     var editModel = self.getEditModel(),
         skinType = editModel.getSetting('_skin') || 'default';
     self.$el.attr('data-widget_type', editModel.get('widgetType') + '.' + skinType).removeClass('elementor-widget-empty').children('.elementor-widget-empty-icon').remove(); // TODO: Find a better way to detect if all the images have been loaded
 
     self.$el.imagesLoaded().always(function () {
       setTimeout(function () {
-        if (!self.$el.children('.elementor-widget-container').outerHeight()) {
+        // Since 'outerHeight' will not handle hidden elements, and mark them as empty (e.g. nested tabs).
+        var $widgetContainer = self.$el.children('.elementor-widget-container').length ? self.$el.children('.elementor-widget-container') : self.$el,
+            shouldHandleEmptyWidget = $widgetContainer.is(':visible') && !$widgetContainer.outerHeight();
+
+        if (shouldHandleEmptyWidget) {
           self.handleEmptyWidget();
         }
       }, 200); // Is element empty?
@@ -27140,7 +36265,59 @@ WidgetView = BaseElementView.extend({
     }
   }
 });
+
 module.exports = WidgetView;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/errors/element-type-not-found.js":
+/*!****************************************************************!*\
+  !*** ../assets/dev/js/editor/errors/element-type-not-found.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.ElementTypeNotFound = void 0;
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _wrapNativeSuper2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/wrapNativeSuper */ "../node_modules/@babel/runtime/helpers/wrapNativeSuper.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var ElementTypeNotFound = /*#__PURE__*/function (_Error) {
+  (0, _inherits2.default)(ElementTypeNotFound, _Error);
+
+  var _super = _createSuper(ElementTypeNotFound);
+
+  function ElementTypeNotFound(elementType) {
+    (0, _classCallCheck2.default)(this, ElementTypeNotFound);
+    return _super.call(this, "Element type not found: '".concat(elementType, "'"));
+  }
+
+  return (0, _createClass2.default)(ElementTypeNotFound);
+}( /*#__PURE__*/(0, _wrapNativeSuper2.default)(Error));
+
+exports.ElementTypeNotFound = ElementTypeNotFound;
+var _default = ElementTypeNotFound;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -27203,14 +36380,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Close = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Close, _CommandBase);
+var Close = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Close, _$e$modules$CommandBa);
 
   var _super = _createSuper(Close);
 
@@ -27226,7 +36401,7 @@ var Close = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Close;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Close = Close;
 var _default = Close;
@@ -27299,14 +36474,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Open = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Open, _CommandBase);
+var Open = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Open, _$e$modules$CommandBa);
 
   var _super = _createSuper(Open);
 
@@ -27322,7 +36495,7 @@ var Open = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Open;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Open = Open;
 var _default = Open;
@@ -27356,14 +36529,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Toggle = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Toggle, _CommandBase);
+var Toggle = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Toggle, _$e$modules$CommandBa);
 
   var _super = _createSuper(Toggle);
 
@@ -27383,7 +36554,7 @@ var Toggle = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Toggle;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Toggle = Toggle;
 var _default = Toggle;
@@ -27719,7 +36890,9 @@ var _default = /*#__PURE__*/function (_Marionette$Composite) {
   }, {
     key: "hasChildren",
     value: function hasChildren() {
-      return 'widget' !== this.model.get('elType');
+      var _this$model$get;
+
+      return ((_this$model$get = this.model.get('elements')) === null || _this$model$get === void 0 ? void 0 : _this$model$get.length) || 'widget' !== this.model.get('elType');
     }
   }, {
     key: "toggleList",
@@ -27826,7 +36999,7 @@ var _default = /*#__PURE__*/function (_Marionette$Composite) {
   }, {
     key: "dragShouldBeIgnored",
     value: function dragShouldBeIgnored(draggedModel) {
-      return !$e.components.get('document/elements').utils.isValidChild(draggedModel, this.model);
+      return !this.model.isValidChild(draggedModel);
     }
   }, {
     key: "addEditingClass",
@@ -28687,14 +37860,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var ChangeDeviceMode = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(ChangeDeviceMode, _CommandBase);
+var ChangeDeviceMode = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(ChangeDeviceMode, _$e$modules$CommandBa);
 
   var _super = _createSuper(ChangeDeviceMode);
 
@@ -28729,7 +37900,7 @@ var ChangeDeviceMode = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return ChangeDeviceMode;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.ChangeDeviceMode = ChangeDeviceMode;
 var _default = ChangeDeviceMode;
@@ -28763,14 +37934,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Close = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Close, _CommandBase);
+var Close = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Close, _$e$modules$CommandBa);
 
   var _super = _createSuper(Close);
 
@@ -28786,7 +37955,7 @@ var Close = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Close;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Close = Close;
 var _default = Close;
@@ -28820,14 +37989,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Exit = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Exit, _CommandBase);
+var Exit = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Exit, _$e$modules$CommandBa);
 
   var _super = _createSuper(Exit);
 
@@ -28843,7 +38010,7 @@ var Exit = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Exit;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Exit = Exit;
 var _default = Exit;
@@ -28987,14 +38154,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandInternalBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-internal-base */ "../modules/web-cli/assets/js/modules/command-internal-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var OpenDefault = /*#__PURE__*/function (_CommandInternalBase) {
-  (0, _inherits2.default)(OpenDefault, _CommandInternalBase);
+var OpenDefault = /*#__PURE__*/function (_$e$modules$CommandIn) {
+  (0, _inherits2.default)(OpenDefault, _$e$modules$CommandIn);
 
   var _super = _createSuper(OpenDefault);
 
@@ -29012,7 +38177,7 @@ var OpenDefault = /*#__PURE__*/function (_CommandInternalBase) {
     }
   }]);
   return OpenDefault;
-}(_commandInternalBase.default);
+}($e.modules.CommandInternalBase);
 
 exports.OpenDefault = OpenDefault;
 var _default = OpenDefault;
@@ -29046,14 +38211,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandInternalBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-internal-base */ "../modules/web-cli/assets/js/modules/command-internal-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var StateLoading = /*#__PURE__*/function (_CommandInternalBase) {
-  (0, _inherits2.default)(StateLoading, _CommandInternalBase);
+var StateLoading = /*#__PURE__*/function (_$e$modules$CommandIn) {
+  (0, _inherits2.default)(StateLoading, _$e$modules$CommandIn);
 
   var _super = _createSuper(StateLoading);
 
@@ -29069,7 +38232,7 @@ var StateLoading = /*#__PURE__*/function (_CommandInternalBase) {
     }
   }]);
   return StateLoading;
-}(_commandInternalBase.default);
+}($e.modules.CommandInternalBase);
 
 exports.StateLoading = StateLoading;
 var _default = StateLoading;
@@ -29103,14 +38266,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandInternalBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-internal-base */ "../modules/web-cli/assets/js/modules/command-internal-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var StateReady = /*#__PURE__*/function (_CommandInternalBase) {
-  (0, _inherits2.default)(StateReady, _CommandInternalBase);
+var StateReady = /*#__PURE__*/function (_$e$modules$CommandIn) {
+  (0, _inherits2.default)(StateReady, _$e$modules$CommandIn);
 
   var _super = _createSuper(StateReady);
 
@@ -29131,7 +38292,7 @@ var StateReady = /*#__PURE__*/function (_CommandInternalBase) {
     }
   }]);
   return StateReady;
-}(_commandInternalBase.default);
+}($e.modules.CommandInternalBase);
 
 exports.StateReady = StateReady;
 var _default = StateReady;
@@ -29165,14 +38326,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Open = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Open, _CommandBase);
+var Open = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Open, _$e$modules$CommandBa);
 
   var _super = _createSuper(Open);
 
@@ -29188,7 +38347,7 @@ var Open = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Open;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Open = Open;
 var _default = Open;
@@ -29222,14 +38381,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Publish = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Publish, _CommandBase);
+var Publish = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Publish, _$e$modules$CommandBa);
 
   var _super = _createSuper(Publish);
 
@@ -29245,7 +38402,7 @@ var Publish = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Publish;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Publish = Publish;
 var _default = Publish;
@@ -29279,14 +38436,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Save = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Save, _CommandBase);
+var Save = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Save, _$e$modules$CommandBa);
 
   var _super = _createSuper(Save);
 
@@ -29302,7 +38457,7 @@ var Save = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Save;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Save = Save;
 var _default = Save;
@@ -29336,14 +38491,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Toggle = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Toggle, _CommandBase);
+var Toggle = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Toggle, _$e$modules$CommandBa);
 
   var _super = _createSuper(Toggle);
 
@@ -29359,7 +38512,7 @@ var Toggle = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Toggle;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Toggle = Toggle;
 var _default = Toggle;
@@ -30065,14 +39218,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Open = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Open, _CommandBase);
+var Open = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Open, _$e$modules$CommandBa);
 
   var _super = _createSuper(Open);
 
@@ -30085,7 +39236,7 @@ var Open = /*#__PURE__*/function (_CommandBase) {
     key: "apply",
     value: function apply(args) {
       if (!this.component.setDefaultTab(args)) {
-        elementorCommon.helpers.softDeprecated("model.trigger( 'request:edit' )", '2.9.0', 'editSettings.defaultEditRoute');
+        elementorDevTools.deprecation.deprecated("model.trigger( 'request:edit' )", '2.9.0', 'editSettings.defaultEditRoute');
         args.model.trigger('request:edit');
       } else {
         $e.route(this.component.getDefaultRoute(), args);
@@ -30101,7 +39252,7 @@ var Open = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Open;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Open = Open;
 var _default = Open;
@@ -30325,7 +39476,7 @@ var PanelElementsElementModel = __webpack_require__(/*! ../models/element */ "..
 
 PanelElementsElementsCollection = Backbone.Collection.extend({
   model: PanelElementsElementModel
-  /*,
+  /* ,
   comparator: 'title'*/
 
 });
@@ -30570,9 +39721,9 @@ PanelElementsLayoutView = Marionette.LayoutView.extend({
   },
   focusSearch: function focusSearch() {
     if (!elementor.userCan('design') || !this.search
-    /* default panel is not elements */
+    /* Default panel is not elements */
     || !this.search.currentView
-    /* on global elements empty */
+    /* On global elements empty */
     ) {
       return;
     }
@@ -30925,22 +40076,28 @@ module.exports = Marionette.ItemView.extend({
 /*!****************************************************************************!*\
   !*** ../assets/dev/js/editor/regions/panel/pages/elements/views/search.js ***!
   \****************************************************************************/
-/***/ ((module) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var PanelElementsSearchView;
-PanelElementsSearchView = Marionette.ItemView.extend({
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _localizedValueStore = _interopRequireDefault(__webpack_require__(/*! elementor-editor-utils/localized-value-store */ "../assets/dev/js/editor/utils/localized-value-store.js"));
+
+var PanelElementsSearchView = Marionette.ItemView.extend({
   template: '#tmpl-elementor-panel-element-search',
   localizedValue: '',
+  localizedValueStore: new _localizedValueStore.default(),
   id: 'elementor-panel-elements-search-wrapper',
   ui: {
     input: 'input'
   },
   events: {
-    'keyup @ui.input': 'onInputChanged',
-    'input @ui.input': 'onInputChanged'
+    'keydown @ui.input': 'onInputChanged',
+    // Used to capture the ctrl+V
+    'input @ui.input': 'onInputChanged' // Will capture the context menu paste
+
   },
   clearInput: function clearInput() {
     this.ui.input.val('');
@@ -30950,26 +40107,9 @@ PanelElementsSearchView = Marionette.ItemView.extend({
 
     if (ESC_KEY === event.keyCode) {
       this.clearInput();
-    } // Don't catch keyboard shortcut.
-
-
-    if (event.shiftKey || event.ctrlKey || event.altKey) {
-      this.triggerMethod('search:change:input');
-      return;
-    } // Reset localized value if the input is empty or some chars were deleted.
-
-
-    if (!event.target.value || event.target.value.length < this.localizedValue.length) {
-      this.localizedValue = '';
     }
 
-    var isLetter = event.keyCode >= 65 && event.keyCode <= 90,
-        isSpace = 32 === event.keyCode;
-
-    if (isLetter || isSpace) {
-      this.localizedValue += String.fromCharCode(event.keyCode);
-    } // Broadcast the localized value.
-
+    this.localizedValue = this.localizedValueStore.appendAndParseLocalizedData(event); // Broadcast the localized value.
 
     elementor.channels.panelElements.reply('filter:localized', this.localizedValue);
     this.triggerMethod('search:change:input');
@@ -31106,6 +40246,14 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports["default"] = void 0;
 
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "../node_modules/@babel/runtime/regenerator/index.js"));
+
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "../node_modules/@babel/runtime/helpers/asyncToGenerator.js"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
 
 var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
@@ -31117,6 +40265,10 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
 var _base = _interopRequireDefault(__webpack_require__(/*! elementor-panel/pages/menu/base */ "../assets/dev/js/editor/regions/panel/pages/menu/base.js"));
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
@@ -31177,19 +40329,14 @@ PanelMenu.initGroups = function () {
       title: __('View Page', 'elementor'),
       type: 'link',
       link: elementor.config.document.urls.permalink
-    }, // Todo: internal command.
-    {
-      name: 'exit-to-dashboard',
-      icon: 'eicon-wordpress-light',
-      title: __('Exit To Dashboard', 'elementor'),
-      type: 'link',
-      link: elementor.config.document.urls.exit_to_dashboard
     }]
   });
 
   if (elementor.config.user.is_administrator) {
     PanelMenu.addAdminMenu();
   }
+
+  PanelMenu.addExitItem();
 };
 
 PanelMenu.addAdminMenu = function () {
@@ -31209,28 +40356,6 @@ PanelMenu.addAdminMenu = function () {
     at: 0
   });
   PanelMenu.addItem({
-    name: 'notes',
-    icon: 'eicon-commenting-o',
-    title: __('Notes', 'elementor'),
-    callback: function callback() {
-      var hasProAndNotConnected = elementor.helpers.hasProAndNotConnected(),
-          dialogOptions = {
-        title: __('Notes', 'elementor'),
-        content: __('With Notes, teamwork gets even better. Stay in sync with comments, feedback & more on your website.', 'elementor'),
-        targetElement: this.$el,
-        position: {
-          blockStart: '-3',
-          inlineStart: '+10'
-        },
-        actionButton: {
-          url: hasProAndNotConnected ? elementorProEditorConfig.urls.connect : 'https://go.elementor.com/go-pro-notes/',
-          text: hasProAndNotConnected ? __('Connect & Activate', 'elementor') : __('See it in Action', 'elementor')
-        }
-      };
-      elementor.promotion.showDialog(dialogOptions);
-    }
-  }, 'navigate_from_page', 'view-page');
-  PanelMenu.addItem({
     name: 'finder',
     icon: 'eicon-search',
     title: __('Finder', 'elementor'),
@@ -31238,6 +40363,158 @@ PanelMenu.addAdminMenu = function () {
       return $e.route('finder');
     }
   }, 'navigate_from_page', 'view-page');
+};
+
+PanelMenu.addExitItem = function () {
+  var itemArgs;
+
+  if (!elementor.config.user.introduction.exit_to && elementor.config.user.is_administrator) {
+    PanelMenu.exitShouldRedirect = false;
+    itemArgs = {
+      callback: function callback() {
+        return PanelMenu.clickExitItem();
+      }
+    };
+  } else {
+    itemArgs = {
+      type: 'link',
+      link: PanelMenu.getExitUrl()
+    };
+  }
+
+  PanelMenu.addItem(_objectSpread({
+    name: 'exit',
+    icon: 'eicon-exit',
+    title: __('Exit', 'elementor')
+  }, itemArgs), 'navigate_from_page');
+}; // Callback being used to determine when to open the modal or redirect the user.
+
+
+PanelMenu.clickExitItem = function () {
+  var currentValue = elementor.getPreferences('exit_to');
+  var defaultValue = elementor.settings.editorPreferences.getEditedView().getContainer().controls.exit_to.default; // The modal will pop if the user has not set the exit to preference yet or if the model never showed before.
+
+  if (currentValue !== defaultValue || PanelMenu.exitShouldRedirect) {
+    window.location.href = PanelMenu.getExitUrl();
+  } else {
+    var exitIntroduction = PanelMenu.createExitIntroductionDialog();
+    exitIntroduction.show();
+  }
+};
+
+PanelMenu.createExitIntroductionDialog = function () {
+  var template = document.querySelector('#tmpl-elementor-exit-dialog');
+  var options = elementor.settings.editorPreferences.getEditedView().getContainer().controls.exit_to.options;
+  var introduction = new elementorModules.editor.utils.Introduction({
+    introductionKey: 'exit_to',
+    dialogType: 'confirm',
+    dialogOptions: {
+      id: 'elementor-change-exit-preference-dialog',
+      className: 'dialog-exit-preferences',
+      headerMessage: __('New options for "Exit to..."', 'elementor'),
+      message: template.innerHTML,
+      position: {
+        my: 'center center',
+        at: 'center center'
+      },
+      strings: {
+        confirm: __('Apply', 'elementor'),
+        cancel: __('Decide Later', 'elementor')
+      },
+      effects: {
+        show: 'fadeIn',
+        hide: 'fadeOut'
+      },
+      onShow: function onShow() {
+        introduction.setViewed();
+        elementor.config.user.introduction.exit_to = true;
+        PanelMenu.exitShouldRedirect = true;
+      },
+      onConfirm: function () {
+        var _onConfirm = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
+          return _regenerator.default.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  $e.run('document/elements/settings', {
+                    container: elementor.settings.editorPreferences.getEditedView().getContainer(),
+                    settings: {
+                      exit_to: select.value
+                    },
+                    options: {
+                      external: true
+                    }
+                  });
+                  _context.next = 3;
+                  return elementor.settings.editorPreferences.save();
+
+                case 3:
+                  window.location.href = PanelMenu.getExitUrl();
+
+                case 4:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee);
+        }));
+
+        function onConfirm() {
+          return _onConfirm.apply(this, arguments);
+        }
+
+        return onConfirm;
+      }(),
+      onCancel: function onCancel() {
+        window.location.href = PanelMenu.getExitUrl();
+      }
+    }
+  }); // Edit the template inside the dialog
+
+  var messageContainer = introduction.getDialog().getElements().message[0],
+      select = messageContainer.querySelector('#exit-to-preferences'),
+      link = messageContainer.querySelector('#user-preferences');
+
+  for (var _i = 0, _Object$entries = Object.entries(options); _i < _Object$entries.length; _i++) {
+    var _Object$entries$_i = (0, _slicedToArray2.default)(_Object$entries[_i], 2),
+        key = _Object$entries$_i[0],
+        value = _Object$entries$_i[1];
+
+    var option = document.createElement('option');
+    option.innerText = value;
+    option.value = key;
+    select.appendChild(option);
+  } // Bind click event to the link in the dialog to open the editor preferences.
+
+
+  link.addEventListener('click', function (e) {
+    e.preventDefault();
+    introduction.getDialog().hide();
+    $e.route('panel/editor-preferences'); // Force the exit button to rerender by creating new exit button.
+
+    PanelMenu.addExitItem();
+  });
+  return introduction;
+};
+/**
+ * Get the exit url according to the 'exit_to' user preference.
+ */
+
+
+PanelMenu.getExitUrl = function () {
+  var exitPreference = elementor.getPreferences('exit_to');
+
+  switch (exitPreference) {
+    case 'dashboard':
+      return elementor.config.document.urls.main_dashboard;
+
+    case 'all_posts':
+      return elementor.config.document.urls.all_post_type;
+
+    case 'this_post':
+    default:
+      return elementor.config.document.urls.exit_to_dashboard;
+  }
 };
 
 PanelMenu.getGroups = function () {
@@ -32019,7 +41296,7 @@ var View = /*#__PURE__*/function (_Marionette$ItemView) {
   }, {
     key: "setWidthHeightInputsEditableState",
     value: function setWidthHeightInputsEditableState() {
-      var currentDeviceMode = elementor.channels.deviceMode.request('currentMode'); //TODO: disable inputs
+      var currentDeviceMode = elementor.channels.deviceMode.request('currentMode'); // TODO: disable inputs
 
       if ('desktop' === currentDeviceMode) {
         this.ui.sizeInputWidth.attr('disabled', 'disabled');
@@ -32379,127 +41656,172 @@ exports["default"] = ColorPicker;
 /*!***************************************************!*\
   !*** ../assets/dev/js/editor/utils/conditions.js ***!
   \***************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
 var _typeof2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js"));
 
-var Conditions;
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
 
-Conditions = function Conditions() {
-  var self = this;
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
 
-  this.compare = function (leftValue, rightValue, operator) {
-    switch (operator) {
-      /* eslint-disable eqeqeq */
-      case '==':
-        return leftValue == rightValue;
+var Conditions = /*#__PURE__*/function () {
+  function Conditions() {
+    (0, _classCallCheck2.default)(this, Conditions);
+  }
 
-      case '!=':
-        return leftValue != rightValue;
+  (0, _createClass2.default)(Conditions, [{
+    key: "compare",
+    value: function compare(leftValue, rightValue, operator) {
+      switch (operator) {
+        /* eslint-disable eqeqeq */
+        case '==':
+          return leftValue == rightValue;
 
-      /* eslint-enable eqeqeq */
+        case '!=':
+          return leftValue != rightValue;
 
-      case '!==':
-        return leftValue !== rightValue;
+        /* eslint-enable eqeqeq */
 
-      case 'in':
-        return -1 !== rightValue.indexOf(leftValue);
+        case '!==':
+          return leftValue !== rightValue;
 
-      case '!in':
-        return -1 === rightValue.indexOf(leftValue);
+        case 'in':
+          return -1 !== rightValue.indexOf(leftValue);
 
-      case 'contains':
-        return -1 !== leftValue.indexOf(rightValue);
+        case '!in':
+          return -1 === rightValue.indexOf(leftValue);
 
-      case '!contains':
-        return -1 === leftValue.indexOf(rightValue);
+        case 'contains':
+          return -1 !== leftValue.indexOf(rightValue);
 
-      case '<':
-        return leftValue < rightValue;
+        case '!contains':
+          return -1 === leftValue.indexOf(rightValue);
 
-      case '<=':
-        return leftValue <= rightValue;
+        case '<':
+          return leftValue < rightValue;
 
-      case '>':
-        return leftValue > rightValue;
+        case '<=':
+          return leftValue <= rightValue;
 
-      case '>=':
-        return leftValue >= rightValue;
+        case '>':
+          return leftValue > rightValue;
 
-      default:
-        return leftValue === rightValue;
+        case '>=':
+          return leftValue >= rightValue;
+
+        default:
+          return leftValue === rightValue;
+      }
     }
-  };
+    /**
+     * Get Operator
+     *
+     * Returns the condition's comparison operator according to the structure of the condition and item values.
+     *
+     * @since 3.7.0
+     *
+     * @param {*}       conditionValue
+     * @param {boolean} isNegativeCondition
+     * @param {8}       currentValue
+     * @return {string} The operator to use.
+     */
 
-  this.check = function (conditions, comparisonObject, controls) {
-    var isOrCondition = 'or' === conditions.relation;
-    var conditionSucceed = !isOrCondition;
-    jQuery.each(conditions.terms, function () {
-      var term = this;
-      var comparisonResult;
+  }, {
+    key: "getOperator",
+    value: function getOperator(conditionValue, isNegativeCondition, currentValue) {
+      var operator;
 
-      if (term.terms) {
-        comparisonResult = self.check(term, comparisonObject, controls);
+      if (Array.isArray(conditionValue) && conditionValue.length) {
+        operator = isNegativeCondition ? '!in' : 'in';
+      } else if (Array.isArray(currentValue) && currentValue.length) {
+        operator = isNegativeCondition ? '!contains' : 'contains';
+      } else if (isNegativeCondition) {
+        operator = '!==';
+      }
+
+      return operator;
+    }
+    /**
+     * Get Condition Value
+     *
+     * Retrieves a passed condition's value.
+     *
+     * @since 3.7.0
+     *
+     * @param {{}}     comparisonObject A settings object (e.g. element settings - keys and values)
+     * @param {string} conditionName    The conditioning item's name
+     * @param {string} subConditionName If the conditioning item's value is an object, and the condition checks for a
+     *                                  specific property, this is the property name.
+     * @return {*} Condition Value
+     */
+
+  }, {
+    key: "getConditionValue",
+    value: function getConditionValue(comparisonObject, conditionName, subConditionName) {
+      var value;
+
+      if ('object' === (0, _typeof2.default)(comparisonObject[conditionName]) && subConditionName) {
+        value = comparisonObject[conditionName][subConditionName];
       } else {
-        // A term consists of a control name to be examined, and a sub key if needed. For example, a term
-        // can look like 'image_overlay[url]' (the 'url' is the sub key). Here we want to isolate the
-        // condition name and the sub key, so later it can be retrieved and examined.
-        var parsedName = term.name.match(/([\w-]+)(?:\[([\w-]+)])?/),
-            conditionRealName = parsedName[1],
-            conditionSubKey = parsedName[2];
-        var value = comparisonObject[conditionRealName];
+        value = comparisonObject[conditionName];
+      }
 
-        if (!value) {
-          var _controls$conditionRe;
+      return value;
+    }
+  }, {
+    key: "check",
+    value: function check(conditions, comparisonObject) {
+      var _this = this;
 
-          var parent = (_controls$conditionRe = controls[conditionRealName]) === null || _controls$conditionRe === void 0 ? void 0 : _controls$conditionRe.parent;
+      var isOrCondition = 'or' === conditions.relation;
+      var conditionSucceed = !isOrCondition;
+      conditions.terms.forEach(function (term) {
+        var comparisonResult;
 
-          while (parent) {
-            var _controls$parent;
+        if (term.terms) {
+          comparisonResult = _this.check(term, comparisonObject);
+        } else {
+          // A term consists of a condition name (id) to be examined, and a sub key if the condition source is
+          // an object. For example, a term can look like 'image_overlay[url]' (the 'url' is the sub key). Here
+          // we want to isolate the condition name and the sub key, so later it can be retrieved and examined.
+          var parsedName = term.name.match(/([\w-]+)(?:\[([\w-]+)])?/),
+              conditionRealName = parsedName[1],
+              conditionSubKey = parsedName[2];
 
-            value = comparisonObject[parent];
+          var value = _this.getConditionValue(comparisonObject, conditionRealName, conditionSubKey);
 
-            if (value) {
-              break;
-            }
+          comparisonResult = undefined !== value && _this.compare(value, term.value, term.operator);
+        }
 
-            parent = (_controls$parent = controls[parent]) === null || _controls$parent === void 0 ? void 0 : _controls$parent.parent;
+        if (isOrCondition) {
+          if (comparisonResult) {
+            conditionSucceed = true;
           }
+
+          return !comparisonResult;
         }
 
-        if (comparisonObject.__dynamic__ && comparisonObject.__dynamic__[conditionRealName]) {
-          value = comparisonObject.__dynamic__[conditionRealName];
+        if (!comparisonResult) {
+          return conditionSucceed = false;
         }
+      });
+      return conditionSucceed;
+    }
+  }]);
+  return Conditions;
+}();
 
-        if ('object' === (0, _typeof2.default)(value) && conditionSubKey) {
-          value = value[conditionSubKey];
-        }
-
-        comparisonResult = undefined !== value && self.compare(value, term.value, term.operator);
-      }
-
-      if (isOrCondition) {
-        if (comparisonResult) {
-          conditionSucceed = true;
-        }
-
-        return !comparisonResult;
-      }
-
-      if (!comparisonResult) {
-        return conditionSucceed = false;
-      }
-    });
-    return conditionSucceed;
-  };
-};
-
-module.exports = new Conditions();
+exports["default"] = Conditions;
 
 /***/ }),
 
@@ -32711,7 +42033,9 @@ var ContainerHelper = /*#__PURE__*/function () {
         switch (preset) {
           // Single column Container without sub Containers.
           case 'c100':
-            newContainer = ContainerHelper.createContainer({}, target, options);
+            newContainer = ContainerHelper.createContainer({
+              flex_direction: ContainerHelper.DIRECTION_COLUMN
+            }, target, options);
             break;
           // Single row Container without sub Containers.
 
@@ -32723,58 +42047,62 @@ var ContainerHelper = /*#__PURE__*/function () {
           // Exceptional preset.
 
           case 'c100-c50-50':
-            settings = {
-              flex_direction: ContainerHelper.DIRECTION_ROW,
-              flex_wrap: 'wrap',
-              flex_gap: {
-                unit: 'px',
-                size: 0 // Set the gap to 0 to override the default inherited from `Site Settings`.
+            {
+              settings = {
+                flex_direction: ContainerHelper.DIRECTION_ROW,
+                flex_wrap: 'wrap',
+                flex_gap: {
+                  unit: 'px',
+                  size: 0 // Set the gap to 0 to override the default inherited from `Site Settings`.
 
+                }
+              };
+
+              if (!createWrapper) {
+                $e.run('document/elements/settings', {
+                  container: target,
+                  settings: settings
+                });
+                newContainer = target;
+              } else {
+                newContainer = ContainerHelper.createContainer(settings, target, options);
               }
-            };
 
-            if (!createWrapper) {
-              $e.run('document/elements/settings', {
-                container: target,
-                settings: settings
+              settings = {
+                content_width: 'full',
+                width: {
+                  unit: '%',
+                  size: '50'
+                }
+              };
+              ContainerHelper.createContainer(settings, newContainer, {
+                edit: false
               });
-              newContainer = target;
-            } else {
-              newContainer = ContainerHelper.createContainer(settings, target, options);
+              var rightContainer = ContainerHelper.createContainer(_objectSpread(_objectSpread({}, settings), {}, {
+                padding: {
+                  size: ''
+                },
+                // Create the right Container with 0 padding (default is 10px) to fix UI (ED-4900).
+                flex_gap: {
+                  unit: 'px',
+                  size: 0 // Set the gap to 0 to override the default inherited from `Site Settings`.
+
+                }
+              }), newContainer, {
+                edit: false
+              });
+              ContainerHelper.createContainers(2, {}, rightContainer, {
+                edit: false
+              });
+              break;
             }
-
-            settings = {
-              content_width: 'full',
-              width: {
-                unit: '%',
-                size: '50'
-              }
-            };
-            ContainerHelper.createContainer(settings, newContainer, {
-              edit: false
-            });
-            var rightContainer = ContainerHelper.createContainer(_objectSpread(_objectSpread({}, settings), {}, {
-              padding: {
-                size: ''
-              },
-              // Create the right Container with 0 padding (default is 10px) to fix UI (ED-4900).
-              flex_gap: {
-                unit: 'px',
-                size: 0 // Set the gap to 0 to override the default inherited from `Site Settings`.
-
-              }
-            }), newContainer, {
-              edit: false
-            });
-            ContainerHelper.createContainers(2, {}, rightContainer, {
-              edit: false
-            });
-            break;
           // Containers by preset.
 
           default:
-            var sizes = preset.split('-');
-            newContainer = ContainerHelper.createContainerFromSizes(sizes, target, options);
+            {
+              var sizes = preset.split('-');
+              newContainer = ContainerHelper.createContainerFromSizes(sizes, target, options);
+            }
         }
 
         $e.internal('document/history/end-log', {
@@ -32998,6 +42326,242 @@ module.exports = elementorModules.Module.extend({
     this.initModal();
   }
 });
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/utils/control-conditions.js":
+/*!***********************************************************!*\
+  !*** ../assets/dev/js/editor/utils/control-conditions.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/get */ "../node_modules/@babel/runtime/helpers/get.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _conditions = _interopRequireDefault(__webpack_require__(/*! ./conditions */ "../assets/dev/js/editor/utils/conditions.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+/**
+ * Control Conditions Class
+ *
+ * This class Handles conditions checks specifically related to element controls.
+ *
+ * @since 3.7.0
+ */
+var ControlConditions = /*#__PURE__*/function (_Conditions) {
+  (0, _inherits2.default)(ControlConditions, _Conditions);
+
+  var _super = _createSuper(ControlConditions);
+
+  function ControlConditions() {
+    (0, _classCallCheck2.default)(this, ControlConditions);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(ControlConditions, [{
+    key: "convertConditionToConditions",
+    value:
+    /**
+     * Convert Condition to Conditions
+     *
+     * "Condition" is the simple form of Elementor's control conditioning system, which allows to create one or more
+     * conditions with an "AND" relationship between them.
+     *
+     * "Conditions" is the advanced system for conditioning controls, which allows combining AND and/or OR conditions,
+     * performing checks for larger/smaller than, checking if keys/values contain other keys/values, and more.
+     *
+     * This method receives a simple Condition (name and value) and converts it into the advanced Conditions format.
+     * format.
+     *
+     * @since 3.7.0
+     *
+     * @param {string} conditionName
+     * @param {string} conditionValue
+     * @param {{}}     controlModel   - The control being tested.
+     * @param {{}}     values         - The containing widget's array of control values.
+     * @param {{}}     controls       - The containing widget's array of control models.
+     * @return {{name, value: ({length}|*), operator: (string)}} A converted condition
+     */
+    function convertConditionToConditions(conditionName, conditionValue, controlModel, values, controls) {
+      var _controlModel$attribu, _controls$conditionNa;
+
+      // The first step is to isolate the term from the negative operator if exists. For example, a condition format
+      // can look like 'selected_icon[value]!', so we examine this term with a negative connotation.
+      var conditionNameParts = conditionName.match(/([\w-]+(?:\[[\w-]+])?)?(!?)$/i),
+          conditionRealName = conditionNameParts[1],
+          isNegativeCondition = !!conditionNameParts[2];
+      var parsedControlName = conditionRealName.match(/([\w-]+)(?:\[([\w-]+)])?/),
+          // ConditionNameWithoutSubKey example: the condition key 'image[url]' will give the value of 'image'.
+      conditionNameWithoutSubKey = parsedControlName[1],
+          // ConditionSubKey example: the condition key 'image[url]' will give the value of 'url'.
+      conditionSubKey = parsedControlName[2],
+          // In some cases the control's attributes will be under the 'attributes' property, and in some
+      // cases they will be directly on the model object.
+      controlResponsiveProp = ((_controlModel$attribu = controlModel.attributes) === null || _controlModel$attribu === void 0 ? void 0 : _controlModel$attribu.responsive) || controlModel.responsive;
+      var conditionNameToCheck = conditionRealName,
+          controlValue; // If the conditioning control is responsive, get the appropriate device's value.
+
+      if (!!controlResponsiveProp && (_controls$conditionNa = controls[conditionNameWithoutSubKey]) !== null && _controls$conditionNa !== void 0 && _controls$conditionNa.responsive) {
+        var deviceSuffix = this.getResponsiveControlDeviceSuffix(controlResponsiveProp);
+        conditionNameToCheck = conditionNameWithoutSubKey + deviceSuffix;
+
+        if (conditionSubKey) {
+          conditionNameToCheck += "[".concat(conditionSubKey, "]");
+        } // If the control is not desktop, take the value of the conditioning control of the corresponding device.
+
+
+        controlValue = values[conditionNameWithoutSubKey + deviceSuffix];
+      } else {
+        controlValue = values[conditionRealName];
+      }
+
+      return {
+        name: conditionNameToCheck,
+        operator: this.getOperator(conditionValue, isNegativeCondition, controlValue),
+        value: conditionValue
+      };
+    }
+    /**
+     * Get Responsive Control Device Suffix
+     *
+     * @param {Object} controlResponsiveProp
+     * @return {string|string}
+     */
+
+  }, {
+    key: "getResponsiveControlDeviceSuffix",
+    value: function getResponsiveControlDeviceSuffix(controlResponsiveProp) {
+      var queryDevice = controlResponsiveProp.max || controlResponsiveProp.min;
+      return 'desktop' === queryDevice ? '' : '_' + queryDevice;
+    }
+    /**
+     * Get Condition Value
+     *
+     * Retrieves a passed condition's value. Dynamic values take precedence. If there is no dynamic value, this method
+     * checks for a regular item value.
+     *
+     * @since 3.7.0
+     *
+     * @param {{}}     comparisonObject A settings object (e.g. element settings - keys and values)
+     * @param {string} conditionName    The conditioning item's name
+     * @param {string} subConditionName If the conditioning item's value is an object, and the condition checks for a
+     *                                  specific property, this is the property name.
+     * @return {*} Condition Value.
+     */
+
+  }, {
+    key: "getConditionValue",
+    value: function getConditionValue(comparisonObject, conditionName, subConditionName) {
+      var _comparisonObject$__d;
+
+      var value;
+      var dynamicValue = (_comparisonObject$__d = comparisonObject.__dynamic__) === null || _comparisonObject$__d === void 0 ? void 0 : _comparisonObject$__d[conditionName];
+
+      if (dynamicValue) {
+        value = dynamicValue;
+      } else {
+        value = (0, _get2.default)((0, _getPrototypeOf2.default)(ControlConditions.prototype), "getConditionValue", this).call(this, comparisonObject, conditionName, subConditionName);
+      }
+
+      return value;
+    }
+    /**
+     * Check
+     *
+     * Iterates over an control's array of conditions and checks if all of them are met.
+     *
+     * @since 3.7.0
+     *
+     * @param {Array<*>} conditions       A control's array of conditions to be tested
+     * @param {{}}       comparisonObject The widget's settings object (setting keys and values)
+     * @param {{}}       controls         An object containing a widget's control models
+     * @return {boolean} id all conditions passes./
+     */
+
+  }, {
+    key: "check",
+    value: function check(conditions, comparisonObject, controls) {
+      var _this = this;
+
+      var isOrCondition = 'or' === conditions.relation;
+      var conditionSucceed = !isOrCondition;
+      conditions.terms.forEach(function (term) {
+        var comparisonResult;
+
+        if (term.terms) {
+          comparisonResult = _this.check(term, comparisonObject, controls);
+        } else {
+          // A term consists of a control name to be examined, and a sub key if needed. For example, a term
+          // can look like 'image_overlay[url]' (the 'url' is the sub key). Here we want to isolate the
+          // condition name and the sub key, so later it can be retrieved and examined.
+          var parsedName = term.name.match(/([\w-]+)(?:\[([\w-]+)])?/),
+              conditionRealName = parsedName[1],
+              conditionSubKey = parsedName[2];
+
+          var value = _this.getConditionValue(comparisonObject, conditionRealName, conditionSubKey);
+
+          if (!value) {
+            var _controls$conditionRe;
+
+            var parent = (_controls$conditionRe = controls[conditionRealName]) === null || _controls$conditionRe === void 0 ? void 0 : _controls$conditionRe.parent;
+
+            while (parent) {
+              var _controls$parent;
+
+              value = _this.getConditionValue(comparisonObject, parent, conditionSubKey);
+
+              if (value) {
+                break;
+              }
+
+              parent = (_controls$parent = controls[parent]) === null || _controls$parent === void 0 ? void 0 : _controls$parent.parent;
+            }
+          }
+
+          comparisonResult = undefined !== value && _this.compare(value, term.value, term.operator);
+        }
+
+        if (isOrCondition) {
+          if (comparisonResult) {
+            conditionSucceed = true;
+          }
+
+          return !comparisonResult;
+        }
+
+        if (!comparisonResult) {
+          return conditionSucceed = false;
+        }
+      });
+      return conditionSucceed;
+    }
+  }]);
+  return ControlConditions;
+}(_conditions.default);
+
+exports["default"] = ControlConditions;
 
 /***/ }),
 
@@ -33227,9 +42791,21 @@ ControlsCSSParser = elementorModules.ViewModule.extend({
   },
   parsePropertyPlaceholder: function parsePropertyPlaceholder(control, value, controls, values, placeholder, parserControlName) {
     if (parserControlName) {
-      control = _.findWhere(controls, {
-        name: parserControlName
-      });
+      if (control.responsive && controls[parserControlName]) {
+        var _$findWhere;
+
+        var deviceSuffix = elementor.conditions.getResponsiveControlDeviceSuffix(control.responsive);
+        control = (_$findWhere = _.findWhere(controls, {
+          name: parserControlName + deviceSuffix
+        })) !== null && _$findWhere !== void 0 ? _$findWhere : _.findWhere(controls, {
+          name: parserControlName
+        });
+      } else {
+        control = _.findWhere(controls, {
+          name: parserControlName
+        });
+      }
+
       value = this.getStyleControlValue(control, values);
     }
 
@@ -33240,7 +42816,7 @@ ControlsCSSParser = elementorModules.ViewModule.extend({
 
     var container = (_this$getSettings = this.getSettings()) === null || _this$getSettings === void 0 ? void 0 : (_this$getSettings$con = _this$getSettings.context) === null || _this$getSettings$con === void 0 ? void 0 : _this$getSettings$con.container,
         isGlobalApplied = container === null || container === void 0 ? void 0 : container.isGlobalApplied(control.name),
-        globalKey = ((_values$__globals__ = values.__globals__) === null || _values$__globals__ === void 0 ? void 0 : _values$__globals__[control.name]) || ((_control$global = control.global) === null || _control$global === void 0 ? void 0 : _control$global.default); // Set a global value only if it's is applied.
+        globalKey = ((_values$__globals__ = values.__globals__) === null || _values$__globals__ === void 0 ? void 0 : _values$__globals__[control.name]) || ((_control$global = control.global) === null || _control$global === void 0 ? void 0 : _control$global.default); // Set a global value only if it is applied.
 
     if (isGlobalApplied && globalKey) {
       // When the control itself has no global value, but it refers to another control global value
@@ -33268,7 +42844,7 @@ ControlsCSSParser = elementorModules.ViewModule.extend({
     }
 
     var id = data.id;
-    var value; // it's a global settings with additional controls in group.
+    var value; // It's a global settings with additional controls in group.
 
     if (control.groupType) {
       // A regex containing all of the active breakpoints' prefixes ('_mobile', '_tablet' etc.).
@@ -33511,10 +43087,9 @@ var Heartbeat = /*#__PURE__*/function () {
   }, {
     key: "showLockMessage",
     value: function showLockMessage(lockedUser) {
-      var modal = this.getModal();
-      modal
-      /* translators: %s: Locked user name. */
-      .setMessage(sprintf(__('%s has taken over and is currently editing. Do you want to take over this page editing?', 'elementor'), lockedUser)).show();
+      var modal = this.getModal(); // Translators: %s is locked username.
+
+      modal.setMessage(sprintf(__('%s has taken over and is currently editing. Do you want to take over this page editing?', 'elementor'), lockedUser)).show();
     }
   }, {
     key: "onSend",
@@ -33653,7 +43228,7 @@ module.exports = {
    * @deprecated 2.6.0
    */
   enqueueStylesheet: function enqueueStylesheet(url) {
-    elementorCommon.helpers.hardDeprecated('elementor.helpers.enqueueStylesheet()', '2.6.0', 'elementor.helpers.enqueuePreviewStylesheet()');
+    elementorDevTools.deprecation.deprecated('elementor.helpers.enqueueStylesheet()', '2.6.0', 'elementor.helpers.enqueuePreviewStylesheet()');
     this.enqueuePreviewStylesheet(url);
   },
   fetchInlineSvg: function fetchInlineSvg(svgUrl) {
@@ -33671,14 +43246,14 @@ module.exports = {
       return;
     }
 
-    if (this._inlineSvg.hasOwnProperty(value.id)) {
+    if (Object.prototype.hasOwnProperty.call(this._inlineSvg, value.id)) {
       return this._inlineSvg[value.id];
     }
 
     var self = this;
     this.fetchInlineSvg(value.url, function (data) {
       if (data) {
-        self._inlineSvg[value.id] = data; //$( data ).find( 'svg' )[ 0 ].outerHTML;
+        self._inlineSvg[value.id] = data; // $( data ).find( 'svg' )[ 0 ].outerHTML;
 
         if (view) {
           view.render();
@@ -33770,7 +43345,7 @@ module.exports = {
 
     var iconSettings = this.getIconLibrarySettings(iconType);
 
-    if (iconSettings && !iconSettings.hasOwnProperty('isCustom')) {
+    if (iconSettings && !Object.prototype.hasOwnProperty.call(iconSettings, 'isCustom')) {
       this.enqueueIconFonts(iconType);
 
       if ('panel' === returnType) {
@@ -33821,7 +43396,7 @@ module.exports = {
 
     if (mapping[fa4Value]) {
       return mapping[fa4Value];
-    } // every thing else is converted to solid
+    } // Every thing else is converted to solid
 
 
     return {
@@ -33863,9 +43438,11 @@ module.exports = {
         break;
 
       case 'earlyaccess':
-        var fontLowerString = font.replace(/\s+/g, '').toLowerCase();
-        fontUrl = 'https://fonts.googleapis.com/earlyaccess/' + fontLowerString + '.css';
-        break;
+        {
+          var fontLowerString = font.replace(/\s+/g, '').toLowerCase();
+          fontUrl = 'https://fonts.googleapis.com/earlyaccess/' + fontLowerString + '.css';
+          break;
+        }
     }
 
     if (!_.isEmpty(fontUrl)) {
@@ -33919,7 +43496,7 @@ module.exports = {
     return result;
   },
   getUniqueID: function getUniqueID() {
-    elementorCommon.helpers.softDeprecated('elementor.helpers.getUniqueID()', '3.0.0', 'elementorCommon.helpers.getUniqueId()');
+    elementorDevTools.deprecation.deprecated('elementor.helpers.getUniqueID()', '3.0.0', 'elementorCommon.helpers.getUniqueId()');
     return elementorCommon.helpers.getUniqueId();
   },
   getSocialNetworkNameFromIcon: function getSocialNetworkNameFromIcon(iconsControl, fallbackControl) {
@@ -34046,28 +43623,8 @@ module.exports = {
             conditionName = _ref2[0],
             conditionValue = _ref2[1];
 
-        // Here we want to convert the 'condition' format to a 'conditions' format. The first step is to
-        // isolate the term from the negative operator if exists. For example, a condition format can look
-        // like 'selected_icon[value]!', so we examine this term with a negative connotation.
-        var conditionNameParts = conditionName.match(/([\w-]+(?:\[[\w-]+])?)?(!?)$/i),
-            conditionRealName = conditionNameParts[1],
-            isNegativeCondition = !!conditionNameParts[2],
-            controlValue = values[conditionRealName];
-        var operator;
-
-        if (Array.isArray(conditionValue) && conditionValue.length) {
-          operator = isNegativeCondition ? '!in' : 'in';
-        } else if (Array.isArray(controlValue) && controlValue.length) {
-          operator = isNegativeCondition ? '!contains' : 'contains';
-        } else if (isNegativeCondition) {
-          operator = '!==';
-        }
-
-        terms.push({
-          name: conditionRealName,
-          operator: operator,
-          value: conditionValue
-        });
+        var convertedCondition = elementor.conditions.convertConditionToConditions(conditionName, conditionValue, controlModel, values, controls);
+        terms.push(convertedCondition);
       });
       conditions = {
         relation: 'and',
@@ -34078,7 +43635,7 @@ module.exports = {
     return !(conditions && !elementor.conditions.check(conditions, values, controls));
   },
   cloneObject: function cloneObject(object) {
-    elementorCommon.helpers.hardDeprecated('elementor.helpers.cloneObject', '2.3.0', 'elementorCommon.helpers.cloneObject');
+    elementorDevTools.deprecation.deprecated('elementor.helpers.cloneObject', '2.3.0', 'elementorCommon.helpers.cloneObject');
     return elementorCommon.helpers.cloneObject(object);
   },
   disableElementEvents: function disableElementEvents($element) {
@@ -34105,7 +43662,7 @@ module.exports = {
     });
   },
   wpColorPicker: function wpColorPicker($element) {
-    elementorCommon.helpers.deprecatedMethod('elementor.helpers.wpColorPicker()', '2.8.0', 'new ColorPicker()');
+    elementorDevTools.deprecation.deprecated('elementor.helpers.wpColorPicker()', '2.8.0', 'new ColorPicker()');
     return new _colorPicker.default({
       picker: {
         el: $element
@@ -34470,6 +44027,134 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "../assets/dev/js/editor/utils/localized-value-store.js":
+/*!**************************************************************!*\
+  !*** ../assets/dev/js/editor/utils/localized-value-store.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var LocalizedValueStore = /*#__PURE__*/function () {
+  function LocalizedValueStore() {
+    (0, _classCallCheck2.default)(this, LocalizedValueStore);
+    this.store = [];
+  }
+  /**
+   * Receives the incoming event and returns the stored localized value
+   * English values will be returned as is
+   * Paste will return an empty value
+   *
+   * @param  event - the incoming event
+   * @return string
+   */
+
+
+  (0, _createClass2.default)(LocalizedValueStore, [{
+    key: "appendAndParseLocalizedData",
+    value: function appendAndParseLocalizedData(event) {
+      if (this.isPaste(event)) {
+        this.resetStore();
+      } else if (this.isInputValueShorterThanStoreLength(event)) {
+        this.rebuildStore(event);
+      } else if (this.isLetter(event) || this.isSpace(event)) {
+        this.addCharToStore(event);
+      }
+
+      return this.store.map(function (x) {
+        return x.localized;
+      }).join('');
+    }
+  }, {
+    key: "resetStore",
+    value: function resetStore() {
+      this.store = [];
+    }
+  }, {
+    key: "isPaste",
+    value: function isPaste(event) {
+      var PASTE_EVENT = 'insertFromPaste';
+      var KEY_V = 'KeyV';
+      var originalEventPaste = PASTE_EVENT === event.originalEvent.inputType;
+      var ctrlPlusV = event.code === KEY_V && event.ctrlKey;
+      return originalEventPaste || ctrlPlusV;
+    }
+  }, {
+    key: "isInputValueShorterThanStoreLength",
+    value: function isInputValueShorterThanStoreLength(event) {
+      var _event$target$value;
+
+      return ((_event$target$value = event.target.value) === null || _event$target$value === void 0 ? void 0 : _event$target$value.length) < this.store.length;
+    }
+  }, {
+    key: "addCharToStore",
+    value: function addCharToStore(event) {
+      var localizedValue = String.fromCharCode(event.keyCode);
+
+      if (!this.localizationRequired(localizedValue, event)) {
+        localizedValue = event.originalEvent.key;
+      }
+
+      this.store.push({
+        original: event.originalEvent.key,
+        localized: localizedValue
+      });
+    }
+  }, {
+    key: "localizationRequired",
+    value: function localizationRequired(localizedValue, event) {
+      return localizedValue.toLowerCase() !== event.originalEvent.key.toLowerCase();
+    }
+  }, {
+    key: "isSpace",
+    value: function isSpace(event) {
+      return 32 === event.keyCode || ' ' === event.originalEvent.data;
+    }
+  }, {
+    key: "isLetter",
+    value: function isLetter(event) {
+      return event.keyCode >= 65 && event.keyCode <= 90;
+    }
+  }, {
+    key: "rebuildStore",
+    value: function rebuildStore(event) {
+      var _this = this;
+
+      var chars = event.target.value.split('');
+      this.store = chars.map(function (char) {
+        return _this.buildLocalizationElement(char);
+      });
+    }
+  }, {
+    key: "buildLocalizationElement",
+    value: function buildLocalizationElement(char) {
+      return {
+        original: char,
+        localized: this.store.find(function (element) {
+          return element.original === char;
+        }).localized
+      };
+    }
+  }]);
+  return LocalizedValueStore;
+}();
+
+exports["default"] = LocalizedValueStore;
+
+/***/ }),
+
 /***/ "../assets/dev/js/editor/utils/notice-bar.js":
 /*!***************************************************!*\
   !*** ../assets/dev/js/editor/utils/notice-bar.js ***!
@@ -34720,7 +44405,7 @@ presetsFactory = {
     return this._createSVGPreset(presetSVGPath, svgWidth, svgHeight);
   },
   _createSVGPreset: function _createSVGPreset(presetPath, svgWidth, svgHeight) {
-    // this is here to avoid being picked up by https re-write systems
+    // This is here to avoid being picked up by https re-write systems
     var protocol = 'ht' + 'tp';
     var svg = document.createElementNS(protocol + '://www.w3.org/2000/svg', 'svg');
     svg.setAttributeNS(protocol + '://www.w3.org/2000/xmlns/', 'xmlns:xlink', protocol + '://www.w3.org/1999/xlink');
@@ -35102,7 +44787,7 @@ Schemes = function Schemes() {
   };
 
   this.removeSchemeItem = function (schemeName, itemKey) {
-    var items = schemes[schemeName].items;
+    var items = schemes[schemeName].items; // eslint-disable-next-line no-constant-condition
 
     while (true) {
       itemKey++;
@@ -35315,7 +45000,7 @@ exports["default"] = Select2;
       var query = {};
       hash = hash.split('-').filter(String);
       hash.forEach(function (singleQuery) {
-        // split {max}/{min}_{device name} to separate strings
+        // Split {max}/{min}_{device name} to separate strings
         var queryParts = singleQuery.split(/_(.+)/),
             endPoint = queryParts[0],
             deviceName = queryParts[1];
@@ -35579,7 +45264,7 @@ var AddSectionBase = /*#__PURE__*/function (_Marionette$ItemView) {
         addTemplateButton: '.elementor-add-template-button',
         selectPreset: '.elementor-select-preset',
         presets: '.elementor-preset',
-        containerPresets: '.e-container-preset'
+        containerPresets: '.e-con-preset'
       };
     }
   }, {
@@ -35987,6 +45672,11 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 
 var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
 
+/**
+ * @typedef {import('elementor/assets/lib/backbone/backbone.marionette')} Marionette
+ * @name BaseContainer
+ * @augments {Marionette.CompositeView}
+ */
 module.exports = Marionette.CompositeView.extend({
   templateHelpers: function templateHelpers() {
     return {
@@ -36148,13 +45838,17 @@ module.exports = Marionette.CompositeView.extend({
       return;
     }
 
-    this.createElementFromModel(Object.fromEntries(Object.entries((_elementor$channels$p = elementor.channels.panelElements.request('element:selected')) === null || _elementor$channels$p === void 0 ? void 0 : _elementor$channels$p.model.attributes) // The `custom` property is responsible for storing global-widgets related data.
+    var args = {};
+    args.model = Object.fromEntries(Object.entries((_elementor$channels$p = elementor.channels.panelElements.request('element:selected')) === null || _elementor$channels$p === void 0 ? void 0 : _elementor$channels$p.model.attributes) // The `custom` property is responsible for storing global-widgets related data.
     .filter(function (_ref) {
       var _ref2 = (0, _slicedToArray2.default)(_ref, 1),
           key = _ref2[0];
 
       return ['elType', 'widgetType', 'custom'].includes(key);
-    })), options);
+    }));
+    args.container = this.getContainer();
+    args.options = options;
+    $e.run('preview/drop', args);
   },
   getHistoryType: function getHistoryType(event) {
     if (event) {
@@ -36203,6 +45897,31 @@ module.exports = Marionette.CompositeView.extend({
     return false;
   }
 });
+/**
+ * Source: https://marionettejs.com/docs/v2.4.5/marionette.collectionview.html#collectionviews-buildchildview
+ *
+ * Since Elementor created custom container(bridge) between view, model, settings, children, parent and so on,
+ * the container requires the parent view for proper work, but in 'marionettejs', the parent view is not available
+ * during the `buildChildView` method, but actually exist, Elementor modified the `buildChildView` method to
+ * set the parent view as a property `_parent` of the child view.
+ * Anyways later, the `_parent` property is set by: 'marionettejs' to same view.
+ */
+
+/**
+ * @inheritDoc
+ */
+
+Marionette.CollectionView.prototype.buildChildView = function (child, ChildViewClass, childViewOptions) {
+  var options = _.extend({
+    model: child
+  }, childViewOptions),
+      childView = new ChildViewClass(options); // `ELEMENTOR EDITING`: Fix `_parent` not available on render.
+
+
+  childView._parent = this;
+  Marionette.MonitorDOMRefresh(childView);
+  return childView;
+};
 
 /***/ }),
 
@@ -36247,7 +45966,7 @@ BaseSectionsContainerView = BaseContainer.extend({
   getSortableOptions: function getSortableOptions() {
     return {
       handle: '> .elementor-element-overlay .elementor-editor-element-edit',
-      items: '> .elementor-section, > .e-container'
+      items: '> .elementor-section, > .e-con'
     };
   },
   getChildType: function getChildType() {
@@ -36407,12 +46126,17 @@ exports["default"] = ControlsPopover;
 /*!*******************************************************!*\
   !*** ../assets/dev/js/editor/views/controls-stack.js ***!
   \*******************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
 
 var _controlsPopover = _interopRequireDefault(__webpack_require__(/*! ./controls-popover */ "../assets/dev/js/editor/views/controls-popover.js"));
 
@@ -36610,7 +46334,8 @@ ControlsStack = Marionette.CompositeView.extend({
     });
   }
 });
-module.exports = ControlsStack;
+var _default = ControlsStack;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -36809,7 +46534,7 @@ var ArgsObject = /*#__PURE__*/function (_InstanceType) {
     value: function requireArgument(property) {
       var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.args;
 
-      if (!args.hasOwnProperty(property)) {
+      if (!Object.prototype.hasOwnProperty.call(args, property)) {
         throw Error("".concat(property, " is required."));
       }
     }
@@ -37695,7 +47420,7 @@ var EventManager = function EventManager() {
 
 
   function
-    /* action, arg1, arg2, ... */
+    /* Action, arg1, arg2, ... */
   doAction() {
     var args = slice.call(arguments);
     var action = args.shift();
@@ -37747,7 +47472,7 @@ var EventManager = function EventManager() {
 
 
   function
-    /* filter, filtered arg, arg2, ... */
+    /* Filter, filtered arg, arg2, ... */
   applyFilters() {
     var args = slice.call(arguments);
     var filter = args.shift();
@@ -37785,92 +47510,12 @@ var EventManager = function EventManager() {
     removeAction: removeAction,
     doAction: doAction,
     addAction: addAction
-  }; // return all of the publicly available methods
+  }; // Return all of the publicly available methods
 
   return MethodsAvailable;
 };
 
 module.exports = EventManager;
-
-/***/ }),
-
-/***/ "../core/app/assets/js/utils/utils.js":
-/*!********************************************!*\
-  !*** ../core/app/assets/js/utils/utils.js ***!
-  \********************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports.stringToRemValues = exports.rgbToHex = exports.pxToRem = exports.isOneOf = exports.arrayToObjectByKey = exports.arrayToClassName = void 0;
-
-var _typeof2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js"));
-
-var pxToRem = function pxToRem(pixels) {
-  if (!pixels) {
-    return;
-  } else if ('string' !== typeof pixels) {
-    pixels = pixels.toString();
-  }
-
-  return pixels.split(' ').map(function (value) {
-    return "".concat(value * 0.0625, "rem");
-  }).join(' ');
-};
-
-exports.pxToRem = pxToRem;
-
-var arrayToClassName = function arrayToClassName(array, action) {
-  return array.filter(function (item) {
-    return 'object' === (0, _typeof2.default)(item) ? Object.entries(item)[0][1] : item;
-  }).map(function (item) {
-    var value = 'object' === (0, _typeof2.default)(item) ? Object.entries(item)[0][0] : item;
-    return action ? action(value) : value;
-  }).join(' ');
-};
-
-exports.arrayToClassName = arrayToClassName;
-
-var stringToRemValues = function stringToRemValues(string) {
-  return string.split(' ').map(function (value) {
-    return pxToRem(value);
-  }).join(' ');
-};
-
-exports.stringToRemValues = stringToRemValues;
-
-var rgbToHex = function rgbToHex(r, g, b) {
-  return '#' + [r, g, b].map(function (x) {
-    var hex = x.toString(16);
-    return 1 === hex.length ? '0' + hex : hex;
-  }).join('');
-};
-
-exports.rgbToHex = rgbToHex;
-
-var isOneOf = function isOneOf(filetype, filetypeOptions) {
-  return filetypeOptions.some(function (type) {
-    return filetype.includes(type);
-  });
-};
-
-exports.isOneOf = isOneOf;
-
-var arrayToObjectByKey = function arrayToObjectByKey(array, key) {
-  var finalObject = {};
-  array.forEach(function (item) {
-    return finalObject[item[key]] = item;
-  });
-  return finalObject;
-};
-
-exports.arrayToObjectByKey = arrayToObjectByKey;
 
 /***/ }),
 
@@ -37903,7 +47548,7 @@ isSafari = /^((?!chrome|android).)*safari/i.test(userAgent) || /constructor/i.te
 }(!window.safari || typeof safari !== 'undefined' && safari.pushNotification),
     // Internet Explorer 6-11
 isIE = /Trident|MSIE/.test(userAgent) && (
-/*@cc_on!@*/
+/* @cc_on!@*/
  false || !!document.documentMode),
     // Edge 20+
 isEdge = !isIE && !!window.StyleMedia || matchUserAgent('Edg'),
@@ -38358,14 +48003,12 @@ var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/run
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Back = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Back, _CommandBase);
+var Back = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Back, _$e$modules$CommandBa);
 
   var _super = _createSuper(Back);
 
@@ -38425,7 +48068,7 @@ var Back = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Back;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Back = Back;
 var _default = Back;
@@ -38459,14 +48102,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Close = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Close, _CommandBase);
+var Close = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Close, _$e$modules$CommandBa);
 
   var _super = _createSuper(Close);
 
@@ -38498,7 +48139,7 @@ var Close = /*#__PURE__*/function (_CommandBase) {
           }
 
           $e.components.get('panel/global').close();
-          $e.routes.clearHistory(_this.component.getRootContainer()); // The kit shouldn't be cached for next open. (it may be changed via create colors/typography).
+          $e.routes.clearHistory(_this.component.getServiceName()); // The kit shouldn't be cached for next open. (it may be changed via create colors/typography).
 
           elementor.documents.invalidateCache(elementor.config.kit_id);
         }
@@ -38508,7 +48149,7 @@ var Close = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Close;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Close = Close;
 var _default = Close;
@@ -38542,14 +48183,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Exit = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Exit, _CommandBase);
+var Exit = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Exit, _$e$modules$CommandBa);
 
   var _super = _createSuper(Exit);
 
@@ -38570,7 +48209,7 @@ var Exit = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Exit;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Exit = Exit;
 var _default = Exit;
@@ -38651,14 +48290,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Open = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Open, _CommandBase);
+var Open = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Open, _$e$modules$CommandBa);
 
   var _super = _createSuper(Open);
 
@@ -38676,7 +48313,7 @@ var Open = /*#__PURE__*/function (_CommandBase) {
         return jQuery.Deferred().resolve();
       }
 
-      $e.routes.clearHistory(this.component.getRootContainer());
+      $e.routes.clearHistory(this.component.getServiceName());
       this.component.toggleHistoryClass();
       $e.internal('panel/state-loading');
       return $e.run('editor/documents/switch', {
@@ -38695,7 +48332,7 @@ var Open = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Open;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Open = Open;
 var _default = Open;
@@ -39314,7 +48951,7 @@ var GlobalControlSelect = /*#__PURE__*/function (_Marionette$Behavior) {
       $e.run(globalMeta.commandName + '/create', {
         container: this.view.container,
         setting: globalMeta.key,
-        // group control name
+        // Group control name
         title: globalMeta.title
       }).then(function (result) {
         _this10.applySavedGlobalValue(result.data.id);
@@ -39334,7 +48971,7 @@ var GlobalControlSelect = /*#__PURE__*/function (_Marionette$Behavior) {
       } else {
         // If the active setting is NOT a global, enable globals and apply the selected global.
         command = 'document/globals/enable';
-      } // colors / typography
+      } // Colors / typography
 
 
       settings[this.view.model.get('name')] = this.view.getGlobalCommand() + '?id=' + globalId; // Trigger async render.
@@ -40748,9 +50385,8 @@ var KitSaveRouteHistory = /*#__PURE__*/function (_BaseOpenClose) {
     }
   }, {
     key: "getConditions",
-    value: function getConditions() {
-      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      return args.route;
+    value: function getConditions(args) {
+      return !!args.route;
     }
   }, {
     key: "apply",
@@ -41127,8 +50763,8 @@ var Manager = /*#__PURE__*/function (_elementorModules$edi) {
           }
         });
         globalControls.forEach(function (control) {
-          cssParser.addControlStyleRules(control, widget.controls, // values
-          widget.controls, // controls
+          cssParser.addControlStyleRules(control, widget.controls, // Values
+          widget.controls, // Controls
           ['{{WRAPPER}}'], ['.elementor-widget-' + widget.widget_type], globalValues);
         });
       });
@@ -41455,16 +51091,21 @@ PanelMenu.getGroups = function () {
 /*!***************************************!*\
   !*** ../core/kits/assets/js/panel.js ***!
   \***************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
 var _panelContent = _interopRequireDefault(__webpack_require__(/*! ./panel-content */ "../core/kits/assets/js/panel-content.js"));
 
-module.exports = Marionette.LayoutView.extend({
+var _default = Marionette.LayoutView.extend({
   id: 'elementor-kit-panel',
   template: '#tmpl-elementor-kit-panel',
   regions: {
@@ -41481,6 +51122,8 @@ module.exports = Marionette.LayoutView.extend({
     this.showChildView('content', new _panelContent.default(options));
   }
 });
+
+exports["default"] = _default;
 
 /***/ }),
 
@@ -41602,7 +51245,7 @@ var _default = /*#__PURE__*/function (_RepeaterRow) {
         var removeButtons = this.getDisabledRemoveButtons();
         this.ui.removeButton.data('e-global-type', globalType);
         this.ui.removeButton.tipsy({
-          /* translators: %s: Font/Color. */
+          /* Translators: %s: Font/Color. */
           title: function title() {
             return sprintf(__('Delete Global %s', 'elementor'), globalTypeTranslated);
           },
@@ -41611,7 +51254,7 @@ var _default = /*#__PURE__*/function (_RepeaterRow) {
           }
         });
         removeButtons.tipsy({
-          /* translators: %s: Font/Color. */
+          /* Translators: %s: Font/Color. */
           title: function title() {
             return sprintf(__('System %s can\'t be deleted', 'elementor'), globalTypeTranslated);
           },
@@ -41637,12 +51280,12 @@ var _default = /*#__PURE__*/function (_RepeaterRow) {
           globalTypeTranslatedCapitalized = 'font' === globalType ? __('Font', 'elementor') : __('Color', 'elementor'),
           globalTypeTranslatedLowercase = 'font' === globalType ? __('font', 'elementor') : __('color', 'elementor'),
 
-      /* translators: 1: Font/Color, 2: typography/color. */
+      /* Translators: 1: Font/Color, 2: typography/color. */
       translatedMessage = sprintf(__('You\'re about to delete a Global %1$s. Note that if it\'s being used anywhere on your site, it will inherit a default %1$s.', 'elementor'), globalTypeTranslatedCapitalized, globalTypeTranslatedLowercase);
       this.confirmDeleteModal = elementorCommon.dialogsManager.createWidget('confirm', {
         className: 'e-global__confirm-delete',
 
-        /* translators: %s: Font/Color. */
+        /* Translators: %s: Font/Color. */
         headerMessage: sprintf(__('Delete Global %s', 'elementor'), globalTypeTranslatedCapitalized),
         message: '<i class="eicon-info-circle"></i> ' + translatedMessage,
         strings: {
@@ -41752,78 +51395,6 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ "../modules/dev-tools/assets/js/editor/dev-tools.js":
-/*!**********************************************************!*\
-  !*** ../modules/dev-tools/assets/js/editor/dev-tools.js ***!
-  \**********************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = void 0;
-
-var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "../node_modules/@babel/runtime/helpers/toConsumableArray.js"));
-
-var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-var _default = /*#__PURE__*/function (_elementorModules$edi) {
-  (0, _inherits2.default)(_default, _elementorModules$edi);
-
-  var _super = _createSuper(_default);
-
-  function _default() {
-    (0, _classCallCheck2.default)(this, _default);
-    return _super.apply(this, arguments);
-  }
-
-  (0, _createClass2.default)(_default, [{
-    key: "onElementorLoaded",
-    value: function onElementorLoaded() {
-      this.notifyDeprecated();
-    }
-  }, {
-    key: "notifyDeprecated",
-    value: function notifyDeprecated() {
-      // eslint-disable-next-line camelcase
-      var notices = elementor.config.dev_tools.deprecation.soft_notices;
-      Object.entries(notices).forEach(function (_ref) {
-        var _elementorCommon$help;
-
-        var _ref2 = (0, _slicedToArray2.default)(_ref, 2),
-            key = _ref2[0],
-            notice = _ref2[1];
-
-        (_elementorCommon$help = elementorCommon.helpers).softDeprecated.apply(_elementorCommon$help, [key].concat((0, _toConsumableArray2.default)(notice)));
-      });
-    }
-  }]);
-  return _default;
-}(elementorModules.editor.utils.Module);
-
-exports["default"] = _default;
-
-/***/ }),
-
 /***/ "../modules/elements-color-picker/assets/js/editor/commands/apply.js":
 /*!***************************************************************************!*\
   !*** ../modules/elements-color-picker/assets/js/editor/commands/apply.js ***!
@@ -41853,8 +51424,6 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
@@ -41862,8 +51431,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 /**
  * Apply & Save the selected color on click.
  */
-var Apply = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Apply, _CommandBase);
+var Apply = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Apply, _$e$modules$CommandBa);
 
   var _super = _createSuper(Apply);
 
@@ -41939,7 +51508,7 @@ var Apply = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Apply;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Apply = Apply;
 
@@ -41971,8 +51540,6 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 var _utils = __webpack_require__(/*! ../utils */ "../modules/elements-color-picker/assets/js/editor/utils.js");
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
@@ -41982,8 +51549,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 /**
  * End the color picking process and return to the normal editor state.
  */
-var End = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(End, _CommandBase);
+var End = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(End, _$e$modules$CommandBa);
 
   var _super = _createSuper(End);
 
@@ -42024,7 +51591,7 @@ var End = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return End;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.End = End;
 
@@ -42056,8 +51623,6 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
@@ -42065,8 +51630,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 /**
  * Show the user a UI preview of the currently hovered color.
  */
-var EnterPreview = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(EnterPreview, _CommandBase);
+var EnterPreview = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(EnterPreview, _$e$modules$CommandBa);
 
   var _super = _createSuper(EnterPreview);
 
@@ -42090,7 +51655,7 @@ var EnterPreview = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return EnterPreview;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.EnterPreview = EnterPreview;
 
@@ -42122,8 +51687,6 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
@@ -42131,8 +51694,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 /**
  * Exit the UI preview mode on mouseout.
  */
-var ExitPreview = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(ExitPreview, _CommandBase);
+var ExitPreview = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(ExitPreview, _$e$modules$CommandBa);
 
   var _super = _createSuper(ExitPreview);
 
@@ -42160,7 +51723,7 @@ var ExitPreview = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return ExitPreview;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.ExitPreview = ExitPreview;
 
@@ -42258,9 +51821,7 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
-var _utils = __webpack_require__(/*! elementor/core/app/assets/js/utils/utils */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! elementor-app/utils/utils */ "../app/assets/js/utils/utils.js");
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
@@ -42273,8 +51834,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 /**
  * Show a palette of color swatches on click.
  */
-var ShowSwatches = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(ShowSwatches, _CommandBase);
+var ShowSwatches = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(ShowSwatches, _$e$modules$CommandBa);
 
   var _super = _createSuper(ShowSwatches);
 
@@ -42701,7 +52262,7 @@ var ShowSwatches = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return ShowSwatches;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.ShowSwatches = ShowSwatches;
 
@@ -42735,8 +52296,6 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 var _utils = __webpack_require__(/*! ../utils */ "../modules/elements-color-picker/assets/js/editor/utils.js");
 
 var _colorPicking = __webpack_require__(/*! ../ui-states/color-picking */ "../modules/elements-color-picker/assets/js/editor/ui-states/color-picking.js");
@@ -42752,8 +52311,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 /**
  * Start the color picking process.
  */
-var Start = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Start, _CommandBase);
+var Start = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Start, _$e$modules$CommandBa);
 
   var _super = _createSuper(Start);
 
@@ -42790,7 +52349,7 @@ var Start = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Start;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Start = Start;
 
@@ -43334,14 +52893,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var CommandsBase = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(CommandsBase, _CommandBase);
+var CommandsBase = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(CommandsBase, _$e$modules$CommandBa);
 
   var _super = _createSuper(CommandsBase);
 
@@ -43359,7 +52916,7 @@ var CommandsBase = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return CommandsBase;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports["default"] = CommandsBase;
 
@@ -43550,14 +53107,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _base = _interopRequireDefault(__webpack_require__(/*! ./base */ "../modules/favorites/assets/js/editor/commands/base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Toggle = /*#__PURE__*/function (_CommandsBase) {
-  (0, _inherits2.default)(Toggle, _CommandsBase);
+var Toggle = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Toggle, _$e$modules$CommandBa);
 
   var _super = _createSuper(Toggle);
 
@@ -43576,7 +53131,7 @@ var Toggle = /*#__PURE__*/function (_CommandsBase) {
     }
   }]);
   return Toggle;
-}(_base.default);
+}($e.modules.CommandBase);
 
 exports.Toggle = Toggle;
 var _default = Toggle;
@@ -44291,8 +53846,6 @@ exports["default"] = Component;
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
 
-var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
@@ -44309,12 +53862,6 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
 var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/component-base */ "../modules/web-cli/assets/js/modules/component-base.js"));
-
-var commands = _interopRequireWildcard(__webpack_require__(/*! elementor-document/history/commands/ */ "../assets/dev/js/editor/document/history/commands/index.js"));
-
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
@@ -44338,7 +53885,17 @@ var Component = /*#__PURE__*/function (_ComponentBase) {
   }, {
     key: "defaultCommands",
     value: function defaultCommands() {
-      return this.importCommands(commands);
+      return {
+        do: function _do(args) {
+          return $e.run('document/history/do', args);
+        },
+        undo: function undo() {
+          return $e.run('document/history/undo');
+        },
+        redo: function redo() {
+          return $e.run('document/history/redo');
+        }
+      };
     }
   }, {
     key: "defaultShortcuts",
@@ -44557,6 +54114,7 @@ var HistoryManager = /*#__PURE__*/function () {
     }));
     (0, _defineProperty2.default)(this, "active", true);
     (0, _defineProperty2.default)(this, "translations", {
+      // Alphabetical order.
       add: __('Added', 'elementor'),
       change: __('Edited', 'elementor'),
       disable: __('Disabled', 'elementor'),
@@ -44567,8 +54125,9 @@ var HistoryManager = /*#__PURE__*/function () {
       paste: __('Pasted', 'elementor'),
       paste_style: __('Style Pasted', 'elementor'),
       remove: __('Removed', 'elementor'),
+      reset_settings: __('Settings Reset', 'elementor'),
       reset_style: __('Style Reset', 'elementor'),
-      reset_settings: __('Settings Reset', 'elementor')
+      selected: __('Selected', 'elementor')
     });
     this.document = document;
     this.currentItem = new Backbone.Model({
@@ -44934,13 +54493,13 @@ var Manager = /*#__PURE__*/function () {
   }, {
     key: "history",
     get: function get() {
-      elementorCommon.helpers.softDeprecated('elementor.history.history', '2.9.0', 'elementor.documents.getCurrent().history');
+      elementorDevTools.deprecation.deprecated('elementor.history.history', '2.9.0', 'elementor.documents.getCurrent().history');
       return elementor.documents.getCurrent().history;
     }
   }, {
     key: "revisions",
     get: function get() {
-      elementorCommon.helpers.softDeprecated('elementor.history.revisions', '2.9.0', 'elementor.documents.getCurrent().revisions');
+      elementorDevTools.deprecation.deprecated('elementor.history.revisions', '2.9.0', 'elementor.documents.getCurrent().revisions');
       return elementor.documents.getCurrent().revisions;
     }
   }]);
@@ -44955,12 +54514,17 @@ exports["default"] = Manager;
 /*!**************************************************!*\
   !*** ../modules/history/assets/js/panel-page.js ***!
   \**************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
 
 var _loading = _interopRequireDefault(__webpack_require__(/*! ./revisions/panel/loading */ "../modules/history/assets/js/revisions/panel/loading.js"));
 
@@ -44970,7 +54534,7 @@ var _empty = _interopRequireDefault(__webpack_require__(/*! ./revisions/panel/em
 
 var TabHistoryView = __webpack_require__(/*! ./history/panel-tab */ "../modules/history/assets/js/history/panel-tab.js");
 
-module.exports = Marionette.LayoutView.extend({
+var _default = Marionette.LayoutView.extend({
   template: '#tmpl-elementor-panel-history-page',
   regions: {
     content: '#elementor-panel-history-content'
@@ -45040,6 +54604,8 @@ module.exports = Marionette.LayoutView.extend({
   }
 });
 
+exports["default"] = _default;
+
 /***/ }),
 
 /***/ "../modules/history/assets/js/revisions/collection.js":
@@ -45088,14 +54654,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Down = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Down, _CommandBase);
+var Down = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Down, _$e$modules$CommandBa);
 
   var _super = _createSuper(Down);
 
@@ -45111,7 +54675,7 @@ var Down = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Down;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Down = Down;
 var _default = Down;
@@ -45176,14 +54740,12 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var Up = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(Up, _CommandBase);
+var Up = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Up, _$e$modules$CommandBa);
 
   var _super = _createSuper(Up);
 
@@ -45199,7 +54761,7 @@ var Up = /*#__PURE__*/function (_CommandBase) {
     }
   }]);
   return Up;
-}(_commandBase.default);
+}($e.modules.CommandBase);
 
 exports.Up = Up;
 var _default = Up;
@@ -46176,285 +55738,6 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ "../modules/web-cli/assets/js/core/data/errors/base-error.js":
-/*!*******************************************************************!*\
-  !*** ../modules/web-cli/assets/js/core/data/errors/base-error.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
-var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ "../node_modules/@babel/runtime/helpers/assertThisInitialized.js"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
-
-var _wrapNativeSuper2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/wrapNativeSuper */ "../node_modules/@babel/runtime/helpers/wrapNativeSuper.js"));
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
-
-var _helpers = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/helpers */ "../modules/web-cli/assets/js/utils/helpers.js"));
-
-var _forceMethodImplementation = _interopRequireDefault(__webpack_require__(/*! ../../../utils/force-method-implementation */ "../modules/web-cli/assets/js/utils/force-method-implementation.js"));
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-var BaseError = /*#__PURE__*/function (_Error) {
-  (0, _inherits2.default)(BaseError, _Error);
-
-  var _super = _createSuper(BaseError);
-
-  /**
-   * Error constructor.
-   *
-   * @param {string} message
-   * @param {string} code
-   * @param {*}      data
-   */
-  function BaseError() {
-    var _this;
-
-    var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-    var code = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-    var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-    (0, _classCallCheck2.default)(this, BaseError);
-    _this = _super.call(this, message);
-    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "code", '');
-    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "data", []);
-    _this.code = code;
-    _this.data = data;
-    return _this;
-  }
-  /**
-   * Notify a message when the error occurs.
-   */
-
-
-  (0, _createClass2.default)(BaseError, [{
-    key: "notify",
-    value: function notify() {
-      _helpers.default.consoleError(_objectSpread({
-        message: this.message
-      }, this));
-    }
-  }], [{
-    key: "create",
-    value:
-    /**
-     * The server error code.
-     *
-     * @type {string}
-     */
-
-    /**
-     * Additional data about the current error.
-     *
-     * @type {*[]}
-     */
-
-    /**
-     * Static helper function to create the error.
-     *
-     * @param {string} message
-     * @param {string} code
-     * @param {*}      data
-     * @return {BaseError} error
-     */
-    function create(message) {
-      var code = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-      var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-      return new this(message, code, data);
-    }
-    /**
-     * Returns the status code of the error.
-     */
-
-  }, {
-    key: "getHTTPErrorCode",
-    value: function getHTTPErrorCode() {
-      (0, _forceMethodImplementation.default)();
-    }
-  }]);
-  return BaseError;
-}( /*#__PURE__*/(0, _wrapNativeSuper2.default)(Error));
-
-exports["default"] = BaseError;
-
-/***/ }),
-
-/***/ "../modules/web-cli/assets/js/core/data/errors/default-error.js":
-/*!**********************************************************************!*\
-  !*** ../modules/web-cli/assets/js/core/data/errors/default-error.js ***!
-  \**********************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = exports.DefaultError = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
-
-var _baseError = _interopRequireDefault(__webpack_require__(/*! ./base-error */ "../modules/web-cli/assets/js/core/data/errors/base-error.js"));
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-var DefaultError = /*#__PURE__*/function (_BaseError) {
-  (0, _inherits2.default)(DefaultError, _BaseError);
-
-  var _super = _createSuper(DefaultError);
-
-  function DefaultError() {
-    (0, _classCallCheck2.default)(this, DefaultError);
-    return _super.apply(this, arguments);
-  }
-
-  (0, _createClass2.default)(DefaultError, null, [{
-    key: "getHTTPErrorCode",
-    value: function getHTTPErrorCode() {
-      return 501;
-    }
-  }]);
-  return DefaultError;
-}(_baseError.default);
-
-exports.DefaultError = DefaultError;
-var _default = DefaultError;
-exports["default"] = _default;
-
-/***/ }),
-
-/***/ "../modules/web-cli/assets/js/core/data/errors/error-404.js":
-/*!******************************************************************!*\
-  !*** ../modules/web-cli/assets/js/core/data/errors/error-404.js ***!
-  \******************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = exports.Error404 = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
-
-var _baseError = _interopRequireDefault(__webpack_require__(/*! ./base-error */ "../modules/web-cli/assets/js/core/data/errors/base-error.js"));
-
-var _helpers = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/helpers */ "../modules/web-cli/assets/js/utils/helpers.js"));
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-var Error404 = /*#__PURE__*/function (_BaseError) {
-  (0, _inherits2.default)(Error404, _BaseError);
-
-  var _super = _createSuper(Error404);
-
-  function Error404() {
-    (0, _classCallCheck2.default)(this, Error404);
-    return _super.apply(this, arguments);
-  }
-
-  (0, _createClass2.default)(Error404, [{
-    key: "notify",
-    value: function notify() {
-      _helpers.default.consoleWarn(this.message);
-    }
-  }], [{
-    key: "getHTTPErrorCode",
-    value: function getHTTPErrorCode() {
-      return 404;
-    }
-  }]);
-  return Error404;
-}(_baseError.default);
-
-exports.Error404 = Error404;
-var _default = Error404;
-exports["default"] = _default;
-
-/***/ }),
-
-/***/ "../modules/web-cli/assets/js/core/data/errors/index.js":
-/*!**************************************************************!*\
-  !*** ../modules/web-cli/assets/js/core/data/errors/index.js ***!
-  \**************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-Object.defineProperty(exports, "DefaultError", ({
-  enumerable: true,
-  get: function get() {
-    return _defaultError.DefaultError;
-  }
-}));
-Object.defineProperty(exports, "Error404", ({
-  enumerable: true,
-  get: function get() {
-    return _error.Error404;
-  }
-}));
-
-var _defaultError = __webpack_require__(/*! ./default-error */ "../modules/web-cli/assets/js/core/data/errors/default-error.js");
-
-var _error = __webpack_require__(/*! ./error-404 */ "../modules/web-cli/assets/js/core/data/errors/error-404.js");
-
-/***/ }),
-
 /***/ "../modules/web-cli/assets/js/core/states/ui-state-base.js":
 /*!*****************************************************************!*\
   !*** ../modules/web-cli/assets/js/core/states/ui-state-base.js ***!
@@ -46507,7 +55790,7 @@ var UiStateBase = /*#__PURE__*/function () {
   (0, _createClass2.default)(UiStateBase, [{
     key: "set",
     value: function set(newValue) {
-      if (newValue && !this.options.hasOwnProperty(newValue)) {
+      if (newValue && !Object.prototype.hasOwnProperty.call(this.options, newValue)) {
         throw "Option '".concat(newValue, "' for state '").concat(this.id, "' is invalid.");
       }
 
@@ -46639,17 +55922,9 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports["default"] = void 0;
 
-var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "../node_modules/@babel/runtime/regenerator/index.js"));
-
-var _typeof2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js"));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "../node_modules/@babel/runtime/helpers/asyncToGenerator.js"));
-
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
 
 var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
-var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ "../node_modules/@babel/runtime/helpers/assertThisInitialized.js"));
 
 var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
 
@@ -46657,76 +55932,90 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _commandInfra = _interopRequireDefault(__webpack_require__(/*! ./command-infra */ "../modules/web-cli/assets/js/modules/command-infra.js"));
 
-var _argsObject = _interopRequireDefault(__webpack_require__(/*! elementor-assets-js/modules/imports/args-object */ "../assets/dev/js/modules/imports/args-object.js"));
-
-var _helpers = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/helpers */ "../modules/web-cli/assets/js/utils/helpers.js"));
-
-var _forceMethodImplementation = _interopRequireDefault(__webpack_require__(/*! ../utils/force-method-implementation */ "../modules/web-cli/assets/js/utils/force-method-implementation.js"));
+var _deprecation = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/deprecation */ "../modules/web-cli/assets/js/utils/deprecation.js"));
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 /**
- * @typedef {import('../modules/component-base')} ComponentBase
+ * @name $e.modules.CommandBase
  */
-
-/**
- * @typedef {{}} Component
- */
-var CommandBase = /*#__PURE__*/function (_ArgsObject) {
-  (0, _inherits2.default)(CommandBase, _ArgsObject);
+var CommandBase = /*#__PURE__*/function (_CommandInfra) {
+  (0, _inherits2.default)(CommandBase, _CommandInfra);
 
   var _super = _createSuper(CommandBase);
 
-  /**
-   * Function constructor().
-   *
-   * Create Commands Base.
-   *
-   * @param {*} [args={}]
-   * @param {*} [commandsAPI={}]
-   */
-  function CommandBase(args) {
-    var _this;
-
-    var commandsAPI = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : $e.commands;
+  function CommandBase() {
     (0, _classCallCheck2.default)(this, CommandBase);
-    _this = _super.call(this, args); // Acknowledge self about which command it run.
-
-    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "component", void 0);
-    _this.currentCommand = commandsAPI.getCurrentLast(); // Assign instance of current component.
-
-    _this.component = commandsAPI.getComponent(_this.currentCommand); // Who ever need do something before without `super` the constructor can use `initialize` method.
-
-    _this.initialize(args); // Refresh args, maybe the changed via `initialize`.
-
-
-    args = _this.args; // Validate args before run.
-
-    _this.validateArgs(args);
-
-    return _this;
+    return _super.apply(this, arguments);
   }
-  /**
-   * Function requireContainer().
-   *
-   * Validate `arg.container` & `arg.containers`.
-   *
-   * @param {{}} args
-   *
-   * @throws {Error}
-   */
-
 
   (0, _createClass2.default)(CommandBase, [{
+    key: "onBeforeRun",
+    value: function onBeforeRun() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      $e.hooks.runUIBefore(this.command, args);
+    }
+  }, {
+    key: "onAfterRun",
+    value: function onAfterRun() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var result = arguments.length > 1 ? arguments[1] : undefined;
+      $e.hooks.runUIAfter(this.command, args, result);
+    }
+  }, {
+    key: "onBeforeApply",
+    value: function onBeforeApply() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      $e.hooks.runDataDependency(this.command, args);
+    }
+  }, {
+    key: "onAfterApply",
+    value: function onAfterApply() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var result = arguments.length > 1 ? arguments[1] : undefined;
+      $e.hooks.runDataAfter(this.command, args, result);
+    }
+  }, {
+    key: "onCatchApply",
+    value: function onCatchApply(e) {
+      this.runCatchHooks(e);
+    }
+    /**
+     * Run all the catch hooks.
+     *
+     * @param {Error} e
+     */
+
+  }, {
+    key: "runCatchHooks",
+    value: function runCatchHooks(e) {
+      $e.hooks.runDataCatch(this.command, this.args, e);
+      $e.hooks.runUICatch(this.command, this.args, e);
+    }
+    /**
+     * TODO - Remove - Backwards compatibility.
+     *
+     * Function requireContainer().
+     *
+     * Validate `arg.container` & `arg.containers`.
+     *
+     * @param {{}} args
+     *
+     * @throws {Error}
+     */
+
+  }, {
     key: "requireContainer",
     value: function requireContainer() {
-      var _this2 = this;
+      var _this = this;
 
       var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.args;
+
+      _deprecation.default.deprecated('requireContainer', '3.7.0', 'Extend `$e.modules.editor.CommandContainerBase` or `$e.modules.editor.CommandContainerInternalBase`');
 
       if (!args.container && !args.containers) {
         throw Error('container or containers are required.');
@@ -46738,673 +56027,27 @@ var CommandBase = /*#__PURE__*/function (_ArgsObject) {
 
       var containers = args.containers || [args.container];
       containers.forEach(function (container) {
-        _this2.requireArgumentInstance('container', elementorModules.editor.Container, {
+        _this.requireArgumentInstance('container', elementorModules.editor.Container, {
           container: container
         });
       });
-    }
-    /**
-     * Function initialize().
-     *
-     * Initialize command, called after construction.
-     *
-     * @param {*} [args={}]
-     */
-
-  }, {
-    key: "initialize",
-    value: function initialize() {
-      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    } // eslint-disable-line no-unused-vars
-
-    /**
-     * Function validateArgs().
-     *
-     * Validate command arguments.
-     *
-     * @param {*} [args={}]
-     */
-
-  }, {
-    key: "validateArgs",
-    value: function validateArgs() {
-      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    } // eslint-disable-line no-unused-vars
-
-    /**
-     * Function isDataChanged().
-     *
-     * Whether the editor needs to set change flag on/off.
-     *
-     * @return {boolean} Whether the editor needs to set change flag on/off.
-     */
-
-  }, {
-    key: "isDataChanged",
-    value: function isDataChanged() {
-      return false;
-    } // eslint-disable-next-line jsdoc/require-returns-check
-
-    /**
-     * Function apply().
-     *
-     * Do the actual command.
-     *
-     * @param {*} [args={}]
-     *
-     * @return {*} callback
-     */
-
-  }, {
-    key: "apply",
-    value: function apply() {
-      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      // eslint-disable-line no-unused-vars
-      (0, _forceMethodImplementation.default)();
-    }
-    /**
-     * Function run().
-     *
-     * Run command with history & hooks.
-     *
-     * @return {*} run results
-     */
-
-  }, {
-    key: "run",
-    value: function run() {
-      var result; // For UI Hooks.
-
-      this.onBeforeRun(this.args);
-
-      try {
-        // For Data hooks.
-        this.onBeforeApply(this.args);
-        result = this.apply(this.args);
-      } catch (e) {
-        this.onCatchApply(e); // Catch 'Hook-Break' that comes from hooks base.
-
-        if (e instanceof $e.modules.HookBreak) {
-          // Bypass.
-          return false;
-        }
-      }
-
-      return this.runAfter(result);
-    }
-  }, {
-    key: "runAfter",
-    value: function runAfter(result) {
-      var _this3 = this;
-
-      var onAfter = function onAfter(_result) {
-        // Run Data hooks.
-        _this3.onAfterApply(_this3.args, _result); // TODO: Create Command-Base for Command-Document and apply it on after.
-
-
-        if (_this3.isDataChanged()) {
-          $e.internal('document/save/set-is-modified', {
-            status: true
-          });
-        } // For UI hooks.
-
-
-        _this3.onAfterRun(_this3.args, _result);
-      },
-          asyncOnAfter = /*#__PURE__*/function () {
-        var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(_result) {
-          var results, promises;
-          return _regenerator.default.wrap(function _callee$(_context) {
-            while (1) {
-              switch (_context.prev = _context.next) {
-                case 0:
-                  // Run Data hooks.
-                  results = _this3.onAfterApply(_this3.args, _result), promises = Array.isArray(results) ? results.flat().filter(function (filtered) {
-                    return filtered instanceof Promise;
-                  }) : [];
-
-                  if (!promises.length) {
-                    _context.next = 4;
-                    break;
-                  }
-
-                  _context.next = 4;
-                  return Promise.all(promises);
-
-                case 4:
-                  if (_this3.isDataChanged()) {
-                    // TODO: Create Command-Base for Command-Document and apply it on after.
-                    $e.internal('document/save/set-is-modified', {
-                      status: true
-                    });
-                  } // For UI hooks.
-
-
-                  _this3.onAfterRun(_this3.args, _result);
-
-                case 6:
-                case "end":
-                  return _context.stop();
-              }
-            }
-          }, _callee);
-        }));
-
-        return function asyncOnAfter(_x) {
-          return _ref.apply(this, arguments);
-        };
-      }(); // TODO: Temp code determine if it's a jQuery deferred object.
-
-
-      if (result && 'object' === (0, _typeof2.default)(result) && result.promise && result.then && result.fail) {
-        result.fail(this.onCatchApply.bind(this));
-        result.done(onAfter);
-      } else if (result instanceof Promise) {
-        // Override initial result ( promise ) to await onAfter promises, first!.
-        return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2() {
-          return _regenerator.default.wrap(function _callee2$(_context2) {
-            while (1) {
-              switch (_context2.prev = _context2.next) {
-                case 0:
-                  _context2.next = 2;
-                  return result.catch(_this3.onCatchApply.bind(_this3));
-
-                case 2:
-                  _context2.next = 4;
-                  return result.then(function (_result) {
-                    return asyncOnAfter(_result);
-                  });
-
-                case 4:
-                  return _context2.abrupt("return", result);
-
-                case 5:
-                case "end":
-                  return _context2.stop();
-              }
-            }
-          }, _callee2);
-        }))();
-      } else {
-        onAfter(result);
-      }
-
-      return result;
-    }
-    /**
-     * Run all the catch hooks.
-     *
-     * @param {Error} e
-     */
-
-  }, {
-    key: "runCatchHooks",
-    value: function runCatchHooks(e) {
-      $e.hooks.runDataCatch(this.currentCommand, this.args, e);
-      $e.hooks.runUICatch(this.currentCommand, this.args, e);
-    }
-    /**
-     * Function onBeforeRun.
-     *
-     * Called before run().
-     *
-     * @param {*} [args={}]
-     */
-
-  }, {
-    key: "onBeforeRun",
-    value: function onBeforeRun() {
-      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      $e.hooks.runUIBefore(this.currentCommand, args);
-    }
-    /**
-     * Function onAfterRun.
-     *
-     * Called after run().
-     *
-     * @param {*} [args={}]
-     * @param {*} [result={*}]
-     */
-
-  }, {
-    key: "onAfterRun",
-    value: function onAfterRun() {
-      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var result = arguments.length > 1 ? arguments[1] : undefined;
-      $e.hooks.runUIAfter(this.currentCommand, args, result);
-    }
-    /**
-     * Function onBeforeApply.
-     *
-     * Called before apply().
-     *
-     * @param {*} [args={}]
-     */
-
-  }, {
-    key: "onBeforeApply",
-    value: function onBeforeApply() {
-      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      $e.hooks.runDataDependency(this.currentCommand, args);
-    }
-    /**
-     * Function onAfterApply.
-     *
-     * Called after apply().
-     *
-     * @param {*} [args={}]
-     * @param {*} [result={*}]
-     */
-
-  }, {
-    key: "onAfterApply",
-    value: function onAfterApply() {
-      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var result = arguments.length > 1 ? arguments[1] : undefined;
-      return $e.hooks.runDataAfter(this.currentCommand, args, result);
-    }
-    /**
-     * Function onCatchApply.
-     *
-     * Called after apply() failed.
-     *
-     * @param {Error} e
-     */
-
-  }, {
-    key: "onCatchApply",
-    value: function onCatchApply(e) {
-      this.runCatchHooks(e);
-
-      _helpers.default.consoleError(e);
     }
   }], [{
     key: "getInstanceType",
     value: function getInstanceType() {
       return 'CommandBase';
     }
-    /**
-     * Get info of command.
-     *
-     * Use to provide 'extra' information about the command.
-     *
-     * @return {Object} info of command
-     */
-
-  }, {
-    key: "getInfo",
-    value: function getInfo() {
-      return {};
-    }
-    /**
-     * Current component.
-     *
-     * @type {Component}
-     */
-
   }]);
   return CommandBase;
-}(_argsObject.default);
+}(_commandInfra.default);
 
 exports["default"] = CommandBase;
 
 /***/ }),
 
-/***/ "../modules/web-cli/assets/js/modules/command-data.js":
-/*!************************************************************!*\
-  !*** ../modules/web-cli/assets/js/modules/command-data.js ***!
-  \************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
-var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ "../node_modules/@babel/runtime/helpers/assertThisInitialized.js"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
-
-var _commandBase = _interopRequireDefault(__webpack_require__(/*! ./command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
-
-var errors = _interopRequireWildcard(__webpack_require__(/*! ../core/data/errors/ */ "../modules/web-cli/assets/js/core/data/errors/index.js"));
-
-var _helpers = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/helpers */ "../modules/web-cli/assets/js/utils/helpers.js"));
-
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-/**
- * @typedef {('create'|'delete'|'get'|'update'|'options')} DataTypes
- */
-
-/**
- * @typedef {{}} RequestData
- */
-
-/**
- * @typedef {import('../core/data/errors/base-error')} BaseError
- */
-var CommandData = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(CommandData, _CommandBase);
-
-  var _super = _createSuper(CommandData);
-
-  function CommandData(args) {
-    var _this$args$options;
-
-    var _this;
-
-    var commandsAPI = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : $e.data;
-    (0, _classCallCheck2.default)(this, CommandData);
-    _this = _super.call(this, args, commandsAPI);
-    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "data", void 0);
-    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "type", void 0);
-
-    if ((_this$args$options = _this.args.options) !== null && _this$args$options !== void 0 && _this$args$options.type) {
-      _this.type = _this.args.options.type;
-    }
-
-    return _this;
-  }
-  /**
-   * Function getEndpointFormat().
-   *
-   * @return {null|string} endpoint format
-   */
-
-
-  (0, _createClass2.default)(CommandData, [{
-    key: "getApplyMethods",
-    value:
-    /**
-     * @param {DataTypes} type
-     *
-     * @return {boolean|{before: (function(*=): {}), after: (function({}, *=): {})}} apply methods
-     */
-    function getApplyMethods() {
-      var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.type;
-      var before, after;
-
-      switch (type) {
-        case 'create':
-          before = this.applyBeforeCreate;
-          after = this.applyAfterCreate;
-          break;
-
-        case 'delete':
-          before = this.applyBeforeDelete;
-          after = this.applyAfterDelete;
-          break;
-
-        case 'get':
-          before = this.applyBeforeGet;
-          after = this.applyAfterGet;
-          break;
-
-        case 'update':
-          before = this.applyBeforeUpdate;
-          after = this.applyAfterUpdate;
-          break;
-
-        case 'options':
-          before = this.applyBeforeOptions;
-          after = this.applyAfterOptions;
-          break;
-
-        default:
-          return false;
-      }
-
-      return {
-        before: before.bind(this),
-        after: after.bind(this)
-      };
-    }
-    /**
-     * Function getRequestData().
-     *
-     * @return {RequestData} request data
-     */
-
-  }, {
-    key: "getRequestData",
-    value: function getRequestData() {
-      return {
-        component: this.component,
-        command: this.currentCommand,
-        type: this.type,
-        args: this.args,
-        timestamp: new Date().getTime(),
-        endpoint: $e.data.commandToEndpoint(this.currentCommand, _helpers.default.cloneObject(this.args), this.constructor.getEndpointFormat())
-      };
-    }
-  }, {
-    key: "apply",
-    value: function apply() {
-      var _this2 = this;
-
-      var applyMethods = this.getApplyMethods(); // Run 'before' method.
-
-      this.args = applyMethods.before(this.args);
-      var requestData = this.getRequestData();
-      return $e.data.fetch(requestData).then(function (data) {
-        _this2.data = data; // Run 'after' method.
-
-        _this2.data = applyMethods.after(data, _this2.args);
-        _this2.data = {
-          data: _this2.data
-        }; // Append requestData.
-
-        _this2.data = Object.assign({
-          __requestData__: requestData
-        }, _this2.data);
-        return _this2.data;
-      });
-    }
-    /**
-     * @param {*} [args={}]
-     * @return {{}} filtered args
-     */
-
-  }, {
-    key: "applyBeforeCreate",
-    value: function applyBeforeCreate() {
-      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      return args;
-    }
-    /**
-     * @param {{}} data
-     * @param {*}  [args={}]
-     * @return {{}} filtered result
-     */
-
-  }, {
-    key: "applyAfterCreate",
-    value: function applyAfterCreate(data) {
-      var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      // eslint-disable-line no-unused-vars
-      return data;
-    }
-    /**
-     * @param {*} [args={}]
-     * @return {{}} filtered args
-     */
-
-  }, {
-    key: "applyBeforeDelete",
-    value: function applyBeforeDelete() {
-      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      return args;
-    }
-    /**
-     * @param {{}} data
-     * @param {*}  [args={}]
-     * @return {{}} filtered result
-     */
-
-  }, {
-    key: "applyAfterDelete",
-    value: function applyAfterDelete(data) {
-      var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      // eslint-disable-line no-unused-vars
-      return data;
-    }
-    /**
-     * @param {*} [args={}]
-     * @return {{}} filtered args
-     */
-
-  }, {
-    key: "applyBeforeGet",
-    value: function applyBeforeGet() {
-      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      return args;
-    }
-    /**
-     * @param {{}} data
-     * @param {*}  [args={}]
-     * @return {{}} filtered result
-     */
-
-  }, {
-    key: "applyAfterGet",
-    value: function applyAfterGet(data) {
-      var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      // eslint-disable-line no-unused-vars
-      return data;
-    }
-    /**
-     * @param {*} [args={}]
-     * @return {{}} filtered args
-     */
-
-  }, {
-    key: "applyBeforeUpdate",
-    value: function applyBeforeUpdate() {
-      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      return args;
-    }
-    /**
-     * @param {{}} data
-     * @param {*}  [args={}]
-     * @return {{}} filtered result
-     */
-
-  }, {
-    key: "applyAfterUpdate",
-    value: function applyAfterUpdate(data) {
-      var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      // eslint-disable-line no-unused-vars
-      return data;
-    }
-    /**
-     * @param {*} [args={}]
-     * @return {{}} filtered args
-     */
-
-  }, {
-    key: "applyBeforeOptions",
-    value: function applyBeforeOptions() {
-      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      return args;
-    }
-    /**
-     * @param {{}} data
-     * @param {*}  [args={}]
-     * @return {{}} filtered result
-     */
-
-  }, {
-    key: "applyAfterOptions",
-    value: function applyAfterOptions(data) {
-      var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      // eslint-disable-line no-unused-vars
-      return data;
-    }
-    /**
-     * @param {BaseError} e
-     */
-
-  }, {
-    key: "applyAfterCatch",
-    value: function applyAfterCatch(e) {
-      e.notify();
-    }
-  }, {
-    key: "onCatchApply",
-    value: function onCatchApply(e) {
-      var _e, _e$data;
-
-      // TODO: If the errors that returns from the server is consistent remove the '?' from 'e'
-      var httpErrorCode = ((_e = e) === null || _e === void 0 ? void 0 : (_e$data = _e.data) === null || _e$data === void 0 ? void 0 : _e$data.status) || 501;
-      var dataError = Object.values(errors).find(function (error) {
-        return error.getHTTPErrorCode() === httpErrorCode;
-      });
-
-      if (!dataError) {
-        dataError = errors.DefaultError;
-      }
-
-      e = dataError.create(e.message, e.code, e.data || []);
-      this.runCatchHooks(e);
-      this.applyAfterCatch(e);
-    }
-  }], [{
-    key: "getInstanceType",
-    value:
-    /**
-     * Data returned from remote.
-     *
-     * @type {*}
-     */
-
-    /**
-     * Fetch type.
-     *
-     * @type {DataTypes}
-     */
-    function getInstanceType() {
-      return 'CommandData';
-    }
-  }, {
-    key: "getEndpointFormat",
-    value: function getEndpointFormat() {
-      return null;
-    }
-  }]);
-  return CommandData;
-}(_commandBase.default);
-
-exports["default"] = CommandData;
-
-/***/ }),
-
-/***/ "../modules/web-cli/assets/js/modules/command-internal-base.js":
+/***/ "../modules/web-cli/assets/js/modules/command-callback-base.js":
 /*!*********************************************************************!*\
-  !*** ../modules/web-cli/assets/js/modules/command-internal-base.js ***!
+  !*** ../modules/web-cli/assets/js/modules/command-callback-base.js ***!
   \*********************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
@@ -47434,27 +56077,316 @@ function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflec
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-var CommandInternalBase = /*#__PURE__*/function (_CommandBase) {
-  (0, _inherits2.default)(CommandInternalBase, _CommandBase);
+/**
+ * To support pure callbacks in the API(commands.js), to ensure they have registered with the proper context.
+ */
+var CommandCallbackBase = /*#__PURE__*/function (_CommandBase) {
+  (0, _inherits2.default)(CommandCallbackBase, _CommandBase);
 
-  var _super = _createSuper(CommandInternalBase);
+  var _super = _createSuper(CommandCallbackBase);
 
-  function CommandInternalBase(args) {
-    var commandsAPI = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : $e.commandsInternal;
-    (0, _classCallCheck2.default)(this, CommandInternalBase);
-    return _super.call(this, args, commandsAPI);
+  function CommandCallbackBase() {
+    (0, _classCallCheck2.default)(this, CommandCallbackBase);
+    return _super.apply(this, arguments);
   }
 
-  (0, _createClass2.default)(CommandInternalBase, null, [{
+  (0, _createClass2.default)(CommandCallbackBase, [{
+    key: "apply",
+    value: function apply() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      return this.constructor.getCallback()(args);
+    }
+  }], [{
     key: "getInstanceType",
     value: function getInstanceType() {
-      return 'CommandInternalBase';
+      return 'CommandCallbackBase';
+    }
+    /**
+     * Get original callback of the command.
+     *
+     * Support pure callbacks ( Non command-base ).
+     *
+     * @return {()=>{}} Command Results.
+     */
+
+  }, {
+    key: "getCallback",
+    value: function getCallback() {
+      return this.registerConfig.callback;
     }
   }]);
-  return CommandInternalBase;
+  return CommandCallbackBase;
 }(_commandBase.default);
 
-exports["default"] = CommandInternalBase;
+exports["default"] = CommandCallbackBase;
+
+/***/ }),
+
+/***/ "../modules/web-cli/assets/js/modules/command-infra.js":
+/*!*************************************************************!*\
+  !*** ../modules/web-cli/assets/js/modules/command-infra.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+
+var _argsObject = _interopRequireDefault(__webpack_require__(/*! elementor-assets-js/modules/imports/args-object */ "../assets/dev/js/modules/imports/args-object.js"));
+
+var _deprecation = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/deprecation */ "../modules/web-cli/assets/js/utils/deprecation.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+/**
+ * @typedef {import('../modules/component-base')} ComponentBase
+ */
+var CommandInfra = /*#__PURE__*/function (_ArgsObject) {
+  (0, _inherits2.default)(CommandInfra, _ArgsObject);
+
+  var _super = _createSuper(CommandInfra);
+
+  /**
+   * Function constructor().
+   *
+   * Create Commands Base.
+   *
+   * @param {{}} args
+   */
+  function CommandInfra() {
+    var _this;
+
+    var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    (0, _classCallCheck2.default)(this, CommandInfra);
+    _this = _super.call(this, args);
+
+    if (!_this.constructor.registerConfig) {
+      throw RangeError('Doing it wrong: Each command type should have `registerConfig`.');
+    } // Acknowledge self about which command it run.
+
+
+    _this.command = _this.constructor.getCommand(); // Assign instance of current component.
+
+    _this.component = _this.constructor.getComponent(); // Who ever need do something before without `super` the constructor can use `initialize` method.
+
+    _this.initialize(args); // Refresh args, maybe the changed via `initialize`.
+
+
+    args = _this.args; // Validate args before run.
+
+    _this.validateArgs(args);
+
+    return _this;
+  }
+  /**
+   * Function initialize().
+   *
+   * Initialize command, called after construction.
+   *
+   * @param {{}} args
+   */
+
+
+  (0, _createClass2.default)(CommandInfra, [{
+    key: "currentCommand",
+    get: // TODO - Remove backwards compatibility.
+    function get() {
+      _deprecation.default.deprecated('this.currentCommand', '3.7.0', 'this.command');
+
+      return this.command;
+    }
+  }, {
+    key: "initialize",
+    value: function initialize() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    } // eslint-disable-line no-unused-vars
+
+    /**
+     * Function validateArgs().
+     *
+     * Validate command arguments.
+     *
+     * @param {{}} args
+     */
+
+  }, {
+    key: "validateArgs",
+    value: function validateArgs() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    } // eslint-disable-line no-unused-vars
+    // eslint-disable-next-line jsdoc/require-returns-check
+
+    /**
+     * Function apply().
+     *
+     * Do the actual command.
+     *
+     * @param {{}} args
+     *
+     * @return {*} Command results.
+     */
+
+  }, {
+    key: "apply",
+    value: function apply() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      // eslint-disable-line no-unused-vars
+      elementorModules.ForceMethodImplementation();
+    }
+    /**
+     * Function run().
+     *
+     * Run command with history & hooks.
+     *
+     * @return {*} Command results.
+     */
+
+  }, {
+    key: "run",
+    value: function run() {
+      return this.apply(this.args);
+    }
+    /**
+     * Function onBeforeRun.
+     *
+     * Called before run().
+     *
+     * @param {{}} args
+     */
+
+  }, {
+    key: "onBeforeRun",
+    value: function onBeforeRun() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    } // eslint-disable-line no-unused-vars
+
+    /**
+     * Function onAfterRun.
+     *
+     * Called after run().
+     *
+     * @param {{}} args
+     * @param {*}  result
+     */
+
+  }, {
+    key: "onAfterRun",
+    value: function onAfterRun() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var result = arguments.length > 1 ? arguments[1] : undefined;
+    } // eslint-disable-line no-unused-vars
+
+    /**
+     * Function onBeforeApply.
+     *
+     * Called before apply().
+     *
+     * @param {{}} args
+     */
+
+  }, {
+    key: "onBeforeApply",
+    value: function onBeforeApply() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    } // eslint-disable-line no-unused-vars
+
+    /**
+     * Function onAfterApply.
+     *
+     * Called after apply().
+     *
+     * @param {{}} args
+     * @param {*}  result
+     */
+
+  }, {
+    key: "onAfterApply",
+    value: function onAfterApply() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var result = arguments.length > 1 ? arguments[1] : undefined;
+    } // eslint-disable-line no-unused-vars
+
+    /**
+     * Function onCatchApply.
+     *
+     * Called after apply() failed.
+     *
+     * @param {Error} e
+     */
+
+  }, {
+    key: "onCatchApply",
+    value: function onCatchApply(e) {} // eslint-disable-line no-unused-vars
+
+  }], [{
+    key: "getInstanceType",
+    value:
+    /**
+     * @type {Object}
+     */
+    function getInstanceType() {
+      return 'CommandInfra';
+    }
+    /**
+     * Get info of command.
+     *
+     * @return {Object} Extra information about the command.
+     */
+
+  }, {
+    key: "getInfo",
+    value: function getInfo() {
+      return {};
+    }
+    /**
+     * @return {string} Self command name.
+     */
+
+  }, {
+    key: "getCommand",
+    value: function getCommand() {
+      return this.registerConfig.command;
+    }
+    /**
+     * @return {ComponentBase} Self component
+     */
+
+  }, {
+    key: "getComponent",
+    value: function getComponent() {
+      return this.registerConfig.component;
+    }
+  }, {
+    key: "setRegisterConfig",
+    value: function setRegisterConfig(config) {
+      this.registerConfig = Object.freeze(config);
+    }
+  }]);
+  return CommandInfra;
+}(_argsObject.default);
+
+exports["default"] = CommandInfra;
+(0, _defineProperty2.default)(CommandInfra, "registerConfig", null);
 
 /***/ }),
 
@@ -47702,11 +56634,15 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
+var _commandCallbackBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-callback-base */ "../modules/web-cli/assets/js/modules/command-callback-base.js"));
+
 var _toolkit = __webpack_require__(/*! @reduxjs/toolkit */ "../node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 
-var _module = _interopRequireDefault(__webpack_require__(/*! elementor-assets-js/modules/imports/module.js */ "../assets/dev/js/modules/imports/module.js"));
+var _module = _interopRequireDefault(__webpack_require__(/*! elementor/assets/dev/js/modules/imports/module.js */ "../assets/dev/js/modules/imports/module.js"));
 
 var _forceMethodImplementation = _interopRequireDefault(__webpack_require__(/*! ../utils/force-method-implementation */ "../modules/web-cli/assets/js/utils/force-method-implementation.js"));
+
+var _deprecation = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/deprecation */ "../modules/web-cli/assets/js/utils/deprecation.js"));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
@@ -47717,10 +56653,8 @@ function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflec
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 /**
+ * @typedef {import('./command-infra')} CommandInfra
  * @typedef {import('./hook-base')} HookBase
- */
-
-/**
  * @typedef {import('../core/states/ui-state-base')} UiStateBase
  */
 var ComponentBase = /*#__PURE__*/function (_Module) {
@@ -47818,8 +56752,19 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
   }, {
     key: "getRootContainer",
     value: function getRootContainer() {
-      var parts = this.getNamespace().split('/');
-      return parts[0];
+      _deprecation.default.deprecated('getRootContainer()', '3.7.0', 'getServiceName()');
+
+      return this.getServiceName();
+    }
+  }, {
+    key: "getServiceName",
+    value: function getServiceName() {
+      return this.getNamespace().split('/')[0];
+    }
+  }, {
+    key: "store",
+    get: function get() {
+      return $e.store.get(this.getNamespace());
     }
   }, {
     key: "defaultTabs",
@@ -47940,10 +56885,65 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
     value: function getData() {
       return this.data;
     }
+    /**
+     * @param {string}                      command
+     * @param {(()=>{}|CommandInfra)}       context
+     * @param {'default'|'internal'|'data'} commandsType
+     */
+
   }, {
     key: "registerCommand",
-    value: function registerCommand(command, callback) {
-      $e.commands.register(this, command, callback);
+    value: function registerCommand(command, context) {
+      var commandsType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'default';
+      var commandsManager;
+
+      switch (commandsType) {
+        case 'default':
+          commandsManager = $e.commands;
+          break;
+
+        case 'internal':
+          commandsManager = $e.commandsInternal;
+          break;
+
+        case 'data':
+          commandsManager = $e.data;
+          break;
+
+        default:
+          throw new Error("Invalid commands type: '".concat(command, "'"));
+      }
+
+      var fullCommand = this.getNamespace() + '/' + command,
+          instanceType = context.getInstanceType ? context.getInstanceType() : false,
+          registerConfig = {
+        command: fullCommand,
+        component: this
+      }; // Support pure callback.
+
+      if (!instanceType) {
+        if ($e.devTools) {
+          $e.devTools.log.warn("Attach command-callback-base, on command: '".concat(fullCommand, "', context is unknown type."));
+        }
+
+        registerConfig.callback = context; // Unique class.
+
+        context = /*#__PURE__*/function (_CommandCallbackBase) {
+          (0, _inherits2.default)(context, _CommandCallbackBase);
+
+          var _super2 = _createSuper(context);
+
+          function context() {
+            (0, _classCallCheck2.default)(this, context);
+            return _super2.apply(this, arguments);
+          }
+
+          return (0, _createClass2.default)(context);
+        }(_commandCallbackBase.default);
+      }
+
+      context.setRegisterConfig(registerConfig);
+      commandsManager.register(this, command, context);
     }
     /**
      * @param {HookBase} instance
@@ -47953,6 +56953,11 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
     key: "registerHook",
     value: function registerHook(instance) {
       return instance.register();
+    }
+  }, {
+    key: "registerCommandInternal",
+    value: function registerCommandInternal(command, context) {
+      this.registerCommand(command, context, 'internal');
     }
     /**
      * Register a UI state.
@@ -47986,19 +56991,14 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
       $e.store.register(id, slice);
     }
   }, {
-    key: "registerCommandInternal",
-    value: function registerCommandInternal(command, callback) {
-      $e.commandsInternal.register(this, command, callback);
-    }
-  }, {
     key: "registerRoute",
     value: function registerRoute(route, callback) {
       $e.routes.register(this, route, callback);
     }
   }, {
     key: "registerData",
-    value: function registerData(command, callback) {
-      $e.data.register(this, command, callback);
+    value: function registerData(command, context) {
+      this.registerCommand(command, context, 'data');
     }
   }, {
     key: "unregisterRoute",
@@ -48034,7 +57034,7 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
       this.isOpen = false;
       this.inactivate();
       $e.routes.clearCurrent(this.getNamespace());
-      $e.routes.clearHistory(this.getRootContainer());
+      $e.routes.clearHistory(this.getServiceName());
       return true;
     }
   }, {
@@ -48159,6 +57159,11 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
         return (offset > 0 ? '-' : '') + match.toLowerCase();
       });
     }
+    /**
+     * @param {{}} commandsFromImport
+     * @return {{}} imported commands
+     */
+
   }, {
     key: "importCommands",
     value: function importCommands(commandsFromImport) {
@@ -48173,13 +57178,7 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
 
         var command = _this5.normalizeCommandName(className);
 
-        commands[command] = function (args) {
-          return new Class(args).run();
-        }; // TODO: Temporary code, remove after merge with 'require-commands-base' branch.
-        // should not return callback, but Class or Instance without run ( gain performance ).
-
-
-        $e.commands.classes[_this5.getNamespace() + '/' + command] = Class;
+        commands[command] = Class;
       });
       return commands;
     }
@@ -48239,7 +57238,7 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
   }, {
     key: "toggleHistoryClass",
     value: function toggleHistoryClass() {
-      document.body.classList.toggle('e-routes-has-history', !!$e.routes.getHistory(this.getRootContainer()).length);
+      document.body.classList.toggle('e-routes-has-history', !!$e.routes.getHistory(this.getServiceName()).length);
     }
   }]);
   return ComponentBase;
@@ -48878,6 +57877,351 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "../modules/web-cli/assets/js/modules/hooks/ui/before.js":
+/*!***************************************************************!*\
+  !*** ../modules/web-cli/assets/js/modules/hooks/ui/before.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Before = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _base = _interopRequireDefault(__webpack_require__(/*! ./base */ "../modules/web-cli/assets/js/modules/hooks/ui/base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Before = /*#__PURE__*/function (_Base) {
+  (0, _inherits2.default)(Before, _Base);
+
+  var _super = _createSuper(Before);
+
+  function Before() {
+    (0, _classCallCheck2.default)(this, Before);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Before, [{
+    key: "register",
+    value: function register() {
+      $e.hooks.registerUIBefore(this);
+    }
+  }]);
+  return Before;
+}(_base.default);
+
+exports.Before = Before;
+var _default = Before;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/web-cli/assets/js/modules/hooks/ui/catch.js":
+/*!**************************************************************!*\
+  !*** ../modules/web-cli/assets/js/modules/hooks/ui/catch.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Catch = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _base = _interopRequireDefault(__webpack_require__(/*! ./base */ "../modules/web-cli/assets/js/modules/hooks/ui/base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Catch = /*#__PURE__*/function (_Base) {
+  (0, _inherits2.default)(Catch, _Base);
+
+  var _super = _createSuper(Catch);
+
+  function Catch() {
+    (0, _classCallCheck2.default)(this, Catch);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Catch, [{
+    key: "register",
+    value: function register() {
+      $e.hooks.registerUICatch(this);
+    }
+  }]);
+  return Catch;
+}(_base.default);
+
+exports.Catch = Catch;
+var _default = Catch;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/web-cli/assets/js/utils/console.js":
+/*!*****************************************************!*\
+  !*** ../modules/web-cli/assets/js/utils/console.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var Console = /*#__PURE__*/function () {
+  function Console() {
+    (0, _classCallCheck2.default)(this, Console);
+  }
+
+  (0, _createClass2.default)(Console, null, [{
+    key: "error",
+    value: function error(message) {
+      // Show an error if devTools is available.
+      if ($e.devTools) {
+        $e.devTools.log.error(message);
+      } // If not a 'Hook-Break' then show error.
+
+
+      if (!(message instanceof $e.modules.HookBreak)) {
+        // eslint-disable-next-line no-console
+        console.error(message);
+      }
+    }
+  }, {
+    key: "warn",
+    value: function warn() {
+      var _console;
+
+      var style = "font-size: 12px; background-image: url(\"".concat(elementorWebCliConfig.urls.assets, "images/logo-icon.png\"); background-repeat: no-repeat; background-size: contain;");
+
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      args.unshift('%c  %c', style, '');
+
+      (_console = console).warn.apply(_console, args); // eslint-disable-line no-console
+
+    }
+  }]);
+  return Console;
+}();
+
+exports["default"] = Console;
+
+/***/ }),
+
+/***/ "../modules/web-cli/assets/js/utils/deprecation.js":
+/*!*********************************************************!*\
+  !*** ../modules/web-cli/assets/js/utils/deprecation.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _console = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/console */ "../modules/web-cli/assets/js/utils/console.js"));
+
+// Copied from `modules/dev-tools/assets/js/deprecation.js`
+
+/**
+ * @typedef {Object} Version
+ * @property {number} major1 The first number
+ * @property {number} major2 The second number
+ * @property {number} minor  The third number
+ * @property {string} build  The fourth number
+ */
+var softDeprecated = function softDeprecated(name, version, replacement) {
+  if (elementorWebCliConfig.isDebug) {
+    deprecatedMessage('soft', name, version, replacement);
+  }
+};
+
+var hardDeprecated = function hardDeprecated(name, version, replacement) {
+  deprecatedMessage('hard', name, version, replacement);
+};
+
+var deprecatedMessage = function deprecatedMessage(type, name, version, replacement) {
+  var message = "`".concat(name, "` is ").concat(type, " deprecated since ").concat(version);
+
+  if (replacement) {
+    message += " - Use `".concat(replacement, "` instead");
+  }
+
+  _console.default.warn(message);
+};
+
+var Deprecation = /*#__PURE__*/function () {
+  function Deprecation() {
+    (0, _classCallCheck2.default)(this, Deprecation);
+  }
+
+  (0, _createClass2.default)(Deprecation, null, [{
+    key: "deprecated",
+    value: function deprecated(name, version, replacement) {
+      if (this.isHardDeprecated(version)) {
+        hardDeprecated(name, version, replacement);
+      } else {
+        softDeprecated(name, version, replacement);
+      }
+    }
+    /**
+     * @param {string} version
+     *
+     * @return {Version}
+     */
+
+  }, {
+    key: "parseVersion",
+    value: function parseVersion(version) {
+      var versionParts = version.split('.');
+
+      if (versionParts.length < 3 || versionParts.length > 4) {
+        throw new RangeError('Invalid Semantic Version string provided');
+      }
+
+      var _versionParts = (0, _slicedToArray2.default)(versionParts, 4),
+          major1 = _versionParts[0],
+          major2 = _versionParts[1],
+          minor = _versionParts[2],
+          _versionParts$ = _versionParts[3],
+          build = _versionParts$ === void 0 ? '' : _versionParts$;
+
+      return {
+        major1: parseInt(major1),
+        major2: parseInt(major2),
+        minor: parseInt(minor),
+        build: build
+      };
+    }
+    /**
+     * Get total of major.
+     *
+     * Since `get_total_major` cannot determine how much really versions between 2.9.0 and 3.3.0 if there is 2.10.0 version for example,
+     * versions with major2 more then 9 will be added to total.
+     *
+     * @param {Version} versionObj
+     *
+     * @return {number}
+     */
+
+  }, {
+    key: "getTotalMajor",
+    value: function getTotalMajor(versionObj) {
+      var total = parseInt("".concat(versionObj.major1).concat(versionObj.major2, "0"));
+      total = Number((total / 10).toFixed(0));
+
+      if (versionObj.major2 > 9) {
+        total = versionObj.major2 - 9;
+      }
+
+      return total;
+    }
+    /**
+     * @param {string} version1
+     * @param {string} version2
+     *
+     * @return {number}
+     */
+
+  }, {
+    key: "compareVersion",
+    value: function compareVersion(version1, version2) {
+      var _this = this;
+
+      return [this.parseVersion(version1), this.parseVersion(version2)].map(function (versionObj) {
+        return _this.getTotalMajor(versionObj);
+      }).reduce(function (acc, major) {
+        return acc - major;
+      });
+    }
+    /**
+     * @param {string} version
+     *
+     * @return {boolean}
+     */
+
+  }, {
+    key: "isSoftDeprecated",
+    value: function isSoftDeprecated(version) {
+      var total = this.compareVersion(version, elementorWebCliConfig.version);
+      return total <= 4;
+    }
+    /**
+     * @param {string} version
+     * @return {boolean}
+     */
+
+  }, {
+    key: "isHardDeprecated",
+    value: function isHardDeprecated(version) {
+      var total = this.compareVersion(version, elementorWebCliConfig.version);
+      return total < 0 || total >= 8;
+    }
+  }]);
+  return Deprecation;
+}();
+
+exports["default"] = Deprecation;
+
+/***/ }),
+
 /***/ "../modules/web-cli/assets/js/utils/force-method-implementation.js":
 /*!*************************************************************************!*\
   !*** ../modules/web-cli/assets/js/utils/force-method-implementation.js ***!
@@ -48953,118 +58297,6 @@ var _default = function _default() {
 };
 
 exports["default"] = _default;
-
-/***/ }),
-
-/***/ "../modules/web-cli/assets/js/utils/helpers.js":
-/*!*****************************************************!*\
-  !*** ../modules/web-cli/assets/js/utils/helpers.js ***!
-  \*****************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
-// TODO: Copied from `core/common/assets/js/utils/helpers.js` and modified into static functions.
-var Helpers = /*#__PURE__*/function () {
-  function Helpers() {
-    (0, _classCallCheck2.default)(this, Helpers);
-  }
-
-  (0, _createClass2.default)(Helpers, null, [{
-    key: "softDeprecated",
-    value: function softDeprecated(name, version, replacement) {
-      if (elementorWebCliConfig.isDebug) {
-        this.deprecatedMessage('soft', name, version, replacement);
-      }
-    }
-  }, {
-    key: "hardDeprecated",
-    value: function hardDeprecated(name, version, replacement) {
-      this.deprecatedMessage('hard', name, version, replacement);
-    }
-  }, {
-    key: "deprecatedMessage",
-    value: function deprecatedMessage(type, name, version, replacement) {
-      var message = "`".concat(name, "` is ").concat(type, " deprecated since ").concat(version);
-
-      if (replacement) {
-        message += " - Use `".concat(replacement, "` instead");
-      }
-
-      this.consoleWarn(message);
-    }
-  }, {
-    key: "consoleWarn",
-    value: function consoleWarn() {
-      var _console;
-
-      var style = "font-size: 12px; background-image: url(\"".concat(elementorWebCliConfig.urls.assets, "images/logo-icon.png\"); background-repeat: no-repeat; background-size: contain;");
-
-      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      args.unshift('%c  %c', style, '');
-
-      (_console = console).warn.apply(_console, args); // eslint-disable-line no-console
-
-    }
-  }, {
-    key: "consoleError",
-    value: function consoleError(message) {
-      // TODO: function is part of $e.
-      // Show an error if devTools is available.
-      if ($e.devTools) {
-        $e.devTools.log.error(message);
-      } // If not a 'Hook-Break' then show error.
-
-
-      if (!(message instanceof $e.modules.HookBreak)) {
-        // eslint-disable-next-line no-console
-        console.error(message);
-      }
-    }
-  }, {
-    key: "deprecatedMethod",
-    value: function deprecatedMethod(methodName, version, replacement) {
-      this.deprecatedMessage('hard', methodName, version, replacement); // This itself is deprecated.
-
-      this.softDeprecated('Helpers.deprecatedMethod', '2.8.0', 'Helpers.softDeprecated || Helpers.hardDeprecated');
-    }
-  }, {
-    key: "cloneObject",
-    value: function cloneObject(object) {
-      return JSON.parse(JSON.stringify(object));
-    }
-  }, {
-    key: "upperCaseWords",
-    value: function upperCaseWords(string) {
-      return (string + '').replace(/^(.)|\s+(.)/g, function ($1) {
-        return $1.toUpperCase();
-      });
-    }
-  }, {
-    key: "getUniqueId",
-    value: function getUniqueId() {
-      return Math.random().toString(16).substr(2, 7);
-    }
-  }]);
-  return Helpers;
-}();
-
-exports["default"] = Helpers;
 
 /***/ }),
 
@@ -52659,6 +61891,8 @@ var __webpack_exports__ = {};
   \****************************************************************/
 
 
+/* eslint-disable */
+
 /*
  * jQuery Serialize Object v1.0.1
  */
@@ -52905,19 +62139,25 @@ var __webpack_exports__ = {};
     };
 
     var insertPlaceholder = function insertPlaceholder() {
+      var _$parentContainer$fin;
+
       if (!settings.placeholder) {
         return;
-      } // Fix placeholder placement for Container with `flex-direction: row`.
-
+      }
 
       var $currentElement = $(currentElement),
-          isRowContainer = $currentElement.parents('.e-container--row').length,
-          isFirstInsert = $currentElement.hasClass('elementor-first-add');
+          isRowContainer = $currentElement.parents('.e-con--row').length,
+          isFirstInsert = $currentElement.hasClass('elementor-first-add'),
+          isInnerContainer = $currentElement.hasClass('e-con-inner'),
+          $parentContainer = $currentElement.closest('.e-con').parent().closest('.e-con'); // Make sure that the previous placeholder is removed before inserting a new one.
+
+      (_$parentContainer$fin = $parentContainer.find('.elementor-widget-placeholder')) === null || _$parentContainer$fin === void 0 ? void 0 : _$parentContainer$fin.remove(); // Fix placeholder placement for Container with `flex-direction: row`.
 
       if (isRowContainer && !isFirstInsert) {
-        var _insertMethod = ['bottom', 'right'].includes(currentSide) ? 'after' : 'before';
+        var _insertMethod = ['bottom', 'right'].includes(currentSide) ? 'after' : 'before',
+            $rowTargetElement = isInnerContainer ? $currentElement.closest('.e-con') : $currentElement;
 
-        $currentElement[_insertMethod](elementsCache.$placeholder);
+        $rowTargetElement[_insertMethod](elementsCache.$placeholder);
 
         return;
       }
@@ -52945,9 +62185,9 @@ var __webpack_exports__ = {};
             settings.groups.forEach(function (groupName) {
               if (-1 !== draggableGroups.groups.indexOf(groupName)) {
                 isGroupMatch = true;
-                return false; // stops the forEach from extra loops
+                return false; // Stops the forEach from extra loops
               }
-            });
+            }); // eslint-disable-next-line no-empty
           } catch (e) {}
         });
 
@@ -52993,7 +62233,7 @@ var __webpack_exports__ = {};
         droppableInstance.doDragLeave();
       });
       setSide(event);
-      $e.run('editor/browser-import/validate', {
+      $e.internal('editor/browser-import/validate', {
         input: event.originalEvent.dataTransfer.items
       }).then(function (importAllowed) {
         isDroppingAllowedState = isDroppingAllowed(event) || importAllowed;
@@ -53111,6 +62351,9 @@ var __webpack_exports__ = {};
             $.removeData(this, pluginName);
           }
 
+          return;
+        } else if ('destroy' === options) {
+          // Escape the loop when an element is destroyed before initialisation.
           return;
         }
 

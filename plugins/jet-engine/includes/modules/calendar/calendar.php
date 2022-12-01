@@ -89,6 +89,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Calendar' ) ) {
 				'post_date' => __( 'Post publication date', 'jet-engine' ),
 				'post_mod'  => __( 'Post modification date', 'jet-engine' ),
 				'meta_date' => __( 'Date from custom field', 'jet-engine' ),
+				'item_date' => __( 'Query Item creation date (depends on used query)', 'jet-engine' ),
 			) );
 
 			if ( $blocks ) {
@@ -112,8 +113,12 @@ if ( ! class_exists( 'Jet_Engine_Module_Calendar' ) ) {
 		 * @return void
 		 */
 		public function module_init() {
-			
-			add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_calendar_widget' ), 20 );
+
+			if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.5.0', '>=' ) ) {
+				add_action( 'elementor/widgets/register', array( $this, 'register_calendar_widget' ), 20 );
+			} else {
+				add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_calendar_widget' ), 20 );
+			}
 			
 			add_action( 'wp_ajax_jet_engine_calendar_get_month', array( $this, 'calendar_get_month' ) );
 			add_action( 'wp_ajax_nopriv_jet_engine_calendar_get_month', array( $this, 'calendar_get_month' ) );
@@ -123,7 +128,48 @@ if ( ! class_exists( 'Jet_Engine_Module_Calendar' ) ) {
 
 			// Blocks Integration
 			add_action( 'jet-engine/blocks-views/register-block-types', array( $this, 'register_block_types' ) );
-			add_filter( 'jet-engine/blocks-views/editor/config',        array( $this, 'add_editor_config' ) );
+			add_filter( 'jet-engine/blocks-views/editor/config',        array( $this, 'add_editor_config' ) );-
+
+			add_action( 'jet-engine/register-macros', array( $this, 'register_macros' ) );
+
+			add_filter( 'jet-smart-filters/query/allowed-ajax-actions', array( $this, 'allow_month_action' ) );
+
+		}
+
+		/**
+		 * Allow month action
+		 *
+		 * @return array
+		 */
+		public function allow_month_action( $allowed_actions = array() ) {
+
+			$allowed_actions[] = 'jet_engine_calendar_get_month';
+			return $allowed_actions;
+
+		}
+
+		/**
+		 * Check if get month request is processed
+		 *
+		 * @return boolean [description]
+		 */
+		public function is_month_request() {
+
+			if ( isset( $_REQUEST['action'] ) && 'jet_engine_calendar_get_month' === $_REQUEST['action'] ) {
+				return true;
+			}
+
+			if ( isset( $_REQUEST['jet_engine_action'] ) && 'jet_engine_calendar_get_month' === $_REQUEST['jet_engine_action'] ) {
+				return true;
+			}
+
+			return false;
+
+		}
+
+		public function register_macros() {
+			require jet_engine()->modules->modules_path( 'calendar/queried-month-macros.php' );
+			new Jet_Engine_Queried_Month_Macros();
 		}
 
 		/**
@@ -181,6 +227,9 @@ if ( ! class_exists( 'Jet_Engine_Module_Calendar' ) ) {
 		 * @param object $listings
 		 */
 		public function register_render_class( $listings ) {
+
+			require jet_engine()->modules->modules_path( 'calendar/query.php' );
+			new Jet_Engine_Calendar_Query();
 
 			$listings->register_render_class(
 				'listing-calendar',

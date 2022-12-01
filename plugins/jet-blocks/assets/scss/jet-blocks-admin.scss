@@ -1,0 +1,96 @@
+#jet-blocks-settings-page {
+	visibility: hidden;
+
+	&.is-mounted {
+		visibility: visible;
+	}
+}
+
+.jet-blocks-settings-page {
+	margin: 25px 15px 0 15px;
+
+	.cx-vui-tabs-panel {
+		> .cx-vui-subtitle {
+			padding: 20px;
+			margin-top: 20px;
+
+			&:first-child {
+				margin-top: 0;
+			}
+		}
+	}
+
+	.jet-blocks-avaliable-widgets-control {
+		.cx-vui-checkgroup {
+			display: flex;
+			flex-flow: row wrap;
+
+			.cx-vui-checkbox-wrap {
+				width: 25%;
+
+				@media screen and (max-width: 1200px) {
+					width: 50%;
+				}
+
+				@media screen and (max-width: 782px) {
+					width: 100%;
+				}
+			}
+		}
+	}
+
+	.cx-vui-subtitle {
+		font-size: 15px;
+		line-height: 20px;
+
+		&.cx-vui-subtitle--divider {
+			margin-bottom: 20px;
+			border-bottom: 1px solid #DCDCDD;
+			padding-bottom: 15px;
+		}
+	}
+
+	&__avaliable-controls {
+		display: flex;
+		flex-flow: row wrap;
+		margin-bottom: 40px;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		.cx-vui-subtitle {
+			width: 100%;
+		}
+	}
+
+	&__avaliable-control {
+		width: 50%;
+
+		@media screen and (max-width: 782px) {
+			width: 100%;
+		}
+
+		.cx-vui-component {
+			padding: 10px 0;
+		}
+	}
+
+	&__disable-all-widgets {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		border-bottom: 1px solid #ececec;
+		padding-bottom: 20px;
+		margin: 20px 0;
+
+		.cx-vui-component__label {
+			margin-right: 10px;
+
+			body.rtl & {
+				margin-right: 0;
+				margin-left: 10px;
+			}
+		}
+	}
+}

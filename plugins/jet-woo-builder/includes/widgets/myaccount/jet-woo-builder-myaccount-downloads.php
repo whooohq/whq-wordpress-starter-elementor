@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_MyAccount_Downloads
- * Name: Downloads
+ * Name: Account Downloads
  * Slug: jet-myaccount-downloads
  */
 
@@ -22,7 +22,7 @@ class Jet_Woo_Builder_MyAccount_Downloads extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return __( 'Downloads', 'jet-woo-builder' );
+		return __( 'Account Downloads', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {

@@ -67,12 +67,13 @@ class Type_Pages {
 		}
 
 		return new Pages\Edit_Item_Page( array(
-			'slug'       => $this->get_page_slug(),
-			'action'     => esc_attr( $action ),
-			'fields'     => $this->factory->fields,
-			'nonce'      => $this->nonce(),
-			'capability' => $this->factory->get_arg( 'capability', 'manage_options' ),
-			'item'       => $item,
+			'slug'             => $this->get_page_slug(),
+			'action'           => esc_attr( $action ),
+			'fields'           => $this->factory->fields,
+			'nonce'            => $this->nonce(),
+			'capability'       => $this->factory->get_arg( 'capability', 'manage_options' ),
+			'item'             => $item,
+			'hide_field_names' => ! empty( $this->factory->args['hide_field_names'] ) ? $this->factory->args['hide_field_names'] : false,
 		), $this );
 
 	}

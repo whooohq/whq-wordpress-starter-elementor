@@ -5,25 +5,30 @@ namespace Elementor;
 use Elementor\Group_Control_Border;
 use Elementor\Core\Schemes\Typography as Scheme_Typography;
 
+// Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-} // Exit if accessed directly
+}
 
 class Jet_Smart_Filters_Apply_Button_Widget extends Widget_Base {
 
 	public function get_name() {
+
 		return 'jet-smart-filters-apply-button';
 	}
 
 	public function get_title() {
+
 		return __( 'Apply Button', 'jet-smart-filters' );
 	}
 
 	public function get_icon() {
+
 		return 'jet-smart-filters-icon-apply-filter';
 	}
 
 	public function get_help_url() {
+
 		return jet_smart_filters()->widgets->prepare_help_url(
 			'https://crocoblock.com/knowledge-base/articles/jetsmartfilters-how-to-specify-the-widget-for-which-to-apply-the-jetsmartfilter-widgets-filter/',
 			$this->get_name()
@@ -31,6 +36,7 @@ class Jet_Smart_Filters_Apply_Button_Widget extends Widget_Base {
 	}
 
 	public function get_categories() {
+
 		return array( jet_smart_filters()->widgets->get_category() );
 	}
 
@@ -325,15 +331,13 @@ class Jet_Smart_Filters_Apply_Button_Widget extends Widget_Base {
 		);
 
 		$this->end_controls_section();
-
 	}
 
 	/**
 	 * Apply button container data attributes
-	 *
-	 * @return String
 	 */
 	public function container_data_atts() {
+
 		$output                 = '';
 		$settings               = $this->get_settings();
 		$provider               = ! empty( $settings['content_provider'] ) ? $settings['content_provider'] : '';
@@ -380,6 +384,5 @@ class Jet_Smart_Filters_Apply_Button_Widget extends Widget_Base {
 		echo '<div class="' . $base_class . ' jet-filter">';
 		include jet_smart_filters()->get_template( 'common/apply-filters.php' );
 		echo '</div>';
-
 	}
 }

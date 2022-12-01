@@ -1,0 +1,164 @@
+@import "../mixins.scss";
+
+.jet-ui_advanced-input {
+	position: relative;
+	display: flex;
+
+	@include control-disabled();
+
+	input#{&}-text {
+		@include input();
+		@include input-placeholder();
+		@include input-focus();
+	}
+
+	&-dropdown {
+		&-button {
+			cursor: pointer;
+			user-select: none;
+			padding: 0 5px;
+			display: flex;
+			align-items: center;
+
+			svg {
+				width: 24px;
+				height: auto;
+
+				path {
+					fill: $color-text-secondary;
+				}
+			}
+			&:hover {
+				svg path {
+					fill: $color-accent;
+				}
+			}
+		}
+
+		&-body {
+			display: none;
+			position: absolute;
+			top: 36px;
+			left: 0;
+			right: 0;
+			margin: 0;
+			padding: 15px 20px;
+			border: $border-width solid $border-color;
+			border-radius: 6px;
+			background: $bg-panel;
+			box-shadow: $box-shadow;
+			z-index: 9999;
+		}
+
+		&-opened &-body {
+			display: block;
+		}
+
+		&-options {
+			margin: 0;
+			padding: 0;
+		}
+
+		&-option {
+			cursor: pointer;
+			user-select: none;
+			margin: 3px 0;
+			color: $color-text-secondary;
+
+			&:hover {
+				font-weight: bold;
+				color: $color-accent;
+			}
+
+			&-mark {
+				display: inline-block;
+				font-size: 11px;
+				line-height: 11px;
+				transform: translateY(-1px);
+			}
+		}
+
+		&-form {
+			&-header {
+				display: flex;
+				margin-bottom: 10px;
+			}
+
+			&-title {
+				margin: 0;
+				color: $color-text-heading;
+				font-size: 15px;
+				line-height: 24px;
+				font-weight: 500;
+			}
+
+			&-back {
+				cursor: pointer;
+				margin-left: auto;
+				padding: 0;
+				color: $color-accent;
+				font-size: 14px;
+				line-height: 20px;
+				font-weight: 500;
+				border: none;
+				background: none;
+				box-shadow: none;
+				transition: $transition;
+
+				&:hover {
+					color: $button-color-bg-hover;
+					background: none;
+				}
+			}
+
+			&-item + &-item {
+				margin-top: 15px;
+			}
+
+			&-item {
+				display: flex;
+
+				&-title {
+					width: 180px;
+					flex-shrink: 0;
+					margin: 7px 0;
+					color: $color-text-primary;
+					font-size: 14px;
+					line-height: 20px;
+					font-weight: 400;
+				}
+
+				&-control {
+					width: 100%;
+				}
+			}
+		}
+	}
+
+	// Is advanced
+	/* &-advanced input#{&}-text {
+		border-color: #f4f4f5;
+		background-color: $bg-panel;
+	}
+
+	&-advanced-clear {
+		cursor: pointer;
+		user-select: none;
+		position: absolute;
+		top: 0;
+		right: 35px;
+		width: 20px;
+		height: auto;
+		padding: 6px 5px;
+
+		path {
+			fill: $color-accent;
+		}
+
+		&:hover {
+			path {
+				fill: $color-error;
+			}
+		}
+	} */
+}

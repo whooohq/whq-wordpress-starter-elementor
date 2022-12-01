@@ -1,0 +1,78 @@
+// Colors
+$color-text-primary: #23282d;
+$color-text-secondary: #7b7e81;
+$color-text-heading: $color-text-primary;
+$color-placeholder: $color-text-secondary;
+
+$color-accent: #007cba;
+$color-accent-text: #fff;
+$color-accent-hover: #066ea2;
+$color-accent-disable: #80bddc;
+$color-error: #d6336c;
+
+// Font
+$font-size: 15px;
+$line-height: 24px;
+
+// Border
+$border-width: 1px;
+$border-color: #e0e0e0;
+$radius: 4px;
+
+// Background
+$bg-panel: #fff;
+$bg-field: #f8f8f8;
+
+// Shadow
+$box-shadow: 0px 2px 6px rgba(35, 40, 45, 0.07);
+
+// Focus
+$color-text-focus: $color-text-primary;
+$color-accent-focus: #80bddc;
+$bg-field-focus: #fff;
+
+// Transitions
+$transition: all 0.15s ease-in-out;
+
+// Dropdown
+$dropdown_max_height: 200px;
+
+// Tags
+$tag_padding: 0 5px;
+$tag_radius: 3px;
+$tag_color: #fff;
+$tag_bg_color: #2271b1;
+$tag_color_hover: #fff;
+$tag_bg_color_hover: #2e92e4;
+
+// Button
+$button-padding: 6px 12px 4px;
+
+$button-font-size: 14px;
+$button-line-height: 20px;
+
+$button-color-text: $color-accent-text;
+$button-color-bg: $color-accent;
+$button-color-bg-disable: $color-accent-disable;
+$button-color-text-hover: $button-color-text;
+$button-color-bg-hover: $color-accent-hover;
+
+// Button large
+$button-padding-large: 8px 15px 7px;
+$button-font-size-large: $button-font-size * 1.2;
+$button-line-height-large: $button-font-size * 1.2;
+
+// Button small
+$button-padding-small: 6px 10px 4px;
+$button-font-size-small: $button-font-size * 0.85;
+$button-line-height-small: $button-font-size * 0.85;
+
+// Switcher
+$switcher-panel-bg-color--off: #ececec;
+$switcher-panel-bg-color--on: #cce5f1;
+$switcher-trigger-bg-color--off: #fff;
+$switcher-trigger-bg-color--on: $color-accent;
+
+// Required notification
+$required-notification-color: $color-error;
+$required-notification-border-color: #efadc4;

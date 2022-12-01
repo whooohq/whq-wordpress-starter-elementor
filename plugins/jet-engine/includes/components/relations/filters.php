@@ -19,7 +19,11 @@ class Filters {
 		add_filter( 'jet-engine/custom-content-types/filters/indexer/skip-key', array( $this, 'prevent_default_indexing_cct_relations' ), 10, 2 );
 		add_filter( 'jet-smart-filters/pre-get-indexed-data', array( $this, 'index_cct_relations' ), 11, 4 );
 
+		// JSF before version 3.0.0
 		add_action( 'jet-smart-filters/post-type/filter-notes-after', array( $this, 'helper_notes' ) );
+
+		// after JSF version 3.0.0
+		add_action( 'jet-smart-filters/admin/register-dynamic-query', array( $this, 'helper_dynamic_query' ) );
 
 	}
 
@@ -53,6 +57,63 @@ class Filters {
 		?>
 		</ul>
 		<?php
+	}
+
+	/**
+	 * Admin dynamic query for JSF query variable
+	 */
+	public function helper_dynamic_query( $dynamic_query_manager ) {
+
+		$relations = jet_engine()->relations->get_active_relations();
+
+		if ( ! $relations ) {
+			return;
+		}
+
+		$relations_list = array(
+			'related_children' => __( 'filters children items list by parents IDs', 'jet-engine' ),
+			'related_parents'  => __( 'filters parents items list by children IDs', 'jet-engine' )
+		);
+
+		$relations_options = array();
+		foreach ( $relations as $relation_item ) {
+			$relations_options[$relation_item->get_id()] = $relation_item->get_relation_name();
+		}
+		
+		foreach ( $relations_list as $relation_key => $relation_label ) {
+			$relation_dynamic_query_item = new class( $relation_key, $relation_label, $relations_options ) {
+				public function __construct( $key, $label, $options ) {
+					$this->key     = $key;
+					$this->label   = $label;
+					$this->options = $options;
+				}
+
+				public function get_name() {
+					return $this->key;
+				}
+
+				public function get_label() {
+					return 'JetEngine: ' . $this->label;
+				}
+
+				public function get_extra_args() {
+					return array(
+						'relation' => array(
+							'type'        => 'select',
+							'title'       => __( 'Relation', 'jet-engine' ),
+							'placeholder' => __( 'Select relation...', 'jet-engine' ),
+							'options'     => $this->options,
+						),
+					);
+				}
+
+				public function get_delimiter() {
+					return '*';
+				}
+			};
+
+			$dynamic_query_manager->register_item( $relation_dynamic_query_item );
+		}
 	}
 
 	/**

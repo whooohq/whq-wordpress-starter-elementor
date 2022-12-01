@@ -12,6 +12,7 @@ abstract class Base_Query {
 	public $query_id      = null;
 
 	public $dynamic_query_changed = false;
+	public $current_stack = null;
 
 	public function __construct( $args = array() ) {
 
@@ -212,6 +213,17 @@ abstract class Base_Query {
 			}
 		}
 
+		$raw_dynamic = $this->get_args_to_dynamic();
+
+		if ( ! empty( $raw_dynamic ) ) {
+			foreach ( $raw_dynamic as $key ) {
+				if ( ! empty( $this->final_query[ $key ] ) ) {
+					$this->final_query[ $key ] = $this->apply_macros( $this->final_query[ $key ] );
+					$this->dynamic_query_changed = true;
+				}
+			}
+		}
+
 		$explode = $this->get_args_to_explode();
 
 		if ( ! empty( $explode ) ) {
@@ -224,6 +236,8 @@ abstract class Base_Query {
 
 		$this->final_query['_query_type']       = $this->query_type;
 		$this->final_query['queried_object_id'] = jet_engine()->listings->data->get_current_object_id();
+
+		$this->current_stack = jet_engine()->listings->objects_stack->get_stack();
 
 		jet_engine()->admin_bar->register_item( $this->get_instance_id(), array(
 			'title'        => $this->get_instance_name(),
@@ -244,7 +258,7 @@ abstract class Base_Query {
 			return;
 		}
 
-		if ( $this->final_query['queried_object_id'] === jet_engine()->listings->data->get_current_object_id() ) {
+		if ( $this->current_stack === jet_engine()->listings->objects_stack->get_stack() ) {
 			return;
 		}
 
@@ -323,7 +337,7 @@ abstract class Base_Query {
 			 */
 			do_action( 'jet-engine/query-builder/query/before-get-items', $this, true );
 
-			return $cached;
+			return apply_filters( 'jet-engine/query-builder/query/items', $cached, $this );
 		}
 
 		$this->setup_query();
@@ -337,7 +351,7 @@ abstract class Base_Query {
 
 		$this->update_query_cache( $items );
 
-		return $items;
+		return apply_filters( 'jet-engine/query-builder/query/items', $items, $this );
 
 	}
 
@@ -351,6 +365,15 @@ abstract class Base_Query {
 	 * @return [type] [description]
 	 */
 	public function get_args_to_explode() {
+		return array();
+	}
+
+	/**
+	 * Array of arguments whose values can contain macros
+	 *
+	 * @return array
+	 */
+	public function get_args_to_dynamic() {
 		return array();
 	}
 
@@ -414,7 +437,7 @@ abstract class Base_Query {
 	abstract public function set_filtered_prop( $prop = '', $value = null );
 
 	public function merge_default_props( $prop, $value ) {
-		
+
 		if ( is_array( $value ) ) {
 			if ( empty( $this->final_query[ $prop ] ) || ! is_array( $this->final_query[ $prop ] ) ) {
 				$this->final_query[ $prop ] = $value;
@@ -425,6 +448,17 @@ abstract class Base_Query {
 			$this->final_query[ $prop ] = $value;
 		}
 
+	}
+
+	/**
+	 * Adds date range query arguments to given query parameters.
+	 * Required to allow ech query to ensure compatibility with Dynamic Calendar
+	 * 
+	 * @param array $args [description]
+	 */
+	public function add_date_range_args( $args = array(), $dates_range = array(), $settings = array() ) {
+		$group_by = $settings['group_by'];
+		return $args;
 	}
 
 }

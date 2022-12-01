@@ -1,0 +1,59 @@
+@import "../mixins.scss";
+
+// Date
+.jet-ui_date {
+	&-value {
+		font-weight: 500;
+		color: $color-text-primary;
+
+		&-label {
+			font-weight: 400;
+			color: $color-text-secondary;
+
+			svg {
+				margin-right: 3px;
+				vertical-align: text-bottom;
+
+				path {
+					fill: $color-text-secondary;
+				}
+			}
+		}
+
+		&-month {
+			margin-right: 3px;
+		}
+
+		&-colon {
+			margin-left: 1px;
+			margin-right: 1px;
+		}
+
+		&-minute {
+			margin-right: 4px;
+		}
+	}
+
+	&-edit {
+		&-actions {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: flex-end;
+			align-items: center;
+			margin-top: 8px;
+
+			&-cancel-button {
+				color: $color-error;
+
+				&:hover {
+					color: darken($color-error, 5%);
+				}
+			}
+
+			&-apply-button {
+				margin-left: 8px;
+				padding: 3px 7px 2px;
+			}
+		}
+	}
+}

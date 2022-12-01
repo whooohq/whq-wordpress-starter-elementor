@@ -1,7 +1,13 @@
 <?php
 /**
  * JetWooBuilder Products Grid widget loop item content template.
+ *
+ * This template can be overridden by copying it to yourtheme/jet-woo-builder/widgets/global/products-grid/item-content.php.
  */
+
+if ( 'yes' !== $this->get_attr( 'show_excerpt' ) ) {
+	return;
+}
 
 $excerpt = jet_woo_builder_tools()->trim_text(
 	jet_woo_builder_template_functions()->get_product_excerpt(),
@@ -10,7 +16,7 @@ $excerpt = jet_woo_builder_tools()->trim_text(
 	'...'
 );
 
-if ( 'yes' !== $this->get_attr( 'show_excerpt' ) || empty( $excerpt ) ) {
+if ( empty( $excerpt ) ) {
 	return;
 }
 ?>

@@ -3,8 +3,6 @@
 namespace Essential_Addons_Elementor\Pro\Elements;
 
 use \Elementor\Controls_Manager;
-use \Elementor\Group_Control_Background;
-use \Elementor\Core\Schemes\Typography;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
@@ -710,6 +708,7 @@ class Image_Hot_Spots extends Widget_Base
                 'size_units'            => ['px', 'em'],
                 'selectors'             => [
                     '{{WRAPPER}} .eael-hot-spot-wrap .eael-hotspot-icon' => 'font-size: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .eael-hot-spot-wrap svg.eael-hotspot-icon' => 'height: {{SIZE}}{{UNIT}};width: {{SIZE}}{{UNIT}};line-height: {{SIZE}}{{UNIT}}',
                     '{{WRAPPER}} .eael-hot-spot-wrap .eael-hotspot-text' => 'font-size: {{SIZE}}{{UNIT}};',
                     '{{WRAPPER}} .eael-hot-spot-wrap .hotspot-svg-icon' => 'width:{{SIZE}}{{UNIT}};'
                 ],
@@ -746,6 +745,7 @@ class Image_Hot_Spots extends Widget_Base
                 'default'               => '#fff',
                 'selectors'             => [
                     '{{WRAPPER}} .eael-hot-spot-wrap, {{WRAPPER}} .eael-hot-spot-inner, {{WRAPPER}} .eael-hot-spot-inner:before' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-hot-spot-wrap svg.eael-hotspot-icon' => 'fill: {{VALUE}}'
                 ],
             ]
         );
@@ -811,6 +811,7 @@ class Image_Hot_Spots extends Widget_Base
                 'default'               => '#fff',
                 'selectors'             => [
                     '{{WRAPPER}} .eael-hot-spot-wrap:hover, {{WRAPPER}} .eael-hot-spot-wrap:hover .eael-hot-spot-inner, {{WRAPPER}} .eael-hot-spot-wrap:hover .eael-hot-spot-inner:before' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-hot-spot-wrap:hover svg.eael-hotspot-icon' => 'fill: {{VALUE}}'
                 ],
             ]
         );
@@ -908,7 +909,6 @@ class Image_Hot_Spots extends Widget_Base
             [
                 'name'                  => 'tooltip_typography',
                 'label'                 => __('Typography', 'essential-addons-elementor'),
-                'scheme'                => Typography::TYPOGRAPHY_4,
                 'selector'              => '.eael-tooltip-{{ID}}',
             ]
         );
@@ -929,7 +929,7 @@ class Image_Hot_Spots extends Widget_Base
                 $i = 1;
                 foreach ($settings['hot_spots'] as $index => $item) :
 	                if ( $item['hotspot_type'] === 'icon' ) {
-		                $icon = ( ( isset( $item['__fa4_migrated']['hotspot_icon_new'] ) || empty( $item['hotspot_icon'] ) ) ? $item['hotspot_icon_new']['value'] : $item['hotspot_icon'] );
+		                $icon = ( ( isset( $item['__fa4_migrated']['hotspot_icon_new'] ) || empty( $item['hotspot_icon'] ) ) ? \Essential_Addons_Elementor\Classes\Helper::get_render_icon($item['hotspot_icon_new'], ['class'=>'eael-hotspot-icon eael-hotspot-tooltip']) : '<i class="eael-hotspot-icon eael-hotspot-tooltip '.esc_attr($item['hotspot_icon']).'"></i>' );
 	                }
 
                     $this->add_render_attribute('hotspot' . $i, 'class', 'eael-hot-spot-wrap elementor-repeater-item-' . esc_attr($item['_id']));
@@ -1006,7 +1006,7 @@ class Image_Hot_Spots extends Widget_Base
                                         <img class="eael-hotspot-icon eael-hotspot-tooltip hotspot-svg-icon" src="%1$s" alt="%2$s" />
                                         </span>', esc_url($icon['url']), esc_attr(get_post_meta($icon['id'], '_wp_attachment_image_alt', true)));
                                 } else {
-                                    printf('<span class="eael-hotspot-icon-wrap"><span class="eael-hotspot-icon eael-hotspot-tooltip %1$s"></span></span>', esc_attr($icon));
+                                    printf('<span class="eael-hotspot-icon-wrap">%1$s</span>', $icon);
                                 }
                             } elseif ($item['hotspot_type'] == 'text') {
                                 printf('<span class="eael-hotspot-icon-wrap"><span class="eael-hotspot-text">%1$s</span></span>', esc_attr($item['hotspot_text']));

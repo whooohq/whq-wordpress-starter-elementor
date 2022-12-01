@@ -91,6 +91,10 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Dynamic_Terms' ) ) {
 					'type' => 'boolean',
 					'default' => false,
 				),
+				'object_context' => array(
+					'type'    => 'string',
+					'default' => 'default_object',
+				),
 			);
 		}
 

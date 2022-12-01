@@ -5,9 +5,10 @@ namespace Elementor;
 use Elementor\Group_Control_Border;
 use Elementor\Core\Schemes\Typography as Scheme_Typography;
 
+// Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-} // Exit if accessed directly
+}
 
 class Jet_Smart_Filters_Base_Widget extends Widget_Base {
 
@@ -17,15 +18,15 @@ class Jet_Smart_Filters_Base_Widget extends Widget_Base {
 	}
 
 	public function get_categories() {
+
 		return array( jet_smart_filters()->widgets->get_category() );
 	}
 
 	/**
 	 * Returns filter control settings
-	 *
-	 * @return array
 	 */
 	public function get_filter_control_settings() {
+
 		return array(
 			'label'       => __( 'Select filter', 'jet-smart-filters' ),
 			'label_block' => true,
@@ -184,7 +185,6 @@ class Jet_Smart_Filters_Base_Widget extends Widget_Base {
 		$this->base_controls_section_filter_apply_button( $css_scheme );
 
 		$this->base_controls_section_filter_group( $css_scheme );
-
 	}
 
 	public function base_controls_section_filter_label( $css_scheme ) {
@@ -292,7 +292,6 @@ class Jet_Smart_Filters_Base_Widget extends Widget_Base {
 		);
 
 		$this->end_controls_section();
-
 	}
 
 	public function base_controls_section_filter_apply_button( $css_scheme ) {
@@ -482,12 +481,12 @@ class Jet_Smart_Filters_Base_Widget extends Widget_Base {
 		);
 
 		$this->end_controls_section();
-
 	}
 
 	public function base_controls_section_filter_group( $css_scheme ) {
 
 		$this->start_controls_section(
+
 			'section_group_filters_style',
 			array(
 				'label'      => esc_html__( 'Grouped Filters', 'jet-smart-filters' ),
@@ -497,6 +496,7 @@ class Jet_Smart_Filters_Base_Widget extends Widget_Base {
 		);
 
 		$this->add_responsive_control(
+
 			'group_filters_vertical_offset',
 			array(
 				'label'      => esc_html__( 'Vertical Space Between', 'jet-smart-filters' ),
@@ -522,30 +522,20 @@ class Jet_Smart_Filters_Base_Widget extends Widget_Base {
 		);
 
 		$this->end_controls_section();
-
 	}
 
 	/**
 	 * Register filter settings controls. Specific for each widget.
-	 *
-	 * @return void
 	 */
-	public function register_filter_settings_controls() {
-
-	}
+	public function register_filter_settings_controls() {}
 
 	/**
 	 * Register filter style controls. Specific for each widget.
-	 *
-	 * @return void
 	 */
-	public function register_filter_style_controls() {
-	}
+	public function register_filter_style_controls() {}
 
 	/**
 	 * Register filter style controls. Specific for each widget.
-	 *
-	 * @return void
 	 */
 	public function register_horizontal_layout_controls( $css_scheme ) {
 
@@ -633,7 +623,6 @@ class Jet_Smart_Filters_Base_Widget extends Widget_Base {
 				),
 			)
 		);
-
 	}
 
 	/**
@@ -648,24 +637,21 @@ class Jet_Smart_Filters_Base_Widget extends Widget_Base {
 		} else {
 			return $filters_by_type;
 		}
-
 	}
 
 	/**
 	 * Returns widget filter type
 	 */
 	public function get_widget_fiter_type() {
+
 		return str_replace( 'jet-smart-filters-', '', $this->get_name() );
 	}
 
 	/**
 	 * Returns CSS selector for nested element
-	 *
-	 * @param  [type] $el [description]
-	 *
-	 * @return [type]     [description]
 	 */
 	public function css_selector( $el = null ) {
+
 		return sprintf( '{{WRAPPER}} .%1$s%2$s', $this->get_name(), $el );
 	}
 
@@ -738,7 +724,7 @@ class Jet_Smart_Filters_Base_Widget extends Widget_Base {
 
 			$filter_id = apply_filters( 'jet-smart-filters/render_filter_template/filter_id', $filter_id );
 
-			jet_smart_filters()->admin_bar->register_post_item( $filter_id );
+			jet_smart_filters()->admin_bar_register_item( $filter_id );
 
 			printf(
 				'<div class="%1$s jet-filter %2$s" data-indexer-rule="%3$s" data-show-counter="%4$s" data-change-counter="%5$s">',
@@ -766,11 +752,6 @@ class Jet_Smart_Filters_Base_Widget extends Widget_Base {
 					'show_counter'      => $show_counter,
 				),
 			);
-
-			// hide main label is hierarchical select
-			if ( $this->get_name() === 'jet-smart-filters-select' && filter_var( get_post_meta( $filter_id, '_is_hierarchical', true ), FILTER_VALIDATE_BOOLEAN ) ) {
-				$show_label = false;
-			}
 
 			// search
 			if ( $search_enabled ) $filter_template_args['search_enabled'] = $search_enabled;
@@ -800,7 +781,5 @@ class Jet_Smart_Filters_Base_Widget extends Widget_Base {
 		}
 
 		include jet_smart_filters()->get_template( 'common/apply-filters.php' );
-
 	}
-
 }

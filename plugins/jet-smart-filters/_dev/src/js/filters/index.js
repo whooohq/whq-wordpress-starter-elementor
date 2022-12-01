@@ -1,3 +1,4 @@
+import Filter from 'bases/Filter';
 import CheckBoxes from './CheckBoxes';
 import CheckRange from './CheckRange';
 import Select from './Select';
@@ -18,6 +19,7 @@ import ActiveFilters from './ActiveFilters';
 import ActiveTags from './ActiveTags';
 
 export default {
+	BasicFilter: Filter,
 	CheckBoxes,
 	CheckRange,
 	Select,

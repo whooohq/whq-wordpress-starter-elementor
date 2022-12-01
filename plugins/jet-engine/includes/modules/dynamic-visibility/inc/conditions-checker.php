@@ -101,7 +101,7 @@ class Condition_Checker {
 		}
 
 		if ( ! $has_conditions ) {
-			return $result;
+			return true;
 		}
 
 		$result = ( 'show' === $type ) ? ! $is_or_relation : $is_or_relation;

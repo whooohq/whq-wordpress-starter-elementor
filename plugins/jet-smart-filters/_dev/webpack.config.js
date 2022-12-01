@@ -6,9 +6,7 @@ module.exports = {
 	context: path.resolve(__dirname, 'src'),
 	entry: {
 		'js/public.js': './js/index.js',
-		'js/blocks.js': './js/blocks/index.js',
-		'js/admin.js': './js/admin/admin.js',
-		'js/admin-vue-components.js': './js/admin/admin-vue-components.js'
+		'js/blocks.js': './js/blocks/index.js'
 	},
 	output: {
 		path: path.resolve(__dirname, '../assets'),

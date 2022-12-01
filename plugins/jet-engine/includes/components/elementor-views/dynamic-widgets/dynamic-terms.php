@@ -155,6 +155,17 @@ class Jet_Listing_Dynamic_Terms_Widget extends Widget_Base {
 			)
 		);
 
+		$this->add_control(
+			'object_context',
+			array(
+				'label'     => __( 'Context', 'jet-engine' ),
+				'type'      => Controls_Manager::SELECT,
+				'default'   => 'default_object',
+				'options'   => jet_engine()->listings->allowed_context_list(),
+				'separator' => 'before',
+			)
+		);
+
 		$this->end_controls_section();
 
 		$this->start_controls_section(

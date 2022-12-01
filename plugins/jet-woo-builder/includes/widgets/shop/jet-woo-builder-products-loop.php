@@ -31,10 +31,6 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 		return 'jet-woo-builder-icon-shop-loop';
 	}
 
-	public function get_script_depends() {
-		return array();
-	}
-
 	public function get_jet_help_url() {
 		return 'https://crocoblock.com/knowledge-base/articles/jetwoobuilder-how-to-create-and-set-a-shop-page-template/';
 	}
@@ -75,14 +71,14 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 			)
 		);
 
-		if ( ! filter_var( jet_woo_builder_shop_settings()->get( 'custom_archive_page' ), FILTER_VALIDATE_BOOLEAN ) ) {
-			$this->start_controls_section(
-				'template_section',
-				[
-					'label' => __( 'Template', 'jet-woo-builder' ),
-				]
-			);
+		$this->start_controls_section(
+			'template_section',
+			[
+				'label' => __( 'Products Loop', 'jet-woo-builder' ),
+			]
+		);
 
+		if ( ! filter_var( jet_woo_builder_shop_settings()->get( 'custom_archive_page' ), FILTER_VALIDATE_BOOLEAN ) ) {
 			$this->add_control(
 				'custom_templates_notification',
 				[
@@ -94,15 +90,6 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 
 			$this->end_controls_section();
 		} else {
-
-
-			$this->start_controls_section(
-				'template_section',
-				[
-					'label' => __( 'Template', 'jet-woo-builder' ),
-				]
-			);
-
 			$this->add_control(
 				'archive_item_layout',
 				[
@@ -257,7 +244,7 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 			$this->start_controls_section(
 				'section_switcher_wrapper_styles_section',
 				[
-					'label'     => __( 'Wrapper', 'jet-woo-builder' ),
+					'label'     => __( 'Switcher Wrapper', 'jet-woo-builder' ),
 					'tab'       => Controls_Manager::TAB_STYLE,
 					'condition' => [
 						'switcher_enable' => 'yes',
@@ -326,7 +313,7 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 					'label'     => __( 'Alignment', 'jet-woo-builder' ),
 					'type'      => Controls_Manager::CHOOSE,
 					'default'   => 'flex-end',
-					'options'   => jet_woo_builder_tools()->get_available_flex_h_align_types(),
+					'options'   => jet_woo_builder_tools()->get_available_flex_h_align_types( true ),
 					'selectors' => [
 						'{{WRAPPER}} ' . $css_scheme['switcher'] => 'justify-content: {{VALUE}};',
 					],
@@ -338,36 +325,10 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 			$this->start_controls_section(
 				'section_switcher_buttons_style_section',
 				[
-					'label'     => __( 'Buttons', 'jet-woo-builder' ),
+					'label'     => __( 'Switcher Buttons', 'jet-woo-builder' ),
 					'tab'       => Controls_Manager::TAB_STYLE,
 					'condition' => [
 						'switcher_enable' => 'yes',
-					],
-				]
-			);
-
-			$this->add_responsive_control(
-				'switcher_buttons_distance',
-				[
-					'label'      => __( 'Gap', 'jet-woo-builder' ),
-					'type'       => Controls_Manager::SLIDER,
-					'size_units' => [ 'px', 'em', '%' ],
-					'range'      => [
-						'px' => [
-							'min' => 0,
-							'max' => 200,
-						],
-						'em' => [
-							'min' => 0.1,
-							'max' => 20,
-						],
-						'%'  => [
-							'min' => 0,
-							'max' => 100,
-						],
-					],
-					'selectors'  => [
-						'{{WRAPPER}} ' . $css_scheme['switcher'] => 'gap: {{SIZE}}{{UNIT}};',
 					],
 				]
 			);
@@ -429,12 +390,37 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 							'max' => 100,
 						],
 					],
-					'separator'  => 'after',
 					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme['buttons'] => 'height: {{SIZE}}{{UNIT}};',
 					],
 					'condition'  => [
 						'switcher_buttons_custom_size' => 'yes',
+					],
+				]
+			);
+
+			$this->add_responsive_control(
+				'switcher_buttons_distance',
+				[
+					'label'      => __( 'Gap', 'jet-woo-builder' ),
+					'type'       => Controls_Manager::SLIDER,
+					'size_units' => [ 'px', 'em', '%' ],
+					'range'      => [
+						'px' => [
+							'min' => 0,
+							'max' => 200,
+						],
+						'em' => [
+							'min' => 0.1,
+							'max' => 20,
+						],
+						'%'  => [
+							'min' => 0,
+							'max' => 100,
+						],
+					],
+					'selectors'  => [
+						'{{WRAPPER}} ' . $css_scheme['switcher'] => 'gap: {{SIZE}}{{UNIT}};',
 					],
 				]
 			);
@@ -833,27 +819,25 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 			);
 
 			$this->end_controls_section();
+
 		}
 
 	}
 
 	public static function products_loop() {
-		if ( jet_woo_builder_integration()->in_elementor() || is_product_taxonomy() || is_post_type_archive( 'product' ) || is_page( wc_get_page_id( 'shop' ) ) ) {
+		if ( jet_woo_builder()->elementor_views->in_elementor() || is_product_taxonomy() || is_post_type_archive( 'product' ) || is_page( wc_get_page_id( 'shop' ) ) ) {
 			if ( woocommerce_product_loop() ) {
 				woocommerce_product_loop_start();
 
 				if ( wc_get_loop_prop( 'total' ) ) {
 					while ( have_posts() ) {
 						the_post();
-
 						do_action( 'woocommerce_shop_loop' );
-
 						wc_get_template_part( 'content', 'product' );
 					}
 				}
 
 				woocommerce_product_loop_end();
-
 				wp_reset_postdata();
 			} else {
 				do_action( 'woocommerce_no_products_found' );
@@ -863,8 +847,9 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 
 	protected function render() {
 
-		$settings        = $this->get_settings_for_display();
-		$switcher_enable = isset( $settings['switcher_enable'] ) ? filter_var( $settings['switcher_enable'], FILTER_VALIDATE_BOOLEAN ) : false;
+		$settings = $this->get_settings_for_display();
+
+		$switcher_enable = isset( $settings['switcher_enable'] ) && filter_var( $settings['switcher_enable'], FILTER_VALIDATE_BOOLEAN );
 
 		// Add filters before displaying our Widget.
 		// Define default archive item template.
@@ -893,10 +878,14 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 	}
 
 	/**
-	 * Define default archive item template
-	 * if admin settings is empty or override if set.
+	 * Default custom template.
 	 *
-	 * @param $custom_template
+	 * Define default archive item template if admin settings is empty or override if set.
+	 *
+	 * @since  1.7.0
+	 * @access public
+	 *
+	 * @param string $custom_template Template ID.
 	 *
 	 * @return mixed
 	 */
@@ -906,14 +895,14 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 			return $custom_template;
 		}
 
-		if ( 'archive' !== jet_woo_builder_integration_woocommerce()->get_current_loop() ) {
+		if ( 'archive' !== jet_woo_builder()->woocommerce->get_current_loop() ) {
 			return $custom_template;
 		}
 
 		$settings        = $this->get_settings_for_display();
-		$switcher_enable = isset( $settings['switcher_enable'] ) ? filter_var( $settings['switcher_enable'], FILTER_VALIDATE_BOOLEAN ) : false;
-		$main_layout     = isset( $settings['main_layout'] ) ? $settings['main_layout'] : null;
-		$archive_item    = isset( $settings['archive_item_layout'] ) ? $settings['archive_item_layout'] : null;
+		$switcher_enable = isset( $settings['switcher_enable'] ) && filter_var( $settings['switcher_enable'], FILTER_VALIDATE_BOOLEAN );
+		$main_layout     = $settings['main_layout'] ?? null;
+		$archive_item    = $settings['archive_item_layout'] ?? null;
 
 		if ( $switcher_enable && ! empty( $main_layout ) ) {
 			$custom_template = $main_layout;
@@ -930,9 +919,14 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 	}
 
 	/**
+	 * Switcher status.
+	 *
 	 * Define if switcher is active.
 	 *
-	 * @param $switcher_enable
+	 * @since  1.7.0
+	 * @access public
+	 *
+	 * @param bool $switcher_enable Switcher availability status.
 	 *
 	 * @return bool
 	 */

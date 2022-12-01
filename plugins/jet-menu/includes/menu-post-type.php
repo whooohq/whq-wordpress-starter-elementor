@@ -52,7 +52,7 @@ class Menu_Post_Type {
 
 		$this->register_post_type();
 
-		$this->edit_redirect();
+		$this->edit_mega_template_redirect();
 
 		add_filter( 'option_elementor_cpt_support', array( $this, 'set_option_support' ) );
 
@@ -127,10 +127,11 @@ class Menu_Post_Type {
 			'labels'              => $labels,
 			'hierarchical'        => false,
 			'description'         => 'description',
-			'taxonomies'          => array(),
+			'taxonomies'          => [],
 			'public'              => true,
 			'show_ui'             => true,
 			'show_in_menu'        => false,
+			'show_in_rest'        => true,
 			'show_in_admin_bar'   => true,
 			'menu_position'       => null,
 			'menu_icon'           => null,
@@ -142,65 +143,10 @@ class Menu_Post_Type {
 			'can_export'          => true,
 			'rewrite'             => true,
 			'capability_type'     => 'post',
-			'supports'            => array( 'title', 'editor' ),
+			'supports'            => array( 'title', 'editor', 'custom-fields' ),
 		);
 
 		register_post_type( $this->slug(), $args );
-
-	}
-
-	/**
-	 * Edit redirect
-	 *
-	 * @return void
-	 */
-	public function edit_redirect() {
-
-		if ( ! current_user_can( 'manage_options' ) ) {
-			return;
-		}
-
-		if ( empty( $_REQUEST['jet-open-editor'] ) ) {
-			return;
-		}
-
-		if ( empty( $_REQUEST['item'] ) ) {
-			return;
-		}
-
-		if ( empty( $_REQUEST['menu'] ) ) {
-			return;
-		}
-
-		$menu_id      = intval( $_REQUEST['menu'] );
-		$menu_item_id = intval( $_REQUEST['item'] );
-		$mega_menu_id = get_post_meta( $menu_item_id, $this->meta_key(), true );
-
-		if ( ! $mega_menu_id ) {
-
-			$mega_menu_id = wp_insert_post( array(
-				'post_title'  => 'mega-item-' . $menu_item_id,
-				'post_status' => 'publish',
-				'post_type'   => $this->slug(),
-			) );
-
-			update_post_meta( $menu_item_id, $this->meta_key(), $mega_menu_id );
-
-		}
-
-		$edit_link = add_query_arg(
-			array(
-				'post'        => $mega_menu_id,
-				'action'      => 'elementor',
-				'context'     => 'jet-menu',
-				'parent_menu' => $menu_id,
-			),
-			admin_url( 'post.php' )
-		);
-
-		wp_redirect( $edit_link );
-
-		die();
 
 	}
 
@@ -231,6 +177,79 @@ class Menu_Post_Type {
 		}
 
 		return $template;
+
+	}
+
+	/**
+	 * Edit redirect
+	 *
+	 * @return void
+	 */
+	public function edit_mega_template_redirect() {
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		if ( empty( $_REQUEST['jet-open-editor'] ) || empty( $_REQUEST['item'] ) || empty( $_REQUEST['menu'] ) || empty( $_REQUEST['content'] ) ) {
+			return;
+		}
+
+		$menu_id      = intval( $_REQUEST['menu'] );
+		$menu_item_id = intval( $_REQUEST['item'] );
+		$content_type = $_REQUEST['content'];
+
+		$mega_elementor_template_id = get_post_meta( $menu_item_id, 'jet-menu-item', true );
+		$mega_block_editor_template_id = get_post_meta( $menu_item_id, 'jet-menu-item-block-editor', true );
+
+		if ( ! $mega_elementor_template_id && 'elementor' === $content_type ) {
+			$mega_elementor_template_id = wp_insert_post( [
+				'post_title'  => 'elementor-mega-item-' . $menu_item_id,
+				'post_status' => 'publish',
+				'post_type'   => $this->slug(),
+			] );
+
+			update_post_meta( $menu_item_id, 'jet-menu-item', $mega_elementor_template_id );
+		}
+
+		if ( ! $mega_block_editor_template_id && 'default' === $content_type ) {
+			$mega_block_editor_template_id = wp_insert_post( [
+				'post_title'  => 'block-editor-mega-item-' . $menu_item_id,
+				'post_status' => 'publish',
+				'post_type'   => $this->slug(),
+			] );
+
+			update_post_meta( $menu_item_id, 'jet-menu-item-block-editor', $mega_block_editor_template_id );
+		}
+
+		update_post_meta( $menu_item_id, '_content_type', $content_type );
+
+		switch ( $content_type ) {
+			case 'default':
+				$edit_link = get_edit_post_link( $mega_block_editor_template_id, '' );
+				break;
+			case 'elementor':
+
+				if ( defined( 'ELEMENTOR_VERSION' ) ) {
+					$edit_link = add_query_arg(
+						[
+							'post'        => $mega_elementor_template_id,
+							'action'      => 'elementor',
+							'context'     => 'jet-menu',
+							'parent_menu' => $menu_id,
+						],
+						admin_url( 'post.php' )
+					);
+				} else {
+					$edit_link = false;
+				}
+
+				break;
+		}
+
+		wp_redirect( $edit_link );
+
+		die();
 
 	}
 }

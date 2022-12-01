@@ -39,13 +39,24 @@ class Mobile_Menu_Render extends Base_Render {
 		$menu_id = $this->get( 'menu-id', false );
 
 		if ( ! isset( $menu_id ) || empty( $menu_id ) ) {
-			echo '<span>' . _e( 'Menu undefined', 'jet-menu' ) . '</span>';
+			$available_menus_options = jet_menu_tools()->get_available_menus_options();
 
-			return;
+            if ( ! empty( $available_menus_options ) ) {
+	            $menu_id = $available_menus_options[0]['value'];
+            } else {
+	            echo sprintf(
+		            '<span>' . esc_html__( '%3$s Go to the %1$sMenus screen%2$s to create one.', 'jet-menu' )  . '</span>',
+		            sprintf( '<a href="%s" target="_blank">', admin_url( 'nav-menus.php?action=edit&menu=0' ) ),
+		            '</a>',
+		            '<span>' . esc_html__( 'There are no menus in your site.', 'jet-menu' ) . '</span>'
+	            );
+
+	            return;
+            }
 		}
 
 		$menu_uniqid    = uniqid();
-		$mobile_menu_id    = $this->get( 'mobile-menu-id', false );
+		$mobile_menu_id = $this->get( 'mobile-menu-id', false );
 
 		$menu_options = array(
 			'menuUniqId'         => $menu_uniqid,
@@ -91,10 +102,11 @@ class Mobile_Menu_Render extends Base_Render {
 			'breadcrumbIcon'     => ! empty( $breadcrumb_icon_html ) ? $breadcrumb_icon_html : jet_menu()->svg_manager->get_svg_html( 'arrow-right' ),
 		);
 
-		$icons_html = '';
 		$widget_refs = '';
+		$icons_html = '';
 
 		if ( ! empty( $icons_data ) ) {
+
 			foreach ( $icons_data as $slug => $icon_html ) {
 				$icons_html .= sprintf( '<div ref="%s">%s</div>', $slug, $icon_html );
 			}
@@ -121,7 +133,30 @@ class Mobile_Menu_Render extends Base_Render {
 			echo $widget_refs;
 		?></div><?php
 
-		jet_menu()->render_manager->location_manager->add_menu_advanced_styles( $menu_id );
+		$this->add_menu_advanced_styles( $menu_id );
 	}
+
+	/**
+	 * @param $menu_id
+	 *
+	 * @return false|void
+	 */
+	public function add_menu_advanced_styles( $menu_id = false ) {
+
+		if ( ! $menu_id ) {
+			return false;
+		}
+
+		$menu_items = jet_menu()->render_manager->get_menu_items_object_data( $menu_id );
+
+		if ( ! $menu_items ) {
+			return false;
+		}
+
+		foreach ( $menu_items as $key => $item ) {
+			jet_menu_tools()->add_menu_css( $item->ID, '#jet-mobile-menu-item-' . $item->ID );
+		}
+	}
+
 
 }

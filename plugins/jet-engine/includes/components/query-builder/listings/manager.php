@@ -15,6 +15,8 @@ class Manager {
 
 	public $source = 'query';
 	public $source_meta = '_query_id';
+	public $filters = null;
+	public $query = null;
 
 	public function __construct() {
 		add_action( 'jet-engine/query-builder/init', array( $this, 'init' ) );
@@ -27,7 +29,7 @@ class Manager {
 
 		require_once Query_Manager::instance()->component_path( 'listings/query.php' );
 
-		new Query();
+		$this->query = new Query();
 
 		if ( jet_engine()->has_elementor() ) {
 			require_once Query_Manager::instance()->component_path( 'listings/elementor.php' );
@@ -39,14 +41,17 @@ class Manager {
 
 		if ( function_exists( 'jet_smart_filters' ) ) {
 			require_once Query_Manager::instance()->component_path( 'listings/filters.php' );
-			new Filters();
+			require_once Query_Manager::instance()->component_path( 'listings/filters-options-source.php' );
+
+			$this->filters = new Filters();
+			
+			new Filters_Options_Source();
 		}
 
 	}
 
 	public function get_query_id( $listing_id, $settings ) {
 
-		$query_id        = false;
 		$query_id        = get_post_meta( $listing_id, $this->source_meta, true );
 		$is_custom_query = ! empty( $settings['custom_query'] ) ? filter_var( $settings['custom_query'], FILTER_VALIDATE_BOOLEAN ) : false;
 

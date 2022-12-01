@@ -7,7 +7,9 @@ const FilterableSelect = {
 	name: 'cx-vui-f-select',
 	template: '#cx-vui-f-select',
 	mixins: [ checkConditions ],
-	directives: { clickOutside },
+	directives: {
+		clickOutside
+	},
 	props: {
 		value: {
 			type: [String, Number, Array],
@@ -46,9 +48,7 @@ const FilterableSelect = {
 			type: String
 		},
 		autocomplete: {
-			validator (value) {
-				return oneOf( value, ['on', 'off'] );
-			},
+			type: String,
 			default: 'off'
 		},
 		conditions: {
@@ -119,13 +119,11 @@ const FilterableSelect = {
 				if ( arraysEqual( newValue, oldValue ) ) {
 					return;
 				}
-
 			} else {
 
 				if ( newValue === oldValue ) {
 					return;
 				}
-
 			}
 
 			this.storeValues( newValue );
@@ -174,7 +172,10 @@ const FilterableSelect = {
 					if ( this.remote ) {
 						return true;
 					} else {
-						return option.label.includes( this.query ) || option.value.includes( this.query );
+						let optionValue = '' + option.value,
+						    optionLabel = option.label;
+
+						return optionLabel.includes( this.query ) || optionValue.includes( this.query );
 					}
 				});
 			}
@@ -244,7 +245,7 @@ const FilterableSelect = {
 			}
 
 			let index     = this.optionInFocus + direction;
-			let maxLength = this.options.length - 1;
+			let maxLength = this.filteredOptions.length - 1;
 
 			if ( maxLength < 0 ) {
 				maxLength = 0;
@@ -280,7 +281,7 @@ const FilterableSelect = {
 				this.inFocus = true;
 			}
 
-			if ( this.remote && this.remoteCallback && this.charsDiff <= 0 && ! this.loading && ! this.loaded ) {
+			if ( this.remote && this.remoteCallback && this.charsDiff <= 0 && ! this.loading ) {
 
 				this.loading = true;
 
@@ -307,7 +308,7 @@ const FilterableSelect = {
 				return;
 			}
 
-			let value = this.options[ this.optionInFocus ].value;
+			let value = this.filteredOptions[ this.optionInFocus ].value;
 
 			this.handleResultClick( value );
 
@@ -321,6 +322,7 @@ const FilterableSelect = {
 			}
 
 			this.$emit( 'input', this.currentValues );
+			this.$emit( 'on-input', this.currentValues );
 			this.$emit( 'on-change', this.currentValues );
 
 			this.inFocus       = false;
@@ -370,12 +372,17 @@ const FilterableSelect = {
 
 					if ( '[object Array]' === Object.prototype.toString.call( value ) ) {
 
-						value.forEach( singleVal => {
-							if ( ! oneOf( singleVal, this.currentValues ) ) {
-								this.currentValues.push( singleVal );
-								this.pushToSelected( singleVal );
-							}
-						} );
+						if ( value.length ) {
+							value.forEach( singleVal => {
+								if ( ! oneOf( singleVal, this.currentValues ) ) {
+									this.currentValues.push( singleVal );
+									this.pushToSelected( singleVal );
+								}
+							} );
+						} else {
+							this.selectedOptions = [];
+							this.currentValues   = [];
+						}
 
 					} else {
 

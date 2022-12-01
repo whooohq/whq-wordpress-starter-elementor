@@ -1,0 +1,335 @@
+@import "./mixins.scss";
+
+.jet_filters-list {
+	margin: 25px 0 0;
+
+	// Table
+	.jet_table {
+		&-thead {
+			&-th {
+				user-select: none;
+			}
+		}
+
+		&-thead,
+		&-row {
+			& &-checkbox {
+				width: 60px;
+			}
+
+			& [name="type"],
+			& [name="source"] {
+				width: 50%;
+			}
+
+			& [name="date"] {
+				width: 200px;
+				flex-shrink: 0;
+			}
+		}
+	}
+
+	// Row
+	&-row {
+		// Buttons
+		@at-root a#{&}-title,
+		&-edit,
+		&-quick-edit {
+			@include active-transparent-button();
+		}
+
+		&-remove {
+			@include remove-transparent-button();
+		}
+
+		&-title {
+			color: $color-text-primary;
+			font-weight: 500;
+		}
+
+		&-edit,
+		&-quick-edit,
+		&-remove {
+			font-weight: 400;
+		}
+
+		// Actions
+		&-actions {
+			display: flex;
+			align-items: center;
+			visibility: hidden;
+			opacity: 0;
+			transition: all 0.15s ease-in-out;
+
+			.jet_table-row:hover & {
+				visibility: visible;
+				opacity: 1;
+			}
+
+			&-separator {
+				display: block;
+				margin: 0 8px;
+				width: 1px;
+				height: 14px;
+				background-color: #7b7e81;
+			}
+		}
+
+		// Type
+		&-type {
+			display: flex;
+
+			img {
+				margin-top: -2px;
+				margin-right: 8px;
+				width: 24px;
+			}
+		}
+	}
+
+	// Header
+	&-header {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-start;
+	}
+
+	&-heading {
+		margin: 0;
+		font-size: 24px;
+		line-height: 32px;
+		font-weight: 500;
+		color: $color-text-primary;
+	}
+
+	&-add-new-btn {
+		@include active-button();
+		margin: 0 20px 0 15px;
+		padding: 7px 12px 5px;
+	}
+
+	&-settings-link {
+		margin: 8px 0 4px auto;
+		font-size: 14px;
+		line-height: 20px;
+		text-decoration: none;
+		color: $color-accent;
+
+		&,
+		&:focus {
+			box-shadow: none;
+		}
+
+		svg {
+			margin-right: 2px;
+			vertical-align: top;
+
+			path {
+				fill: $color-accent;
+			}
+		}
+
+		&:hover {
+			color: $button-color-bg-hover;
+		}
+
+		&:hover svg path {
+			fill: $button-color-bg-hover;
+		}
+	}
+
+	&-admin-mode-switcher,
+	&-indexer-button {
+		@include active-secondary-button();
+
+		svg {
+			path {
+				fill: $color-accent;
+			}
+		}
+
+		&:hover,
+		&.state-loading,
+		&.state-loaded {
+			color: $color-accent;
+			background-color: lighten($color-accent, 60%);
+		}
+	}
+
+	&-indexer-button {
+		margin-left: 16px;
+	}
+
+	// Subnav
+	&-subnav {
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		margin-top: 18px;
+		font-size: 15px;
+		line-height: 24px;
+
+		&-filters,
+		&-trash {
+			cursor: pointer;
+			user-select: none;
+			margin-right: 10px;
+			transition: $transition;
+
+			&:last-child {
+				margin-right: 0;
+			}
+
+			span {
+				color: $color-text-secondary;
+			}
+		}
+
+		&-filters {
+			color: $color-accent;
+
+			&:hover {
+				color: $button-color-bg-hover;
+			}
+		}
+
+		&-trash {
+			color: $color-error;
+
+			&:hover {
+				color: darken($color-error, 5%);
+			}
+		}
+
+		&-active {
+			cursor: default;
+
+			&,
+			&:hover {
+				color: $color-text-primary;
+			}
+		}
+	}
+
+	// Filtration
+	&-filtration {
+		display: flex;
+		align-items: flex-end;
+		margin-top: 16px;
+		padding: 20px;
+		border-radius: $radius;
+		background-color: $bg-panel;
+		box-shadow: $box-shadow;
+
+		&-search,
+		&-by-type,
+		&-by-source,
+		&-sort-by {
+			width: 100%;
+			margin-right: 20px;
+		}
+
+		&-clear-btn {
+			flex-shrink: 0;
+			padding-left: 36px;
+			padding-right: 36px;
+			@include active-secondary-button();
+		}
+
+		&-control {
+			&-label {
+				margin-bottom: 8px;
+				color: $color-text-primary;
+				font-size: 15px;
+				line-height: 24px;
+			}
+
+			&--active.jet-ui_text input,
+			&--active.jet-ui_select {
+				border-color: #f4f4f5;
+				background-color: #fff;
+			}
+		}
+	}
+
+	// Navigation
+	&-navigation {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 20px;
+		margin-bottom: 20px;
+		color: $color-text-secondary;
+
+		&-info,
+		&-perpage {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			width: 200px;
+		}
+
+		&-perpage {
+			justify-content: flex-end;
+
+			.jet-ui_number {
+				width: 52px;
+				margin-left: 13px;
+
+				.jet-ui_number-input {
+					color: $color-text-secondary;
+				}
+			}
+
+			.jet-ui_number-input,
+			.jet-ui_number-input::-webkit-outer-spin-button,
+			.jet-ui_number-input::-webkit-inner-spin-button {
+				margin: 0;
+				appearance: none;
+			}
+		}
+	}
+
+	// Active head
+	&-active-head {
+		width: 100%;
+		display: flex;
+		align-items: center;
+
+		&-checkbox {
+			padding-left: 30px;
+			padding-right: 10px;
+		}
+
+		&-selected {
+			user-select: none;
+			padding-left: 20px;
+			padding-right: 20px;
+
+			&-clear {
+				margin-left: 10px;
+			}
+		}
+
+		&-actions {
+			width: 200px;
+			box-sizing: border-box;
+			margin-left: auto;
+			padding-left: 20px;
+			padding-right: 20px;
+
+			&-remove {
+				@include remove-transparent-button();
+				font-size: 14px;
+			}
+		}
+	}
+
+	&-not-found {
+		margin: 50px 0;
+		font-size: 21px;
+		line-height: 32px;
+		font-weight: 500;
+		color: #cacbcd;
+		text-align: center;
+	}
+}

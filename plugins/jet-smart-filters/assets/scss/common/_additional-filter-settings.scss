@@ -28,11 +28,6 @@
 		.jet-input-not-empty + & {
 			display: block;
 		}
-
-		.rtl & {
-			right: initial;
-			left: 5px;
-		}
 	}
 
 	/* clears the 'X' from Internet Explorer */
@@ -109,8 +104,8 @@
 	}
 
 	&__body {
+		//overflow: hidden;
 		display: none;
-		overflow: hidden;
 		position: absolute;
 		z-index: 99;
 		left: 0;

@@ -21,15 +21,11 @@ class Jet_Woo_Builder_Single_Related extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Single Related Products', 'jet-woo-builder' );
+		return __( 'Single Related Products', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
 		return 'jet-woo-builder-icon-single-related';
-	}
-
-	public function get_script_depends() {
-		return array();
 	}
 
 	public function get_jet_help_url() {
@@ -55,9 +51,17 @@ class Jet_Woo_Builder_Single_Related extends Jet_Woo_Builder_Base {
 
 		$this->start_controls_section(
 			'section_single_related_style',
-			array(
-				'label' => esc_html__( 'Title', 'jet-woo-builder' ),
+			[
+				'label' => __( 'Heading', 'jet-woo-builder' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'single_related_title_typography',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['title'],
 			)
 		);
 
@@ -69,14 +73,6 @@ class Jet_Woo_Builder_Single_Related extends Jet_Woo_Builder_Base {
 				'selectors' => array(
 					'{{WRAPPER}} ' . $css_scheme['title'] => 'color: {{VALUE}}',
 				),
-			)
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			array(
-				'name'     => 'single_related_title_typography',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['title'],
 			)
 		);
 
@@ -118,7 +114,7 @@ class Jet_Woo_Builder_Single_Related extends Jet_Woo_Builder_Base {
 			return;
 		}
 
-		if ( true === $this->__set_editor_product() ) {
+		if ( $this->__set_editor_product() ) {
 			// Remove filters before displaying our Widget.
 			remove_filter( 'woocommerce_product_loop_start', 'woocommerce_maybe_show_product_subcategories' );
 
@@ -131,7 +127,7 @@ class Jet_Woo_Builder_Single_Related extends Jet_Woo_Builder_Base {
 			// Add filters after displaying our Widget.
 			add_filter( 'woocommerce_product_loop_start', 'woocommerce_maybe_show_product_subcategories' );
 
-			if ( jet_woo_builder_integration()->in_elementor() ) {
+			if ( jet_woo_builder()->elementor_views->in_elementor() ) {
 				$this->__reset_editor_product();
 			}
 		}

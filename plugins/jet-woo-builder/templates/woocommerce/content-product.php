@@ -15,7 +15,7 @@ if ( empty( $product ) || ! $product->is_visible() ) {
 	return;
 }
 
-$template = apply_filters( 'jet-woo-builder/current-template/template-id', jet_woo_builder_integration_woocommerce()->get_current_archive_template() );
+$template = apply_filters( 'jet-woo-builder/current-template/template-id', jet_woo_builder()->woocommerce->get_custom_archive_template() );
 $content  = jet_woo_builder()->parser->get_template_content( $template, false, $product );
 
 jet_woo_builder()->admin_bar->register_post_item( $template );

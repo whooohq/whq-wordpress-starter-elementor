@@ -60,7 +60,58 @@
 				editID: false,
 				nonce: JetEngineGlossariesConfig._nonce,
 				deleteID: false,
+				ordersAjaxRequest: null,
+
 			};
+		},
+		directives: { handle: window.VueSlicksort.HandleDirective },
+		components: {
+			'slick-list': window.VueSlicksort.SlickList,
+			'slick-item': window.VueSlicksort.SlickItem,
+		},
+		computed: {
+			itemsOrders: function() {
+				return this.items.map( function( item ) {
+					return item.id;
+				} );
+			}
+		},
+		watch: {
+			itemsOrders: function( value, oldValue ) {
+				var isEqual = value.length && oldValue.length && value.length === oldValue.length;
+
+				if ( isEqual ) {
+					isEqual = value.every( function( element, index ) {
+						return element === oldValue[index];
+					} );
+				}
+
+				if ( isEqual ) {
+					return;
+				}
+
+				var self = this;
+
+				this.ordersAjaxRequest = jQuery.ajax( {
+					url: window.ajaxurl,
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						action: 'jet_engine_glossary_save_orders',
+						orders: value,
+						nonce: self.nonce,
+					},
+					beforeSend: function() {
+						if ( null !== self.ordersAjaxRequest ) {
+							self.ordersAjaxRequest.abort();
+						}
+					},
+				} ).done( function( response ) {
+					//console.log( response );
+				} ).fail( function( jqXHR, textStatus, errorThrown ) {
+
+				} );
+			}
 		},
 		methods: {
 			setEdit: function( itemID ) {

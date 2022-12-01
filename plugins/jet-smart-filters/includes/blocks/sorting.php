@@ -9,22 +9,20 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Block_Sorting' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Block_Sorting class
 	 */
 	class Jet_Smart_Filters_Block_Sorting extends Jet_Smart_Filters_Block_Base {
-
 		/**
 		 * Returns block name
-		 *
-		 * @return string
 		 */
 		public function get_name() {
+
 			return 'sorting';
 		}
 
-		public function set_css_scheme(){
+		public function set_css_scheme() {
+
 			$this->css_scheme = apply_filters(
 				'jet-smart-filters/widgets/sorting/css-scheme',
 				[
@@ -36,7 +34,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Sorting' ) ) {
 			);
 		}
 
-		public function add_style_manager_options(){
+		public function add_style_manager_options() {
 
 			$this->controls_manager->start_section(
 				'style_controls',
@@ -416,8 +414,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Sorting' ) ) {
 
 		/**
 		 * Return callback
-		 *
-		 * @return html
 		 */
 		public function render_callback( $settings = array() ) {
 
@@ -445,9 +441,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Sorting' ) ) {
 			$filter_layout = ob_get_clean();
 
 			return $filter_layout;
-
 		}
-
 	}
-
 }

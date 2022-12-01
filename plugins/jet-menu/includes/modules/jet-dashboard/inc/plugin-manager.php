@@ -453,7 +453,6 @@ class Plugin_Manager {
 		if ( $this->user_plugins ) {
 
 			foreach ( $this->user_plugins as $plugin_file => $plugin_data ) {
-
 				$current_version = $plugin_data['Version'];
 				$latest_version = $this->get_latest_version( $plugin_file );
 

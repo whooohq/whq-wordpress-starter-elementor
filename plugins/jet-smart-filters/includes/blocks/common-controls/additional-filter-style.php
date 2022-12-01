@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Search items style controls
  */
@@ -238,11 +237,9 @@ $this->controls_manager->end_tabs();
 $this->controls_manager->end_section();
 
 
-
 /**
  * More Less style controls
  */
-
 $css_items_moreless_scheme = apply_filters(
 	'jet-smart-filters/widgets/items-moreless/css-scheme',
 	array(
@@ -462,11 +459,9 @@ $this->controls_manager->add_control([
 $this->controls_manager->end_section();
 
 
-
 /**
  * Dropdown style controls
  */
-
 $css_items_dropdown_scheme = apply_filters(
 	'jet-smart-filters/widgets/items-dropdown/css-scheme',
 	array(
@@ -678,7 +673,6 @@ $this->controls_manager->start_tab(
 		'title' => esc_html__( 'Hover', 'jet-smart-filters' ),
 	]
 );
-
 
 $this->controls_manager->add_control([
 	'id'       => 'dropdown_active_item_hover_color',

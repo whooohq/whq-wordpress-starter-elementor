@@ -44,6 +44,8 @@ class Manager {
 		require jet_menu()->plugin_path( 'includes/render/base-render.php' );
 		require jet_menu()->plugin_path( 'includes/render/render-modules/mega-menu-render.php' );
 		require jet_menu()->plugin_path( 'includes/render/render-modules/mobile-menu-render.php' );
+		require jet_menu()->plugin_path( 'includes/render/render-modules/block-editor-template-render.php' );
+		require jet_menu()->plugin_path( 'includes/render/render-modules/elementor-template-render.php' );
 
 		if ( jet_menu_tools()->is_nextgen_mode() ) {
 			require jet_menu()->plugin_path( 'includes/render/walkers/mega-menu-walker.php' );
@@ -76,28 +78,52 @@ class Manager {
 
 			$item_settings = jet_menu()->settings_manager->get_item_settings( $item_id );
 
-			$item_template_id = get_post_meta( $item_id, jet_menu()->post_type_manager->meta_key(), true );
+			$item_content_type = isset( $item_settings['content_type'] ) ? $item_settings['content_type'] : 'default';
 
-			$elementor_template_id = ( isset( $item_settings['enabled'] ) && filter_var( $item_settings['enabled'], FILTER_VALIDATE_BOOLEAN ) ) ? (int)$item_template_id : false;
+			switch ( $item_content_type ) {
+				case 'default':
+					$mega_template_id = get_post_meta( $item_id, 'jet-menu-item-block-editor', true );
+					break;
+				case 'elementor':
+					$mega_template_id = get_post_meta( $item_id, 'jet-menu-item', true );
+
+					break;
+			}
+
+			$template_id = ( isset( $item_settings['enabled'] ) && filter_var( $item_settings['enabled'], FILTER_VALIDATE_BOOLEAN ) ) ? (int)$mega_template_id : false;
 
 			$item_icon = ! empty( $item_settings['menu_svg'] ) ? jet_menu_tools()->get_svg_html( $item_settings['menu_svg'], false ) : false;
 
-			$items[] = array(
-				'id'                  => 'item-' . $item_id,
-				'name'                => $item->title,
-				'attrTitle'           => ! empty( $item->attr_title ) ? $item->attr_title : false,
-				'description'         => $item->description,
-				'url'                 => $item->url,
-				'target'              => ! empty( $item->target ) ? $item->target : false,
-				'xfn'                 => ! empty( $item->xfn ) ? $item->xfn : false,
-				'itemParent'          => ! empty( $item->menu_item_parent ) ? 'item-' . $item->menu_item_parent : false,
-				'itemId'              => $item_id,
-				'elementorTemplateId' => $elementor_template_id,
-				'elementorContent'    => false,
-				'open'                => false,
-				'badgeText'           => isset( $item_settings['menu_badge'] ) ? $item_settings['menu_badge'] : false,
-				'itemIcon'            => $item_icon,
-				'classes'             => $item->classes,
+			$badge_content_type = isset( $item_settings['menu_badge_type'] ) ? $item_settings['menu_badge_type'] : 'text';
+
+			switch ( $badge_content_type ) {
+				case 'text':
+					$badge_content = isset( $item_settings[ 'menu_badge' ] ) ? $item_settings[ 'menu_badge' ] : false;
+
+					break;
+				case 'svg':
+					$badge_content = ! empty( $item_settings['badge_svg'] ) ? jet_menu_tools()->get_svg_html( $item_settings['badge_svg'], false ) : false;;
+
+					break;
+			}
+
+			$items[] = array (
+				'id'              => 'item-' . $item_id,
+				'name'            => $item->title,
+				'attrTitle'       => ! empty( $item->attr_title ) ? $item->attr_title : false,
+				'description'     => $item->description,
+				'url'             => $item->url,
+				'target'          => ! empty( $item->target ) ? $item->target : false,
+				'xfn'             => ! empty( $item->xfn ) ? $item->xfn : false,
+				'itemParent'      => ! empty( $item->menu_item_parent ) ? 'item-' . $item->menu_item_parent : false,
+				'itemId'          => $item_id,
+				'megaTemplateId'  => $template_id,
+				'megaContent'     => false,
+				'megaContentType' => $item_content_type,
+				'open'            => false,
+				'badgeContent'    => $badge_content,
+				'itemIcon'        => $item_icon,
+				'classes'         => $item->classes,
 			);
 		}
 
@@ -127,7 +153,7 @@ class Manager {
 			if ( $item['itemParent'] === $parentId ) {
 				$children = $this->buildItemsTree( $items, $item['id'] );
 
-				if ( $children && !$item['elementorTemplateId'] ) {
+				if ( $children && !$item['megaTemplateId'] ) {
 					$item['children'] = $children;
 				}
 

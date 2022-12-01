@@ -5,25 +5,30 @@ namespace Elementor;
 use Elementor\Group_Control_Border;
 use Elementor\Core\Schemes\Typography as Scheme_Typography;
 
+// Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-} // Exit if accessed directly
+}
 
 class Jet_Smart_Filters_Search_Widget extends Jet_Smart_Filters_Base_Widget {
 
 	public function get_name() {
+
 		return 'jet-smart-filters-search';
 	}
 
 	public function get_title() {
+
 		return __( 'Search Filter', 'jet-smart-filters' );
 	}
 
 	public function get_icon() {
+
 		return 'jet-smart-filters-icon-search-filter';
 	}
 
 	public function get_help_url() {
+
 		return jet_smart_filters()->widgets->prepare_help_url(
 			'https://crocoblock.com/knowledge-base/articles/jetsmartfilters-how-to-create-a-search-filter/',
 			$this->get_name()
@@ -830,7 +835,6 @@ class Jet_Smart_Filters_Search_Widget extends Jet_Smart_Filters_Base_Widget {
 		);
 
 		$this->end_controls_section();
-
 	}
 
 	protected function render() {
@@ -864,7 +868,7 @@ class Jet_Smart_Filters_Search_Widget extends Jet_Smart_Filters_Base_Widget {
 		$format               = '<i class="%s"></i>';
 		$icon                 = $settings['apply_button_icon'] ? sprintf( $format, $settings['apply_button_icon'] ) : '';
 
-		jet_smart_filters()->admin_bar->register_post_item( $filter_id );
+		jet_smart_filters()->admin_bar_register_item( $filter_id );
 
 		include jet_smart_filters()->get_template( 'common/filter-label.php' );
 
@@ -881,7 +885,5 @@ class Jet_Smart_Filters_Search_Widget extends Jet_Smart_Filters_Base_Widget {
 		) );
 
 		echo '</div>';
-
 	}
-
 }

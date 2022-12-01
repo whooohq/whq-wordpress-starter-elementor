@@ -9,29 +9,32 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Widgets_Manager' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Widgets_Manager class
 	 */
 	class Jet_Smart_Filters_Widgets_Manager {
-
-		private $_category = 'jet-smart-filters';
-
 		/**
 		 * Constructor for the class
 		 */
 		public function __construct() {
 			add_action( 'elementor/init', array( $this, 'register_category' ) );
 			add_action( 'elementor/init', array( $this, 'init_extension_module' ), 0 );
-			add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_widgets' ), 10 );
+
+			if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.5.0', '>=' ) ) {
+				add_action( 'elementor/widgets/register', array( $this, 'register_widgets' ), 10 );
+			} else {
+				add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_widgets' ), 10 );
+			}
 		}
 
 		public function init_extension_module() {
+
 			$ext_module_data = jet_smart_filters()->framework->get_included_module_data( 'jet-elementor-extension.php' );
 			Jet_Elementor_Extension\Module::get_instance( $ext_module_data );
 		}
 
-		public function prepare_help_url( $url, $name ){
+		public function prepare_help_url( $url, $name ) {
+
 			if ( ! empty( $url ) ) {
 				return add_query_arg(
 					array(
@@ -42,6 +45,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Widgets_Manager' ) ) {
 					esc_url( $url )
 				);
 			}
+
 			return false;
 		}
 
@@ -49,13 +53,12 @@ if ( ! class_exists( 'Jet_Smart_Filters_Widgets_Manager' ) ) {
 		 * Returns filters widgets category
 		 */
 		public function get_category() {
-			return $this->_category;
+
+			return jet_smart_filters()->post_type->slug();
 		}
 
 		/**
 		 * Register cherry category for elementor if not exists
-		 *
-		 * @return void
 		 */
 		public function register_category() {
 
@@ -66,15 +69,12 @@ if ( ! class_exists( 'Jet_Smart_Filters_Widgets_Manager' ) ) {
 				array(
 					'title' => esc_html__( 'Filters', 'jet-smart-filters' ),
 					'icon'  => 'font',
-				),
-				0
+				)
 			);
 		}
 
 		/**
 		 * Register listing widgets
-		 *
-		 * @return void
 		 */
 		public function register_widgets( $widgets_manager ) {
 
@@ -100,13 +100,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Widgets_Manager' ) ) {
 			foreach ( $additional_widgets as $widget ) {
 				$this->register_widget( $widget, $widgets_manager );
 			}
-
 		}
 
 		/**
 		 * Register new widget
-		 *
-		 * @return void
 		 */
 		public function register_widget( $file, $widgets_manager ) {
 
@@ -118,11 +115,13 @@ if ( ! class_exists( 'Jet_Smart_Filters_Widgets_Manager' ) ) {
 			require $file;
 
 			if ( class_exists( $class ) ) {
-				$widgets_manager->register_widget_type( new $class );
+
+				if ( method_exists( $widgets_manager, 'register' ) ) {
+					$widgets_manager->register( new $class );
+				} else {
+					$widgets_manager->register_widget_type( new $class );
+				}
 			}
-
 		}
-
 	}
-
 }

@@ -13,7 +13,9 @@ use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
 use \Elementor\Core\Schemes\Typography;
+use Elementor\Icons_Manager;
 use Essential_Addons_Elementor\Pro\Classes\Custom_Walker_Nav_Menu;
+use Essential_Addons_Elementor\Pro\Classes\Helper;
 
 class Skin_Default extends Skin_Base
 {
@@ -393,8 +395,8 @@ class Skin_Default extends Skin_Base
                 'default' => '#ffffff',
                 'selectors' => [
                     '{{WRAPPER}} .eael-advanced-menu li:hover > a' => 'color: {{VALUE}}',
-                    '{{WRAPPER}} .eael-advanced-menu li.current-menu-item > a' => 'color: {{VALUE}}',
-                    '{{WRAPPER}} .eael-advanced-menu li.current-menu-ancestor > a' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-advanced-menu li.current-menu-item > a.eael-item-active' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-advanced-menu li.current-menu-ancestor > a.eael-item-active' => 'color: {{VALUE}}',
                 ],
             ]
         );
@@ -407,8 +409,8 @@ class Skin_Default extends Skin_Base
                 'default' => '#ee355f',
                 'selectors' => [
                     '{{WRAPPER}} .eael-advanced-menu li:hover > a' => 'background-color: {{VALUE}}',
-                    '{{WRAPPER}} .eael-advanced-menu li.current-menu-item > a' => 'background-color: {{VALUE}}',
-                    '{{WRAPPER}} .eael-advanced-menu li.current-menu-ancestor > a' => 'background-color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-advanced-menu li.current-menu-item > a.eael-item-active' => 'background-color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-advanced-menu li.current-menu-ancestor > a.eael-item-active' => 'background-color: {{VALUE}}',
                 ],
             ]
         );
@@ -664,8 +666,8 @@ class Skin_Default extends Skin_Base
                 'default' => 'rgba(255,255,255,0)',
                 'selectors' => [
                     '{{WRAPPER}} .eael-advanced-menu li ul li:hover > a' => 'background-color: {{VALUE}}',
-                    '{{WRAPPER}} .eael-advanced-menu li ul li.current-menu-item > a' => 'background-color: {{VALUE}}',
-                    '{{WRAPPER}} .eael-advanced-menu li ul li.current-menu-ancestor > a' => 'background-color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-advanced-menu li ul li.current-menu-item > a.eael-item-active' => 'background-color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-advanced-menu li ul li.current-menu-ancestor > a.eael-item-active' => 'background-color: {{VALUE}}',
                 ],
             ]
         );
@@ -737,9 +739,15 @@ class Skin_Default extends Skin_Base
     public function render()
     {
         $settings = $this->parent->get_settings();
-        $menu_classes = ['eael-advanced-menu', $settings['default_eael_advanced_menu_dropdown_animation'], 'eael-advanced-menu-indicator'];
+        $hamburger_device = ! empty( $settings['eael_advanced_menu_dropdown'] ) ? esc_html( $settings['eael_advanced_menu_dropdown'] ) : esc_html( 'tablet' );
+        
+        $menu_classes = ['eael-advanced-menu', $settings['default_eael_advanced_menu_dropdown_animation'], 'eael-advanced-menu-indicator', $settings['eael_advanced_menu_hamburger_menu_item_alignment'] ];
         $container_classes = ['eael-advanced-menu-container', $settings['default_eael_advanced_menu_item_alignment'], $settings['default_eael_advanced_menu_dropdown_item_alignment']];
 
+        if( \Elementor\Plugin::instance()->editor->is_edit_mode() ){
+            $container_classes[] = 'eael-hamburger--not-responsive';
+        }
+        
         if ($settings['default_eael_advanced_menu_layout'] == 'horizontal') {
             $menu_classes[] = 'eael-advanced-menu-horizontal';
         } else {
@@ -750,10 +758,19 @@ class Skin_Default extends Skin_Base
             $menu_classes[] = 'eael-advanced-menu-indicator';
         }
 
+        if (isset($settings['eael_advanced_menu_hamburger_icon'])) {
+            ob_start();
+            Icons_Manager::render_icon( $settings['eael_advanced_menu_hamburger_icon'], [ 'aria-hidden' => 'true' ] );
+            $hamburger_icon = ob_get_clean();
+            $this->parent->add_render_attribute( 'eael-advanced-menu', 'data-hamburger-icon', $hamburger_icon );
+        }
+
         $this->parent->add_render_attribute('eael-advanced-menu', [
             'class' => implode(' ', array_filter($container_classes)),
             'data-indicator-class' => $settings['default_eael_advanced_menu_item_indicator'],
             'data-dropdown-indicator-class' => $settings['default_eael_advanced_menu_dropdown_item_indicator'],
+            'data-hamburger-breakpoints' => wp_json_encode( Helper::get_breakpoint_dropdown_options() ),
+            'data-hamburger-device' => $hamburger_device,
         ]);
 
         if ($settings['eael_advanced_menu_menu']) {

@@ -119,7 +119,9 @@ export default class Filter {
 
 	// Getters
 	get data() {
-		return this.dataValue || false;
+		return this.dataValue && !this.disabled
+			? this.dataValue
+			: false;
 	}
 
 	get queryKey() {

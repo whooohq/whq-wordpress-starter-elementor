@@ -50,6 +50,12 @@
 					:wrapper-css="[ 'equalwidth' ]"
 					v-model="generalSettings.show_edit_link"
 				></cx-vui-switcher>
+				<cx-vui-switcher
+					label="<?php _e( 'Hide meta field names', 'jet-engine' ); ?>"
+					description="<?php _e( 'Hide meta field names on post edit page.', 'jet-engine' ); ?>"
+					:wrapper-css="[ 'equalwidth' ]"
+					v-model="generalSettings.hide_field_names"
+				></cx-vui-switcher>
 			</div>
 		</cx-vui-collapse>
 		<cx-vui-collapse

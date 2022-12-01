@@ -25,7 +25,7 @@ class Jet_Woo_Categories extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Categories Grid', 'jet-woo-builder' );
+		return __( 'Categories Grid', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
@@ -52,17 +52,15 @@ class Jet_Woo_Categories extends Jet_Woo_Builder_Base {
 
 		$this->start_controls_section(
 			'section_general',
-			array(
-				'label' => esc_html__( 'General', 'jet-woo-builder' ),
-			)
+			[
+				'label' => __( 'Categories Grid', 'jet-woo-builder' ),
+			]
 		);
 
 		if ( $this->__shortcode() ) {
-
 			$attributes = $this->__shortcode()->get_atts();
 
 			foreach ( $attributes as $attr => $settings ) {
-
 				if ( empty( $settings['type'] ) ) {
 					continue;
 				}
@@ -72,9 +70,7 @@ class Jet_Woo_Categories extends Jet_Woo_Builder_Base {
 				} else {
 					$this->add_control( $attr, $settings );
 				}
-
 			}
-
 		}
 
 		$this->end_controls_section();
@@ -118,212 +114,35 @@ class Jet_Woo_Categories extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'column_padding',
-			array(
-				'label'       => esc_html__( 'Column Padding', 'jet-woo-builder' ),
+			[
+				'label'       => __( 'Padding', 'jet-woo-builder' ),
 				'type'        => Controls_Manager::DIMENSIONS,
-				'size_units'  => array( 'px' ),
+				'size_units'  => [ 'px' ],
 				'render_type' => 'template',
-				'selectors'   => array(
+				'selectors'   => [
 					'{{WRAPPER}} ' . $css_scheme['column']                         => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					'{{WRAPPER}} ' . $css_scheme['wrap'] . ':not(.swiper-wrapper)' => 'margin-right: -{{RIGHT}}{{UNIT}}; margin-left: -{{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->end_controls_section();
 
 		$this->start_controls_section(
 			'section_box_style',
-			array(
-				'label'      => esc_html__( 'Category Item', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
-		);
-
-		$this->controls_section_box( $css_scheme );
-
-		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'section_box_hover_style',
-			array(
-				'label'      => esc_html__( 'Category Item (hover)', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
-		);
-
-		$this->controls_section_box_hover( $css_scheme );
-
-		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'section_thumb_style',
-			array(
-				'label'      => esc_html__( 'Category Thumbnail', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
-		);
-
-		$this->controls_section_thumbnail( $css_scheme );
-
-		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'section_content_style',
-			array(
-				'label'      => esc_html__( 'Content', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
-		);
-
-		$this->controls_section_content( $css_scheme );
-
-		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'section_title_style',
-			array(
-				'label'      => esc_html__( 'Title', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
-		);
-
-		$this->controls_section_title( $css_scheme );
-
-		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'section_count_style',
-			array(
-				'label'      => esc_html__( 'Count', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
-		);
-
-		$this->controls_section_count( $css_scheme );
-
-		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'section_excerpt_style',
-			array(
-				'label'      => esc_html__( 'Excerpt', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
-		);
-
-		$this->controls_section_excerpt( $css_scheme );
-
-		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'section_overlay_style',
-			array(
-				'label'      => esc_html__( 'Overlay', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
-		);
-
-		$this->controls_section_overlay( $css_scheme );
-
-		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'section_arrows_style', [
-				'label'     => __( 'Carousel Navigation', 'jet-woo-builder' ),
-				'tab'       => Controls_Manager::TAB_STYLE,
-				'condition' => [
-					'carousel_enabled' => 'yes',
-					'arrows'           => 'yes',
-				],
-			]
-		);
-
-		jet_woo_builder_common_controls()->register_carousel_navigation_style_controls( $this );
-
-		$this->end_controls_section();
-
-		$this->start_controls_section(
-			'section_dots_style',
 			[
-				'label'     => __( 'Carousel Pagination', 'jet-woo-builder' ),
-				'tab'       => Controls_Manager::TAB_STYLE,
-				'condition' => [
-					'carousel_enabled' => 'yes',
-					'dots!'            => '',
-				],
+				'label' => __( 'Grid Item', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
 
-		jet_woo_builder_common_controls()->register_carousel_pagination_style_controls( $this );
+		$this->start_controls_tabs( 'box_style_tabs' );
 
-		$this->end_controls_section();
-
-	}
-
-	protected function render() {
-
-		$this->__context = 'render';
-
-		$this->__open_wrap();
-
-		$attributes    = array();
-		$settings      = $this->get_settings();
-		$shortcode_obj = $this->__shortcode();
-
-		if ( isset( $settings['selected_prev_arrow'] ) || isset( $settings['prev_arrow'] ) ) {
-			$settings['prev_arrow'] = htmlspecialchars( $this->__render_icon( 'prev_arrow', '%s', '', false ) );
-		}
-
-		if ( isset( $settings['selected_next_arrow'] ) || isset( $settings['next_arrow'] ) ) {
-			$settings['next_arrow'] = htmlspecialchars( $this->__render_icon( 'next_arrow', '%s', '', false ) );
-		}
-
-		$shortcode_obj->set_settings( $settings );
-
-		foreach ( $shortcode_obj->get_atts() as $attr => $data ) {
-			$attr_val            = $settings[ $attr ];
-			$attr_val            = ! is_array( $attr_val ) ? $attr_val : implode( ',', $attr_val );
-			$attributes[ $attr ] = $attr_val;
-		}
-
-		echo jet_woo_builder_tools()->get_carousel_wrapper_atts( $shortcode_obj->do_shortcode( $attributes ), $settings );
-
-		$this->__close_wrap();
-
-	}
-
-	protected function controls_section_box( $css_scheme ) {
-
-		$this->add_group_control(
-			Group_Control_Border::get_type(),
-			array(
-				'name'        => 'box_border',
-				'label'       => esc_html__( 'Border', 'jet-woo-builder' ),
-				'placeholder' => '1px',
-				'default'     => '1px',
-				'selector'    => '{{WRAPPER}} ' . $css_scheme['inner-box'],
-			)
-		);
-
-		$this->add_responsive_control(
-			'box_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['inner-box'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+		$this->start_controls_tab(
+			'box_normal_styles',
+			[
+				'label' => __( 'Normal', 'jet-woo-builder' ),
+			]
 		);
 
 		$this->add_control(
@@ -339,152 +158,19 @@ class Jet_Woo_Categories extends Jet_Woo_Builder_Base {
 
 		$this->add_group_control(
 			Group_Control_Box_Shadow::get_type(),
-			array(
+			[
 				'name'     => 'inner_box_shadow',
 				'selector' => '{{WRAPPER}} ' . $css_scheme['inner-box'],
-			)
+			]
 		);
 
-		$this->add_responsive_control(
-			'box_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['inner-box'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-				'separator'  => 'before',
-			)
-		);
+		$this->end_controls_tab();
 
-	}
-
-	protected function controls_section_box_hover( $css_scheme ) {
-
-		$this->add_control(
-			'box_hover_title',
-			array(
-				'label'     => esc_html__( 'Title', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::HEADING,
-				'separator' => 'before',
-			)
-		);
-
-		$this->add_control(
-			'box_hover_title_color',
-			array(
-				'label'     => esc_html__( 'Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'scheme'    => array(
-					'type'  => Color::get_type(),
-					'value' => Color::COLOR_2,
-				),
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['inner-box'] . ':hover .jet-woo-category-title' . ' a' => 'color: {{VALUE}}',
-				),
-			)
-		);
-
-		$this->add_control(
-			'box_hover_title_decoration',
-			array(
-				'label'     => esc_html__( 'Text Decoration', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::SELECT,
-				'default'   => 'none',
-				'options'   => jet_woo_builder_tools()->get_available_text_decoration_types(),
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['inner-box'] . ':hover .jet-woo-category-title' . ' a' => 'text-decoration: {{VALUE}}',
-				),
-			)
-		);
-
-		$this->add_control(
-			'box_hover_excerpt',
-			array(
-				'label'     => esc_html__( 'Excerpt', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::HEADING,
-				'separator' => 'before',
-			)
-		);
-
-		$this->add_control(
-			'box_hover_excerpt_color',
-			array(
-				'label'     => esc_html__( 'Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'scheme'    => array(
-					'type'  => Color::get_type(),
-					'value' => Color::COLOR_2,
-				),
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['inner-box'] . ':hover .jet-woo-category-excerpt' => 'color: {{VALUE}}',
-				),
-			)
-		);
-
-		$this->add_control(
-			'box_hover_count',
-			array(
-				'label'     => esc_html__( 'Count', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::HEADING,
-				'separator' => 'before',
-			)
-		);
-
-		$this->add_control(
-			'box_hover_count_bg',
-			array(
-				'label'     => esc_html__( 'Background Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['inner-box'] . ':hover .jet-woo-category-count' => 'background-color: {{VALUE}}',
-				),
-			)
-		);
-
-		$this->add_control(
-			'box_hover_count_color',
-			array(
-				'label'     => esc_html__( 'Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'scheme'    => array(
-					'type'  => Color::get_type(),
-					'value' => Color::COLOR_2,
-				),
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['inner-box'] . ':hover .jet-woo-category-count' => 'color: {{VALUE}}',
-				),
-			)
-		);
-
-		$this->add_control(
-			'box_hover_content',
-			array(
-				'label'     => esc_html__( 'Content', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::HEADING,
-				'separator' => 'before',
-			)
-		);
-
-		$this->add_control(
-			'box_hover_content_bg',
-			array(
-				'label'     => esc_html__( 'Background Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['inner-box'] . ':hover .jet-woo-categories-content' => 'background-color: {{VALUE}}',
-				),
-			)
-		);
-
-		$this->add_control(
-			'box_hover_shadow',
-			array(
-				'label'     => esc_html__( 'Item', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::HEADING,
-				'separator' => 'before',
-			)
+		$this->start_controls_tab(
+			'box_hover_styles',
+			[
+				'label' => __( 'Hover', 'jet-woo-builder' ),
+			]
 		);
 
 		$this->add_control(
@@ -500,36 +186,128 @@ class Jet_Woo_Categories extends Jet_Woo_Builder_Base {
 
 		$this->add_group_control(
 			Group_Control_Box_Shadow::get_type(),
-			array(
+			[
 				'name'     => 'inner_box_hover_shadow',
 				'selector' => '{{WRAPPER}} ' . $css_scheme['inner-box'] . ':hover',
-			)
+			]
 		);
 
-	}
+		$this->end_controls_tab();
 
-	protected function controls_section_thumbnail( $css_scheme ) {
-
-		$this->add_control(
-			'thumb_background',
-			array(
-				'label'     => esc_html__( 'Background Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['thumb'] => 'background-color: {{VALUE}}',
-				),
-			)
-		);
+		$this->end_controls_tabs();
 
 		$this->add_group_control(
 			Group_Control_Border::get_type(),
-			array(
-				'name'        => 'thumb_border',
-				'label'       => esc_html__( 'Border', 'jet-woo-builder' ),
-				'placeholder' => '1px',
-				'default'     => '1px',
-				'selector'    => '{{WRAPPER}} ' . $css_scheme['thumb'],
-			)
+			[
+				'name'      => 'box_border',
+				'label'     => __( 'Border', 'jet-woo-builder' ),
+				'separator' => 'before',
+				'selector'  => '{{WRAPPER}} ' . $css_scheme['inner-box'],
+			]
+		);
+
+		$this->add_responsive_control(
+			'box_border_radius',
+			[
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} ' . $css_scheme['inner-box'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'box_padding',
+			[
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%', 'em' ],
+				'selectors'  => [
+					'{{WRAPPER}} ' . $css_scheme['inner-box'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_thumb_style',
+			[
+				'label' => __( 'Thumbnail', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->start_controls_tabs( 'tabs_thumb_style' );
+
+		$this->start_controls_tab(
+			'tab_thumb_normal',
+			[
+				'label' => __( 'Normal', 'jet-woo-builder' ),
+			]
+		);
+
+		$this->add_control(
+			'thumb_background',
+			[
+				'label'     => __( 'Background Color', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['thumb'] => 'background-color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name'     => 'thumb_box_shadow',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['thumb'],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'tab_thumb_hover',
+			[
+				'label' => __( 'Hover', 'jet-woo-builder' ),
+			]
+		);
+
+		$this->add_control(
+			'thumb_background_hover',
+			[
+				'label'     => __( 'Background Color', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['inner-box'] . ':hover .jet-woo-category-thumbnail' => 'background-color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name'     => 'thumb_box_shadow_hover',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['inner-box'] . ':hover .jet-woo-category-thumbnail',
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			[
+				'name'      => 'thumb_border',
+				'label'     => __( 'Border', 'jet-woo-builder' ),
+				'separator' => 'before',
+				'selector'  => '{{WRAPPER}} ' . $css_scheme['thumb'],
+			]
 		);
 
 		$this->add_responsive_control(
@@ -541,14 +319,6 @@ class Jet_Woo_Categories extends Jet_Woo_Builder_Base {
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['thumb'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
-			)
-		);
-
-		$this->add_group_control(
-			Group_Control_Box_Shadow::get_type(),
-			array(
-				'name'     => 'thumb_box_shadow',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['thumb'],
 			)
 		);
 
@@ -576,9 +346,24 @@ class Jet_Woo_Categories extends Jet_Woo_Builder_Base {
 			)
 		);
 
-	}
+		$this->end_controls_section();
 
-	protected function controls_section_content( $css_scheme ) {
+		$this->start_controls_section(
+			'section_content_style',
+			[
+				'label' => __( 'Content', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->start_controls_tabs( 'box_content_style_tabs' );
+
+		$this->start_controls_tab(
+			'box_content_normal_styles',
+			[
+				'label' => __( 'Normal', 'jet-woo-builder' ),
+			]
+		);
 
 		$this->add_control(
 			'content_bg',
@@ -591,30 +376,52 @@ class Jet_Woo_Categories extends Jet_Woo_Builder_Base {
 			)
 		);
 
-		$this->add_group_control(
-			Group_Control_Border::get_type(),
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'box_content_hover_styles',
+			[
+				'label' => __( 'Hover', 'jet-woo-builder' ),
+			]
+		);
+
+		$this->add_control(
+			'box_hover_content_bg',
 			array(
-				'name'        => 'content_border',
-				'label'       => esc_html__( 'Border', 'jet-woo-builder' ),
-				'placeholder' => '1px',
-				'default'     => '1px',
-				'selector'    => '{{WRAPPER}} ' . $css_scheme['content'],
+				'label'     => esc_html__( 'Background Color', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} ' . $css_scheme['inner-box'] . ':hover .jet-woo-categories-content' => 'background-color: {{VALUE}}',
+				),
 			)
 		);
 
 		$this->add_control(
 			'content_hover_border_color',
-			array(
-				'label'     => esc_html__( 'Hover Border Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Border Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'scheme'    => array(
-					'type'  => Color::get_type(),
-					'value' => Color::COLOR_2,
-				),
-				'selectors' => array(
+				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['inner-box'] . ':hover .jet-woo-categories-content' => 'border-color: {{VALUE}}',
-				),
-			)
+				],
+				'condition' => [
+					'content_border_border!' => '',
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			[
+				'name'      => 'content_border',
+				'label'     => __( 'Border', 'jet-woo-builder' ),
+				'separator' => 'before',
+				'selector'  => '{{WRAPPER}} ' . $css_scheme['content'],
+			]
 		);
 
 		$this->add_responsive_control(
@@ -661,17 +468,25 @@ class Jet_Woo_Categories extends Jet_Woo_Builder_Base {
 			)
 		);
 
-	}
+		$this->end_controls_section();
 
-	protected function controls_section_title( $css_scheme ) {
+		$this->start_controls_section(
+			'section_title_style',
+			[
+				'label'     => __( 'Title', 'jet-woo-builder' ),
+				'tab'       => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'show_title' => 'yes',
+				],
+			]
+		);
 
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
-			array(
+			[
 				'name'     => 'title_typography',
-				'scheme'   => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} ' . $css_scheme['title'] . ', {{WRAPPER}} ' . $css_scheme['title'] . ' a',
-			)
+			]
 		);
 
 		$this->add_control(
@@ -685,17 +500,104 @@ class Jet_Woo_Categories extends Jet_Woo_Builder_Base {
 			)
 		);
 
+		$this->start_controls_tabs( 'box_content_title_style_tabs' );
+
+		$this->start_controls_tab(
+			'box_content_title_normal_styles',
+			[
+				'label' => __( 'Normal', 'jet-woo-builder' ),
+			]
+		);
+
 		$this->add_control(
 			'title_color',
-			array(
-				'label'     => esc_html__( 'Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'scheme'    => array(
-					'type'  => Color::get_type(),
-					'value' => Color::COLOR_2,
-				),
-				'selectors' => array(
+				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['title'] . ' a' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'box_content_title_hover_styles',
+			[
+				'label' => __( 'Hover', 'jet-woo-builder' ),
+			]
+		);
+
+		$this->add_control(
+			'box_hover_title_color',
+			[
+				'label'     => __( 'Color', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['inner-box'] . ':hover .jet-woo-category-title' . ' a' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_control(
+			'box_hover_title_decoration',
+			array(
+				'label'     => esc_html__( 'Text Decoration', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::SELECT,
+				'default'   => 'none',
+				'options'   => jet_woo_builder_tools()->get_available_text_decoration_types(),
+				'selectors' => array(
+					'{{WRAPPER}} ' . $css_scheme['inner-box'] . ':hover .jet-woo-category-title' . ' a' => 'text-decoration: {{VALUE}}',
+				),
+			)
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			[
+				'name'      => 'title_border',
+				'separator' => 'before',
+				'selector'  => '{{WRAPPER}} ' . $css_scheme['title'],
+			]
+		);
+
+		$this->add_responsive_control(
+			'title_border_radius',
+			[
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} ' . $css_scheme['title'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'title_padding',
+			[
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%', 'em' ],
+				'selectors'  => [
+					'{{WRAPPER}} ' . $css_scheme['title'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'title_margin',
+			array(
+				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%', 'em' ),
+				'selectors'  => array(
+					'{{WRAPPER}} ' . $css_scheme['title'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -715,113 +617,133 @@ class Jet_Woo_Categories extends Jet_Woo_Builder_Base {
 			)
 		);
 
-		$this->add_responsive_control(
-			'title_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['title'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_count_style',
+			[
+				'label'     => __( 'Count', 'jet-woo-builder' ),
+				'tab'       => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'show_count' => 'yes',
+				],
+			]
 		);
-
-		$this->add_responsive_control(
-			'title_margin',
-			array(
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['title'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
-		);
-
-	}
-
-	protected function controls_section_count( $css_scheme ) {
 
 		$this->add_responsive_control(
 			'count_min_width',
-			array(
-				'label'      => esc_html__( 'Count Minimal Width (px)', 'jet-woo-builder' ),
+			[
+				'label'      => __( 'Width', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array(
-					'px',
-				),
-				'range'      => array(
-					'px' => array(
+				'size_units' => [ 'px' ],
+				'range'      => [
+					'px' => [
 						'min' => 0,
 						'max' => 100,
-					),
-				),
-				'selectors'  => array(
+					],
+				],
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['count'] => 'min-width: {{SIZE}}{{UNIT}}; text-align: center;',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
-			array(
+			[
 				'name'     => 'count_typography',
-				'scheme'   => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} ' . $css_scheme['count'],
-			)
+			]
 		);
 
-		$this->add_control(
-			'count_bg',
-			array(
-				'label'     => esc_html__( 'Background Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['count'] => 'background-color: {{VALUE}}',
-				),
-			)
+		$this->start_controls_tabs( 'box_content_count_style_tabs' );
+
+		$this->start_controls_tab(
+			'box_content_count_normal_styles',
+			[
+				'label' => __( 'Normal', 'jet-woo-builder' ),
+			]
 		);
 
 		$this->add_control(
 			'count_color',
-			array(
-				'label'     => esc_html__( 'Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'scheme'    => array(
-					'type'  => Color::get_type(),
-					'value' => Color::COLOR_2,
-				),
-				'selectors' => array(
+				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['count'] => 'color: {{VALUE}}',
-				),
-			)
+				],
+			]
 		);
 
-		$this->add_group_control(
-			Group_Control_Border::get_type(),
+		$this->add_control(
+			'count_bg',
+			[
+				'label'     => __( 'Background Color', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['count'] => 'background-color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'box_content_count_hover_styles',
+			[
+				'label' => __( 'Hover', 'jet-woo-builder' ),
+			]
+		);
+
+		$this->add_control(
+			'box_hover_count_color',
+			[
+				'label'     => __( 'Color', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['inner-box'] . ':hover .jet-woo-category-count' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_control(
+			'box_hover_count_bg',
 			array(
-				'name'        => 'count_border',
-				'label'       => esc_html__( 'Border', 'jet-woo-builder' ),
-				'placeholder' => '1px',
-				'default'     => '1px',
-				'selector'    => '{{WRAPPER}} ' . $css_scheme['count'],
+				'label'     => esc_html__( 'Background Color', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} ' . $css_scheme['inner-box'] . ':hover .jet-woo-category-count' => 'background-color: {{VALUE}}',
+				),
 			)
 		);
 
 		$this->add_control(
 			'count_hover_border_color',
-			array(
-				'label'     => esc_html__( 'Hover Border Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Border Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'scheme'    => array(
-					'type'  => Color::get_type(),
-					'value' => Color::COLOR_2,
-				),
-				'selectors' => array(
+				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['inner-box'] . ':hover .jet-woo-category-count' => 'border-color: {{VALUE}}',
-				),
-			)
+				],
+				'condition' => [
+					'count_border_border!' => '',
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			[
+				'name'      => 'count_border',
+				'label'     => __( 'Border', 'jet-woo-builder' ),
+				'separator' => 'before',
+				'selector'  => '{{WRAPPER}} ' . $css_scheme['count'],
+			]
 		);
 
 		$this->add_responsive_control(
@@ -845,19 +767,14 @@ class Jet_Woo_Categories extends Jet_Woo_Builder_Base {
 		);
 
 		$this->add_responsive_control(
-			'count_alignment',
+			'count_margin',
 			array(
-				'label'     => esc_html__( 'Alignment', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::CHOOSE,
-				'default'   => 'center',
-				'options'   => jet_woo_builder_tools()->get_available_h_align_types(),
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['count-wrap'] => 'text-align: {{VALUE}};',
+				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%', 'em' ),
+				'selectors'  => array(
+					'{{WRAPPER}} ' . $css_scheme['count'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
-				'condition' => array(
-					'presets!' => array( 'preset-3' ),
-				),
-				'classes'   => 'elementor-control-align',
 			)
 		);
 
@@ -874,27 +791,38 @@ class Jet_Woo_Categories extends Jet_Woo_Builder_Base {
 		);
 
 		$this->add_responsive_control(
-			'count_margin',
-			array(
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['count'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+			'count_alignment',
+			[
+				'label'     => __( 'Alignment', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::CHOOSE,
+				'default'   => 'center',
+				'options'   => jet_woo_builder_tools()->get_available_h_align_types(),
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['count-wrap'] => 'text-align: {{VALUE}};',
+				],
+				'condition' => [
+					'presets!' => 'preset-3',
+				],
+				'classes'   => 'elementor-control-align',
+			]
 		);
 
-	}
+		$this->end_controls_section();
 
-	protected function controls_section_excerpt( $css_scheme ) {
+		$this->start_controls_section(
+			'section_excerpt_style',
+			[
+				'label' => __( 'Excerpt', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
+		);
+
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
-			array(
+			[
 				'name'     => 'excerpt_typography',
-				'scheme'   => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} ' . $css_scheme['excerpt'],
-			)
+			]
 		);
 
 		$this->add_control(
@@ -908,6 +836,15 @@ class Jet_Woo_Categories extends Jet_Woo_Builder_Base {
 			)
 		);
 
+		$this->start_controls_tabs( 'box_content-excerpt_style_tabs' );
+
+		$this->start_controls_tab(
+			'box_content-excerpt_normal_styles',
+			[
+				'label' => __( 'Normal', 'jet-woo-builder' ),
+			]
+		);
+
 		$this->add_control(
 			'excerpt_color',
 			array(
@@ -915,6 +852,55 @@ class Jet_Woo_Categories extends Jet_Woo_Builder_Base {
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => array(
 					'{{WRAPPER}} ' . $css_scheme['excerpt'] => 'color: {{VALUE}}',
+				),
+			)
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'box_content-excerpt_hover_styles',
+			[
+				'label' => __( 'Hover', 'jet-woo-builder' ),
+			]
+		);
+
+		$this->add_control(
+			'box_hover_excerpt_color',
+			[
+				'label'     => __( 'Color', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['inner-box'] . ':hover .jet-woo-category-excerpt' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->add_responsive_control(
+			'excerpt_margin',
+			[
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%', 'em' ],
+				'separator'  => 'before',
+				'selectors'  => [
+					'{{WRAPPER}} ' . $css_scheme['excerpt'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'excerpt_padding',
+			array(
+				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%', 'em' ),
+				'selectors'  => array(
+					'{{WRAPPER}} ' . $css_scheme['excerpt'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -933,33 +919,15 @@ class Jet_Woo_Categories extends Jet_Woo_Builder_Base {
 			)
 		);
 
-		$this->add_responsive_control(
-			'excerpt_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['excerpt'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_overlay_style',
+			[
+				'label' => __( 'Overlay', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
 		);
-
-		$this->add_responsive_control(
-			'excerpt_margin',
-			array(
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['excerpt'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
-		);
-
-	}
-
-	protected function controls_section_overlay( $css_scheme ) {
 
 		$this->start_controls_tabs( 'tabs_overlay_style' );
 
@@ -973,10 +941,15 @@ class Jet_Woo_Categories extends Jet_Woo_Builder_Base {
 		$this->add_group_control(
 			Group_Control_Background::get_type(),
 			[
-				'name'     => 'overlay_bg',
-				'label'    => esc_html__( 'Background', 'jet-woo-builder' ),
-				'types'    => [ 'classic', 'gradient' ],
-				'selector' => '{{WRAPPER}} ' . $css_scheme['overlay'],
+				'name'           => 'overlay_bg',
+				'fields_options' => [
+					'image' => [
+						'dynamic' => [
+							'active' => false,
+						],
+					],
+				],
+				'selector'       => '{{WRAPPER}} ' . $css_scheme['overlay'],
 			]
 		);
 
@@ -992,10 +965,15 @@ class Jet_Woo_Categories extends Jet_Woo_Builder_Base {
 		$this->add_group_control(
 			Group_Control_Background::get_type(),
 			[
-				'name'     => 'overlay_bg_hover',
-				'label'    => esc_html__( 'Background', 'jet-woo-builder' ),
-				'types'    => [ 'classic', 'gradient' ],
-				'selector' => '{{WRAPPER}} ' . $css_scheme['column'] . ':hover .jet-woo-category-img-overlay__hover',
+				'name'           => 'overlay_bg_hover',
+				'fields_options' => [
+					'image' => [
+						'dynamic' => [
+							'active' => false,
+						],
+					],
+				],
+				'selector'       => '{{WRAPPER}} ' . $css_scheme['column'] . ':hover .jet-woo-category-img-overlay__hover',
 			]
 		);
 
@@ -1003,8 +981,69 @@ class Jet_Woo_Categories extends Jet_Woo_Builder_Base {
 
 		$this->end_controls_tabs();
 
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_arrows_style', [
+				'label'     => __( 'Carousel Navigation', 'jet-woo-builder' ),
+				'tab'       => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'carousel_enabled' => 'yes',
+					'arrows'           => 'yes',
+				],
+			]
+		);
+
+		jet_woo_builder_common_controls()->register_carousel_navigation_style_controls( $this );
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_dots_style',
+			[
+				'label'     => __( 'Carousel Pagination', 'jet-woo-builder' ),
+				'tab'       => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'carousel_enabled' => 'yes',
+					'dots!'            => '',
+				],
+			]
+		);
+
+		jet_woo_builder_common_controls()->register_carousel_pagination_style_controls( $this );
+
+		$this->end_controls_section();
+
 	}
 
-	protected function content_template() {
+	protected function render() {
+
+		$attributes    = [];
+		$settings      = $this->get_settings_for_display();
+		$shortcode_obj = $this->__shortcode();
+
+		if ( isset( $settings['selected_prev_arrow'] ) || isset( $settings['prev_arrow'] ) ) {
+			$settings['prev_arrow'] = htmlspecialchars( $this->__render_icon( 'prev_arrow', '%s', '', false ) );
+		}
+
+		if ( isset( $settings['selected_next_arrow'] ) || isset( $settings['next_arrow'] ) ) {
+			$settings['next_arrow'] = htmlspecialchars( $this->__render_icon( 'next_arrow', '%s', '', false ) );
+		}
+
+		$shortcode_obj->set_settings( $settings );
+
+		foreach ( $shortcode_obj->get_atts() as $attr => $data ) {
+			$attr_val            = $settings[ $attr ];
+			$attr_val            = ! is_array( $attr_val ) ? $attr_val : implode( ',', $attr_val );
+			$attributes[ $attr ] = $attr_val;
+		}
+
+		$this->__open_wrap();
+
+		echo jet_woo_builder_tools()->get_carousel_wrapper_atts( $shortcode_obj->do_shortcode( $attributes ), $settings );
+
+		$this->__close_wrap();
+
 	}
+
 }

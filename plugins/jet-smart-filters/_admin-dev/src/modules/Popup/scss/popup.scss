@@ -1,0 +1,57 @@
+.jet-popup {
+	position: fixed;
+	top: 32px;
+	right: 0;
+	bottom: 0;
+	left: 160px;
+	z-index: 999;
+
+	@media only screen and (max-width: 960px) {
+		left: 36px;
+	}
+
+	&-backing {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		background-color: rgba(#1d2327, 0.3);
+	}
+
+	&-body {
+		position: absolute;
+		top: 20%;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 388px;
+		border-radius: 8px;
+		background: #fff;
+
+		&-header {
+			display: flex;
+			padding: 10px 10px 5px;
+
+			&-close {
+				cursor: pointer;
+				margin-left: auto;
+				padding: 3px;
+
+				svg {
+					path {
+						fill: #cacbcd;
+						transition: fill 0.15s ease-in-out;
+					}
+				}
+
+				&:hover svg path {
+					fill: #007cba;
+				}
+			}
+		}
+
+		&-content {
+			padding: 0 40px 40px 40px;
+		}
+	}
+}

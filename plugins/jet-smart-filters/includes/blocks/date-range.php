@@ -9,12 +9,10 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Block_Date_Range class
 	 */
 	class Jet_Smart_Filters_Block_Date_Range extends Jet_Smart_Filters_Block_Base {
-
 		/**
 		 * Returns block name
 		 *
@@ -24,8 +22,8 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
 			return 'date-range';
 		}
 
+		public function set_css_scheme() {
 
-		public function set_css_scheme(){
 			$this->css_scheme =  apply_filters(
 				'jet-smart-filters/widgets/date-range/css-scheme',
 				[
@@ -48,7 +46,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
 			);
 		}
 
-		public function add_style_manager_options(){
+		public function add_style_manager_options() {
 
 			$this->controls_manager->start_section(
 				'style_controls',
@@ -192,6 +190,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
 					],
 				],
 			]);
+
 			$this->controls_manager->add_control([
 				'id'         => 'input_typography',
 				'type'       => 'typography',
@@ -412,6 +411,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
 					],
 				],
 			]);
+
 			$this->controls_manager->add_control([
 				'id'       => 'calendar_prev_next_normal_color',
 				'type'     => 'color-picker',
@@ -422,6 +422,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
 					'.jet-smart-filters-datepicker-{{ID}}.ui-datepicker ' . $this->css_scheme['calendar-prev-button'] . '> span' => 'border-right-color: {{VALUE}}',
 				),
 			]);
+
 			$this->controls_manager->add_control([
 				'id'       => 'calendar_prev_next_hover_color',
 				'type'     => 'color-picker',
@@ -453,6 +454,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
 				'disable_radius' => true,
 				'separator'    => 'after',
 			]);
+
 			$this->controls_manager->add_control([
 				'id'       => 'calendar_header_background_color',
 				'type'     => 'color-picker',
@@ -545,7 +547,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
 				'separator'    => 'before',
 			]);
 
-
 			$this->controls_manager->end_section();
 
 			$this->controls_manager->start_section(
@@ -556,6 +557,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
 					'title'       => esc_html__( 'Calendar Days', 'jet-smart-filters' )
 				]
 			);
+
 			$this->controls_manager->add_control([
 				'id'         => 'calendar_content_border',
 				'type'       => 'border',
@@ -565,6 +567,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
 				),
 				'separator'    => 'after',
 			]);
+
 			$this->controls_manager->add_control([
 				'id'       => 'calendar_content_background_color',
 				'type'     => 'color-picker',
@@ -580,6 +583,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
 				'separator'     => 'both',
 				'content'       => esc_html__( 'Day', 'jet-smart-filters' ),
 			]);
+
 			$this->controls_manager->add_control([
 				'id'         => 'calendar_content_cells_padding',
 				'type'       => 'dimensions',
@@ -589,6 +593,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
 					'.jet-smart-filters-datepicker-{{ID}} ' . $this->css_scheme['calendar-body-content'] . ' > tr > td' => 'padding: {{TOP}} {{RIGHT}} {{BOTTOM}} {{LEFT}};',
 				),
 			]);
+
 			$this->controls_manager->add_control([
 				'id'         => 'calendar_content_cells_border',
 				'type'       => 'border',
@@ -598,6 +603,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
 				),
 				'separator'    => 'before',
 			]);
+
 			$this->controls_manager->add_control([
 				'id'         => 'calendar_content_cells_first_border_width',
 				'type'       => 'dimensions',
@@ -608,6 +614,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
 				),
 				'separator'    => 'before',
 			]);
+
 			$this->controls_manager->add_control([
 				'id'         => 'calendar_content_cells_last_border_width',
 				'type'       => 'dimensions',
@@ -672,7 +679,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
 			]);
 
 			$this->controls_manager->end_tab();
-
 
 			$this->controls_manager->start_tab(
 				'style_controls',
@@ -807,6 +813,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
 					'.jet-smart-filters-datepicker-{{ID}} ' . $this->css_scheme['calendar-body-content'] . ' > tr > td > span,' . '.jet-smart-filters-datepicker-{{ID}} ' . $this->css_scheme['calendar-body-content'] . ' > tr > td > a',
 				),
 			]);
+
 			$this->controls_manager->add_control([
 				'id'         => 'calendar_content_cells_content_padding',
 				'type'       => 'dimensions',
@@ -818,6 +825,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
 				),
 				'separator'    => 'before',
 			]);
+
 			$this->controls_manager->end_section();
 
 			$this->controls_manager->start_section(
@@ -969,6 +977,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
 					'title' => esc_html__( 'Hover', 'jet-smart-filters' ),
 				]
 			);
+
 			$this->controls_manager->add_control([
 				'id'       => 'filter_apply_button_hover_color',
 				'type'     => 'color-picker',
@@ -1067,15 +1076,13 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
 			]);
 
 			$this->controls_manager->end_section();
-
 		}
 
 		/**
 		 * Return callback
-		 *
-		 * @return html
 		 */
 		public function render_callback( $settings = array() ) {
+			
 			jet_smart_filters()->set_filters_used();
 
 			if ( empty( $settings['filter_id'] ) ) {
@@ -1095,7 +1102,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
 			$filter_id            = $settings['filter_id'];
 			$base_class           = 'jet-smart-filters-' . $this->get_name();
 			$provider             = $settings['content_provider'];
-			$query_id             = 'default';
+			$query_id             = ! empty( $settings['query_id'] ) ? $settings['query_id'] : 'default';
 			$show_label           = $settings['show_label'];
 			$hide_button          = $settings['hide_apply_button'];
 			$apply_button_text    = $settings['apply_button_text'];
@@ -1112,7 +1119,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
 				$filter_template_args['block_id'] = $settings['blockID'];
 			}
 
-			jet_smart_filters()->admin_bar->register_post_item( $filter_id );
+			jet_smart_filters()->admin_bar_register_item( $filter_id );
 
 			ob_start();
 
@@ -1135,9 +1142,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Date_Range' ) ) {
 			$filter_layout = ob_get_clean();
 
 			return $filter_layout;
-
 		}
-
 	}
-
 }

@@ -1,6 +1,8 @@
 <?php
 /**
  * JetWooBuilder Categories Grid widget loop item layout 1 template.
+ *
+ * This template can be overridden by copying it to yourtheme/jet-woo-builder/widgets/global/categories-grid/presets/preset-1.php.
  */
 ?>
 
@@ -11,6 +13,7 @@
 		<?php include $this->get_template( 'item-count' ); ?>
 	</div>
 </div>
+
 <div class="jet-woo-categories-content">
 	<?php
 	include $this->get_template( 'item-title' );

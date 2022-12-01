@@ -1,0 +1,45 @@
+.jet-tricks-settings-page {
+
+	&__avaliable-controls {
+		display: flex;
+		flex-flow: row wrap;
+		margin-bottom: 40px;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		.cx-vui-title {
+			font-weight: 500;
+			font-size: 15px;
+			line-height: 20px;
+			width: 100%;
+			margin-bottom: 20px;
+			border-bottom: 1px solid #DCDCDD;
+			padding-bottom: 15px;
+		}
+	}
+
+	&__avaliable-control {
+		width: 33.3333%;
+
+		@media screen and (max-width: 1200px) {
+			width: 50%;
+		}
+
+		@media screen and (max-width: 782px) {
+			width: 100%;
+		}
+
+		.cx-vui-component__label {
+			font-size: 14px;
+			line-height: 18px;
+			font-weight: normal;
+		}
+
+		.cx-vui-component {
+			padding: 10px 0;
+		}
+	}
+
+}

@@ -70,7 +70,7 @@ if ( ! class_exists( 'CX_Control_Textarea' ) ) {
 
 			$html .= '<div class="cx-ui-container ' . esc_attr( $class ) . '">';
 				if ( '' !== $this->settings['label'] ) {
-					$html .= '<label class="cx-label" for="' . esc_attr( $this->settings['id'] ) . '">' . $this->settings['label'] . '</label> ';
+					$html .= '<label class="cx-label" for="' . esc_attr( $this->settings['id'] ) . '">' . wp_kses_post( $this->settings['label'] ) . '</label> ';
 				}
 				$html .= '<textarea id="' . esc_attr( $this->settings['id'] ) . '" class="cx-ui-textarea" name="' . esc_attr( $this->settings['name'] ) . '" rows="' . esc_attr( $this->settings['rows'] ) . '" cols="' . esc_attr( $this->settings['cols'] ) . '" placeholder="' . esc_attr( $this->settings['placeholder'] ) . '" ' . $this->get_required() . ' ' . $this->get_maxlength() . '>' . esc_html( $this->settings['value'] ) . '</textarea>';
 			$html .= '</div>';

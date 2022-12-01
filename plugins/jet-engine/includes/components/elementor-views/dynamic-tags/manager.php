@@ -19,6 +19,8 @@ if ( ! class_exists( 'Jet_Engine_Dynamic_Tags_Manager' ) ) {
 	 */
 	class Jet_Engine_Dynamic_Tags_Manager {
 
+		private $printed_css = array();
+
 		/**
 		 * Constructor for the class
 		 */
@@ -35,7 +37,7 @@ if ( ! class_exists( 'Jet_Engine_Dynamic_Tags_Manager' ) ) {
 
 			add_filter(
 				'jet-engine/elementor-views/frontend/listing-content',
-				array( $this, 'add_listing_item_dynamic_css' ), 10, 2
+				array( $this, 'add_listing_item_dynamic_css' ), 10, 3
 			);
 
 			add_filter(
@@ -67,14 +69,32 @@ if ( ! class_exists( 'Jet_Engine_Dynamic_Tags_Manager' ) ) {
 		}
 
 		/**
+		 * Returns an instance of the Dynamic CSS class.
+		 *
+		 * @param $post_id
+		 * @param $post_id_for_data
+		 *
+		 * @return \Elementor\Core\DynamicTags\Dynamic_CSS|Jet_Engine_Elementor_Dynamic_CSS
+		 */
+		public function get_dynamic_css_file( $post_id, $post_id_for_data ) {
+
+			if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.0.0-beta4', '>=' ) ) {
+				return Jet_Engine_Elementor_Dynamic_CSS::create( $post_id, $post_id_for_data );
+			}
+
+			return Elementor\Core\DynamicTags\Dynamic_CSS::create( $post_id, $post_id_for_data );
+		}
+
+		/**
 		 * Add dynamic CSS to the listing item
 		 *
 		 * @param $content
 		 * @param $listing_id
+		 * @param $inner_templates
 		 *
 		 * @return string
 		 */
-		public function add_listing_item_dynamic_css( $content, $listing_id ) {
+		public function add_listing_item_dynamic_css( $content, $listing_id, $inner_templates ) {
 
 			if ( ! class_exists( 'Elementor\Core\DynamicTags\Dynamic_CSS' ) ) {
 				return $content;
@@ -97,13 +117,29 @@ if ( ! class_exists( 'Jet_Engine_Dynamic_Tags_Manager' ) ) {
 					$post_id = apply_filters( 'jet-engine/listing/custom-post-id', get_the_ID(), $object );
 			}
 
-			if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.0.0-beta4', '>=' ) ) {
-				$css_file = Jet_Engine_Elementor_Dynamic_CSS::create( $post_id, $listing_id );
-			} else {
-				$css_file = Elementor\Core\DynamicTags\Dynamic_CSS::create( $post_id, $listing_id );
+			$post_ids_for_data = array( $listing_id );
+			$css = '';
+
+			if ( ! empty( $inner_templates ) ) {
+				$post_ids_for_data = array_merge( $post_ids_for_data, $inner_templates );
 			}
 
-			$css = $css_file->get_content();
+			foreach ( $post_ids_for_data as $post_id_for_data ) {
+
+				$handle = $class . '_' . $post_id . '_' . $post_id_for_data;
+
+				if ( in_array( $handle, $this->printed_css ) ) {
+					continue;
+				}
+
+				$css_file = $this->get_dynamic_css_file( $post_id, $post_id_for_data );
+				$post_css = $css_file->get_content();
+
+				if ( ! empty( $post_css ) ) {
+					$css .= $post_css;
+					$this->printed_css[] = $handle;
+				}
+			}
 
 			if ( empty( $css ) ) {
 				return $content;
@@ -133,13 +169,8 @@ if ( ! class_exists( 'Jet_Engine_Dynamic_Tags_Manager' ) ) {
 				return $content;
 			}
 
-			if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.0.0-beta4', '>=' ) ) {
-				$css_file = Jet_Engine_Elementor_Dynamic_CSS::create( $popup_data['popup_id'], $popup_data['popup_id'] );
-			} else {
-				$css_file = Elementor\Core\DynamicTags\Dynamic_CSS::create( $popup_data['popup_id'], $popup_data['popup_id'] );
-			}
-
-			$css = $css_file->get_content();
+			$css_file = $this->get_dynamic_css_file( $popup_data['popup_id'], $popup_data['popup_id'] );
+			$css      = $css_file->get_content();
 
 			if ( empty( $css ) ) {
 				return $content;

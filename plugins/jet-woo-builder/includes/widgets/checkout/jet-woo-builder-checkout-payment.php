@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_Checkout_Payment
- * Name: Payment
+ * Name: Checkout Payment
  * Slug: jet-checkout-payment
  */
 
@@ -22,7 +22,7 @@ class Jet_Woo_Builder_Checkout_Payment extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return __( 'Payment', 'jet-woo-builder' );
+		return __( 'Checkout Payment', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
@@ -539,7 +539,7 @@ class Jet_Woo_Builder_Checkout_Payment extends Jet_Woo_Builder_Base {
 	 */
 	public function maybe_set_cart_needs_payment( $required ) {
 
-		if ( jet_woo_builder_integration()->in_elementor() ) {
+		if ( jet_woo_builder()->elementor_views->in_elementor() ) {
 			$required = true;
 		}
 

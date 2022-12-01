@@ -8,8 +8,6 @@ if (!defined('ABSPATH')) {
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Typography;
-use Elementor\Core\Schemes\Color;
-use \Elementor\Core\Schemes\Typography;
 
 class EAEL_Tooltip_Section
 {
@@ -83,6 +81,20 @@ class EAEL_Tooltip_Section
                 'frontend_available' => true,
                 'condition' => [
                     'eael_tooltip_section_enable!' => '',
+                ],
+            ]
+        );
+
+        $element->add_control(
+            'eael_tooltip_auto_flip',
+            [
+                'label' => __('Position Flip', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SWITCHER,
+                'return_value' => 'yes',
+                'default' => 'yes',
+                'condition' => [
+                    'eael_tooltip_section_enable!' => '',
+                    'eael_tooltip_section_position' => [ 'top', 'bottom' ]
                 ],
             ]
         );
@@ -242,7 +254,6 @@ class EAEL_Tooltip_Section
             [
                 'name' => 'eael_tooltip_section_typography',
                 'selector' => '.tippy-popper[data-tippy-popper-id="{{ID}}"] .tippy-tooltip',
-                'scheme' => Typography::TYPOGRAPHY_3,
                 'separator' => 'after',
                 'condition' => [
                     'eael_tooltip_section_enable!' => '',
@@ -419,6 +430,7 @@ class EAEL_Tooltip_Section
             $trigger = $settings["eael_tooltip_section_trigger"];
             $width = $settings["eael_tooltip_section_width"];
             $followCursor = $settings["eael_tooltip_section_follow_cursor"];
+            $flip = $settings["eael_tooltip_auto_flip"];
             ?>
 
             <script>
@@ -438,8 +450,10 @@ class EAEL_Tooltip_Section
                             size: '<?php echo $size; ?>',
                             trigger: '<?php echo $trigger; ?>',
                             animateFill: false,
+                            flip: <?php echo $flip == 'yes' ? esc_js( 'true' ) : esc_js( 'false' ); ?>,
                             flipOnUpdate: true,
                             interactive: true,
+                            flipBehavior: <?php echo $flip == 'yes' ? "'flip'" : esc_js( '[]' ); ?>,
                             maxWidth: <?php echo $width['size']; ?>,
                             zIndex: 999,
                             followCursor: <?php if ($followCursor !== 'false') {

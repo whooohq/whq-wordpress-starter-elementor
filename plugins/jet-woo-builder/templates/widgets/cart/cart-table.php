@@ -155,21 +155,29 @@ defined( 'ABSPATH' ) || exit; ?>
 
 		<?php do_action( 'woocommerce_cart_contents' ); ?>
 
-		<tr>
+		<?php
+		$row_styles = '';
+
+		if ( $table_settings['components']['update-automatically'] && ! wc_coupons_enabled() ) {
+			$row_styles = 'style="display: none;"';
+		}
+		?>
+
+		<tr <?php echo $row_styles; ?> >
 			<td colspan="<?php echo count( $table_settings['items'] ); ?>" class="actions">
 
 				<?php if ( wc_coupons_enabled() ) { ?>
 					<div class="coupon">
 						<label for="coupon_code"><?php esc_html_e( 'Coupon:', 'woocommerce' ); ?></label>
 						<input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="<?php esc_attr_e( $table_settings['components']['coupon-form-placeholder'], 'jet-woo-builder' ); ?>"/>
-						<button type="submit" class="button" name="apply_coupon" value="<?php esc_attr_e( $table_settings['components']['coupon-form-button-label'], 'jet-woo-builder' ); ?>">
+						<button type="submit" class="button <?php echo esc_attr( wc_wp_theme_get_element_class_name( 'button' ) ? ' ' . wc_wp_theme_get_element_class_name( 'button' ) : '' ); ?>" name="apply_coupon" value="<?php esc_attr_e( $table_settings['components']['coupon-form-button-label'], 'jet-woo-builder' ); ?>">
 							<?php esc_attr_e( $table_settings['components']['coupon-form-button-label'], 'jet-woo-builder' ); ?>
 						</button>
 						<?php do_action( 'woocommerce_cart_coupon' ); ?>
 					</div>
 				<?php } ?>
 
-				<button type="submit" class="button" name="update_cart" value="<?php esc_attr_e( $table_settings['components']['update-button-label'], 'jet-woo-builder' ); ?>">
+				<button type="submit" class="button <?php echo esc_attr( wc_wp_theme_get_element_class_name( 'button' ) ? ' ' . wc_wp_theme_get_element_class_name( 'button' ) : '' ); ?>" name="update_cart" value="<?php esc_attr_e( $table_settings['components']['update-button-label'], 'jet-woo-builder' ); ?>">
 					<?php esc_html_e( $table_settings['components']['update-button-label'], 'jet-woo-builder' ); ?>
 				</button>
 

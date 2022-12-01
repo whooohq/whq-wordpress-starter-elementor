@@ -19,6 +19,18 @@ gulp.task( 'css-admin', () => {
 		.pipe( notify( 'Compile Sass Done!' ) );
 } );
 
+gulp.task( 'css-gutenberg', () => {
+	return gulp.src('./assets/admin/scss/gutenberg.scss')
+	.pipe( sass( { outputStyle: 'compressed' } ) )
+	.pipe( autoprefixer({
+		browsers: ['last 10 versions'],
+		cascade: false
+	} ) )
+	.pipe( rename('gutenberg.css' ) )
+	.pipe( gulp.dest('./assets/admin/css/') )
+	.pipe( notify( 'Compile Sass Done!' ) );
+} );
+
 gulp.task( 'css-public', () => {
 	return gulp.src( './assets/public/scss/public.scss')
 		.pipe( sass( { outputStyle: 'compressed' } ))
@@ -46,6 +58,7 @@ gulp.task( 'css-editor', () => {
 //watch
 gulp.task( 'watch', () => {
 	gulp.watch( './assets/admin/scss/**', gulp.series( 'css-admin' ) );
+	gulp.watch( './assets/admin/scss/**', gulp.series( 'css-gutenberg' ) );
 	gulp.watch( './assets/public/scss/**', gulp.series( 'css-public' ) );
 	gulp.watch( './includes/elementor/assets/editor/scss/**', gulp.series( 'css-editor' ) );
 } );

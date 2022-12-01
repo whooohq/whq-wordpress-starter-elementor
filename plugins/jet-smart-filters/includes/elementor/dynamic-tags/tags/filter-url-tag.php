@@ -7,18 +7,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Jet_Smart_Filters_Elementor_Filter_URL_Tag extends Elementor\Core\DynamicTags\Tag {
 
 	public function get_name() {
+
 		return 'jet-smart-filters-url';
 	}
 
 	public function get_title() {
+
 		return __( 'URL with filtered value', 'jet-engine' );
 	}
 
 	public function get_group() {
+
 		return Jet_Smart_Filters_Elementor_Dynamic_Tags_Module::JET_SMART_FILTERS_GROUP;
 	}
 
 	public function get_categories() {
+
 		return array(
 			Jet_Smart_Filters_Elementor_Dynamic_Tags_Module::TEXT_CATEGORY,
 			Jet_Smart_Filters_Elementor_Dynamic_Tags_Module::URL_CATEGORY,
@@ -26,6 +30,7 @@ class Jet_Smart_Filters_Elementor_Filter_URL_Tag extends Elementor\Core\DynamicT
 	}
 
 	public function is_settings_required() {
+
 		return true;
 	}
 
@@ -87,7 +92,6 @@ class Jet_Smart_Filters_Elementor_Filter_URL_Tag extends Elementor\Core\DynamicT
 				'description' => __( 'If your filter on the destination page uses some custom query ID, you can set it here.', 'jet-engine' ),
 			)
 		);
-
 	}
 
 	public function render() {
@@ -131,10 +135,9 @@ class Jet_Smart_Filters_Elementor_Filter_URL_Tag extends Elementor\Core\DynamicT
 
 	/**
 	 * Return allowed filters list
-	 *
-	 * @return [type] [description]
 	 */
 	private function get_filters_list() {
+
 		return jet_smart_filters()->data->get_filters_by_type();
 	}
 }

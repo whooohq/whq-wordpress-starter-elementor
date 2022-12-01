@@ -39,10 +39,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Repeater' ) ) {
 				$option = ! empty( $settings['dynamic_field_option'] ) ? $settings['dynamic_field_option'] : false;
 				return jet_engine()->listings->data->get_option( $option );
 			} else {
-				return jet_engine()->listings->data->get_meta(
-					$source,
-					jet_engine()->listings->data->get_object_by_context( $object_context )
-				);
+				return jet_engine()->listings->data->get_meta_by_context( $source, $object_context );
 			}
 
 		}
@@ -91,6 +88,30 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Repeater' ) ) {
 			}
 
 			$index = 1;
+
+			if ( ! is_array( $fields ) ) {
+			
+				$unserialized = maybe_unserialize( $fields );
+				
+				if ( is_array( $unserialized ) ) {
+					$fields = $unserialized;
+				}
+				
+			}
+			
+			if ( ! is_array( $fields ) ) {
+				
+				$decoded = json_decode( $fields, true );
+				
+				if ( is_array( $decoded ) ) {
+					$fields = $decoded;
+				}
+				
+			}
+			
+			if ( ! is_array( $fields ) ) {
+				$fields = array( $fields );
+			}
 
 			foreach ( $fields as $field ) {
 

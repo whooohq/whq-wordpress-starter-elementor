@@ -179,7 +179,6 @@
   -webkit-transform: translateY(-50%);
       -ms-transform: translateY(-50%);
           transform: translateY(-50%);
-  color: #434872;
   pointer-events: none;
 }
 
@@ -464,6 +463,48 @@
           box-shadow: 0px 8px 18px rgba(102, 107, 145, 0.2);
 }
 
+@media screen and (max-width: 600px) {
+  .eael-advanced-search-widget .eael-advanced-search-result {
+    padding: 10px;
+  }
+  .eael-advanced-search-widget .eael-advanced-search-result > *:not(:last-child) {
+    margin-bottom: 10px;
+  }
+  .eael-advanced-search-widget .eael-advanced-search-result .eael-advanced-search-popular-keyword {
+    padding-bottom: 7px;
+  }
+  .eael-advanced-search-widget .eael-advanced-search-result .eael-advanced-search-popular-keyword h4 {
+    font-size: 12px;
+  }
+  .eael-advanced-search-widget .eael-advanced-search-result .eael-advanced-search-popular-keyword .eael-popular-keyword-content .eael-popular-keyword-item {
+    padding: 2px 10px;
+    font-size: 12px;
+  }
+  .eael-advanced-search-widget .eael-advanced-search-result .eael-advanced-search-category h4 {
+    font-size: 12px;
+  }
+  .eael-advanced-search-widget .eael-advanced-search-result .eael-advanced-search-category .eael-popular-category-content ul {
+    padding: 5px 0;
+  }
+  .eael-advanced-search-widget .eael-advanced-search-result .eael-advanced-search-category .eael-popular-category-content ul li a {
+    font-size: 13px;
+  }
+  .eael-advanced-search-widget .eael-advanced-search-result .eael-advanced-search-content .eael-advanced-search-content-item .item-thumb {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 90px;
+            flex: 0 0 90px;
+  }
+  .eael-advanced-search-widget .eael-advanced-search-result .eael-advanced-search-content .eael-advanced-search-content-item .item-content h4 {
+    font-size: 15px;
+  }
+  .eael-advanced-search-widget .eael-advanced-search-result .eael-advanced-search-content .eael-advanced-search-content-item .item-content p {
+    font-size: 14px;
+  }
+  .eael-advanced-search-widget .eael-advanced-search-result .eael-advanced-search-not-found p {
+    font-size: 15px;
+  }
+}
+
 .eael-advanced-search-widget .eael-after-adv-search {
   margin-top: 20px;
 }
@@ -514,7 +555,15 @@
 }
 
 .eael-advanced-search-widget .eael-advanced-search-load-more {
-  display: inline-block;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 .eael-advanced-search-widget .eael-advanced-search-load-more .eael-advanced-search-load-more-button {
@@ -527,4 +576,8 @@
 
 .eael-advanced-search-widget .eael-advanced-search-load-more .eael-advanced-search-load-more-button:focus {
   outline: none;
+}
+
+.eael-advanced-search-widget .eael-advanced-search-load-more .eael-advanced-search-post-count-wrap {
+  color: #434872;
 }

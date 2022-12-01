@@ -9,21 +9,20 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Block_Visual' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Block_Visual class
 	 */
 	class Jet_Smart_Filters_Block_Visual extends Jet_Smart_Filters_Block_Base {
-
 		/**
 		 * Returns block name
-		 *
-		 * @return string
 		 */
 		public function get_name() {
+
 			return 'color-image';
 		}
-		public function set_css_scheme(){
+
+		public function set_css_scheme() {
+
 			$this->css_scheme = apply_filters(
 				'jet-smart-filters/widgets/color-image/css-scheme',
 				array(
@@ -44,7 +43,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Visual' ) ) {
 			);
 		}
 
-		public function add_style_manager_options(){
+		public function add_style_manager_options() {
 
 			$this->controls_manager->start_section(
 				'style_controls',
@@ -234,7 +233,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Visual' ) ) {
 				),
 			]);
 
-
 			$this->controls_manager->add_control([
 				'id'       => 'item_checked_background_color',
 				'type'     => 'color-picker',
@@ -256,7 +254,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Visual' ) ) {
 
 			$this->controls_manager->end_tab();
 
-		/*	$this->controls_manager->start_tab(
+			/* $this->controls_manager->start_tab(
 				'style_controls',
 				[
 					'id'    => 'item_disable_styles',
@@ -404,6 +402,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Visual' ) ) {
 					'{{WRAPPER}} .jet-filter-row ' . $this->css_scheme['decorator'] . ' > span' => 'border-style: {{STYLE}}; border-width: {{WIDTH}}; border-radius: {{RADIUS}}; border-color: {{COLOR}}',
 				),
 			]);
+
 			$this->controls_manager->end_tab();
 
 			$this->controls_manager->start_tab(
@@ -740,6 +739,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Visual' ) ) {
 					],
 				],
 			]);
+
 			$this->controls_manager->add_control([
 				'id'           => 'counter_padding',
 				'type'         => 'dimensions',
@@ -766,7 +766,5 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Visual' ) ) {
 			// Include Additional Filter Settings Style
 			include jet_smart_filters()->plugin_path( 'includes/blocks/common-controls/additional-filter-style.php' );
 		}
-
 	}
-
 }

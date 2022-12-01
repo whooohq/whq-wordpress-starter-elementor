@@ -1,5 +1,5 @@
 <li
-	:id="'jet-menu-item-'+itemDataObject.itemId"
+	:id="'jet-mobile-menu-item-'+itemDataObject.itemId"
 	:class="itemClasses"
 >
 	<div
@@ -33,12 +33,12 @@
 						v-html="itemDataObject.description"
 					></small>
 				</div>
-				<small
+				<div
 					class="jet-menu-badge"
 					v-if="isBadgeVisible"
 				>
-					<span class="jet-menu-badge__inner">{{ itemDataObject.badgeText }}</span>
-				</small>
+					<div class="jet-menu-badge__inner" v-html="itemDataObject.badgeContent"></div>
+				</div>
 			</div>
 		</a>
 		<span

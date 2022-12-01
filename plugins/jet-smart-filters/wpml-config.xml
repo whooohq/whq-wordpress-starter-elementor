@@ -16,9 +16,7 @@
 		<custom-field action="copy">_only_child</custom-field>
 		<custom-field action="copy">_group_by_parent</custom-field>
 		<custom-field action="copy">_source_custom_field</custom-field>
-
 		<custom-field action="translate">_source_manual_input</custom-field>
-
 		<custom-field action="copy">_source_manual_input_range</custom-field>
 		<custom-field action="translate" style="line" label="Placeholder">_placeholder</custom-field>
 		<custom-field action="translate" style="line" label="Search Placeholder">_s_placeholder</custom-field>

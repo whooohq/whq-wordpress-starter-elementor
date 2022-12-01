@@ -20,3 +20,30 @@
 	// do not appear to require this.
 	max-width: calc( 100% / #{$columns} );
 }
+
+@mixin ajax-add-to-cart {
+	.ajax_add_to_cart {
+		&.loading {
+			position: relative;
+			opacity: 0.25;
+			padding-right: 2.618em;
+
+			&::after {
+				font-family: WooCommerce;
+				content: '\e01c';
+				vertical-align: top;
+				position: absolute;
+				top: 50%;
+				margin-top: -9px;
+				animation: spin 2s linear infinite;
+			}
+		}
+
+		&.added::after {
+			font-family: WooCommerce;
+			content: '\e017';
+			margin-left: 10px;
+			font-weight: 400;
+		}
+	}
+}

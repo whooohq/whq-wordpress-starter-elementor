@@ -1,6 +1,8 @@
 <?php
 /**
  * JetWooBuilder Products Grid widget loop item layout 1 template.
+ *
+ * This template can be overridden by copying it to yourtheme/jet-woo-builder/widgets/global/products-grid/presets/preset-1.php.
  */
 
 include $this->get_template( 'item-thumb' );

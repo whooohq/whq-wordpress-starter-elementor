@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_Checkout_Coupon_Form
- * Name: Coupon Form
+ * Name: Checkout Coupon Form
  * Slug: jet-checkout-coupon-form
  */
 
@@ -22,7 +22,7 @@ class Jet_Woo_Builder_Checkout_Coupon_Form extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return __( 'Coupon Form', 'jet-woo-builder' );
+		return __( 'Checkout Coupon Form', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {

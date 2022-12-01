@@ -28,6 +28,8 @@
 				post_type: false,
 			},
 			errorNotices: [],
+			incorrectSlugMessage: JetEngineCPTConfig.slug_error,
+			showIncorrectSlug: false,
 		},
 		mounted: function() {
 
@@ -162,6 +164,17 @@
 					}
 				}
 
+				if ( this.showIncorrectSlug ) {
+
+					self.$CXNotice.add( {
+						message: this.incorrectSlugMessage,
+						type: 'error',
+						duration: 7000,
+					}, 'name' );
+
+					hasErrors = true;
+				}
+
 				if ( ! self.generalSettings.name ) {
 					self.$set( this.errors, 'name', true );
 
@@ -279,10 +292,21 @@
 					// Replace cyrillic
 					slug = window.JetEngineTools.maybeCyrToLatin( slug );
 
+					if ( 32 < slug.length ) {
+						slug = slug.substr( 0, 32 );
+
+						if ( '-' === slug.slice( -1 ) ) {
+							slug = slug.slice( 0, -1 );
+						}
+					}
+
 					this.$set( this.generalSettings, 'slug', slug );
 
 				}
 
+			},
+			checkSlug: function() {
+				this.showIncorrectSlug = ( 32 < this.generalSettings.slug.length );
 			},
 			isCollapsed: function( object ) {
 

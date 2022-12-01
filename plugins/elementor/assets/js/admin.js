@@ -1,4 +1,4 @@
-/*! elementor - v3.6.8 - 27-07-2022 */
+/*! elementor - v3.8.1 - 13-11-2022 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -192,6 +192,80 @@ exports["default"] = MenuHandler;
 
 /***/ }),
 
+/***/ "../assets/dev/js/admin/new-template/template-controls.js":
+/*!****************************************************************!*\
+  !*** ../assets/dev/js/admin/new-template/template-controls.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var TemplateControls = /*#__PURE__*/function () {
+  function TemplateControls() {
+    (0, _classCallCheck2.default)(this, TemplateControls);
+  }
+
+  (0, _createClass2.default)(TemplateControls, [{
+    key: "setDynamicControlsVisibility",
+    value: function setDynamicControlsVisibility(lookupControlIdPrefix, controls) {
+      if (undefined === controls) {
+        return;
+      }
+
+      var controlsArray = Object.entries(controls);
+
+      for (var _i = 0, _controlsArray = controlsArray; _i < _controlsArray.length; _i++) {
+        var _controlsArray$_i = (0, _slicedToArray2.default)(_controlsArray[_i], 2),
+            controlId = _controlsArray$_i[0],
+            controlSettings = _controlsArray$_i[1];
+
+        this.setVisibilityForControl(lookupControlIdPrefix, controlSettings, controlId);
+      }
+    }
+  }, {
+    key: "setVisibilityForControl",
+    value: function setVisibilityForControl(lookupControlIdPrefix, controlSettings, controlId) {
+      var _controlSettings$cond,
+          _this = this;
+
+      var conditions = Object.entries((_controlSettings$cond = controlSettings.conditions) !== null && _controlSettings$cond !== void 0 ? _controlSettings$cond : {});
+      conditions.forEach(function (condition) {
+        _this.changeVisibilityBasedOnCondition(lookupControlIdPrefix, condition, controlId);
+      });
+    }
+  }, {
+    key: "changeVisibilityBasedOnCondition",
+    value: function changeVisibilityBasedOnCondition(lookupControlIdPrefix, condition, controlId) {
+      var _condition = (0, _slicedToArray2.default)(condition, 2),
+          conditionKey = _condition[0],
+          conditionValue = _condition[1];
+
+      var targetControlWrapper = document.getElementById(lookupControlIdPrefix + controlId + '__wrapper');
+      var lookupControl = document.getElementById(lookupControlIdPrefix + conditionKey);
+      targetControlWrapper.classList.toggle('elementor-hidden', !lookupControl || conditionValue !== lookupControl.value);
+    }
+  }]);
+  return TemplateControls;
+}();
+
+exports["default"] = TemplateControls;
+
+/***/ }),
+
 /***/ "../assets/dev/js/editor/utils/files-upload-handler.js":
 /*!*************************************************************!*\
   !*** ../assets/dev/js/editor/utils/files-upload-handler.js ***!
@@ -380,7 +454,7 @@ isSafari = /^((?!chrome|android).)*safari/i.test(userAgent) || /constructor/i.te
 }(!window.safari || typeof safari !== 'undefined' && safari.pushNotification),
     // Internet Explorer 6-11
 isIE = /Trident|MSIE/.test(userAgent) && (
-/*@cc_on!@*/
+/* @cc_on!@*/
  false || !!document.documentMode),
     // Edge 20+
 isEdge = !isIE && !!window.StyleMedia || matchUserAgent('Edg'),
@@ -405,6 +479,240 @@ isAppleWebkit = matchUserAgent('AppleWebKit') && !isBlink,
 
 var _default = environment;
 exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../core/experiments/assets/js/admin/behaviors/experiments-dependency.js":
+/*!*******************************************************************************!*\
+  !*** ../core/experiments/assets/js/admin/behaviors/experiments-dependency.js ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "../node_modules/@babel/runtime/helpers/toConsumableArray.js"));
+
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+
+var STATE_ACTIVE = 'active';
+var STATE_INACTIVE = 'inactive';
+var STATE_DEFAULT = 'default';
+
+var ExperimentsDependency = /*#__PURE__*/function () {
+  function ExperimentsDependency(_ref) {
+    var selects = _ref.selects,
+        submit = _ref.submit;
+    (0, _classCallCheck2.default)(this, ExperimentsDependency);
+    (0, _defineProperty2.default)(this, "elements", {});
+    this.elements = {
+      /**
+       * @type {HTMLSelectElement[]}
+       */
+      selects: selects,
+
+      /**
+       * @type {HTMLInputElement}
+       */
+      submit: submit
+    };
+  }
+
+  (0, _createClass2.default)(ExperimentsDependency, [{
+    key: "bindEvents",
+    value: function bindEvents() {
+      var _this = this;
+
+      this.elements.selects.forEach(function (select) {
+        select.addEventListener('change', function (e) {
+          return _this.onExperimentStateChange(e);
+        });
+      });
+    }
+  }, {
+    key: "onExperimentStateChange",
+    value: function onExperimentStateChange(e) {
+      var experimentId = e.currentTarget.dataset.experimentId,
+          experimentNewState = this.getExperimentActualState(experimentId);
+
+      switch (experimentNewState) {
+        case STATE_ACTIVE:
+          if (this.shouldShowDependenciesDialog(experimentId)) {
+            this.showDependenciesDialog(experimentId);
+          }
+
+          break;
+
+        case STATE_INACTIVE:
+          this.deactivateDependantExperiments(experimentId);
+          break;
+
+        default:
+          break;
+      }
+    }
+  }, {
+    key: "getExperimentData",
+    value: function getExperimentData(experimentId) {
+      return elementorAdminConfig.experiments[experimentId];
+    }
+  }, {
+    key: "getExperimentDependencies",
+    value: function getExperimentDependencies(experimentId) {
+      var _this2 = this;
+
+      return this.getExperimentData(experimentId).dependencies.map(function (dependencyId) {
+        return _this2.getExperimentData(dependencyId);
+      });
+    }
+  }, {
+    key: "getExperimentSelect",
+    value: function getExperimentSelect(experimentId) {
+      return this.elements.selects.find(function (select) {
+        return select.matches("[data-experiment-id=\"".concat(experimentId, "\"]"));
+      });
+    }
+  }, {
+    key: "setExperimentState",
+    value: function setExperimentState(experimentId, state) {
+      this.getExperimentSelect(experimentId).value = state;
+    }
+  }, {
+    key: "getExperimentActualState",
+    value: function getExperimentActualState(experimentId) {
+      var state = this.getExperimentSelect(experimentId).value;
+
+      if (state !== STATE_DEFAULT) {
+        return state;
+      } // Normalize the "default" state to the actual state value.
+
+
+      return this.isExperimentActiveByDefault(experimentId) ? STATE_ACTIVE : STATE_INACTIVE;
+    }
+  }, {
+    key: "isExperimentActive",
+    value: function isExperimentActive(experimentId) {
+      return this.getExperimentActualState(experimentId) === STATE_ACTIVE;
+    }
+  }, {
+    key: "isExperimentActiveByDefault",
+    value: function isExperimentActiveByDefault(experimentId) {
+      return this.getExperimentData(experimentId).default === STATE_ACTIVE;
+    }
+  }, {
+    key: "areAllDependenciesActive",
+    value: function areAllDependenciesActive(dependencies) {
+      var _this3 = this;
+
+      return dependencies.every(function (dependency) {
+        return _this3.isExperimentActive(dependency.name);
+      });
+    }
+  }, {
+    key: "deactivateDependantExperiments",
+    value: function deactivateDependantExperiments(experimentId) {
+      var _this4 = this;
+
+      Object.entries(elementorAdminConfig.experiments).forEach(function (_ref2) {
+        var _ref3 = (0, _slicedToArray2.default)(_ref2, 2),
+            id = _ref3[0],
+            experimentData = _ref3[1];
+
+        var isDependant = experimentData.dependencies.includes(experimentId);
+
+        if (isDependant) {
+          _this4.setExperimentState(id, STATE_INACTIVE);
+        }
+      });
+    }
+  }, {
+    key: "shouldShowDependenciesDialog",
+    value: function shouldShowDependenciesDialog(experimentId) {
+      var dependencies = this.getExperimentDependencies(experimentId);
+      return !this.areAllDependenciesActive(dependencies);
+    }
+  }, {
+    key: "showDependenciesDialog",
+    value: function showDependenciesDialog(experimentId) {
+      var _this5 = this;
+
+      var experiment = this.getExperimentData(experimentId),
+          dependencies = this.getExperimentDependencies(experimentId);
+      var dependenciesList = this.joinDepenednciesNames(dependencies.map(function (d) {
+        return d.title;
+      }), ', ', ' & '); // Translators: %1$s: Experiment title, %2$s: Experiment dependencies list
+
+      var message = __('In order to use %1$s, first you need to activate %2$s.', 'elementor').replace('%1$s', "<strong>".concat(experiment.title, "</strong>")).replace('%2$s', "<strong>".concat(dependenciesList, "</strong>"));
+
+      elementorCommon.dialogsManager.createWidget('confirm', {
+        id: 'e-experiments-dependency-dialog',
+        headerMessage: __('First, activate another experiment.', 'elementor'),
+        message: message,
+        position: {
+          my: 'center center',
+          at: 'center center'
+        },
+        strings: {
+          confirm: __('Activate', 'elementor'),
+          cancel: __('Cancel', 'elementor')
+        },
+        hide: {
+          onOutsideClick: false,
+          onBackgroundClick: false,
+          onEscKeyPress: false
+        },
+        onConfirm: function onConfirm() {
+          dependencies.forEach(function (dependency) {
+            _this5.setExperimentState(dependency.name, STATE_ACTIVE);
+          });
+
+          _this5.elements.submit.click();
+        },
+        onCancel: function onCancel() {
+          _this5.setExperimentState(experimentId, STATE_INACTIVE);
+        }
+      }).show();
+    }
+  }, {
+    key: "joinDepenednciesNames",
+    value: function joinDepenednciesNames(array, glue) {
+      var finalGlue = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+
+      if ('' === finalGlue) {
+        return array.join(glue);
+      }
+
+      if (!array.length) {
+        return '';
+      }
+
+      if (1 === array.length) {
+        return array[0];
+      }
+
+      var clone = (0, _toConsumableArray2.default)(array),
+          lastItem = clone.pop();
+      return clone.join(glue) + finalGlue + lastItem;
+    }
+  }]);
+  return ExperimentsDependency;
+}();
+
+exports["default"] = ExperimentsDependency;
 
 /***/ }),
 
@@ -435,6 +743,8 @@ var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/h
 var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _experimentsDependency = _interopRequireDefault(__webpack_require__(/*! ./behaviors/experiments-dependency */ "../core/experiments/assets/js/admin/behaviors/experiments-dependency.js"));
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
@@ -517,6 +827,11 @@ var ExperimentsModule = /*#__PURE__*/function (_elementorModules$Vie) {
       var _this3 = this;
 
       (0, _get2.default)((0, _getPrototypeOf2.default)(ExperimentsModule.prototype), "onInit", this).call(this);
+      this.experimentsDependency = new _experimentsDependency.default({
+        selects: this.elements.$experimentSelects.toArray(),
+        submit: this.elements.$experimentForm.find('#submit').get(0)
+      });
+      this.experimentsDependency.bindEvents();
 
       if (this.elements.$experimentIndicators.length) {
         import(
@@ -584,8 +899,8 @@ var LandingPagesHandler = /*#__PURE__*/function (_AdminMenuHandler) {
       var pageName = 'e-landing-page',
           adminMenuSelectors = {
         // The escaping is done because jQuery requires it for selectors.
-        landingPagesTablePage: 'a[href=\"edit.php?post_type=' + pageName + '\"]',
-        landingPagesAddNewPage: 'a[href=\"edit.php?post_type=elementor_library&page=' + pageName + '\"]'
+        landingPagesTablePage: 'a[href="edit.php?post_type=' + pageName + '"]',
+        landingPagesAddNewPage: 'a[href="edit.php?post_type=elementor_library&page=' + pageName + '"]'
       };
       return {
         selectors: {
@@ -753,6 +1068,22 @@ module.exports = _arrayWithHoles, module.exports.__esModule = true, module.expor
 
 /***/ }),
 
+/***/ "../node_modules/@babel/runtime/helpers/arrayWithoutHoles.js":
+/*!*******************************************************************!*\
+  !*** ../node_modules/@babel/runtime/helpers/arrayWithoutHoles.js ***!
+  \*******************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var arrayLikeToArray = __webpack_require__(/*! ./arrayLikeToArray.js */ "../node_modules/@babel/runtime/helpers/arrayLikeToArray.js");
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) return arrayLikeToArray(arr);
+}
+
+module.exports = _arrayWithoutHoles, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
 /***/ "../node_modules/@babel/runtime/helpers/assertThisInitialized.js":
 /*!***********************************************************************!*\
   !*** ../node_modules/@babel/runtime/helpers/assertThisInitialized.js ***!
@@ -813,6 +1144,31 @@ function _createClass(Constructor, protoProps, staticProps) {
 }
 
 module.exports = _createClass, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ "../node_modules/@babel/runtime/helpers/defineProperty.js":
+/*!****************************************************************!*\
+  !*** ../node_modules/@babel/runtime/helpers/defineProperty.js ***!
+  \****************************************************************/
+/***/ ((module) => {
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+module.exports = _defineProperty, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
 
@@ -911,6 +1267,20 @@ module.exports = _interopRequireDefault, module.exports.__esModule = true, modul
 
 /***/ }),
 
+/***/ "../node_modules/@babel/runtime/helpers/iterableToArray.js":
+/*!*****************************************************************!*\
+  !*** ../node_modules/@babel/runtime/helpers/iterableToArray.js ***!
+  \*****************************************************************/
+/***/ ((module) => {
+
+function _iterableToArray(iter) {
+  if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
+}
+
+module.exports = _iterableToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
 /***/ "../node_modules/@babel/runtime/helpers/iterableToArrayLimit.js":
 /*!**********************************************************************!*\
   !*** ../node_modules/@babel/runtime/helpers/iterableToArrayLimit.js ***!
@@ -962,6 +1332,20 @@ function _nonIterableRest() {
 }
 
 module.exports = _nonIterableRest, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ "../node_modules/@babel/runtime/helpers/nonIterableSpread.js":
+/*!*******************************************************************!*\
+  !*** ../node_modules/@babel/runtime/helpers/nonIterableSpread.js ***!
+  \*******************************************************************/
+/***/ ((module) => {
+
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+module.exports = _nonIterableSpread, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
 
@@ -1047,6 +1431,28 @@ function _superPropBase(object, property) {
 }
 
 module.exports = _superPropBase, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ "../node_modules/@babel/runtime/helpers/toConsumableArray.js":
+/*!*******************************************************************!*\
+  !*** ../node_modules/@babel/runtime/helpers/toConsumableArray.js ***!
+  \*******************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var arrayWithoutHoles = __webpack_require__(/*! ./arrayWithoutHoles.js */ "../node_modules/@babel/runtime/helpers/arrayWithoutHoles.js");
+
+var iterableToArray = __webpack_require__(/*! ./iterableToArray.js */ "../node_modules/@babel/runtime/helpers/iterableToArray.js");
+
+var unsupportedIterableToArray = __webpack_require__(/*! ./unsupportedIterableToArray.js */ "../node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js");
+
+var nonIterableSpread = __webpack_require__(/*! ./nonIterableSpread.js */ "../node_modules/@babel/runtime/helpers/nonIterableSpread.js");
+
+function _toConsumableArray(arr) {
+  return arrayWithoutHoles(arr) || iterableToArray(arr) || unsupportedIterableToArray(arr) || nonIterableSpread();
+}
+
+module.exports = _toConsumableArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
 
@@ -1142,6 +1548,8 @@ var _events = _interopRequireDefault(__webpack_require__(/*! elementor-utils/eve
 
 var _filesUploadHandler = _interopRequireDefault(__webpack_require__(/*! ../editor/utils/files-upload-handler */ "../assets/dev/js/editor/utils/files-upload-handler.js"));
 
+var _templateControls = _interopRequireDefault(__webpack_require__(/*! ./new-template/template-controls.js */ "../assets/dev/js/admin/new-template/template-controls.js"));
+
 (function ($) {
   var ElementorAdmin = elementorModules.ViewModule.extend({
     maintenanceMode: null,
@@ -1162,6 +1570,7 @@ var _filesUploadHandler = _interopRequireDefault(__webpack_require__(/*! ../edit
         $settingsForm: $('#elementor-settings-form'),
         $settingsTabsWrapper: $('#elementor-settings-tabs-wrapper'),
         $menuGetHelpLink: $('a[href="admin.php?page=go_knowledge_base_site"]'),
+        $menuGoProLink: $('a[href="admin.php?page=go_elementor_pro"]'),
         $reMigrateGlobalsButton: $('.elementor-re-migrate-globals-button')
       };
       elements.$settingsFormPages = elements.$settingsForm.find('.elementor-settings-form-page');
@@ -1407,7 +1816,7 @@ var _filesUploadHandler = _interopRequireDefault(__webpack_require__(/*! ../edit
       this.initTemplatesImport();
       this.initMaintenanceMode();
       this.goToSettingsTabFromHash();
-      this.openGetHelpInNewTab();
+      this.openLinksInNewTab();
       this.addUserAgentClasses();
       this.roleManager.init();
 
@@ -1415,6 +1824,7 @@ var _filesUploadHandler = _interopRequireDefault(__webpack_require__(/*! ../edit
         new _module.default();
       }
 
+      this.templateControls = new _templateControls.default();
       new _module2.default();
     },
     addUserAgentClasses: function addUserAgentClasses() {
@@ -1431,8 +1841,23 @@ var _filesUploadHandler = _interopRequireDefault(__webpack_require__(/*! ../edit
         body.classList.add('e--ua-' + key);
       });
     },
-    openGetHelpInNewTab: function openGetHelpInNewTab() {
-      this.elements.$menuGetHelpLink.attr('target', '_blank');
+
+    /**
+     * Open Links in New Tab
+     *
+     * Adds a `target="_blank"` attribute to the Admin Dashboard menu items specified in the `elements` array,
+     * if the elements are found in the DOM. The items in the `elements` array should be jQuery instances.
+     *
+     * @since 3.6.0
+     */
+    openLinksInNewTab: function openLinksInNewTab() {
+      var elements = [this.elements.$menuGetHelpLink, this.elements.$menuGoProLink];
+      elements.forEach(function ($element) {
+        // Only add the attribute if the element is found.
+        if ($element.length) {
+          $element.attr('target', '_blank');
+        }
+      });
     },
     initTemplatesImport: function initTemplatesImport() {
       if (!elementorCommon.elements.$body.hasClass('post-type-elementor_library')) {
@@ -1440,21 +1865,26 @@ var _filesUploadHandler = _interopRequireDefault(__webpack_require__(/*! ../edit
       }
 
       var self = this,
+          $importForm = self.elements.$importForm,
           $importButton = self.elements.$importButton,
           $importArea = self.elements.$importArea,
-          $importNowButton = self.elements.$importNowButton;
+          $importNowButton = self.elements.$importNowButton,
+          $importFormFileInput = self.elements.$importFormFileInput;
       self.elements.$formAnchor = $('.wp-header-end');
       $('#wpbody-content').find('.page-title-action').last().after($importButton);
       self.elements.$formAnchor.after($importArea);
       $importButton.on('click', function () {
         $('#elementor-import-template-area').toggle();
       });
-      $importNowButton.on('click', function (event) {
-        if (self.elements.$importFormFileInput[0].files.length && !elementorCommon.config.filesUpload.unfilteredFiles) {
+      $importForm.on('submit', function (event) {
+        $importNowButton[0].disabled = true;
+        $importNowButton[0].value = __('Importing...', 'elementor');
+
+        if ($importFormFileInput[0].files.length && !elementorCommon.config.filesUpload.unfilteredFiles) {
           event.preventDefault();
 
           var enableUnfilteredFilesModal = _filesUploadHandler.default.getUnfilteredFilesNotEnabledImportTemplateDialog(function () {
-            self.elements.$importForm.trigger('submit');
+            $importForm.trigger('submit');
           });
 
           enableUnfilteredFilesModal.show();

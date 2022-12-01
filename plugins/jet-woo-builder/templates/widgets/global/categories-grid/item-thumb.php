@@ -1,12 +1,13 @@
 <?php
 /**
  * JetWooBuilder Categories Grid widget loop item thumbnail template.
+ *
+ * This template can be overridden by copying it to yourtheme/jet-woo-builder/widgets/global/categories-grid/item-thumn.php.
  */
 
-$size = $this->get_attr( 'thumb_size' );
 $thumbnail = jet_woo_builder_template_functions()->get_category_thumbnail( $category->term_id, $this->get_attr( 'thumb_size' ) );
 
-if ( null === $thumbnail ) {
+if ( ! $thumbnail ) {
 	return;
 }
 ?>

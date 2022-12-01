@@ -1,0 +1,79 @@
+.jet-smart-filters-settings-page {
+	.cx-vui-title {
+		font-weight: 500;
+		font-size: 14px;
+		line-height: 20px;
+	}
+
+	.cx-vui-subtitle {
+		font-size: 12px;
+		line-height: 18px;
+		font-weight: 300;
+		color: #7b7e81;
+	}
+
+	.avaliable-controls,
+	.rewritable-post-types {
+		&__list {
+			display: flex;
+			justify-content: flex-start;
+			align-items: flex-start;
+			flex-wrap: wrap;
+		}
+
+		&__item {
+			width: 50%;
+
+			> .cx-vui-component {
+				padding: 0;
+				margin-bottom: 15px;
+			}
+
+			@media screen and (max-width: 1200px) {
+				width: 50%;
+			}
+
+			@media screen and (max-width: 782px) {
+				width: 100%;
+			}
+		}
+
+		&__header {
+			margin-bottom: 20px;
+			border-bottom: 1px solid #dcdcdd;
+			padding-bottom: 15px;
+		}
+	}
+
+	.avaliable-controls {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: stretch;
+		padding: 20px;
+		margin-bottom: 40px;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	.tabindex {
+		&__header {
+			padding: 20px;
+		}
+
+		&__body {
+			border-top: 1px solid #ECECEC;
+			padding: 20px;
+		}
+
+		.cx-vui-component {
+			padding: 0;
+
+			&__meta {
+				align-self: center;
+			}
+		}
+	}
+}

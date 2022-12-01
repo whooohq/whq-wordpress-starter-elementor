@@ -61,34 +61,10 @@ class Query_Count_Tag extends \Elementor\Core\DynamicTags\Tag {
 	}
 
 	public function render() {
-
 		$query_id   = $this->get_settings( 'query_id' );
 		$count_type = $this->get_settings( 'count_type' );
 
-		if ( ! $count_type ) {
-			$count_type = 'total';
-		}
-
-		if ( ! $query_id ) {
-			echo 0;
-			return;
-		}
-
-		$query = Manager::instance()->get_query_by_id( $query_id );
-
-		if ( ! $query ) {
-			echo 0;
-			return;
-		}
-
-		if ( 'visible' === $count_type ) {
-			$result = $query->get_items_page_count();
-		} else {
-			$result = $query->get_items_total_count();
-		}
-
-		printf( '<span class="jet-engine-query-count query-%2$s count-type-%3$s" data-query="%2$s">%1$s</span>', $result, $query_id, $count_type );
-
+		echo Manager::instance()->get_query_count_html( $query_id, $count_type );
 	}
 
 }

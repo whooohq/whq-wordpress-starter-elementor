@@ -7,7 +7,13 @@ class Elementor_Integration {
 	 * Constructor for the class
 	 */
 	public function __construct() {
-		add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_widgets' ), 99 );
+
+		if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.5.0', '>=' ) ) {
+			add_action( 'elementor/widgets/register', array( $this, 'register_widgets' ), 99 );
+		} else {
+			add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_widgets' ), 99 );
+		}
+
 		add_action( 'jet-engine/listings/preview-scripts', array( $this, 'preview_scripts' ) );
 
 		add_action( 'jet-engine/elementor-views/dynamic-tags/register', array( $this, 'register_dynamic_tags' ) );
@@ -34,7 +40,12 @@ class Elementor_Integration {
 	public function register_widgets( $widgets_manager ) {
 
 		require jet_engine()->modules->modules_path( 'maps-listings/inc/widgets/maps-listings-widget.php' );
-		$widgets_manager->register_widget_type( new Maps_Listings_Widget() );
+
+		if ( method_exists( $widgets_manager, 'register' ) ) {
+			$widgets_manager->register( new Maps_Listings_Widget() );
+		} else {
+			$widgets_manager->register_widget_type( new Maps_Listings_Widget() );
+		}
 
 	}
 

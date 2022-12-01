@@ -38,6 +38,13 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax' ) ) {
 		public $meta_boxes = array();
 
 		/**
+		 * Metaboxes args to register
+		 *
+		 * @var array
+		 */
+		public $meta_boxes_args = array();
+
+		/**
 		 * Set object type
 		 * @var string
 		 */
@@ -70,13 +77,15 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax' ) ) {
 		 * Constructor for the class
 		 */
 		public function __construct() {
-			
+
 			parent::__construct();
 
 			$this->register_built_in_modifications();
 			add_action( 'jet-engine/meta-boxes/register-instances', array( $this, 'init_meta_boxes' ) );
 			add_action( 'current_screen', array( $this, 'init_edit_links' ) );
 
+			add_action( 'jet-engine/post-types/deleted-post-type',      array( $this, 'remove_deleted_post_type_from_tax' ) );
+			add_action( 'jet-engine/post-types/updated-post-type-slug', array( $this, 'update_post_type_in_tax' ), 10, 2 );
 		}
 
 		/**
@@ -92,7 +101,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax' ) ) {
 			$built_ins = $this->data->get_modified_built_in_items();
 
 			if ( ! empty( $built_ins ) ) {
-				
+
 				foreach ( $built_ins as $built_in ) {
 
 					$tax_slug = ! empty( $built_in['slug'] ) ? $built_in['slug'] : false;
@@ -146,7 +155,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax' ) ) {
 
 						if ( ! empty( $new_labels ) ) {
 							$existing_labels = (array) $existing_tax['labels'];
-							
+
 							foreach ( $new_labels as $key => $value ) {
 								$existing_labels[ $key ] = $value;
 							}
@@ -164,7 +173,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax' ) ) {
 						 * Anonymus function to register apropriate meta fields.
 						 * Should be called there, if called earlier - jet_engine()->meta_boxes instance is not defined
 						 */
-						add_action( 'jet-engine/meta-boxes/register-instances', function() use ( $built_in, $new_object_type, $tax_slug ) {
+						add_action( 'jet-engine/meta-boxes/register-instances', function() use ( $built_in, $new_object_type, $tax_slug, $new_args ) {
 
 							$meta_fields = maybe_unserialize( $built_in['meta_fields'] );
 
@@ -179,6 +188,10 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax' ) ) {
 							}
 
 							$meta_fields = apply_filters( 'jet-engine/meta-boxes/raw-fields', $meta_fields, $this );
+
+							if ( ! empty( $new_args['hide_field_names'] ) ) {
+								$this->meta_boxes_args[ $tax_slug ]['hide_field_names'] = $new_args['hide_field_names'];
+							}
 
 							$this->meta_boxes[ $tax_slug ] = array_merge( $this->meta_boxes[ $tax_slug ], $meta_fields );
 
@@ -239,6 +252,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax' ) ) {
 			require_once $this->component_path( 'rest-api/get-built-in-tax.php' );
 			require_once $this->component_path( 'rest-api/edit-built-in-tax.php' );
 			require_once $this->component_path( 'rest-api/reset-built-in-tax.php' );
+			require_once $this->component_path( 'rest-api/copy-taxonomy.php' );
 
 			$api_manager->register_endpoint( new Jet_Engine_CPT_Rest_Add_Taxonomy() );
 			$api_manager->register_endpoint( new Jet_Engine_CPT_Rest_Edit_Taxonomy() );
@@ -248,6 +262,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax' ) ) {
 			$api_manager->register_endpoint( new Jet_Engine_CPT_Rest_Get_BI_Tax() );
 			$api_manager->register_endpoint( new Jet_Engine_CPT_Rest_Edit_BI_Tax() );
 			$api_manager->register_endpoint( new Jet_Engine_CPT_Rest_Reset_BI_Tax() );
+			$api_manager->register_endpoint( new Jet_Engine_CPT_Rest_Copy_Taxonomy() );
 
 		}
 
@@ -289,9 +304,13 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax' ) ) {
 				if ( ! empty( $tax['meta_fields'] ) ) {
 
 					$tax['meta_fields'] = apply_filters( 'jet-engine/meta-boxes/raw-fields', $tax['meta_fields'], $this );
-					
+
 					if ( empty( $this->meta_boxes[ $tax['slug'] ] ) ) {
 						$this->meta_boxes[ $tax['slug'] ] = array();
+					}
+
+					if ( ! empty( $tax['hide_field_names'] ) ) {
+						$this->meta_boxes_args[ $tax['slug'] ]['hide_field_names'] = $tax['hide_field_names'];
 					}
 
 					$this->meta_boxes[ $tax['slug'] ] = $tax['meta_fields'];
@@ -412,7 +431,10 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax' ) ) {
 			foreach ( $this->meta_boxes as $tax => $meta_box ) {
 
 				$this->find_meta_fields_with_save_custom( $tax, $meta_box );
-				$meta_instance = new Jet_Engine_CPT_Tax_Meta( $tax, $meta_box );
+
+				$args = ! empty( $this->meta_boxes_args[ $tax ] ) ? $this->meta_boxes_args[ $tax ] : array();
+
+				$meta_instance = new Jet_Engine_CPT_Tax_Meta( $tax, $meta_box, $args );
 
 				if ( ! empty( $this->edit_links[ $tax ] ) ) {
 					$meta_instance->add_edit_link( $this->edit_links[ $tax ] );
@@ -757,6 +779,58 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax' ) ) {
 			);
 
 			return array_merge( $default, $config );
+
+		}
+
+		/**
+		 * Remove post type from `object_type` param in taxonomy instance.
+		 *
+		 * @param $deleted_post_type
+		 */
+		public function remove_deleted_post_type_from_tax( $deleted_post_type ) {
+			$this->update_post_type_in_tax( false, $deleted_post_type );
+		}
+
+		/**
+		 * Update the post type slug in taxonomy instance after it has been changed.
+		 *
+		 * To delete the post type in taxonomy, set $new_post_type to false.
+		 *
+		 * @param $new_post_type
+		 * @param $post_type
+		 */
+		public function update_post_type_in_tax( $new_post_type, $post_type ) {
+
+			$taxonomies = $this->data->get_raw();
+
+			if ( empty( $taxonomies ) ) {
+				return;
+			}
+
+			foreach ( $taxonomies as $tax ) {
+
+				$post_types = ! empty( $tax['object_type'] ) ? maybe_unserialize( $tax['object_type'] ) : array();
+
+				if ( empty( $post_types ) ) {
+					continue;
+				}
+
+				if ( ! in_array( $post_type, $post_types ) ) {
+					continue;
+				}
+
+				$post_types = array_combine( $post_types, $post_types );
+
+				if ( ! $new_post_type ) {
+					unset( $post_types[ $post_type ] );
+				} else {
+					$post_types[ $post_type ] = $new_post_type;
+				}
+
+				$tax['object_type'] = maybe_serialize( array_values( $post_types ) );
+
+				$this->data->update_item_in_db( $tax );
+			}
 
 		}
 

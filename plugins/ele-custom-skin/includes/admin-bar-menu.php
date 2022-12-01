@@ -31,9 +31,9 @@ class ECS_Admin_Bar_Menu {
 			return '';
 		}
 
-		if ( ! \Elementor\Plugin::$instance->documents->get( $post_id )->is_built_with_elementor() ) {
-			return '';
-		}
+  if ( ! get_post_meta( $post_id, '_elementor_edit_mode', true ) ) {
+        return '';
+  }
 
 		$document = \Elementor\Plugin::$instance->documents->get_doc_for_frontend( $post_id );
 

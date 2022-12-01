@@ -38,6 +38,8 @@ const JetMapboxPopup = function( data ) {
 
 window.JetEngineMapsProvider = function() {
 
+	this._activePopup = null;
+
 	this.initMap = function( container, settings ) {
 
 		settings = settings || {};
@@ -148,10 +150,27 @@ window.JetEngineMapsProvider = function() {
 
 		infobox.popup.on( 'open', () => {
 			callback();
+			this._activePopup = infobox.popup;
 		} );
 
 		trigger.setPopup( infobox.popup );
 
+	}
+
+	this.triggerOpenPopup = function( trigger ) {
+
+		if ( ! trigger._map ) {
+			return;
+		}
+
+		// Close active popup.
+		if ( this._activePopup ) {
+			this._activePopup.remove();
+		}
+
+		if ( ! trigger.getPopup().isOpen() ) {
+			trigger.togglePopup();
+		}
 	}
 
 	this.getMarkerCluster = function( data ) {
@@ -185,6 +204,43 @@ window.JetEngineMapsProvider = function() {
 			popup: popup
 		} );
 
+	}
+
+	this.getMarkerMap = function( marker ) {
+		return marker._map;
+	}
+
+	this.fitMapToMarker = function( marker, markersClusterer, zoom ) {
+
+		const map = markersClusterer.map;
+
+		if ( ! zoom ) {
+			zoom = 10;
+		}
+
+		const idleHandler = () => {
+
+			if ( ! marker._map ) {
+				zoom++;
+				this.fitMapToMarker( marker, markersClusterer, zoom );
+			} else {
+				this.triggerOpenPopup( marker );
+			}
+
+			map.off( 'idle', idleHandler );
+		}
+
+		// Close active popup.
+		if ( this._activePopup ) {
+			this._activePopup.remove();
+		}
+
+		map.flyTo( {
+			center: this.getMarkerPosition( marker ),
+			zoom:   zoom,
+		} );
+
+		map.on( 'idle', idleHandler );
 	}
 
 }

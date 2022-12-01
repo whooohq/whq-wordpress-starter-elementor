@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_Checkout_Order_Review
- * Name: Order Review
+ * Name: Checkout Order Review
  * Slug: jet-checkout-order-review
  */
 
@@ -22,7 +22,7 @@ class Jet_Woo_Builder_Checkout_Order_Review extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return __( 'Order Review', 'jet-woo-builder' );
+		return __( 'Checkout Order Review', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {

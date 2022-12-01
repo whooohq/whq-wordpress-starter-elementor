@@ -69,9 +69,9 @@ if ( ! class_exists( 'Jet_Engine_Module_Gallery_Grid' ) ) {
 			add_filter( 'jet-engine/listings/allowed-callbacks', array( $this, 'add_grid_cb' ) );
 			add_filter( 'jet-engine/listing/dynamic-field/callback-args', array( $this, 'cb_args' ), 10, 4 );
 			add_filter( 'jet-engine/listings/allowed-callbacks-args', array( $this, 'add_cb_args' ) );
-			add_action( 'jet-engine/listing/dynamic-field/callback-controls', array( $this, 'cb_controls' ) );
 			add_action( 'jet-engine/listing/dynamic-field/misc-style-controls', array( $this, 'style_controls' ) );
 			add_action( 'jet-engine/blocks-views/dynamic-field/misc-style-controls', array( $this, 'block_style_controls' ), 10, 2 );
+			add_filter( 'jet-engine/blocks-views/editor-data', array( $this, 'modify_cb_args' ) );
 
 		}
 
@@ -117,7 +117,15 @@ if ( ! class_exists( 'Jet_Engine_Module_Gallery_Grid' ) ) {
 				)
 			);
 
-			$widget->start_controls_tabs( 'tabs_overlay_style' );
+			$widget->start_controls_tabs(
+				'tabs_overlay_style',
+				array(
+					'condition' => array(
+						'dynamic_field_filter' => 'yes',
+						'filter_callback'      => array( 'jet_engine_img_gallery_grid', 'jet_engine_img_gallery_slider' ),
+					),
+				)
+			);
 
 			$widget->start_controls_tab(
 				'tab_overlay_normal',
@@ -169,6 +177,10 @@ if ( ! class_exists( 'Jet_Engine_Module_Gallery_Grid' ) ) {
 					'type'      => Elementor\Controls_Manager::COLOR,
 					'selectors' => array(
 						$widget->css_selector( ' .jet-engine-gallery-item-wrap:before' ) => 'color: {{VALUE}}',
+					),
+					'condition' => array(
+						'dynamic_field_filter' => 'yes',
+						'filter_callback'      => array( 'jet_engine_img_gallery_grid', 'jet_engine_img_gallery_slider' ),
 					),
 				)
 			);
@@ -234,33 +246,17 @@ if ( ! class_exists( 'Jet_Engine_Module_Gallery_Grid' ) ) {
 				),
 			);
 
-			return $args;
-		}
-
-		/**
-		 * Add call-back related controls
-		 *
-		 * @param  [type] $widget [description]
-		 * @return [type]         [description]
-		 */
-		public function cb_controls( $widget ) {
-
-			$widget->add_control(
-				'img_gallery_lightbox',
-				array(
-					'label'        => esc_html__( 'Use lightbox', 'jet-engine' ),
-					'type'         => Elementor\Controls_Manager::SWITCHER,
-					'label_on'     => esc_html__( 'Yes', 'jet-engine' ),
-					'label_off'    => esc_html__( 'No', 'jet-engine' ),
-					'return_value' => 'yes',
-					'default'      => '',
-					'condition' => array(
-						'dynamic_field_filter' => 'yes',
-						'filter_callback'      => array( 'jet_engine_img_gallery_grid' ),
-					),
-				)
+			$args['img_gallery_lightbox'] = array(
+				'label'     => __( 'Use lightbox', 'jet-engine' ),
+				'type'      => 'switcher',
+				'default'   => '',
+				'condition' => array(
+					'dynamic_field_filter' => 'yes',
+					'filter_callback'      => array( 'jet_engine_img_gallery_grid' ),
+				),
 			);
 
+			return $args;
 		}
 
 		/**
@@ -288,6 +284,20 @@ if ( ! class_exists( 'Jet_Engine_Module_Gallery_Grid' ) ) {
 
 			return array_merge( $args, array( $gallery_args ) );
 
+		}
+
+		public function modify_cb_args( $data ) {
+
+			foreach ( $data['filterCallbacksArgs'] as $index => $arg ) {
+
+				if ( 'img_gallery_lightbox' !== $arg['prop'] ) {
+					continue;
+				}
+
+				$data['filterCallbacksArgs'][ $index ]['label'] = __( 'Add link', 'jet-engine' );
+			}
+
+			return $data;
 		}
 
 		/**

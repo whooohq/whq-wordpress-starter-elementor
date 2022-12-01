@@ -9,40 +9,43 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Range_Filter' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Range_Filter class
 	 */
 	class Jet_Smart_Filters_Range_Filter extends Jet_Smart_Filters_Filter_Base {
-
 		/**
 		 * Get provider name
-		 *
-		 * @return string
 		 */
 		public function get_name() {
+
 			return __( 'Range', 'jet-smart-filters' );
 		}
 
 		/**
 		 * Get provider ID
-		 *
-		 * @return string
 		 */
 		public function get_id() {
+
 			return 'range';
 		}
 
 		/**
+		 * Get icon URL
+		 */
+		public function get_icon_url() {
+
+			return jet_smart_filters()->plugin_url( 'admin/assets/img/filter-types/range.png' );
+		}
+
+		/**
 		 * Get provider wrapper selector
-		 *
-		 * @return string
 		 */
 		public function get_scripts() {
+
 			return false;
 		}
 
-		private function max_value_for_current_step($max, $min, $step) {
+		private function max_value_for_current_step( $max, $min, $step ) {
 
 			if ( $step === 1 ) {
 				return $max;
@@ -51,14 +54,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Range_Filter' ) ) {
 			$steps_count = ceil( ( $max - $min ) / $step );
 
 			return $steps_count * $step + $min;
-
 		}
 
 		/**
 		 * Prepare filter template argumnets
-		 *
-		 * @param  [type] $args [description]
-		 * @return [type]       [description]
 		 */
 		public function prepare_args( $args ) {
 
@@ -80,21 +79,23 @@ if ( ! class_exists( 'Jet_Smart_Filters_Range_Filter' ) ) {
 			$min            = false;
 			$max            = false;
 			$step           = get_post_meta( $filter_id, '_source_step', true );
-			$format         = array();
+			$decimal_num    = get_post_meta( $filter_id, '_values_decimal_num', true );
+			$decimal_sep    = get_post_meta( $filter_id, '_values_decimal_sep', true );
+			$thousand_sep   = get_post_meta( $filter_id, '_values_thousand_sep', true );
+			$format         = array(
+				'decimal_num'   => $decimal_num ? absint( $decimal_num ) : 0,
+				'decimal_sep'   => $decimal_sep ? $decimal_sep : '.',
+				'thousands_sep' => $thousand_sep ? $thousand_sep : ''
+			);
 
 			if ( ! $step ) {
 				$step = 1;
 			}
 
-			$format['thousands_sep'] = get_post_meta( $filter_id, '_values_thousand_sep', true );
-			$format['decimal_sep']   = get_post_meta( $filter_id, '_values_decimal_sep', true );
-			$format['decimal_num']   = get_post_meta( $filter_id, '_values_decimal_num', true );
-			$format['decimal_num']   = absint( $format['decimal_num'] );
-
 			if ( is_callable( $source_cb ) ) {
 				$data = call_user_func( $source_cb, array( 'key' => $query_var ) );
 				$min  = isset( $data['min'] ) ? $data['min'] : false;
-				$max  = isset( $data['max'] ) ? $this->max_value_for_current_step( $data['max'], $min, $step) : false;
+				$max  = isset( $data['max'] ) ? $this->max_value_for_current_step( $data['max'], $min, $step ) : false;
 			}
 
 			if ( false === $min ) {
@@ -128,19 +129,17 @@ if ( ! class_exists( 'Jet_Smart_Filters_Range_Filter' ) ) {
 				'suffix'               => jet_smart_filters_macros( $suffix ),
 				'filter_id'            => $filter_id,
 			);
-
 		}
 
 		public function additional_filter_data_atts( $args ) {
 
 			$additional_filter_data_atts = array();
 
-			if ( ! empty( $args['format'] ) ) $additional_filter_data_atts['data-format'] = $args['format'];
+			if ( ! empty( $args['format'] ) ) {
+				$additional_filter_data_atts['data-format'] = $args['format'];
+			}
 
 			return $additional_filter_data_atts;
-
 		}
-
 	}
-
 }

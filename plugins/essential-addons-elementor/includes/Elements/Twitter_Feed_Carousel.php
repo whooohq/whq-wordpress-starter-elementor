@@ -7,6 +7,7 @@ use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
 use \Elementor\Widget_Base;
+use \Essential_Addons_Elementor\Classes\Helper;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -49,6 +50,13 @@ class Twitter_Feed_Carousel extends Widget_Base
             'twitter feed slider',
             'ea',
             'essential addons'
+        ];
+    }
+
+    public function get_style_depends() {
+        return [
+            'font-awesome-5-all',
+            'font-awesome-4-shim',
         ];
     }
 
@@ -895,7 +903,7 @@ class Twitter_Feed_Carousel extends Widget_Base
                 'label_block' => true,
                 'default' => [
                     'value' => 'fas fa-angle-left',
-                    'library' => 'solid',
+                    'library' => 'fa-solid',
                 ],
             ]
         );
@@ -908,7 +916,7 @@ class Twitter_Feed_Carousel extends Widget_Base
                 'label_block' => true,
                 'default' => [
                     'value' => 'fas fa-angle-right',
-                    'library' => 'solid',
+                    'library' => 'fa-solid',
                 ],
             ]
         );
@@ -918,7 +926,7 @@ class Twitter_Feed_Carousel extends Widget_Base
             [
                 'label' => __('Arrows Size', 'essential-addons-elementor'),
                 'type' => Controls_Manager::SLIDER,
-                'default' => ['size' => '22'],
+                'default' => ['size' => '22', 'unit'=>'px'],
                 'range' => [
                     'px' => [
                         'min' => 15,
@@ -929,6 +937,7 @@ class Twitter_Feed_Carousel extends Widget_Base
                 'size_units' => ['px'],
                 'selectors' => [
                     '{{WRAPPER}} .swiper-container .swiper-button-next, {{WRAPPER}} .swiper-container .swiper-button-prev' => 'font-size: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .swiper-container .swiper-button-next svg, {{WRAPPER}} .swiper-container .swiper-button-prev svg' => 'width: {{SIZE}}{{UNIT}};height: {{SIZE}}{{UNIT}};line-height: {{SIZE}}{{UNIT}};',
                 ],
             ]
         );
@@ -1023,6 +1032,7 @@ class Twitter_Feed_Carousel extends Widget_Base
                 'default' => '',
                 'selectors' => [
                     '{{WRAPPER}} .swiper-container .swiper-button-next, {{WRAPPER}} .swiper-container .swiper-button-prev' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .swiper-container .swiper-button-next svg, {{WRAPPER}} .swiper-container .swiper-button-prev svg' => 'fill: {{VALUE}};',
                 ],
             ]
         );
@@ -1079,6 +1089,7 @@ class Twitter_Feed_Carousel extends Widget_Base
                 'default' => '',
                 'selectors' => [
                     '{{WRAPPER}} .swiper-container .swiper-button-next:hover, {{WRAPPER}} .swiper-container .swiper-button-prev:hover' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .swiper-container .swiper-button-next:hover svg, {{WRAPPER}} .swiper-container .swiper-button-prev:hover svg' => 'fill: {{VALUE}};',
                 ],
             ]
         );
@@ -1468,11 +1479,12 @@ class Twitter_Feed_Carousel extends Widget_Base
         }
 
         if ($settings['arrows'] == 'yes') {
+
             echo '<div class="swiper-button-next swiper-button-next-' . esc_attr($this->get_id()) . '">
-					<i class="' . esc_attr($settings['arrow_right']['value']) . '"></i>
+					'. Helper::get_render_icon( $settings['arrow_right'] ) .'
 				</div>
 				<div class="swiper-button-prev swiper-button-prev-' . esc_attr($this->get_id()) . '">
-					<i class="' . esc_attr($settings['arrow_left']['value']) . '"></i>
+				    '. Helper::get_render_icon( $settings['arrow_left'] ) .'
 				</div>';
         }
         echo '</div>';

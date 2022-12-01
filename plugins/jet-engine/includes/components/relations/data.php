@@ -81,6 +81,8 @@ class Data extends \Jet_Engine_Base_Data {
 			'child_control',
 			'parent_manager',
 			'child_manager',
+			'parent_allow_delete',
+			'child_allow_delete',
 			'is_legacy',
 			'rest_get_enabled',
 			'rest_post_enabled',
@@ -287,6 +289,19 @@ class Data extends \Jet_Engine_Base_Data {
 
 		if ( empty( $args ) ) {
 			$args = array();
+		}
+
+		// For existing relations the `parent_allow_delete` and the `child_allow_delete` settings must be enabled.
+		if ( ! empty( $args ) ) {
+
+			if ( ! isset( $args['parent_allow_delete'] ) ) {
+				$args['parent_allow_delete'] = true;
+			}
+
+			if ( ! isset( $args['child_allow_delete'] ) ) {
+				$args['child_allow_delete'] = true;
+			}
+
 		}
 
 		if ( empty( $meta_fields ) ) {

@@ -46,8 +46,11 @@ class Search_Fields extends \Jet_Engine_Base_API_Endpoint {
 
 		} else {
 
+			$query = trim( $query );
+			$query = strtolower( $query );
+
 			$result = array_filter( $result, function ( $option ) use ( $query ) {
-				return false !== strpos( $option['value'], $query ) || false !== strpos( $option['label'], $query );
+				return false !== strpos( strtolower( $option['value'] ), $query ) || false !== strpos( strtolower( $option['label'] ), $query );
 			} );
 
 		}

@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_Checkout_Shipping_Form
- * Name: Shipping Form
+ * Name: Checkout Shipping Form
  * Slug: jet-checkout-shipping-form
  */
 
@@ -20,7 +20,7 @@ class Jet_Woo_Builder_Checkout_Shipping_Form extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return __( 'Shipping Form', 'jet-woo-builder' );
+		return __( 'Checkout Shipping Form', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
@@ -95,7 +95,7 @@ class Jet_Woo_Builder_Checkout_Shipping_Form extends Jet_Woo_Builder_Base {
 			]
 		);
 
-		jet_woo_builder_common_controls()->register_checkout_forms_manage_fields_controls( $this, 'shipping' );
+		jet_woo_builder_common_controls()->register_checkout_forms_manage_fields_controls( $this, 'shipping', $css_scheme );
 
 		$this->end_controls_section();
 
@@ -230,12 +230,15 @@ class Jet_Woo_Builder_Checkout_Shipping_Form extends Jet_Woo_Builder_Base {
 				$priority = 10;
 
 				foreach ( $settings['field_list'] as $key => $field ) {
-					$field_key = 'shipping_' . $field['field_key'];
+					$field_key     = 'shipping_' . $field['field_key'];
+					$field_classes = is_array( $field['field_class'] ) ? $field['field_class'] : explode( ' ', $field['field_class'] );
+
+					$field_classes[] = 'elementor-repeater-item-' . $field['_id'];
 
 					$items[ $field_key ] = [
 						'label'       => $field['field_label'],
 						'required'    => filter_var( $field['field_required'], FILTER_VALIDATE_BOOLEAN ),
-						'class'       => is_array( $field['field_class'] ) ? $field['field_class'] : explode( ' ', $field['field_class'] ),
+						'class'       => $field_classes,
 						'default'     => $field['field_default_value'],
 						'placeholder' => $field['field_placeholder'],
 						'validate'    => $field['field_validation'],
@@ -289,7 +292,7 @@ class Jet_Woo_Builder_Checkout_Shipping_Form extends Jet_Woo_Builder_Base {
 	 */
 	public function maybe_cart_needs_shipping_address( $required ) {
 
-		if ( jet_woo_builder_integration()->in_elementor() ) {
+		if ( jet_woo_builder()->elementor_views->in_elementor() ) {
 			return true;
 		}
 

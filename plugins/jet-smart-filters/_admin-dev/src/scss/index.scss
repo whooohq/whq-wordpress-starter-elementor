@@ -1,0 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+
+@import "./data-table.scss";
+@import "./filters.scss";
+@import "./trash.scss";
+@import "./filter.scss";
+@import "./popups.scss";
+@import "./settings-list.scss";
+@import "./transition.scss";
+@import "./rtl.scss";
+
+#jet-smart-filters-admin-app {
+	margin-right: 20px;
+	font: 400 13px/20px "Roboto", sans-serif;
+}

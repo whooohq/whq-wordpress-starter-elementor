@@ -51,21 +51,22 @@ class Conditional_Display {
 		$element->add_control(
 			'eael_cl_enable',
 			[
-				'label'        => __( 'Enable Conditional Display', 'essential-addons-elementor' ),
-				'type'         => Controls_Manager::SWITCHER,
-				'default'      => '',
-				'label_on'     => __( 'Yes', 'essential-addons-elementor' ),
-				'label_off'    => __( 'No', 'essential-addons-elementor' ),
-				'return_value' => 'yes',
+				'label'          => __( 'Enable Conditional Display', 'essential-addons-elementor' ),
+				'type'           => Controls_Manager::SWITCHER,
+				'default'        => '',
+				'label_on'       => __( 'Yes', 'essential-addons-elementor' ),
+				'label_off'      => __( 'No', 'essential-addons-elementor' ),
+				'return_value'   => 'yes',
+				'style_transfer' => false
 			]
 		);
 
 		$element->add_control(
 			'eael_cl_visibility_action',
 			[
-				'label'     => __( 'Visibility Action', 'essential-addons-elementor' ),
-				'type'      => Controls_Manager::CHOOSE,
-				'options'   => [
+				'label'          => __( 'Visibility Action', 'essential-addons-elementor' ),
+				'type'           => Controls_Manager::CHOOSE,
+				'options'        => [
 					'show'            => [
 						'title' => esc_html__( 'Show', 'essential-addons-elementor' ),
 						'icon'  => 'eaicon-eye-solid',
@@ -79,20 +80,21 @@ class Conditional_Display {
 						'icon'  => 'eaicon-ban-solid',
 					],
 				],
-				'default'   => 'show',
-				'toggle'    => false,
-				'condition' => [
+				'default'        => 'show',
+				'toggle'         => false,
+				'condition'      => [
 					'eael_cl_enable' => 'yes',
-				]
+				],
+				'style_transfer' => false
 			]
 		);
 
 		$element->add_control(
 			'eael_cl_action_apply_if',
 			[
-				'label'     => __( 'Action Applicable if', 'essential-addons-elementor' ),
-				'type'      => Controls_Manager::CHOOSE,
-				'options'   => [
+				'label'          => __( 'Action Applicable if', 'essential-addons-elementor' ),
+				'type'           => Controls_Manager::CHOOSE,
+				'options'        => [
 					'all' => [
 						'title' => esc_html__( 'True All Logic', 'essential-addons-elementor' ),
 						'icon'  => 'eaicon-dice-six-solid',
@@ -102,12 +104,13 @@ class Conditional_Display {
 						'icon'  => 'eaicon-dice-one-solid',
 					],
 				],
-				'default'   => 'all',
-				'toggle'    => false,
-				'condition' => [
+				'default'        => 'all',
+				'toggle'         => false,
+				'condition'      => [
 					'eael_cl_enable'             => 'yes',
 					'eael_cl_visibility_action!' => 'forcefully_hide',
-				]
+				],
+				'style_transfer' => false
 			]
 		);
 
@@ -124,6 +127,7 @@ class Conditional_Display {
 					'post_type'    => __( 'Post Type', 'essential-addons-elementor' ),
 					'browser'      => __( 'Browser', 'essential-addons-elementor' ),
 					'date_time'    => __( 'Date & Time', 'essential-addons-elementor' ),
+					'recurring_day' => __( 'Recurring Day', 'essential-addons-elementor' ),
 					'dynamic'      => __( 'Dynamic Field', 'essential-addons-elementor' ),
 				],
 			]
@@ -437,7 +441,7 @@ class Conditional_Display {
 		$repeater->add_control(
 			'single_date',
 			[
-				'label'          => esc_html__( 'Date', 'plugin-name' ),
+				'label'          => esc_html__( 'Date', 'essential-addons-elementor' ),
 				'label_block'    => false,
 				'type'           => Controls_Manager::DATE_TIME,
 				'picker_options' => [
@@ -472,7 +476,7 @@ class Conditional_Display {
 		$repeater->add_control(
 			'from_date',
 			[
-				'label'          => esc_html__( 'From', 'plugin-name' ),
+				'label'          => esc_html__( 'From', 'essential-addons-elementor' ),
 				'label_block'    => false,
 				'type'           => Controls_Manager::DATE_TIME,
 				'picker_options' => [
@@ -506,7 +510,7 @@ class Conditional_Display {
 		$repeater->add_control(
 			'to_date',
 			[
-				'label'          => esc_html__( 'To', 'plugin-name' ),
+				'label'          => esc_html__( 'To', 'essential-addons-elementor' ),
 				'label_block'    => false,
 				'type'           => Controls_Manager::DATE_TIME,
 				'picker_options' => [
@@ -537,20 +541,198 @@ class Conditional_Display {
 			]
 		);
 
+		$repeater->add_control(
+			'recurring_day_logic',
+			[
+				'label'      => __( 'Recurring Day', 'essential-addons-elementor' ),
+				'show_label' => false,
+				'type'       => Controls_Manager::CHOOSE,
+				'options'    => [
+					'between'     => [
+						'title' => esc_html__( 'Between', 'essential-addons-elementor' ),
+						'icon'  => 'eaicon-check-solid',
+					],
+					'not_between' => [
+						'title' => esc_html__( 'Not Between', 'essential-addons-elementor' ),
+						'icon'  => 'eaicon-xmark-solid',
+					],
+				],
+				'default'    => 'between',
+				'toggle'     => false,
+				'condition'  => [
+					'logic_type' => 'recurring_day',
+				]
+			]
+		);
+
+        $repeater->add_control(
+            'recurring_days_all',
+            [
+                'label'          => __( 'All Days', 'essential-addons-elementor' ),
+                'type'           => Controls_Manager::SWITCHER,
+                'default'        => '',
+                'label_on'       => __( 'Yes', 'essential-addons-elementor' ),
+                'label_off'      => __( 'No', 'essential-addons-elementor' ),
+                'return_value'   => 'yes',
+                'condition'   => [
+                    'logic_type' => 'recurring_day',
+                ]
+            ]
+        );
+
+		$repeater->add_control(
+			'recurring_days',
+			[
+				'label'       => __( 'Recurring Days', 'essential-addons-elementor' ),
+				'label_block' => true,
+				'type'        => Controls_Manager::SELECT2,
+				'multiple'    => true,
+				'options'     => $this->get_days_list(),
+				'default'     => [ key( $this->get_days_list() ) ],
+				'condition'   => [
+					'logic_type' => 'recurring_day',
+                    'recurring_days_all!' => 'yes'
+				]
+			]
+		);
+
+		$repeater->add_control(
+			'recurring_days_heading',
+			[
+				'label'     => __( 'Date Duration', 'essential-addons-elementor' ),
+				'type'      => Controls_Manager::HEADING,
+				'condition' => [
+					'logic_type' => 'recurring_day',
+				]
+			]
+		);
+
+		$repeater->add_control(
+			'recurring_days_duration_from',
+			[
+				'label'          => esc_html__( 'From', 'essential-addons-elementor' ),
+				'label_block'    => false,
+				'type'           => Controls_Manager::DATE_TIME,
+				'picker_options' => [
+					'altInput'   => true,
+					'altFormat'  => 'M j, Y',
+					'dateFormat' => 'Y-m-d',
+					'enableTime' => false,
+				],
+				'conditions'     => [
+					'relation' => 'and',
+					'terms'    => [
+						[
+							'name'     => 'logic_type',
+							'operator' => '===',
+							'value'    => 'recurring_day',
+						],
+					],
+				]
+			]
+		);
+
+		$repeater->add_control(
+			'recurring_days_duration_to',
+			[
+				'label'          => esc_html__( 'To', 'essential-addons-elementor' ),
+				'label_block'    => false,
+				'type'           => Controls_Manager::DATE_TIME,
+				'picker_options' => [
+					'altInput'   => true,
+					'altFormat'  => 'M j, Y',
+					'dateFormat' => 'Y-m-d',
+					'enableTime' => false,
+				],
+				'conditions'     => [
+					'relation' => 'and',
+					'terms'    => [
+						[
+							'name'     => 'logic_type',
+							'operator' => '===',
+							'value'    => 'recurring_day',
+						],
+					],
+				]
+			]
+		);
+
+		$repeater->add_control(
+			'recurring_days_heading2',
+			[
+				'label'     => __( 'Time Duration', 'essential-addons-elementor' ),
+				'type'      => Controls_Manager::HEADING,
+				'condition' => [
+					'logic_type' => 'recurring_day',
+				]
+			]
+		);
+
+		$repeater->add_control(
+			'from_time',
+			[
+				'label'       => esc_html__( 'From', 'essential-addons-elementor' ),
+				'label_block' => false,
+                'type'           => Controls_Manager::DATE_TIME,
+                'picker_options' => [
+                    'altInput'   => true,
+                    'altFormat'  => 'h:i K',
+                    'enableTime' => true,
+                    'noCalendar' => true,
+                ],
+				'conditions'  => [
+					'relation' => 'and',
+					'terms'    => [
+						[
+							'name'     => 'logic_type',
+							'operator' => '===',
+							'value'    => 'recurring_day',
+						],
+					],
+				]
+			]
+		);
+
+		$repeater->add_control(
+			'to_time',
+			[
+				'label'       => esc_html__( 'To', 'essential-addons-elementor' ),
+				'label_block' => false,
+                'type'           => Controls_Manager::DATE_TIME,
+                'picker_options' => [
+                    'altInput'   => true,
+                    'altFormat'  => 'h:i K',
+                    'enableTime' => true,
+                    'noCalendar' => true,
+                ],
+				'conditions'  => [
+					'relation' => 'and',
+					'terms'    => [
+						[
+							'name'     => 'logic_type',
+							'operator' => '===',
+							'value'    => 'recurring_day',
+						],
+					],
+				]
+			]
+		);
+
 		$element->add_control(
 			'eael_cl_logics',
 			[
-				'label'       => __( 'Logics', 'essential-addons-elementor' ),
-				'type'        => Controls_Manager::REPEATER,
-				'fields'      => $repeater->get_controls(),
-				'default'     => [
+				'label'          => __( 'Logics', 'essential-addons-elementor' ),
+				'type'           => Controls_Manager::REPEATER,
+				'fields'         => $repeater->get_controls(),
+				'default'        => [
 					[
 						'logic_type'           => 'login_status',
 						'login_status_operand' => 'logged_in',
 					],
 				],
-				'title_field' => '{{{ ea_conditional_logic_type_title(logic_type) }}}',
-				'condition'   => [
+				'style_transfer' => false,
+				'title_field'    => '{{{ ea_conditional_logic_type_title(logic_type) }}}',
+				'condition'      => [
 					'eael_cl_enable'             => 'yes',
 					'eael_cl_visibility_action!' => 'forcefully_hide',
 				]
@@ -598,6 +780,23 @@ class Conditional_Display {
 			'netscape4' => __( 'Netscape 4', 'essential-addons-elementor' ),
 			'lynx'      => __( 'Lynx', 'essential-addons-elementor' ),
 			'others'    => __( 'Others', 'essential-addons-elementor' ),
+		];
+	}
+
+	/**
+	 * Get all days list of a week and return array with simple slug|name pare
+	 *
+	 * @return array
+	 */
+	public function get_days_list() {
+		return [
+			'sun' => __( 'Sunday', 'essential-addons-elementor' ),
+			'mon' => __( 'Monday', 'essential-addons-elementor' ),
+			'tue' => __( 'Tuesday', 'essential-addons-elementor' ),
+			'wed' => __( 'Wednesday', 'essential-addons-elementor' ),
+			'thu' => __( 'Thursday', 'essential-addons-elementor' ),
+			'fri' => __( 'Friday', 'essential-addons-elementor' ),
+			'sat' => __( 'Saturday', 'essential-addons-elementor' )
 		];
 	}
 
@@ -748,6 +947,26 @@ class Conditional_Display {
 					}
 
 					break;
+				case 'recurring_day':
+					$current_time = current_time( 'U' );
+					$from_date    = isset( $cl_logic['recurring_days_duration_from'] ) && $cl_logic['recurring_days_duration_from'] ? strtotime( "{$cl_logic['recurring_days_duration_from']} 00:00:00" ) : $current_time - WEEK_IN_SECONDS;
+					$to_date      = isset( $cl_logic['recurring_days_duration_to'] ) && $cl_logic['recurring_days_duration_to'] ? strtotime( "{$cl_logic['recurring_days_duration_to']} 23:59:59" ) : $current_time + WEEK_IN_SECONDS;
+					$is_today     = isset( $cl_logic['recurring_days_all'] ) && $cl_logic['recurring_days_all'] === 'yes' || in_array(strtolower(date('D')), $cl_logic['recurring_days']);
+					$from_time    = isset( $cl_logic['from_time'] ) ? strtotime( $cl_logic['from_time'] ) : strtotime( '00:00:00' );
+					$to_time      = isset( $cl_logic['to_time'] ) ? strtotime( $cl_logic['to_time'] ) : strtotime( '23:59:59' );
+
+					$return = $is_today && $from_date < $current_time && $to_date > $current_time && $from_time < $current_time && $to_time > $current_time;
+					$return = $cl_logic['recurring_day_logic'] === 'between' ? $return : ! $return;
+
+					if ( $needed_any_logic_true && $return ) {
+						break( 2 );
+					}
+
+					if ( $needed_all_logic_true && ! $return ) {
+						break( 2 );
+					}
+
+					break;
 				case 'dynamic':
 					if ( defined( 'ELEMENTOR_PRO_VERSION' ) ) {
 						$dynamic_field = trim( $cl_logic['dynamic_field'] );
@@ -774,7 +993,7 @@ class Conditional_Display {
 	public function content_render( $should_render, Element_Base $element ) {
 		$settings = $element->get_settings_for_display();
 		$settings = $this->parse_arg( $settings );
-
+		
 		if ( $settings['eael_cl_enable'] === 'yes' ) {
 			switch ( $settings['eael_cl_visibility_action'] ) {
 				case 'show':

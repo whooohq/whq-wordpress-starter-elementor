@@ -1,6 +1,8 @@
 <?php
 /**
  * JetWooBuilder Products Grid widget loop item layout 5 template.
+ *
+ * This template can be overridden by copying it to yourtheme/jet-woo-builder/widgets/global/products-grid/presets/preset-5.php.
  */
 ?>
 

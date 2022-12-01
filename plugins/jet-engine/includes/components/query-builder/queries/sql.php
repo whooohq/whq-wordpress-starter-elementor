@@ -17,19 +17,24 @@ class SQL_Query extends Base_Query {
 		$sql    = $this->build_sql_query();
 		$result = $this->wpdb()->get_results( $sql );
 
+		$cast_to_class = ! empty( $this->query['cast_object_to'] ) ? $this->query['cast_object_to'] : false;
+
+		if ( $cast_to_class && class_exists( $cast_to_class ) ) {
+			$result = array_map( function( $item ) use ( $cast_to_class ) {
+				return new $cast_to_class( $item );
+			}, $result );
+		}
+
 		return $result;
 
 	}
 
 	public function get_current_items_page() {
 
-		$per_page = $this->get_items_per_page();
-		$offset   = ! empty( $this->final_query['offset'] ) ? absint( $this->final_query['offset'] ) : 0;
-
-		if ( ! $offset || ! $per_page ) {
+		if ( empty( $this->final_query['_page'] ) ) {
 			return 1;
 		} else {
-			return ceil( $offset / $per_page ) + 1;
+			return absint( $this->final_query['_page'] );
 		}
 
 	}
@@ -87,25 +92,24 @@ class SQL_Query extends Base_Query {
 	 * @return [type] [description]
 	 */
 	public function get_items_page_count() {
-//		$result   = $this->get_items_total_count();
-//		$per_page = $this->get_items_per_page();
-//
-//		if ( $per_page < $result ) {
-//
-//			$page  = $this->get_current_items_page();
-//			$pages = $this->get_items_pages_count();
-//
-//			if ( $page < $pages ) {
-//				$result = $per_page;
-//			} elseif ( $page == $pages ) {
-//				$offset = ! empty( $this->final_query['offset'] ) ? absint( $this->final_query['offset'] ) : 0;
-//				$result = $result - $offset;
-//			}
-//
-//		}
-//
-//		return $result;
-		return $this->get_items_total_count();
+		$result   = $this->get_items_total_count();
+		$per_page = $this->get_items_per_page();
+
+		if ( $per_page < $result ) {
+
+			$page  = $this->get_current_items_page();
+			$pages = $this->get_items_pages_count();
+
+			if ( $page < $pages ) {
+				$result = $per_page;
+			} elseif ( $page == $pages ) {
+				$offset = ( $page - 1 ) * $per_page;
+				$result = $result - $offset;
+			}
+
+		}
+
+		return $result;
 	}
 
 	public function set_filtered_prop( $prop = '', $value = null ) {
@@ -117,8 +121,7 @@ class SQL_Query extends Base_Query {
 				$page = absint( $value );
 
 				if ( 0 < $page ) {
-					$offset = ( $page - 1 ) * $this->get_items_per_page();
-					$this->final_query['offset'] = $offset;
+					$this->final_query['_page']  = $page;
 				}
 
 				break;
@@ -314,7 +317,7 @@ class SQL_Query extends Base_Query {
 		}
 
 		if ( $is_count ) {
-			$query = $this->final_query['count_query'];
+			$query = ! empty( $this->final_query['count_query'] ) ? $this->final_query['count_query'] : false;
 
 			if ( ! $query ) {
 				return 'nosql';
@@ -353,8 +356,7 @@ class SQL_Query extends Base_Query {
 
 		$select_query = "SELECT ";
 
-		//if ( $is_count && ! $this->is_grouped() && empty( $this->final_query['limit'] ) ) {
-		if ( $is_count && ! $this->is_grouped() ) {
+		if ( $is_count && ! $this->is_grouped() && empty( $this->final_query['limit'] ) ) {
 			$select_query .= " COUNT(*) ";
 		} else {
 
@@ -469,20 +471,21 @@ class SQL_Query extends Base_Query {
 			$limit_offset .= " LIMIT";
 			$offset = ! empty( $this->final_query['offset'] ) ? absint( $this->final_query['offset'] ) : 0;
 
-			if ( $offset ) {
+			if ( ! $is_count && ! empty( $this->final_query['_page'] ) ) {
+				$page    = absint( $this->final_query['_page'] );
+				$pages   = $this->get_items_pages_count();
+				$_offset = ( $page - 1 ) * $this->get_items_per_page();
+				$offset  = $offset + $_offset;
 
 				// Fixed the following issue:
 				// The last page has an incorrect number of posts if the `Total Query Limit` number
 				// is not a multiple of the `Per Page Limit` number.
-//				if (
-//					! $is_count
-//					&& ! empty( $this->final_query['limit_per_page'] )
-//					&& ! empty( $this->final_query['limit'] )
-//					&& ( $offset + $limit > absint( $this->final_query['limit'] ) )
-//				) {
-//					$limit = absint( $this->final_query['limit'] ) - $offset;
-//				}
+				if ( $page == $pages ) {
+					$limit = $this->get_items_total_count() - $_offset;
+				}
+			}
 
+			if ( $offset ) {
 				$limit_offset .= " $offset, $limit";
 			} else {
 				$limit_offset .= " $limit";
@@ -496,11 +499,7 @@ class SQL_Query extends Base_Query {
 			$is_count
 		);
 
-//		if ( $is_count && ( $this->is_grouped() || ! empty( $this->final_query['limit'] ) ) ) {
-//			$result = $this->wrap_grouped_query( 'COUNT(*)', $result );
-//		}
-
-		if ( $is_count && $this->is_grouped() ) {
+		if ( $is_count && ( $this->is_grouped() || ! empty( $this->final_query['limit'] ) ) ) {
 			$result = $this->wrap_grouped_query( 'COUNT(*)', $result );
 		}
 
@@ -824,7 +823,7 @@ class SQL_Query extends Base_Query {
 
 		$cols = array();
 
-		if ( ! empty( $this->query['include_columns'] ) ) {
+		if ( ! empty( $this->query['include_columns'] ) && empty( $this->final_query['advanced_mode'] ) ) {
 			$cols = $this->query['include_columns'];
 		} elseif ( ! empty( $this->query['default_columns'] ) ) {
 			$cols = $this->query['default_columns'];
@@ -845,6 +844,13 @@ class SQL_Query extends Base_Query {
 		}
 
 		return $result;
+	}
+
+	public function get_args_to_dynamic() {
+		return array(
+			'manual_query',
+			'count_query',
+		);
 	}
 
 	public function reset_query() {

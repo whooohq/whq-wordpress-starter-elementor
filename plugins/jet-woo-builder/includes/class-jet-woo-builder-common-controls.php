@@ -82,16 +82,17 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			);
 
 			$obj->add_responsive_control(
-				'slides_to_scroll',
+				'slides_min_height',
 				[
-					'label'              => __( 'Slides to Scroll', 'jet-woo-builder' ),
-					'type'               => Controls_Manager::SELECT,
-					'default'            => '1',
-					'options'            => jet_woo_builder_tools()->get_select_range( 12 ),
-					'frontend_available' => true,
-					'condition'          => [
-						'carousel_enabled!' => '',
-						'columns!'          => '1',
+					'label'       => __( 'Slides Min Height', 'jet-woo-builder' ),
+					'type'        => Controls_Manager::NUMBER,
+					'render_type' => 'template',
+					'selectors'   => [
+						'{{WRAPPER}} ' . '.jet-woo-carousel div[ class *= "__inner-box" ]' => 'min-height: {{VALUE}}px;',
+					],
+					'condition'   => [
+						'carousel_enabled!'  => '',
+						'carousel_direction' => 'horizontal',
 					],
 				]
 			);
@@ -99,7 +100,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				'carousel_height',
 				[
-					'label'       => __( 'Height', 'jet-woo-builder' ),
+					'label'       => __( 'Carousel Height', 'jet-woo-builder' ),
 					'type'        => Controls_Manager::NUMBER,
 					'default'     => '1500',
 					'render_type' => 'template',
@@ -109,41 +110,6 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 					'condition'   => [
 						'carousel_enabled!'  => '',
 						'carousel_direction' => 'vertical',
-					],
-				]
-			);
-
-			$obj->add_responsive_control(
-				'slides_min_height',
-				[
-					'label'       => __( 'Minimal Slides Height', 'jet-woo-builder' ),
-					'type'        => Controls_Manager::NUMBER,
-					'default'     => '',
-					'render_type' => 'template',
-					'selectors'   => [
-						'{{WRAPPER}} ' . '.jet-woo-carousel div[ class *= "__inner-box" ]' => 'min-height: {{VALUE}}px;',
-					],
-					'condition'   => [
-						'carousel_enabled!' => '',
-					],
-				]
-			);
-
-			$obj->add_responsive_control(
-				'space_between_slides',
-				[
-					'label'              => __( 'Space Between Slides', 'jet-woo-builder' ),
-					'type'               => Controls_Manager::NUMBER,
-					'desktop_default'    => 10,
-					'tablet_default'     => 10,
-					'mobile_default'     => 10,
-					'frontend_available' => true,
-					'render_type'        => 'template',
-					'selectors'          => [
-						'{{WRAPPER}} .jet-woo-carousel .swiper-slide' => '--space-between: {{VALUE}}px',
-					],
-					'condition'          => [
-						'carousel_enabled!' => '',
 					],
 				]
 			);
@@ -168,11 +134,9 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 					'min'                => 0,
 					'max'                => 0.7,
 					'step'               => 0.1,
-					'desktop_default'    => 0.5,
-					'tablet_default'     => 0.5,
-					'mobile_default'     => 0.3,
-					'render_type'        => 'template',
+					'default'            => 0.5,
 					'frontend_available' => true,
+					'separator'          => 'after',
 					'selectors'          => [
 						'{{WRAPPER}} .jet-woo-carousel .swiper-slide' => '--slides-overflow: {{VALUE}}',
 					],
@@ -183,13 +147,35 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 				]
 			);
 
-			$obj->add_control(
-				'simulate_touch',
+			$obj->add_responsive_control(
+				'slides_to_scroll',
 				[
-					'label'     => __( 'Simulate Touch', 'jet-woo-builder' ),
-					'type'      => Controls_Manager::SWITCHER,
-					'default'   => 'yes',
-					'condition' => [
+					'label'              => __( 'Slides to Scroll', 'jet-woo-builder' ),
+					'type'               => Controls_Manager::SELECT,
+					'default'            => '1',
+					'options'            => jet_woo_builder_tools()->get_select_range( 12 ),
+					'frontend_available' => true,
+					'condition'          => [
+						'carousel_enabled!' => '',
+						'columns!'          => '1',
+					],
+				]
+			);
+
+			$obj->add_responsive_control(
+				'space_between_slides',
+				[
+					'label'              => __( 'Space Between', 'jet-woo-builder' ),
+					'type'               => Controls_Manager::NUMBER,
+					'desktop_default'    => 10,
+					'tablet_default'     => 10,
+					'mobile_default'     => 10,
+					'frontend_available' => true,
+					'render_type'        => 'template',
+					'selectors'          => [
+						'{{WRAPPER}} .jet-woo-carousel .swiper-slide' => '--space-between: {{VALUE}}px',
+					],
+					'condition'          => [
 						'carousel_enabled!' => '',
 					],
 				]
@@ -198,7 +184,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_control(
 				'arrows',
 				[
-					'label'     => __( 'Enable Navigation', 'jet-woo-builder' ),
+					'label'     => __( 'Navigation', 'jet-woo-builder' ),
 					'type'      => Controls_Manager::SWITCHER,
 					'default'   => 'yes',
 					'condition' => [
@@ -238,6 +224,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 						'value'   => ! is_rtl() ? 'fas fa-angle-right' : 'fas fa-angle-left',
 						'library' => 'fa-solid',
 					],
+					'separator'   => 'after',
 					'condition'   => [
 						'carousel_enabled!' => '',
 						'arrows!'           => '',
@@ -248,11 +235,24 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_control(
 				'dots',
 				[
-					'label'        => __( 'Enable Pagination', 'jet-woo-builder' ),
+					'label'        => __( 'Pagination', 'jet-woo-builder' ),
 					'type'         => Controls_Manager::SWITCHER,
 					'return_value' => 'true',
 					'condition'    => [
 						'carousel_enabled!' => '',
+					],
+				]
+			);
+
+			$obj->add_control(
+				'dynamic_bullets',
+				[
+					'label'     => __( 'Dynamic Bullets', 'jet-woo-builder' ),
+					'type'      => Controls_Manager::SWITCHER,
+					'separator' => 'after',
+					'condition' => [
+						'carousel_enabled!' => '',
+						'dots!'             => '',
 					],
 				]
 			);
@@ -287,6 +287,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 				[
 					'label'     => __( 'Disable on Interaction', 'jet-woo-builder' ),
 					'type'      => Controls_Manager::SWITCHER,
+					'separator' => 'after',
 					'condition' => [
 						'carousel_enabled!' => '',
 						'autoplay!'         => '',
@@ -298,6 +299,30 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 				'infinite',
 				[
 					'label'     => __( 'Loop', 'jet-woo-builder' ),
+					'type'      => Controls_Manager::SWITCHER,
+					'default'   => 'yes',
+					'condition' => [
+						'carousel_enabled!' => '',
+					],
+				]
+			);
+
+			$obj->add_control(
+				'speed',
+				[
+					'label'     => __( 'Animation Speed', 'jet-woo-builder' ),
+					'type'      => Controls_Manager::NUMBER,
+					'default'   => 500,
+					'condition' => [
+						'carousel_enabled!' => '',
+					],
+				]
+			);
+
+			$obj->add_control(
+				'simulate_touch',
+				[
+					'label'     => __( 'Simulate Touch', 'jet-woo-builder' ),
 					'type'      => Controls_Manager::SWITCHER,
 					'default'   => 'yes',
 					'condition' => [
@@ -326,6 +351,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 					'max'       => 1,
 					'step'      => 0.01,
 					'default'   => 0.02,
+					'separator' => 'after',
 					'condition' => [
 						'carousel_enabled!' => '',
 						'freemode!'         => '',
@@ -358,18 +384,6 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 					'condition' => [
 						'carousel_enabled!' => '',
 						'columns'           => '1',
-					],
-				]
-			);
-
-			$obj->add_control(
-				'speed',
-				[
-					'label'     => __( 'Animation Speed', 'jet-woo-builder' ),
-					'type'      => Controls_Manager::NUMBER,
-					'default'   => 500,
-					'condition' => [
-						'carousel_enabled!' => '',
 					],
 				]
 			);
@@ -603,7 +617,6 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 					'name'      => 'prev_arrow_border',
 					'label'     => __( 'Border', 'jet-woo-builder' ),
 					'selector'  => '{{WRAPPER}} .jet-woo-carousel .jet-arrow.prev-arrow',
-					'exclude'   => [ 'color' ],
 					'condition' => [
 						'enable_specific_prev_arrow_borders' => 'yes',
 					],
@@ -801,7 +814,6 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 					'name'      => 'next_arrow_border',
 					'label'     => __( 'Border', 'jet-woo-builder' ),
 					'selector'  => '{{WRAPPER}} .jet-woo-carousel .jet-arrow.next-arrow',
-					'exclude'   => [ 'color' ],
 					'condition' => [
 						'enable_specific_next_arrow_borders' => 'yes',
 					],
@@ -917,6 +929,9 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 					'selectors' => [
 						'{{WRAPPER}} .jet-woo-carousel .swiper-pagination' => 'gap: {{SIZE}}{{UNIT}};',
 					],
+					'condition' => [
+						'dynamic_bullets' => '',
+					],
 				]
 			);
 
@@ -932,6 +947,55 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 					],
 					'condition' => [
 						'carousel_direction' => 'horizontal',
+						'dynamic_bullets'    => '',
+					],
+				]
+			);
+
+			$obj->add_responsive_control(
+				'horizontal_space',
+				[
+					'label'              => __( 'Bullet Space', 'jet-woo-builder' ),
+					'type'               => Controls_Manager::DIMENSIONS,
+					'size_units'         => [ 'px', '%' ],
+					'allowed_dimensions' => 'horizontal',
+					'placeholder'        => [
+						'top'    => 'auto',
+						'right'  => '',
+						'bottom' => 'auto',
+						'left'   => '',
+					],
+					'render_type'        => 'template',
+					'selectors'          => [
+						'{{WRAPPER}} .jet-woo-carousel .swiper-pagination .swiper-pagination-bullet' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+					'condition'          => [
+						'carousel_direction' => 'horizontal',
+						'dynamic_bullets!'   => '',
+					],
+				]
+			);
+
+			$obj->add_responsive_control(
+				'vertical_space',
+				[
+					'label'              => __( 'Bullet Space', 'jet-woo-builder' ),
+					'type'               => Controls_Manager::DIMENSIONS,
+					'size_units'         => [ 'px', '%' ],
+					'allowed_dimensions' => 'vertical',
+					'placeholder'        => [
+						'top'    => '',
+						'right'  => 'auto',
+						'bottom' => '',
+						'left'   => 'auto',
+					],
+					'render_type'        => 'template',
+					'selectors'          => [
+						'{{WRAPPER}} .jet-woo-carousel .swiper-pagination .swiper-pagination-bullet' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+					'condition'          => [
+						'carousel_direction' => 'vertical',
+						'dynamic_bullets!'   => '',
 					],
 				]
 			);
@@ -969,11 +1033,11 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 							'max' => 50,
 						],
 					],
-					'condition'  => [
-						'dots_vert_position' => 'top',
-					],
 					'selectors'  => [
 						'{{WRAPPER}} .jet-woo-carousel .swiper-pagination' => 'top: {{SIZE}}{{UNIT}}; bottom: auto;',
+					],
+					'condition'  => [
+						'dots_vert_position' => 'top',
 					],
 				]
 			);
@@ -998,11 +1062,11 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 							'max' => 50,
 						],
 					],
-					'condition'  => [
-						'dots_vert_position' => 'bottom',
-					],
 					'selectors'  => [
 						'{{WRAPPER}} .jet-woo-carousel .swiper-pagination' => 'bottom: {{SIZE}}{{UNIT}}; top: auto;',
+					],
+					'condition'  => [
+						'dots_vert_position' => 'bottom',
 					],
 				]
 			);
@@ -1040,11 +1104,11 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 							'max' => 50,
 						],
 					],
-					'condition'  => [
-						'dots_hor_position' => 'left',
-					],
 					'selectors'  => [
 						'{{WRAPPER}} .jet-woo-carousel .swiper-pagination' => 'left: {{SIZE}}{{UNIT}}; right: auto;',
+					],
+					'condition'  => [
+						'dots_hor_position' => 'left',
 					],
 				]
 			);
@@ -1069,11 +1133,23 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 							'max' => 50,
 						],
 					],
+					'selectors'  => [
+						'{{WRAPPER}} .jet-woo-carousel .swiper-pagination' => 'right: {{SIZE}}{{UNIT}}; left: auto;',
+					],
 					'condition'  => [
 						'dots_hor_position' => 'right',
 					],
+				]
+			);
+
+			$obj->add_responsive_control(
+				'dots_padding',
+				[
+					'label'      => __( 'Padding', 'jet-woo-builder' ),
+					'type'       => Controls_Manager::DIMENSIONS,
+					'size_units' => [ 'px', 'em', '%' ],
 					'selectors'  => [
-						'{{WRAPPER}} .jet-woo-carousel .swiper-pagination' => 'right: {{SIZE}}{{UNIT}}; left: auto;',
+						'{{WRAPPER}} .jet-woo-carousel .swiper-pagination' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 				]
 			);
@@ -1653,11 +1729,20 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 		}
 
 		/**
+		 * Form manager controls.
+		 *
 		 * Register controls for managing checkout forms fields.
 		 *
-		 * @param $obj
+		 * @since  2.0.0
+		 * @access public
+		 *
+		 * @param object $obj          Widget instance.
+		 * @param string $fields_group Specific form prefix.
+		 * @param array  $css_scheme   Style selectors list.
+		 *
+		 * @return void
 		 */
-		public function register_checkout_forms_manage_fields_controls( $obj, $fields_group ) {
+		public function register_checkout_forms_manage_fields_controls( $obj, $fields_group, $css_scheme ) {
 
 			$obj->add_control(
 				'modify_field',
@@ -1744,6 +1829,31 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 				]
 			);
 
+			$repeater->add_responsive_control(
+				'field_width',
+				[
+					'label'      => __( 'Width', 'jet-woo-builder' ),
+					'type'       => Controls_Manager::SLIDER,
+					'size_units' => [ 'px', '%' ],
+					'range'      => [
+						'px' => [
+							'min' => 0,
+							'max' => 1000,
+						],
+						'%'  => [
+							'min' => 0,
+							'max' => 100,
+						],
+					],
+					'selectors'  => [
+						'{{WRAPPER}} ' . $css_scheme['field'] . '{{CURRENT_ITEM}}' => 'width: {{SIZE}}{{UNIT}};',
+					],
+					'condition'  => [
+						'field_class!' => 'form-row-wide',
+					],
+				]
+			);
+
 			$repeater->add_control(
 				'field_required',
 				[
@@ -1766,6 +1876,208 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 				]
 			);
 
+			$obj->add_control(
+				'fields_mobile_approach',
+				[
+					'type'         => Controls_Manager::SWITCHER,
+					'label'        => __( 'Responsive Mobile Approach', 'jet-woo-builder' ),
+					'description'  => __( 'Enable responsive fields width for mobile devices.', 'jet-woo-builder' ),
+					'prefix_class' => 'jet-woo-builder-forms-mobile-approach-',
+					'separator'    => 'before',
+				]
+			);
+
+		}
+
+		/**
+		 * Register badges style controls.
+		 *
+		 * @since  2.1.0
+		 * @access public
+		 *
+		 * @param object $obj        Widget instance.
+		 * @param array  $css_scheme Styles selector list.
+		 *
+		 * @return void
+		 */
+		public function register_badges_style_controls( $obj, $css_scheme ) {
+			$obj->add_control(
+				'badges_display',
+				[
+					'label'     => __( 'Display Type', 'jet-woo-builder' ),
+					'type'      => Controls_Manager::SELECT,
+					'options'   => [
+						'inline-flex' => __( 'Inline', 'jet-woo-builder' ),
+						'flex'        => __( 'Block', 'jet-woo-builder' ),
+					],
+					'default'   => 'inline-flex',
+					'selectors' => [
+						'{{WRAPPER}} ' . $css_scheme['badge'] => 'display: {{VALUE}};',
+					],
+				]
+			);
+
+			$obj->add_control(
+				'badges_custom_size',
+				[
+					'label' => __( 'Custom Size', 'jet-woo-builder' ),
+					'type'  => Controls_Manager::SWITCHER,
+				]
+			);
+
+			$obj->add_responsive_control(
+				'badges_min_width',
+				[
+					'label'      => __( 'Min Width', 'jet-woo-builder' ),
+					'type'       => Controls_Manager::SLIDER,
+					'size_units' => [ 'px' ],
+					'range'      => [
+						'px' => [
+							'min' => 0,
+							'max' => 300,
+						],
+					],
+					'selectors'  => [
+						'{{WRAPPER}} ' . $css_scheme['badge'] => 'min-width: {{SIZE}}{{UNIT}};',
+					],
+					'condition'  => [
+						'badges_custom_size!' => '',
+						'badges_display'      => 'inline-flex',
+					],
+				]
+			);
+
+			$obj->add_responsive_control(
+				'badges_min_height',
+				[
+					'label'      => __( 'Min Height', 'jet-woo-builder' ),
+					'type'       => Controls_Manager::SLIDER,
+					'size_units' => [ 'px' ],
+					'range'      => [
+						'px' => [
+							'min' => 0,
+							'max' => 300,
+						],
+					],
+					'selectors'  => [
+						'{{WRAPPER}} ' . $css_scheme['badge'] => 'min-height: {{SIZE}}{{UNIT}};',
+					],
+					'condition'  => [
+						'badges_custom_size!' => '',
+					],
+				]
+			);
+
+			$obj->add_responsive_control(
+				'badge_alignment',
+				[
+					'label'     => __( 'Alignment', 'jet-woo-builder' ),
+					'type'      => Controls_Manager::CHOOSE,
+					'options'   => jet_woo_builder_tools()->get_available_h_align_types(),
+					'default'   => ! is_rtl() ? 'left' : 'right',
+					'selectors' => [
+						'{{WRAPPER}} ' . $css_scheme['badges'] => 'text-align: {{VALUE}};',
+					],
+					'condition' => [
+						'badges_display' => 'inline-flex',
+					],
+					'classes'   => 'elementor-control-align',
+				]
+			);
+
+			$obj->add_control(
+				'badge_on_sale_color',
+				[
+					'label'     => __( 'Color', 'jet-woo-builder' ),
+					'type'      => Controls_Manager::COLOR,
+					'separator' => 'before',
+					'selectors' => [
+						'{{WRAPPER}} ' . $css_scheme['badge'] => 'color: {{VALUE}}',
+					],
+				]
+			);
+
+			$obj->add_group_control(
+				Group_Control_Background::get_type(),
+				[
+					'name'     => 'badge_on_sale_background',
+					'selector' => '{{WRAPPER}} ' . $css_scheme['badge'],
+				]
+			);
+
+			$obj->add_group_control(
+				Group_Control_Typography::get_type(),
+				[
+					'name'     => 'badge_typography',
+					'selector' => '{{WRAPPER}}  ' . $css_scheme['badge'],
+				]
+			);
+
+			$obj->add_group_control(
+				Group_Control_Border::get_type(),
+				[
+					'name'     => 'badge_on_sale_border',
+					'label'    => __( 'Border', 'jet-woo-builder' ),
+					'selector' => '{{WRAPPER}} ' . $css_scheme['badge'],
+				]
+			);
+
+			$obj->add_responsive_control(
+				'badge_border_radius',
+				[
+					'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+					'type'       => Controls_Manager::DIMENSIONS,
+					'size_units' => [ 'px', '%' ],
+					'selectors'  => [
+						'{{WRAPPER}} ' . $css_scheme['badge'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+				]
+			);
+
+			$obj->add_group_control(
+				Group_Control_Box_Shadow::get_type(),
+				[
+					'name'     => 'badge_box_shadow',
+					'selector' => '{{WRAPPER}} ' . $css_scheme['badge'],
+				]
+			);
+
+			$obj->add_responsive_control(
+				'badge_margin',
+				[
+					'label'      => __( 'Margin', 'jet-woo-builder' ),
+					'type'       => Controls_Manager::DIMENSIONS,
+					'size_units' => [ 'px', '%', 'em' ],
+					'selectors'  => [
+						'{{WRAPPER}} ' . $css_scheme['badge'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+				]
+			);
+
+			$obj->add_responsive_control(
+				'badge_padding',
+				[
+					'label'      => __( 'Padding', 'jet-woo-builder' ),
+					'type'       => Controls_Manager::DIMENSIONS,
+					'size_units' => [ 'px', '%', 'em' ],
+					'selectors'  => [
+						'{{WRAPPER}} ' . $css_scheme['badge'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+				]
+			);
+
+			$obj->add_responsive_control(
+				'badge_content_alignment',
+				[
+					'label'     => __( 'Content Alignment', 'jet-woo-builder' ),
+					'type'      => Controls_Manager::CHOOSE,
+					'default'   => 'center',
+					'options'   => jet_woo_builder_tools()->get_available_flex_h_align_types(),
+					'selectors' => [
+						'{{WRAPPER}} ' . $css_scheme['badge'] => 'justify-content: {{VALUE}};',
+					],
+				]
+			);
 		}
 
 		/**

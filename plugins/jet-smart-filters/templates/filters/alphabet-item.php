@@ -7,7 +7,7 @@ $label = strtoupper( $value );
 
 ?>
 <div class="jet-alphabet-list__row jet-filter-row">
-	<label class="jet-alphabet-list__item">
+	<label class="jet-alphabet-list__item" <?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>>
 		<input
 			type="<?php echo $filter_type; ?>"
 			class="jet-alphabet-list__input"

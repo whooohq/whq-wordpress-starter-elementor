@@ -4,33 +4,40 @@ namespace Elementor;
 
 use Elementor\Group_Control_Border;
 
+// Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-} // Exit if accessed directly
+}
 
 class Jet_Smart_Filters_Date_Period_Widget extends Jet_Smart_Filters_Base_Widget {
 
 	public function get_name() {
+
 		return 'jet-smart-filters-date-period';
 	}
 
 	public function get_title() {
+
 		return __( 'Date Period Filter', 'jet-smart-filters' );
 	}
 
 	public function get_icon() {
+
 		return 'jet-smart-filters-icon-date-period-filter';
 	}
 
 	public function get_script_depends() {
+
 		return array( 'air-datepicker' );
 	}
 
 	public function get_style_depends() {
+
 		return array( 'air-datepicker' );
 	}
 
 	public function get_help_url() {
+
 		return jet_smart_filters()->widgets->prepare_help_url(
 			'https://crocoblock.com/knowledge-base/articles/jetsmartfilters-how-to-add-a-date-period-filter-based-on-the-dates-in-the-meta-fields/',
 			$this->get_name()
@@ -63,8 +70,7 @@ class Jet_Smart_Filters_Date_Period_Widget extends Jet_Smart_Filters_Base_Widget
 		// Include Datepicker Style
 		include jet_smart_filters()->plugin_path( 'includes/widgets/common-controls/air-datepicker-style.php' );
 
-		/*
-		$this->controls_section_date_inputs( $css_scheme );
+		/* $this->controls_section_date_inputs( $css_scheme );
 
 		$this->controls_section_filter_label( $css_scheme );
 
@@ -241,7 +247,6 @@ class Jet_Smart_Filters_Date_Period_Widget extends Jet_Smart_Filters_Base_Widget
 		);
 
 		$this->end_controls_section();
-
 	}
 
 	protected function controls_next_prev_buttons( $css_scheme ) {
@@ -404,7 +409,6 @@ class Jet_Smart_Filters_Date_Period_Widget extends Jet_Smart_Filters_Base_Widget
 		);
 
 		$this->end_controls_section();
-
 	}
 
 	protected function controls_section_date_inputs( $css_scheme ) {
@@ -518,7 +522,6 @@ class Jet_Smart_Filters_Date_Period_Widget extends Jet_Smart_Filters_Base_Widget
 		);
 
 		$this->end_controls_section();
-
 	}
 
 	protected function controls_section_filter_label( $css_scheme ) {
@@ -614,7 +617,6 @@ class Jet_Smart_Filters_Date_Period_Widget extends Jet_Smart_Filters_Base_Widget
 		);
 
 		$this->end_controls_section();
-
 	}
 
 	protected function controls_section_apply_filter_button( $css_scheme ) {
@@ -893,9 +895,7 @@ class Jet_Smart_Filters_Date_Period_Widget extends Jet_Smart_Filters_Base_Widget
 		);
 
 		$this->end_controls_section();
-
 	}
 
 	public function base_controls_section_filter_group( $css_scheme ) {}
-
 }

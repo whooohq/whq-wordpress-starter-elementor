@@ -5,8 +5,6 @@
 
 /**
  * Get min/max price for WooCommerce products
- *
- * @return array
  */
 function jet_smart_filters_woo_prices( $args = array() ) {
 
@@ -60,13 +58,13 @@ function jet_smart_filters_woo_prices( $args = array() ) {
 	}
 
 	return $price; // WPCS: unprepared SQL ok.
-
 }
 
 /**
  * Callback to get min/max value for meta key
  */
 function jet_smart_filters_meta_values( $args = array() ) {
+
 	$key = ! empty( $args['key'] ) ? $args['key'] : false;
 
 	if ( ! $key ) {
@@ -86,11 +84,18 @@ function jet_smart_filters_meta_values( $args = array() ) {
 	}
 
 	$tax_query     = new WP_Tax_Query( $tax_query );
-	$tax_query_sql = $tax_query->get_sql( $wpdb->postmeta, 'post_id' );
+	$tax_query_sql = $tax_query->get_sql( 'pm', 'post_id' );
 
-	$sql  = "SELECT min( FLOOR( meta_value ) ) as min, max( CEILING( meta_value ) ) as max FROM $wpdb->postmeta";
+	$search_in_statuses = apply_filters( 'jet-smart-filters/dynamic-min-max/search-statuses', array( 'publish' ) );
+	$search_in_statuses = implode( ', ', array_map( function( $status ) {
+		return '\'' . $status . '\'';
+	}, $search_in_statuses ) );
+
+	$sql  = "SELECT min( FLOOR( pm.meta_value ) ) as min, max( CEILING( pm.meta_value ) ) as max FROM $wpdb->postmeta AS pm";
+	$sql .= " INNER JOIN $wpdb->posts AS p ON p.ID = pm.post_id";
 	$sql .= $tax_query_sql['join'];
-	$sql .= " WHERE `meta_key` IN ('" . str_replace( ',', '\',\'', str_replace( ' ', '', $key ) ) . "')";
+	$sql .= " WHERE pm.meta_key IN ('" . str_replace( ',', '\',\'', str_replace( ' ', '', $key ) ) . "')";
+	$sql .= " AND p.post_status IN ( $search_in_statuses )";
 	$sql .= $tax_query_sql['where'];
 
 	$data = $wpdb->get_results( $sql, ARRAY_A );
@@ -100,29 +105,68 @@ function jet_smart_filters_meta_values( $args = array() ) {
 	} else {
 		return array();
 	}
+}
 
+/**
+ * Callback to get min/max value for meta key
+ */
+function jet_smart_filters_term_meta_values( $args = array() ) {
+
+	$key = ! empty( $args['key'] ) ? $args['key'] : false;
+
+	if ( ! $key ) {
+		return array();
+	}
+
+	global $wpdb;
+
+	$sql  = "SELECT min( FLOOR( tm.meta_value ) ) as min, max( CEILING( tm.meta_value ) ) as max FROM $wpdb->termmeta AS tm";
+	$sql .= " WHERE tm.meta_key IN ('" . str_replace( ',', '\',\'', str_replace( ' ', '', $key ) ) . "')";
+	$data = $wpdb->get_results( $sql, ARRAY_A );
+	
+	if ( ! empty( $data ) ) {
+		return $data[0];
+	} else {
+		return array();
+	}
+}
+
+/**
+ * Callback to get min/max value for meta key
+ */
+function jet_smart_filters_user_meta_values( $args = array() ) {
+
+	$key = ! empty( $args['key'] ) ? $args['key'] : false;
+
+	if ( ! $key ) {
+		return array();
+	}
+
+	global $wpdb;
+
+	$sql  = "SELECT min( FLOOR( um.meta_value ) ) as min, max( CEILING( um.meta_value ) ) as max FROM $wpdb->usermeta AS um";
+	$sql .= " WHERE um.meta_key IN ('" . str_replace( ',', '\',\'', str_replace( ' ', '', $key ) ) . "')";
+	$data = $wpdb->get_results( $sql, ARRAY_A );
+
+	if ( ! empty( $data ) ) {
+		return $data[0];
+	} else {
+		return array();
+	}
 }
 
 /**
  * Returns current currency symbol
- *
- * @return string
  */
 function jet_smart_filters_woo_currency_symbol() {
 
 	$currency = apply_filters( 'jet-smart-filters/woocommerce/currency-symbol', get_woocommerce_currency_symbol() );
 
 	return $currency;
-
 }
 
 /**
  * Do macros inside string
- *
- * @param  [type] $string      [description]
- * @param  [type] $field_value [description]
- *
- * @return [type]              [description]
  */
 function jet_smart_filters_macros( $string, $field_value = null ) {
 
@@ -152,5 +196,4 @@ function jet_smart_filters_macros( $string, $field_value = null ) {
 
 		}, $string
 	);
-
 }

@@ -63,7 +63,7 @@
 			<cx-vui-switcher
 				name="parent_manager"
 				label="<?php _e( 'Allow to create new children from parent', 'jet-engine' ); ?>"
-				description="<?php _e( 'If enabled allows to create new children items from the related items control for parent object page', 'jet-engine' ); ?>"
+				description="<?php _e( 'If enabled, allows to create new children items from the related items control for parent object page', 'jet-engine' ); ?>"
 				:wrapper-css="[ 'equalwidth' ]"
 				:value="args.parent_manager"
 				:conditions="[ {
@@ -72,6 +72,19 @@
 					value: true,
 				} ]"
 				@input="( newValue ) => { setArg( newValue, 'parent_manager' ) }"
+			></cx-vui-switcher>
+			<cx-vui-switcher
+				name="parent_allow_delete"
+				label="<?php _e( 'Allow to delete children from parent', 'jet-engine' ); ?>"
+				description="<?php _e( 'If enabled, allows to delete children items from the related items control for parent object page', 'jet-engine' ); ?>"
+				:wrapper-css="[ 'equalwidth' ]"
+				:value="args.parent_allow_delete"
+				:conditions="[ {
+					input: args.parent_control,
+					compare: 'equal',
+					value: true,
+				} ]"
+				@input="( newValue ) => { setArg( newValue, 'parent_allow_delete' ) }"
 			></cx-vui-switcher>
 			<cx-vui-switcher
 				name="child_control"
@@ -84,7 +97,7 @@
 			<cx-vui-switcher
 				name="child_manager"
 				label="<?php _e( 'Allow to create new parents from children', 'jet-engine' ); ?>"
-				description="<?php _e( 'If enabled allows to create new parent items from the related items control for child object page', 'jet-engine' ); ?>"
+				description="<?php _e( 'If enabled, allows to create new parent items from the related items control for child object page', 'jet-engine' ); ?>"
 				:wrapper-css="[ 'equalwidth' ]"
 				:value="args.child_manager"
 				:conditions="[ {
@@ -93,6 +106,19 @@
 					value: true,
 				} ]"
 				@input="( newValue ) => { setArg( newValue, 'child_manager' ) }"
+			></cx-vui-switcher>
+			<cx-vui-switcher
+				name="child_allow_delete"
+				label="<?php _e( 'Allow to delete parents from children', 'jet-engine' ); ?>"
+				description="<?php _e( 'If enabled, allows to delete parent items from the related items control for child object page', 'jet-engine' ); ?>"
+				:wrapper-css="[ 'equalwidth' ]"
+				:value="args.child_allow_delete"
+				:conditions="[ {
+					input: args.child_control,
+					compare: 'equal',
+					value: true,
+				} ]"
+				@input="( newValue ) => { setArg( newValue, 'child_allow_delete' ) }"
 			></cx-vui-switcher>
 			<cx-vui-switcher
 				name="db_table"

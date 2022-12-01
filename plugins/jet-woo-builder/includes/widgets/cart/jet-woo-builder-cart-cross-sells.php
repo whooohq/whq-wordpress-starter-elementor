@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_Cart_Cross_Sells
- * Name: Cross Sells
+ * Name: Cart Cross Sells
  * Slug: jet-cart-cross-sells
  */
 
@@ -23,7 +23,7 @@ class Jet_Woo_Builder_Cart_Cross_Sells extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return __( 'Cross Sells', 'jet-woo-builder' );
+		return __( 'Cart Cross Sells', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {

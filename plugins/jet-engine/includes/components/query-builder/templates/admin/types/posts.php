@@ -46,6 +46,28 @@
 					name="query_s"
 					v-model="query.s"
 				><jet-query-dynamic-args v-model="dynamicQuery.s"></jet-query-dynamic-args></cx-vui-input>
+				<cx-vui-switcher
+					label="<?php _e( 'Sentence Search', 'jet-engine' ); ?>"
+					description="<?php _e( 'Whether to search by phrase.', 'jet-engine' ); ?>"
+					:wrapper-css="[ 'equalwidth' ]"
+					name="query_sentence"
+					v-model="query.sentence"
+					:conditions="[
+						{
+							operator: 'OR',
+						},
+						{
+							input: query.s,
+							compare: 'not_in',
+							value: [ '', undefined ],
+						},
+						{
+							input: dynamicQuery.s,
+							compare: 'not_in',
+							value: [ '', undefined ],
+						}
+					]"
+				></cx-vui-switcher>
 				<cx-vui-component-wrapper
 					:wrapper-css="[ 'query-fullwidth' ]"
 				>
@@ -99,7 +121,7 @@
 								<cx-vui-component-wrapper
 									v-if="'meta_clause' === query.orderby[ index ].orderby && ! metaClauses.length"
 									label="<?php _e( 'Warning', 'jet-engine' ); ?>"
-									description="<?php _e( 'You not created any meta clauses yet. You can do this at the Meta Query tab. Note that Clause name option is required for the meta query if you want to use it for ordering', 'jet-engine' ); ?>"
+									description="<?php _e( 'You have not created any meta clauses yet. You can do this at the Meta Query tab. Note that Clause name option is required for the meta query if you want to use it for ordering', 'jet-engine' ); ?>"
 									:wrapper-css="[ 'equalwidth' ]"
 								></cx-vui-component-wrapper>
 								<cx-vui-select
@@ -413,7 +435,7 @@
 									size="fullwidth"
 									:value="query.date_query[ index ].after"
 									@input="setFieldProp( dateClause._id, 'after', $event, query.date_query )"
-								><jet-query-dynamic-args v-model="dynamicQuery.date_query[ dateClause._id ].day"></jet-query-dynamic-args></cx-vui-input>
+								><jet-query-dynamic-args v-model="dynamicQuery.date_query[ dateClause._id ].after"></jet-query-dynamic-args></cx-vui-input>
 								<cx-vui-input
 									label="<?php _e( 'Before', 'jet-engine' ); ?>"
 									description="<?php _e( 'Date to retrieve posts before. Eg. January 1st 2020, Today, Tomorrow etc.', 'jet-engine' ); ?>"

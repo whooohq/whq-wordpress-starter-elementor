@@ -21,11 +21,13 @@ class Jet_Woo_Builder_Shop_Document extends Jet_Woo_Builder_Document_Base {
 	}
 
 	public static function get_properties() {
+
 		$properties = parent::get_properties();
 
 		$properties['woo_builder_template_settings'] = true;
 
 		return $properties;
+
 	}
 
 	public function get_preview_as_query_args() {

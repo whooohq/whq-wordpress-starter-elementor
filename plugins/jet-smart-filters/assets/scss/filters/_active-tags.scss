@@ -32,11 +32,4 @@
 			line-height: 1;
 		}
 	}
-
-	body.rtl & {
-		.jet-active-tags__title + .jet-active-tag,
-		.jet-active-tag:first-child {
-			margin-right: 0 !important;
-		}
-	}
 }

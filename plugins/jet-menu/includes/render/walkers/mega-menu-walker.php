@@ -273,8 +273,18 @@ class Mega_Menu_Walker extends \Walker_Nav_Menu {
 			$title_html = '';
 		}
 
-		if ( ! empty( $settings['menu_badge'] ) ) {
-			$badge = $this->get_badge_html( $settings['menu_badge'], $depth );
+		if ( ! empty( $settings['menu_badge'] ) || ! empty( $settings['badge_svg'] ) ) {
+
+			switch ( $settings['menu_badge_type'] ) {
+				case 'text':
+					$badge_html = $settings['menu_badge'];
+					break;
+				case 'svg':
+					$badge_html = $this->get_svg_icon_html( $settings['badge_svg'], false );
+					break;
+			}
+
+			$badge = $this->get_badge_html( $badge_html, $depth );
 		}
 
 		$dropdown_icon = $args->settings[ 'dropdown-icon' ];
@@ -315,28 +325,50 @@ class Mega_Menu_Walker extends \Walker_Nav_Menu {
 
 		$is_elementor = ( isset( $_GET['elementor-preview'] ) ) ? true : false;
 
-		$mega_item = get_post_meta( $item->ID, jet_menu()->post_type_manager->meta_key(), true );
+		if ( $this->is_mega_enabled( $item->ID ) ) {
+			$content_type = $settings['content_type'];
+			$render_instance = false;
 
-		if ( $this->is_mega_enabled( $item->ID ) && ! $is_elementor ) {
+			switch ( $content_type ) {
+				case 'default':
+					$mega_template_id = get_post_meta( $item->ID, 'jet-menu-item-block-editor', true );
 
-			$content = '';
+					if ( ! empty( $mega_template_id ) ) {
+						$render_instance = new \Jet_Menu\Render\Block_Editor_Template_Render( [
+							'template_id' => $mega_template_id,
+						] );
+					}
 
-			if ( ! filter_var( $args->settings['ajax-loading'], FILTER_VALIDATE_BOOLEAN ) ) {
-				do_action( 'jet-menu/mega-sub-menu/before-render', $item->ID );
+					break;
+				case 'elementor':
+					$mega_template_id = get_post_meta( $item->ID, 'jet-menu-item', true );
 
-				if ( class_exists( 'Elementor\Plugin' ) ) {
-					$elementor = \Elementor\Plugin::instance();
-					$content   = $elementor->frontend->get_builder_content_for_display( $mega_item );
+					if ( ! empty( $mega_template_id ) ) {
+						$render_instance = new \Jet_Menu\Render\Elementor_Template_Render( [
+							'template_id' => $mega_template_id,
+						] );
+					}
+
+					break;
+			}
+
+			$tepmlate_content = __( 'Mega content is empty', 'jet-menu' );
+
+			if ( $render_instance ) {
+
+				if ( ! filter_var( $args->settings[ 'ajax-loading' ], FILTER_VALIDATE_BOOLEAN ) ) {
+					do_action( 'jet-menu/mega-sub-menu/before-render', $item->ID );
+
+					ob_start();
+					$render_status = $render_instance->render();
+					$tepmlate_content = ob_get_clean();
+
+					do_action( 'jet-menu/mega-sub-menu/after-render', $item->ID );
+				} else {
+					ob_start();
+					include jet_menu()->get_template( 'public/mega-content-loader.php' );
+					$tepmlate_content = ob_get_clean();
 				}
-
-				$content = do_shortcode( $content );
-
-				do_action( 'jet-menu/mega-sub-menu/after-render', $item->ID );
-
-			} else {
-				ob_start();
-				include jet_menu()->get_template( 'public/mega-content-loader.php' );
-				$content = ob_get_clean();
 			}
 
 			if ( ! empty( $settings['custom_mega_menu_position'] ) && 'default' !== $settings['custom_mega_menu_position'] ) {
@@ -345,11 +377,11 @@ class Mega_Menu_Walker extends \Walker_Nav_Menu {
 
 			$position = ( !empty( $settings['custom_mega_menu_position'] ) && 'default' !== $settings['custom_mega_menu_position'] ) ? 'relative' : 'default';
 
-			$item_output .= sprintf( '<div class="jet-mega-menu-mega-container" data-template-id="%s" data-position="%s"><div class="jet-mega-menu-mega-container__inner">%s</div></div>', $mega_item, $position, $content );
+			$item_output .= sprintf( '<div class="jet-mega-menu-mega-container" data-template-id="%s" data-template-content="%s" data-position="%s"><div class="jet-mega-menu-mega-container__inner">%s</div></div>', $mega_template_id, $content_type, $position, $tepmlate_content );
 
 		}
 
-		jet_menu_tools()->add_menu_css( $item->ID, '.jet-mega-menu-item-' . $item->ID );
+		//jet_menu_tools()->add_menu_css( $item->ID, '.jet-mega-menu-item-' . $item->ID );
 
 		$item_output = apply_filters( 'jet-menu/mega-menu-walker/start-el', $item_output, $item, $this, $depth, $args );
 
@@ -411,7 +443,7 @@ class Mega_Menu_Walker extends \Walker_Nav_Menu {
 	 */
 	public function modify_menu_item_classes( &$item, $index ) {
 
-		if ( 0 === $index && 'menu-item' !== $item ) {
+		if ( false === strpos( $item, 'menu-item' ) ) {
 			return;
 		}
 
@@ -455,11 +487,9 @@ class Mega_Menu_Walker extends \Walker_Nav_Menu {
 	 * @return boolean
 	 */
 	public function is_mega_enabled( $item_id = 0 ) {
-
 		$item_settings = $this->get_settings( $item_id );
-		$menu_post     = jet_menu()->post_type_manager->get_related_menu_post( $item_id );
 
-		return ( isset( $item_settings['enabled'] ) && 'true' == $item_settings['enabled'] && ! empty( $menu_post ) );
+		return ( isset( $item_settings['enabled'] ) && filter_var( $item_settings['enabled'], FILTER_VALIDATE_BOOLEAN ) );
 	}
 
 	/**
@@ -471,7 +501,7 @@ class Mega_Menu_Walker extends \Walker_Nav_Menu {
 	public function get_settings( $item_id = 0 ) {
 
 		if ( null === $this->item_settings ) {
-			$this->item_settings = jet_menu()->settings_manager->get_item_settings( $item_id );
+			$this->item_settings = jet_menu()->settings_manager->get_menu_item_settings( $item_id );
 		}
 
 		return $this->item_settings;
@@ -506,11 +536,11 @@ class Mega_Menu_Walker extends \Walker_Nav_Menu {
 	public function get_badge_html( $badge = '', $depth = 0 ) {
 		$format = apply_filters(
 			'jet-menu/mega-menu-walker/badge-format',
-			'<div class="jet-mega-menu-item__badge"><small class="jet-mega-menu-item__badge-inner">%1$s</small></div>',
+			'<div class="jet-mega-menu-item__badge"><div class="jet-mega-menu-item__badge-inner">%1$s</div></div>',
 			$badge,
 			$depth
 		);
 
-		return sprintf( $format, esc_attr( $badge ) );
+		return sprintf( $format, $badge );
 	}
 }

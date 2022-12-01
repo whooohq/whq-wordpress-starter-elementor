@@ -371,7 +371,7 @@ class Jet_Woo_Builder_MyAccount_Content extends Jet_Woo_Builder_Base {
 			]
 		);
 
-		jet_woo_builder_common_controls()->register_heading_style_controls( $this, 'my_account_order_details', $css_scheme['order_details_title'] );
+		jet_woo_builder_common_controls()->register_heading_style_controls( $this, 'my_account_order_details_order', $css_scheme['order_details_title'] );
 
 		$this->add_control(
 			'my_account_order_details_table_heading_heading',

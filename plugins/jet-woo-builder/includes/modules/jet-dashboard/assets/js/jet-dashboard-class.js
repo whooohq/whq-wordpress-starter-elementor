@@ -430,7 +430,8 @@ class JetDasboardClass {
 				classes: function() {
 					let classes = [
 						'jet-dashboard-page__alert',
-						`${ this.type }-type`
+						`${ this.type }-type`,
+						this.config.customClass
 					];
 
 					return classes;
@@ -693,7 +694,7 @@ class JetDasboardClass {
 
 				alertNoticeList: function() {
 					return this.noticeList.filter( ( noticeData ) => {
-						return this.pageModule === noticeData.page && 'alert' === noticeData.preset;
+						return noticeData.page.includes( this.pageModule ) && 'alert' === noticeData.preset;
 					} );
 				},
 

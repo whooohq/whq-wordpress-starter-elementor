@@ -59,7 +59,7 @@ class Jet_Widget_Mega_Menu extends Widget_Base {
 	 * @return array Widget categories.
 	 */
 	public function get_categories() {
-		return array( 'cherry' );
+		return array( 'jet-menu' );
 	}
 
 	/**
@@ -319,6 +319,18 @@ class Jet_Widget_Mega_Menu extends Widget_Base {
 						'roll-up'      => 'yes',
 						'roll-up-type' => 'icon',
 					),
+				)
+			);
+
+			$this->add_control(
+				'ajax-loading',
+				array(
+					'label'        => esc_html__( 'Mega Content Ajax Loading', 'jet-menu' ),
+					'type'         => Controls_Manager::SWITCHER,
+					'label_on'     => esc_html__( 'Yes', 'jet-menu' ),
+					'label_off'    => esc_html__( 'No', 'jet-menu' ),
+					'return_value' => 'yes',
+					'default'      => 'false',
 				)
 			);
 
@@ -825,6 +837,22 @@ class Jet_Widget_Mega_Menu extends Widget_Base {
 			)
 		);
 
+		$this->add_responsive_control(
+			'main_menu_item_icon_size',
+			[
+				'label' => __( 'Items Icon Size', 'jet-menu' ),
+				'type' => Controls_Manager::SLIDER,
+				'range' => array(
+					'px' => array(
+						'max' => 50,
+					),
+				),
+				'selectors' => array(
+					'{{WRAPPER}}' => '--jmm-top-items-icon-size:{{SIZE}}{{UNIT}};',
+				),
+			]
+		);
+
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			array(
@@ -934,6 +962,22 @@ class Jet_Widget_Mega_Menu extends Widget_Base {
 			array(
 				'label' => __( 'Sub', 'jet-menu' ),
 			)
+		);
+
+		$this->add_responsive_control(
+			'main_menu_sub_item_icon_size',
+			[
+				'label' => __( 'Items Icon Size', 'jet-menu' ),
+				'type' => Controls_Manager::SLIDER,
+				'range' => array(
+					'px' => array(
+						'max' => 50,
+					),
+				),
+				'selectors' => array(
+					'{{WRAPPER}}' => '--jmm-sub-items-icon-size:{{SIZE}}{{UNIT}};',
+				),
+			]
 		);
 
 		$this->add_group_control(
@@ -1471,6 +1515,22 @@ class Jet_Widget_Mega_Menu extends Widget_Base {
 			)
 		);
 
+		$this->add_responsive_control(
+			'dropdown_top_item_icon_size',
+			[
+				'label' => __( 'Items Icon Size', 'jet-menu' ),
+				'type' => Controls_Manager::SLIDER,
+				'range' => array(
+					'px' => array(
+						'max' => 50,
+					),
+				),
+				'selectors' => array(
+					'{{WRAPPER}}' => '--jmm-dropdown-top-items-icon-size:{{SIZE}}{{UNIT}};',
+				),
+			]
+		);
+
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			array(
@@ -1535,6 +1595,22 @@ class Jet_Widget_Mega_Menu extends Widget_Base {
 			array(
 				'label' => __( 'Sub', 'jet-menu' ),
 			)
+		);
+
+		$this->add_responsive_control(
+			'dropdown_sub_item_icon_size',
+			[
+				'label' => __( 'Items Icon Size', 'jet-menu' ),
+				'type' => Controls_Manager::SLIDER,
+				'range' => array(
+					'px' => array(
+						'max' => 50,
+					),
+				),
+				'selectors' => array(
+					'{{WRAPPER}}' => '--jmm-dropdown-sub-items-icon-size:{{SIZE}}{{UNIT}};',
+				),
+			]
 		);
 
 		$this->add_group_control(
@@ -1653,6 +1729,18 @@ class Jet_Widget_Mega_Menu extends Widget_Base {
 		);
 
 		$this->add_control(
+			'dropdown_menu_item_dropdown_color',
+			array(
+				'label'   => __( 'Sub Marker Color', 'jet-menu' ),
+				'type'    => Controls_Manager::COLOR,
+				'default'   => '',
+				'selectors' => array(
+					'{{WRAPPER}}' => '--jmm-dropdown-item-dropdown-color: {{VALUE}}',
+				),
+			)
+		);
+
+		$this->add_control(
 			'dropdown_menu_item_bg_color',
 			array(
 				'label'   => __( 'Background Color', 'jet-menu' ),
@@ -1710,6 +1798,18 @@ class Jet_Widget_Mega_Menu extends Widget_Base {
 		);
 
 		$this->add_control(
+			'dropdown_menu_hover_item_dropdown_color',
+			array(
+				'label'   => __( 'Sub Marker Color', 'jet-menu' ),
+				'type'    => Controls_Manager::COLOR,
+				'default'   => '',
+				'selectors' => array(
+					'{{WRAPPER}}' => '--jmm-dropdown-hover-item-dropdown-color: {{VALUE}}',
+				),
+			)
+		);
+
+		$this->add_control(
 			'dropdown_menu_hover_item_bg_color',
 			array(
 				'label'   => __( 'Background Color', 'jet-menu' ),
@@ -1762,6 +1862,18 @@ class Jet_Widget_Mega_Menu extends Widget_Base {
 				'default'   => '',
 				'selectors' => array(
 					'{{WRAPPER}}' => '--jmm-dropdown-active-item-badge-color: {{VALUE}}',
+				),
+			)
+		);
+
+		$this->add_control(
+			'dropdown_menu_active_item_dropdown_color',
+			array(
+				'label'   => __( 'Sub Marker Color', 'jet-menu' ),
+				'type'    => Controls_Manager::COLOR,
+				'default'   => '',
+				'selectors' => array(
+					'{{WRAPPER}}' => '--jmm-dropdown-active-item-dropdown-color: {{VALUE}}',
 				),
 			)
 		);
@@ -2675,7 +2787,7 @@ class Jet_Widget_Mega_Menu extends Widget_Base {
 			$menu = $settings['menu'];
 		}
 
-		jet_menu()->render_manager->location_manager->add_menu_advanced_styles( $menu );
+		//jet_menu()->render_manager->location_manager->add_menu_advanced_styles( $menu );
 
 		$breakpoints = Responsive::get_breakpoints();
 
@@ -2735,6 +2847,7 @@ class Jet_Widget_Mega_Menu extends Widget_Base {
 				'dropdown-icon'       => $this->get_icon_html( $settings[ 'dropdown-icon' ] ),
 				'toggle-default-icon' => $this->get_icon_html( $settings[ 'toggle-default-icon' ] ),
 				'toggle-opened-icon'  => $this->get_icon_html( $settings[ 'toggle-opened-icon' ] ),
+				'ajax-loading'        => filter_var( $settings[ 'ajax-loading' ], FILTER_VALIDATE_BOOLEAN ),
 				'location'            => 'elementor',
 			) );
 		}

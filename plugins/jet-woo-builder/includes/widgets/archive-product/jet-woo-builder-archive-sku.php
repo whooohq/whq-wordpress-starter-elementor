@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_Archive_Sku
- * Name: SKU
+ * Name: Archive SKU
  * Slug: jet-woo-builder-archive-sku
  */
 
@@ -21,7 +21,7 @@ class Jet_Woo_Builder_Archive_Sku extends Widget_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'SKU', 'jet-woo-builder' );
+		return __( 'Archive SKU', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
@@ -49,34 +49,20 @@ class Jet_Woo_Builder_Archive_Sku extends Widget_Base {
 			)
 		);
 
-
 		$this->start_controls_section(
 			'section_sku_style',
-			array(
-				'label'      => esc_html__( 'SKU', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
+			[
+				'label' => __( 'SKU', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
 		);
 
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
-			array(
+			[
 				'name'     => 'sku_typography',
-				'scheme'   => Typography::TYPOGRAPHY_3,
 				'selector' => '{{WRAPPER}} ' . $css_scheme['sku'],
-			)
-		);
-
-		$this->add_control(
-			'sku_bg',
-			array(
-				'label'     => esc_html__( 'Background Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['sku'] => 'background-color: {{VALUE}}',
-				),
-			)
+			]
 		);
 
 		$this->add_control(
@@ -90,28 +76,13 @@ class Jet_Woo_Builder_Archive_Sku extends Widget_Base {
 			)
 		);
 
-		$this->add_responsive_control(
-			'sku_alignment',
+		$this->add_control(
+			'sku_bg',
 			array(
-				'label'     => esc_html__( 'Alignment', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::CHOOSE,
-				'default'   => is_rtl() ? 'right' : 'left',
-				'options'   => jet_woo_builder_tools()->get_available_h_align_types(),
+				'label'     => esc_html__( 'Background Color', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['sku'] => 'text-align: {{VALUE}};',
-				),
-				'classes'   => 'elementor-control-align',
-			)
-		);
-
-		$this->add_responsive_control(
-			'sku_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['sku'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} ' . $css_scheme['sku'] => 'background-color: {{VALUE}}',
 				),
 			)
 		);
@@ -128,19 +99,49 @@ class Jet_Woo_Builder_Archive_Sku extends Widget_Base {
 			)
 		);
 
+		$this->add_responsive_control(
+			'sku_padding',
+			array(
+				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%', 'em' ),
+				'selectors'  => array(
+					'{{WRAPPER}} ' . $css_scheme['sku'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_responsive_control(
+			'sku_alignment',
+			[
+				'label'     => __( 'Alignment', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::CHOOSE,
+				'options'   => jet_woo_builder_tools()->get_available_h_align_types(),
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['sku'] => 'text-align: {{VALUE}};',
+				],
+				'classes'   => 'elementor-control-align',
+			]
+		);
+
 		$this->end_controls_section();
 
 	}
 
 	/**
-	 * Returns CSS selector for nested element
+	 * CSS selector.
 	 *
-	 * @param null $el
+	 * Returns CSS selector for nested element.
+	 *
+	 * @since  1.2.0
+	 * @access public
+	 *
+	 * @param null $el Selector.
 	 *
 	 * @return string
 	 */
 	public function css_selector( $el = null ) {
-		return sprintf( '{{WRAPPER}} .%1$s %2$s', $this->get_name(), $el );
+		return sprintf( '{{WRAPPER}} .%1$s%2$s', $this->get_name(), $el );
 	}
 
 	public static function render_callback() {
@@ -151,7 +152,7 @@ class Jet_Woo_Builder_Archive_Sku extends Widget_Base {
 			return;
 		}
 
-		echo '<div class="jet-woo-builder-archive-product-sku">' . $sku . '</div>';
+		printf( '<div class="jet-woo-builder-archive-product-sku">%s</div>', $sku );
 
 	}
 

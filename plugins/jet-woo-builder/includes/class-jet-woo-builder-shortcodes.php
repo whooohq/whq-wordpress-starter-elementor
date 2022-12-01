@@ -95,43 +95,60 @@ if ( ! class_exists( 'Jet_Woo_Builder_Shortcodes' ) ) {
 		}
 
 		/**
-		 * Return list query types
+		 * Get products query type.
+		 *
+		 * Return list of possible query types.
+		 *
+		 * @since  1.7.5
+		 * @since  2.0.4 Added `jet-woo-builder/shortcodes/query-types`, updated naming.
+		 * @access public
 		 *
 		 * @return array
 		 */
 		public function get_products_query_type() {
 
-			$args = [
-				'all'         => __( 'All', 'jet-woo-builder' ),
-				'featured'    => __( 'Featured', 'jet-woo-builder' ),
-				'bestsellers' => __( 'Bestsellers', 'jet-woo-builder' ),
-				'sale'        => __( 'Sale', 'jet-woo-builder' ),
-				'tag'         => __( 'Tag', 'jet-woo-builder' ),
-				'category'    => __( 'Category', 'jet-woo-builder' ),
-				'ids'         => __( 'Specific IDs', 'jet-woo-builder' ),
-				'viewed'      => __( 'Recently Viewed', 'jet-woo-builder' ),
-				'custom_tax'  => __( 'Custom Taxonomy', 'jet-woo-builder' ),
+			$query_types = [
+				'all'          => __( 'All', 'jet-woo-builder' ),
+				'featured'     => __( 'Featured', 'jet-woo-builder' ),
+				'bestsellers'  => __( 'Bestsellers', 'jet-woo-builder' ),
+				'sale'         => __( 'Sale', 'jet-woo-builder' ),
+				'tag'          => __( 'Tag', 'jet-woo-builder' ),
+				'category'     => __( 'Category', 'jet-woo-builder' ),
+				'ids'          => __( 'Specific IDs', 'jet-woo-builder' ),
+				'viewed'       => __( 'Recently Viewed', 'jet-woo-builder' ),
+				'custom_tax'   => __( 'Custom Taxonomy', 'jet-woo-builder' ),
+				'stock_status' => __( 'Stock Status', 'jet-woo-builder' ),
 			];
 
-			$single_product_args = [
+			$single_query_types = [
 				'related'     => __( 'Related', 'jet-woo-builder' ),
 				'up-sells'    => __( 'Up Sells', 'jet-woo-builder' ),
 				'cross-sells' => __( 'Cross Sells', 'jet-woo-builder' ),
 			];
 
-			if ( is_product() ) {
-				$args = wp_parse_args( $single_product_args, $args );
+			$template_type = jet_woo_builder()->documents->get_current_type();
+
+			if ( ! $template_type ) {
+				$document = \Elementor\Plugin::$instance->documents->get_current();
+
+				if ( $document ) {
+					$template_type = $document->get_template_type();
+				}
 			}
 
-			$cart_page_args = [
+			if ( 'jet-woo-builder' === $template_type || is_product() ) {
+				$query_types = wp_parse_args( $single_query_types, $query_types );
+			}
+
+			$cart_query_types = [
 				'cross-sells' => __( 'Cross Sells', 'jet-woo-builder' ),
 			];
 
-			if ( 'jet-woo-builder-cart' === jet_woo_builder()->documents->get_current_type() || is_cart() ) {
-				$args = wp_parse_args( $cart_page_args, $args );
+			if ( 'jet-woo-builder-cart' === $template_type || is_cart() ) {
+				$query_types = wp_parse_args( $cart_query_types, $query_types );
 			}
 
-			return $args;
+			return apply_filters( 'jet-woo-builder/shortcodes/query-types', $query_types );
 
 		}
 
@@ -158,6 +175,26 @@ if ( ! class_exists( 'Jet_Woo_Builder_Shortcodes' ) ) {
 			}
 
 			return $query_args;
+
+		}
+
+		/**
+		 * Get products not found message.
+		 *
+		 * @since  2.1.0
+		 * @access public
+		 *
+		 * @param $tag
+		 * @param $message
+		 * @param $shortcode
+		 *
+		 * @return void
+		 */
+		public function get_products_not_found_message( $tag, $message, $shortcode ) {
+
+			$message = apply_filters( 'jet-woo-builder/shortcodes/' . $tag . '/not-found-message', $message, $shortcode );
+
+			printf( '<div class="jet-woo-products__not-found">%s</div>', $message );
 
 		}
 

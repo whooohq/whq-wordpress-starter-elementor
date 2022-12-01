@@ -5,33 +5,19 @@ namespace Jet_Smart_Filters\Endpoints;
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
 /**
  * Define Posts class
  */
 class Plugin_Settings extends Base {
-
-	/**
-	 * [get_method description]
-	 * @return [type] [description]
-	 */
-	public function get_method() {
-		return 'POST';
-	}
-
 	/**
 	 * Returns route name
-	 *
-	 * @return string
 	 */
 	public function get_name() {
+
 		return 'plugin-settings';
 	}
 
-	/**
-	 * [callback description]
-	 * @param  [type]   $request [description]
-	 * @return function          [description]
-	 */
 	public function callback( $request ) {
 
 		$data = $request->get_params();
@@ -56,5 +42,4 @@ class Plugin_Settings extends Base {
 			'message' => __( 'Settings have been saved', 'jet-smart-filters' ),
 		] );
 	}
-
 }

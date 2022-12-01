@@ -54,12 +54,13 @@ if ( ! class_exists( 'Jet_Woo_Builder_Documents' ) ) {
 		 *
 		 * Fired by `template_redirect` action.
 		 *
-		 * @since 1.8.0
+		 * @since  1.8.0
 		 * @access public
 		 */
 		public function block_template_frontend() {
 			if ( is_singular( $this->custom_post_type ) && ! current_user_can( Editor::EDITING_CAPABILITY ) ) {
 				wp_safe_redirect( site_url(), 301 );
+
 				die;
 			}
 		}
@@ -104,7 +105,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Documents' ) ) {
 		}
 
 		/**
-		 * Return true if currently processed certain type
+		 * Return true if currently processed certain type.
 		 *
 		 * @param string $type
 		 *
@@ -112,41 +113,13 @@ if ( ! class_exists( 'Jet_Woo_Builder_Documents' ) ) {
 		 */
 		public function is_document_type( $type = 'single' ) {
 
-			$doc_types              = $this->get_document_types();
-			$is_permissible_listing = class_exists( 'Jet_Engine' ) ? $this->check_jet_engine_listing_source( $type ) : false;
+			$doc_types = $this->get_document_types();
 
-			if ( $doc_types[ $type ]['slug'] === $this->get_current_type() || $is_permissible_listing ) {
+			if ( $doc_types[ $type ]['slug'] === $this->get_current_type() ) {
 				return true;
 			}
 
 			return apply_filters( 'jet-woo-builder/documents/is-document-type', false, $type );
-
-		}
-
-		/**
-		 * Check if JetEngine listing has proper source
-		 *
-		 * @param $type
-		 *
-		 * @return bool
-		 */
-		public function check_jet_engine_listing_source( $type ) {
-
-			$settings = get_post_meta( get_the_ID(), '_elementor_page_settings', true );
-
-			if ( ! $settings ) {
-				return false;
-			}
-
-			if ( ! array_key_exists( 'listing_post_type', $settings ) || ! array_key_exists( 'listing_tax', $settings ) ) {
-				return false;
-			}
-
-			if ( 'archive' === $type && 'product' === $settings['listing_post_type'] || 'category' === $type && 'product_cat' === $settings['listing_tax'] ) {
-				return true;
-			}
-
-			return false;
 
 		}
 
@@ -161,13 +134,13 @@ if ( ! class_exists( 'Jet_Woo_Builder_Documents' ) ) {
 			$document        = Elementor\Plugin::instance()->documents->get_doc_or_auto_save( $current_post_id );
 
 			if ( ! is_object( $document ) || ! method_exists( $document, 'get_preview_as_query_args' ) ) {
-				return null;
+				return;
 			}
 
 			$new_query_vars = $document->get_preview_as_query_args();
 
 			if ( empty( $new_query_vars ) ) {
-				return null;
+				return;
 			}
 
 			Elementor\Plugin::instance()->db->switch_to_query( $new_query_vars );
@@ -250,16 +223,17 @@ if ( ! class_exists( 'Jet_Woo_Builder_Documents' ) ) {
 		 */
 		public function register_elementor_document_types( $documents_manager ) {
 
-			require jet_woo_builder()->plugin_path( 'includes/documents/class-jet-woo-builder-document-base.php' );
-
-			$document_types = $this->get_document_types();
-
 			require jet_woo_builder()->plugin_path( 'includes/documents/class-jet-woo-builder-not-supported.php' );
 			$documents_manager->register_document_type( 'jet-woo-builder-not-supported', 'Jet_Woo_Builder_Document_Not_Supported' );
 
-			foreach ( $document_types as $type => $data ) {
-				require jet_woo_builder()->plugin_path( $data['file'] );
-				$documents_manager->register_document_type( $data['slug'], $data['class'] );
+			require jet_woo_builder()->plugin_path( 'includes/documents/class-jet-woo-builder-document-base.php' );
+
+			$doc_types = $this->get_document_types();
+
+			foreach ( $doc_types as $doc_type ) {
+				require jet_woo_builder()->plugin_path( $doc_type['file'] );
+
+				$documents_manager->register_document_type( $doc_type['slug'], $doc_type['class'] );
 			}
 
 		}

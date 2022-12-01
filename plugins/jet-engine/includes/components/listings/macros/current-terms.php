@@ -59,7 +59,7 @@ class Current_Terms extends \Jet_Engine_Base_Macros {
 
 		$terms = wp_get_post_terms( $object->ID, $taxonomy, array( 'fields' => 'ids' ) );
 
-		if ( empty( $terms ) ) {
+		if ( empty( $terms ) || is_wp_error( $terms ) ) {
 			return '';
 		}
 

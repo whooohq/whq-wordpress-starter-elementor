@@ -1,0 +1,30 @@
+.jet_search {
+	input {
+		width: 100%;
+		padding: 0 28px 0 8px;
+	}
+
+	&-icon {
+		user-select: none;
+		position: absolute;
+		top: 3px;
+		right: 2px;
+		width: 24px;
+		height: 24px;
+		font-size: 24px;
+		line-height: 1;
+		font-family: dashicons;
+
+		&::before {
+			content: "\f179";
+		}
+
+		.jet_not-empty & {
+			cursor: pointer;
+
+			&::before {
+				content: "\f158";
+			}
+		}
+	}
+}

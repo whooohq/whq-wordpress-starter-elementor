@@ -493,7 +493,7 @@ if ( -1 !== window.JetEngineListingData.activeModules.indexOf( 'maps-listings' )
 													options={ [
 														{
 															value: 'meta_field',
-															label: __( 'Post meta field is equal to value' ),
+															label: __( 'Meta field is equal to value' ),
 														},
 														{
 															value: 'post_term',

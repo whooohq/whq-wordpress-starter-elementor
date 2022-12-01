@@ -19,22 +19,16 @@ class Jet_Smart_Filters_Terms_Walker extends Walker {
 
 	/**
 	 * What the class handles.
-	 *
-	 * @var string
 	 */
 	public $tree_type = null;
 
 	/**
 	 * Item template path
-	 *
-	 * @var string
 	 */
 	public $item_template = null;
 
 	/**
 	 * DB fields to use.
-	 *
-	 * @var array
 	 */
 	public $db_fields = array(
 		'parent' => 'parent',
@@ -45,14 +39,12 @@ class Jet_Smart_Filters_Terms_Walker extends Walker {
 	/**
 	 * Starts the list before the elements are added.
 	 *
-	 * @see Walker::start_lvl()
-	 * @since 2.1.0
-	 *
 	 * @param string $output Passed by reference. Used to append additional content.
 	 * @param int    $depth Depth of category. Used for tab indentation.
 	 * @param array  $args Will only append content if style argument value is 'list'.
 	 */
 	public function start_lvl( &$output, $depth = 0, $args = array() ) {
+
 		$indent  = str_repeat( "\t", $depth );
 		$output .= "$indent<div class='jet-list-tree__children'>\n";
 	}
@@ -60,23 +52,18 @@ class Jet_Smart_Filters_Terms_Walker extends Walker {
 	/**
 	 * Ends the list of after the elements are added.
 	 *
-	 * @see Walker::end_lvl()
-	 * @since 2.1.0
-	 *
 	 * @param string $output Passed by reference. Used to append additional content.
 	 * @param int    $depth Depth of category. Used for tab indentation.
 	 * @param array  $args Will only append content if style argument value is 'list'.
 	 */
 	public function end_lvl( &$output, $depth = 0, $args = array() ) {
+
 		$indent  = str_repeat( "\t", $depth );
 		$output .= "$indent</div>\n";
 	}
 
 	/**
 	 * Start the element output.
-	 *
-	 * @see Walker::start_el()
-	 * @since 2.1.0
 	 *
 	 * @param string  $output            Passed by reference. Used to append additional content.
 	 * @param object  $cat               Category.
@@ -100,7 +87,6 @@ class Jet_Smart_Filters_Terms_Walker extends Walker {
 		}
 
 		if ( $current ) {
-
 			if ( is_array( $current ) && in_array( $value, $current ) ) {
 				$checked = 'checked';
 			}
@@ -108,7 +94,6 @@ class Jet_Smart_Filters_Terms_Walker extends Walker {
 			if ( ! is_array( $current ) && $value == $current ) {
 				$checked = 'checked';
 			}
-
 		}
 
 		ob_start();
@@ -116,14 +101,10 @@ class Jet_Smart_Filters_Terms_Walker extends Walker {
 		include $template;
 
 		$output .= ob_get_clean();
-
 	}
 
 	/**
 	 * Ends the element output, if needed.
-	 *
-	 * @see Walker::end_el()
-	 * @since 2.1.0
 	 *
 	 * @param string $output Passed by reference. Used to append additional content.
 	 * @param object $cat    Category.
@@ -134,17 +115,12 @@ class Jet_Smart_Filters_Terms_Walker extends Walker {
 
 	/**
 	 * Return HTML attributes string from key=>value array
-	 *
-	 * @param  array $atts Attributes array.
-	 *
-	 * @return string
 	 */
 	public function get_atts_string( $atts ) {
 
 		$result = array();
 
 		foreach ( $atts as $key => $value ) {
-
 			if ( is_array( $value ) ) {
 				$value = htmlspecialchars( json_encode( $value ) );
 			}
@@ -153,7 +129,5 @@ class Jet_Smart_Filters_Terms_Walker extends Walker {
 		}
 
 		return implode( ' ', $result );
-
 	}
-
 }

@@ -865,12 +865,13 @@ window.JetEngineMapsProvider = function() {
 	}
 
 	this.fitMapBounds = function( data ) {
+		var self = this;
 
-		data.map.fitBounds( bounds );
+		data.map.fitBounds( data.bounds );
 
 		var listener = google.maps.event.addListener( data.map, 'idle', function() {
 			if ( ! data.marker.getMap() ) {
-				JetEngineMaps.fitMapToMarker( data.marker, data.markersClusterer );
+				self.fitMapToMarker( data.marker, data.markersClusterer );
 			}
 			google.maps.event.removeListener( listener );
 		} );
@@ -928,6 +929,10 @@ window.JetEngineMapsProvider = function() {
 		google.maps.event.addListener( trigger, 'click', callback );
 	}
 
+	this.triggerOpenPopup = function( trigger ) {
+		google.maps.event.trigger( trigger, 'click' );
+	}
+
 	this.getMarkerPosition = function( marker, toJSON ) {
 		toJSON = toJSON || false;
 
@@ -971,6 +976,55 @@ window.JetEngineMapsProvider = function() {
 
 			} );
 		}
+	}
+
+	this.getMarkerMap = function( marker ) {
+		return marker.getMap();
+	}
+
+	this.fitMapToMarker = function( marker, markersClusterer ) {
+		var cluster = this._findClusterByMarker( markersClusterer, marker ),
+			bounds,
+			map;
+
+		if ( ! cluster ) {
+			return;
+		}
+
+		map    = markersClusterer.getMap();
+		bounds = cluster.getBounds();
+
+		this.fitMapBounds( {
+			map: map,
+			bounds: bounds,
+			marker: marker,
+			markersClusterer: markersClusterer,
+		} );
+
+		map.setCenter( this.getMarkerPosition( marker ) );
+	};
+
+	this._findClusterByMarker = function( markersClusterer, marker ) {
+		var clusters = markersClusterer.getClusters(),
+			result;
+
+		if ( !clusters.length ) {
+			return;
+		}
+
+		for ( var i = 0; i < clusters.length; i++ ) {
+			var markers = clusters[i].getMarkers();
+
+			for ( var j = 0; j < markers.length; j++ ) {
+
+				if ( markers[j] === marker && markers.length > 1) {
+					result = clusters[i];
+					break;
+				}
+			}
+		}
+
+		return result;
 	}
 
 }

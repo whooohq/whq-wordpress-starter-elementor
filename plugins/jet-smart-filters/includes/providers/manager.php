@@ -9,7 +9,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Providers_Manager' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Providers_Manager class
 	 */
@@ -22,12 +21,12 @@ if ( ! class_exists( 'Jet_Smart_Filters_Providers_Manager' ) ) {
 		 * Constructor for the class
 		 */
 		public function __construct() {
+
 			$this->register_providers();
 		}
 
 		/**
 		 * Store provider settings
-		 * @return [type] [description]
 		 */
 		public function store_provider_settings( $provider_id, $settings, $query_id = false ) {
 
@@ -44,12 +43,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Providers_Manager' ) ) {
 			}
 
 			$this->_provider_settings[ $provider_id ][ $query_id ] = $settings;
-
 		}
 
 		/**
 		 * Store provider settings
-		 * @return [type] [description]
 		 */
 		public function add_provider_settings( $provider_id, $settings, $query_id = 'default' ) {
 
@@ -66,22 +63,18 @@ if ( ! class_exists( 'Jet_Smart_Filters_Providers_Manager' ) ) {
 			$all_settings[ $query_id ] = array_merge( $all_settings[ $query_id ], $settings );
 
 			$this->_provider_settings[ $provider_id ] = $all_settings;
-
 		}
 
 		/**
 		 * Returns all provider settings
-		 *
-		 * @return [type] [description]
 		 */
 		public function get_provider_settings() {
+
 			return $this->_provider_settings;
 		}
 
 		/**
 		 * Register all providers.
-		 *
-		 * @return void
 		 */
 		public function register_providers() {
 
@@ -94,13 +87,13 @@ if ( ! class_exists( 'Jet_Smart_Filters_Providers_Manager' ) ) {
 				$class = $data['class'];
 				$name = $data['name'];
 
-				if( $name ){
+				if ( $name ) {
 					$enabled = isset( $available_providers[ $class ] ) ? $available_providers[ $class ] : '';
-					if( filter_var( $enabled, FILTER_VALIDATE_BOOLEAN ) || ! $available_providers ){
+
+					if ( filter_var( $enabled, FILTER_VALIDATE_BOOLEAN ) || ! $available_providers ) {
 						$default_providers[ $data['class'] ] = $file;
 					}
 				}
-
 			}
 
 			require $base_path . 'base.php';
@@ -113,15 +106,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Providers_Manager' ) ) {
 			 * Register custom providers on this hook
 			 */
 			do_action( 'jet-smart-filters/providers/register', $this );
-
 		}
 
 		/**
 		 * Register new provider.
-		 *
-		 * @param  string $provider_class Provider class name.
-		 * @param  string $provider_file  Path to file with provider class.
-		 * @return void
 		 */
 		public function register_provider( $provider_class, $provider_file ) {
 
@@ -135,14 +123,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Providers_Manager' ) ) {
 				$instance = new $provider_class();
 				$this->_providers[ $instance->get_id() ] = $instance;
 			}
-
 		}
 
 		/**
 		 * Return all providers list or specific provider by ID
-		 *
-		 * @param  string $provider optional, provider ID.
-		 * @return array|provider object|false
 		 */
 		public function get_providers( $provider = null ) {
 
@@ -152,7 +136,5 @@ if ( ! class_exists( 'Jet_Smart_Filters_Providers_Manager' ) ) {
 
 			return $this->_providers;
 		}
-
 	}
-
 }

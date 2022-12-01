@@ -111,7 +111,7 @@ class Location {
 				'item-after-template'       => jet_menu()->settings_manager->options_manager->get_option( 'jet-menu-mobile-after-template', 0 ),
 				'use-breadcrumbs'           => filter_var( $use_breadcrumbs, FILTER_VALIDATE_BOOLEAN ),
 				'breadcrumbs-path'          => jet_menu()->settings_manager->options_manager->get_option( 'jet-menu-mobile-breadcrumb-path', 'full' ),
-				'toggle-text'               => esc_attr( jet_menu()->settings_manager->options_manager->get_option( 'jet-menu-mobile-back-text', '' ) ),
+				'toggle-text'               => esc_attr( jet_menu()->settings_manager->options_manager->get_option( 'jet-menu-mobile-toggle-text', '' ) ),
 				'toggle-loader'             => filter_var( $toggle_loader, FILTER_VALIDATE_BOOLEAN ),
 				'back-text'                 => esc_attr( jet_menu()->settings_manager->options_manager->get_option( 'jet-menu-mobile-back-text', '' ) ),
 				'is-item-icon'              => filter_var( $is_item_icon, FILTER_VALIDATE_BOOLEAN ),
@@ -917,64 +917,6 @@ class Location {
 	}
 
 	/**
-	 * [generate_menu_raw_data description]
-	 * @param  string  $menu_slug [description]
-	 * @param  boolean $is_return [description]
-	 * @return [type]             [description]
-	 */
-	public function generate_menu_raw_data( $menu_id = false ) {
-
-		if ( ! $menu_id ) {
-			return false;
-		}
-
-		$menu_items = $this->get_menu_items_object_data( $menu_id );
-
-		$items = array();
-
-		foreach ( $menu_items as $key => $item ) {
-
-			$item_id = $item->ID;
-
-			$item_settings = jet_menu()->settings_manager->get_item_settings( $item_id );
-
-			$item_template_id = get_post_meta( $item_id, jet_menu()->post_type_manager->meta_key(), true );
-
-			$elementor_template_id = ( isset( $item_settings['enabled'] ) && filter_var( $item_settings['enabled'], FILTER_VALIDATE_BOOLEAN ) ) ? (int)$item_template_id : false;
-
-			$item_icon = ! empty( $item_settings['menu_svg'] ) ? jet_menu_tools()->get_svg_html( $item_settings['menu_svg'], false ) : false;
-
-			$items[] = array(
-				'id'                  => 'item-' . $item_id,
-				'name'                => $item->title,
-				'attrTitle'           => ! empty( $item->attr_title ) ? $item->attr_title : false,
-				'description'         => $item->description,
-				'url'                 => $item->url,
-				'target'              => ! empty( $item->target ) ? $item->target : false,
-				'xfn'                 => ! empty( $item->xfn ) ? $item->xfn : false,
-				'itemParent'          => ! empty( $item->menu_item_parent ) ? 'item-' . $item->menu_item_parent : false,
-				'itemId'              => $item_id,
-				'elementorTemplateId' => $elementor_template_id,
-				'elementorContent'    => false,
-				'open'                => false,
-				'badgeText'           => isset( $item_settings['menu_badge'] ) ? $item_settings['menu_badge'] : false,
-				'itemIcon'            => $item_icon,
-				'classes'             => $item->classes,
-			);
-		}
-
-		if ( ! empty( $items ) ) {
-			$items = $this->buildItemsTree( $items, false );
-		}
-
-		$menu_data = array(
-			'items' => $items,
-		);
-
-		return $menu_data;
-	}
-
-	/**
 	 * [buildItemsTree description]
 	 * @param  array   &$items   [description]
 	 * @param  integer $parentId [description]
@@ -989,7 +931,7 @@ class Location {
 			if ( $item['itemParent'] === $parentId ) {
 				$children = $this->buildItemsTree( $items, $item['id'] );
 
-				if ( $children && !$item['elementorTemplateId'] ) {
+				if ( $children && !$item['megaTemplateId'] ) {
 					$item['children'] = $children;
 				}
 

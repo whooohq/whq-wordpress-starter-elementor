@@ -1,0 +1,54 @@
+@import "../mixins.scss";
+
+// Checkboxes list
+.jet-ui_checkboxes-list {
+	&-item {
+		font-size: 0;
+		line-height: 0;
+	}
+
+	&-item + &-item {
+		margin-top: 10px;
+	}
+}
+
+// Checkbox item
+.jet-ui_checkbox {
+	cursor: pointer;
+	user-select: none;
+	display: inline-flex;
+	align-items: center;
+	font-size: $font-size;
+	line-height: $line-height;
+	color: $color-text-secondary;
+
+	&-input {
+		display: none !important;
+	}
+
+	&-marker {
+		width: 18px;
+		height: 18px;
+		margin: 0 10px 0 0;
+
+		svg {
+			path {
+				fill: $color-accent;
+			}
+		}
+
+		.rtl & {
+			margin: 0 0 0 10px;
+		}
+	}
+
+	&--disabled {
+		cursor: default;
+		pointer-events: none;
+		opacity: 0.5;
+	}
+
+	&--checked {
+		color: $color-text-primary;
+	}
+}

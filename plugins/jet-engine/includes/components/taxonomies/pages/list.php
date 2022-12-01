@@ -111,7 +111,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax_Page_List' ) ) {
 				'JetEngineCPTListConfig',
 				array(
 					'api_path'       => jet_engine()->api->get_route( 'get-taxonomies' ),
-					'api_path_add'   => jet_engine()->api->get_route( 'add-taxonomy' ),
+					'api_path_copy'  => jet_engine()->api->get_route( 'copy-taxonomy' ),
 					'edit_link'      => $this->manager->get_edit_item_link( '%id%' ),
 					'built_in_types' => $this->get_built_in_types(),
 					'engine_types'   => array_values( $this->get_engine_types() ),
@@ -144,6 +144,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax_Page_List' ) ) {
 				foreach ( $items as $item ) {
 
 					$item['labels'] = maybe_unserialize( $item['labels'] );
+					$item['args']   = maybe_unserialize( $item['args'] );
 
 					$this->engine_types[ $item['slug'] ] = array(
 						'slug'   => $item['slug'],
@@ -152,6 +153,12 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax_Page_List' ) ) {
 							'name' => $item['labels']['name'],
 						),
 					);
+
+					if ( ! empty( $item['args']['rewrite'] ) && ! empty( $item['args']['rewrite_slug'] )
+						&& $item['slug'] !== $item['args']['rewrite_slug']
+					) {
+						$this->engine_types[ $item['slug'] ]['rewrite_slug'] = $item['args']['rewrite_slug'];
+					}
 				}
 			}
 
@@ -183,13 +190,21 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax_Page_List' ) ) {
 					continue;
 				}
 
-				$result[] = array(
+				$tax_config = array(
 					'slug'   => $object->name,
 					'id'     => -1,
 					'labels' => array(
 						'name' => $object->label,
 					),
 				);
+
+				if ( ! empty( $object->rewrite ) && ! empty( $object->rewrite['slug'] )
+					&& $object->name !== $object->rewrite['slug']
+				) {
+					$tax_config['rewrite_slug'] = $object->rewrite['slug'];
+				}
+
+				$result[] = $tax_config;
 
 			}
 

@@ -6,29 +6,35 @@ use Elementor\Plugin;
 use Elementor\Group_Control_Border;
 use Elementor\Core\Schemes\Typography as Scheme_Typography;
 
+// Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-} // Exit if accessed directly
+}
 
 class Jet_Smart_Filters_Remove_Filters_Widget extends Widget_Base {
 
 	public function get_name() {
+
 		return 'jet-smart-filters-remove-filters';
 	}
 
 	public function get_title() {
+
 		return __( 'Remove Filters', 'jet-smart-filters' );
 	}
 
 	public function get_icon() {
+
 		return 'jet-smart-filters-icon-remove-filter';
 	}
 
 	public function get_html_wrapper_class() {
+
 		return 'elementor-widget-' . $this->get_name() . ' hide-widget';
 	}
 
 	public function get_help_url() {
+
 		return jet_smart_filters()->widgets->prepare_help_url(
 			'https://crocoblock.com/knowledge-base/articles/jetsmartfilters-how-to-use-remove-filters-widget/',
 			$this->get_name()
@@ -36,6 +42,7 @@ class Jet_Smart_Filters_Remove_Filters_Widget extends Widget_Base {
 	}
 
 	public function get_categories() {
+
 		return array( jet_smart_filters()->widgets->get_category() );
 	}
 
@@ -79,7 +86,6 @@ class Jet_Smart_Filters_Remove_Filters_Widget extends Widget_Base {
 				'default'   => __( 'Remove filters', 'jet-smart-filters' ),
 			)
 		);
-
 
 		$this->add_control(
 			'query_id',
@@ -290,7 +296,6 @@ class Jet_Smart_Filters_Remove_Filters_Widget extends Widget_Base {
 		);
 
 		$this->end_controls_section();
-
 	}
 
 	protected function render() {
@@ -307,6 +312,5 @@ class Jet_Smart_Filters_Remove_Filters_Widget extends Widget_Base {
 		echo '<div class="' . $base_class . ' jet-filter">';
 		include jet_smart_filters()->get_template( 'common/remove-filters.php' );
 		echo '</div>';
-
 	}
 }

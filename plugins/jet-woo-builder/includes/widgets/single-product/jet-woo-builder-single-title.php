@@ -21,7 +21,7 @@ class Jet_Woo_Builder_Single_Title extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Single Title', 'jet-woo-builder' );
+		return __( 'Single Title', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
@@ -51,27 +51,27 @@ class Jet_Woo_Builder_Single_Title extends Jet_Woo_Builder_Base {
 
 		$this->start_controls_section(
 			'section_general',
-			array(
-				'label' => esc_html__( 'Content', 'jet-woo-builder' ),
+			[
+				'label' => __( 'Title', 'jet-woo-builder' ),
 				'tab'   => Controls_Manager::TAB_CONTENT,
-			)
+			]
 		);
 
 		$this->add_control(
 			'title_trim_type',
-			array(
-				'label'   => esc_html__( 'Title Trim Type', 'jet-woo-builder' ),
+			[
+				'label'   => __( 'Trim Type', 'jet-woo-builder' ),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'word',
 				'options' => jet_woo_builder_tools()->get_available_title_trim_types(),
-			)
+			]
 		);
 
 		$this->add_control(
 			'title_length',
 			[
-				'label'       => esc_html__( 'Title Words/Letters Count', 'jet-woo-builder' ),
-				'description' => esc_html__( 'Set -1 to show full title and 0 to hide it.', 'jet-woo-builder' ),
+				'label'       => __( 'Length', 'jet-woo-builder' ),
+				'description' => __( 'Set -1 to show full title and 0 to hide it.', 'jet-woo-builder' ),
 				'type'        => Controls_Manager::NUMBER,
 				'min'         => -1,
 				'default'     => -1,
@@ -81,13 +81,9 @@ class Jet_Woo_Builder_Single_Title extends Jet_Woo_Builder_Base {
 		$this->add_control(
 			'title_tooltip',
 			[
-				'label'        => esc_html__( 'Enable Title Tooltip', 'jet-woo-builder' ),
-				'type'         => Controls_Manager::SWITCHER,
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => '',
-				'conditions'   => [
+				'label'      => __( 'Enable Tooltip', 'jet-woo-builder' ),
+				'type'       => Controls_Manager::SWITCHER,
+				'conditions' => [
 					'relation' => 'or',
 					'terms'    => [
 						[
@@ -104,10 +100,17 @@ class Jet_Woo_Builder_Single_Title extends Jet_Woo_Builder_Base {
 
 		$this->start_controls_section(
 			'section_single_title_style',
+			[
+				'label' => __( 'Title', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
 			array(
-				'label'      => esc_html__( 'General', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
+				'name'     => 'single_title_typography',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['title'],
 			)
 		);
 
@@ -119,14 +122,6 @@ class Jet_Woo_Builder_Single_Title extends Jet_Woo_Builder_Base {
 				'selectors' => array(
 					'{{WRAPPER}} ' . $css_scheme['title'] => 'color: {{VALUE}}',
 				),
-			)
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			array(
-				'name'     => 'single_title_typography',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['title'],
 			)
 		);
 
@@ -156,16 +151,15 @@ class Jet_Woo_Builder_Single_Title extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'single_title_alignment',
-			array(
-				'label'     => esc_html__( 'Alignment', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Alignment', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::CHOOSE,
-				'default'   => 'left',
 				'options'   => jet_woo_builder_tools()->get_available_h_align_types( true ),
-				'selectors' => array(
+				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['title'] => 'text-align: {{VALUE}};',
-				),
+				],
 				'classes'   => 'elementor-control-align',
-			)
+			]
 		);
 
 		$this->end_controls_section();
@@ -180,14 +174,14 @@ class Jet_Woo_Builder_Single_Title extends Jet_Woo_Builder_Base {
 			return;
 		}
 
-		if ( true === $this->__set_editor_product() ) {
+		if ( $this->__set_editor_product() ) {
 			$this->__open_wrap();
 
 			include $this->get_template( 'single-product/title.php' );
 
 			$this->__close_wrap();
 
-			if ( jet_woo_builder_integration()->in_elementor() ) {
+			if ( jet_woo_builder()->elementor_views->in_elementor() ) {
 				$this->__reset_editor_product();
 			}
 		}

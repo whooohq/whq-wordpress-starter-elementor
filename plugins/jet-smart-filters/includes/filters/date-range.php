@@ -9,44 +9,44 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Date_Range_Filter' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Date_Range_Filter class
 	 */
 	class Jet_Smart_Filters_Date_Range_Filter extends Jet_Smart_Filters_Filter_Base {
-
 		/**
 		 * Get provider name
-		 *
-		 * @return string
 		 */
 		public function get_name() {
+
 			return __( 'Date Range', 'jet-smart-filters' );
 		}
 
 		/**
 		 * Get provider ID156
-		 *
-		 * @return string
 		 */
 		public function get_id() {
+
 			return 'date-range';
 		}
 
 		/**
+		 * Get icon URL
+		 */
+		public function get_icon_url() {
+
+			return jet_smart_filters()->plugin_url( 'admin/assets/img/filter-types/date-range.png' );
+		}
+
+		/**
 		 * Get provider wrapper selector
-		 *
-		 * @return string
 		 */
 		public function get_scripts() {
+
 			return array( 'jquery-ui-datepicker' );
 		}
 
 		/**
 		 * Prepare filter template argumnets
-		 *
-		 * @param  [type] $args [description]
-		 * @return [type]       [description]
 		 */
 		public function prepare_args( $args ) {
 
@@ -86,9 +86,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Date_Range_Filter' ) ) {
 				'from_placeholder'     => $from,
 				'to_placeholder'       => $to,
 			);
-
 		}
-
 	}
-
 }

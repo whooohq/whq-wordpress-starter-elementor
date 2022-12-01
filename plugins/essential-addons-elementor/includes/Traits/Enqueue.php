@@ -43,6 +43,8 @@ trait Enqueue
 
         $object[ 'eael_login_nonce' ]    = wp_create_nonce( 'eael-login-action' );
         $object[ 'eael_register_nonce' ] = wp_create_nonce( 'eael-register-action' );
+        $object[ 'eael_lostpassword_nonce' ]    = wp_create_nonce( 'eael-lostpassword-action' );
+        $object[ 'eael_resetpassword_nonce' ]    = wp_create_nonce( 'eael-resetpassword-action' );
 
         return $object;
     }

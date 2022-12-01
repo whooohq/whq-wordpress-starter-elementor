@@ -1,24 +1,26 @@
 <?php
 /**
  * JetWooBuilder Products Grid widget loop item thumbnail template.
+ *
+ * This template can be overridden by copying it to yourtheme/jet-woo-builder/widgets/global/products-grid/item-thumb.php.
  */
 
-$size           = $this->get_attr( 'thumb_size' );
-$badge_text     = jet_woo_builder()->macros->do_macros( $this->get_attr( 'sale_badge_text' ) );
-$thumb_effect   = 'yes' === $this->get_attr( 'enable_thumb_effect' );
-$thumbnail      = jet_woo_builder_template_functions()->get_product_thumbnail( $size, $thumb_effect );
-$sale_badge     = jet_woo_builder_template_functions()->get_product_sale_flash( $badge_text, $settings );
-$thumbnail_link = jet_woo_builder_template_functions()->get_product_permalink( $product );
-$open_link      = '';
-$close_link     = '';
+$size         = $this->get_attr( 'thumb_size' );
+$thumb_effect = 'yes' === $this->get_attr( 'enable_thumb_effect' );
+$thumbnail    = jet_woo_builder_template_functions()->get_product_thumbnail( $size, $thumb_effect );
 
-if ( 'yes' === $this->get_attr( 'add_thumb_link' ) ) {
-	$open_link  = '<a href="' . $thumbnail_link . '" ' . $target_attr . '>';
-	$close_link = '</a>';
+if ( ! $thumbnail ) {
+	return;
 }
 
-if ( null === $thumbnail ) {
-	return;
+$badge_text   = jet_woo_builder()->macros->do_macros( $this->get_attr( 'sale_badge_text' ) );
+$sale_badge = jet_woo_builder_template_functions()->get_product_sale_flash( $badge_text, $settings );
+$open_link  = '';
+$close_link = '';
+
+if ( 'yes' === $this->get_attr( 'add_thumb_link' ) ) {
+	$open_link  = '<a href="' . $permalink . '" ' . $target_attr . '>';
+	$close_link = '</a>';
 }
 ?>
 
@@ -30,7 +32,7 @@ if ( null === $thumbnail ) {
 	<div class="jet-woo-product-img-overlay"></div>
 
 	<?php
-	if ( null != $sale_badge && 'yes' === $this->get_attr( 'show_badges' ) ) {
+	if ( ! empty( $sale_badge ) && 'yes' === $this->get_attr( 'show_badges' ) ) {
 		echo sprintf( '<div class="jet-woo-product-badges">%s</div>', $sale_badge );
 	}
 	?>

@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_MyAccount_Order
- * Name: Orders
+ * Name: Account Orders
  * Slug: jet-myaccount-order
  */
 
@@ -22,7 +22,7 @@ class Jet_Woo_Builder_MyAccount_Order extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return __( 'Orders', 'jet-woo-builder' );
+		return __( 'Account Orders', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {

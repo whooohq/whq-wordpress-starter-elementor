@@ -142,7 +142,7 @@ Vue.component( 'jet-query-dynamic-args', {
 			res += this.result.macros;
 
 			if ( this.result.macrosControls ) {
-				for ( const prop in this.currentMacros.controls ) {
+				for ( const prop in this.result.macrosControls ) {
 					res += '|';
 
 					if ( undefined !== this.result[ prop ] ) {

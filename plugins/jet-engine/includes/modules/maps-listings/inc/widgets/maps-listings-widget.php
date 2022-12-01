@@ -468,7 +468,7 @@ class Maps_Listings_Widget extends \Elementor\Jet_Listing_Grid_Widget {
 				'separator'   => 'before',
 				'default'     => 'meta_field',
 				'options'     => array(
-					'meta_field' => __( 'Post meta field is equal to value', 'jet-engine' ),
+					'meta_field' => __( 'Meta field is equal to value', 'jet-engine' ),
 					'post_term'  => __( 'Post has term', 'jet-engine' ),
 				),
 			)

@@ -164,7 +164,23 @@
 				watch: {
 					itemId: function( newValue, prevValue ) {
 						this.getItemData();
-					}
+					},
+					/*controlData: {
+						handler( options ) {
+							console.log(options.enabled.value);
+							let $infoHolder =  $( `#menu-item-${ this.itemId } .jet-menu-item-settings__info` );
+
+							$( '.mega-enabled', $infoHolder ).remove();
+
+							if ( 'true' === options.enabled.value ) {
+								$( `#menu-item-${ this.itemId } .jet-menu-item-settings__info` ).html( `<span class="jet-menu-item-settings__info-label mega-enabled">${ navSettingsConfig.labels.itemMegaEnableLabel }</span>` );
+							} else {
+
+							}
+						//	$( `#menu-item-${ this.itemId }]` ).html( response.data.verboseHtml );
+						},
+						deep: true
+					}*/
 				},
 
 				computed: {
@@ -183,6 +199,10 @@
 
 							url = this.navSettings.editURL.replace( '%id%', this.itemId );
 							url = url.replace( '%menuid%', this.navSettings.currentMenuId );
+
+							if ( this.preparedItemSettings.content_type ) {
+								url = url.replace( '%content%', this.preparedItemSettings.content_type );
+							}
 
 						return url;
 					},
@@ -283,6 +303,14 @@
 									type: responce.success ? 'success' : 'error',
 									duration: 4000,
 								} );
+
+								let $infoHolder =  $( `#menu-item-${ self.itemId } .jet-menu-item-settings__info` );
+
+								$( '.mega-enabled', $infoHolder ).remove();
+
+								if ( 'true' === self.controlData.enabled.value ) {
+									$( `#menu-item-${ self.itemId } .jet-menu-item-settings__info` ).html( `<span class="jet-menu-item-settings__info-label mega-enabled">${ navSettingsConfig.labels.itemMegaEnableLabel }</span>` );
+								}
 
 							}
 						} );

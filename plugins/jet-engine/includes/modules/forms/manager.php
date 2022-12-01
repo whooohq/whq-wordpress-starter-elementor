@@ -54,7 +54,12 @@ if ( ! class_exists( 'Jet_Engine_Booking_Forms' ) ) {
 			$this->handler = new Jet_Engine_Booking_Forms_Handler( $this );
 			$this->captcha = new Jet_Engine_Booking_Forms_Captcha();
 
-			add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_widgets' ), 11 );
+			if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.5.0', '>=' ) ) {
+				add_action( 'elementor/widgets/register', array( $this, 'register_widgets' ), 11 );
+			} else {
+				add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_widgets' ), 11 );
+			}
+
 			add_action( 'wp_enqueue_scripts', array( $this, 'register_assets' ) );
 
 			/**
@@ -454,7 +459,12 @@ if ( ! class_exists( 'Jet_Engine_Booking_Forms' ) ) {
 			require_once $file;
 
 			if ( class_exists( $class ) ) {
-				$widgets_manager->register_widget_type( new $class );
+
+				if ( method_exists( $widgets_manager, 'register' ) ) {
+					$widgets_manager->register( new $class );
+				} else {
+					$widgets_manager->register_widget_type( new $class );
+				}
 			}
 
 		}

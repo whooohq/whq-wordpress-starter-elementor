@@ -991,11 +991,12 @@ class Jet_Woo_Builder_Cart_Table extends Jet_Woo_Builder_Base {
 		$settings = $this->get_settings_for_display();
 
 		$table_settings = [
-			'items'      => isset( $settings['cart_table_items_list'] ) ? $settings['cart_table_items_list'] : [],
+			'items'      => $settings['cart_table_items_list'] ?? [],
 			'components' => [
-				'update-button-label'      => isset( $settings['cart_table_update_button_text'] ) ? $settings['cart_table_update_button_text'] : 'Update cart',
-				'coupon-form-placeholder'  => isset( $settings['cart_table_coupon_form_placeholder_text'] ) ? $settings['cart_table_coupon_form_placeholder_text'] : 'Coupon code',
-				'coupon-form-button-label' => isset( $settings['cart_table_coupon_form_button_text'] ) ? $settings['cart_table_coupon_form_button_text'] : 'Apply coupon',
+				'update-automatically'     => isset( $settings['cart_update_automatically'] ) ? filter_var( $settings['cart_update_automatically'], FILTER_VALIDATE_BOOLEAN ) : false,
+				'update-button-label'      => $settings['cart_table_update_button_text'] ?? 'Update cart',
+				'coupon-form-placeholder'  => $settings['cart_table_coupon_form_placeholder_text'] ?? 'Coupon code',
+				'coupon-form-button-label' => $settings['cart_table_coupon_form_button_text'] ?? 'Apply coupon',
 			],
 		];
 
@@ -1068,7 +1069,7 @@ class Jet_Woo_Builder_Shortcode_Cart extends \WC_Shortcode_Cart {
 
 		WC()->cart->calculate_totals();
 
-		if ( WC()->cart->is_empty() && ! jet_woo_builder_integration()->in_elementor() ) {
+		if ( WC()->cart->is_empty() && ! jet_woo_builder()->elementor_views->in_elementor() ) {
 			wc_get_template( 'cart/cart-empty.php' );
 		} else {
 			$template = jet_woo_builder()->get_template( 'jet-cart-table/global/index.php' );

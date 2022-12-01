@@ -32,6 +32,10 @@ if ( ! class_exists( 'Jet_Engine_CPT_User_Meta' ) ) {
 			$this->args     = $args;
 			$this->meta_box = $meta_box;
 
+			if ( ! empty( $args['hide_field_names'] ) ) {
+				$this->hide_field_names = $args['hide_field_names'];
+			}
+
 			$fields = $this->prepare_meta_fields( $meta_box );
 			$this->fields = $fields;
 

@@ -40,6 +40,22 @@ class Query {
 			[ $this, 'restore_wc_product_object' ]
 		);
 
+		add_action( 'jet-engine/listings/frontend/setup-data', function ( $obj ) {
+			if ( is_a( $obj, 'WC_Product' ) ) {
+				global $post;
+
+				$post = get_post( $obj->get_id() );
+
+				setup_postdata( $post );
+			}
+		} );
+
+		add_action( 'jet-engine/listings/frontend/reset-data', function( $data ) {
+			if ( 'query' === $data->get_listing_source() && is_a( $data->get_current_object(), 'WC_Product' ) ) {
+				wp_reset_postdata();
+			}
+		} );
+
 	}
 	
 	/**

@@ -28,14 +28,15 @@ class Jet_Engine_Rest_Add_Options_Page extends Jet_Engine_Base_API_Endpoint {
 		$params = $request->get_params();
 
 		jet_engine()->options_pages->data->set_request( array(
-			'name'       => $this->safe_get( $params, 'general_settings', 'name' ),
-			'slug'       => $this->safe_get( $params, 'general_settings', 'slug' ),
-			'menu_name'  => $this->safe_get( $params, 'general_settings', 'menu_name' ),
-			'parent'     => $this->safe_get( $params, 'general_settings', 'parent' ),
-			'icon'       => $this->safe_get( $params, 'general_settings', 'icon' ),
-			'capability' => $this->safe_get( $params, 'general_settings', 'capability' ),
-			'position'   => $this->safe_get( $params, 'general_settings', 'position' ),
-			'fields'     => ! empty( $params['fields'] ) ? $params['fields'] : array(),
+			'name'             => $this->safe_get( $params, 'general_settings', 'name' ),
+			'slug'             => $this->safe_get( $params, 'general_settings', 'slug' ),
+			'menu_name'        => $this->safe_get( $params, 'general_settings', 'menu_name' ),
+			'parent'           => $this->safe_get( $params, 'general_settings', 'parent' ),
+			'icon'             => $this->safe_get( $params, 'general_settings', 'icon' ),
+			'capability'       => $this->safe_get( $params, 'general_settings', 'capability' ),
+			'position'         => $this->safe_get( $params, 'general_settings', 'position' ),
+			'hide_field_names' => $this->safe_get( $params, 'general_settings', 'hide_field_names' ),
+			'fields'           => ! empty( $params['fields'] ) ? $params['fields'] : array(),
 		) );
 
 		$item_id = jet_engine()->options_pages->data->create_item( false );

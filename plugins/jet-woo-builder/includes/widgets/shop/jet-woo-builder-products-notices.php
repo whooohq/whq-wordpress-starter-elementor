@@ -18,15 +18,11 @@ class Jet_Woo_Builder_Products_Notices extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Products Notices', 'jet-woo-builder' );
+		return __( 'Products Notices', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
 		return 'jet-woo-builder-icon-shop-notice';
-	}
-
-	public function get_script_depends() {
-		return [];
 	}
 
 	public function get_jet_help_url() {
@@ -43,11 +39,9 @@ class Jet_Woo_Builder_Products_Notices extends Jet_Woo_Builder_Base {
 
 	protected function render() {
 
-		$this->__context = 'render';
-
 		$this->__open_wrap();
 
-		if ( ! jet_woo_builder_integration()->in_elementor() ) {
+		if ( ! jet_woo_builder()->elementor_views->in_elementor() ) {
 			wc_print_notices();
 		}
 

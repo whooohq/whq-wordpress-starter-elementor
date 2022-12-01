@@ -70,6 +70,7 @@ class Advanced_Search extends Widget_Base {
 		$this->popular_search_style();
 		$this->category_search();
 		$this->content_style();
+		$this->all_results_style();
 		$this->load_more_style();
 		$this->not_found_style();
 	}
@@ -223,6 +224,18 @@ class Advanced_Search extends Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'show_search_result_all_results',
+			[
+				'label'        => esc_html__( 'Show Total Results', 'essential-addons-for-elementor-lite' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'label_on'     => __( 'Show', 'essential-addons-for-elementor-lite' ),
+				'label_off'    => __( 'Hide', 'essential-addons-for-elementor-lite' ),
+				'return_value' => 'yes',
+				'default'      => 'no',
+			]
+		);
+
 		$this->end_controls_section();
 	}
 
@@ -296,6 +309,16 @@ class Advanced_Search extends Widget_Base {
 				'label'   => esc_html__( 'Load More Text', 'essential-addons-for-elementor-lite' ),
 				'type'    => Controls_Manager::TEXT,
 				'default' => __( 'View All Results', 'essential-addons-for-elementor-lite' )
+			]
+		);
+
+		$this->add_control(
+			'total_results_text',
+			[
+				'label'   => esc_html__( 'Total Results Text', 'essential-addons-for-elementor-lite' ),
+				'description' => esc_html__('Total result count will be displayed on [post count].', 'essential-addons-for-elementor-lite'),
+				'type'    => Controls_Manager::TEXT,
+				'default' => __( 'Total [post_count] Results', 'essential-addons-for-elementor-lite' )
 			]
 		);
 
@@ -588,6 +611,7 @@ class Advanced_Search extends Widget_Base {
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-adv-search-cate' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .eael-advance-search-select .icon' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -617,7 +641,7 @@ class Advanced_Search extends Widget_Base {
 				],
                 'desktop_default'    => [
                     'unit' => 'px',
-                    'size' => 200,
+                    'size' => 320,
                 ],
                 'mobile_default'    => [
                     'unit' => '%',
@@ -679,7 +703,7 @@ class Advanced_Search extends Widget_Base {
 				],
                 'default'    => [
                     'unit' => 'px',
-                    'size' => 200,
+                    'size' => 220,
                 ],
                 'mobile_default'    => [
                     'unit' => '%',
@@ -1431,6 +1455,168 @@ class Advanced_Search extends Widget_Base {
 		$this->end_controls_section();
 	}
 
+	public function all_results_style(){
+		$this->start_controls_section(
+			'search_result_all_results_style',
+			[
+				'label' => esc_html__( 'Total Results', 'essential-addons-for-elementor-lite' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'show_search_result_all_results' => 'yes'
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'search_result_all_results_style_alignment',
+			[
+				'label'       => esc_html__('Alignment', 'essential-addons-elementor'),
+				'type'        => Controls_Manager::CHOOSE,
+				'options'     => [
+					'left' => [
+						'title' => esc_html__('Left', 'essential-addons-elementor'),
+						'icon'  => 'eicon-text-align-left',
+					],
+					'center' => [
+						'title' => esc_html__('Center', 'essential-addons-elementor'),
+						'icon'  => 'eicon-text-align-center',
+					],
+					'right' => [
+						'title' => esc_html__('Right', 'essential-addons-elementor'),
+						'icon'  => 'eicon-text-align-right',
+					],
+				],
+				'default'   => 'left',
+				'selectors' => [
+					'{{WRAPPER}} .eael-advanced-search-total-results-wrap' => 'text-align: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->start_controls_tabs( 'search_result_all_results_normal' );
+
+		$this->start_controls_tab( 'search_result_all_results_normal_tab', [ 'label' => esc_html__( 'Normal', 'essential-addons-for-elementor-lite' ) ] );
+
+		$this->add_group_control(
+			Group_Control_Background::get_type(),
+			[
+				'name'     => 'search_result_all_results_text_bg',
+				'types'    => [ 'classic', 'gradient' ],
+				'selector' => '{{WRAPPER}} .eael-advanced-search-total-results-wrap'
+			]
+		);
+
+		$this->add_control(
+			'search_result_all_results_text_color',
+			[
+				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .eael-advanced-search-total-results-wrap' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'search_result_all_results_typography',
+				'selector' => '{{WRAPPER}} .eael-advanced-search-total-results-wrap'
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab( 'search_result_all_results_hover', [ 'label' => esc_html__( 'Hover', 'essential-addons-for-elementor-lite' ) ] );
+
+		$this->add_group_control(
+			Group_Control_Background::get_type(),
+			[
+				'name'     => 'search_result_all_results_text_bg_hover',
+				'types'    => [ 'classic', 'gradient' ],
+				'selector' => '{{WRAPPER}} .eael-advanced-search-total-results-wrap:hover'
+			]
+		);
+
+		$this->add_control(
+			'search_result_all_results_text_color_hover',
+			[
+				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .eael-advanced-search-total-results-wrap:hover' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'search_result_all_results_typography_hover',
+				'selector' => '{{WRAPPER}} .eael-advanced-search-total-results-wrap:hover'
+			]
+		);
+
+		$this->end_controls_tab();
+		$this->end_controls_tabs();
+
+		$this->add_responsive_control(
+			'search_result_all_results_padding',
+			[
+				'label'      => esc_html__( 'Padding', 'essential-addons-for-elementor-lite' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px' ],
+				'selectors'  => [
+					'{{WRAPPER}} .eael-advanced-search-total-results-wrap' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};'
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'search_result_all_results_margin',
+			[
+				'label'      => esc_html__( 'Margin', 'essential-addons-for-elementor-lite' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px' ],
+				'selectors'  => [
+					'{{WRAPPER}} .eael-advanced-search-total-results-wrap' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};'
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'search_result_all_results_radius',
+			[
+				'label'      => esc_html__( 'Border Radius', 'essential-addons-for-elementor-lite' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', 'em', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} .eael-advanced-search-total-results-wrap' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			[
+				'name'     => 'search_result_all_results_border',
+				'label'    => __( 'Border', 'essential-addons-for-elementor-lite' ),
+				'selector' => '{{WRAPPER}} .eael-advanced-search-total-results-wrap',
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name'     => 'search_result_all_results_shadow',
+				'label'    => __( 'Box Shadow', 'essential-addons-for-elementor-lite' ),
+				'selector' => '{{WRAPPER}} .eael-advanced-search-total-results-wrap',
+			]
+		);
+
+		$this->end_controls_section();
+	}
+
 	public function load_more_style() {
 		$this->start_controls_section(
 			'load_more_style',
@@ -1674,9 +1860,11 @@ class Advanced_Search extends Widget_Base {
 
 		$args = [
 			'post_per_page'        => $settings[ 'show_initial_result' ],
+			'current_post_id'        => get_the_ID(),
 			'show_popular_keyword' => ( $settings[ 'show_popular_keyword' ] == 'yes' ) ? 1 : 0,
 			'show_category'        => ( $settings[ 'show_category_search_result' ] == 'yes' ) ? 1 : 0,
 			'show_content_image'   => ( $settings[ 'show_content_image' ] == 'yes' ) ? 1 : 0,
+			'show_search_result_all_results'   => ( 'yes' === $settings[ 'show_search_result_all_results' ] ) ? 1 : 0,
 		];
 		if ( $args[ 'show_popular_keyword' ] ) {
 			$args[ 'show_popular_keyword_rank' ]      = $settings[ 'show_popular_keyword_rank' ];
@@ -1779,12 +1967,31 @@ class Advanced_Search extends Widget_Base {
                 <h4><?php echo esc_html( $settings[ 'category_search_text' ] ); ?> </h4>
                 <div class="eael-popular-category-content"></div>
             </div>
+			<div class="eael-advanced-search-total-results-section">
+				<?php if( ! empty( $settings['show_search_result_all_results'] ) && 'yes' === $settings['show_search_result_all_results'] ) : ?>
+				<p class="eael-advanced-search-total-results-wrap">
+					<?php 
+						$settings[ 'total_results_text' ] = !empty( $settings[ 'total_results_text' ] ) ? $settings[ 'total_results_text' ] : __( 'Total [post_count] Results', 'essential-addons-for-elementor-lite' );
+						$total_results_text = explode('[post_count]', $settings[ 'total_results_text' ] );
+						if ( count( $total_results_text ) ) {
+							esc_html_e( $total_results_text[0] );
+							
+							if ( isset( $total_results_text[1] ) ) {
+								echo '<span class="eael-advanced-search-total-results-count"></span>';
+								esc_html_e( $total_results_text[1] );
+							}
+						}
+					?>
+				</p>
+				<?php endif; ?>
+			</div>
             <div class="eael-advanced-search-content <?php echo $content_style; ?>">
             </div>
             <div class="eael-advanced-search-not-found">
                 <p><?php echo esc_html( $settings[ 'not_found_text' ] ); ?></p></div>
-            <div class="eael-advanced-search-load-more"><a class="eael-advanced-search-load-more-button"
-                                                           href="#"><?php echo esc_html( $settings[ 'load_more_text' ] ); ?></a>
+            <div class="eael-advanced-search-load-more">
+				<a 	class="eael-advanced-search-load-more-button"
+                	href="#"><?php echo esc_html( $settings[ 'load_more_text' ] ); ?></a>
             </div>
         </div>
 

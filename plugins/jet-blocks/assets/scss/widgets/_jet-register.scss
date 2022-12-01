@@ -1,0 +1,75 @@
+.jet-register {
+	.rtl & {
+		text-align: right;
+	}
+	&__row {
+		padding: 0;
+		margin: 0;
+
+		&.jet-privacy-policy {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			margin-top: 10px;
+			margin-bottom: 10px;
+
+			.jet-register__label {
+				p {
+					margin: 0;
+				}
+			}
+		}
+	}
+	&__label {
+		display: block;
+	}
+
+	&__wrapper {
+		position: relative;
+
+		.password-visibility {
+			&__icon {
+				display: none;
+				position: absolute;
+				top: calc(50% - 10px);
+				right: 10px;
+				width: 20px;
+				height: 20px;
+				font-size: 20px;
+				line-height: 20px;
+				cursor: pointer;
+
+				svg {
+					display: block;
+					fill: currentColor;
+				}
+
+				&.show {
+					display: block;
+				}
+			}
+		}
+	}
+}
+
+.jet-register-password-requirements {
+	.rtl & {
+		text-align: right;
+	}
+
+	.jet-password-requirements {
+		margin: 0;
+		padding: 0;
+
+		&__item {
+			list-style: none;
+			margin: 5px 0;
+		}
+	}
+}
+
+.jet-register-message {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	color: #f00;
+}

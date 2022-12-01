@@ -12,22 +12,17 @@ if ( ! class_exists( 'Jet_Smart_Filters_Hierarchy' ) ) {
 
 	class Jet_Smart_Filters_Hierarchy {
 
-		private $filter_id  = 0;
-		private $depth      = 0;
-		private $values     = array();
-		private $args       = array();
-		private $filter     = null;
-		private $single_tax = null;
-		private $hierarchy  = null;
-		private $indexer    = false;
+		protected $filter_id  = 0;
+		protected $depth      = 0;
+		protected $values     = array();
+		protected $args       = array();
+		protected $filter     = null;
+		protected $single_tax = null;
+		protected $hierarchy  = null;
+		protected $indexer    = false;
 
 		/**
 		 * Class constructor
-		 *
-		 * @param integer|object $filter_id [description]
-		 * @param integer $depth     [description]
-		 * @param array   $values    [description]
-		 * @param array   $args      [description]
 		 */
 		public function __construct( $filter = 0, $depth = 0, $values = array(), $args = array(), $indexer = false ) {
 
@@ -57,13 +52,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Hierarchy' ) ) {
 			$this->values    = $values;
 			$this->indexer   = $indexer;
 			$this->hierarchy = $this->get_hierarchy();
-
 		}
 
 		/**
 		 * Returns current filter hieararchy map or false
-		 *
-		 * @return boolean|array
 		 */
 		public function get_hierarchy() {
 
@@ -88,13 +80,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Hierarchy' ) ) {
 			}
 
 			return $result;
-
 		}
 
 		/**
 		 * Returns hiearachy evels data starting from $this->depth
-		 *
-		 * @return  array
 		 */
 		public function get_levels() {
 
@@ -115,12 +104,11 @@ if ( ! class_exists( 'Jet_Smart_Filters_Hierarchy' ) ) {
 			}
 
 			$current_value_data = array();
-			if ( ! empty( $_REQUEST['hc'] ) ) {
-				$current_value_data = explode( ',', $_REQUEST['hc'] );
+			if ( isset( $_REQUEST['hc_' . $single_tax] ) ) {
+				$current_value_data = explode( ',', $_REQUEST['hc_' . $single_tax] );
 			}
 
 			for ( $i = $from_depth; $i <= count( $this->hierarchy ); $i++ ) {
-
 				$level = ! empty( $this->hierarchy[ $i ] ) ? $this->hierarchy[ $i ] : false;
 
 				if ( ! $level ) {
@@ -152,40 +140,46 @@ if ( ! class_exists( 'Jet_Smart_Filters_Hierarchy' ) ) {
 				if ( isset( $current_value_data[$args['depth']] ) ) {
 					$args['current_value'] = $current_value_data[$args['depth']];
 				}
-				if ( isset( $current_value_data[--$level['depth']] ) ) {
+				if ( isset( $current_value_data[$level['depth'] - 1] ) ) {
 					$args['is_loading'] = true;
 				}
 				
 				if ( false === $this->depth ) {
 					if ( $i <= count( $this->values ) ) {
-						$args['options'] = $this->get_level_options( $i, $level );
+						$args['options'] = $this->get_level_options( $i );
 					}
 				} elseif ( $i === $from_depth ) {
-					$args['options'] = $this->get_level_options( $i, $level );
+					$args['options'] = $this->get_level_options( $i );
 				}
 
 				$result[ 'level_' . $i ] = $this->filter->get_rendered_template( $args );
-
 			}
 
 			return $result;
-
 		}
 
 		/**
 		 * Returns terms for options
-		 *
-		 * @return [type] [description]
 		 */
-		public function get_level_options( $i = 0, $level = array() ) {
+		public function get_level_options( $i = 0 ) {
 
 			global $wpdb;
 
-			$single_tax = $this->is_single_tax_hierarchy();
 			$result     = array();
+			$curr_level = isset( $this->hierarchy[$i] ) ? $this->hierarchy[$i] : false;
+			$prev_level = isset( $this->hierarchy[$i - 1] ) ? $this->hierarchy[$i - 1] : false;
+			$next_level = isset( $this->hierarchy[$i + 1] ) ? $this->hierarchy[$i + 1] : false;
 
-			if ( $single_tax ) {
+			if ( ! $curr_level ) {
+				return $result;
+			}
 
+			$is_sub_tax =
+				( $prev_level && $curr_level['tax'] === $prev_level['tax'] )
+				||
+				( $next_level && $curr_level['tax'] === $next_level['tax'] );
+
+			if ( $is_sub_tax ) {
 				if ( false === $this->depth && 0 === $i ) {
 					$value = 0;
 				} else {
@@ -194,23 +188,19 @@ if ( ! class_exists( 'Jet_Smart_Filters_Hierarchy' ) ) {
 				}
 
 				if ( false !== $value ) {
-
 					if ( empty( $value ) && 0 !== $value ) {
 						return array();
 					}
 
 					$result = jet_smart_filters()->data->get_terms_for_options(
-						$level['tax'],
+						$curr_level['tax'],
 						false,
 						array(
 							'parent' => $value,
 						)
 					);
-
 				}
-
 			} else {
-
 				$from  = '';
 				$on    = '';
 				$where = '';
@@ -255,41 +245,32 @@ if ( ! class_exists( 'Jet_Smart_Filters_Hierarchy' ) ) {
 				}
 
 				if ( $from ) {
-
 					$ids = $wpdb->get_results( $from . $on . $where, OBJECT_K );
 
 					if ( ! empty( $ids ) ) {
-
 						$result = jet_smart_filters()->data->get_terms_for_options(
-							$level['tax'],
+							$curr_level['tax'],
 							false,
 							array(
 								'object_ids' => array_keys( $ids ),
 							)
 						);
-
 					}
-				
 				} else {
-
 					$result = jet_smart_filters()->data->get_terms_for_options(
-						$level['tax'],
+						$curr_level['tax'],
 						false,
 						array()
 					);
-
 				}
 			}
 
 			return $result;
-
 		}
 
 		/**
 		 * Check if all previous hierarchy levels has same taxonomy.
 		 * In this case we need get only direct children of latest value
-		 *
-		 * @return bool false or string - taxonomy slug
 		 */
 		public function is_single_tax_hierarchy() {
 
@@ -302,7 +283,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Hierarchy' ) ) {
 			$to_depth   = ( false !== $this->depth ) ? $this->depth : count( $this->values );
 
 			for ( $i = 0; $i <= $to_depth; $i++ ) {
-
 				$level = ! empty( $this->hierarchy[ $i ] ) ? $this->hierarchy[ $i ] : false;
 
 				if ( ! $level ) {
@@ -323,9 +303,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Hierarchy' ) ) {
 			}
 
 			return $this->single_tax;
-
 		}
-
 	}
-
 }

@@ -28,13 +28,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Blocks_Manager' ) ) {
 			add_filter( 'block_categories_all', array( $this, 'add_filters_category' ) );
 
 			$this->register_block_types();
-
 		}
 
 		/**
 		 * Register blocks assets
-		 *
-		 * @return false
 		 */
 		public function blocks_assets() {
 
@@ -44,15 +41,15 @@ if ( ! class_exists( 'Jet_Smart_Filters_Blocks_Manager' ) ) {
 
 			wp_enqueue_style(
 				'jet-smart-filters-gutenberg-editor-styles',
-				jet_smart_filters()->plugin_url( 'assets/css/admin/gutenberg.css' ),
-				array(),
+				jet_smart_filters()->plugin_url( 'admin/assets/css/gutenberg.css' ),
+				array('air-datepicker'),
 				jet_smart_filters()->get_version()
 			);
 
 			wp_enqueue_script(
 				'jet-smart-filters-blocks',
 				jet_smart_filters()->plugin_url( 'assets/js/blocks.js' ),
-				array('wp-blocks','wp-editor', 'wp-components', 'wp-i18n', 'jet-smart-filters'),
+				array('wp-blocks','wp-editor', 'wp-components', 'wp-i18n', 'jet-smart-filters', 'air-datepicker'),
 				jet_smart_filters()->get_version(),
 				true
 			);
@@ -65,13 +62,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Blocks_Manager' ) ) {
 			) );
 
 			wp_localize_script( 'jet-smart-filters-blocks', 'JetSmartFilterBlocksData', $localized_data );
-
 		}
 
 		/**
 		 * Returns filters of all types options
-		 *
-		 * @return Array
 		 */
 		public function get_filter_types_data() {
 
@@ -84,13 +78,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Blocks_Manager' ) ) {
 			}
 
 			return $filter_types_data;
-
 		}
 
 		/**
 		 * Returns providers options
-		 *
-		 * @return Array
 		 */
 		public function get_providers_data() {
 
@@ -107,14 +98,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Blocks_Manager' ) ) {
 			}
 
 			return apply_filters( 'jet-smart-filters/blocks/allowed-providers', $providers_data );
-
 		}
 
 		/**
 		 * Add new category for filters
-		 *
-		 * @param $categories
-		 * @return false
 		 */
 		function add_filters_category( $categories ) {
 
@@ -128,13 +115,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Blocks_Manager' ) ) {
 					),
 				)
 			);
-
 		}
 
 		/**
 		 * Register block types
-		 *
-		 * @return false
 		 */
 		public function register_block_types() {
 
@@ -176,9 +160,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Blocks_Manager' ) ) {
 			new Jet_Smart_Filters_Block_Apply_Button();
 			new Jet_Smart_Filters_Block_Remove_Filters();
 			new Jet_Smart_Filters_Block_Pagination();
-
 		}
-
 	}
-
 }

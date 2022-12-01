@@ -42,7 +42,7 @@ $current = $this->get_current_filter_value( $args );
 
 		?>
 		<div class="jet-checkboxes-list__row jet-filter-row">
-			<label class="jet-checkboxes-list__item">
+			<label class="jet-checkboxes-list__item" <?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>>
 				<input
 					type="checkbox"
 					class="jet-checkboxes-list__input"

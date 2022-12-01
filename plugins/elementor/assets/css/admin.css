@@ -1,4 +1,4 @@
-/*! elementor - v3.6.8 - 27-07-2022 */
+/*! elementor - v3.8.1 - 13-11-2022 */
 .elementor-button {
   font-family: Roboto, Arial, Helvetica, Verdana, sans-serif;
   font-weight: 500;
@@ -300,18 +300,18 @@ body .block-editor #elementor-switch-mode .button i {
 }
 #elementor-editor .elementor-loader-box:nth-of-type(2) {
   top: 0;
-  -webkit-animation-delay: -0.45s;
-          animation-delay: -0.45s;
+  -webkit-animation-delay: calc( 1.8s / 4 * -1 );
+          animation-delay: calc( 1.8s / 4 * -1 );
 }
 #elementor-editor .elementor-loader-box:nth-of-type(3) {
   top: 40%;
-  -webkit-animation-delay: -0.9s;
-          animation-delay: -0.9s;
+  -webkit-animation-delay: calc( 1.8s / 4 * -2 );
+          animation-delay: calc( 1.8s / 4 * -2 );
 }
 #elementor-editor .elementor-loader-box:nth-of-type(4) {
   bottom: 0;
-  -webkit-animation-delay: -1.35s;
-          animation-delay: -1.35s;
+  -webkit-animation-delay: calc( 1.8s / 4 * -3 );
+          animation-delay: calc( 1.8s / 4 * -3 );
 }
 #elementor-editor .elementor-loading-title {
   color: #a4afb7;
@@ -387,7 +387,7 @@ body .block-editor #elementor-switch-mode .button i {
   font-size: 50px;
   color: #a4afb7;
 }
-.elementor-blank_state h2 {
+.elementor-blank_state h3 {
   font-size: 32px;
   font-weight: 300;
   color: inherit;
@@ -832,7 +832,7 @@ fieldset:disabled a.e-button {
   display: block;
   position: absolute;
   top: 0;
-  right: 1px;
+  inset-inline-end: 1px;
   border: none;
   margin: 0;
   padding: 9px;
@@ -1156,9 +1156,15 @@ fieldset:disabled a.e-button {
   display: none;
 }
 
-#elementor_rollback > div,
-#elementor_rollback_pro > div,
 #elementor_replace_url > div {
+  max-width: 800px;
+}
+#elementor_replace_url > div input {
+  margin-bottom: 6px;
+}
+
+#elementor_rollback > div,
+#elementor_rollback_pro > div {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1166,9 +1172,7 @@ fieldset:disabled a.e-button {
 #elementor_rollback > div input,
 #elementor_rollback > div select,
 #elementor_rollback_pro > div input,
-#elementor_rollback_pro > div select,
-#elementor_replace_url > div input,
-#elementor_replace_url > div select {
+#elementor_rollback_pro > div select {
   margin-right: 6px;
 }
 
@@ -1342,6 +1346,9 @@ fieldset:disabled a.e-button {
 #elementor-new-template-modal .dialog-message {
   max-height: 70vh;
 }
+#elementor-new-template-modal .e-hidden {
+  display: none !important;
+}
 #elementor-new-template-dialog-content {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1416,6 +1423,31 @@ fieldset:disabled a.e-button {
 #elementor-new-template__form__template-type.elementor-form-field__select {
   max-width: initial;
 }
+#elementor-new-template__form__template-type-badge {
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 2px;
+  border-radius: 2px;
+  background-color: #f1f3f5;
+  padding: 4px;
+  font-size: 8px;
+  font-weight: 500;
+  line-height: 1;
+  text-transform: uppercase;
+  top: 50%;
+  inset-inline-end: 28px;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
 #elementor-new-template__form .elementor-form-field__label {
   display: block;
   margin: 25px 0 7px;
@@ -1463,10 +1495,15 @@ fieldset:disabled a.e-button {
       -ms-transform: translateY(-50%);
           transform: translateY(-50%);
 }
-#elementor-new-template__form__submit {
+#elementor-new-template__form__submit, #elementor-new-template__form__lock_button {
+  display: block;
   width: 100%;
   height: 50px;
-  margin-top: 25px;
+  margin-top: 24px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  text-align: center;
+  text-transform: none;
 }
 
 @media (max-width: 1024px) {
@@ -1612,8 +1649,13 @@ fieldset:disabled a.e-button {
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 .e-experiment__title__indicator {
+  position: absolute;
   height: 10px;
   width: 10px;
   border-radius: 50%;
@@ -1628,22 +1670,49 @@ fieldset:disabled a.e-button {
   background: #39b54a;
 }
 .e-experiment__title__label {
-  margin-left: 10px;
+  margin-left: 24px;
+}
+.e-experiment__title__tag {
+  background: #0085ba;
+  color: #ffffff;
+  font-size: 0.8em;
+  padding: 3px 6px;
+  line-height: 1;
+  border-radius: 3px;
+  font-weight: 600;
+  margin-top: 5px;
+  margin-left: 24px;
 }
 .e-experiment__table-title {
   margin: 30px 0;
 }
-.e-experiment__description {
-  max-width: 820px;
-}
-.e-experiment__status {
-  margin-top: 5px;
-  font-size: 13px;
+.e-experiment__dependency, .e-experiment__status {
+  margin-top: 4px;
+  font-size: 0.9em;
+  line-height: 18px;
   font-weight: bold;
   font-style: italic;
 }
 .e-experiment__button.button {
   margin: 18px 14px 22px 0;
+}
+.e-experiment__dependency {
+  color: #21759b;
+}
+.e-experiment__dependency__title {
+  font-weight: inherit;
+}
+
+#tab-experiments .form-table tr {
+  border-bottom: 1px solid #dcdcde;
+}
+#tab-experiments .form-table tr:last-child {
+  border-bottom: none;
+}
+#tab-experiments .form-table tr .description {
+  font-size: 0.9em;
+  margin: 10px 0;
+  max-width: 820px;
 }
 
 .e-landing-pages-empty .elementor-blank_state {

@@ -13,7 +13,7 @@ class Jet_Engine_Dynamic_Tags_Module extends Elementor\Modules\DynamicTags\Modul
 	const JET_MACROS_CATEGORY = 'jet_engine_macros';
 
 	public function get_tag_classes_names() {
-		return array(
+		return apply_filters( 'jet-engine/elementor-views/dynamic-tags/default-tags', array(
 			'Jet_Engine_Custom_Image_Tag',
 			'Jet_Engine_Custom_Field_Tag',
 			'Jet_Engine_Custom_Gallery_Tag',
@@ -26,7 +26,8 @@ class Jet_Engine_Dynamic_Tags_Module extends Elementor\Modules\DynamicTags\Modul
 			'Jet_Engine_User_Image_Tag',
 			'Jet_Engine_Dynamic_Function_Tag',
 			'Jet_Engine_Macros_Tag',
-		);
+			'Jet_Engine_Object_Property_Tag',
+		) );
 	}
 
 	public function get_groups() {

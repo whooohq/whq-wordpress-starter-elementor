@@ -98,6 +98,7 @@ class EAELicense {
 			 * Admin Notices
 			 */
 			add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+			add_action( 'eael_admin_notices', array( $this, 'admin_notices' ) );
 		}
 	}
 	/**

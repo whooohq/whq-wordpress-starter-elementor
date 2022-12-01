@@ -88,11 +88,12 @@ class Edit_Item_Page extends \Jet_Engine_Options_Page_Factory {
 	 */
 	public function __construct( $page, $pages_manager ) {
 
-		$this->page          = $page;
-		$this->slug          = $page['slug'];
-		$this->action        = $page['action'];
-		$this->meta_box      = $page['fields'];
-		$this->pages_manager = $pages_manager;
+		$this->page             = $page;
+		$this->slug             = $page['slug'];
+		$this->action           = $page['action'];
+		$this->meta_box         = $page['fields'];
+		$this->pages_manager    = $pages_manager;
+		$this->hide_field_names = $page['hide_field_names'];
 
 		if ( $this->is_page_now() ) {
 

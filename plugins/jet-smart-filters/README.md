@@ -2,6 +2,60 @@
 
 # ChangeLog
 
+## 3.0.2
+* ADD: admin ability to open a filter from the list in a new tab
+* ADD: pagination filter autoscroll option
+* FIX: apply all hierarchical selects on redirect
+* FIX: checkbox, radio & visual filter RTL
+* FIX: active filters, active tag filters duplicate results after mixed url opening
+* FIX: ePro Archive Posts taxonomy with multiple post types
+* FIX: elementor responsive with url parameters
+* FIX: additional settings placeholders translation
+* FIX: adding tabindex attr
+
+## 3.0.1
+* ADD: admin RTL
+* ADD: admin select search field for options
+* ADD: admin advanced input for custom query var
+* UPD: admin color-image icon
+* FIX: admin exclude or include items on options changing
+* FIX: admin media control SVG
+* ADD: accessibility tabindex
+* ADD: 'jet-smart-filters/inited' document event
+* ADD: JS trigger before filters initialization
+* ADD: allow to use tax query with different sources
+* UPD: change icons
+* UPD: tax query and new dynamic min/max callbacks
+* FIX: prevent notices when Color Image options generated dynamically
+* FIX: compatibility with custom options
+
+## 3.0.0
+Admin interface changes. Redesigned into single page application.
+
+* FIX: prevent php notices after installation template by wizard
+* FIX: prevent php notices on calendar request
+* FIX: allow to correctly extend Jet_Smart_Filters_Hierarchy class
+* FIX: woocommerce-archive hide out of stock items from the catalog on page reload
+* FIX: date period editor block error (air-datepicker script)
+
+## 2.3.14
+* ADD: Query ID setting for blocks
+* ADD: 'jet-smart-filters/query/request' to filter request before parsing query arguments
+* FIX: Compatibility with Elementor 3.7
+* FIX: Blocks editor and Listing Grid 'is_archive_template' option compatibility
+* FIX: Merge default with current query args on ajax indexing
+* FIX: Correctly pull dynamic min/max from meta values for range filter on terms archive pages
+* FIX: Select filter. Don't add select_disabled_color control if the indexer is disabled
+* FIX: JetEngine Calendar compatibility
+* UPD: For indexer SQL query removed space between parenthesis and value. This causes an error for some clients
+* UPD: Unchecked group items for intersection relational operator
+
+## 2.3.13
+* ADD: JetWooBuilder 2.0.0 version compatibility
+* FIX: Blocks styles
+* FIX: multi language without multi currency
+* FIX: filter name Check Range > Check Range Filter
+
 ## 2.3.12
 * ADD: reindex indexer DB table on plugin activate and update
 * UPD: template parses special characters

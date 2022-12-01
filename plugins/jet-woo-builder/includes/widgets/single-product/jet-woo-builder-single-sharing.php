@@ -20,15 +20,11 @@ class Jet_Woo_Builder_Single_Sharing extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Single Sharing', 'jet-woo-builder' );
+		return __( 'Single Sharing', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
 		return 'jet-woo-builder-icon-single-sharing';
-	}
-
-	public function get_script_depends() {
-		return [];
 	}
 
 	public function get_jet_help_url() {
@@ -48,7 +44,7 @@ class Jet_Woo_Builder_Single_Sharing extends Jet_Woo_Builder_Base {
 		$this->start_controls_section(
 			'content_section',
 			[
-				'label' => esc_html__( 'Notice', 'jet-woo-builder' ),
+				'label' => __( 'Product Sharing', 'jet-woo-builder' ),
 				'tab'   => Controls_Manager::TAB_CONTENT,
 			]
 		);
@@ -74,14 +70,14 @@ class Jet_Woo_Builder_Single_Sharing extends Jet_Woo_Builder_Base {
 			return;
 		}
 
-		if ( true === $this->__set_editor_product() ) {
+		if ( $this->__set_editor_product() ) {
 			$this->__open_wrap();
 
 			woocommerce_template_single_sharing();
 
 			$this->__close_wrap();
 
-			if ( jet_woo_builder_integration()->in_elementor() ) {
+			if ( jet_woo_builder()->elementor_views->in_elementor() ) {
 				$this->__reset_editor_product();
 			}
 		}

@@ -113,13 +113,19 @@ if ( ! class_exists( 'Jet_Menu_Assets' ) ) {
 				'5.12.0'
 			);
 
+			$deps = [];
+
+			if ( ! jet_menu_tools()->is_nextgen_mode() ) {
+				$deps = [
+					'font-awesome-all',
+					'font-awesome-v4-shims',
+				];
+            }
+
 			wp_register_style(
 				'jet-menu-public-styles',
 				jet_menu()->plugin_url( 'assets/public/css/public.css' ),
-				apply_filters( 'jet-menu/assets/public-styles-dependencies', array(
-					'font-awesome-all',
-					'font-awesome-v4-shims',
-				) ),
+				apply_filters( 'jet-menu/assets/public-styles-dependencies', $deps ),
 				jet_menu()->get_version()
 			);
 		}
@@ -150,10 +156,7 @@ if ( ! class_exists( 'Jet_Menu_Assets' ) ) {
 				true
 			);
 
-			$public_script_depend = apply_filters( 'jet-menu/assets/public-script-dependencies', array(
-                'jquery',
-                'jet-vue',
-            ) );
+			$public_script_depend = apply_filters( 'jet-menu/assets/public-script-dependencies', [ 'jquery', 'jet-vue' ] );
 
 			$scripts_path = jet_menu_tools()->is_nextgen_mode() ? 'assets/public/js' : 'assets/public/js/legacy';
 
@@ -168,17 +171,17 @@ if ( ! class_exists( 'Jet_Menu_Assets' ) ) {
 			$rest_api_url = apply_filters( 'jet-menu/rest/url', get_rest_url() );
 
 			wp_localize_script( 'jet-menu-public-scripts', 'jetMenuPublicSettings', apply_filters(
-				'jet-menu/assets/public/localize',
-				array(
-					'version'          => jet_menu()->get_version(),
-					'ajaxUrl'          => esc_url( admin_url( 'admin-ajax.php' ) ),
-					'isMobile'         => filter_var( Jet_Menu_Tools::is_phone(), FILTER_VALIDATE_BOOLEAN ) ? 'true' : 'false',
-					'templateApiUrl'   => $rest_api_url . 'jet-menu-api/v1/elementor-template',
-					'menuItemsApiUrl'  => $rest_api_url . 'jet-menu-api/v1/get-menu-items',
-					'restNonce'        => wp_create_nonce( 'wp_rest' ),
-					'devMode'          => is_user_logged_in() ? 'true' : 'false',
-					'wpmlLanguageCode' => defined( 'ICL_LANGUAGE_CODE' ) ? ICL_LANGUAGE_CODE : false, // WPML Language Code
-					'menuSettings'     => array(
+				'jet-menu/assets/public/localize', array (
+					'version'                    => jet_menu()->get_version(),
+					'ajaxUrl'                    => esc_url( admin_url( 'admin-ajax.php' ) ),
+					'isMobile'                   => filter_var( Jet_Menu_Tools::is_phone(), FILTER_VALIDATE_BOOLEAN ) ? 'true' : 'false',
+					'getElementorTemplateApiUrl' => $rest_api_url . 'jet-menu-api/v2/get-elementor-template-content',
+					'getBlocksTemplateApiUrl'    => $rest_api_url . 'jet-menu-api/v2/get-blocks-template-content',
+					'menuItemsApiUrl'            => $rest_api_url . 'jet-menu-api/v2/get-menu-items',
+					'restNonce'                  => wp_create_nonce( 'wp_rest' ),
+					'devMode'                    => is_user_logged_in() ? 'true' : 'false',
+					'wpmlLanguageCode'           => defined( 'ICL_LANGUAGE_CODE' ) ? ICL_LANGUAGE_CODE : false,
+					'menuSettings'               => array (
 						'jetMenuRollUp'            => jet_menu()->settings_manager->options_manager->get_option( 'jet-menu-roll-up', 'false' ),
 						'jetMenuMouseleaveDelay'   => jet_menu()->settings_manager->options_manager->get_option( 'jet-menu-mouseleave-delay', 500 ),
 						'jetMenuMegaWidthType'     => jet_menu()->settings_manager->options_manager->get_option( 'jet-mega-menu-width-type', 'container' ),

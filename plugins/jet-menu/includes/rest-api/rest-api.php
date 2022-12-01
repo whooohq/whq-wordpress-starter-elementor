@@ -25,7 +25,7 @@ class Rest_Api {
 	 * [$api_namespace description]
 	 * @var string
 	 */
-	public $api_namespace = 'jet-menu-api/v1';
+	public $api_namespace = 'jet-menu-api/v2';
 
 	/**
 	 * [$_endpoints description]
@@ -62,7 +62,8 @@ class Rest_Api {
 
 		$this->_endpoints = array();
 
-		$this->register_endpoint( new Endpoints\Elementor_Template() );
+		$this->register_endpoint( new Endpoints\Get_Blocks_Template_Content() );
+		$this->register_endpoint( new Endpoints\Get_Elementor_Template_Content() );
 		$this->register_endpoint( new Endpoints\Plugin_Settings() );
 		$this->register_endpoint( new Endpoints\Get_Menu_Items() );
 

@@ -52,6 +52,7 @@
 				}
 
 				.product-thumbnail img {
+					width: auto;
 					max-width: 100%;
 				}
 
@@ -152,12 +153,28 @@
 	.elementor-jet-checkout-billing,
 	.elementor-jet-checkout-shipping-form {
 		.form-row {
+			margin: 0;
+			padding: 0;
+
 			label {
 				display: block;
 			}
 			
 			.select2 {
 				text-align: start;
+			}
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.jet-woo-builder-forms-mobile-approach-yes {
+			.elementor-jet-checkout-billing,
+			.elementor-jet-checkout-shipping-form {
+				.form-row-first,
+				.form-row-last {
+					float: none;
+					width: 100%;
+				}
 			}
 		}
 	}

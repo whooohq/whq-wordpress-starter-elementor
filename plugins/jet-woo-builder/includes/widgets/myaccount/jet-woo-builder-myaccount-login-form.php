@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_MyAccount_Login_Form
- * Name: Login Form
+ * Name: Account Login Form
  * Slug: jet-myaccount-login-form
  */
 
@@ -21,7 +21,7 @@ class Jet_Woo_Builder_MyAccount_Login_Form extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return __( 'Login Form', 'jet-woo-builder' );
+		return __( 'Account Login Form', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {

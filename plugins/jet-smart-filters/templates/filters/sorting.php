@@ -4,7 +4,7 @@ if ( empty( $settings ) || empty( $sorting_options ) || empty( $container_data_a
 	return;
 }
 
-$class = 'jet-sorting';
+$class            = 'jet-sorting';
 $class_containter = $class . ' ' . ( ! empty( $settings['label_block'] ) ? $class . '--flex-column' : $class . '--flex-row' );
 
 ?>
@@ -16,6 +16,7 @@ $class_containter = $class . ' ' . ( ! empty( $settings['label_block'] ) ? $clas
 		<select
 			class="<?php echo $class ?>-select"
 			name="select-name"
+			<?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>
 		>
 			<?php if ( $placeholder ) : ?>
 				<option value=""><?php echo $placeholder ?></option>

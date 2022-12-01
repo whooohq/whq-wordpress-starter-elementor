@@ -139,6 +139,12 @@
 				}
 			}
 		}
+
+		&[dir="rtl"] {
+			.jet-slick-dots li {
+				text-indent: 50px;
+			}
+		}
 	}
 
 	.jet-engine-listing-overlay {
@@ -259,7 +265,7 @@
 			}
 
 			// For compat with E. v3.6
-			> :is( .elementor-section, .e-container ) {
+			> :is( .elementor-section, .e-container, .e-con ) {
 				height: 100%;
 			}
 
@@ -288,7 +294,7 @@
 				}
 
 				// For compat with E. v3.6
-				> :is( .elementor-section, .e-container ) {
+				> :is( .elementor-section, .e-container, .e-con ) {
 					height: 100%;
 				}
 			}

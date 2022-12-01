@@ -4232,6 +4232,11 @@ class GFFormsModel {
 	}
 
 	public static function maybe_trim_input( $value, $form_id, $field ) {
+		
+		if ( is_null( $value ) ) {
+			return $value;
+		}
+		
 		$trim_value = apply_filters( 'gform_trim_input_value', true, $form_id, $field );
 
 		if ( $trim_value ) {
@@ -7065,7 +7070,28 @@ class GFFormsModel {
 	 * @return array
 	 */
 	public static function get_lead_db_columns() {
-		return array( 'id', 'form_id', 'post_id', 'date_created', 'date_updated', 'is_starred', 'is_read', 'ip', 'source_url', 'user_agent', 'currency', 'payment_status', 'payment_date', 'payment_amount', 'transaction_id', 'is_fulfilled', 'created_by', 'transaction_type', 'status', 'payment_method' );
+		return array(
+			'id',
+			'form_id',
+			'post_id',
+			'date_created',
+			'date_updated',
+			'is_starred',
+			'is_read',
+			'ip',
+			'source_url',
+			'user_agent',
+			'currency',
+			'payment_status',
+			'payment_date',
+			'payment_amount',
+			'payment_method',
+			'transaction_id',
+			'is_fulfilled',
+			'created_by',
+			'transaction_type',
+			'status',
+		);
 	}
 
 	/**

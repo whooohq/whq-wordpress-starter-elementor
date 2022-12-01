@@ -1,90 +1,20 @@
-/*! elementor - v3.6.8 - 27-07-2022 */
+/*! elementor - v3.8.1 - 13-11-2022 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "../core/app/assets/js/molecules/collapse.scss":
-/*!*****************************************************!*\
-  !*** ../core/app/assets/js/molecules/collapse.scss ***!
-  \*****************************************************/
+/***/ "../app/assets/js/molecules/collapse.scss":
+/*!************************************************!*\
+  !*** ../app/assets/js/molecules/collapse.scss ***!
+  \************************************************/
 /***/ (() => {
 
 
 
 /***/ }),
 
-/***/ "../core/app/assets/js/molecules/upload-file.scss":
-/*!********************************************************!*\
-  !*** ../core/app/assets/js/molecules/upload-file.scss ***!
-  \********************************************************/
-/***/ (() => {
-
-
-
-/***/ }),
-
-/***/ "../core/app/assets/js/organisms/drop-zone.scss":
-/*!******************************************************!*\
-  !*** ../core/app/assets/js/organisms/drop-zone.scss ***!
-  \******************************************************/
-/***/ (() => {
-
-
-
-/***/ }),
-
-/***/ "../core/app/assets/js/ui/atoms/box.scss":
-/*!***********************************************!*\
-  !*** ../core/app/assets/js/ui/atoms/box.scss ***!
-  \***********************************************/
-/***/ (() => {
-
-
-
-/***/ }),
-
-/***/ "../core/app/assets/js/ui/atoms/checkbox.scss":
-/*!****************************************************!*\
-  !*** ../core/app/assets/js/ui/atoms/checkbox.scss ***!
-  \****************************************************/
-/***/ (() => {
-
-
-
-/***/ }),
-
-/***/ "../core/app/assets/js/ui/atoms/css-grid.scss":
-/*!****************************************************!*\
-  !*** ../core/app/assets/js/ui/atoms/css-grid.scss ***!
-  \****************************************************/
-/***/ (() => {
-
-
-
-/***/ }),
-
-/***/ "../core/app/assets/js/ui/atoms/drag-drop.scss":
-/*!*****************************************************!*\
-  !*** ../core/app/assets/js/ui/atoms/drag-drop.scss ***!
-  \*****************************************************/
-/***/ (() => {
-
-
-
-/***/ }),
-
-/***/ "../core/app/assets/js/ui/card/card.scss":
-/*!***********************************************!*\
-  !*** ../core/app/assets/js/ui/card/card.scss ***!
-  \***********************************************/
-/***/ (() => {
-
-
-
-/***/ }),
-
-/***/ "../core/app/assets/js/ui/dialog/dialog.scss":
+/***/ "../app/assets/js/molecules/upload-file.scss":
 /*!***************************************************!*\
-  !*** ../core/app/assets/js/ui/dialog/dialog.scss ***!
+  !*** ../app/assets/js/molecules/upload-file.scss ***!
   \***************************************************/
 /***/ (() => {
 
@@ -92,39 +22,9 @@
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/grid/grid.scss":
-/*!***********************************************!*\
-  !*** ../core/app/assets/js/ui/grid/grid.scss ***!
-  \***********************************************/
-/***/ (() => {
-
-
-
-/***/ }),
-
-/***/ "../core/app/assets/js/ui/menu/menu-item.scss":
-/*!****************************************************!*\
-  !*** ../core/app/assets/js/ui/menu/menu-item.scss ***!
-  \****************************************************/
-/***/ (() => {
-
-
-
-/***/ }),
-
-/***/ "../core/app/assets/js/ui/menu/menu.scss":
-/*!***********************************************!*\
-  !*** ../core/app/assets/js/ui/menu/menu.scss ***!
-  \***********************************************/
-/***/ (() => {
-
-
-
-/***/ }),
-
-/***/ "../core/app/assets/js/ui/modal/modal.scss":
+/***/ "../app/assets/js/organisms/drop-zone.scss":
 /*!*************************************************!*\
-  !*** ../core/app/assets/js/ui/modal/modal.scss ***!
+  !*** ../app/assets/js/organisms/drop-zone.scss ***!
   \*************************************************/
 /***/ (() => {
 
@@ -132,39 +32,119 @@
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/molecules/add-new-button.scss":
-/*!**************************************************************!*\
-  !*** ../core/app/assets/js/ui/molecules/add-new-button.scss ***!
-  \**************************************************************/
+/***/ "../app/assets/js/ui/atoms/box.scss":
+/*!******************************************!*\
+  !*** ../app/assets/js/ui/atoms/box.scss ***!
+  \******************************************/
 /***/ (() => {
 
 
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/molecules/inline-link.scss":
-/*!***********************************************************!*\
-  !*** ../core/app/assets/js/ui/molecules/inline-link.scss ***!
-  \***********************************************************/
+/***/ "../app/assets/js/ui/atoms/checkbox.scss":
+/*!***********************************************!*\
+  !*** ../app/assets/js/ui/atoms/checkbox.scss ***!
+  \***********************************************/
 /***/ (() => {
 
 
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/molecules/list.scss":
-/*!****************************************************!*\
-  !*** ../core/app/assets/js/ui/molecules/list.scss ***!
-  \****************************************************/
+/***/ "../app/assets/js/ui/atoms/css-grid.scss":
+/*!***********************************************!*\
+  !*** ../app/assets/js/ui/atoms/css-grid.scss ***!
+  \***********************************************/
 /***/ (() => {
 
 
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/molecules/notice.scss":
+/***/ "../app/assets/js/ui/atoms/drag-drop.scss":
+/*!************************************************!*\
+  !*** ../app/assets/js/ui/atoms/drag-drop.scss ***!
+  \************************************************/
+/***/ (() => {
+
+
+
+/***/ }),
+
+/***/ "../app/assets/js/ui/card/card.scss":
+/*!******************************************!*\
+  !*** ../app/assets/js/ui/card/card.scss ***!
+  \******************************************/
+/***/ (() => {
+
+
+
+/***/ }),
+
+/***/ "../app/assets/js/ui/dialog/dialog.scss":
+/*!**********************************************!*\
+  !*** ../app/assets/js/ui/dialog/dialog.scss ***!
+  \**********************************************/
+/***/ (() => {
+
+
+
+/***/ }),
+
+/***/ "../app/assets/js/ui/grid/grid.scss":
+/*!******************************************!*\
+  !*** ../app/assets/js/ui/grid/grid.scss ***!
+  \******************************************/
+/***/ (() => {
+
+
+
+/***/ }),
+
+/***/ "../app/assets/js/ui/menu/menu-item.scss":
+/*!***********************************************!*\
+  !*** ../app/assets/js/ui/menu/menu-item.scss ***!
+  \***********************************************/
+/***/ (() => {
+
+
+
+/***/ }),
+
+/***/ "../app/assets/js/ui/menu/menu.scss":
+/*!******************************************!*\
+  !*** ../app/assets/js/ui/menu/menu.scss ***!
+  \******************************************/
+/***/ (() => {
+
+
+
+/***/ }),
+
+/***/ "../app/assets/js/ui/modal/modal.scss":
+/*!********************************************!*\
+  !*** ../app/assets/js/ui/modal/modal.scss ***!
+  \********************************************/
+/***/ (() => {
+
+
+
+/***/ }),
+
+/***/ "../app/assets/js/ui/molecules/add-new-button.scss":
+/*!*********************************************************!*\
+  !*** ../app/assets/js/ui/molecules/add-new-button.scss ***!
+  \*********************************************************/
+/***/ (() => {
+
+
+
+/***/ }),
+
+/***/ "../app/assets/js/ui/molecules/inline-link.scss":
 /*!******************************************************!*\
-  !*** ../core/app/assets/js/ui/molecules/notice.scss ***!
+  !*** ../app/assets/js/ui/molecules/inline-link.scss ***!
   \******************************************************/
 /***/ (() => {
 
@@ -172,39 +152,49 @@
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/molecules/popover.scss":
-/*!*******************************************************!*\
-  !*** ../core/app/assets/js/ui/molecules/popover.scss ***!
-  \*******************************************************/
+/***/ "../app/assets/js/ui/molecules/list.scss":
+/*!***********************************************!*\
+  !*** ../app/assets/js/ui/molecules/list.scss ***!
+  \***********************************************/
 /***/ (() => {
 
 
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/molecules/select2.scss":
-/*!*******************************************************!*\
-  !*** ../core/app/assets/js/ui/molecules/select2.scss ***!
-  \*******************************************************/
+/***/ "../app/assets/js/ui/molecules/notice.scss":
+/*!*************************************************!*\
+  !*** ../app/assets/js/ui/molecules/notice.scss ***!
+  \*************************************************/
 /***/ (() => {
 
 
 
 /***/ }),
 
-/***/ "../core/app/modules/site-editor/assets/js/molecules/site-part.scss":
-/*!**************************************************************************!*\
-  !*** ../core/app/modules/site-editor/assets/js/molecules/site-part.scss ***!
-  \**************************************************************************/
+/***/ "../app/assets/js/ui/molecules/popover.scss":
+/*!**************************************************!*\
+  !*** ../app/assets/js/ui/molecules/popover.scss ***!
+  \**************************************************/
 /***/ (() => {
 
 
 
 /***/ }),
 
-/***/ "../core/app/modules/site-editor/assets/js/organisms/menu.scss":
+/***/ "../app/assets/js/ui/molecules/select2.scss":
+/*!**************************************************!*\
+  !*** ../app/assets/js/ui/molecules/select2.scss ***!
+  \**************************************************/
+/***/ (() => {
+
+
+
+/***/ }),
+
+/***/ "../app/modules/site-editor/assets/js/molecules/site-part.scss":
 /*!*********************************************************************!*\
-  !*** ../core/app/modules/site-editor/assets/js/organisms/menu.scss ***!
+  !*** ../app/modules/site-editor/assets/js/molecules/site-part.scss ***!
   \*********************************************************************/
 /***/ (() => {
 
@@ -212,30 +202,40 @@
 
 /***/ }),
 
-/***/ "../core/app/modules/site-editor/assets/js/pages/promotion.scss":
-/*!**********************************************************************!*\
-  !*** ../core/app/modules/site-editor/assets/js/pages/promotion.scss ***!
-  \**********************************************************************/
-/***/ (() => {
-
-
-
-/***/ }),
-
-/***/ "../core/app/modules/site-editor/assets/js/templates/site-editor.scss":
-/*!****************************************************************************!*\
-  !*** ../core/app/modules/site-editor/assets/js/templates/site-editor.scss ***!
-  \****************************************************************************/
-/***/ (() => {
-
-
-
-/***/ }),
-
-/***/ "../core/app/modules/site-editor/assets/scss/loading.scss":
+/***/ "../app/modules/site-editor/assets/js/organisms/menu.scss":
 /*!****************************************************************!*\
-  !*** ../core/app/modules/site-editor/assets/scss/loading.scss ***!
+  !*** ../app/modules/site-editor/assets/js/organisms/menu.scss ***!
   \****************************************************************/
+/***/ (() => {
+
+
+
+/***/ }),
+
+/***/ "../app/modules/site-editor/assets/js/pages/promotion.scss":
+/*!*****************************************************************!*\
+  !*** ../app/modules/site-editor/assets/js/pages/promotion.scss ***!
+  \*****************************************************************/
+/***/ (() => {
+
+
+
+/***/ }),
+
+/***/ "../app/modules/site-editor/assets/js/templates/site-editor.scss":
+/*!***********************************************************************!*\
+  !*** ../app/modules/site-editor/assets/js/templates/site-editor.scss ***!
+  \***********************************************************************/
+/***/ (() => {
+
+
+
+/***/ }),
+
+/***/ "../app/modules/site-editor/assets/scss/loading.scss":
+/*!***********************************************************!*\
+  !*** ../app/modules/site-editor/assets/scss/loading.scss ***!
+  \***********************************************************/
 /***/ (() => {
 
 
@@ -1504,10 +1504,10 @@ var shallowCompare = function shallowCompare(obj1, obj2) {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/hooks/use-action.js":
-/*!*************************************************!*\
-  !*** ../core/app/assets/js/hooks/use-action.js ***!
-  \*************************************************/
+/***/ "../app/assets/js/hooks/use-action.js":
+/*!********************************************!*\
+  !*** ../app/assets/js/hooks/use-action.js ***!
+  \********************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -1542,10 +1542,10 @@ function useAction() {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/hooks/use-ajax.js":
-/*!***********************************************!*\
-  !*** ../core/app/assets/js/hooks/use-ajax.js ***!
-  \***********************************************/
+/***/ "../app/assets/js/hooks/use-ajax.js":
+/*!******************************************!*\
+  !*** ../app/assets/js/hooks/use-ajax.js ***!
+  \******************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -1650,10 +1650,10 @@ function useAjax() {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/hooks/use-page-title.js":
-/*!*****************************************************!*\
-  !*** ../core/app/assets/js/hooks/use-page-title.js ***!
-  \*****************************************************/
+/***/ "../app/assets/js/hooks/use-page-title.js":
+/*!************************************************!*\
+  !*** ../app/assets/js/hooks/use-page-title.js ***!
+  \************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -1681,10 +1681,10 @@ function usePageTitle(_ref) {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/hooks/use-query-params.js":
-/*!*******************************************************!*\
-  !*** ../core/app/assets/js/hooks/use-query-params.js ***!
-  \*******************************************************/
+/***/ "../app/assets/js/hooks/use-query-params.js":
+/*!**************************************************!*\
+  !*** ../app/assets/js/hooks/use-query-params.js ***!
+  \**************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -1736,10 +1736,10 @@ function useQueryParams() {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/layout/content.js":
-/*!***********************************************!*\
-  !*** ../core/app/assets/js/layout/content.js ***!
-  \***********************************************/
+/***/ "../app/assets/js/layout/content.js":
+/*!******************************************!*\
+  !*** ../app/assets/js/layout/content.js ***!
+  \******************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -1771,10 +1771,10 @@ Content.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/layout/footer.js":
-/*!**********************************************!*\
-  !*** ../core/app/assets/js/layout/footer.js ***!
-  \**********************************************/
+/***/ "../app/assets/js/layout/footer.js":
+/*!*****************************************!*\
+  !*** ../app/assets/js/layout/footer.js ***!
+  \*****************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -1802,10 +1802,10 @@ Footer.propTypes = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/layout/header-button.js":
-/*!*****************************************************!*\
-  !*** ../core/app/assets/js/layout/header-button.js ***!
-  \*****************************************************/
+/***/ "../app/assets/js/layout/header-button.js":
+/*!************************************************!*\
+  !*** ../app/assets/js/layout/header-button.js ***!
+  \************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -1832,7 +1832,7 @@ var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/run
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
 
-var _button = _interopRequireDefault(__webpack_require__(/*! ../ui/molecules/button */ "../core/app/assets/js/ui/molecules/button.js"));
+var _button = _interopRequireDefault(__webpack_require__(/*! ../ui/molecules/button */ "../app/assets/js/ui/molecules/button.js"));
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
@@ -1869,7 +1869,7 @@ var Button = /*#__PURE__*/function (_BaseButton) {
 
 exports["default"] = Button;
 (0, _defineProperty2.default)(Button, "defaultProps", Object.assign({}
-/* clone */
+/* Clone */
 , _button.default.defaultProps, {
   hideText: true,
   includeHeaderBtnClass: true
@@ -1877,10 +1877,10 @@ exports["default"] = Button;
 
 /***/ }),
 
-/***/ "../core/app/assets/js/layout/header-buttons.js":
-/*!******************************************************!*\
-  !*** ../core/app/assets/js/layout/header-buttons.js ***!
-  \******************************************************/
+/***/ "../app/assets/js/layout/header-buttons.js":
+/*!*************************************************!*\
+  !*** ../app/assets/js/layout/header-buttons.js ***!
+  \*************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -1899,9 +1899,9 @@ var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
 var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
 
-var _useAction = _interopRequireDefault(__webpack_require__(/*! elementor-app/hooks/use-action */ "../core/app/assets/js/hooks/use-action.js"));
+var _useAction = _interopRequireDefault(__webpack_require__(/*! elementor-app/hooks/use-action */ "../app/assets/js/hooks/use-action.js"));
 
-var _headerButton = _interopRequireDefault(__webpack_require__(/*! ./header-button */ "../core/app/assets/js/layout/header-button.js"));
+var _headerButton = _interopRequireDefault(__webpack_require__(/*! ./header-button */ "../app/assets/js/layout/header-button.js"));
 
 function HeaderButtons(props) {
   var action = (0, _useAction.default)();
@@ -1945,10 +1945,10 @@ HeaderButtons.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/layout/header.js":
-/*!**********************************************!*\
-  !*** ../core/app/assets/js/layout/header.js ***!
-  \**********************************************/
+/***/ "../app/assets/js/layout/header.js":
+/*!*****************************************!*\
+  !*** ../app/assets/js/layout/header.js ***!
+  \*****************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -1966,11 +1966,11 @@ var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
 var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
 
-var _grid = _interopRequireDefault(__webpack_require__(/*! ../ui/grid/grid */ "../core/app/assets/js/ui/grid/grid.js"));
+var _grid = _interopRequireDefault(__webpack_require__(/*! ../ui/grid/grid */ "../app/assets/js/ui/grid/grid.js"));
 
-var _headerButtons = _interopRequireDefault(__webpack_require__(/*! ./header-buttons */ "../core/app/assets/js/layout/header-buttons.js"));
+var _headerButtons = _interopRequireDefault(__webpack_require__(/*! ./header-buttons */ "../app/assets/js/layout/header-buttons.js"));
 
-var _usePageTitle = _interopRequireDefault(__webpack_require__(/*! elementor-app/hooks/use-page-title */ "../core/app/assets/js/hooks/use-page-title.js"));
+var _usePageTitle = _interopRequireDefault(__webpack_require__(/*! elementor-app/hooks/use-page-title */ "../app/assets/js/hooks/use-page-title.js"));
 
 function Header(props) {
   (0, _usePageTitle.default)({
@@ -2006,7 +2006,8 @@ function Header(props) {
 Header.propTypes = {
   title: PropTypes.string,
   titleRedirectRoute: PropTypes.string,
-  buttons: PropTypes.arrayOf(PropTypes.object)
+  buttons: PropTypes.arrayOf(PropTypes.object),
+  onClose: PropTypes.func
 };
 Header.defaultProps = {
   buttons: []
@@ -2014,10 +2015,10 @@ Header.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/layout/page.js":
-/*!********************************************!*\
-  !*** ../core/app/assets/js/layout/page.js ***!
-  \********************************************/
+/***/ "../app/assets/js/layout/page.js":
+/*!***************************************!*\
+  !*** ../app/assets/js/layout/page.js ***!
+  \***************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -2033,13 +2034,13 @@ exports["default"] = Page;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _header = _interopRequireDefault(__webpack_require__(/*! ./header */ "../core/app/assets/js/layout/header.js"));
+var _header = _interopRequireDefault(__webpack_require__(/*! ./header */ "../app/assets/js/layout/header.js"));
 
-var _sidebar = _interopRequireDefault(__webpack_require__(/*! ./sidebar */ "../core/app/assets/js/layout/sidebar.js"));
+var _sidebar = _interopRequireDefault(__webpack_require__(/*! ./sidebar */ "../app/assets/js/layout/sidebar.js"));
 
-var _content = _interopRequireDefault(__webpack_require__(/*! ./content */ "../core/app/assets/js/layout/content.js"));
+var _content = _interopRequireDefault(__webpack_require__(/*! ./content */ "../app/assets/js/layout/content.js"));
 
-var _footer = _interopRequireDefault(__webpack_require__(/*! ./footer */ "../core/app/assets/js/layout/footer.js"));
+var _footer = _interopRequireDefault(__webpack_require__(/*! ./footer */ "../app/assets/js/layout/footer.js"));
 
 function Page(props) {
   var AppSidebar = function AppSidebar() {
@@ -2064,7 +2065,12 @@ function Page(props) {
   }, /*#__PURE__*/_react.default.createElement(_header.default, {
     title: props.title,
     buttons: props.headerButtons,
-    titleRedirectRoute: props.titleRedirectRoute
+    titleRedirectRoute: props.titleRedirectRoute,
+    onClose: function onClose() {
+      var _props$onClose;
+
+      return (_props$onClose = props.onClose) === null || _props$onClose === void 0 ? void 0 : _props$onClose.call(props);
+    }
   }), /*#__PURE__*/_react.default.createElement("div", {
     className: "eps-app__main"
   }, AppSidebar(), /*#__PURE__*/_react.default.createElement(_content.default, null, props.content)), AppFooter()));
@@ -2077,7 +2083,8 @@ Page.propTypes = {
   headerButtons: PropTypes.arrayOf(PropTypes.object),
   sidebar: PropTypes.object,
   content: PropTypes.object.isRequired,
-  footer: PropTypes.object
+  footer: PropTypes.object,
+  onClose: PropTypes.func
 };
 Page.defaultProps = {
   className: ''
@@ -2085,10 +2092,10 @@ Page.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/layout/sidebar.js":
-/*!***********************************************!*\
-  !*** ../core/app/assets/js/layout/sidebar.js ***!
-  \***********************************************/
+/***/ "../app/assets/js/layout/sidebar.js":
+/*!******************************************!*\
+  !*** ../app/assets/js/layout/sidebar.js ***!
+  \******************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -2116,10 +2123,10 @@ Sidebar.propTypes = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/molecules/collapse-content.js":
-/*!***********************************************************!*\
-  !*** ../core/app/assets/js/molecules/collapse-content.js ***!
-  \***********************************************************/
+/***/ "../app/assets/js/molecules/collapse-content.js":
+/*!******************************************************!*\
+  !*** ../app/assets/js/molecules/collapse-content.js ***!
+  \******************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -2151,10 +2158,10 @@ CollapseContent.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/molecules/collapse-context.js":
-/*!***********************************************************!*\
-  !*** ../core/app/assets/js/molecules/collapse-context.js ***!
-  \***********************************************************/
+/***/ "../app/assets/js/molecules/collapse-context.js":
+/*!******************************************************!*\
+  !*** ../app/assets/js/molecules/collapse-context.js ***!
+  \******************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -2175,10 +2182,10 @@ exports.CollapseContext = CollapseContext;
 
 /***/ }),
 
-/***/ "../core/app/assets/js/molecules/collapse-toggle.js":
-/*!**********************************************************!*\
-  !*** ../core/app/assets/js/molecules/collapse-toggle.js ***!
-  \**********************************************************/
+/***/ "../app/assets/js/molecules/collapse-toggle.js":
+/*!*****************************************************!*\
+  !*** ../app/assets/js/molecules/collapse-toggle.js ***!
+  \*****************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -2198,9 +2205,9 @@ var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
 
-var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../app/assets/js/utils/utils.js");
 
-var _collapseContext = __webpack_require__(/*! ./collapse-context */ "../core/app/assets/js/molecules/collapse-context.js");
+var _collapseContext = __webpack_require__(/*! ./collapse-context */ "../app/assets/js/molecules/collapse-context.js");
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -2245,10 +2252,10 @@ CollapseToggle.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/molecules/collapse.js":
-/*!***************************************************!*\
-  !*** ../core/app/assets/js/molecules/collapse.js ***!
-  \***************************************************/
+/***/ "../app/assets/js/molecules/collapse.js":
+/*!**********************************************!*\
+  !*** ../app/assets/js/molecules/collapse.js ***!
+  \**********************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -2270,15 +2277,15 @@ var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/run
 
 var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
 
-var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../app/assets/js/utils/utils.js");
 
-var _collapseContext = __webpack_require__(/*! ./collapse-context */ "../core/app/assets/js/molecules/collapse-context.js");
+var _collapseContext = __webpack_require__(/*! ./collapse-context */ "../app/assets/js/molecules/collapse-context.js");
 
-var _collapseToggle = _interopRequireDefault(__webpack_require__(/*! ./collapse-toggle */ "../core/app/assets/js/molecules/collapse-toggle.js"));
+var _collapseToggle = _interopRequireDefault(__webpack_require__(/*! ./collapse-toggle */ "../app/assets/js/molecules/collapse-toggle.js"));
 
-var _collapseContent = _interopRequireDefault(__webpack_require__(/*! ./collapse-content */ "../core/app/assets/js/molecules/collapse-content.js"));
+var _collapseContent = _interopRequireDefault(__webpack_require__(/*! ./collapse-content */ "../app/assets/js/molecules/collapse-content.js"));
 
-__webpack_require__(/*! ./collapse.scss */ "../core/app/assets/js/molecules/collapse.scss");
+__webpack_require__(/*! ./collapse.scss */ "../app/assets/js/molecules/collapse.scss");
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -2331,10 +2338,10 @@ Collapse.Content = _collapseContent.default;
 
 /***/ }),
 
-/***/ "../core/app/assets/js/molecules/upload-file.js":
-/*!******************************************************!*\
-  !*** ../core/app/assets/js/molecules/upload-file.js ***!
-  \******************************************************/
+/***/ "../app/assets/js/molecules/upload-file.js":
+/*!*************************************************!*\
+  !*** ../app/assets/js/molecules/upload-file.js ***!
+  \*************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -2353,11 +2360,11 @@ exports["default"] = UploadFile;
 
 var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
 
-var _button = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/molecules/button */ "../core/app/assets/js/ui/molecules/button.js"));
+var _button = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/molecules/button */ "../app/assets/js/ui/molecules/button.js"));
 
-var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../app/assets/js/utils/utils.js");
 
-__webpack_require__(/*! ./upload-file.scss */ "../core/app/assets/js/molecules/upload-file.scss");
+__webpack_require__(/*! ./upload-file.scss */ "../app/assets/js/molecules/upload-file.scss");
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -2400,6 +2407,10 @@ function UploadFile(props) {
     hideText: props.isLoading,
     icon: props.isLoading ? 'eicon-loading eicon-animation-spin' : '',
     onClick: function onClick() {
+      if (props.onFileChoose) {
+        props.onFileChoose();
+      }
+
       if (!props.isLoading) {
         if (props.onButtonClick) {
           props.onButtonClick();
@@ -2443,7 +2454,8 @@ UploadFile.propTypes = {
   onError: PropTypes.func,
   variant: PropTypes.string,
   color: PropTypes.string,
-  onButtonClick: PropTypes.func
+  onButtonClick: PropTypes.func,
+  onFileChoose: PropTypes.func
 };
 UploadFile.defaultProps = {
   className: '',
@@ -2456,10 +2468,10 @@ UploadFile.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/organisms/drop-zone.js":
-/*!****************************************************!*\
-  !*** ../core/app/assets/js/organisms/drop-zone.js ***!
-  \****************************************************/
+/***/ "../app/assets/js/organisms/drop-zone.js":
+/*!***********************************************!*\
+  !*** ../app/assets/js/organisms/drop-zone.js ***!
+  \***********************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -2478,19 +2490,19 @@ var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
 var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
 
-var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../app/assets/js/utils/utils.js");
 
-var _uploadFile = _interopRequireDefault(__webpack_require__(/*! elementor-app/molecules/upload-file */ "../core/app/assets/js/molecules/upload-file.js"));
+var _uploadFile = _interopRequireDefault(__webpack_require__(/*! elementor-app/molecules/upload-file */ "../app/assets/js/molecules/upload-file.js"));
 
-var _dragDrop = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/drag-drop */ "../core/app/assets/js/ui/atoms/drag-drop.js"));
+var _dragDrop = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/drag-drop */ "../app/assets/js/ui/atoms/drag-drop.js"));
 
-var _icon = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/icon */ "../core/app/assets/js/ui/atoms/icon.js"));
+var _icon = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/icon */ "../app/assets/js/ui/atoms/icon.js"));
 
-var _heading = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/heading */ "../core/app/assets/js/ui/atoms/heading.js"));
+var _heading = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/heading */ "../app/assets/js/ui/atoms/heading.js"));
 
-var _text = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/text */ "../core/app/assets/js/ui/atoms/text.js"));
+var _text = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/text */ "../app/assets/js/ui/atoms/text.js"));
 
-__webpack_require__(/*! ./drop-zone.scss */ "../core/app/assets/js/organisms/drop-zone.scss");
+__webpack_require__(/*! ./drop-zone.scss */ "../app/assets/js/organisms/drop-zone.scss");
 
 function DropZone(props) {
   var classes = ['e-app-drop-zone', props.className],
@@ -2538,7 +2550,8 @@ function DropZone(props) {
     text: props.buttonText,
     filetypes: props.filetypes,
     variant: props.buttonVariant,
-    color: props.buttonColor
+    color: props.buttonColor,
+    onFileChoose: props.onFileChoose
   }), props.description && /*#__PURE__*/_react.default.createElement(_text.default, {
     variant: "xl",
     className: "e-app-drop-zone__description"
@@ -2564,7 +2577,8 @@ DropZone.propTypes = {
   filetypes: PropTypes.array.isRequired,
   onError: PropTypes.func,
   description: PropTypes.string,
-  onButtonClick: PropTypes.func
+  onButtonClick: PropTypes.func,
+  onFileChoose: PropTypes.func
 };
 DropZone.defaultProps = {
   className: '',
@@ -2577,10 +2591,10 @@ DropZone.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/organisms/error-boundary.js":
-/*!*********************************************************!*\
-  !*** ../core/app/assets/js/organisms/error-boundary.js ***!
-  \*********************************************************/
+/***/ "../app/assets/js/organisms/error-boundary.js":
+/*!****************************************************!*\
+  !*** ../app/assets/js/organisms/error-boundary.js ***!
+  \****************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -2609,7 +2623,7 @@ var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/run
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
 
-var _dialog = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/dialog/dialog */ "../core/app/assets/js/ui/dialog/dialog.js"));
+var _dialog = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/dialog/dialog */ "../app/assets/js/ui/dialog/dialog.js"));
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
@@ -2689,10 +2703,10 @@ exports["default"] = ErrorBoundary;
 
 /***/ }),
 
-/***/ "../core/app/assets/js/organisms/unfiltered-files-dialog.js":
-/*!******************************************************************!*\
-  !*** ../core/app/assets/js/organisms/unfiltered-files-dialog.js ***!
-  \******************************************************************/
+/***/ "../app/assets/js/organisms/unfiltered-files-dialog.js":
+/*!*************************************************************!*\
+  !*** ../app/assets/js/organisms/unfiltered-files-dialog.js ***!
+  \*************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -2713,9 +2727,9 @@ var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
 
 var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
 
-var _dialog = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/dialog/dialog */ "../core/app/assets/js/ui/dialog/dialog.js"));
+var _dialog = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/dialog/dialog */ "../app/assets/js/ui/dialog/dialog.js"));
 
-var _useAjax2 = _interopRequireDefault(__webpack_require__(/*! elementor-app/hooks/use-ajax */ "../core/app/assets/js/hooks/use-ajax.js"));
+var _useAjax2 = _interopRequireDefault(__webpack_require__(/*! elementor-app/hooks/use-ajax */ "../app/assets/js/hooks/use-ajax.js"));
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -2727,6 +2741,9 @@ function UnfilteredFilesDialog(props) {
       onReady = props.onReady,
       onCancel = props.onCancel,
       onDismiss = props.onDismiss,
+      onLoad = props.onLoad,
+      onEnable = props.onEnable,
+      onClose = props.onClose,
       _useAjax = (0, _useAjax2.default)(),
       ajaxState = _useAjax.ajaxState,
       setAjax = _useAjax.setAjax,
@@ -2753,6 +2770,10 @@ function UnfilteredFilesDialog(props) {
           })
         }
       });
+
+      if (onEnable) {
+        onEnable();
+      }
     }
   }, [enableUnfilteredFiles]); // Enabling unfiltered files ajax status.
 
@@ -2768,18 +2789,23 @@ function UnfilteredFilesDialog(props) {
         break;
     }
   }, [ajaxState]);
+  (0, _react.useEffect)(function () {
+    if (show && onLoad) {
+      onLoad();
+    }
+  }, [show]);
 
   if (!show) {
     return null;
   }
 
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, isEnableError ? /*#__PURE__*/_react.default.createElement(_dialog.default, {
-    title: __('Sorry, something went wrong.', 'elementor'),
+    title: __('Something went wrong.', 'elementor'),
     text: props.errorModalText,
     approveButtonColor: "link",
     approveButtonText: __('Continue', 'elementor'),
     approveButtonOnClick: onReady,
-    dismissButtonText: __('Go back', 'elementor'),
+    dismissButtonText: __('Go Back', 'elementor'),
     dismissButtonOnClick: onCancel,
     onClose: onCancel
   }) : /*#__PURE__*/_react.default.createElement(_dialog.default, {
@@ -2792,7 +2818,7 @@ function UnfilteredFilesDialog(props) {
     },
     dismissButtonText: __('Skip', 'elementor'),
     dismissButtonOnClick: onDismiss || onReady,
-    onClose: onDismiss || onReady
+    onClose: onClose || onDismiss || onReady
   }));
 }
 
@@ -2803,18 +2829,23 @@ UnfilteredFilesDialog.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onDismiss: PropTypes.func,
   confirmModalText: PropTypes.string.isRequired,
-  errorModalText: PropTypes.string.isRequired
+  errorModalText: PropTypes.string.isRequired,
+  onLoad: PropTypes.func,
+  onEnable: PropTypes.func,
+  onClose: PropTypes.func
 };
 UnfilteredFilesDialog.defaultProps = {
-  show: false
+  show: false,
+  onReady: function onReady() {},
+  onCancel: function onCancel() {}
 };
 
 /***/ }),
 
-/***/ "../core/app/assets/js/package.js":
-/*!****************************************!*\
-  !*** ../core/app/assets/js/package.js ***!
-  \****************************************/
+/***/ "../app/assets/js/package.js":
+/*!***********************************!*\
+  !*** ../app/assets/js/package.js ***!
+  \***********************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -2829,79 +2860,79 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports.hooks = exports.components = exports.appUi = void 0;
 
-var _addNewButton = _interopRequireDefault(__webpack_require__(/*! ./ui/molecules/add-new-button */ "../core/app/assets/js/ui/molecules/add-new-button.js"));
+var _addNewButton = _interopRequireDefault(__webpack_require__(/*! ./ui/molecules/add-new-button */ "../app/assets/js/ui/molecules/add-new-button.js"));
 
-var _box = _interopRequireDefault(__webpack_require__(/*! ./ui/atoms/box */ "../core/app/assets/js/ui/atoms/box.js"));
+var _box = _interopRequireDefault(__webpack_require__(/*! ./ui/atoms/box */ "../app/assets/js/ui/atoms/box.js"));
 
-var _button = _interopRequireDefault(__webpack_require__(/*! ./ui/molecules/button */ "../core/app/assets/js/ui/molecules/button.js"));
+var _button = _interopRequireDefault(__webpack_require__(/*! ./ui/molecules/button */ "../app/assets/js/ui/molecules/button.js"));
 
-var _card = _interopRequireDefault(__webpack_require__(/*! ./ui/card/card */ "../core/app/assets/js/ui/card/card.js"));
+var _card = _interopRequireDefault(__webpack_require__(/*! ./ui/card/card */ "../app/assets/js/ui/card/card.js"));
 
-var _cardBody = _interopRequireDefault(__webpack_require__(/*! ./ui/card/card-body */ "../core/app/assets/js/ui/card/card-body.js"));
+var _cardBody = _interopRequireDefault(__webpack_require__(/*! ./ui/card/card-body */ "../app/assets/js/ui/card/card-body.js"));
 
-var _cardFooter = _interopRequireDefault(__webpack_require__(/*! ./ui/card/card-footer */ "../core/app/assets/js/ui/card/card-footer.js"));
+var _cardFooter = _interopRequireDefault(__webpack_require__(/*! ./ui/card/card-footer */ "../app/assets/js/ui/card/card-footer.js"));
 
-var _cardImage = _interopRequireDefault(__webpack_require__(/*! ./ui/card/card-image */ "../core/app/assets/js/ui/card/card-image.js"));
+var _cardImage = _interopRequireDefault(__webpack_require__(/*! ./ui/card/card-image */ "../app/assets/js/ui/card/card-image.js"));
 
-var _cardHeader = _interopRequireDefault(__webpack_require__(/*! ./ui/card/card-header */ "../core/app/assets/js/ui/card/card-header.js"));
+var _cardHeader = _interopRequireDefault(__webpack_require__(/*! ./ui/card/card-header */ "../app/assets/js/ui/card/card-header.js"));
 
-var _cardOverlay = _interopRequireDefault(__webpack_require__(/*! ./ui/card/card-overlay */ "../core/app/assets/js/ui/card/card-overlay.js"));
+var _cardOverlay = _interopRequireDefault(__webpack_require__(/*! ./ui/card/card-overlay */ "../app/assets/js/ui/card/card-overlay.js"));
 
-var _checkbox = _interopRequireDefault(__webpack_require__(/*! ./ui/atoms/checkbox */ "../core/app/assets/js/ui/atoms/checkbox.js"));
+var _checkbox = _interopRequireDefault(__webpack_require__(/*! ./ui/atoms/checkbox */ "../app/assets/js/ui/atoms/checkbox.js"));
 
-var _collapse = _interopRequireDefault(__webpack_require__(/*! ./molecules/collapse */ "../core/app/assets/js/molecules/collapse.js"));
+var _collapse = _interopRequireDefault(__webpack_require__(/*! ./molecules/collapse */ "../app/assets/js/molecules/collapse.js"));
 
-var _cssGrid = _interopRequireDefault(__webpack_require__(/*! ./ui/atoms/css-grid */ "../core/app/assets/js/ui/atoms/css-grid.js"));
+var _cssGrid = _interopRequireDefault(__webpack_require__(/*! ./ui/atoms/css-grid */ "../app/assets/js/ui/atoms/css-grid.js"));
 
-var _dialog = _interopRequireDefault(__webpack_require__(/*! ./ui/dialog/dialog */ "../core/app/assets/js/ui/dialog/dialog.js"));
+var _dialog = _interopRequireDefault(__webpack_require__(/*! ./ui/dialog/dialog */ "../app/assets/js/ui/dialog/dialog.js"));
 
-var _dragDrop = _interopRequireDefault(__webpack_require__(/*! ./ui/atoms/drag-drop */ "../core/app/assets/js/ui/atoms/drag-drop.js"));
+var _dragDrop = _interopRequireDefault(__webpack_require__(/*! ./ui/atoms/drag-drop */ "../app/assets/js/ui/atoms/drag-drop.js"));
 
-var _dropZone = _interopRequireDefault(__webpack_require__(/*! ./organisms/drop-zone */ "../core/app/assets/js/organisms/drop-zone.js"));
+var _dropZone = _interopRequireDefault(__webpack_require__(/*! ./organisms/drop-zone */ "../app/assets/js/organisms/drop-zone.js"));
 
-var _errorBoundary = _interopRequireDefault(__webpack_require__(/*! ./organisms/error-boundary */ "../core/app/assets/js/organisms/error-boundary.js"));
+var _errorBoundary = _interopRequireDefault(__webpack_require__(/*! ./organisms/error-boundary */ "../app/assets/js/organisms/error-boundary.js"));
 
-var _heading = _interopRequireDefault(__webpack_require__(/*! ./ui/atoms/heading */ "../core/app/assets/js/ui/atoms/heading.js"));
+var _heading = _interopRequireDefault(__webpack_require__(/*! ./ui/atoms/heading */ "../app/assets/js/ui/atoms/heading.js"));
 
-var _grid = _interopRequireDefault(__webpack_require__(/*! ./ui/grid/grid */ "../core/app/assets/js/ui/grid/grid.js"));
+var _grid = _interopRequireDefault(__webpack_require__(/*! ./ui/grid/grid */ "../app/assets/js/ui/grid/grid.js"));
 
-var _icon = _interopRequireDefault(__webpack_require__(/*! ./ui/atoms/icon */ "../core/app/assets/js/ui/atoms/icon.js"));
+var _icon = _interopRequireDefault(__webpack_require__(/*! ./ui/atoms/icon */ "../app/assets/js/ui/atoms/icon.js"));
 
-var _list = _interopRequireDefault(__webpack_require__(/*! ./ui/molecules/list */ "../core/app/assets/js/ui/molecules/list.js"));
+var _list = _interopRequireDefault(__webpack_require__(/*! ./ui/molecules/list */ "../app/assets/js/ui/molecules/list.js"));
 
-var _menu = _interopRequireDefault(__webpack_require__(/*! ./ui/menu/menu */ "../core/app/assets/js/ui/menu/menu.js"));
+var _menu = _interopRequireDefault(__webpack_require__(/*! ./ui/menu/menu */ "../app/assets/js/ui/menu/menu.js"));
 
-var _menuItem = _interopRequireDefault(__webpack_require__(/*! ./ui/menu/menu-item */ "../core/app/assets/js/ui/menu/menu-item.js"));
+var _menuItem = _interopRequireDefault(__webpack_require__(/*! ./ui/menu/menu-item */ "../app/assets/js/ui/menu/menu-item.js"));
 
-var _modal = _interopRequireWildcard(__webpack_require__(/*! ./ui/modal/modal */ "../core/app/assets/js/ui/modal/modal.js"));
+var _modal = _interopRequireWildcard(__webpack_require__(/*! ./ui/modal/modal */ "../app/assets/js/ui/modal/modal.js"));
 
-var _notFound = _interopRequireDefault(__webpack_require__(/*! ./pages/not-found */ "../core/app/assets/js/pages/not-found.js"));
+var _notFound = _interopRequireDefault(__webpack_require__(/*! ./pages/not-found */ "../app/assets/js/pages/not-found.js"));
 
-var _notice = _interopRequireDefault(__webpack_require__(/*! ./ui/molecules/notice */ "../core/app/assets/js/ui/molecules/notice.js"));
+var _notice = _interopRequireDefault(__webpack_require__(/*! ./ui/molecules/notice */ "../app/assets/js/ui/molecules/notice.js"));
 
-var _page = _interopRequireDefault(__webpack_require__(/*! ./layout/page */ "../core/app/assets/js/layout/page.js"));
+var _page = _interopRequireDefault(__webpack_require__(/*! ./layout/page */ "../app/assets/js/layout/page.js"));
 
-var _popover = _interopRequireDefault(__webpack_require__(/*! ./ui/molecules/popover */ "../core/app/assets/js/ui/molecules/popover.js"));
+var _popover = _interopRequireDefault(__webpack_require__(/*! ./ui/molecules/popover */ "../app/assets/js/ui/molecules/popover.js"));
 
-var _select = _interopRequireDefault(__webpack_require__(/*! ./ui/atoms/select */ "../core/app/assets/js/ui/atoms/select.js"));
+var _select = _interopRequireDefault(__webpack_require__(/*! ./ui/atoms/select */ "../app/assets/js/ui/atoms/select.js"));
 
-var _select2 = _interopRequireDefault(__webpack_require__(/*! ./ui/molecules/select2 */ "../core/app/assets/js/ui/molecules/select2.js"));
+var _select2 = _interopRequireDefault(__webpack_require__(/*! ./ui/molecules/select2 */ "../app/assets/js/ui/molecules/select2.js"));
 
-var _text = _interopRequireDefault(__webpack_require__(/*! ./ui/atoms/text */ "../core/app/assets/js/ui/atoms/text.js"));
+var _text = _interopRequireDefault(__webpack_require__(/*! ./ui/atoms/text */ "../app/assets/js/ui/atoms/text.js"));
 
-var _uploadFile = _interopRequireDefault(__webpack_require__(/*! ./molecules/upload-file */ "../core/app/assets/js/molecules/upload-file.js"));
+var _uploadFile = _interopRequireDefault(__webpack_require__(/*! ./molecules/upload-file */ "../app/assets/js/molecules/upload-file.js"));
 
-var _inlineLink = _interopRequireDefault(__webpack_require__(/*! ./ui/molecules/inline-link */ "../core/app/assets/js/ui/molecules/inline-link.js"));
+var _inlineLink = _interopRequireDefault(__webpack_require__(/*! ./ui/molecules/inline-link */ "../app/assets/js/ui/molecules/inline-link.js"));
 
-var _unfilteredFilesDialog = _interopRequireDefault(__webpack_require__(/*! ./organisms/unfiltered-files-dialog.js */ "../core/app/assets/js/organisms/unfiltered-files-dialog.js"));
+var _unfilteredFilesDialog = _interopRequireDefault(__webpack_require__(/*! ./organisms/unfiltered-files-dialog.js */ "../app/assets/js/organisms/unfiltered-files-dialog.js"));
 
-var _useAjax = _interopRequireDefault(__webpack_require__(/*! ./hooks/use-ajax */ "../core/app/assets/js/hooks/use-ajax.js"));
+var _useAjax = _interopRequireDefault(__webpack_require__(/*! ./hooks/use-ajax */ "../app/assets/js/hooks/use-ajax.js"));
 
-var _useAction = _interopRequireDefault(__webpack_require__(/*! ./hooks/use-action */ "../core/app/assets/js/hooks/use-action.js"));
+var _useAction = _interopRequireDefault(__webpack_require__(/*! ./hooks/use-action */ "../app/assets/js/hooks/use-action.js"));
 
-var _usePageTitle = _interopRequireDefault(__webpack_require__(/*! ./hooks/use-page-title */ "../core/app/assets/js/hooks/use-page-title.js"));
+var _usePageTitle = _interopRequireDefault(__webpack_require__(/*! ./hooks/use-page-title */ "../app/assets/js/hooks/use-page-title.js"));
 
-var _useQueryParams = _interopRequireDefault(__webpack_require__(/*! ./hooks/use-query-params */ "../core/app/assets/js/hooks/use-query-params.js"));
+var _useQueryParams = _interopRequireDefault(__webpack_require__(/*! ./hooks/use-query-params */ "../app/assets/js/hooks/use-query-params.js"));
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -2961,10 +2992,10 @@ exports.hooks = hooks;
 
 /***/ }),
 
-/***/ "../core/app/assets/js/pages/not-found.js":
-/*!************************************************!*\
-  !*** ../core/app/assets/js/pages/not-found.js ***!
-  \************************************************/
+/***/ "../app/assets/js/pages/not-found.js":
+/*!*******************************************!*\
+  !*** ../app/assets/js/pages/not-found.js ***!
+  \*******************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -2980,7 +3011,7 @@ exports["default"] = NotFound;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _page = _interopRequireDefault(__webpack_require__(/*! elementor-app/layout/page */ "../core/app/assets/js/layout/page.js"));
+var _page = _interopRequireDefault(__webpack_require__(/*! elementor-app/layout/page */ "../app/assets/js/layout/page.js"));
 
 function NotFound() {
   var config = {
@@ -2994,10 +3025,10 @@ function NotFound() {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/router.js":
-/*!***************************************!*\
-  !*** ../core/app/assets/js/router.js ***!
-  \***************************************/
+/***/ "../app/assets/js/router.js":
+/*!**********************************!*\
+  !*** ../app/assets/js/router.js ***!
+  \**********************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -3063,10 +3094,10 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/atoms/box.js":
-/*!*********************************************!*\
-  !*** ../core/app/assets/js/ui/atoms/box.js ***!
-  \*********************************************/
+/***/ "../app/assets/js/ui/atoms/box.js":
+/*!****************************************!*\
+  !*** ../app/assets/js/ui/atoms/box.js ***!
+  \****************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -3082,16 +3113,16 @@ exports["default"] = Box;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../app/assets/js/utils/utils.js");
 
-__webpack_require__(/*! ./box.scss */ "../core/app/assets/js/ui/atoms/box.scss");
+__webpack_require__(/*! ./box.scss */ "../app/assets/js/ui/atoms/box.scss");
 
 function Box(props) {
   var baseClassName = 'eps-box',
       classes = [baseClassName, props.className],
       style = {};
 
-  if (props.hasOwnProperty('padding')) {
+  if (Object.prototype.hasOwnProperty.call(props, 'padding')) {
     style['--eps-box-padding'] = (0, _utils.pxToRem)(props.padding);
     classes.push(baseClassName + '--padding');
   }
@@ -3113,10 +3144,10 @@ Box.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/atoms/checkbox.js":
-/*!**************************************************!*\
-  !*** ../core/app/assets/js/ui/atoms/checkbox.js ***!
-  \**************************************************/
+/***/ "../app/assets/js/ui/atoms/checkbox.js":
+/*!*********************************************!*\
+  !*** ../app/assets/js/ui/atoms/checkbox.js ***!
+  \*********************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -3132,9 +3163,9 @@ exports["default"] = Checkbox;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../app/assets/js/utils/utils.js");
 
-__webpack_require__(/*! ./checkbox.scss */ "../core/app/assets/js/ui/atoms/checkbox.scss");
+__webpack_require__(/*! ./checkbox.scss */ "../app/assets/js/ui/atoms/checkbox.scss");
 
 function Checkbox(_ref) {
   var className = _ref.className,
@@ -3188,10 +3219,10 @@ Checkbox.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/atoms/css-grid.js":
-/*!**************************************************!*\
-  !*** ../core/app/assets/js/ui/atoms/css-grid.js ***!
-  \**************************************************/
+/***/ "../app/assets/js/ui/atoms/css-grid.js":
+/*!*********************************************!*\
+  !*** ../app/assets/js/ui/atoms/css-grid.js ***!
+  \*********************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -3207,9 +3238,9 @@ exports["default"] = CssGrid;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _utils = __webpack_require__(/*! ../../utils/utils */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! ../../utils/utils */ "../app/assets/js/utils/utils.js");
 
-__webpack_require__(/*! ./css-grid.scss */ "../core/app/assets/js/ui/atoms/css-grid.scss");
+__webpack_require__(/*! ./css-grid.scss */ "../app/assets/js/ui/atoms/css-grid.scss");
 
 function CssGrid(props) {
   var gridStyle = {
@@ -3239,10 +3270,10 @@ CssGrid.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/atoms/drag-drop.js":
-/*!***************************************************!*\
-  !*** ../core/app/assets/js/ui/atoms/drag-drop.js ***!
-  \***************************************************/
+/***/ "../app/assets/js/ui/atoms/drag-drop.js":
+/*!**********************************************!*\
+  !*** ../app/assets/js/ui/atoms/drag-drop.js ***!
+  \**********************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -3264,9 +3295,9 @@ var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/he
 
 var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
 
-var _utils = __webpack_require__(/*! ../../utils/utils */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! ../../utils/utils */ "../app/assets/js/utils/utils.js");
 
-__webpack_require__(/*! ./drag-drop.scss */ "../core/app/assets/js/ui/atoms/drag-drop.scss");
+__webpack_require__(/*! ./drag-drop.scss */ "../app/assets/js/ui/atoms/drag-drop.scss");
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -3337,10 +3368,10 @@ DragDrop.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/atoms/heading.js":
-/*!*************************************************!*\
-  !*** ../core/app/assets/js/ui/atoms/heading.js ***!
-  \*************************************************/
+/***/ "../app/assets/js/ui/atoms/heading.js":
+/*!********************************************!*\
+  !*** ../app/assets/js/ui/atoms/heading.js ***!
+  \********************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -3356,7 +3387,7 @@ exports["default"] = Heading;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _utils = __webpack_require__(/*! ../../utils/utils */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! ../../utils/utils */ "../app/assets/js/utils/utils.js");
 
 function Heading(props) {
   var baseClassName = 'eps',
@@ -3388,10 +3419,10 @@ Heading.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/atoms/icon.js":
-/*!**********************************************!*\
-  !*** ../core/app/assets/js/ui/atoms/icon.js ***!
-  \**********************************************/
+/***/ "../app/assets/js/ui/atoms/icon.js":
+/*!*****************************************!*\
+  !*** ../app/assets/js/ui/atoms/icon.js ***!
+  \*****************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -3422,10 +3453,10 @@ Icon.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/atoms/select.js":
-/*!************************************************!*\
-  !*** ../core/app/assets/js/ui/atoms/select.js ***!
-  \************************************************/
+/***/ "../app/assets/js/ui/atoms/select.js":
+/*!*******************************************!*\
+  !*** ../app/assets/js/ui/atoms/select.js ***!
+  \*******************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -3447,7 +3478,12 @@ function Select(props) {
     className: props.className,
     value: props.value,
     onChange: props.onChange,
-    ref: props.elRef
+    ref: props.elRef,
+    onClick: function onClick() {
+      var _props$onClick;
+
+      return (_props$onClick = props.onClick) === null || _props$onClick === void 0 ? void 0 : _props$onClick.call(props);
+    }
   }, props.options.map(function (option) {
     return option.children ? /*#__PURE__*/_react.default.createElement("optgroup", {
       label: option.label,
@@ -3470,7 +3506,8 @@ Select.propTypes = {
   options: PropTypes.array,
   elRef: PropTypes.object,
   multiple: PropTypes.bool,
-  value: PropTypes.oneOfType([PropTypes.array, PropTypes.string])
+  value: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
+  onClick: PropTypes.func
 };
 Select.defaultProps = {
   className: '',
@@ -3479,10 +3516,10 @@ Select.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/atoms/text.js":
-/*!**********************************************!*\
-  !*** ../core/app/assets/js/ui/atoms/text.js ***!
-  \**********************************************/
+/***/ "../app/assets/js/ui/atoms/text.js":
+/*!*****************************************!*\
+  !*** ../app/assets/js/ui/atoms/text.js ***!
+  \*****************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -3498,7 +3535,7 @@ exports["default"] = Text;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _utils = __webpack_require__(/*! ../../utils/utils */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! ../../utils/utils */ "../app/assets/js/utils/utils.js");
 
 function Text(props) {
   var baseClassName = 'eps',
@@ -3528,10 +3565,10 @@ Text.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/card/card-body.js":
-/*!**************************************************!*\
-  !*** ../core/app/assets/js/ui/card/card-body.js ***!
-  \**************************************************/
+/***/ "../app/assets/js/ui/card/card-body.js":
+/*!*********************************************!*\
+  !*** ../app/assets/js/ui/card/card-body.js ***!
+  \*********************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -3547,16 +3584,16 @@ exports["default"] = CardBody;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../app/assets/js/utils/utils.js");
 
-__webpack_require__(/*! ./card.scss */ "../core/app/assets/js/ui/card/card.scss");
+__webpack_require__(/*! ./card.scss */ "../app/assets/js/ui/card/card.scss");
 
 function CardBody(props) {
   var classNameBase = 'eps-card__body',
       classes = [classNameBase, props.className],
       style = {};
 
-  if (props.hasOwnProperty('padding')) {
+  if (Object.prototype.hasOwnProperty.call(props, 'padding')) {
     style['--eps-card-body-padding'] = (0, _utils.pxToRem)(props.padding);
     classes.push(classNameBase + '--padding');
   }
@@ -3580,10 +3617,10 @@ CardBody.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/card/card-divider.js":
-/*!*****************************************************!*\
-  !*** ../core/app/assets/js/ui/card/card-divider.js ***!
-  \*****************************************************/
+/***/ "../app/assets/js/ui/card/card-divider.js":
+/*!************************************************!*\
+  !*** ../app/assets/js/ui/card/card-divider.js ***!
+  \************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -3599,9 +3636,9 @@ exports["default"] = CardDivider;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../app/assets/js/utils/utils.js");
 
-__webpack_require__(/*! ./card.scss */ "../core/app/assets/js/ui/card/card.scss");
+__webpack_require__(/*! ./card.scss */ "../app/assets/js/ui/card/card.scss");
 
 function CardDivider(props) {
   var classNameBase = 'eps-card__divider',
@@ -3620,10 +3657,10 @@ CardDivider.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/card/card-footer.js":
-/*!****************************************************!*\
-  !*** ../core/app/assets/js/ui/card/card-footer.js ***!
-  \****************************************************/
+/***/ "../app/assets/js/ui/card/card-footer.js":
+/*!***********************************************!*\
+  !*** ../app/assets/js/ui/card/card-footer.js ***!
+  \***********************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -3639,16 +3676,16 @@ exports["default"] = CardFooter;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../app/assets/js/utils/utils.js");
 
-__webpack_require__(/*! ./card.scss */ "../core/app/assets/js/ui/card/card.scss");
+__webpack_require__(/*! ./card.scss */ "../app/assets/js/ui/card/card.scss");
 
 function CardFooter(props) {
   var classNameBase = 'eps-card__footer',
       classes = [classNameBase, props.className],
       style = {};
 
-  if (props.hasOwnProperty('padding')) {
+  if (Object.prototype.hasOwnProperty.call(props, 'padding')) {
     style['--eps-card-footer-padding'] = (0, _utils.pxToRem)(props.padding);
     classes.push(classNameBase + '--padding');
   }
@@ -3672,10 +3709,10 @@ CardFooter.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/card/card-header.js":
-/*!****************************************************!*\
-  !*** ../core/app/assets/js/ui/card/card-header.js ***!
-  \****************************************************/
+/***/ "../app/assets/js/ui/card/card-header.js":
+/*!***********************************************!*\
+  !*** ../app/assets/js/ui/card/card-header.js ***!
+  \***********************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -3691,16 +3728,16 @@ exports["default"] = CardHeader;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../app/assets/js/utils/utils.js");
 
-__webpack_require__(/*! ./card.scss */ "../core/app/assets/js/ui/card/card.scss");
+__webpack_require__(/*! ./card.scss */ "../app/assets/js/ui/card/card.scss");
 
 function CardHeader(props) {
   var classNameBase = 'eps-card__header',
       classes = [classNameBase, props.className],
       style = {};
 
-  if (props.hasOwnProperty('padding')) {
+  if (Object.prototype.hasOwnProperty.call(props, 'padding')) {
     style['--eps-card-header-padding'] = (0, _utils.pxToRem)(props.padding);
     classes.push(classNameBase + '--padding');
   }
@@ -3724,10 +3761,10 @@ CardHeader.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/card/card-headline.js":
-/*!******************************************************!*\
-  !*** ../core/app/assets/js/ui/card/card-headline.js ***!
-  \******************************************************/
+/***/ "../app/assets/js/ui/card/card-headline.js":
+/*!*************************************************!*\
+  !*** ../app/assets/js/ui/card/card-headline.js ***!
+  \*************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -3743,9 +3780,9 @@ exports["default"] = CardHeadline;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../app/assets/js/utils/utils.js");
 
-__webpack_require__(/*! ./card.scss */ "../core/app/assets/js/ui/card/card.scss");
+__webpack_require__(/*! ./card.scss */ "../app/assets/js/ui/card/card.scss");
 
 function CardHeadline(props) {
   var classNameBase = 'eps-card__headline',
@@ -3765,10 +3802,10 @@ CardHeadline.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/card/card-image.js":
-/*!***************************************************!*\
-  !*** ../core/app/assets/js/ui/card/card-image.js ***!
-  \***************************************************/
+/***/ "../app/assets/js/ui/card/card-image.js":
+/*!**********************************************!*\
+  !*** ../app/assets/js/ui/card/card-image.js ***!
+  \**********************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -3784,7 +3821,7 @@ exports["default"] = CardImage;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-__webpack_require__(/*! ./card.scss */ "../core/app/assets/js/ui/card/card.scss");
+__webpack_require__(/*! ./card.scss */ "../app/assets/js/ui/card/card.scss");
 
 function CardImage(props) {
   var image = /*#__PURE__*/_react.default.createElement("img", {
@@ -3811,10 +3848,10 @@ CardImage.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/card/card-overlay.js":
-/*!*****************************************************!*\
-  !*** ../core/app/assets/js/ui/card/card-overlay.js ***!
-  \*****************************************************/
+/***/ "../app/assets/js/ui/card/card-overlay.js":
+/*!************************************************!*\
+  !*** ../app/assets/js/ui/card/card-overlay.js ***!
+  \************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -3830,7 +3867,7 @@ exports["default"] = CardOverlay;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-__webpack_require__(/*! ./card.scss */ "../core/app/assets/js/ui/card/card.scss");
+__webpack_require__(/*! ./card.scss */ "../app/assets/js/ui/card/card.scss");
 
 function CardOverlay(props) {
   return /*#__PURE__*/_react.default.createElement("div", {
@@ -3848,10 +3885,10 @@ CardOverlay.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/card/card.js":
-/*!*********************************************!*\
-  !*** ../core/app/assets/js/ui/card/card.js ***!
-  \*********************************************/
+/***/ "../app/assets/js/ui/card/card.js":
+/*!****************************************!*\
+  !*** ../app/assets/js/ui/card/card.js ***!
+  \****************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -3867,21 +3904,21 @@ exports["default"] = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _cardHeader = _interopRequireDefault(__webpack_require__(/*! ./card-header */ "../core/app/assets/js/ui/card/card-header.js"));
+var _cardHeader = _interopRequireDefault(__webpack_require__(/*! ./card-header */ "../app/assets/js/ui/card/card-header.js"));
 
-var _cardBody = _interopRequireDefault(__webpack_require__(/*! ./card-body */ "../core/app/assets/js/ui/card/card-body.js"));
+var _cardBody = _interopRequireDefault(__webpack_require__(/*! ./card-body */ "../app/assets/js/ui/card/card-body.js"));
 
-var _cardImage = _interopRequireDefault(__webpack_require__(/*! ./card-image */ "../core/app/assets/js/ui/card/card-image.js"));
+var _cardImage = _interopRequireDefault(__webpack_require__(/*! ./card-image */ "../app/assets/js/ui/card/card-image.js"));
 
-var _cardOverlay = _interopRequireDefault(__webpack_require__(/*! ./card-overlay */ "../core/app/assets/js/ui/card/card-overlay.js"));
+var _cardOverlay = _interopRequireDefault(__webpack_require__(/*! ./card-overlay */ "../app/assets/js/ui/card/card-overlay.js"));
 
-var _cardFooter = _interopRequireDefault(__webpack_require__(/*! ./card-footer */ "../core/app/assets/js/ui/card/card-footer.js"));
+var _cardFooter = _interopRequireDefault(__webpack_require__(/*! ./card-footer */ "../app/assets/js/ui/card/card-footer.js"));
 
-var _cardHeadline = _interopRequireDefault(__webpack_require__(/*! ./card-headline */ "../core/app/assets/js/ui/card/card-headline.js"));
+var _cardHeadline = _interopRequireDefault(__webpack_require__(/*! ./card-headline */ "../app/assets/js/ui/card/card-headline.js"));
 
-var _cardDivider = _interopRequireDefault(__webpack_require__(/*! ./card-divider */ "../core/app/assets/js/ui/card/card-divider.js"));
+var _cardDivider = _interopRequireDefault(__webpack_require__(/*! ./card-divider */ "../app/assets/js/ui/card/card-divider.js"));
 
-__webpack_require__(/*! ./card.scss */ "../core/app/assets/js/ui/card/card.scss");
+__webpack_require__(/*! ./card.scss */ "../app/assets/js/ui/card/card.scss");
 
 var Card = _react.default.forwardRef(function (props, ref) {
   return /*#__PURE__*/_react.default.createElement("article", {
@@ -3911,10 +3948,10 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/dialog/dialog-actions.js":
-/*!*********************************************************!*\
-  !*** ../core/app/assets/js/ui/dialog/dialog-actions.js ***!
-  \*********************************************************/
+/***/ "../app/assets/js/ui/dialog/dialog-actions.js":
+/*!****************************************************!*\
+  !*** ../app/assets/js/ui/dialog/dialog-actions.js ***!
+  \****************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -3942,10 +3979,10 @@ DialogActions.propTypes = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/dialog/dialog-button.js":
-/*!********************************************************!*\
-  !*** ../core/app/assets/js/ui/dialog/dialog-button.js ***!
-  \********************************************************/
+/***/ "../app/assets/js/ui/dialog/dialog-button.js":
+/*!***************************************************!*\
+  !*** ../app/assets/js/ui/dialog/dialog-button.js ***!
+  \***************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -3965,7 +4002,7 @@ var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/run
 
 var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
 
-var _button = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/molecules/button */ "../core/app/assets/js/ui/molecules/button.js"));
+var _button = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/molecules/button */ "../app/assets/js/ui/molecules/button.js"));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
@@ -3988,10 +4025,10 @@ DialogButton.defaultProps = _objectSpread(_objectSpread({}, _button.default.defa
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/dialog/dialog-content.js":
-/*!*********************************************************!*\
-  !*** ../core/app/assets/js/ui/dialog/dialog-content.js ***!
-  \*********************************************************/
+/***/ "../app/assets/js/ui/dialog/dialog-content.js":
+/*!****************************************************!*\
+  !*** ../app/assets/js/ui/dialog/dialog-content.js ***!
+  \****************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -4019,10 +4056,10 @@ DialogContent.propTypes = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/dialog/dialog-text.js":
-/*!******************************************************!*\
-  !*** ../core/app/assets/js/ui/dialog/dialog-text.js ***!
-  \******************************************************/
+/***/ "../app/assets/js/ui/dialog/dialog-text.js":
+/*!*************************************************!*\
+  !*** ../app/assets/js/ui/dialog/dialog-text.js ***!
+  \*************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -4041,7 +4078,7 @@ var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/run
 
 var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
 
-var _text = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/text */ "../core/app/assets/js/ui/atoms/text.js"));
+var _text = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/text */ "../app/assets/js/ui/atoms/text.js"));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
@@ -4063,10 +4100,10 @@ DialogText.defaultProps = _objectSpread(_objectSpread({}, _text.default.defaultP
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/dialog/dialog-title.js":
-/*!*******************************************************!*\
-  !*** ../core/app/assets/js/ui/dialog/dialog-title.js ***!
-  \*******************************************************/
+/***/ "../app/assets/js/ui/dialog/dialog-title.js":
+/*!**************************************************!*\
+  !*** ../app/assets/js/ui/dialog/dialog-title.js ***!
+  \**************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -4086,7 +4123,7 @@ var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/run
 
 var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
 
-var _heading = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/heading */ "../core/app/assets/js/ui/atoms/heading.js"));
+var _heading = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/heading */ "../app/assets/js/ui/atoms/heading.js"));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
@@ -4109,10 +4146,10 @@ DialogTitle.defaultProps = _objectSpread(_objectSpread({}, _heading.default.prop
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/dialog/dialog-wrapper.js":
-/*!*********************************************************!*\
-  !*** ../core/app/assets/js/ui/dialog/dialog-wrapper.js ***!
-  \*********************************************************/
+/***/ "../app/assets/js/ui/dialog/dialog-wrapper.js":
+/*!****************************************************!*\
+  !*** ../app/assets/js/ui/dialog/dialog-wrapper.js ***!
+  \****************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -4129,7 +4166,7 @@ exports["default"] = DialogWrapper;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _button = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/molecules/button */ "../core/app/assets/js/ui/molecules/button.js"));
+var _button = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/molecules/button */ "../app/assets/js/ui/molecules/button.js"));
 
 function DialogWrapper(props) {
   var WrapperTag = 'div';
@@ -4160,10 +4197,10 @@ DialogWrapper.propTypes = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/dialog/dialog.js":
-/*!*************************************************!*\
-  !*** ../core/app/assets/js/ui/dialog/dialog.js ***!
-  \*************************************************/
+/***/ "../app/assets/js/ui/dialog/dialog.js":
+/*!********************************************!*\
+  !*** ../app/assets/js/ui/dialog/dialog.js ***!
+  \********************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -4179,19 +4216,19 @@ exports["default"] = Dialog;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _dialogWrapper = _interopRequireDefault(__webpack_require__(/*! ./dialog-wrapper */ "../core/app/assets/js/ui/dialog/dialog-wrapper.js"));
+var _dialogWrapper = _interopRequireDefault(__webpack_require__(/*! ./dialog-wrapper */ "../app/assets/js/ui/dialog/dialog-wrapper.js"));
 
-var _dialogContent = _interopRequireDefault(__webpack_require__(/*! ./dialog-content */ "../core/app/assets/js/ui/dialog/dialog-content.js"));
+var _dialogContent = _interopRequireDefault(__webpack_require__(/*! ./dialog-content */ "../app/assets/js/ui/dialog/dialog-content.js"));
 
-var _dialogTitle = _interopRequireDefault(__webpack_require__(/*! ./dialog-title */ "../core/app/assets/js/ui/dialog/dialog-title.js"));
+var _dialogTitle = _interopRequireDefault(__webpack_require__(/*! ./dialog-title */ "../app/assets/js/ui/dialog/dialog-title.js"));
 
-var _dialogText = _interopRequireDefault(__webpack_require__(/*! ./dialog-text */ "../core/app/assets/js/ui/dialog/dialog-text.js"));
+var _dialogText = _interopRequireDefault(__webpack_require__(/*! ./dialog-text */ "../app/assets/js/ui/dialog/dialog-text.js"));
 
-var _dialogActions = _interopRequireDefault(__webpack_require__(/*! ./dialog-actions */ "../core/app/assets/js/ui/dialog/dialog-actions.js"));
+var _dialogActions = _interopRequireDefault(__webpack_require__(/*! ./dialog-actions */ "../app/assets/js/ui/dialog/dialog-actions.js"));
 
-var _dialogButton = _interopRequireDefault(__webpack_require__(/*! ./dialog-button */ "../core/app/assets/js/ui/dialog/dialog-button.js"));
+var _dialogButton = _interopRequireDefault(__webpack_require__(/*! ./dialog-button */ "../app/assets/js/ui/dialog/dialog-button.js"));
 
-__webpack_require__(/*! ./dialog.scss */ "../core/app/assets/js/ui/dialog/dialog.scss");
+__webpack_require__(/*! ./dialog.scss */ "../app/assets/js/ui/dialog/dialog.scss");
 
 function Dialog(props) {
   return /*#__PURE__*/_react.default.createElement(_dialogWrapper.default, {
@@ -4245,10 +4282,10 @@ Dialog.Button = _dialogButton.default;
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/grid/grid.js":
-/*!*********************************************!*\
-  !*** ../core/app/assets/js/ui/grid/grid.js ***!
-  \*********************************************/
+/***/ "../app/assets/js/ui/grid/grid.js":
+/*!****************************************!*\
+  !*** ../app/assets/js/ui/grid/grid.js ***!
+  \****************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -4266,9 +4303,9 @@ var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "../node_modules/@babel/runtime/helpers/toConsumableArray.js"));
 
-var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../app/assets/js/utils/utils.js");
 
-__webpack_require__(/*! ./grid.scss */ "../core/app/assets/js/ui/grid/grid.scss");
+__webpack_require__(/*! ./grid.scss */ "../app/assets/js/ui/grid/grid.scss");
 
 function Grid(props) {
   var propsMap = {
@@ -4360,10 +4397,10 @@ Grid.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/menu/menu-item.js":
-/*!**************************************************!*\
-  !*** ../core/app/assets/js/ui/menu/menu-item.js ***!
-  \**************************************************/
+/***/ "../app/assets/js/ui/menu/menu-item.js":
+/*!*********************************************!*\
+  !*** ../app/assets/js/ui/menu/menu-item.js ***!
+  \*********************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -4388,9 +4425,9 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-__webpack_require__(/*! ./menu-item.scss */ "../core/app/assets/js/ui/menu/menu-item.scss");
+__webpack_require__(/*! ./menu-item.scss */ "../app/assets/js/ui/menu/menu-item.scss");
 
-var _button = _interopRequireDefault(__webpack_require__(/*! ../molecules/button */ "../core/app/assets/js/ui/molecules/button.js"));
+var _button = _interopRequireDefault(__webpack_require__(/*! ../molecules/button */ "../app/assets/js/ui/molecules/button.js"));
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
@@ -4424,10 +4461,10 @@ exports["default"] = SideMenuItem;
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/menu/menu.js":
-/*!*********************************************!*\
-  !*** ../core/app/assets/js/ui/menu/menu.js ***!
-  \*********************************************/
+/***/ "../app/assets/js/ui/menu/menu.js":
+/*!****************************************!*\
+  !*** ../app/assets/js/ui/menu/menu.js ***!
+  \****************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -4445,9 +4482,9 @@ var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
 var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
 
-__webpack_require__(/*! ./menu.scss */ "../core/app/assets/js/ui/menu/menu.scss");
+__webpack_require__(/*! ./menu.scss */ "../app/assets/js/ui/menu/menu.scss");
 
-var _button = _interopRequireDefault(__webpack_require__(/*! ../molecules/button */ "../core/app/assets/js/ui/molecules/button.js"));
+var _button = _interopRequireDefault(__webpack_require__(/*! ../molecules/button */ "../app/assets/js/ui/molecules/button.js"));
 
 var _router = _interopRequireDefault(__webpack_require__(/*! @elementor/router */ "@elementor/router"));
 
@@ -4506,10 +4543,10 @@ Menu.propTypes = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/modal/modal-section.js":
-/*!*******************************************************!*\
-  !*** ../core/app/assets/js/ui/modal/modal-section.js ***!
-  \*******************************************************/
+/***/ "../app/assets/js/ui/modal/modal-section.js":
+/*!**************************************************!*\
+  !*** ../app/assets/js/ui/modal/modal-section.js ***!
+  \**************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -4525,7 +4562,7 @@ exports["default"] = ModalSection;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _utils = __webpack_require__(/*! ../../utils/utils */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! ../../utils/utils */ "../app/assets/js/utils/utils.js");
 
 function ModalSection(props) {
   return /*#__PURE__*/_react.default.createElement("section", {
@@ -4543,10 +4580,10 @@ ModalSection.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/modal/modal-tip.js":
-/*!***************************************************!*\
-  !*** ../core/app/assets/js/ui/modal/modal-tip.js ***!
-  \***************************************************/
+/***/ "../app/assets/js/ui/modal/modal-tip.js":
+/*!**********************************************!*\
+  !*** ../app/assets/js/ui/modal/modal-tip.js ***!
+  \**********************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -4563,11 +4600,11 @@ exports["default"] = ModalTip;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _utils = __webpack_require__(/*! ../../utils/utils */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! ../../utils/utils */ "../app/assets/js/utils/utils.js");
 
-var _heading = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/heading */ "../core/app/assets/js/ui/atoms/heading.js"));
+var _heading = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/heading */ "../app/assets/js/ui/atoms/heading.js"));
 
-var _text = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/text */ "../core/app/assets/js/ui/atoms/text.js"));
+var _text = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/text */ "../app/assets/js/ui/atoms/text.js"));
 
 function ModalTip(props) {
   return /*#__PURE__*/_react.default.createElement("div", {
@@ -4592,10 +4629,10 @@ ModalTip.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/modal/modal.js":
-/*!***********************************************!*\
-  !*** ../core/app/assets/js/ui/modal/modal.js ***!
-  \***********************************************/
+/***/ "../app/assets/js/ui/modal/modal.js":
+/*!******************************************!*\
+  !*** ../app/assets/js/ui/modal/modal.js ***!
+  \******************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -4621,21 +4658,21 @@ var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/run
 
 var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
 
-var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../app/assets/js/utils/utils.js");
 
-var _button = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/molecules/button */ "../core/app/assets/js/ui/molecules/button.js"));
+var _button = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/molecules/button */ "../app/assets/js/ui/molecules/button.js"));
 
-var _grid = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/grid/grid */ "../core/app/assets/js/ui/grid/grid.js"));
+var _grid = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/grid/grid */ "../app/assets/js/ui/grid/grid.js"));
 
-var _icon = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/icon */ "../core/app/assets/js/ui/atoms/icon.js"));
+var _icon = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/icon */ "../app/assets/js/ui/atoms/icon.js"));
 
-var _text = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/text */ "../core/app/assets/js/ui/atoms/text.js"));
+var _text = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/text */ "../app/assets/js/ui/atoms/text.js"));
 
-var _modalSection = _interopRequireDefault(__webpack_require__(/*! ./modal-section */ "../core/app/assets/js/ui/modal/modal-section.js"));
+var _modalSection = _interopRequireDefault(__webpack_require__(/*! ./modal-section */ "../app/assets/js/ui/modal/modal-section.js"));
 
-var _modalTip = _interopRequireDefault(__webpack_require__(/*! ./modal-tip */ "../core/app/assets/js/ui/modal/modal-tip.js"));
+var _modalTip = _interopRequireDefault(__webpack_require__(/*! ./modal-tip */ "../app/assets/js/ui/modal/modal-tip.js"));
 
-__webpack_require__(/*! ./modal.scss */ "../core/app/assets/js/ui/modal/modal.scss");
+__webpack_require__(/*! ./modal.scss */ "../app/assets/js/ui/modal/modal.scss");
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -4685,7 +4722,9 @@ ModalProvider.propTypes = {
   title: PropTypes.string,
   icon: PropTypes.string,
   show: PropTypes.bool,
-  setShow: PropTypes.func
+  setShow: PropTypes.func,
+  onOpen: PropTypes.func,
+  onClose: PropTypes.func
 };
 ModalProvider.defaultProps = {
   show: false
@@ -4699,18 +4738,25 @@ var Modal = function Modal(props) {
       closeModal = function closeModal(e) {
     var node = modalRef.current,
         closeNode = closeRef.current,
-        isInCloseNode = closeNode && closeNode.contains(e.target); // ignore if click is inside the modal
+        isInCloseNode = closeNode && closeNode.contains(e.target); // Ignore if click is inside the modal
 
     if (node && node.contains(e.target) && !isInCloseNode) {
       return;
     }
 
     props.hideModal();
+
+    if (props.onClose) {
+      props.onClose(e);
+    }
   };
 
   (0, _react.useEffect)(function () {
     if (props.show) {
+      var _props$onOpen;
+
       document.addEventListener('mousedown', closeModal, false);
+      (_props$onOpen = props.onOpen) === null || _props$onOpen === void 0 ? void 0 : _props$onOpen.call(props);
     }
 
     return function () {
@@ -4769,7 +4815,9 @@ Modal.propTypes = {
   setShow: PropTypes.func,
   hideModal: PropTypes.func,
   showModal: PropTypes.func,
-  closeModal: PropTypes.func
+  closeModal: PropTypes.func,
+  onOpen: PropTypes.func,
+  onClose: PropTypes.func
 };
 Modal.defaultProps = {
   className: ''
@@ -4777,10 +4825,10 @@ Modal.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/molecules/add-new-button.js":
-/*!************************************************************!*\
-  !*** ../core/app/assets/js/ui/molecules/add-new-button.js ***!
-  \************************************************************/
+/***/ "../app/assets/js/ui/molecules/add-new-button.js":
+/*!*******************************************************!*\
+  !*** ../app/assets/js/ui/molecules/add-new-button.js ***!
+  \*******************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -4807,9 +4855,9 @@ var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/run
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
 
-var _button = _interopRequireDefault(__webpack_require__(/*! ./button */ "../core/app/assets/js/ui/molecules/button.js"));
+var _button = _interopRequireDefault(__webpack_require__(/*! ./button */ "../app/assets/js/ui/molecules/button.js"));
 
-__webpack_require__(/*! ./add-new-button.scss */ "../core/app/assets/js/ui/molecules/add-new-button.scss");
+__webpack_require__(/*! ./add-new-button.scss */ "../app/assets/js/ui/molecules/add-new-button.scss");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
@@ -4857,10 +4905,10 @@ exports["default"] = AddNewButton;
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/molecules/button.js":
-/*!****************************************************!*\
-  !*** ../core/app/assets/js/ui/molecules/button.js ***!
-  \****************************************************/
+/***/ "../app/assets/js/ui/molecules/button.js":
+/*!***********************************************!*\
+  !*** ../app/assets/js/ui/molecules/button.js ***!
+  \***********************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -4894,7 +4942,7 @@ var _router = __webpack_require__(/*! @reach/router */ "../node_modules/@reach/r
 
 var _router2 = _interopRequireDefault(__webpack_require__(/*! @elementor/router */ "@elementor/router"));
 
-var _icon = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/icon */ "../core/app/assets/js/ui/atoms/icon.js"));
+var _icon = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/icon */ "../app/assets/js/ui/atoms/icon.js"));
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
@@ -5057,10 +5105,10 @@ exports["default"] = Button;
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/molecules/inline-link.js":
-/*!*********************************************************!*\
-  !*** ../core/app/assets/js/ui/molecules/inline-link.js ***!
-  \*********************************************************/
+/***/ "../app/assets/js/ui/molecules/inline-link.js":
+/*!****************************************************!*\
+  !*** ../app/assets/js/ui/molecules/inline-link.js ***!
+  \****************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -5080,9 +5128,9 @@ var _router = __webpack_require__(/*! @reach/router */ "../node_modules/@reach/r
 
 var _router2 = _interopRequireDefault(__webpack_require__(/*! @elementor/router */ "@elementor/router"));
 
-var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../app/assets/js/utils/utils.js");
 
-__webpack_require__(/*! ./inline-link.scss */ "../core/app/assets/js/ui/molecules/inline-link.scss");
+__webpack_require__(/*! ./inline-link.scss */ "../app/assets/js/ui/molecules/inline-link.scss");
 
 function InlineLink(props) {
   var baseClassName = 'eps-inline-link',
@@ -5104,7 +5152,8 @@ function InlineLink(props) {
       href: props.url,
       target: props.target,
       rel: props.rel,
-      className: className
+      className: className,
+      onClick: props.onClick
     }, props.children);
   },
       getActionLink = function getActionLink() {
@@ -5130,7 +5179,8 @@ InlineLink.propTypes = {
   text: PropTypes.string,
   color: PropTypes.oneOf(['primary', 'secondary', 'cta', 'link', 'disabled']),
   underline: PropTypes.oneOf(['none', 'hover', 'always']),
-  italic: PropTypes.bool
+  italic: PropTypes.bool,
+  onClick: PropTypes.func
 };
 InlineLink.defaultProps = {
   className: '',
@@ -5142,10 +5192,10 @@ InlineLink.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/molecules/list-item.js":
-/*!*******************************************************!*\
-  !*** ../core/app/assets/js/ui/molecules/list-item.js ***!
-  \*******************************************************/
+/***/ "../app/assets/js/ui/molecules/list-item.js":
+/*!**************************************************!*\
+  !*** ../app/assets/js/ui/molecules/list-item.js ***!
+  \**************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -5161,14 +5211,14 @@ exports["default"] = ListItem;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../app/assets/js/utils/utils.js");
 
 function ListItem(props) {
   var baseClassName = 'eps-list__item',
       classes = [baseClassName, props.className];
   var style;
 
-  if (props.hasOwnProperty('padding')) {
+  if (Object.prototype.hasOwnProperty.call(props, 'padding')) {
     style = {
       '--eps-list-item-padding': (0, _utils.pxToRem)(props.padding)
     };
@@ -5192,10 +5242,10 @@ ListItem.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/molecules/list.js":
-/*!**************************************************!*\
-  !*** ../core/app/assets/js/ui/molecules/list.js ***!
-  \**************************************************/
+/***/ "../app/assets/js/ui/molecules/list.js":
+/*!*********************************************!*\
+  !*** ../app/assets/js/ui/molecules/list.js ***!
+  \*********************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -5211,18 +5261,18 @@ exports["default"] = List;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../app/assets/js/utils/utils.js");
 
-var _listItem = _interopRequireDefault(__webpack_require__(/*! ./list-item */ "../core/app/assets/js/ui/molecules/list-item.js"));
+var _listItem = _interopRequireDefault(__webpack_require__(/*! ./list-item */ "../app/assets/js/ui/molecules/list-item.js"));
 
-__webpack_require__(/*! ./list.scss */ "../core/app/assets/js/ui/molecules/list.scss");
+__webpack_require__(/*! ./list.scss */ "../app/assets/js/ui/molecules/list.scss");
 
 function List(props) {
   var baseClassName = 'eps-list',
       classes = [baseClassName, props.className];
   var style;
 
-  if (props.hasOwnProperty('padding')) {
+  if (Object.prototype.hasOwnProperty.call(props, 'padding')) {
     style = {
       '--eps-list-padding': (0, _utils.pxToRem)(props.padding)
     };
@@ -5253,10 +5303,10 @@ List.Item = _listItem.default;
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/molecules/notice.js":
-/*!****************************************************!*\
-  !*** ../core/app/assets/js/ui/molecules/notice.js ***!
-  \****************************************************/
+/***/ "../app/assets/js/ui/molecules/notice.js":
+/*!***********************************************!*\
+  !*** ../app/assets/js/ui/molecules/notice.js ***!
+  \***********************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -5272,15 +5322,15 @@ exports["default"] = Notice;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! elementor-app/utils/utils.js */ "../app/assets/js/utils/utils.js");
 
-var _text = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/text */ "../core/app/assets/js/ui/atoms/text.js"));
+var _text = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/text */ "../app/assets/js/ui/atoms/text.js"));
 
-var _icon = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/icon */ "../core/app/assets/js/ui/atoms/icon.js"));
+var _icon = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/icon */ "../app/assets/js/ui/atoms/icon.js"));
 
-var _grid = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/grid/grid */ "../core/app/assets/js/ui/grid/grid.js"));
+var _grid = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/grid/grid */ "../app/assets/js/ui/grid/grid.js"));
 
-__webpack_require__(/*! ./notice.scss */ "../core/app/assets/js/ui/molecules/notice.scss");
+__webpack_require__(/*! ./notice.scss */ "../app/assets/js/ui/molecules/notice.scss");
 
 var iconsClassesMap = {
   danger: 'eicon-warning',
@@ -5337,10 +5387,10 @@ Notice.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/molecules/popover.js":
-/*!*****************************************************!*\
-  !*** ../core/app/assets/js/ui/molecules/popover.js ***!
-  \*****************************************************/
+/***/ "../app/assets/js/ui/molecules/popover.js":
+/*!************************************************!*\
+  !*** ../app/assets/js/ui/molecules/popover.js ***!
+  \************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -5356,7 +5406,7 @@ exports["default"] = Popover;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-__webpack_require__(/*! ./popover.scss */ "../core/app/assets/js/ui/molecules/popover.scss");
+__webpack_require__(/*! ./popover.scss */ "../app/assets/js/ui/molecules/popover.scss");
 
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 
@@ -5384,10 +5434,10 @@ Popover.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/ui/molecules/select2.js":
-/*!*****************************************************!*\
-  !*** ../core/app/assets/js/ui/molecules/select2.js ***!
-  \*****************************************************/
+/***/ "../app/assets/js/ui/molecules/select2.js":
+/*!************************************************!*\
+  !*** ../app/assets/js/ui/molecules/select2.js ***!
+  \************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -5405,9 +5455,9 @@ var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
 
-var _select = _interopRequireDefault(__webpack_require__(/*! ../atoms/select */ "../core/app/assets/js/ui/atoms/select.js"));
+var _select = _interopRequireDefault(__webpack_require__(/*! ../atoms/select */ "../app/assets/js/ui/atoms/select.js"));
 
-__webpack_require__(/*! ./select2.scss */ "../core/app/assets/js/ui/molecules/select2.scss");
+__webpack_require__(/*! ./select2.scss */ "../app/assets/js/ui/molecules/select2.scss");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
@@ -5486,10 +5536,10 @@ Select2.defaultProps = {
 
 /***/ }),
 
-/***/ "../core/app/assets/js/utils/utils.js":
-/*!********************************************!*\
-  !*** ../core/app/assets/js/utils/utils.js ***!
-  \********************************************/
+/***/ "../app/assets/js/utils/utils.js":
+/*!***************************************!*\
+  !*** ../app/assets/js/utils/utils.js ***!
+  \***************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -5566,10 +5616,10 @@ exports.arrayToObjectByKey = arrayToObjectByKey;
 
 /***/ }),
 
-/***/ "../core/app/modules/site-editor/assets/js/context/template-types.js":
-/*!***************************************************************************!*\
-  !*** ../core/app/modules/site-editor/assets/js/context/template-types.js ***!
-  \***************************************************************************/
+/***/ "../app/modules/site-editor/assets/js/context/template-types.js":
+/*!**********************************************************************!*\
+  !*** ../app/modules/site-editor/assets/js/context/template-types.js ***!
+  \**********************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -5598,7 +5648,7 @@ var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/run
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
 
-__webpack_require__(/*! ../../scss/loading.scss */ "../core/app/modules/site-editor/assets/scss/loading.scss");
+__webpack_require__(/*! ../../scss/loading.scss */ "../app/modules/site-editor/assets/scss/loading.scss");
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
@@ -5699,10 +5749,10 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ "../core/app/modules/site-editor/assets/js/module.js":
-/*!***********************************************************!*\
-  !*** ../core/app/modules/site-editor/assets/js/module.js ***!
-  \***********************************************************/
+/***/ "../app/modules/site-editor/assets/js/module.js":
+/*!******************************************************!*\
+  !*** ../app/modules/site-editor/assets/js/module.js ***!
+  \******************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -5722,9 +5772,9 @@ var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtim
 
 var _router = _interopRequireDefault(__webpack_require__(/*! @elementor/router */ "@elementor/router"));
 
-var _promotion = _interopRequireDefault(__webpack_require__(/*! ./pages/promotion */ "../core/app/modules/site-editor/assets/js/pages/promotion.js"));
+var _promotion = _interopRequireDefault(__webpack_require__(/*! ./pages/promotion */ "../app/modules/site-editor/assets/js/pages/promotion.js"));
 
-var _notFound = _interopRequireDefault(__webpack_require__(/*! ./pages/not-found */ "../core/app/modules/site-editor/assets/js/pages/not-found.js"));
+var _notFound = _interopRequireDefault(__webpack_require__(/*! ./pages/not-found */ "../app/modules/site-editor/assets/js/pages/not-found.js"));
 
 var SiteEditor = /*#__PURE__*/function () {
   function SiteEditor() {
@@ -5889,10 +5939,10 @@ exports["default"] = SiteEditor;
 
 /***/ }),
 
-/***/ "../core/app/modules/site-editor/assets/js/molecules/site-part.js":
-/*!************************************************************************!*\
-  !*** ../core/app/modules/site-editor/assets/js/molecules/site-part.js ***!
-  \************************************************************************/
+/***/ "../app/modules/site-editor/assets/js/molecules/site-part.js":
+/*!*******************************************************************!*\
+  !*** ../app/modules/site-editor/assets/js/molecules/site-part.js ***!
+  \*******************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -5908,17 +5958,17 @@ exports["default"] = SitePart;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _card = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/card/card */ "../core/app/assets/js/ui/card/card.js"));
+var _card = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/card/card */ "../app/assets/js/ui/card/card.js"));
 
-var _cardHeader = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/card/card-header */ "../core/app/assets/js/ui/card/card-header.js"));
+var _cardHeader = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/card/card-header */ "../app/assets/js/ui/card/card-header.js"));
 
-var _cardBody = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/card/card-body */ "../core/app/assets/js/ui/card/card-body.js"));
+var _cardBody = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/card/card-body */ "../app/assets/js/ui/card/card-body.js"));
 
-var _cardImage = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/card/card-image */ "../core/app/assets/js/ui/card/card-image.js"));
+var _cardImage = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/card/card-image */ "../app/assets/js/ui/card/card-image.js"));
 
-var _heading = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/heading */ "../core/app/assets/js/ui/atoms/heading.js"));
+var _heading = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/heading */ "../app/assets/js/ui/atoms/heading.js"));
 
-__webpack_require__(/*! ./site-part.scss */ "../core/app/modules/site-editor/assets/js/molecules/site-part.scss");
+__webpack_require__(/*! ./site-part.scss */ "../app/modules/site-editor/assets/js/molecules/site-part.scss");
 
 function SitePart(props) {
   return /*#__PURE__*/_react.default.createElement(_card.default, {
@@ -5943,10 +5993,10 @@ SitePart.propTypes = {
 
 /***/ }),
 
-/***/ "../core/app/modules/site-editor/assets/js/organisms/all-parts-button.js":
-/*!*******************************************************************************!*\
-  !*** ../core/app/modules/site-editor/assets/js/organisms/all-parts-button.js ***!
-  \*******************************************************************************/
+/***/ "../app/modules/site-editor/assets/js/organisms/all-parts-button.js":
+/*!**************************************************************************!*\
+  !*** ../app/modules/site-editor/assets/js/organisms/all-parts-button.js ***!
+  \**************************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -5963,7 +6013,7 @@ exports["default"] = AllPartsButton;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _menuItem = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/menu/menu-item */ "../core/app/assets/js/ui/menu/menu-item.js"));
+var _menuItem = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/menu/menu-item */ "../app/assets/js/ui/menu/menu-item.js"));
 
 var _router = __webpack_require__(/*! @reach/router */ "../node_modules/@reach/router/es/index.js");
 
@@ -5990,10 +6040,10 @@ AllPartsButton.propTypes = {
 
 /***/ }),
 
-/***/ "../core/app/modules/site-editor/assets/js/organisms/menu.js":
-/*!*******************************************************************!*\
-  !*** ../core/app/modules/site-editor/assets/js/organisms/menu.js ***!
-  \*******************************************************************/
+/***/ "../app/modules/site-editor/assets/js/organisms/menu.js":
+/*!**************************************************************!*\
+  !*** ../app/modules/site-editor/assets/js/organisms/menu.js ***!
+  \**************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -6010,15 +6060,15 @@ exports["default"] = Menu;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _menu = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/menu/menu */ "../core/app/assets/js/ui/menu/menu.js"));
+var _menu = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/menu/menu */ "../app/assets/js/ui/menu/menu.js"));
 
-var _templateTypes = __webpack_require__(/*! ../context/template-types */ "../core/app/modules/site-editor/assets/js/context/template-types.js");
+var _templateTypes = __webpack_require__(/*! ../context/template-types */ "../app/modules/site-editor/assets/js/context/template-types.js");
 
-var _button = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/molecules/button */ "../core/app/assets/js/ui/molecules/button.js"));
+var _button = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/molecules/button */ "../app/assets/js/ui/molecules/button.js"));
 
-var _addNewButton = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/molecules/add-new-button */ "../core/app/assets/js/ui/molecules/add-new-button.js"));
+var _addNewButton = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/molecules/add-new-button */ "../app/assets/js/ui/molecules/add-new-button.js"));
 
-__webpack_require__(/*! ./menu.scss */ "../core/app/modules/site-editor/assets/js/organisms/menu.scss");
+__webpack_require__(/*! ./menu.scss */ "../app/modules/site-editor/assets/js/organisms/menu.scss");
 
 function Menu(props) {
   var _React$useContext = _react.default.useContext(_templateTypes.Context),
@@ -6066,10 +6116,10 @@ Menu.propTypes = {
 
 /***/ }),
 
-/***/ "../core/app/modules/site-editor/assets/js/organisms/site-parts.js":
-/*!*************************************************************************!*\
-  !*** ../core/app/modules/site-editor/assets/js/organisms/site-parts.js ***!
-  \*************************************************************************/
+/***/ "../app/modules/site-editor/assets/js/organisms/site-parts.js":
+/*!********************************************************************!*\
+  !*** ../app/modules/site-editor/assets/js/organisms/site-parts.js ***!
+  \********************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -6088,15 +6138,15 @@ var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
 var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
 
-var _button = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/molecules/button */ "../core/app/assets/js/ui/molecules/button.js"));
+var _button = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/molecules/button */ "../app/assets/js/ui/molecules/button.js"));
 
-var _cssGrid = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/css-grid */ "../core/app/assets/js/ui/atoms/css-grid.js"));
+var _cssGrid = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/css-grid */ "../app/assets/js/ui/atoms/css-grid.js"));
 
-var _modal = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/modal/modal */ "../core/app/assets/js/ui/modal/modal.js"));
+var _modal = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/modal/modal */ "../app/assets/js/ui/modal/modal.js"));
 
-var _sitePart = _interopRequireDefault(__webpack_require__(/*! ../molecules/site-part */ "../core/app/modules/site-editor/assets/js/molecules/site-part.js"));
+var _sitePart = _interopRequireDefault(__webpack_require__(/*! ../molecules/site-part */ "../app/modules/site-editor/assets/js/molecules/site-part.js"));
 
-var _templateTypes = __webpack_require__(/*! ../context/template-types */ "../core/app/modules/site-editor/assets/js/context/template-types.js");
+var _templateTypes = __webpack_require__(/*! ../context/template-types */ "../app/modules/site-editor/assets/js/context/template-types.js");
 
 /* eslint-disable jsx-a11y/iframe-has-title */
 var InfoButton = function InfoButton(props) {
@@ -6162,10 +6212,10 @@ SiteParts.propTypes = {
 
 /***/ }),
 
-/***/ "../core/app/modules/site-editor/assets/js/package.js":
-/*!************************************************************!*\
-  !*** ../core/app/modules/site-editor/assets/js/package.js ***!
-  \************************************************************/
+/***/ "../app/modules/site-editor/assets/js/package.js":
+/*!*******************************************************!*\
+  !*** ../app/modules/site-editor/assets/js/package.js ***!
+  \*******************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -6178,19 +6228,19 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports["default"] = void 0;
 
-var _allPartsButton = _interopRequireDefault(__webpack_require__(/*! ./organisms/all-parts-button */ "../core/app/modules/site-editor/assets/js/organisms/all-parts-button.js"));
+var _allPartsButton = _interopRequireDefault(__webpack_require__(/*! ./organisms/all-parts-button */ "../app/modules/site-editor/assets/js/organisms/all-parts-button.js"));
 
-var _layout = _interopRequireDefault(__webpack_require__(/*! ./templates/layout */ "../core/app/modules/site-editor/assets/js/templates/layout.js"));
+var _layout = _interopRequireDefault(__webpack_require__(/*! ./templates/layout */ "../app/modules/site-editor/assets/js/templates/layout.js"));
 
-var _module = _interopRequireDefault(__webpack_require__(/*! ./module */ "../core/app/modules/site-editor/assets/js/module.js"));
+var _module = _interopRequireDefault(__webpack_require__(/*! ./module */ "../app/modules/site-editor/assets/js/module.js"));
 
-var _notFound = _interopRequireDefault(__webpack_require__(/*! ./pages/not-found */ "../core/app/modules/site-editor/assets/js/pages/not-found.js"));
+var _notFound = _interopRequireDefault(__webpack_require__(/*! ./pages/not-found */ "../app/modules/site-editor/assets/js/pages/not-found.js"));
 
-var _siteParts = _interopRequireDefault(__webpack_require__(/*! ./organisms/site-parts */ "../core/app/modules/site-editor/assets/js/organisms/site-parts.js"));
+var _siteParts = _interopRequireDefault(__webpack_require__(/*! ./organisms/site-parts */ "../app/modules/site-editor/assets/js/organisms/site-parts.js"));
 
-var _sitePart = _interopRequireDefault(__webpack_require__(/*! ./molecules/site-part */ "../core/app/modules/site-editor/assets/js/molecules/site-part.js"));
+var _sitePart = _interopRequireDefault(__webpack_require__(/*! ./molecules/site-part */ "../app/modules/site-editor/assets/js/molecules/site-part.js"));
 
-var _templateTypes = __webpack_require__(/*! ./context/template-types */ "../core/app/modules/site-editor/assets/js/context/template-types.js");
+var _templateTypes = __webpack_require__(/*! ./context/template-types */ "../app/modules/site-editor/assets/js/context/template-types.js");
 
 // Alphabetical order.
 var _default = {
@@ -6206,10 +6256,10 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ "../core/app/modules/site-editor/assets/js/pages/not-found.js":
-/*!********************************************************************!*\
-  !*** ../core/app/modules/site-editor/assets/js/pages/not-found.js ***!
-  \********************************************************************/
+/***/ "../app/modules/site-editor/assets/js/pages/not-found.js":
+/*!***************************************************************!*\
+  !*** ../app/modules/site-editor/assets/js/pages/not-found.js ***!
+  \***************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -6225,7 +6275,7 @@ exports["default"] = NotFound;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _dialog = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/dialog/dialog */ "../core/app/assets/js/ui/dialog/dialog.js"));
+var _dialog = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/dialog/dialog */ "../app/assets/js/ui/dialog/dialog.js"));
 
 function NotFound() {
   var url = _react.default.useMemo(function () {
@@ -6248,10 +6298,10 @@ function NotFound() {
 
 /***/ }),
 
-/***/ "../core/app/modules/site-editor/assets/js/pages/promotion.js":
-/*!********************************************************************!*\
-  !*** ../core/app/modules/site-editor/assets/js/pages/promotion.js ***!
-  \********************************************************************/
+/***/ "../app/modules/site-editor/assets/js/pages/promotion.js":
+/*!***************************************************************!*\
+  !*** ../app/modules/site-editor/assets/js/pages/promotion.js ***!
+  \***************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -6268,23 +6318,23 @@ exports["default"] = Promotion;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _allPartsButton = _interopRequireDefault(__webpack_require__(/*! ../organisms/all-parts-button */ "../core/app/modules/site-editor/assets/js/organisms/all-parts-button.js"));
+var _allPartsButton = _interopRequireDefault(__webpack_require__(/*! ../organisms/all-parts-button */ "../app/modules/site-editor/assets/js/organisms/all-parts-button.js"));
 
-var _button = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/molecules/button */ "../core/app/assets/js/ui/molecules/button.js"));
+var _button = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/molecules/button */ "../app/assets/js/ui/molecules/button.js"));
 
-var _cardOverlay = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/card/card-overlay */ "../core/app/assets/js/ui/card/card-overlay.js"));
+var _cardOverlay = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/card/card-overlay */ "../app/assets/js/ui/card/card-overlay.js"));
 
-var _grid = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/grid/grid */ "../core/app/assets/js/ui/grid/grid.js"));
+var _grid = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/grid/grid */ "../app/assets/js/ui/grid/grid.js"));
 
-var _heading = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/heading */ "../core/app/assets/js/ui/atoms/heading.js"));
+var _heading = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/heading */ "../app/assets/js/ui/atoms/heading.js"));
 
-var _layout = _interopRequireDefault(__webpack_require__(/*! ../templates/layout */ "../core/app/modules/site-editor/assets/js/templates/layout.js"));
+var _layout = _interopRequireDefault(__webpack_require__(/*! ../templates/layout */ "../app/modules/site-editor/assets/js/templates/layout.js"));
 
-var _siteParts = _interopRequireDefault(__webpack_require__(/*! ../organisms/site-parts */ "../core/app/modules/site-editor/assets/js/organisms/site-parts.js"));
+var _siteParts = _interopRequireDefault(__webpack_require__(/*! ../organisms/site-parts */ "../app/modules/site-editor/assets/js/organisms/site-parts.js"));
 
-var _text = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/text */ "../core/app/assets/js/ui/atoms/text.js"));
+var _text = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/atoms/text */ "../app/assets/js/ui/atoms/text.js"));
 
-__webpack_require__(/*! ./promotion.scss */ "../core/app/modules/site-editor/assets/js/pages/promotion.scss");
+__webpack_require__(/*! ./promotion.scss */ "../app/modules/site-editor/assets/js/pages/promotion.scss");
 
 function Promotion() {
   var promotionUrl = 'https://go.elementor.com/go-pro-theme-builder/',
@@ -6338,6 +6388,7 @@ function Promotion() {
     color: "cta",
     variant: "contained",
     url: promotionUrl,
+    target: "_blank",
     text: __('Upgrade Now', 'elementor')
   }))), /*#__PURE__*/_react.default.createElement("hr", {
     className: "eps-separator"
@@ -6348,10 +6399,10 @@ function Promotion() {
 
 /***/ }),
 
-/***/ "../core/app/modules/site-editor/assets/js/templates/layout.js":
-/*!*********************************************************************!*\
-  !*** ../core/app/modules/site-editor/assets/js/templates/layout.js ***!
-  \*********************************************************************/
+/***/ "../app/modules/site-editor/assets/js/templates/layout.js":
+/*!****************************************************************!*\
+  !*** ../app/modules/site-editor/assets/js/templates/layout.js ***!
+  \****************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -6368,18 +6419,20 @@ exports["default"] = Layout;
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 
-var _page = _interopRequireDefault(__webpack_require__(/*! elementor-app/layout/page */ "../core/app/assets/js/layout/page.js"));
+var _page = _interopRequireDefault(__webpack_require__(/*! elementor-app/layout/page */ "../app/assets/js/layout/page.js"));
 
-var _menu = _interopRequireDefault(__webpack_require__(/*! ../organisms/menu */ "../core/app/modules/site-editor/assets/js/organisms/menu.js"));
+var _menu = _interopRequireDefault(__webpack_require__(/*! ../organisms/menu */ "../app/modules/site-editor/assets/js/organisms/menu.js"));
 
-var _templateTypes = _interopRequireDefault(__webpack_require__(/*! ../context/template-types */ "../core/app/modules/site-editor/assets/js/context/template-types.js"));
+var _templateTypes = _interopRequireDefault(__webpack_require__(/*! ../context/template-types */ "../app/modules/site-editor/assets/js/context/template-types.js"));
 
-__webpack_require__(/*! ./site-editor.scss */ "../core/app/modules/site-editor/assets/js/templates/site-editor.scss");
+__webpack_require__(/*! ./site-editor.scss */ "../app/modules/site-editor/assets/js/templates/site-editor.scss");
 
 function Layout(props) {
+  var _props$titleRedirectR;
+
   var config = {
     title: __('Theme Builder', 'elementor'),
-    titleRedirectRoute: '/site-editor',
+    titleRedirectRoute: (_props$titleRedirectR = props.titleRedirectRoute) !== null && _props$titleRedirectR !== void 0 ? _props$titleRedirectR : null,
     headerButtons: props.headerButtons,
     sidebar: /*#__PURE__*/_react.default.createElement(_menu.default, {
       allPartsButton: props.allPartsButton,
@@ -6394,7 +6447,8 @@ Layout.propTypes = {
   headerButtons: PropTypes.arrayOf(PropTypes.object),
   allPartsButton: PropTypes.element.isRequired,
   children: PropTypes.object.isRequired,
-  promotion: PropTypes.bool
+  promotion: PropTypes.bool,
+  titleRedirectRoute: PropTypes.string
 };
 Layout.defaultProps = {
   headerButtons: []
@@ -8669,18 +8723,18 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-/*!*********************************************!*\
-  !*** ../core/app/assets/js/app-packages.js ***!
-  \*********************************************/
+/*!****************************************!*\
+  !*** ../app/assets/js/app-packages.js ***!
+  \****************************************/
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
 
-var _router = _interopRequireDefault(__webpack_require__(/*! ./router */ "../core/app/assets/js/router.js"));
+var _router = _interopRequireDefault(__webpack_require__(/*! ./router */ "../app/assets/js/router.js"));
 
-var _package = __webpack_require__(/*! ./package */ "../core/app/assets/js/package.js");
+var _package = __webpack_require__(/*! ./package */ "../app/assets/js/package.js");
 
-var _package2 = _interopRequireDefault(__webpack_require__(/*! ../../modules/site-editor/assets/js/package */ "../core/app/modules/site-editor/assets/js/package.js"));
+var _package2 = _interopRequireDefault(__webpack_require__(/*! ../../modules/site-editor/assets/js/package */ "../app/modules/site-editor/assets/js/package.js"));
 
 /**
  * Temporary solution for share components.

@@ -890,7 +890,7 @@ class Options_Manager {
 		$rest_api_url = apply_filters( 'jet-menu/rest/admin/url', get_rest_url() );
 
 		return array(
-			'optionsApiUrl'    => $rest_api_url . 'jet-menu-api/v1/plugin-settings',
+			'optionsApiUrl'    => $rest_api_url . 'jet-menu-api/v2/plugin-settings',
 			'rawOptionsData'   => $this->get_option(),
 			'optionPresetList' => jet_menu()->settings_manager->options_manager->get_presets_select_options(),
 			'importUrl'        => add_query_arg( array( 'jet-action' => 'import-options' ), esc_url( admin_url( 'admin.php' ) ) ),

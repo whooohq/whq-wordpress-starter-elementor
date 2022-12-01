@@ -1,6 +1,10 @@
 # Changelog
 
-# 1.4.1 / 2022-07-22
+# 1.4.3 / 2022-11-28
+- REST API enabled by default for all users. Needed for the modern WordPress themes and other plugins.
+- Resolved an issue with Elementor Template Kits import.
+
+# 1.4.2 / 2022-07-22
 - PHP 8.x compatibility check.
 - Tested up to WordPress 6.0.
 - Added an option to enable/disble the sender email address.

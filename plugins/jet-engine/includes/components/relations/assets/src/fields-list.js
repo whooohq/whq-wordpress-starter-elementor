@@ -47,7 +47,7 @@ class FieldsList extends Component {
 		const commonProps = {
 			key: 'field_' + field.type + field.name,
 			label: field.title,
-			help: field.description,
+			help: field.description ? <div dangerouslySetInnerHTML={{ __html: field.description }}/> : '',
 			value: this.state[ field.name ],
 			onChange: ( newVal ) => {
 				this.onChange( field.name, newVal );

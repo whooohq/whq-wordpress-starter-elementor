@@ -4,25 +4,30 @@ namespace Elementor;
 
 use Elementor\Group_Control_Border;
 
+// Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-} // Exit if accessed directly
+}
 
 class Jet_Smart_Filters_Date_Range_Widget extends Jet_Smart_Filters_Base_Widget {
 
 	public function get_name() {
+
 		return 'jet-smart-filters-date-range';
 	}
 
 	public function get_title() {
+
 		return __( 'Date Range Filter', 'jet-smart-filters' );
 	}
 
 	public function get_icon() {
+
 		return 'jet-smart-filters-icon-date-range-filter';
 	}
 
 	public function get_help_url() {
+
 		return jet_smart_filters()->widgets->prepare_help_url(
 			'https://crocoblock.com/knowledge-base/articles/jetsmartfilters-how-to-add-a-date-range-filter-based-on-the-dates-in-the-meta-fields/',
 			$this->get_name()
@@ -177,7 +182,6 @@ class Jet_Smart_Filters_Date_Range_Widget extends Jet_Smart_Filters_Base_Widget 
 		$this->controls_section_filter_label( $css_scheme );
 
 		$this->controls_section_apply_filter_button( $css_scheme );
-
 	}
 
 	protected function controls_section_content( $css_scheme ){
@@ -345,7 +349,6 @@ class Jet_Smart_Filters_Date_Range_Widget extends Jet_Smart_Filters_Base_Widget 
 		);
 
 		$this->end_controls_section();
-
 	}
 
 	protected function controls_section_date_inputs( $css_scheme ) {
@@ -459,7 +462,6 @@ class Jet_Smart_Filters_Date_Range_Widget extends Jet_Smart_Filters_Base_Widget 
 		);
 
 		$this->end_controls_section();
-
 	}
 
 	protected function controls_section_filter_label( $css_scheme ) {
@@ -558,7 +560,6 @@ class Jet_Smart_Filters_Date_Range_Widget extends Jet_Smart_Filters_Base_Widget 
 		);
 
 		$this->end_controls_section();
-
 	}
 
 	protected function controls_section_apply_filter_button( $css_scheme ) {
@@ -837,7 +838,6 @@ class Jet_Smart_Filters_Date_Range_Widget extends Jet_Smart_Filters_Base_Widget 
 		);
 
 		$this->end_controls_section();
-
 	}
 
 	protected function render() {
@@ -873,7 +873,7 @@ class Jet_Smart_Filters_Date_Range_Widget extends Jet_Smart_Filters_Base_Widget 
 		$hide_button          = ! empty( $settings['hide_apply_button'] ) ? $settings['hide_apply_button'] : false;
 		$hide_button          = filter_var( $hide_button, FILTER_VALIDATE_BOOLEAN );
 
-		jet_smart_filters()->admin_bar->register_post_item( $filter_id );
+		jet_smart_filters()->admin_bar_register_item( $filter_id );
 
 		include jet_smart_filters()->get_template( 'common/filter-label.php' );
 
@@ -890,7 +890,5 @@ class Jet_Smart_Filters_Date_Range_Widget extends Jet_Smart_Filters_Base_Widget 
 		) );
 
 		echo '</div>';
-
 	}
-
 }

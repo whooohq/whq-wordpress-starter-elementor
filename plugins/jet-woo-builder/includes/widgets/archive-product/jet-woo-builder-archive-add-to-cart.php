@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_Archive_Add_To_Cart
- * Name: Add To Cart
+ * Name: Archive Add To Cart
  * Slug: jet-woo-builder-archive-add-to-cart
  */
 
@@ -21,7 +21,7 @@ class Jet_Woo_Builder_Archive_Add_To_Cart extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Add to Cart', 'jet-woo-builder' );
+		return __( 'Archive Add to Cart', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
@@ -42,28 +42,18 @@ class Jet_Woo_Builder_Archive_Add_To_Cart extends Jet_Woo_Builder_Base {
 
 	protected function register_controls() {
 
-		$css_scheme = apply_filters(
-			'jet-woo-builder/jet-archive-add-to-cart/css-scheme',
-			array(
-				'wrapper'   => '.jet-woo-builder-archive-add-to-cart',
-				'button'    => '.jet-woo-builder-archive-add-to-cart .button',
-				'qty'       => '.jet-woo-builder-archive-add-to-cart  .qty',
-				'qty_input' => '.jet-woo-builder-archive-add-to-cart  .quantity',
-			)
-		);
-
 		$this->start_controls_section(
 			'section_archive_add_to_cart_content',
-			array(
-				'label' => esc_html__( 'Content', 'jet-woo-builder' ),
+			[
+				'label' => __( 'Add to Cart', 'jet-woo-builder' ),
 				'tab'   => Controls_Manager::TAB_CONTENT,
-			)
+			]
 		);
 
 		$this->add_control(
 			'show_quantity',
 			[
-				'label'              => __( 'Show Quantity Input', 'jet-woo-builder' ),
+				'label'              => __( 'Enable Quantity Input', 'jet-woo-builder' ),
 				'type'               => Controls_Manager::SWITCHER,
 				'frontend_available' => true,
 			]
@@ -73,71 +63,53 @@ class Jet_Woo_Builder_Archive_Add_To_Cart extends Jet_Woo_Builder_Base {
 
 		$this->start_controls_section(
 			'section_archive_add_to_cart_style',
-			array(
-				'label'      => esc_html__( 'Add To Cart', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
-		);
-
-		$this->add_control(
-			'button_styles_heading',
-			array(
-				'label' => esc_html__( 'Button Styles', 'jet-woo-builder' ),
-				'type'  => Controls_Manager::HEADING,
-			)
+			[
+				'label' => __( 'Button', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
 		);
 
 		$this->add_control(
 			'button_display',
-			array(
-				'label'     => esc_html__( 'Button Display', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Display Type', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::SELECT,
 				'options'   => jet_woo_builder_tools()->get_available_display_types(),
 				'default'   => 'inline-block',
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['button'] => 'display: {{VALUE}};',
-				),
-			)
+				'selectors' => [
+					$this->css_selector( ' .button' ) => 'display: {{VALUE}};',
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'button_width',
-			array(
-				'label'      => esc_html__( 'Button Width', 'jet-woo-builder' ),
+			[
+				'label'      => __( 'Width', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array(
-					'%',
-					'px',
-				),
-				'range'      => array(
-					'%'  => array(
+				'size_units' => [ '%', 'px' ],
+				'range'      => [
+					'%'  => [
 						'min' => 10,
 						'max' => 100,
-					),
-					'px' => array(
+					],
+					'px' => [
 						'min' => 50,
 						'max' => 1000,
-					),
-				),
-				'default'    => array(
-					'unit' => 'px',
-					'size' => '',
-				),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['button'] => 'width: {{SIZE}}{{UNIT}}',
-				),
-			)
+					],
+				],
+				'selectors'  => [
+					$this->css_selector( ' .button' ) => 'width: {{SIZE}}{{UNIT}}',
+				],
+			]
 		);
 
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
-			array(
-				'name'        => 'archive_add_to_cart_typography',
-				'scheme'      => Typography::TYPOGRAPHY_4,
-				'selector'    => '{{WRAPPER}} ' . $css_scheme['button'],
-				'placeholder' => '1px',
-			)
+			[
+				'name'     => 'archive_add_to_cart_typography',
+				'selector' => $this->css_selector( ' .button' ),
+			]
 		);
 
 		$this->start_controls_tabs( 'tabs_archive_add_to_cart_style' );
@@ -151,34 +123,32 @@ class Jet_Woo_Builder_Archive_Add_To_Cart extends Jet_Woo_Builder_Base {
 
 		$this->add_control(
 			'archive_add_to_cart_text_color',
-			array(
-				'label'     => esc_html__( 'Text Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'default'   => '',
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['button'] => 'color: {{VALUE}};',
-				),
-
-			)
+				'selectors' => [
+					$this->css_selector( ' .button' ) => 'color: {{VALUE}};',
+				],
+			]
 		);
 
 		$this->add_control(
 			'archive_add_to_cart_background_color',
-			array(
-				'label'     => esc_html__( 'Background Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Background Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['button'] => 'background-color: {{VALUE}};',
-				),
-			)
+				'selectors' => [
+					$this->css_selector( ' .button' ) => 'background-color: {{VALUE}};',
+				],
+			]
 		);
 
 		$this->add_group_control(
 			Group_Control_Box_Shadow::get_type(),
-			array(
+			[
 				'name'     => 'archive_add_to_cart_box_shadow',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['button'],
-			)
+				'selector' => $this->css_selector( ' .button' ),
+			]
 		);
 
 		$this->end_controls_tab();
@@ -192,46 +162,46 @@ class Jet_Woo_Builder_Archive_Add_To_Cart extends Jet_Woo_Builder_Base {
 
 		$this->add_control(
 			'archive_add_to_cart_hover_color',
-			array(
-				'label'     => esc_html__( 'Text Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['button'] . ':hover' => 'color: {{VALUE}};',
-				),
-			)
+				'selectors' => [
+					$this->css_selector( ' .button:hover' ) => 'color: {{VALUE}};',
+				],
+			]
 		);
 
 		$this->add_control(
 			'archive_add_to_cart_background_hover_color',
-			array(
-				'label'     => esc_html__( 'Background Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Background Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['button'] . ':hover' => 'background-color: {{VALUE}};',
-				),
-			)
+				'selectors' => [
+					$this->css_selector( ' .button:hover' ) => 'background-color: {{VALUE}};',
+				],
+			]
 		);
 
 		$this->add_control(
 			'archive_add_to_cart_hover_border_color',
-			array(
-				'label'     => esc_html__( 'Border Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Border Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'condition' => array(
+				'selectors' => [
+					$this->css_selector( ' .button:hover' ) => 'border-color: {{VALUE}};',
+				],
+				'condition' => [
 					'archive_add_to_cart_border_border!' => '',
-				),
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['button'] . ':hover' => 'border-color: {{VALUE}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_group_control(
 			Group_Control_Box_Shadow::get_type(),
-			array(
+			[
 				'name'     => 'archive_add_to_cart_hover_box_shadow',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['button'] . ':hover',
-			)
+				'selector' => $this->css_selector( ' .button:hover' ),
+			]
 		);
 
 		$this->end_controls_tab();
@@ -245,44 +215,46 @@ class Jet_Woo_Builder_Archive_Add_To_Cart extends Jet_Woo_Builder_Base {
 
 		$this->add_control(
 			'archive_add_to_cart_disabled_color',
-			array(
-				'label'     => esc_html__( 'Text Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['button'] . '.added' => 'color: {{VALUE}};',
-				),
-			)
+				'selectors' => [
+					$this->css_selector( ' .button.added' ) => 'color: {{VALUE}};',
+				],
+			]
 		);
 
 		$this->add_control(
 			'archive_add_to_cart_background_disabled_color',
-			array(
-				'label'     => esc_html__( 'Background Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Background Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['button'] . '.added' => 'background-color: {{VALUE}};',
-				),
-			)
+				'selectors' => [
+					$this->css_selector( ' .button.added' ) => 'background-color: {{VALUE}};',
+				],
+			]
 		);
 
 		$this->add_control(
 			'archive_add_to_cart_added_border_color',
-			array(
-				'label'     => esc_html__( 'Border Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Border Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['button'] . '.added' => 'border-color: {{VALUE}};',
-					'{{WRAPPER}} ' . $css_scheme['button'] . '.added' => 'border-color: {{VALUE}};',
-				),
-			)
+				'selectors' => [
+					$this->css_selector( ' .button.added' ) => 'border-color: {{VALUE}};',
+				],
+				'condition' => [
+					'archive_add_to_cart_border_border!' => '',
+				],
+			]
 		);
 
 		$this->add_group_control(
 			Group_Control_Box_Shadow::get_type(),
-			array(
+			[
 				'name'     => 'archive_add_to_cart_added_box_shadow',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['button'] . '.added',
-			)
+				'selector' => $this->css_selector( ' .button.added' ),
+			]
 		);
 
 		$this->end_controls_tab();
@@ -296,43 +268,46 @@ class Jet_Woo_Builder_Archive_Add_To_Cart extends Jet_Woo_Builder_Base {
 
 		$this->add_control(
 			'archive_add_to_cart_loading_color',
-			array(
-				'label'     => esc_html__( 'Text Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['button'] . '.loading' => 'color: {{VALUE}};',
-				),
-			)
+				'selectors' => [
+					$this->css_selector( ' .button.loading' ) => 'color: {{VALUE}};',
+				],
+			]
 		);
 
 		$this->add_control(
 			'archive_add_to_cart_background_loading_color',
-			array(
-				'label'     => esc_html__( 'Background Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Background Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['button'] . '.loading' => 'background-color: {{VALUE}};',
-				),
-			)
+				'selectors' => [
+					$this->css_selector( ' .button.loading' ) => 'background-color: {{VALUE}};',
+				],
+			]
 		);
 
 		$this->add_control(
 			'archive_add_to_cart_loading_border_color',
-			array(
-				'label'     => esc_html__( 'Border Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Border Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['button'] . '.loading' => 'border-color: {{VALUE}};',
-				),
-			)
+				'selectors' => [
+					$this->css_selector( ' .button.loading' ) => 'border-color: {{VALUE}};',
+				],
+				'condition' => [
+					'archive_add_to_cart_border_border!' => '',
+				],
+			]
 		);
 
 		$this->add_group_control(
 			Group_Control_Box_Shadow::get_type(),
-			array(
+			[
 				'name'     => 'archive_add_to_cart_loading_box_shadow',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['button'] . '.loading',
-			)
+				'selector' => $this->css_selector( ' .button.loading' ),
+			]
 		);
 
 		$this->end_controls_tab();
@@ -341,98 +316,108 @@ class Jet_Woo_Builder_Archive_Add_To_Cart extends Jet_Woo_Builder_Base {
 
 		$this->add_group_control(
 			Group_Control_Border::get_type(),
-			array(
-				'name'        => 'archive_add_to_cart_border',
-				'placeholder' => '1px',
-				'default'     => '1px',
-				'selector'    => '{{WRAPPER}} ' . $css_scheme['button'],
-				'separator'   => 'before',
-
-			)
+			[
+				'name'      => 'archive_add_to_cart_border',
+				'selector'  => $this->css_selector( ' .button' ),
+				'separator' => 'before',
+			]
 		);
 
 		$this->add_control(
 			'archive_add_to_cart_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['button'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				'size_units' => [ 'px', '%' ],
+				'selectors'  => [
+					$this->css_selector( ' .button' ) => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'archive_add_to_cart_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
+			[
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['button'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-				'separator'  => 'before',
-			)
+				'size_units' => [ 'px', 'em', '%' ],
+				'selectors'  => [
+					$this->css_selector( ' .button' ) => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
 		);
 
-		$this->add_control(
-			'quantity_input_styles_heading',
-			array(
-				'label'     => esc_html__( 'Quantity Input Styles', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::HEADING,
-				'separator' => 'before',
-			)
+		$this->add_responsive_control(
+			'archive_add_to_cart_alignment',
+			[
+				'label'     => __( 'Alignment', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::CHOOSE,
+				'options'   => jet_woo_builder_tools()->get_available_h_align_types(),
+				'selectors' => [
+					$this->css_selector() => 'text-align: {{VALUE}};',
+				],
+				'classes'   => 'elementor-control-align',
+			]
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'quantity_input_style_section',
+			[
+				'label'     => __( 'Quantity Input', 'jet-woo-builder' ),
+				'tab'       => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'show_quantity' => 'yes',
+				],
+			]
 		);
 
 		$this->add_control(
 			'qty_display',
-			array(
-				'label'     => esc_html__( 'Quantity Input Display', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Display Type', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::SELECT,
 				'options'   => jet_woo_builder_tools()->get_available_display_types(),
 				'default'   => 'inline-block',
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['qty_input'] => 'display: {{VALUE}};',
-				),
-			)
+				'selectors' => [
+					$this->css_selector( ' .quantity' ) => 'display: {{VALUE}};',
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'qty_input_width',
-			array(
-				'label'      => esc_html__( 'Input Width', 'jet-woo-builder' ),
+			[
+				'label'      => __( 'Width', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array(
-					'%',
-					'px',
-				),
-				'range'      => array(
-					'%'  => array(
+				'size_units' => [ '%', 'px' ],
+				'range'      => [
+					'%'  => [
 						'min' => 10,
 						'max' => 100,
-					),
-					'px' => array(
+					],
+					'px' => [
 						'min' => 50,
 						'max' => 1000,
-					),
-				),
-				'default'    => array(
+					],
+				],
+				'default'    => [
 					'unit' => 'px',
 					'size' => 70,
-				),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['qty_input'] => 'width: {{SIZE}}{{UNIT}}',
-				),
-			)
+				],
+				'selectors'  => [
+					$this->css_selector( ' .quantity' ) => 'width: {{SIZE}}{{UNIT}}',
+				],
+			]
 		);
 
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
-			array(
+			[
 				'name'     => 'qty_typography',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['qty'],
-			)
+				'selector' => $this->css_selector( ' .qty' ),
+			]
 		);
 
 		$this->start_controls_tabs( 'tabs_qty_style' );
@@ -446,25 +431,24 @@ class Jet_Woo_Builder_Archive_Add_To_Cart extends Jet_Woo_Builder_Base {
 
 		$this->add_control(
 			'qty_color',
-			array(
-				'label'     => esc_html__( 'Text Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'default'   => '',
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['qty'] => 'color: {{VALUE}};',
-				),
-			)
+				'selectors' => [
+					$this->css_selector( ' .qty' ) => 'color: {{VALUE}};',
+				],
+			]
 		);
 
 		$this->add_control(
 			'qty_background_color',
-			array(
-				'label'     => esc_html__( 'Background Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Background Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['qty'] => 'background-color: {{VALUE}};',
-				),
-			)
+				'selectors' => [
+					$this->css_selector( ' .qty' ) => 'background-color: {{VALUE}};',
+				],
+			]
 		);
 
 		$this->end_controls_tab();
@@ -478,35 +462,38 @@ class Jet_Woo_Builder_Archive_Add_To_Cart extends Jet_Woo_Builder_Base {
 
 		$this->add_control(
 			'qty_focus_color',
-			array(
-				'label'     => esc_html__( 'Text Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['qty'] . ':focus' => 'color: {{VALUE}};',
-				),
-			)
+				'selectors' => [
+					$this->css_selector( ' .qty:focus' ) => 'color: {{VALUE}};',
+				],
+			]
 		);
 
 		$this->add_control(
 			'qty_background_focus_color',
-			array(
-				'label'     => esc_html__( 'Background Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Background Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['qty'] . ':focus' => 'background-color: {{VALUE}};',
-				),
-			)
+				'selectors' => [
+					$this->css_selector( ' .qty:focus' ) => 'background-color: {{VALUE}};',
+				],
+			]
 		);
 
 		$this->add_control(
 			'qty_focus_border_color',
-			array(
-				'label'     => esc_html__( 'Border Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Border Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['qty'] . ':focus' => 'border-color: {{VALUE}};',
-				),
-			)
+				'selectors' => [
+					$this->css_selector( ' .qty:focus' ) => 'border-color: {{VALUE}};',
+				],
+				'condition' => [
+					'qty_border_border!' => '',
+				],
+			]
 		);
 
 		$this->end_controls_tab();
@@ -515,80 +502,55 @@ class Jet_Woo_Builder_Archive_Add_To_Cart extends Jet_Woo_Builder_Base {
 
 		$this->add_group_control(
 			Group_Control_Border::get_type(),
-			array(
-				'name'        => 'qty_border',
-				'placeholder' => '1px',
-				'default'     => '1px',
-				'selector'    => '{{WRAPPER}} ' . $css_scheme['qty'],
-				'separator'   => 'before',
-			)
+			[
+				'name'      => 'qty_border',
+				'selector'  => $this->css_selector( ' .qty' ),
+				'separator' => 'before',
+			]
 		);
 
 		$this->add_control(
 			'qty_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['qty'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				'size_units' => [ 'px', '%' ],
+				'selectors'  => [
+					$this->css_selector( ' .qty' ) => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
 		);
 
 		$this->add_group_control(
 			Group_Control_Box_Shadow::get_type(),
-			array(
+			[
 				'name'     => 'qty_box_shadow',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['qty'],
-			)
-		);
-
-		$this->add_responsive_control(
-			'qty_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['qty'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-				'separator'  => 'before',
-			)
+				'selector' => $this->css_selector( ' .qty' ),
+			]
 		);
 
 		$this->add_responsive_control(
 			'qty_margin',
-			array(
+			[
 				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['qty_input'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
-		);
-
-		$this->add_control(
-			'wrapper_styles_heading',
-			array(
-				'label'     => esc_html__( 'Wrapper Styles', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::HEADING,
-				'separator' => 'before',
-			)
+				'size_units' => [ 'px', 'em', '%' ],
+				'selectors'  => [
+					$this->css_selector( ' .quantity' ) => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
 		);
 
 		$this->add_responsive_control(
-			'archive_add_to_cart_alignment',
-			array(
-				'label'     => esc_html__( 'Alignment', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::CHOOSE,
-				'options'   => jet_woo_builder_tools()->get_available_h_align_types(),
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['wrapper'] => 'text-align: {{VALUE}};',
-				),
-				'classes'   => 'elementor-control-align',
-			)
+			'qty_padding',
+			[
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', 'em', '%' ],
+				'selectors'  => [
+					$this->css_selector( ' .qty' ) => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
 		);
 
 		$this->end_controls_section();
@@ -596,26 +558,28 @@ class Jet_Woo_Builder_Archive_Add_To_Cart extends Jet_Woo_Builder_Base {
 	}
 
 	/**
-	 * Returns CSS selector for nested element
+	 * CSS selector.
 	 *
-	 * @param null $el
+	 * Returns CSS selector for nested element.
+	 *
+	 * @since  1.2.0
+	 * @access public
+	 *
+	 * @param null $el Selector.
 	 *
 	 * @return string
 	 */
 	public function css_selector( $el = null ) {
-		return sprintf( '{{WRAPPER}} .%1$s %2$s', $this->get_name(), $el );
+		return sprintf( '{{WRAPPER}} .%1$s%2$s', $this->get_name(), $el );
 	}
 
-	public static function render_callback( $settings = array() ) {
+	public static function render_callback( $settings = [] ) {
 
-		$btn_classes       = [];
-		$enable_quantity   = $settings['show_quantity'];
-		$custom_attributes = '';
-		$custom_attributes = apply_filters( 'jet-woo-builder/jet-woo-archive-add-to-cart/widget-attributes', $custom_attributes, $settings );
+		$attributes = apply_filters( 'jet-woo-builder/jet-woo-archive-add-to-cart/widget-attributes', '', $settings );
 
-		echo sprintf( '<div class="jet-woo-builder-archive-add-to-cart" %s >', $custom_attributes );
+		echo '<div class="jet-woo-builder-archive-add-to-cart"' . $attributes . '>';
 
-		jet_woo_builder_template_functions()->get_product_add_to_cart_button( $btn_classes, $enable_quantity );
+		jet_woo_builder_template_functions()->get_product_add_to_cart_button( [], $settings['quantity'] );
 
 		echo '</div>';
 
@@ -625,16 +589,15 @@ class Jet_Woo_Builder_Archive_Add_To_Cart extends Jet_Woo_Builder_Base {
 
 		$this->__open_wrap();
 
-		$settings = $this->get_settings();
-		$settings = apply_filters( 'jet-woo-builder/jet-woo-archive-add-to-cart/settings', $settings, $this );
+		$settings = apply_filters( 'jet-woo-builder/jet-woo-archive-add-to-cart/settings', $this->get_settings_for_display(), $this );
 
 		$macros_settings = [
-			'show_quantity' => 'yes' === $settings['show_quantity'],
+			'quantity' => isset( $settings['show_quantity'] ) ? filter_var( $settings['show_quantity'], FILTER_VALIDATE_BOOLEAN ) : false,
 		];
 
 		if ( class_exists( 'Jet_Popup' ) ) {
-			$macros_settings['jet_woo_builder_cart_popup']          = 'yes' === $settings['jet_woo_builder_cart_popup'];
-			$macros_settings['jet_woo_builder_cart_popup_template'] = ! empty( $settings['jet_woo_builder_cart_popup_template'] ) ? esc_attr( $settings['jet_woo_builder_cart_popup_template'] ) : '';
+			$macros_settings['jet_woo_builder_cart_popup']          = isset( $settings['jet_woo_builder_cart_popup'] ) ? filter_var( $settings['jet_woo_builder_cart_popup'], FILTER_VALIDATE_BOOLEAN ) : false;
+			$macros_settings['jet_woo_builder_cart_popup_template'] = isset( $settings['jet_woo_builder_cart_popup_template'] ) && ! empty( $settings['jet_woo_builder_cart_popup_template'] ) ? $settings['jet_woo_builder_cart_popup_template'] : '';
 		}
 
 		if ( jet_woo_builder_tools()->is_builder_content_save() ) {

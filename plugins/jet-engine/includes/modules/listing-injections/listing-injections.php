@@ -363,6 +363,8 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 							$meta_val = $exists ? $meta_val[0] : false;
 							$matched  = false;
 
+							$compare_val = do_shortcode( jet_engine()->listings->macros->do_macros( $compare_val ) );
+
 							switch ( $meta_compare ) {
 								case '=':
 									if ( $meta_val == $compare_val ) {

@@ -9,34 +9,31 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Block_Range' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Block_Range class
 	 */
 	class Jet_Smart_Filters_Block_Range extends Jet_Smart_Filters_Block_Base {
-
 		/**
 		 * Returns block name
-		 *
-		 * @return string
 		 */
 		public function get_name() {
 			return 'range';
 		}
 
-		public function set_css_scheme(){
+		public function set_css_scheme() {
+
 			$this->css_scheme = apply_filters(
 				'jet-smart-filters/widgets/range/css-scheme',
 				[
-					'slider-track'     => '.jet-range__slider__track',
-					'slider-range'     => '.jet-range__slider__track__range',
-					'slider-input'     => '.jet-range__slider__input',
-					'range-values'     => '.jet-range__values',
-					'inputs'           => '.jet-range__inputs',
-					'inputs-container' => '.jet-range__inputs__container',
-					'input-group'      => '.jet-range__inputs__group',
-					'input'            => '.jet-range__inputs__group input',
-					'input-text'       => '.jet-range__inputs__group__text',
+					'slider-track'     => '.jet-range__slider .jet-range__slider__track',
+					'slider-range'     => '.jet-range__slider .jet-range__slider__track__range',
+					'slider-input'     => '.jet-range__slider .jet-range__slider__input',
+					'range-values'     => '.jet-range__slider .jet-range__values',
+					'inputs'           => '.jet-range__slider .jet-range__inputs',
+					'inputs-container' => '.jet-range__slider .jet-range__inputs__container',
+					'input-group'      => '.jet-range__slider .jet-range__inputs__group',
+					'input'            => '.jet-range__slider .jet-range__inputs__group input',
+					'input-text'       => '.jet-range__slider .jet-range__inputs__group__text',
 
 					'slider'       => '.jet-range__slider',
 					'range'        => '.ui-slider-range',
@@ -49,7 +46,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Range' ) ) {
 			);
 		}
 
-		public function add_style_manager_options(){
+		public function add_style_manager_options() {
 
 			$this->controls_manager->start_section(
 				'style_controls',
@@ -220,7 +217,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Range' ) ) {
 					'{{WRAPPER}} ' . $this->css_scheme['slider-input'] . '::-ms-thumb'            => 'border-style: {{STYLE}}; border-width: {{WIDTH}}; border-radius: {{RADIUS}}; border-color: {{COLOR}}',
 				],
 			]);
-
 
 			$this->controls_manager->end_section();
 
@@ -744,9 +740,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Range' ) ) {
 			]);
 
 			$this->controls_manager->end_section();
-
 		}
-
 	}
-
 }

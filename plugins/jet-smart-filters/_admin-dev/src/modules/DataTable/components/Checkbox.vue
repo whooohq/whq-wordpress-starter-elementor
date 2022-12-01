@@ -1,0 +1,32 @@
+<template>
+	<div class="jet_table-checkbox"
+		 @click="onClick">
+		<input type="checkbox"
+			   :value="modelValue"
+			   :checked="modelValue" />
+		<svg v-if="modelValue" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 0H2C0.9 0 0 0.9 0 2V16C0 17.1 0.9 18 2 18H16C17.1 18 18 17.1 18 16V2C18 0.9 17.1 0 16 0ZM16 16H2V2H16V16ZM14.99 6L13.58 4.58L6.99 11.17L4.41 8.6L2.99 10.01L6.99 14L14.99 6Z" /></svg>
+		<svg v-else width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 2V16H2V2H16ZM16 0H2C0.9 0 0 0.9 0 2V16C0 17.1 0.9 18 2 18H16C17.1 18 18 17.1 18 16V2C18 0.9 17.1 0 16 0Z"/></svg>
+	</div>
+</template>
+
+<script>
+import { defineComponent } from "vue";
+
+export default defineComponent({
+	name: "Checkbox",
+
+	props: {
+		modelValue: { type: Boolean, default: false }
+	},
+
+	setup(props, context) {
+		const onClick = () => {
+			context.emit('update:modelValue', !props.modelValue);
+		};
+
+		return {
+			onClick
+		};
+	}
+});
+</script>

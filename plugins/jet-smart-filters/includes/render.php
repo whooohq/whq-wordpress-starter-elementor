@@ -9,7 +9,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Render' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Render class
 	 */
@@ -23,7 +22,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Render' ) ) {
 		 */
 		public function __construct() {
 
-			add_action( 'init', array( $this, 'apply_filters_from_request' ) );
+			add_action( 'init', array( $this, 'apply_filters_from_request' ), 20 );
 			add_action( 'parse_request', array( $this, 'apply_filters_from_permalink' ) );
 
 			// backward compatibility
@@ -37,12 +36,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Render' ) ) {
 
 			add_action( 'wp_ajax_jet_smart_filters_get_indexed_data', array( $this, 'get_indexed_data' ) );
 			add_action( 'wp_ajax_nopriv_jet_smart_filters_get_indexed_data', array( $this, 'get_indexed_data' ) );
-
 		}
 
 		/**
 		 * Update hierarchy levels starting from depth
-		 * @return [type] [description]
 		 */
 		public function hierarchy_level() {
 
@@ -68,12 +65,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Render' ) ) {
 			);
 
 			wp_send_json_success( $hierarchy->get_levels() );
-
 		}
 
 		/**
 		 * Get indexed data
-		 * @return
 		 */
 		public function get_indexed_data() {
 
@@ -92,15 +87,13 @@ if ( ! class_exists( 'Jet_Smart_Filters_Render' ) ) {
 			$indexed_data = jet_smart_filters()->indexer->data->get_indexed_data($provider_key, $query_args);
 
 			wp_send_json_success( $indexed_data );
-
 		}
 
 		/**
 		 * Returns requested provider ID
-		 *
-		 * @return string
 		 */
 		public function request_provider( $return = null ) {
+
 			return jet_smart_filters()->query->get_current_provider( $return );
 		}
 
@@ -132,7 +125,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Render' ) ) {
 
 			jet_smart_filters()->query->get_query_from_request();
 			$provider->apply_filters_in_request();
-
 		}
 
 		/**
@@ -159,7 +151,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Render' ) ) {
 			}
 
 			$this->apply_filters_from_request();
-
 		}
 
 		/**
@@ -182,13 +173,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Render' ) ) {
 				jet_smart_filters()->query->get_query_from_request();
 				$provider->apply_filters_in_request();
 			}
-
 		}
 
 		/**
 		 * Apply filters in AJAX request
-		 *
-		 * @return [type] [description]
 		 */
 		public function ajax_apply_filters() {
 
@@ -227,13 +215,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Render' ) ) {
 			$args = apply_filters( 'jet-smart-filters/render/ajax/data', $args );
 
 			wp_send_json( $args );
-
 		}
 
 		/**
 		 * Render content
-		 *
-		 * @return string
 		 */
 		public function render_content( $provider ) {
 
@@ -246,9 +231,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Render' ) ) {
 			}
 
 			return ob_get_clean();
-
 		}
-
 	}
-
 }

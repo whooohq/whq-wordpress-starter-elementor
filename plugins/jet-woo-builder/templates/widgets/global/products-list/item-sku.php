@@ -1,11 +1,17 @@
 <?php
 /**
  * JetWooBuilder Products List widget loop item SKU template.
+ *
+ * This template can be overridden by copying it to yourtheme/jet-woo-builder/widgets/global/products-list/item-sku.php.
  */
+
+if ( 'yes' !== $this->get_attr( 'show_sku' ) ) {
+	return;
+}
 
 $sku = jet_woo_builder_template_functions()->get_product_sku();
 
-if ( 'yes' !== $this->get_attr( 'show_sku' ) || empty( $sku ) ) {
+if ( empty( $sku ) ) {
 	return;
 }
 ?>

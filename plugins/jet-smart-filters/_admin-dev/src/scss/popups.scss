@@ -1,0 +1,249 @@
+@import "./mixins.scss";
+
+.jet-popup {
+	&-body {
+		.jet-popup--quick-edit & {
+			min-width: 476px;
+		}
+	}
+
+	&-title {
+		margin: 0 0 4px;
+		font-size: 21px;
+		line-height: 32px;
+		font-weight: 500;
+		text-align: center;
+		color: $color-text-primary;
+
+		.jet-popup--quick-edit & {
+			text-align: left;
+		}
+	}
+
+	&-text {
+		margin: 4px 0 20px;
+		text-align: center;
+		color: $color-text-secondary;
+
+		.jet-popup--save-changes & {
+			margin-left: 25px;
+			margin-right: 25px;
+		}
+	}
+
+	&-actions {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		margin: -6px;
+
+		.jet-popup--quick-edit & {
+			justify-content: start;
+		}
+
+		.jet-popup--save-changes & {
+			flex-direction: row-reverse;
+		}
+
+		> * {
+			margin: 6px;
+		}
+
+		&-apply {
+			.jet-popup--delete-permanently &,
+			.jet-popup--empty-trash & {
+				@include secondary-button();
+
+				color: $color-error;
+				border-color: $color-error;
+
+				&:hover {
+					color: $color-error;
+					background-color: lighten($color-error, 42%);
+				}
+			}
+
+			.jet-popup--save-changes & {
+				min-width: 91px;
+			}
+		}
+
+		&-cancel {
+			@include active-secondary-button();
+
+			.jet-popup--delete-permanently &,
+			.jet-popup--empty-trash & {
+				color: $color-accent;
+				border-color: $color-accent;
+
+				&:hover {
+					color: $color-accent;
+					background-color: lighten($color-accent, 60%);
+				}
+			}
+			.jet-popup--delete-permanently & {
+				min-width: 146px;
+			}
+			.jet-popup--empty-trash & {
+				min-width: 100px;
+			}
+
+			.jet-popup--save-changes & {
+				color: $color-error;
+				border-color: $color-error;
+
+				&:hover {
+					color: $color-error;
+					background-color: lighten($color-error, 42%);
+				}
+			}
+		}
+	}
+
+	&-form {
+		margin: 15px 0 25px;
+
+		> * {
+			display: flex;
+			margin-bottom: 8px;
+		}
+
+		&-label {
+			width: 85px;
+			margin-right: 10px;
+			font-weight: 500;
+			font-size: 13px;
+			line-height: 32px;
+			color: $color-text-primary;
+		}
+
+		&-control {
+			width: calc(100% - 95px);
+		}
+
+		.jet-ui_text {
+			input {
+				padding: 4px 8px;
+				font-size: 13px;
+				line-height: 20px;
+			}
+		}
+
+		.jet-ui_date-input {
+			.jet-ui_number-input {
+				padding: 4px 12px;
+			}
+
+			&-month {
+				width: 66px;
+			}
+			&-year {
+				width: 58px;
+			}
+			&-day,
+			&-hours,
+			&-minute {
+				width: 42px;
+			}
+
+			&-comma {
+				margin-top: 6px;
+			}
+			&-at {
+				margin-top: 6px;
+				margin-left: 7px;
+				margin-right: 7px;
+			}
+			&-colon {
+				margin-top: 6px;
+				margin-left: 4px;
+				margin-right: 3px;
+			}
+		}
+	}
+}
+
+// Filter info popup
+.jet-popup--filter-info {
+	.jet-popup {
+		&-body {
+			width: auto;
+
+			&-content {
+				margin-top: -17px;
+				padding: 0 24px 24px;
+
+				.conatiner {
+					width: 340px;
+
+					&-columns {
+						display: flex;
+						margin: -10px;
+
+						.column {
+							margin: 10px;
+
+							&:nth-child(1) {
+								width: 290px;
+							}
+							&:nth-child(2) {
+								width: 270px;
+							}
+						}
+					}
+				}
+
+				p {
+					margin: 0 0 16px;
+				}
+
+				a {
+					text-decoration: none;
+					color: $color-accent;
+
+					&:hover {
+						color: $color-accent-hover;
+					}
+
+					&.link {
+						padding-right: 15px;
+						font-size: 14px;
+						background-position: 100% 50%;
+						background-repeat: no-repeat;
+						background-image: url("data:image/svg+xml,%0A%3Csvg width='7' height='10' viewBox='0 0 7 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.3332 0L0.158203 1.175L3.97487 5L0.158203 8.825L1.3332 10L6.3332 5L1.3332 0Z' fill='%23007CBA'/%3E%3C/svg%3E");
+					}
+				}
+
+				ul {
+					margin: 0 0 16px;
+
+					li {
+						margin-bottom: 2px;
+					}
+				}
+
+				.help-list {
+					li {
+						position: relative;
+						margin-bottom: 12px;
+						padding-left: 26px;
+
+						&::before {
+							content: "";
+							position: absolute;
+							top: 2px;
+							left: 0;
+							width: 14px;
+							height: 16px;
+							background-image: url("data:image/svg+xml,%0A%3Csvg width='14' height='16' viewBox='0 0 14 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13.4585 11.2552V1.41144C13.4585 1.03058 13.1362 0.708313 12.7554 0.708313H3.146C1.59326 0.708313 0.333496 1.96808 0.333496 3.52081V12.8958C0.333496 14.4486 1.59326 15.7083 3.146 15.7083H12.7554C13.1362 15.7083 13.4585 15.4153 13.4585 15.0052V14.5364C13.4585 14.3314 13.3413 14.1263 13.1948 14.0091C13.0483 13.5403 13.0483 12.2513 13.1948 11.8118C13.3413 11.6946 13.4585 11.4896 13.4585 11.2552ZM4.0835 4.63409C4.0835 4.5462 4.14209 4.45831 4.25928 4.45831H10.4702C10.5581 4.45831 10.646 4.5462 10.646 4.63409V5.22003C10.646 5.33722 10.5581 5.39581 10.4702 5.39581H4.25928C4.14209 5.39581 4.0835 5.33722 4.0835 5.22003V4.63409ZM4.0835 6.5091C4.0835 6.4212 4.14209 6.33331 4.25928 6.33331H10.4702C10.5581 6.33331 10.646 6.4212 10.646 6.5091V7.09503C10.646 7.21222 10.5581 7.27081 10.4702 7.27081H4.25928C4.14209 7.27081 4.0835 7.21222 4.0835 7.09503V6.5091ZM11.4956 13.8333H3.146C2.61865 13.8333 2.2085 13.4232 2.2085 12.8958C2.2085 12.3978 2.61865 11.9583 3.146 11.9583H11.4956C11.437 12.4857 11.437 13.3353 11.4956 13.8333Z' fill='%23007CBA'/%3E%3C/svg%3E%0A");
+						}
+					}
+				}
+
+				.video {
+					margin-bottom: 5px;
+				}
+			}
+		}
+	}
+}

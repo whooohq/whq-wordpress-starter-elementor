@@ -1660,24 +1660,23 @@ class Post_Carousel extends Widget_Base
 				'show-read-more-button'
 			);
 		}
-
+		if ( method_exists( \Elementor\Plugin::$instance->breakpoints, 'get_breakpoints_config' ) && ! empty( $breakpoints = \Elementor\Plugin::$instance->breakpoints->get_breakpoints_config() ) ) {
+            foreach ( $breakpoints as $key => $breakpoint ){
+                if ($breakpoint['is_enabled']) {
+                    if (!empty($settings['items_'.$key]['size'])) {
+                        $this->add_render_attribute('eael-post-carousel-wrap', 'data-items-'.$key, $settings['items_'.$key]['size']);
+                    }
+                    if (!empty($settings['margin_'.$key]['size'])) {
+                        $this->add_render_attribute('eael-post-carousel-wrap', 'data-margin-'.$key, $settings['margin_'.$key]['size']);
+                    }
+                }
+            }
+        }
 		if (!empty($settings['items']['size'])) {
 			$this->add_render_attribute('eael-post-carousel-wrap', 'data-items', $settings['items']['size']);
 		}
-		if (!empty($settings['items_tablet']['size'])) {
-			$this->add_render_attribute('eael-post-carousel-wrap', 'data-items-tablet', $settings['items_tablet']['size']);
-		}
-		if (!empty($settings['items_mobile']['size'])) {
-			$this->add_render_attribute('eael-post-carousel-wrap', 'data-items-mobile', $settings['items_mobile']['size']);
-		}
 		if (!empty($settings['margin']['size'])) {
 			$this->add_render_attribute('eael-post-carousel-wrap', 'data-margin', $settings['margin']['size']);
-		}
-		if (!empty($settings['margin_tablet']['size'])) {
-			$this->add_render_attribute('eael-post-carousel-wrap', 'data-margin-tablet', $settings['margin_tablet']['size']);
-		}
-		if (!empty($settings['margin_mobile']['size'])) {
-			$this->add_render_attribute('eael-post-carousel-wrap', 'data-margin-mobile', $settings['margin_mobile']['size']);
 		}
 		if ($settings['carousel_effect']) {
 			$this->add_render_attribute('eael-post-carousel-wrap', 'data-effect', $settings['carousel_effect']);

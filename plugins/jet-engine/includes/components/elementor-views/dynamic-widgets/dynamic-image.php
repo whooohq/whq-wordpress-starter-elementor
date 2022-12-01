@@ -5,7 +5,7 @@ use Elementor\Group_Control_Border;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class Jet_Listing_Dynamic_Image_Widget extends Widget_Base {
+class Jet_Listing_Dynamic_Image_Widget extends \Jet_Listing_Dynamic_Widget {
 
 	public function get_name() {
 		return 'jet-listing-dynamic-image';
@@ -133,6 +133,28 @@ class Jet_Listing_Dynamic_Image_Widget extends Widget_Base {
 		);
 
 		$this->add_control(
+			'custom_image_alt',
+			array(
+				'label'       => __( 'Custom Image Alt', 'jet-engine' ),
+				'label_block' => true,
+				'type'        => Controls_Manager::TEXT,
+				'default'     => '',
+				'dynamic'     => array(
+					'active' => 'yes',
+				),
+			)
+		);
+
+		$this->add_control(
+			'lazy_load_image',
+			array(
+				'label'   => __( 'Lazy Load', 'jet-engine' ),
+				'type'    => Controls_Manager::SWITCHER,
+				'default' => wp_lazy_loading_enabled( 'img', 'wp_get_attachment_image' ) ? 'yes' : '',
+			)
+		);
+
+		$this->add_control(
 			'linked_image',
 			array(
 				'label'        => __( 'Linked image', 'jet-engine' ),
@@ -141,6 +163,7 @@ class Jet_Listing_Dynamic_Image_Widget extends Widget_Base {
 				'label_off'    => __( 'No', 'jet-engine' ),
 				'return_value' => 'yes',
 				'default'      => '',
+				'separator'    => 'before',
 			)
 		);
 
@@ -153,6 +176,19 @@ class Jet_Listing_Dynamic_Image_Widget extends Widget_Base {
 				'groups'    => $this->get_dynamic_sources( 'plain' ),
 				'condition' => array(
 					'linked_image' => 'yes',
+				),
+			)
+		);
+
+		$this->add_control(
+			'lightbox',
+			array(
+				'label'     => esc_html__( 'Lightbox', 'jet-engine' ),
+				'type'      => Controls_Manager::SWITCHER,
+				'default'   => 'yes',
+				'condition' => array(
+					'linked_image'      => 'yes',
+					'image_link_source' => '_file',
 				),
 			)
 		);
@@ -511,6 +547,7 @@ class Jet_Listing_Dynamic_Image_Widget extends Widget_Base {
 				'label'   => __( 'General', 'jet-engine' ),
 				'options' => array(
 					'_permalink' => __( 'Permalink', 'jet-engine' ),
+					'_file'      => __( 'Media File', 'jet-engine' ),
 				),
 			);
 
@@ -542,7 +579,7 @@ class Jet_Listing_Dynamic_Image_Widget extends Widget_Base {
 	}
 
 	protected function render() {
-		jet_engine()->listings->render_item( 'dynamic-image', $this->get_settings() );
+		jet_engine()->listings->render_item( 'dynamic-image', $this->get_settings_for_display() );
 	}
 
 }

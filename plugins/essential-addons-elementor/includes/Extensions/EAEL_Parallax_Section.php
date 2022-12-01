@@ -17,6 +17,10 @@ class EAEL_Parallax_Section
     {
         add_action('elementor/element/section/section_layout/after_section_end', array($this, 'register_controls'), 10);
         add_action('elementor/frontend/section/after_render', array($this, 'after_render'), 10);
+
+        //Elementor Flexbox Container
+        add_action('elementor/element/container/section_layout/after_section_end', array($this, 'register_controls'), 10);
+        add_action('elementor/frontend/container/after_render', array($this, 'after_render'), 10);
     }
 
     public function register_controls($element)
@@ -210,17 +214,18 @@ class EAEL_Parallax_Section
             ]
         );
 
-        $element->add_control('eael_parallax_layers_list',
-            [
-                'label' => '',
-                'type' => Controls_Manager::REPEATER,
-                'fields' => $repeater->get_controls(),
-                'condition' => [
-                    'eael_parallax_switcher' => 'yes',
-                    'eael_parallax_type' => 'multi',
-                ],
-            ]
-        );
+	    $element->add_control( 'eael_parallax_layers_list',
+		    [
+			    'label'          => '',
+			    'type'           => Controls_Manager::REPEATER,
+			    'fields'         => $repeater->get_controls(),
+			    'style_transfer' => false,
+			    'condition'      => [
+				    'eael_parallax_switcher' => 'yes',
+				    'eael_parallax_type'     => 'multi',
+			    ],
+		    ]
+	    );
 
         $element->end_controls_section();
     }
@@ -230,7 +235,7 @@ class EAEL_Parallax_Section
         $settings = $element->get_settings_for_display();
         $parallax = isset($settings['eael_parallax_type']) ? $settings['eael_parallax_type'] : '';
 
-        if ('section' === $element->get_type() && isset($parallax)
+        if ( ( 'container' === $element->get_type() || 'section' === $element->get_type() ) && isset($parallax)
             && '' !== $parallax && 'yes' === $element->get_settings('eael_parallax_switcher')
         ) {
             $android = (isset($settings['eael_parallax_android_support']) && $settings['eael_parallax_android_support'] == 'yes') ? 0 : 1;

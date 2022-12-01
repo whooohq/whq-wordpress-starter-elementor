@@ -99,18 +99,17 @@ if ( ! class_exists( 'Jet_Engine_Listings_Ajax_Handlers' ) ) {
 
 			$query           = ! empty( $_REQUEST['query'] ) ? $_REQUEST['query'] : array();
 			$widget_settings = ! empty( $_REQUEST['widget_settings'] ) ? $_REQUEST['widget_settings'] : array();
-
-			$data = array(
-				'id'         => 'jet-listing-grid',
-				'elType'     => 'widget',
-				'settings'   => $widget_settings,
-				'elements'   => array(),
-				'widgetType' => 'jet-listing-grid',
-			);
-
-			$widget = false;
+			$response        = array();
 
 			if ( jet_engine()->has_elementor() ) {
+
+				$data = array(
+					'id'         => 'jet-listing-grid',
+					'elType'     => 'widget',
+					'settings'   => $widget_settings,
+					'elements'   => array(),
+					'widgetType' => 'jet-listing-grid',
+				);
 
 				$widget = Elementor\Plugin::$instance->elements_manager->create_element_instance( $data );
 
@@ -118,9 +117,10 @@ if ( ! class_exists( 'Jet_Engine_Listings_Ajax_Handlers' ) ) {
 					throw new \Exception( 'Widget not found.' );
 				}
 
+				do_action( 'jet-engine/elementor-views/ajax/load-more', $widget );
 			}
 
-			do_action( 'jet-engine/elementor-views/ajax/load-more', $widget );
+			do_action( 'jet-engine/listings/ajax/load-more' );
 
 			ob_start();
 
@@ -218,7 +218,11 @@ if ( ! class_exists( 'Jet_Engine_Listings_Ajax_Handlers' ) ) {
 				$start_from
 			);
 
-			wp_send_json_success( array( 'html' => ob_get_clean() ) );
+			$response['html'] = ob_get_clean();
+
+			self::maybe_add_enqueue_assets_data( $response );
+
+			wp_send_json_success( $response );
 
 		}
 

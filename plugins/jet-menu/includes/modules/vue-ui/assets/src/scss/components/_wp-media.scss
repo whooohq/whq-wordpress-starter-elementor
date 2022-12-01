@@ -8,11 +8,12 @@
 		display: inline-block;
 		border-radius: 5px;
 		overflow: hidden;
-		background: #fff;
 		position: relative;
-		margin-right: 5px;
-		margin-bottom: 5px;
+		margin: 0 5px 5px 0;
 		background-color: #f4f4f5;
+		.rtl & {
+			margin: 0 0 5px 5px;
+		}
 
 		img {
 			width: 100%;
@@ -45,6 +46,10 @@
 			top: 3px;
 			right: 3px;
 			cursor: pointer;
+			.rtl & {
+				left: 3px;
+				right: auto;
+			}
 		}
 	}
 

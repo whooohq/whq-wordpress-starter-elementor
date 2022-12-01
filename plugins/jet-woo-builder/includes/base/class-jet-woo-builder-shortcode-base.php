@@ -345,6 +345,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Shortcode_Base' ) ) {
 			if ( ! strstr( $sql, 'wc_product_meta_lookup' ) ) {
 				$sql .= " LEFT JOIN {$wpdb->wc_product_meta_lookup} wc_product_meta_lookup ON $wpdb->posts.ID = wc_product_meta_lookup.product_id ";
 			}
+
 			return $sql;
 
 		}

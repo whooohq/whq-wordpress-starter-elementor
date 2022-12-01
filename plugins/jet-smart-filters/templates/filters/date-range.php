@@ -40,6 +40,7 @@ $hide_button = isset( $args['hide_button'] ) ? $args['hide_button'] : false;
 			placeholder="<?php echo $from_placeholder ?>"
 			name="<?php echo $query_var; ?>_from"
 			value="<?php echo $from; ?>"
+			<?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>
 		>
 		<input
 			class="jet-date-range__to jet-date-range__control"
@@ -48,6 +49,7 @@ $hide_button = isset( $args['hide_button'] ) ? $args['hide_button'] : false;
 			placeholder="<?php echo $to_placeholder ?>"
 			name="<?php echo $query_var; ?>_to"
 			value="<?php echo $to; ?>"
+			<?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>
 		>
 	</div>
 	<input
@@ -61,6 +63,7 @@ $hide_button = isset( $args['hide_button'] ) ? $args['hide_button'] : false;
 	<button
 		type="button"
 		class="jet-date-range__submit apply-filters__button"
+		<?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>
 	>
 	<?php echo 'left' === $args['button_icon_position'] ? $args['button_icon'] : ''; ?>
 		<span class="jet-date-range__submit-text"><?php echo $args['button_text']; ?></span>

@@ -226,8 +226,20 @@ class Vertical_Menu_Walker extends \Walker_Nav_Menu {
 			$title = $item_icon . $title;
 		}
 
-		if ( ! empty( $settings['menu_badge'] ) ) {
-			$title = $title . jet_menu_tools()->get_badge_html( $settings['menu_badge'], $depth );
+		if ( ! empty( $settings['menu_badge'] ) || ! empty( $settings['badge_svg'] ) ) {
+			$menu_badge_type = isset( $settings['menu_badge_type'] ) ? $settings['menu_badge_type'] : 'text';
+			$badge_html = '';
+
+			switch ( $menu_badge_type ) {
+				case 'text':
+					$badge_html = $settings['menu_badge'];
+					break;
+				case 'svg':
+					$badge_html = jet_menu_tools()->get_svg_html( $settings['badge_svg'], false );
+					break;
+			}
+
+			$title = $title . jet_menu_tools()->get_badge_html( $badge_html, $depth );
 		}
 
 		if ( in_array( 'menu-item-has-children', $item->classes ) || $this->is_mega_enabled( $item->ID ) ) {
@@ -244,20 +256,51 @@ class Vertical_Menu_Walker extends \Walker_Nav_Menu {
 
 		$mega_item = get_post_meta( $item->ID, jet_menu()->post_type_manager->meta_key(), true );
 
-		if ( $this->is_mega_enabled( $item->ID ) && ! $is_elementor ) {
+		if ( $this->is_mega_enabled( $item->ID ) ) {
+			$content_type = $settings['content_type'];
+			$render_instance = false;
 
-			$content = '';
+			switch ( $content_type ) {
+				case 'default':
+					$mega_template_id = get_post_meta( $item->ID, 'jet-menu-item-block-editor', true );
+
+					if ( ! empty( $mega_template_id ) ) {
+						$render_instance = new \Jet_Menu\Render\Block_Editor_Template_Render( [
+							'template_id' => $mega_template_id,
+						] );
+					}
+
+					break;
+				case 'elementor':
+					$mega_template_id = get_post_meta( $item->ID, 'jet-menu-item', true );
+
+					if ( ! empty( $mega_template_id ) ) {
+						$render_instance = new \Jet_Menu\Render\Elementor_Template_Render( [
+							'template_id' => $mega_template_id,
+						] );
+					}
+
+					break;
+			}
+
+			$tepmlate_content = __( 'Mega content is empty', 'jet-menu' );
+
+			if ( $render_instance ) {
+				ob_start();
+				$render_status = $render_instance->render();
+				$tepmlate_content = ob_get_clean();
+			}
 
 			do_action( 'jet-menu/widgets/custom-menu/mega-sub-menu/before-render', $item->ID );
 
-			if ( class_exists( 'Elementor\Plugin' ) ) {
+			/*if ( class_exists( 'Elementor\Plugin' ) ) {
 				$elementor = \Elementor\Plugin::instance();
 				$content   = $elementor->frontend->get_builder_content_for_display( $mega_item );
-			}
+			}*/
 
 			do_action( 'jet-menu/widgets/custom-menu/mega-sub-menu/after-render', $item->ID );
 
-			$item_output .= sprintf( '<div class="jet-custom-nav__mega-sub">%s</div>', do_shortcode( $content ) );
+			$item_output .= sprintf( '<div class="jet-custom-nav__mega-sub" data-template-id="%s" data-template-content="%s">%s</div>', $mega_template_id, $content_type, $tepmlate_content );
 
 			// Fixed displaying mega and sub menu together.
 			$this->set_item_type( $item->ID, $depth );
@@ -346,11 +389,9 @@ class Vertical_Menu_Walker extends \Walker_Nav_Menu {
 	 * @return boolean
 	 */
 	public function is_mega_enabled( $item_id = 0 ) {
-
 		$item_settings = $this->get_settings( $item_id );
-		$menu_post     = jet_menu()->post_type_manager->get_related_menu_post( $item_id );
 
-		return ( isset( $item_settings['enabled'] ) && 'true' == $item_settings['enabled'] && ! empty( $menu_post ) );
+		return ( isset( $item_settings['enabled'] ) && 'true' == $item_settings['enabled'] );
 	}
 
 	/**
@@ -362,7 +403,7 @@ class Vertical_Menu_Walker extends \Walker_Nav_Menu {
 	public function get_settings( $item_id = 0 ) {
 
 		if ( null === $this->item_settings ) {
-			$this->item_settings = jet_menu()->settings_manager->get_item_settings( $item_id );
+			$this->item_settings = jet_menu()->settings_manager->get_menu_item_settings( $item_id );
 		}
 
 		return $this->item_settings;

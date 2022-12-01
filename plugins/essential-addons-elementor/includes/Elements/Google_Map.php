@@ -739,6 +739,46 @@ class Google_Map extends Widget_Base
 				'return_value'          => 'yes',
 			]
 		);
+		$this->add_control(
+			'eael_google_map_center_point',
+			[
+				'label'     => esc_html__( 'Center Point', 'essential-addons-elementor' ),
+				'type'      => Controls_Manager::SELECT,
+				'default'   => '',
+				'options'   => [
+					''       => __( 'Default', 'essential-addons-elementor' ),
+					'auto'   => __( 'Auto Center', 'essential-addons-elementor' ),
+					'custom' => __( 'Custom Point', 'essential-addons-elementor' ),
+				],
+				'condition' => [
+					'eael_google_map_type' => ['polyline', 'polygon']
+				]
+			]
+		);
+		$this->add_control(
+			'eael_google_map_center_point_lat',
+			[
+				'label' => esc_html__('Latitude', 'essential-addons-elementor'),
+				'type' => Controls_Manager::TEXT,
+				'label_block' => false,
+				'default' => esc_html__('28.948790', 'essential-addons-elementor'),
+				'condition' => [
+					'eael_google_map_center_point' => 'custom',
+				]
+			]
+		);
+		$this->add_control(
+			'eael_google_map_center_point_lng',
+			[
+				'label' => esc_html__('Longitude', 'essential-addons-elementor'),
+				'type' => Controls_Manager::TEXT,
+				'label_block' => false,
+				'default' => esc_html__('90.403947', 'essential-addons-elementor'),
+				'condition' => [
+					'eael_google_map_center_point' => 'custom',
+				]
+			]
+		);
 		$this->end_controls_section();
 
 		/**
@@ -749,7 +789,7 @@ class Google_Map extends Widget_Base
 			[
 				'label'		=> esc_html__('Map Theme', 'essential-addons-elementor'),
 				'condition' => [
-					'eael_google_map_type!'	=> ['static', 'panorama']
+                    'eael_google_map_type!'	=> ['static', 'panorama', 'polygon', 'routes']
 				]
 			]
 		);
@@ -1197,16 +1237,38 @@ class Google_Map extends Widget_Base
 		return $data_string;
 	}
 
+	protected function get_polyline_center_point( $obj ) {
+		$center_type = $obj->get_settings_for_display( 'eael_google_map_center_point' );
+
+		if ( $center_type === 'auto' ) {
+			$poly_lines = $obj->get_settings_for_display( 'eael_google_map_polylines' );
+			$lat_array  = wp_list_pluck( $poly_lines, 'eael_google_map_polyline_lat' );
+			$lng_array  = wp_list_pluck( $poly_lines, 'eael_google_map_polyline_lng' );
+			$center_lat = ( max( $lat_array ) + min( $lat_array ) ) / 2;
+			$center_lng = ( max( $lng_array ) + min( $lng_array ) ) / 2;
+		} elseif ( $center_type === 'custom' ) {
+			$center_lat = $obj->get_settings_for_display( 'eael_google_map_center_point_lat' );
+			$center_lng = $obj->get_settings_for_display( 'eael_google_map_center_point_lng' );
+
+		} else {
+			$center_lat = $center_lng = '';
+		}
+
+		return [ 'center_lat' => $center_lat, 'center_lng' => $center_lng ];
+	}
 
 	protected function render()
 	{
 
         $settings = $this->get_settings_for_display();
+        $poly_line_center = $this->get_polyline_center_point($this);
 		$this->add_render_attribute( 'eael_google_map_wrap', [
-			'class'					=> ['eael-google-map','eael-google-map-'.$settings['eael_google_map_type']],
-			'id'					=> 'eael-google-map-'.esc_attr($this->get_id()),
-			'data-id'				=> esc_attr($this->get_id())
-		]);
+			'class'               => [ 'eael-google-map', 'eael-google-map-' . $settings['eael_google_map_type'] ],
+			'id'                  => 'eael-google-map-' . esc_attr( $this->get_id() ),
+			'data-id'             => esc_attr( $this->get_id() ),
+			'data-map-center-lat' => $poly_line_center['center_lat'],
+			'data-map-center-lng' => $poly_line_center['center_lng'],
+		] );
 ?>
 
 		<?php if (!empty($settings['eael_google_map_type'])) : ?>

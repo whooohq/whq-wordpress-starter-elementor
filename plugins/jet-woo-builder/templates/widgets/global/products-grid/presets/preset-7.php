@@ -1,12 +1,15 @@
 <?php
 /**
  * JetWooBuilder Products Grid widget loop item layout 7 template.
+ *
+ * This template can be overridden by copying it to yourtheme/jet-woo-builder/widgets/global/products-grid/presets/preset-7.php.
  */
 ?>
 
 <div class="jet-woo-products__thumb-wrap">
 	<?php include $this->get_template( 'item-thumb' ); ?>
 </div>
+
 <div class="jet-woo-products-cqw-wrapper">
 	<?php
 	include $this->get_template( 'item-compare' );
@@ -14,6 +17,7 @@
 	include $this->get_template( 'item-quick-view' );
 	?>
 </div>
+
 <div class="jet-woo-products__item-content">
 	<?php
 	include $this->get_template( 'item-categories' );

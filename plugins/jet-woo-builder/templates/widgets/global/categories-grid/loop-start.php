@@ -1,6 +1,8 @@
 <?php
 /**
  * JetWooBuilder Categories Grid widget loop start template.
+ *
+ * This template can be overridden by copying it to yourtheme/jet-woo-builder/widgets/global/categories-grid/loop-start.php.
  */
 
 $settings         = $this->get_settings();
@@ -17,8 +19,4 @@ $classes = [
 	$equal ? 'jet-equal-cols' : '',
 ];
 
-printf(
-	'<div class="%s" data-mobile-hover="%s">',
-	implode( ' ', $classes ),
-	$hover_on_touch
-);
+printf( '<div class="%s" data-mobile-hover="%s">', implode( ' ', $classes ), $hover_on_touch );

@@ -1,22 +1,19 @@
 <?php
-
-
 namespace Jet_Engine\Modules\Custom_Content_Types\Forms;
-
 
 use Jet_Engine\Modules\Custom_Content_Types\Module;
 use Jet_Form_Builder\Presets\Sources\Base_Source;
 
 class Preset_Source_Cct extends Base_Source {
 
-	public function query_source() {
-		$key = explode( '::', $this->prop );
+	private $slug = '';
 
-		if ( 2 !== count( $key ) || empty( $key[0] ) ) {
+	public function query_source() {
+		if ( empty( $this->slug ) ) {
 			return false;
 		}
 
-		$item = Module::instance()->form_preset->get_content_type_item( $key[0], $this->preset_data );
+		$item = Module::instance()->form_preset->get_content_type_item( $this->slug, $this->preset_data );
 
 		if ( ! $item ) {
 			return false;
@@ -25,11 +22,20 @@ class Preset_Source_Cct extends Base_Source {
 		return (object) $item;
 	}
 
-	public function default_prop( string $prop ) {
-		$key  = explode( '::', $prop );
-		$prop = isset( $key[1] ) ? $key[1] : '_ID';
+	protected function get_prop() {
+		$prop = explode( '::', parent::get_prop() );
 
-		return parent::default_prop( $prop );
+		if ( ! isset( $prop[1] ) ) {
+			return false;
+		}
+
+		$this->slug = isset( $prop[0] ) ? $prop[0] : '_ID';
+
+		return $prop[1];
+	}
+
+	protected function before_query_extra_field( $field ) {
+		$this->prop = $field;
 	}
 
 	public function get_id() {
@@ -37,9 +43,11 @@ class Preset_Source_Cct extends Base_Source {
 	}
 
 	protected function can_get_preset() {
+		
 		if ( ! parent::can_get_preset() ) {
 			return false;
 		}
+		
 		$source = $this->src();
 
 		if ( empty( $source->cct_author_id ) ) {
@@ -50,9 +58,16 @@ class Preset_Source_Cct extends Base_Source {
 			return false;
 		}
 
-		if ( current_user_can( 'manage_options' ) ) {
+		$cct = Module::instance()->manager->get_content_types( $source->cct_slug );
+
+		if ( ! $cct ) {
+			return false;
+		}
+
+		if ( $cct->user_has_access() ) {
 			return true;
 		}
+
 		$author = absint( $source->cct_author_id );
 
 		return $author === get_current_user_id();

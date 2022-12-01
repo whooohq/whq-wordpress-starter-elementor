@@ -34,6 +34,7 @@ const DynamicFunctions = function( DataSourceControls ) {
 							control={ control }
 							prefix={ 'dynamic_functions_' }
 							condition={ control.condition }
+							key={ 'dynamic_functions_control_' + control.name }
 						/>
 					} )
 				}

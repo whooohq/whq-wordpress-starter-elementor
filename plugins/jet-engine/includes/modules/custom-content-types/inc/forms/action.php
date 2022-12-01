@@ -1,8 +1,5 @@
 <?php
-
-
 namespace Jet_Engine\Modules\Custom_Content_Types\Forms;
-
 
 use Jet_Engine\Modules\Custom_Content_Types\Module;
 use Jet_Form_Builder\Actions\Action_Handler;
@@ -72,7 +69,7 @@ class Action extends Base {
 
 	public function editor_labels_help() {
 		return array(
-			'fields_map'     => __( 'Select content type fields to save apropriate form fields into', 'jet-engine' ),
+			'fields_map'     => __( 'Select content type fields to save appropriate form fields into', 'jet-engine' ),
 			'default_fields' => __( 'Define default fields values which should be set on the CCT item creation', 'jet-engine' ),
 		);
 	}
@@ -135,7 +132,6 @@ class Action extends Base {
 				) )->dynamic_error();
 			}
 
-			$is_admin      = current_user_can( 'manage_options' );
 			$existing_item = $type_object->db->get_item( $item['_ID'] );
 
 			if ( ! $existing_item ) {
@@ -145,8 +141,15 @@ class Action extends Base {
 			}
 
 			$author = absint( $existing_item['cct_author_id'] );
+			$cct = Module::instance()->manager->get_content_types( $existing_item['cct_slug'] );
 
-			if ( $author !== get_current_user_id() && ! $is_admin ) {
+			if ( ! $cct ) {
+				throw ( new Action_Exception(
+					'Content Type not exists'
+				) )->dynamic_error();
+			}
+
+			if ( $author !== get_current_user_id() && ! $cct->user_has_access() ) {
 				throw ( new Action_Exception(
 					'Only item author can edit the item'
 				) )->dynamic_error();

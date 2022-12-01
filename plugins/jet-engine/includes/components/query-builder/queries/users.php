@@ -148,10 +148,58 @@ class Users_Query extends Base_Query {
 				$this->replace_meta_query_row( $value );
 				break;
 
+			case 's':
+				$this->final_query['search'] = '*' . $value . '*';
+				$this->final_query['search_columns'] = array( 'user_login', 'user_nicename', 'user_email' );
+				break;
+
 			default:
 				$this->merge_default_props( $prop, $value );
 				break;
 		}
+
+	}
+
+	/**
+	 * Adds date range query arguments to given query parameters.
+	 * Required to allow ech query to ensure compatibility with Dynamic Calendar
+	 * 
+	 * @param array $args [description]
+	 */
+	public function add_date_range_args( $args = array(), $dates_range = array(), $settings = array() ) {
+
+		$group_by = $settings['group_by'];
+
+		switch ( $group_by ) {
+
+			case 'item_date':
+
+				if ( isset( $args['date_query'] ) ) {
+					$date_query = $args['date_query'];
+				} else {
+					$date_query = array();
+				}
+
+				$date_query = array_merge( $date_query, array(
+					array(
+						'column'    => 'user_registered',
+						'after'     => date( 'Y-m-d', $dates_range['start'] ),
+						'before'    => date( 'Y-m-d', $dates_range['end'] ),
+						'inclusive' => true,
+					),
+				) );
+
+				$args['date_query'] = $date_query;
+
+				break;
+
+			case 'meta_date':
+				$args['meta_query'] = $this->get_dates_range_meta_query( $args, $dates_range, $settings );
+				break;
+
+		}
+
+		return $args;
 
 	}
 

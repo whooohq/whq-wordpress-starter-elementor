@@ -157,10 +157,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Field' ) ) {
 						}
 
 						if ( $field ) {
-							$result = jet_engine()->listings->data->get_meta(
-								$field,
-								jet_engine()->listings->data->get_object_by_context( $object_context )
-							);
+							$result = jet_engine()->listings->data->get_meta_by_context( $field, $object_context );
 						}
 
 						break;
@@ -198,10 +195,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Field' ) ) {
 
 						if ( $field ) {
 							$field  = trim( $field );
-							$result = jet_engine()->listings->data->get_meta(
-								$field,
-								jet_engine()->listings->data->get_object_by_context( $object_context )
-							);
+							$result = jet_engine()->listings->data->get_meta_by_context( $field, $object_context );;
 						}
 
 						break;

@@ -1,17 +1,18 @@
 .single-product {
 	.product .elementor-jet-single-add-to-cart {
 		.cart {
-			.single_add_to_cart_button {
-				float: none;
+			margin: 0;
 
-				&.loading:after {
-					top: auto;
-				}
+			.single_add_to_cart_button {
+				vertical-align: unset;
+			}
+
+			.single_add_to_cart_button,
+			.quantity {
+				float: none;
 			}
 
 			.quantity {
-				float: none;
-
 				&.hidden {
 					display: none !important;
 				}
@@ -53,6 +54,13 @@
 			}
 		}
 	}
+
+	.jet-woo-builder-single-ajax-add-to-cart {
+		.button.loading:after {
+			top: 50%;
+			margin-top: -9px;
+		}
+	}
 }
 
 .elementor-jet-single-add-to-cart {
@@ -61,6 +69,6 @@
 	}
 
 	.added_to_cart.wc-forward {
-		display: none !important;
+		display: var(--add-to-cart-wc-forward-display, none) !important;
 	}
 }

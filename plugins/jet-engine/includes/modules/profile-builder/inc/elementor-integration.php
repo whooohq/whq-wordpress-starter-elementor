@@ -14,7 +14,12 @@ class Elementor_Integration {
 			return;
 		}
 
-		add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_widgets' ), 11 );
+		if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.5.0', '>=' ) ) {
+			add_action( 'elementor/widgets/register', array( $this, 'register_widgets' ), 11 );
+		} else {
+			add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_widgets' ), 11 );
+		}
+
 		add_action( 'jet-engine/listings/dynamic-link/source-controls', array( $this, 'register_link_controls' ), 10 );
 		add_action( 'jet-engine/listings/dynamic-image/link-source-controls', array( $this, 'register_img_link_controls' ), 10 );
 
@@ -174,14 +179,20 @@ class Elementor_Integration {
 	 */
 	public function register_widgets( $widgets_manager ) {
 
+		if ( method_exists( $widgets_manager, 'register' ) ) {
+			$register_method = 'register';
+		} else {
+			$register_method = 'register_widget_type';
+		}
+
 		require jet_engine()->modules->modules_path( 'profile-builder/inc/widgets/profile-menu-widget.php' );
-		$widgets_manager->register_widget_type( new Profile_Menu_Widget() );
+		call_user_func( array( $widgets_manager, $register_method ), new Profile_Menu_Widget() );
 
 		$template_mode = Module::instance()->settings->get( 'template_mode' );
 
 		if ( 'content' === $template_mode ) {
 			require jet_engine()->modules->modules_path( 'profile-builder/inc/widgets/profile-content-widget.php' );
-			$widgets_manager->register_widget_type( new Profile_Content_Widget() );
+			call_user_func( array( $widgets_manager, $register_method ), new Profile_Content_Widget() );
 		}
 
 	}

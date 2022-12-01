@@ -313,5 +313,13 @@
                 <field type="Woo Product Slider: Stock Out Text" editor_type="LINE">eael_product_carousel_stockout_text</field>
             </fields>
         </widget>
+        <widget name="eael-one-page-nav">
+            <conditions>
+                <condition key="widgetType">eael-one-page-nav</condition>
+            </conditions>
+            <fields-in-item items_of="nav_dots">
+                <field type="One Page Navigation: Section Title" editor_type="LINE">section_title</field>
+            </fields-in-item>
+        </widget>
     </elementor-widgets>
 </wpml-config>

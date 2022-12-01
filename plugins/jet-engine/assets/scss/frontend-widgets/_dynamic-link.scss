@@ -27,3 +27,7 @@
 .jet-remove-from-store.is-hidden {
 	display: none !important;
 }
+
+.jet-add-to-cart + .added_to_cart.wc-forward {
+	display: none !important;
+}

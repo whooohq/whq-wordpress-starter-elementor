@@ -1,6 +1,8 @@
 <?php
 /**
  * JetWooBuilder Products Grid widget loop item layout 6 template.
+ *
+ * This template can be overridden by copying it to yourtheme/jet-woo-builder/widgets/global/products-grid/presets/preset-6.php.
  */
 ?>
 
@@ -28,6 +30,7 @@
 		</div>
 	</div>
 </div>
+
 <div class="jet-woo-products-cqw-wrapper">
 	<?php
 	include $this->get_template( 'item-compare' );

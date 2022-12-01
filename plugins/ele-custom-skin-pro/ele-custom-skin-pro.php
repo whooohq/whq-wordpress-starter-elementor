@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: Ele Custom Skin Pro
- * Version: 3.2.3
+ * Version: 3.2.4
  * Description: Elementor Custom Skin Pro adds more functionality to the Ele Custom Skin: alternating templates inside a loop, dynamic anywhere, custom dynamic values and many more.
  * Plugin URI: https://dudaster.com
  * Author: Dudaster.com
@@ -10,13 +10,13 @@
  * Domain Path: /languages
  * License: GPLv3
  * License URI: http://www.gnu.org/licenses/gpl-3.0
- * Elementor tested up to: 3.6.0
- * Elementor Pro tested up to: 3.7.0
+ * Elementor tested up to: 3.7.0
+ * Elementor Pro tested up to: 3.8.0
 */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 define( 'ELECSP_DIR', plugin_dir_path( __FILE__ ));
-define ('ELECSP_VER','3.2.3');
+define ('ELECSP_VER','3.2.4');
 define ('ELECSP_PID','ecsprou');
 define( 'ELECSP_URL', plugin_dir_url( __FILE__ ));
 define ('ELECSP_SRV','https://dudaster.com/');

@@ -209,6 +209,12 @@ class Maps_Listing_Blocks_Views_Type extends \Jet_Engine_Blocks_Views_Type_Base 
 				'type'    => 'string',
 				'default' => '',
 			),
+
+			// Element ID
+			'_element_id' => array(
+				'type'    => 'string',
+				'default' => '',
+			),
 		), jet_engine()->blocks_views->block_types->get_allowed_callbacks_atts() ) );
 	}
 
@@ -601,9 +607,10 @@ class Maps_Listing_Blocks_Views_Type extends \Jet_Engine_Blocks_Views_Type_Base 
 		}
 
 		return sprintf(
-			'<div class="jet-map-listing-block" data-id="%2$s">%1$s</div>',
+			'<div class="jet-map-listing-block" data-id="%2$s"%3$s>%1$s</div>',
 			$content,
-			esc_attr( $attributes['_block_id'] )
+			esc_attr( $attributes['_block_id'] ),
+			! empty( $attributes['_element_id'] ) ? ' id="' . esc_attr( $attributes['_element_id'] ) . '"' : ''
 		);
 	}
 

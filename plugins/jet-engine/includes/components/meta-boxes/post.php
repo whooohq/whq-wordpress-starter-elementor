@@ -32,6 +32,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Meta' ) ) {
 		public $current_panel     = false;
 		public $edit_link         = false;
 		public $show_in_rest      = array();
+		public $hide_field_names  = false;
 
 		/**
 		 * Trigger to define which fields format should be used - plain or blocks
@@ -58,6 +59,10 @@ if ( ! class_exists( 'Jet_Engine_CPT_Meta' ) ) {
 			$this->meta_box  = $meta_box;
 
 			$args['allowed_post_type'] = array( $post_type );
+
+			if ( ! empty( $args['hide_field_names'] ) ) {
+				$this->hide_field_names = $args['hide_field_names'];
+			}
 
 			$fields = $this->prepare_meta_fields( $meta_box );
 
@@ -320,10 +325,18 @@ if ( ! class_exists( 'Jet_Engine_CPT_Meta' ) ) {
 					$this->custom_css[ $selector ] = $field['width'];
 				}
 
-				if ( empty( $field['description'] ) ) {
-					$result[ $field['name'] ]['description'] = __( 'Name: ', 'jet-engine' ) . $field['name'];
-				} else {
-					$result[ $field['name'] ]['description'] = apply_filters( 'jet-engine/compatibility/translate-string', rtrim( $field['description'], '.' ) ) . '. <br>' . __( 'Name: ', 'jet-engine' ) . $field['name'];
+				if ( ! empty( $field['description'] ) ) {
+					$description = apply_filters( 'jet-engine/compatibility/translate-string', $field['description'] );
+
+					if ( ! $this->hide_field_names ) {
+						$description  = rtrim( $description, '.' );
+						$description .= '. <br><span>' . __( 'Name: ', 'jet-engine' ) . $field['name'] . '</span>';
+					}
+
+					$result[ $field['name'] ]['description'] = $description;
+
+				} elseif ( ! $this->hide_field_names ) {
+					$result[ $field['name'] ]['description'] = '<span>' . __( 'Name: ', 'jet-engine' ) . $field['name'] . '</span>';
 				}
 
 				if ( ! empty( $field['is_required'] ) ) {
@@ -819,12 +832,18 @@ if ( ! class_exists( 'Jet_Engine_CPT_Meta' ) ) {
 
 				$field_title = isset( $field['title'] ) ? $field['title'] : '';
 
+				$label = apply_filters( 'jet-engine/compatibility/translate-string', $field_title );
+
+				if ( ! $this->hide_field_names ) {
+					$label .= ' <span>(' . __( 'name: ', 'jet-engine' ) . $field['name'] . ')</span>';
+				}
+
 				$result[ $field['name'] ] = array(
 					'type'  => $field['type'],
 					'id'    => $field['name'],
 					'name'  => $field['name'],
 					'class' => $this->get_field_css_class( $field ),
-					'label' => apply_filters( 'jet-engine/compatibility/translate-string', $field_title ) . ' (' . __( 'name: ', 'jet-engine' ) . $field['name'] . ')',
+					'label' => $label,
 				);
 
 				switch ( $field['type'] ) {

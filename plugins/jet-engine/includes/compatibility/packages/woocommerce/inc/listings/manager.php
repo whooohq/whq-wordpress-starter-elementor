@@ -133,11 +133,140 @@ class Manager {
 			10, 2
 		);
 
+		add_filter(
+			'jet-engine/elementor-view/dynamic-link/generel-options',
+			[ $this, 'register_dynamic_link_option' ]
+		);
+
+		add_filter(
+			'jet-engine/listings/dynamic-link/pre-render-link',
+			[ $this, 'maybe_render_links' ],
+			10, 4
+		);
+
+	}
+
+	/**
+	 * Register dynamic link option.
+	 *
+	 * Add required options to the dynamic link widget.
+	 *
+	 * @since  3.0.2
+	 * @access public
+	 *
+	 * @param array $options List of options.
+	 *
+	 * @return array
+	 */
+	public function register_dynamic_link_option( $options ) {
+
+		$options['add_to_cart'] = __( 'Add to Cart', 'jet-engine' );
+
+		return $options;
+
+	}
+
+	/**
+	 * Render link.
+	 *
+	 * Check dynamic widget link source and returns proper result according to it.
+	 *
+	 * @since  3.0.2
+	 * @access public
+	 *
+	 * @param string $result     Dynamic link markup.
+	 * @param array  $settings   List of widget settings.
+	 * @param string $base_class Widget name.
+	 * @param object $render     Dynamic link render instance.
+	 *
+	 * @return mixed|string
+	 */
+	public function maybe_render_links( $result, $settings, $base_class, $render ) {
+
+		$source = ! empty( $settings['dynamic_link_source'] ) ? $settings['dynamic_link_source'] : '_permalink';
+
+		if ( 'add_to_cart' === $source ) {
+			$result = $this->add_to_cart_link( $result, $settings, $base_class, $render );
+		}
+
+		return $result;
+
+	}
+
+	/**
+	 * Add to cart link.
+	 *
+	 * Returns dynamic link with WooCommerce add to cart functionality.
+	 *
+	 * @param string $result     Dynamic link markup.
+	 * @param array  $settings   List of widget settings.
+	 * @param string $base_class Widget name.
+	 * @param object $render     Dynamic link render instance.
+	 *
+	 * @return string
+	 */
+	public function add_to_cart_link( $result, $settings, $base_class, $render ) {
+
+		global $product;
+
+		if ( ! $product ) {
+			return $result;
+		}
+
+		$url   = esc_url( $product->add_to_cart_url() );
+		$label = $render->get_link_label( $settings, $base_class, $url );
+		$icon  = $render->get_link_icon( $settings, $base_class );
+
+		$args = [
+			'quantity'   => 1,
+			'class'      => implode(
+				' ',
+				array_filter(
+					[
+						'button',
+						'product_type_' . $product->get_type(),
+						$product->is_purchasable() && $product->is_in_stock() ? 'add_to_cart_button' : '',
+						$product->supports( 'ajax_add_to_cart' ) && $product->is_purchasable() && $product->is_in_stock() ? 'ajax_add_to_cart' : '',
+					]
+				)
+			),
+			'attributes' => [
+				'data-product_id'  => $product->get_id(),
+				'data-product_sku' => $product->get_sku(),
+				'aria-label'       => $product->add_to_cart_description(),
+				'rel'              => 'nofollow',
+			],
+		];
+
+		$args = apply_filters( 'jet-engine/listing/data/dynamic-link/add-to-cart-args', $args, $product );
+
+		$rendered_attributes = [];
+
+		foreach ( $args['attributes'] as $attribute_key => $attribute_values ) {
+			if ( is_array( $attribute_values ) ) {
+				$attribute_values = implode( ' ', $attribute_values );
+			}
+
+			$rendered_attributes[] = sprintf( '%1$s="%2$s"', $attribute_key, esc_attr( $attribute_values ) );
+		}
+
+		$result = sprintf(
+			'<a href="%s" data-quantity="%s" class="jet-add-to-cart jet-listing-dynamic-link__link %s"  style="display: inline-flex;" %s>%s %s</a>',
+			$url,
+			esc_attr( isset( $args['quantity'] ) ? $args['quantity'] : 1 ),
+			esc_attr( isset( $args['class'] ) ? $args['class'] : 'button' ),
+			implode( ' ', $rendered_attributes ),
+			$icon,
+			$label
+		);
+
+		return $result;
+
 	}
 
 	/**
 	 * Tries to get product object for current context
-	 * 
+	 *
 	 * @return [type] [description]
 	 */
 	public function get_current_product() {
@@ -145,11 +274,11 @@ class Manager {
 		$object = jet_engine()->listings->data->get_current_object();
 
 		if ( ! is_a( $object, 'WC_Product' ) ) {
-			
+
 			global $product, $post;
 
 			if ( $product ) {
-				if ( is_a( $product , 'WC_Product' ) ) {
+				if ( is_a( $product, 'WC_Product' ) ) {
 					$object = $product;
 				} else {
 					$object = wc_get_product( $post );
@@ -166,7 +295,7 @@ class Manager {
 
 	/**
 	 * Maybe print WooCommerce notices before WC listing
-	 * 
+	 *
 	 * @return [type] [description]
 	 */
 	public function maybe_print_wc_notices( $post, $listing ) {
@@ -185,8 +314,8 @@ class Manager {
 			return;
 		}
 
-		$print_notices = apply_filters( 
-			'jet-engine/listing/data/wc-product-query/print-notices-before-listing', true, 
+		$print_notices = apply_filters(
+			'jet-engine/listing/data/wc-product-query/print-notices-before-listing', true,
 			$post, $listing, $this
 		);
 
@@ -197,7 +326,7 @@ class Manager {
 		$index = jet_engine()->listings->data->get_index();
 
 		if ( 0 === $index && function_exists( 'wc_print_notices' ) ) {
-			
+
 			$notices = wc_print_notices( true );
 
 			if ( $notices ) {
@@ -427,15 +556,19 @@ class Manager {
 			return $result;
 		}
 
-		$image = isset( $settings['dynamic_image_source'] ) ? $settings['dynamic_image_source'] : '';
+		$image = $settings['dynamic_image_source'] ?? '';
 
 		if ( ! $image ) {
 			return $result;
 		}
 
-		if ( is_callable( [ $current_object, $image ] ) ) {
+		$_product = $this->maybe_convert_object_to_wc_product( $current_object );
+
+		if ( is_callable( [ $_product, $image ] ) ) {
 			ob_start();
-			echo call_user_func( [ $current_object, $image ], $size );
+
+			echo call_user_func( [ $_product, $image ], $size );
+
 			return ob_get_clean();
 		}
 
@@ -494,20 +627,22 @@ class Manager {
 	public function get_custom_link_by_setting( $setting, $settings ) {
 
 		$current_object = jet_engine()->listings->data->get_current_object();
+		$result         = false;
 
 		if ( ! isset( $current_object ) ) {
 			return false;
 		}
 
-		$link   = isset( $settings[ $setting ] ) ? $settings[ $setting ] : '';
-		$result = false;
+		$link = $settings[ $setting ] ?? '';
 
 		if ( ! $link ) {
-			return $result;
+			return false;
 		}
 
-		if ( is_callable( [ $current_object, $link ] ) ) {
-			$result = call_user_func( [ $current_object, $link ] );
+		$_product = $this->maybe_convert_object_to_wc_product( $current_object );
+
+		if ( is_callable( [ $_product, $link ] ) ) {
+			$result = call_user_func( [ $_product, $link ] );
 		}
 
 		return $result;
@@ -610,25 +745,47 @@ class Manager {
 	 */
 	public function maybe_get_wc_product_object_prop( $found, $property, $object ) {
 
+		$_product = $this->maybe_convert_object_to_wc_product( $object );
+
+		if ( is_callable( [ $_product, $property ] ) ) {
+			return call_user_func( [ $_product, $property ] );
+		} else {
+			$result = $this->get_wc_product_method_with_param( null, $property, $_product );
+
+			if ( null !== $result ) {
+				return $result;
+			}
+		}
+
+		return $found;
+
+	}
+
+	/**
+	 * Convert object to WC product.
+	 *
+	 * Check if post object is exist and its post type is product, then convert appropriately.
+	 *
+	 * @since  3.0.2
+	 * @access public
+	 *
+	 * @param object $object Post object.
+	 *
+	 * @return false|mixed|\WC_Product|null
+	 */
+	public function maybe_convert_object_to_wc_product( $object ) {
+
 		if ( $object && is_a( $object, 'WP_Post' ) && 'product' === $object->post_type ) {
-			$_product = isset( $this->_products[ $object->ID ] ) ? $this->_products[ $object->ID ] : false;
+			$_product = $this->_products[ $object->ID ] ?? false;
 
 			if ( ! $_product ) {
 				$this->_products[ $object->ID ] = $_product = wc_get_product( $object->ID );
 			}
 
-			if ( is_callable( [ $_product, $property ] ) ) {
-				return call_user_func( [ $_product, $property ] );
-			} else {
-				$result = $this->get_wc_product_method_with_param( null, $property, $_product );
-
-				if ( null !== $result ) {
-					return $result;
-				}
-			}
+			return $_product;
 		}
 
-		return $found;
+		return $object;
 
 	}
 

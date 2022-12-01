@@ -1,4 +1,4 @@
-/*! elementor - v3.6.8 - 27-07-2022 */
+/*! elementor - v3.8.1 - 13-11-2022 */
 (self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["preloaded-modules"],{
 
 /***/ "../assets/dev/js/frontend/handlers/accordion.js":
@@ -251,7 +251,7 @@ class baseTabs extends elementorModules.frontend.handlers.Base {
         }
       },
       keyup: event => {
-        switch (event.key) {
+        switch (event.code) {
           case 'ArrowLeft':
           case 'ArrowRight':
             this.handleKeyboardNavigation(event);
@@ -817,7 +817,7 @@ class Video extends elementorModules.frontend.handlers.Base {
 
   playVideo() {
     if (this.elements.$video.length) {
-      // this.youtubePlayer exists only for YouTube videos, and its play function is different.
+      // This.youtubePlayer exists only for YouTube videos, and its play function is different.
       if (this.youtubePlayer) {
         this.youtubePlayer.playVideo();
       } else {
@@ -1494,22 +1494,24 @@ module.exports = elementorModules.ViewModule.extend({
         break;
 
       case 'image':
-        const slides = [{
-          image: options.url,
-          index: 0,
-          title: options.title,
-          description: options.description,
-          hash: options.hash
-        }];
-        options.slideshow = {
-          slides,
-          swiper: {
-            loop: false,
-            pagination: false
-          }
-        };
-        self.setSlideshowContent(options.slideshow);
-        break;
+        {
+          const slides = [{
+            image: options.url,
+            index: 0,
+            title: options.title,
+            description: options.description,
+            hash: options.hash
+          }];
+          options.slideshow = {
+            slides,
+            swiper: {
+              loop: false,
+              pagination: false
+            }
+          };
+          self.setSlideshowContent(options.slideshow);
+          break;
+        }
 
       case 'slideshow':
         self.setSlideshowContent(options.slideshow);
@@ -1556,7 +1558,7 @@ module.exports = elementorModules.ViewModule.extend({
 
   setHTMLContent(html) {
     if (window.elementorCommon) {
-      elementorCommon.helpers.hardDeprecated('elementorFrontend.utils.lightbox.setHTMLContent', '3.1.4');
+      elementorDevTools.deprecation.deprecated('elementorFrontend.utils.lightbox.setHTMLContent', '3.1.4');
     }
 
     this.getModal().setMessage(html);

@@ -363,7 +363,7 @@ class Render extends \Jet_Engine_Render_Listing_Grid {
 		foreach ( $marker_types as $marker ) {
 
 			$condition_met = false;
-			$apply_type    = ! empty( $marker['apply_type'] ) ? $marker['apply_type'] : false;
+			$apply_type    = ! empty( $marker['apply_type'] ) ? $marker['apply_type'] : 'meta_field';
 
 			switch ( $apply_type ) {
 

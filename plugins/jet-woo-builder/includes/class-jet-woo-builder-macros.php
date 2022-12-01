@@ -65,7 +65,6 @@ if ( ! class_exists( 'Jet_Woo_Builder_Macros' ) ) {
 			$percentage_sale = '';
 
 			if ( 'variable' === $product->get_type() ) {
-
 				$prices = $this->sort_variation_price( $product );
 
 				if ( $prices['regular_min'] > 0 && $prices['regular_max'] > 0 ) {
@@ -73,16 +72,13 @@ if ( ! class_exists( 'Jet_Woo_Builder_Macros' ) ) {
 					$percentage_max  = round( 100 - ( $prices['sale_max'] / $prices['regular_max'] * 100 ), $precision );
 					$percentage_sale = ( ( $percentage_min != $percentage_max ) ? ( $percentage_min . '&#37;' . '-' . $percentage_max . '&#37;' ) : $percentage_max . '&#37;' );
 				}
-
 			} else {
-
 				$regular_price = (float)$product->get_regular_price();
 				$sale_price    = (float)$product->get_price();
 
 				if ( $sale_price > 0 && $regular_price > 0 ) {
 					$percentage_sale = round( 100 - ( $sale_price / $regular_price * 100 ), $precision ) . '&#37;';
 				}
-
 			}
 
 			return 0 < $percentage_sale ? $percentage_sale : '';

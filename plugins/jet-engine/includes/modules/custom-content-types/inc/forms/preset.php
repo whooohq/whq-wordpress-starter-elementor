@@ -52,7 +52,13 @@ class Preset {
 			return false;
 		}
 
-		if ( current_user_can( 'manage_options' ) ) {
+		$cct = Module::instance()->manager->get_content_types( $source['cct_slug'] );
+
+		if ( ! $cct ) {
+			return false;
+		}
+
+		if ( $cct->user_has_access() ) {
 			return $res;
 		}
 

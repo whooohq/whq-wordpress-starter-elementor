@@ -9,7 +9,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Pagination_Filter' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Pagination_Filter class
 	 */
@@ -17,17 +16,14 @@ if ( ! class_exists( 'Jet_Smart_Filters_Pagination_Filter' ) ) {
 
 		/**
 		 * Get provider ID
-		 *
-		 * @return string
 		 */
 		public function get_id() {
+
 			return 'pagination';
 		}
 
 		/**
 		 * Render pagination sample
-		 *
-		 * @return [type] [description]
 		 */
 		public function render_pagination_sample( $controls ) {
 
@@ -72,9 +68,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Pagination_Filter' ) ) {
 					echo '</div>';
 				}
 			echo '</div>';
-
 		}
-
 	}
-
 }

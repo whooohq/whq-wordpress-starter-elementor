@@ -4,9 +4,10 @@
  */
 
 $checked_icon = apply_filters( 'jet-smart-filters/templates/checkboxes-item/checked-icon', 'fa fa-check' );
+
 ?>
 <div class="jet-checkboxes-list__row jet-filter-row<?php echo $extra_classes; ?>">
-	<label class="jet-checkboxes-list__item">
+	<label class="jet-checkboxes-list__item" <?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>>
 		<input
 			type="checkbox"
 			class="jet-checkboxes-list__input"

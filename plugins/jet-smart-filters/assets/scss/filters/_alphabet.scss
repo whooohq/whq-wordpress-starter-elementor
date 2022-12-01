@@ -12,6 +12,7 @@
 	&__item {
 		cursor: pointer;
 		user-select: none;
+		display: block;
 
 		input[type="checkbox"],
 		input[type="radio"] {

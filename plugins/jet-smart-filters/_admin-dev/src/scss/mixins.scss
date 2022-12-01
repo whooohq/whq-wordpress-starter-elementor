@@ -1,0 +1,118 @@
+@import "./variables.scss";
+
+@mixin button {
+	cursor: pointer;
+	position: relative;
+	display: inline-block;
+	padding: $button-padding;
+	font-size: $button-font-size;
+	line-height: $button-line-height;
+	font-weight: 500;
+	text-decoration: none;
+	border-radius: $radius;
+	box-sizing: border-box;
+	transition: $transition;
+	outline: none;
+}
+
+@mixin active-button {
+	@include button();
+	color: $button-color-text;
+	border: none;
+	background-color: $button-color-bg;
+	box-shadow: 0px 4px 4px rgba(35, 40, 45, 0.24);
+
+	&:focus,
+	&:hover {
+		color: $button-color-text-hover;
+		background-color: $button-color-bg-hover;
+		box-shadow: none;
+	}
+}
+
+@mixin secondary-button() {
+	cursor: pointer;
+	font-weight: 400;
+	border: $border-width solid;
+	border-radius: $radius;
+	background: none;
+	box-shadow: none;
+	transition: $transition;
+}
+
+@mixin active-secondary-button() {
+	@include secondary-button();
+	color: $color-accent;
+	border-color: $color-accent;
+
+	&:hover {
+		color: $color-accent;
+		background-color: lighten($color-accent, 60%);
+	}
+}
+
+@mixin remove-secondary-button() {
+	@include secondary-button();
+	color: $color-error;
+	border-color: $color-error;
+
+	&:hover {
+		color: $color-error;
+		background-color: lighten($color-error, 42%);
+	}
+}
+
+@mixin transparent-button() {
+	cursor: pointer;
+	padding: 0;
+	font-size: 13px;
+	line-height: 20px;
+	text-decoration: none;
+	border: none;
+	background: none;
+	box-shadow: none;
+	transition: $transition;
+
+	svg {
+		margin-right: 4px;
+		vertical-align: top;
+	}
+
+	&:hover {
+		background: none;
+	}
+}
+
+@mixin active-transparent-button() {
+	@include transparent-button();
+	color: $color-accent;
+
+	svg path {
+		fill: $color-accent;
+	}
+
+	&:hover {
+		color: $button-color-bg-hover;
+	}
+
+	&:hover svg path {
+		fill: darken($button-color-bg-hover, 5%);
+	}
+}
+
+@mixin remove-transparent-button() {
+	@include transparent-button();
+	color: $color-error;
+
+	svg path {
+		fill: $color-error;
+	}
+
+	&:hover {
+		color: darken($color-error, 5%);
+	}
+
+	&:hover svg path {
+		fill: darken($color-error, 5%);
+	}
+}

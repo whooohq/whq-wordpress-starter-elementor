@@ -1,6 +1,8 @@
 <?php
 /**
  * JetWooBuilder Products Grid widget loop item layout 4 template.
+ *
+ * This template can be overridden by copying it to yourtheme/jet-woo-builder/widgets/global/products-grid/presets/preset-4.php.
  */
 ?>
 
@@ -15,6 +17,7 @@
 		?>
 	</div>
 </div>
+
 <div class="jet-woo-products__item-content">
 	<?php
 	include $this->get_template( 'item-categories' );

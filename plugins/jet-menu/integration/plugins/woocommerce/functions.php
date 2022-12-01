@@ -19,3 +19,13 @@ add_action( 'init', function() {
 		}, 99, 2 );
 	}
 } ) ;
+
+/**
+ * Include woo hooks functions for ajax
+ */
+add_action( 'jet-menu/render/elementor-render/get-content/before', function ( $template_id, $settings ) {
+
+	if ( wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+		WC()->frontend_includes();
+	}
+}, 10, 4 );

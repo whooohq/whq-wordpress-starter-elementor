@@ -10,19 +10,16 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Posts' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Provider_EPro_Posts class
 	 */
 	class Jet_Smart_Filters_Provider_EPro_Posts extends Jet_Smart_Filters_Provider_Base {
-
 		/**
 		 * Watch for default query
 		 */
 		public function __construct() {
 
 			if ( ! jet_smart_filters()->query->is_ajax_filter() ) {
-
 				if ( defined( 'ELEMENTOR_PRO_VERSION' ) && version_compare( ELEMENTOR_PRO_VERSION, '2.5.0', '>=' ) ) {
 					add_action(
 						'elementor/query/jet-smart-filters',
@@ -38,15 +35,11 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Posts' ) ) {
 				}
 
 				add_action( 'elementor/widget/before_render_content', array( $this, 'store_default_settings' ), 0 );
-
 			}
-
 		}
 
 		/**
 		 * Hook apply query function
-		 *
-		 * @return [type] [description]
 		 */
 		public function hook_apply_query() {
 
@@ -57,14 +50,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Posts' ) ) {
 			}
 
 			add_filter( 'elementor_pro/query_control/get_query_args/current_query', array( $this, 'posts_add_current_query_args' ), 10 );
-
 		}
 
 		/**
 		 * Save default widget settings
-		 *
-		 * @param  [type] $widget [description]
-		 * @return [type]         [description]
 		 */
 		public function store_default_settings( $widget ) {
 
@@ -89,22 +78,18 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Posts' ) ) {
 			$default_settings['_el_widget_id'] = $widget->get_id();
 
 			jet_smart_filters()->providers->store_provider_settings( $this->get_id(), $default_settings, $query_id );
-
 		}
 
 		/**
 		 * Returns Elementor Pro apropriate widget name
-		 * @return [type] [description]
 		 */
 		public function widget_name() {
+
 			return 'posts';
 		}
 
 		/**
 		 * Save default query
-		 *
-		 * @param  [type] $wp_query [description]
-		 * @return [type]        [description]
 		 */
 		public function posts_store_default_query( $wp_query, $widget ) {
 
@@ -134,57 +119,50 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Posts' ) ) {
 				$this->get_id(),
 				$query_id
 			);
-
 		}
 
 		/**
 		 * Get provider name
-		 *
-		 * @return string
 		 */
 		public function get_name() {
+
 			return __( 'Elementor Pro Posts', 'jet-smart-filters' );
 		}
 
 		/**
 		 * Get provider ID
-		 *
-		 * @return string
 		 */
 		public function get_id() {
+
 			return 'epro-posts';
 		}
 
 		/**
 		 * Get provider wrapper selector
-		 *
-		 * @return string
 		 */
 		public function get_wrapper_selector() {
+
 			return '.elementor-widget-posts .elementor-widget-container';
 		}
 
 		/**
 		 * Action for wrapper selector - 'insert' into it or 'replace'
-		 *
-		 * @return string
 		 */
 		public function get_wrapper_action() {
+
 			return 'replace';
 		}
 
 		/**
 		 * If added unique ID this paramter will determine - search selector inside this ID, or is the same element
-		 *
-		 * @return bool
 		 */
 		public function in_depth() {
+
 			return false;
 		}
 
 		/**
 		 * Returns settings to store list
-		 * @return [type] [description]
 		 */
 		public function settings_to_store() {
 
@@ -281,12 +259,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Posts' ) ) {
 				'full_content_meta_separator',
 				'full_content_open_new_tab'
 			);
-
 		}
 
 		/**
 		 * Ensure all settings are passed
-		 * @return [type] [description]
 		 */
 		public function ensure_settings( $settings ) {
 
@@ -301,13 +277,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Posts' ) ) {
 			}
 
 			return $settings;
-
 		}
 
 		/**
 		 * Get filtered provider content
-		 *
-		 * @return string
 		 */
 		public function ajax_get_content() {
 
@@ -343,7 +316,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Posts' ) ) {
 			} else {
 				echo '<div class="elementor-widget-container"></div>';
 			}
-
 		}
 
 		/**
@@ -358,13 +330,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Posts' ) ) {
 			}
 
 			$this->hook_apply_query();
-
 		}
 
 		/**
 		 * Add custom query arguments
-		 *
-		 * @param array $args [description]
 		 */
 		public function posts_add_query_args( $wp_query, $widget ) {
 
@@ -385,14 +354,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Posts' ) ) {
 			foreach ( jet_smart_filters()->query->get_query_args() as $query_var => $value ) {
 				$wp_query->set( $query_var, $value );
 			}
-
 		}
 
 		/**
 		 * Add current query arguments
-		 *
-		 * @param $query
-		 * @return array
 		 */
 		public function posts_add_current_query_args( $query ) {
 
@@ -403,9 +368,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Posts' ) ) {
 			$query['jet_smart_filters'] = $this->get_id() . '/default';
 
 			return $query;
-
 		}
-
 	}
-
 }

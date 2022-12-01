@@ -94,6 +94,14 @@ if ( ! class_exists( 'Jet_Engine_Compatibility' ) ) {
 					'cb'   => 'defined',
 					'args' => 'JET_FORM_BUILDER_VERSION',
 				),
+				'search-exclude.php' => array(
+					'cb'   => 'class_exists',
+					'args' => 'SearchExclude',
+				),
+				'kadence-block.php' => array(
+					'cb'   => 'defined',
+					'args' => 'KADENCE_BLOCKS_VERSION',
+				),
 			);
 
 			foreach ( $whitelist as $file => $condition ) {

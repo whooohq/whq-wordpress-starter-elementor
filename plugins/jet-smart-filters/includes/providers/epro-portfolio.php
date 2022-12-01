@@ -10,19 +10,16 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Portfolio' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Provider_EPro_Portfolio class
 	 */
 	class Jet_Smart_Filters_Provider_EPro_Portfolio extends Jet_Smart_Filters_Provider_Base {
-
 		/**
 		 * Watch for default query
 		 */
 		public function __construct() {
 
 			if ( ! jet_smart_filters()->query->is_ajax_filter() ) {
-	
 				if ( defined( 'ELEMENTOR_PRO_VERSION' ) && version_compare( ELEMENTOR_PRO_VERSION, '2.5.0', '>=' ) ) {
 					add_action(
 						'elementor/query/jet-smart-filters',
@@ -39,13 +36,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Portfolio' ) ) {
 
 				add_action( 'elementor/widget/before_render_content', array( $this, 'store_default_settings' ), 0 );
 			}
-
 		}
 
 		/**
 		 * Hook apply query function
-		 *
-		 * @return [type] [description]
 		 */
 		public function hook_apply_query() {
 
@@ -56,14 +50,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Portfolio' ) ) {
 			}
 
 			add_filter( 'elementor_pro/query_control/get_query_args/current_query', array( $this, 'portfolio_add_current_query_args' ), 10 );
-
 		}
 
 		/**
 		 * Save default widget settings
-		 *
-		 * @param  [type] $widget [description]
-		 * @return [type]         [description]
 		 */
 		public function store_default_settings( $widget ) {
 
@@ -88,22 +78,18 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Portfolio' ) ) {
 			$default_settings['_el_widget_id'] = $widget->get_id();
 
 			jet_smart_filters()->providers->store_provider_settings( $this->get_id(), $default_settings, $query_id );
-
 		}
 
 		/**
 		 * Returns Elementor Pro apropriate widget name
-		 * @return [type] [description]
 		 */
 		public function widget_name() {
+
 			return 'portfolio';
 		}
 
 		/**
 		 * Save default query
-		 *
-		 * @param  [type] $wp_query [description]
-		 * @return [type]        [description]
 		 */
 		public function portfolio_store_default_query( $wp_query, $widget ) {
 			
@@ -133,49 +119,42 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Portfolio' ) ) {
 				$this->get_id(),
 				$query_id
 			);
-
 		}
-
 
 		/**
 		 * Get provider name
-		 *
-		 * @return string
 		 */
 		public function get_name() {
+
 			return __( 'Elementor Pro Portfolio', 'jet-smart-filters' );
 		}
 
 		/**
 		 * Get provider ID
-		 *
-		 * @return string
 		 */
 		public function get_id() {
+
 			return 'epro-portfolio';
 		}
 
 		/**
 		 * Get provider wrapper selector
-		 *
-		 * @return string
 		 */
 		public function get_wrapper_selector() {
+
 			return '.elementor-widget-portfolio';
 		}
 
 		/**
 		 * If added unique ID this paramter will determine - search selector inside this ID, or is the same element
-		 *
-		 * @return bool
 		 */
 		public function in_depth() {
+
 			return false;
 		}
 
 		/**
 		 * Returns settings to store list
-		 * @return [type] [description]
 		 */
 		public function settings_to_store() {
 
@@ -221,12 +200,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Portfolio' ) ) {
 				'posts_order',
 				'posts_ignore_sticky_posts',
 			);
-
 		}
 
 		/**
 		 * Ensure all settings are passed
-		 * @return [type] [description]
 		 */
 		public function ensure_settings( $settings ) {
 
@@ -245,8 +222,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Portfolio' ) ) {
 
 		/**
 		 * Get filtered provider content
-		 *
-		 * @return string
 		 */
 		public function ajax_get_content() {
 
@@ -282,7 +257,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Portfolio' ) ) {
 			} else {
 				echo '<div class="elementor-widget-container"></div>';
 			}
-
 		}
 
 		/**
@@ -297,13 +271,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Portfolio' ) ) {
 			}
 
 			$this->hook_apply_query();
-
 		}
 
 		/**
 		 * Add custom query arguments
-		 *
-		 * @param array $args [description]
 		 */
 		public function portfolio_add_query_args( $wp_query, $widget ) {
 
@@ -324,14 +295,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Portfolio' ) ) {
 			foreach ( jet_smart_filters()->query->get_query_args() as $query_var => $value ) {
 				$wp_query->set( $query_var, $value );
 			}
-
 		}
 
 		/**
 		 * Add current query arguments
-		 *
-		 * @param $query
-		 * @return array
 		 */
 		public function portfolio_add_current_query_args( $query ) {
 
@@ -342,9 +309,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Portfolio' ) ) {
 			$query['jet_smart_filters'] = $this->get_id() . '/default';
 
 			return $query;
-
 		}
-
 	}
-
 }

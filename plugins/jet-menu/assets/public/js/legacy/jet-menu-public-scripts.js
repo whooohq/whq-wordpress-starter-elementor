@@ -221,7 +221,7 @@
 
 			$.ajax( {
 				type: 'GET',
-				url: window.jetMenuPublicSettings.templateApiUrl,
+				url: window.jetMenuPublicSettings.getElementorTemplateApiUrl,
 				dataType: 'json',
 				data: {
 					'id': templateId,
@@ -988,7 +988,7 @@
 					},
 
 					isTemplateDefine: function() {
-						return false !== this.itemDataObject.elementorTemplateId ? true : false;
+						return false !== this.itemDataObject.megaTemplateId ? true : false;
 					},
 
 					isSub: function() {
@@ -1099,7 +1099,7 @@
 
 						} else {
 
-							if ( ! this.itemDataObject.elementorContent ) {
+							if ( ! this.itemDataObject.megaContent ) {
 								this.getElementorTemplate();
 							} else {
 
@@ -1107,7 +1107,7 @@
 									menuUniqId: this.$root.menuOptions.menuUniqId,
 									id: this.itemDataObject.id,
 									name: this.itemDataObject.name,
-									elementorContent: this.itemDataObject.elementorContent
+									megaContent: this.itemDataObject.megaContent
 								} );
 							}
 						}
@@ -1118,10 +1118,10 @@
 
 						vueInstance.ajaxRequest = $.ajax( {
 							type: 'GET',
-							url: window.jetMenuPublicSettings.templateApiUrl,
+							url: window.jetMenuPublicSettings.getElementorTemplateApiUrl,
 							dataType: 'json',
 							data: {
-								'id': vueInstance.itemDataObject.elementorTemplateId,
+								'id': vueInstance.itemDataObject.megaTemplateId,
 								'dev': window.jetMenuPublicSettings.devMode
 							},
 							beforeSend: function( jqXHR, ajaxSettings ) {
@@ -1149,13 +1149,13 @@
 
 								vueInstance.templateLoadStatus = false;
 
-								vueInstance.itemDataObject.elementorContent = templateContent;
+								vueInstance.itemDataObject.megaContent = templateContent;
 
 								jetMenu.eventBus.$emit( 'showTemplateContent', {
 									menuUniqId: vueInstance.$root.menuOptions.menuUniqId,
 									id: vueInstance.itemDataObject.id,
 									name: vueInstance.itemDataObject.name,
-									elementorContent: vueInstance.itemDataObject.elementorContent
+									megaContent: vueInstance.itemDataObject.megaContent
 								} );
 							}
 						} );
@@ -1239,7 +1239,7 @@
 							new Promise( function( resolve, reject ) {
 								$.ajax( {
 									type: 'GET',
-									url: window.jetMenuPublicSettings.templateApiUrl,
+									url: window.jetMenuPublicSettings.getElementorTemplateApiUrl,
 									dataType: 'json',
 									data: {
 										'id': vueInstance.headerTemplate,
@@ -1276,7 +1276,7 @@
 							new Promise( function( resolve, reject ) {
 								$.ajax( {
 									type: 'GET',
-									url: window.jetMenuPublicSettings.templateApiUrl,
+									url: window.jetMenuPublicSettings.getElementorTemplateApiUrl,
 									dataType: 'json',
 									data: {
 										'id': vueInstance.beforeTemplate,
@@ -1312,7 +1312,7 @@
 							new Promise( function( resolve, reject ) {
 								$.ajax( {
 									type: 'GET',
-									url: window.jetMenuPublicSettings.templateApiUrl,
+									url: window.jetMenuPublicSettings.getElementorTemplateApiUrl,
 									dataType: 'json',
 									data: {
 										'id': vueInstance.afterTemplate,
@@ -1368,7 +1368,7 @@
 							return;
 						}
 
-						vueInstance.itemTemplateContent = payLoad.elementorContent;
+						vueInstance.itemTemplateContent = payLoad.megaContent;
 						vueInstance.templateVisible = true;
 						vueInstance.breadcrumbsData.push( payLoad.name );
 						vueInstance.animation = 'items-next-animation';

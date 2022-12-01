@@ -171,25 +171,35 @@ if ( ! class_exists( 'Jet_Woo_Builder_Tools' ) ) {
 		}
 
 		/**
-		 * Return attributes string from attributes array.
+		 * Get attr string.
 		 *
-		 * @param array $attr Attributes string.
+		 * Get html attributes string.
+		 *
+		 * @since  0.9.0
+		 * @since  2.1.0 Code refactor.
+		 * @access public
+		 *
+		 * @param array $attr List of attributes.
 		 *
 		 * @return string
 		 */
-		public function get_attr_string( $attr = array() ) {
+		public function get_attr_string( $attr = [] ) {
 
 			if ( empty( $attr ) || ! is_array( $attr ) ) {
-				return null;
+				return '';
 			}
 
-			$result = '';
+			$result = [];
 
 			foreach ( $attr as $key => $value ) {
-				$result .= sprintf( ' %s="%s"', esc_attr( $key ), esc_attr( $value ) );
+				if ( is_array( $value ) ) {
+					$value = join( ' ', $value );
+				}
+
+				$result[] = sprintf( '%s="%s"', $key, esc_attr( $value ) );
 			}
 
-			return $result;
+			return join( ' ', $result );
 
 		}
 
@@ -266,6 +276,32 @@ if ( ! class_exists( 'Jet_Woo_Builder_Tools' ) ) {
 		}
 
 		/**
+		 * Available down icon list.
+		 *
+		 * Return available arrows list.
+		 *
+		 * @since  1.13.0
+		 * @access public
+		 *
+		 * @return array
+		 */
+		public function get_available_down_arrows_list() {
+			return apply_filters(
+				'jet-woo-builder/product-ordering/select-arrow/icons',
+				[
+					'angle'          => __( 'Angle', 'jet-woo-builder' ),
+					'chevron'        => __( 'Chevron', 'jet-woo-builder' ),
+					'angle-double'   => __( 'Angle Double', 'jet-woo-builder' ),
+					'arrow'          => __( 'Arrow', 'jet-woo-builder' ),
+					'caret'          => __( 'Caret', 'jet-woo-builder' ),
+					'arrow-circle'   => __( 'Arrow Circle', 'jet-woo-builder' ),
+					'chevron-circle' => __( 'Chevron Circle', 'jet-woo-builder' ),
+					'caret-square'   => __( 'Caret Square', 'jet-woo-builder' ),
+				]
+			);
+		}
+
+		/**
 		 * Apply carousel wrappers for shortcode content if carousel is enabled.
 		 *
 		 * @param string $content  Module content.
@@ -280,23 +316,24 @@ if ( ! class_exists( 'Jet_Woo_Builder_Tools' ) ) {
 			}
 
 			$carousel_settings = [
-				'columns'               => isset( $settings['columns'] ) ? $settings['columns'] : 4,
-				'carousel_direction'    => isset( $settings['carousel_direction'] ) ? $settings['carousel_direction'] : 'horizontal',
+				'columns'               => $settings['columns'] ?? 4,
+				'carousel_direction'    => $settings['carousel_direction'] ?? 'horizontal',
 				'slides_to_scroll'      => isset( $settings['slides_to_scroll'] ) && '1' !== $settings['columns'] ? $settings['slides_to_scroll'] : 1,
 				'simulate_touch'        => isset( $settings['simulate_touch'] ) ? filter_var( $settings['simulate_touch'], FILTER_VALIDATE_BOOLEAN ) : false,
 				'arrows'                => isset( $settings['arrows'] ) ? filter_var( $settings['arrows'], FILTER_VALIDATE_BOOLEAN ) : false,
-				'prev_arrow'            => isset( $settings['prev_arrow'] ) ? $settings['prev_arrow'] : '',
-				'next_arrow'            => isset( $settings['next_arrow'] ) ? $settings['next_arrow'] : '',
+				'prev_arrow'            => $settings['prev_arrow'] ?? '',
+				'next_arrow'            => $settings['next_arrow'] ?? '',
 				'dots'                  => isset( $settings['dots'] ) ? filter_var( $settings['dots'], FILTER_VALIDATE_BOOLEAN ) : false,
+				'dynamic_bullets'       => isset( $settings['dynamic_bullets'] ) ? filter_var( $settings['dynamic_bullets'], FILTER_VALIDATE_BOOLEAN ) : false,
 				'autoplay'              => isset( $settings['autoplay'] ) ? filter_var( $settings['autoplay'], FILTER_VALIDATE_BOOLEAN ) : false,
-				'autoplay_speed'        => isset( $settings['autoplay_speed'] ) ? $settings['autoplay_speed'] : 5000,
+				'autoplay_speed'        => $settings['autoplay_speed'] ?? 5000,
 				'pause_on_interactions' => isset( $settings['pause_on_interactions'] ) ? filter_var( $settings['pause_on_interactions'], FILTER_VALIDATE_BOOLEAN ) : false,
 				'infinite'              => isset( $settings['infinite'] ) ? filter_var( $settings['infinite'], FILTER_VALIDATE_BOOLEAN ) : false,
 				'freemode'              => isset( $settings['freemode'] ) ? filter_var( $settings['freemode'], FILTER_VALIDATE_BOOLEAN ) : false,
-				'freemode_velocity'     => isset( $settings['freemode_velocity'] ) ? $settings['freemode_velocity'] : 0.02,
+				'freemode_velocity'     => $settings['freemode_velocity'] ?? 0.02,
 				'centered'              => isset( $settings['centered'] ) ? filter_var( $settings['centered'], FILTER_VALIDATE_BOOLEAN ) : false,
-				'effect'                => isset( $settings['effect'] ) ? $settings['effect'] : 'slide',
-				'speed'                 => isset( $settings['speed'] ) ? $settings['speed'] : 500,
+				'effect'                => $settings['effect'] ?? 'slide',
+				'speed'                 => $settings['speed'] ?? 500,
 			];
 
 			$carousel_settings = apply_filters( 'jet-woo-builder/tools/carousel/pre-options', $carousel_settings, $settings );
@@ -313,7 +350,11 @@ if ( ! class_exists( 'Jet_Woo_Builder_Tools' ) ) {
 				'navigationEnable' => $carousel_settings['arrows'],
 			];
 
-			if ( $carousel_settings['freemode'] ) {
+			if ( $options['paginationEnable'] ) {
+				$options['dynamicBullets'] = $carousel_settings['dynamic_bullets'];
+			}
+
+			if ( $options['freeMode'] ) {
 				$options['freeModeMinimumVelocity'] = $carousel_settings['freemode_velocity'];
 			}
 
@@ -352,15 +393,17 @@ if ( ! class_exists( 'Jet_Woo_Builder_Tools' ) ) {
 		}
 
 		/**
-		 * Trim text
+		 * Trim text.
+		 *
+		 * Trim text depending on trimming time.
 		 *
 		 * @since  1.0.0
+		 * @since  2.1.0 Small code refactor.
 		 *
-		 * @param int    $length
-		 * @param string $trimmed_type
-		 * @param        $after
-		 *
-		 * @param string $text
+		 * @param string $text         Text to trim.
+		 * @param int    $length       Trim length.
+		 * @param string $trimmed_type Type of trimming.
+		 * @param string $after        Symbol after trim.
 		 *
 		 * @return string
 		 */
@@ -368,20 +411,12 @@ if ( ! class_exists( 'Jet_Woo_Builder_Tools' ) ) {
 
 			$length = intval( $length );
 
-			if ( '' === $text ) {
-				return '';
-			}
-
-			if ( 0 === $length ) {
+			if ( '' === $text || 0 === $length ) {
 				return '';
 			}
 
 			if ( -1 !== $length ) {
-				if ( 'word' === $trimmed_type ) {
-					$text = wp_trim_words( $text, $length, $after );
-				} else {
-					$text = wp_html_excerpt( $text, $length, $after );
-				}
+				$text = 'word' === $trimmed_type ? wp_trim_words( $text, $length, $after ) : wp_html_excerpt( $text, $length, $after );
 			}
 
 			return $text;
@@ -455,15 +490,31 @@ if ( ! class_exists( 'Jet_Woo_Builder_Tools' ) ) {
 		}
 
 		/**
-		 * Returns available flex-directions types
+		 * Get available flex direction types.
+		 *
+		 * Returns list od available flex directions types.
+		 *
+		 * @since 1.12.0
+		 * @since 2.1.0 Added `$reverse` parameter.
+		 *
+		 * @param bool $reverse Status of reverse values.
 		 *
 		 * @return array
 		 */
-		public function get_available_flex_directions_types() {
-			return [
-				'column' => esc_html__( 'Block', 'jet-woo-builder' ),
-				'row'    => esc_html__( 'Inline', 'jet-woo-builder' ),
+		public function get_available_flex_directions_types( $reverse = false ) {
+
+			$directions = [
+				'column' => __( 'Block', 'jet-woo-builder' ),
+				'row'    => __( 'Inline', 'jet-woo-builder' ),
 			];
+
+			if ( $reverse ) {
+				$directions['column-reverse'] = __( 'Block Reverse', 'jet-woo-builder' );
+				$directions['row-reverse']    = __( 'Inline Reverse', 'jet-woo-builder' );
+			}
+
+			return $directions;
+
 		}
 
 		/**
@@ -524,7 +575,12 @@ if ( ! class_exists( 'Jet_Woo_Builder_Tools' ) ) {
 		}
 
 		/**
-		 * Returns available flex horizontal align types
+		 * Flex horizontal align types.
+		 *
+		 * Returns available flex horizontal align types.
+		 *
+		 * @since  2.0.0
+		 * @access public
 		 *
 		 * @param bool $is_justify
 		 *
@@ -534,23 +590,23 @@ if ( ! class_exists( 'Jet_Woo_Builder_Tools' ) ) {
 
 			$align_types = [
 				'flex-start' => [
-					'title' => esc_html__( 'Start', 'jet-woo-builder' ),
-					'icon'  => ! is_rtl() ? 'eicon-h-align-left' : 'eicon-h-align-right',
+					'title' => __( 'Start', 'jet-woo-builder' ),
+					'icon'  => ! is_rtl() ? 'eicon-align-start-h' : 'eicon-align-end-h',
 				],
 				'center'     => [
-					'title' => esc_html__( 'Center', 'jet-woo-builder' ),
-					'icon'  => 'eicon-h-align-center',
+					'title' => __( 'Center', 'jet-woo-builder' ),
+					'icon'  => 'eicon-align-center-h',
 				],
 				'flex-end'   => [
-					'title' => esc_html__( 'End', 'jet-woo-builder' ),
-					'icon'  => ! is_rtl() ? 'eicon-h-align-right' : 'eicon-h-align-left',
+					'title' => __( 'End', 'jet-woo-builder' ),
+					'icon'  => ! is_rtl() ? 'eicon-align-end-h' : 'eicon-align-start-h',
 				],
 			];
 
 			if ( $is_justify ) {
 				$align_types['space-between'] = [
-					'title' => esc_html__( 'Justify', 'jet-woo-builder' ),
-					'icon'  => 'eicon-h-align-stretch',
+					'title' => __( 'Justify', 'jet-woo-builder' ),
+					'icon'  => 'eicon-align-stretch-h',
 				];
 			}
 
@@ -592,13 +648,23 @@ if ( ! class_exists( 'Jet_Woo_Builder_Tools' ) ) {
 		}
 
 		/**
-		 * Get categories list.
+		 * Get product categories.
+		 *
+		 * Returns the full list of products categories.
+		 *
+		 * @since  1.9.0
+		 * @since  2.0.3 `get_terms()` method parameters changed.
+		 *
+		 * @access public
 		 *
 		 * @return array
 		 */
 		public function get_product_categories() {
 
-			$categories = get_terms( 'product_cat' );
+			$categories = get_terms( [
+				'taxonomy'   => 'product_cat',
+				'hide_empty' => false,
+			] );
 
 			if ( empty( $categories ) || ! is_array( $categories ) ) {
 				return array();
@@ -609,7 +675,13 @@ if ( ! class_exists( 'Jet_Woo_Builder_Tools' ) ) {
 		}
 
 		/**
-		 * Get categories list.
+		 * Get product tags.
+		 *
+		 * Returns the list of products tags.
+		 *
+		 * @since  1.9.0
+		 *
+		 * @access public
 		 *
 		 * @return array
 		 */
@@ -791,6 +863,39 @@ if ( ! class_exists( 'Jet_Woo_Builder_Tools' ) ) {
 		}
 
 		/**
+		 * WooCommerce actions.
+		 *
+		 * Return list of WooCommerce actions based on template where it used.
+		 *
+		 * @since  2.0.0
+		 * @access public
+		 *
+		 * @return array
+		 */
+		public function get_woocommerce_actions() {
+			return [
+				[
+					'label'   => __( 'Single Product', 'jet-woo-builder' ),
+					'options' => [
+						'woocommerce_before_single_product_summary' => __( 'Before Summary', 'jet-woo-builder' ),
+						'woocommerce_single_product_summary'        => __( 'Summary', 'jet-woo-builder' ),
+						'woocommerce_after_single_product_summary'  => __( 'After Summary', 'jet-woo-builder' ),
+					],
+				],
+				[
+					'label'   => __( 'Shop Loop', 'jet-woo-builder' ),
+					'options' => [
+						'woocommerce_before_shop_loop_item'       => __( 'Before Item', 'jet-woo-builder' ),
+						'woocommerce_before_shop_loop_item_title' => __( 'Before Item Title', 'jet-woo-builder' ),
+						'woocommerce_shop_loop_item_title'        => __( 'Item Title', 'jet-woo-builder' ),
+						'woocommerce_after_shop_loop_item_title'  => __( 'After Item Title', 'jet-woo-builder' ),
+						'woocommerce_after_shop_loop_item'        => __( 'After Item', 'jet-woo-builder' ),
+					],
+				],
+			];
+		}
+
+		/**
 		 * Additional HTML tags validation
 		 *
 		 * @param $input
@@ -822,6 +927,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Tools' ) ) {
 			return self::$instance;
 
 		}
+
 	}
 
 }

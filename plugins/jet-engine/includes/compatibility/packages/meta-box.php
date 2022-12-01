@@ -35,7 +35,7 @@ if ( ! class_exists( 'Jet_Engine_Meta_Box_Package' ) ) {
 			add_action( 'jet-engine/listings/dynamic-image/source-controls', array( $this, 'image_controls' ) );
 			add_action( 'jet-engine/listings/dynamic-image/link-source-controls', array( $this, 'linked_image_controls' ) );
 
-			add_filter( 'jet-engine/listings/dynamic-image/custom-image', array( $this, 'image_render' ), 10, 3 );
+			add_filter( 'jet-engine/listings/dynamic-image/custom-image', array( $this, 'image_render' ), 10, 4 );
 			add_filter( 'jet-engine/listings/dynamic-image/custom-url', array( $this, 'image_url_render' ), 10, 2 );
 			add_filter( 'jet-engine/listings/dynamic-link/custom-url', array( $this, 'link_render' ), 10, 2 );
 			add_filter( 'jet-engine/listings/dynamic-field/field-value', array( $this, 'field_render' ), 10, 2 );
@@ -160,7 +160,7 @@ if ( ! class_exists( 'Jet_Engine_Meta_Box_Package' ) ) {
 		 * @param  [type] $size     [description]
 		 * @return [type]           [description]
 		 */
-		public function image_render( $result, $settings, $size ) {
+		public function image_render( $result, $settings, $size, $render ) {
 
 			if ( 'mb_field_groups' !== $settings['dynamic_image_source'] ) {
 				return $result;
@@ -179,9 +179,11 @@ if ( ! class_exists( 'Jet_Engine_Meta_Box_Package' ) ) {
 			}
 
 			if ( filter_var( $image, FILTER_VALIDATE_URL ) ) {
-				return sprintf( '<img src="%1$s" alt="%2$s">', $image, '' );
+				ob_start();
+				$render->print_image_html_by_src( $image );
+				return ob_get_clean();
 			} else {
-				return wp_get_attachment_image( $image, $size, false );
+				return wp_get_attachment_image( $image, $size, false, array( 'alt' => $render->get_image_alt( $image, $settings ) ) );
 			}
 
 		}

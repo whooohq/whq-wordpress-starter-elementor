@@ -1,0 +1,91 @@
+@import "./mixins.scss";
+
+.jet-ui_repeater {
+	border-radius: $radius;
+	background: #f0f0f1;
+
+	&-items {
+		position: relative;
+		padding: 20px 10px 0;
+	}
+
+	&-item {
+		margin: 0 10px 20px;
+		border-radius: $radius;
+		background: $bg-panel;
+		box-shadow: 0px 2px 6px rgba(35, 40, 45, 0.07);
+
+		&-heading {
+			display: flex;
+			border-bottom: $border-width solid $border-color;
+		}
+
+		&-content {
+			padding: 12px;
+		}
+
+		&-handle,
+		&-clone,
+		&-remove {
+			width: 16px;
+			height: 16px;
+		}
+
+		&-handle {
+			cursor: move;
+			padding: 12px;
+			stroke: $color-text-secondary;
+			width: 100%;
+		}
+
+		&-clone,
+		&-remove {
+			cursor: pointer;
+			padding: 12px 4px;
+			flex-shrink: 0;
+
+			path {
+				fill: $color-text-secondary;
+			}
+
+			&:hover {
+				path {
+					fill: $color-accent;
+				}
+			}
+		}
+
+		&-clone {
+			margin-left: 10px;
+		}
+
+		&-remove {
+			margin-right: 10px;
+		}
+	}
+
+	&-actions {
+		padding: 0 20px 20px 20px;
+	}
+
+	&-add-buttom {
+		cursor: pointer;
+		padding: 6px 12px 4px;
+		font-size: 14px;
+		line-height: 20px;
+		color: $color-accent;
+		border: $border-width solid $color-accent;
+		border-radius: $radius;
+		background: none;
+
+		&:hover {
+			background-color: lighten($color-accent, 60%);
+		}
+
+		svg {
+			vertical-align: top;
+			margin-top: 3px;
+			margin-right: 5px;
+		}
+	}
+}

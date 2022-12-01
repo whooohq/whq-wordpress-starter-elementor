@@ -4,32 +4,28 @@ namespace Jet_Smart_Filters;
 /**
  * API controller class
  */
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
 /**
  * Define Controller class
  */
 class Rest_Api {
-
 	/**
 	 * A reference to an instance of this class.
-	 *
-	 * @since 1.0.0
-	 * @var   object
 	 */
 	private static $instance = null;
 
 	/**
-	 * [$api_namespace description]
-	 * @var string
+	 * api namespace
 	 */
 	public $api_namespace = 'jet-smart-filters-api/v1';
 
 	/**
-	 * [$_endpoints description]
-	 * @var null
+	 * endpoints
 	 */
 	private $_endpoints = null;
 
@@ -40,7 +36,6 @@ class Rest_Api {
 	 * @return object
 	 */
 	public static function get_instance() {
-
 		// If the single instance hasn't been set, set it now.
 		if ( null == self::$instance ) {
 			self::$instance = new self;
@@ -57,48 +52,46 @@ class Rest_Api {
 		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
 	}
 
-	/**
-	 * [load_files description]
-	 * @return [type] [description]
-	 */
 	public function load_files() {
+
 		require jet_smart_filters()->plugin_path( 'includes/rest-api/endpoints/base.php' );
 		require jet_smart_filters()->plugin_path( 'includes/rest-api/endpoints/plugin-settings.php' );
+		require jet_smart_filters()->plugin_path( 'includes/rest-api/endpoints/filters.php' );
+		require jet_smart_filters()->plugin_path( 'includes/rest-api/endpoints/filter.php' );
+		require jet_smart_filters()->plugin_path( 'includes/rest-api/endpoints/taxonomy-terms.php' );
+		require jet_smart_filters()->plugin_path( 'includes/rest-api/endpoints/posts-list.php' );
+		require jet_smart_filters()->plugin_path( 'includes/rest-api/endpoints/admin-mode-switch.php' );
 	}
 
 	/**
 	 * Initialize all JetEngine related Rest API endpoints
-	 *
-	 * @return [type] [description]
 	 */
 	public function init_endpoints() {
 
 		$this->_endpoints = array();
 
 		$this->register_endpoint( new Endpoints\Plugin_Settings() );
+		$this->register_endpoint( new Endpoints\Filters() );
+		$this->register_endpoint( new Endpoints\Filter() );
+		$this->register_endpoint( new Endpoints\TaxonomyTerms() );
+		$this->register_endpoint( new Endpoints\PostsList() );
+		$this->register_endpoint( new Endpoints\AdminModeSwitch() );
 
 		do_action( 'jet-smart-filters/rest/init-endpoints', $this );
-
 	}
 
 	/**
 	 * Register new endpoint
-	 *
-	 * @param  object $endpoint_instance Endpoint instance
-	 * @return void
 	 */
 	public function register_endpoint( $endpoint_instance = null ) {
 
 		if ( $endpoint_instance ) {
 			$this->_endpoints[ $endpoint_instance->get_name() ] = $endpoint_instance;
 		}
-
 	}
 
 	/**
 	 * Returns all registererd API endpoints
-	 *
-	 * @return [type] [description]
 	 */
 	public function get_endpoints() {
 
@@ -107,7 +100,6 @@ class Rest_Api {
 		}
 
 		return $this->_endpoints;
-
 	}
 
 	/**
@@ -124,13 +116,10 @@ class Rest_Api {
 		}
 
 		return $result;
-
 	}
 
 	/**
 	 * Returns route to passed endpoint
-	 *
-	 * @return [type] [description]
 	 */
 	public function get_route( $endpoint = '', $full = false ) {
 
@@ -141,16 +130,16 @@ class Rest_Api {
 		} else {
 			return get_rest_url( null, $path );
 		}
-
 	}
 
-	// Register our routes.
+	/**
+	 * Register our routes.
+	 */
 	public function register_routes() {
 
 		$endpoints = $this->get_endpoints();
 
 		foreach ( $endpoints as $endpoint ) {
-
 			$args = array(
 				'methods'             => $endpoint->get_method(),
 				'callback'            => array( $endpoint, 'callback' ),
@@ -166,6 +155,5 @@ class Rest_Api {
 			register_rest_route( $this->api_namespace, $route, $args );
 		}
 	}
-
 }
 

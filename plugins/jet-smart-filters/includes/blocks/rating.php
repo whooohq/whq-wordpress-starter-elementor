@@ -9,22 +9,20 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Block_Rating' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Block_Rating class
 	 */
 	class Jet_Smart_Filters_Block_Rating extends Jet_Smart_Filters_Block_Base {
-
 		/**
 		 * Returns block name
-		 *
-		 * @return string
 		 */
 		public function get_name() {
+
 			return 'rating';
 		}
 
-		public function set_css_scheme(){
+		public function set_css_scheme() {
+
 			$this->css_scheme = apply_filters(
 				'jet-smart-filters/widgets/rating/css-scheme',
 				array(
@@ -39,7 +37,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Rating' ) ) {
 			);
 		}
 
-		public function add_style_manager_options(){
+		public function add_style_manager_options() {
 
 			$this->controls_manager->start_section(
 				'style_controls',
@@ -99,7 +97,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Rating' ) ) {
 					],
 				],
 			]);
-
 
 			$this->controls_manager->add_control([
 				'id'       => 'stars_color',
@@ -412,7 +409,5 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Rating' ) ) {
 
 			$this->controls_manager->end_section();
 		}
-
 	}
-
 }

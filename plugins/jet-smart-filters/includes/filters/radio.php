@@ -9,7 +9,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Radio_Filter' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Radio_Filter class
 	 */
@@ -17,37 +16,38 @@ if ( ! class_exists( 'Jet_Smart_Filters_Radio_Filter' ) ) {
 
 		/**
 		 * Get provider name
-		 *
-		 * @return string
 		 */
 		public function get_name() {
+
 			return __( 'Radio', 'jet-smart-filters' );
 		}
 
 		/**
 		 * Get provider ID
-		 *
-		 * @return string
 		 */
 		public function get_id() {
+
 			return 'radio';
 		}
 
 		/**
+		 * Get icon URL
+		 */
+		public function get_icon_url() {
+
+			return jet_smart_filters()->plugin_url( 'admin/assets/img/filter-types/radio.png' );
+		}
+
+		/**
 		 * Get provider wrapper selector
-		 *
-		 * @return string
 		 */
 		public function get_scripts() {
+
 			return false;
 		}
 
 		/**
 		 * Prepare filter template argumnets
-		 *
-		 * @param  [type] $args [description]
-		 *
-		 * @return [type]       [description]
 		 */
 		public function prepare_args( $args ) {
 
@@ -56,13 +56,13 @@ if ( ! class_exists( 'Jet_Smart_Filters_Radio_Filter' ) ) {
 			$additional_providers = isset( $args['additional_providers'] ) ? $args['additional_providers'] : false;
 			$apply_type           = isset( $args['apply_type'] ) ? $args['apply_type'] : false;
 			$search_enabled       = isset( $args['search_enabled'] ) ? $args['search_enabled'] : false;
-			$search_placeholder   = isset( $args['search_placeholder'] ) ?  $args['search_placeholder'] : false;
+			$search_placeholder   = isset( $args['search_placeholder'] ) ? $args['search_placeholder'] : __( 'Search...', 'jet-smart-filters' );
 			$less_items_count     = isset( $args['less_items_count'] ) ? $args['less_items_count'] : false;
 			$more_text            = isset( $args['more_text'] ) ? $args['more_text'] : __( 'More', 'jet-smart-filters' );
 			$less_text            = isset( $args['less_text'] ) ? $args['less_text'] : __( 'Less', 'jet-smart-filters' );
 			$scroll_height        = isset( $args['scroll_height'] ) ? $args['scroll_height'] : false;
 			$dropdown_enabled     = isset( $args['dropdown_enabled'] ) ? filter_var( $args['dropdown_enabled'], FILTER_VALIDATE_BOOLEAN ) : false;
-			$dropdown_placeholder = isset( $args['dropdown_placeholder'] ) ? $args['dropdown_placeholder'] : false;
+			$dropdown_placeholder = isset( $args['dropdown_placeholder'] ) ? $args['dropdown_placeholder'] : __( 'Select some options', 'jet-smart-filters' );
 
 			if ( ! $filter_id ) {
 				return false;
@@ -117,7 +117,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Radio_Filter' ) ) {
 					break;
 
 				case 'posts':
-
 					$post_type = get_post_meta( $filter_id, '_source_post_type', true );
 					$args      = array(
 						'post_type' => $post_type,
@@ -138,7 +137,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Radio_Filter' ) ) {
 					break;
 
 				case 'custom_fields':
-
 					$custom_field   = get_post_meta( $filter_id, '_source_custom_field', true );
 					$get_from_field = get_post_meta( $filter_id, '_source_get_from_field_data', true );
 					$get_from_field = filter_var( $get_from_field, FILTER_VALIDATE_BOOLEAN );
@@ -219,7 +217,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Radio_Filter' ) ) {
 			}
 
 			return $result;
-
 		}
 
 		public function additional_filter_data_atts( $args ) {
@@ -229,9 +226,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Radio_Filter' ) ) {
 			if ( ! empty( $args['can_deselect'] ) ) $additional_filter_data_atts['data-can-deselect'] = $args['can_deselect'];
 
 			return $additional_filter_data_atts;
-
 		}
-
 	}
-
 }

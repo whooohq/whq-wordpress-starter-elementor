@@ -10,7 +10,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Products' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Provider_EPro_Products class
 	 */
@@ -27,16 +26,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Products' ) ) {
 				add_action( 'elementor/widget/before_render_content', array( $this, 'store_default_settings' ), 0 );
 				add_filter( 'woocommerce_shortcode_products_query', array( $this, 'store_shortcode_query' ), 0, 3 );
 			}
-
 		}
 
 		/**
 		 * Store default query args
-		 *
-		 * @param  array  $args       Query arguments.
-		 * @param  array  $attributes Shortcode attributes.
-		 * @param  string $type       Shortcode type.
-		 * @return array
 		 */
 		public function store_shortcode_query( $args, $attributes, $type ) {
 
@@ -65,40 +58,37 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Products' ) ) {
 			add_action( "woocommerce_shortcode_before_{$type}_loop", array( $this, 'store_props' ) );
 
 			return $args;
-
 		}
 
 		/**
 		 * Get provider name
-		 *
-		 * @return string
 		 */
 		public function get_name() {
+
 			return __( 'Elementor Pro Products', 'jet-smart-filters' );
 		}
 
 		/**
 		 * Get provider ID
-		 *
-		 * @return string
 		 */
 		public function get_id() {
+
 			return 'epro-products';
 		}
 
 		/**
 		 * Returns Elementor Pro apropriate widget name
-		 * @return [type] [description]
 		 */
 		public function widget_name() {
+
 			return 'woocommerce-products';
 		}
 
 		/**
 		 * Returns settings to store list
-		 * @return [type] [description]
 		 */
 		public function settings_to_store() {
+
 			return array(
 				'rows',
 				'columns',
@@ -134,9 +124,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Products' ) ) {
 
 		/**
 		 * Save default widget settings
-		 *
-		 * @param  [type] $widget [description]
-		 * @return [type]         [description]
 		 */
 		public function store_default_settings( $widget ) {
 
@@ -163,12 +150,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Products' ) ) {
 			$default_settings['_el_widget_id'] = $widget->get_id();
 
 			jet_smart_filters()->providers->store_provider_settings( $this->get_id(), $default_settings, $query_id );
-
 		}
 
 		/**
 		 * Ensure all settings are passed
-		 * @return [type] [description]
 		 */
 		public function ensure_settings( $settings ) {
 
@@ -183,7 +168,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Products' ) ) {
 			}
 
 			return $settings;
-
 		}
 
 		public function ajax_get_content() {
@@ -233,15 +217,13 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Products' ) ) {
 			}
 
 			do_action( 'jet-smart-filters/providers/epro-products/after-ajax-content' );
-
 		}
 
 		/**
 		 * Store query ptoperties
-		 *
-		 * @return [type] [description]
 		 */
 		public function store_props() {
+
 			global $woocommerce_loop;
 
 			$query_id = $this->current_query_id;
@@ -255,7 +237,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Products' ) ) {
 				),
 				$query_id
 			);
-
 		}
 
 		/**
@@ -274,33 +255,29 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Products' ) ) {
 				),
 				$query_id
 			);
-
 		}
 
 		/**
 		 * Get provider wrapper selector
-		 *
-		 * @return string
 		 */
 		public function get_wrapper_selector() {
+
 			return '.elementor-widget-woocommerce-products .elementor-widget-container';
 		}
 
 		/**
 		 * Action for wrapper selector - 'insert' into it or 'replace'
-		 *
-		 * @return string
 		 */
 		public function get_wrapper_action() {
+
 			return 'replace';
 		}
 
 		/**
 		 * Set prefix for unique ID selector. Mostly is default '#' sign, but sometimes class '.' sign needed
-		 *
-		 * @return bool
 		 */
 		public function id_prefix() {
+
 			return '#';
 		}
 
@@ -316,13 +293,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Products' ) ) {
 			}
 
 			add_filter( 'woocommerce_shortcode_products_query', array( $this, 'add_query_args' ), 10, 2 );
-
 		}
 
 		/**
 		 * Add custom query arguments
-		 *
-		 * @param array $args [description]
 		 */
 		public function add_query_args( $args = array(), $attributes = array() ) {
 
@@ -355,9 +329,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Products' ) ) {
 			}
 
 			return $this->merge_query( $filter_args, $args );
-
 		}
-
 	}
-
 }

@@ -9,44 +9,44 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Date_Period_Filter' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Date_Period_Filter class
 	 */
 	class Jet_Smart_Filters_Date_Period_Filter extends Jet_Smart_Filters_Filter_Base {
-
 		/**
 		 * Get provider name
-		 *
-		 * @return string
 		 */
 		public function get_name() {
+
 			return __( 'Date Period', 'jet-smart-filters' );
 		}
 
 		/**
 		 * Get provider ID156
-		 *
-		 * @return string
 		 */
 		public function get_id() {
+
 			return 'date-period';
 		}
 
 		/**
+		 * Get icon URL
+		 */
+		public function get_icon_url() {
+
+			return jet_smart_filters()->plugin_url( 'admin/assets/img/filter-types/date-period.png' );
+		}
+
+		/**
 		 * Get provider wrapper selector
-		 *
-		 * @return string
 		 */
 		public function get_scripts() {
+
 			return false;
 		}
 
 		/**
 		 * Prepare filter template argumnets
-		 *
-		 * @param  [type] $args [description]
-		 * @return [type]       [description]
 		 */
 		public function prepare_args( $args ) {
 
@@ -100,7 +100,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Date_Period_Filter' ) ) {
 				'datepicker_button_text' => $datepicker_button_text,
 				'date_format'            => $date_format,
 			);
-
 		}
 
 		public function additional_filter_data_atts( $args ) {
@@ -110,9 +109,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Date_Period_Filter' ) ) {
 			if ( ! empty( $args['period_type'] ) ) $additional_filter_data_atts['data-period-type'] = $args['period_type'];
 
 			return $additional_filter_data_atts;
-
 		}
-
 	}
-
 }

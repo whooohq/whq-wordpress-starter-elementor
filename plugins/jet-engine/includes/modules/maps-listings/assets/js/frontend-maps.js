@@ -32,6 +32,15 @@
 			}
 		},
 
+		commonInit: function() {
+			// Register URL Action.
+			if ( undefined === window.JetEngine ) {
+				$( window ).on( 'jet-engine/frontend/loaded', JetEngineMaps.registerUrlAction );
+			} else {
+				JetEngineMaps.registerUrlAction();
+			}
+		},
+
 		widgetMap: function( $scope ) {
 
 			var $container = $scope.find( '.jet-map-listing' ),
@@ -317,47 +326,40 @@
 			this.markersData = {};
 		},
 
-		findClusterByMarker: function( markersClusterer, marker ) {
-			var clusters = markersClusterer.getClusters(),
-				result;
-
-			if ( !clusters.length ) {
-				return;
-			}
-
-			for ( var i = 0; i < clusters.length; i++ ) {
-				var markers = clusters[i].getMarkers();
-
-				for ( var j = 0; j < markers.length; j++ ) {
-
-					if ( markers[j] === marker && markers.length > 1) {
-						result = clusters[i];
-						break;
-					}
-				}
-			}
-
-			return result;
+		registerUrlAction: function() {
+			window.JetEngine.customUrlActions.addAction(
+				'open_map_listing_popup',
+				JetEngineMaps.openMapListingPopup
+			);
 		},
 
-		fitMapToMarker: function( marker, markersClusterer ) {
-			var cluster = this.findClusterByMarker( markersClusterer, marker ),
-				bounds,
-				map;
+		openMapListingPopup: function( settings ) {
 
-			if ( ! cluster ) {
+			if ( ! settings.id ) {
 				return;
 			}
 
-			map    = markersClusterer.getMap();
-			bounds = cluster.getBounds();
+			var popupID = settings.id;
 
-			mapProvider.fitMapBounds( {
-				map: map,
-				bounds: bounds,
-				marker: marker,
-				markersClusterer: markersClusterer,
-			} );
+			if ( undefined === JetEngineMaps.markersData[ popupID ] ) {
+				return;
+			}
+
+			for ( var i = 0; i < JetEngineMaps.markersData[ popupID ].length; i++ ) {
+
+				var marker = JetEngineMaps.markersData[ popupID ][i].marker,
+					map = mapProvider.getMarkerMap( marker );
+
+				if ( !map ) {
+					// A marker inside a cluster
+					var clustererIndex   = JetEngineMaps.markersData[ popupID ][i].clustererIndex,
+						markersClusterer = JetEngineMaps.clusterersData[ clustererIndex ];
+
+					mapProvider.fitMapToMarker( marker, markersClusterer );
+				}
+
+				mapProvider.triggerOpenPopup( marker );
+			}
 		},
 
 		customInitMapBySelector: function( $selector ) {
@@ -382,6 +384,8 @@
 	JetEngineMaps.initBlocks();
 
 	window.JetEngineMaps = JetEngineMaps;
+
+	JetEngineMaps.commonInit();
 
 	$( window ).trigger( 'jet-engine/frontend-maps/loaded' );
 

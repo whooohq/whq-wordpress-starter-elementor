@@ -1,6 +1,8 @@
 <?php
 namespace Jet_Engine\Query_Builder\Listings;
 
+use Jet_Engine\Query_Builder\Manager as Query_Manager;
+
 class Filters {
 
 	public function __construct() {
@@ -8,12 +10,18 @@ class Filters {
 		add_action( 'jet-engine/query-builder/query/after-query-setup', array( $this, 'maybe_setup_filter' ) );
 	}
 
+
 	/**
-	 * Check if JetSmartFilters request is currently processing
-	 *
+	 * Private filters request checker.
+	 * Used as separate method to filters its result later in single place in the code
+	 * 
 	 * @return boolean [description]
 	 */
-	public function is_filters_request( $query = null ) {
+	private function _is_filters_request( $query = null ) {
+
+		if ( function_exists( 'jet_smart_filters' ) && jet_smart_filters()->query->is_ajax_filter() ) {
+			return true;
+		}
 
 		if ( ! empty( $_REQUEST['action'] ) && 'jet_smart_filters' === $_REQUEST['action'] && ! empty( $_REQUEST['provider'] ) ) {
 			return true;
@@ -43,9 +51,9 @@ class Filters {
 			$provider = $jsf_data[0];
 			$query_id = isset( $jsf_data[1] ) ? $jsf_data[1] : null;
 
-			if ( $query_id && 'default' !== $query_id && $query->query_id ) {
+			if ( $query_id && 'default' !== $query_id && $query && $query->query_id ) {
 				return ( in_array( $provider, $allowed_providers ) && $query->query_id == $query_id );
-			} elseif ( $query->query_id && $query->query_id !== $query_id ) {
+			} elseif ( $query && $query->query_id && $query->query_id !== $query_id ) {
 				return false;
 			}
 
@@ -55,6 +63,15 @@ class Filters {
 
 		return false;
 
+	}
+
+	/**
+	 * Check if JetSmartFilters request is currently processing
+	 *
+	 * @return boolean [description]
+	 */
+	public function is_filters_request( $query = null ) {
+		return apply_filters( 'jet-engine/query-builder/filters/is-filters-request', $this->_is_filters_request( $query ), $query );
 	}
 
 	/**
@@ -89,7 +106,7 @@ class Filters {
 			$remove_hook = true;
 
 			// For compatibility with the Load More feature.
-			add_filter( 'jet-engine/listing/grid/query-args', function ( $args, $widget, $settings ) use ( $filtered_query ) {
+			add_filter( 'jet-engine/listing/grid/query-args', function ( $args, $widget, $settings ) use ( $filtered_query, $query ) {
 
 				$use_load_more = ! empty( $settings['use_load_more'] ) ? $settings['use_load_more'] : false;
 				$use_load_more = filter_var( $use_load_more, FILTER_VALIDATE_BOOLEAN );
@@ -97,6 +114,8 @@ class Filters {
 				if ( $use_load_more && ! empty( $filtered_query ) ) {
 					$args['filtered_query'] = $filtered_query;
 				}
+
+				$args = Query_Manager::instance()->listings->query->maybe_add_load_more_query_args( $args, $query, $settings );
 
 				return $args;
 			}, 10, 3 );
@@ -106,6 +125,8 @@ class Filters {
 				if ( ! isset( $data['fragments'] ) ) {
 					$data['fragments'] = array();
 				}
+
+				$query->dynamic_query_changed = false;
 
 				$data['fragments'][ '.jet-engine-query-count.count-type-total.query-' . $query->id ] = $query->get_items_total_count();
 				$data['fragments'][ '.jet-engine-query-count.count-type-visible.query-' . $query->id ] = $query->get_items_page_count();
@@ -151,7 +172,7 @@ class Filters {
 			$query_id = $query->query_id;
 		}
 
-		if ( ! $query_id && $this->is_filters_request() ) {
+		if ( ! $query_id && $this->is_filters_request( $query ) ) {
 			$query_id = jet_smart_filters()->query->get_current_provider( 'query_id' );
 		}
 

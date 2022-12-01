@@ -375,10 +375,12 @@ class Ajax_Handlers {
 				$item_id    = $item['parent_object_id'];
 				$current_id = $item['child_object_id'];
 				$type       = $relation->get_args( 'parent_object' );
+				$allow_del  = $relation->get_args( 'child_allow_delete' );
 			} else {
 				$item_id    = $item['child_object_id'];
 				$current_id = $item['parent_object_id'];
 				$type       = $relation->get_args( 'child_object' );
+				$allow_del  = $relation->get_args( 'parent_allow_delete' );
 			}
 
 			$columns   = $relation->get_table_columns_for_object( $type );
@@ -399,7 +401,7 @@ class Ajax_Handlers {
 				$item['actions']['edit'] = jet_engine()->relations->types_helper->get_type_item_edit_url( $type, $item_id, $relation );
 			}
 
-			if ( jet_engine()->relations->types_helper->current_user_can( 'delete', $type, $item_id, $type_data[1] ) ) {
+			if ( $allow_del && jet_engine()->relations->types_helper->current_user_can( 'delete', $type, $item_id, $type_data[1] ) ) {
 				$item['actions']['trash'] = true;
 			}
 

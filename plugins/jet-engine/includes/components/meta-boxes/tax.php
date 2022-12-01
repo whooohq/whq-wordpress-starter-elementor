@@ -30,6 +30,10 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax_Meta' ) ) {
 			$this->tax      = $taxonomy;
 			$this->meta_box = $meta_box;
 
+			if ( ! empty( $args['hide_field_names'] ) ) {
+				$this->hide_field_names = $args['hide_field_names'];
+			}
+
 			$fields = $this->prepare_meta_fields( $meta_box );
 
 			if ( ! empty( $this->show_in_rest ) ) {

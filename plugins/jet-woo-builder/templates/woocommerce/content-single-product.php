@@ -9,10 +9,10 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( jet_woo_builder_integration()->in_elementor() ) {
+if ( jet_woo_builder()->elementor_views->in_elementor() ) {
 	if ( is_product() || ( ! empty( $post->post_content ) && strstr( $post->post_content, '[product_page' ) ) ) {
 		$format  = '<h5>%s</h5>';
-		$message = esc_html__( 'JetWooBuilder Template is enabled, however, it can&rsquo;t be displayed in shortcode when you&rsquo;re on Elementor editor page.', 'jet-woo-builder' );
+		$message = __( 'JetWooBuilder Template is enabled, however, it can&rsquo;t be displayed in shortcode when you&rsquo;re on Elementor editor page.', 'jet-woo-builder' );
 
 		printf( $format, $message );
 
@@ -29,7 +29,7 @@ if ( post_password_required() ) {
 	return;
 }
 
-$template = apply_filters( 'jet-woo-builder/current-template/template-id', jet_woo_builder_integration_woocommerce()->get_custom_single_template() );
+$template = apply_filters( 'jet-woo-builder/current-template/template-id', jet_woo_builder()->woocommerce->get_custom_single_template() );
 
 jet_woo_builder()->admin_bar->register_post_item( $template );
 ?>

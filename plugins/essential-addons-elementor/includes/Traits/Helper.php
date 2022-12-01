@@ -86,6 +86,54 @@ trait Helper
         }
     }
 
+    public function login_register_mailchimp_integration_subscribe( $user_id, $user_data, $settings )
+    {
+        if ( empty($user_data['user_email']) ) {
+            return;
+        }
+
+        if( !( !empty( $settings['eael_register_mailchimp_integration_enable'] ) && 'yes' === $settings['eael_register_mailchimp_integration_enable'] ) ){
+            return;
+        }
+        $api_key = get_option('eael_lr_mailchimp_api_key');
+        $list_id = !empty($settings['eael_mailchimp_lists']) ? sanitize_text_field( $settings['eael_mailchimp_lists'] ) : '';
+
+        if ( empty($api_key) || empty($list_id)) {
+            return;
+        }
+        $merge_fields = array(
+            'FNAME' => !empty($user_data['first_name']) ? sanitize_text_field( $user_data['first_name'] ) : '',
+            'LNAME' => !empty($user_data['last_name']) ? sanitize_text_field( $user_data['last_name'] ) : '',
+        );
+
+        $email = sanitize_email( $user_data['user_email'] );
+
+        $response = wp_remote_post(
+            'https://' . substr($api_key, strpos(
+                $api_key,
+                '-'
+            ) + 1) . '.api.mailchimp.com/3.0/lists/' . $list_id . '/members/' . md5(strtolower( $email )),
+            [
+                'method' => 'PUT',
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Basic ' . base64_encode('user:' . $api_key),
+                ],
+                'body' => json_encode([
+                    'email_address' => $email,
+                    'status' => 'subscribed',
+                    'merge_fields' => $merge_fields,
+                ]),
+            ]
+        );
+
+        if (!is_wp_error($response)) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
     public function ajax_post_search()
     {
         if (!isset($_POST['_nonce']) && !wp_verify_nonce($_POST['_nonce'], 'eael_ajax_post_search_nonce_action')) {
@@ -387,7 +435,8 @@ trait Helper
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
 			'no_found_rows'          => true,
-			'post_status'            => 'publish',
+			'post_status'            => ['publish','inherit'],
+			'post__not_in'            => !empty( $_POST[ 'settings' ][ 'current_post_id' ] ) ? [ intval( $_POST[ 'settings' ][ 'current_post_id' ] ) ] : [],
 		];
 
 		if ( !empty( $_POST[ 'settings' ][ 'offset' ] ) ) {
@@ -417,23 +466,42 @@ trait Helper
             $post_args = $this->manage_include_exclude_category( $_POST[ 'settings' ][ 'exclude' ], $post_args, 'exclude' );
         }
 
-		$query                   = new \WP_Query( $post_args );
+        $show_total_results = ! empty( $_POST['show_search_result_all_results'] ) ? intval( $_POST['show_search_result_all_results'] ) : intval( 1 );
+        if( $show_total_results ){
+            $post_args_all_posts = isset( $post_args ) && is_array( $post_args ) ? $post_args : array();
+            $post_args_all_posts['posts_per_page'] = -1;
+            $post_args_all_posts['fields'] = 'ids';
+
+    		$query_all_posts = new \WP_Query( $post_args_all_posts );
+            $response['all_posts_count'] = $query_all_posts->post_count;
+            $response['all_posts_count'] = ! empty( $response['all_posts_count'] ) ? number_format( intval( $response['all_posts_count'] ) , 0, '.', ',' ) : intval( $response['all_posts_count'] );
+			wp_reset_postdata();
+        }
+
+        $query                   = new \WP_Query( $post_args );
 		$post_lists              = '';
 		$response[ 'more_data' ] = $query->post_count >= $post_args[ 'posts_per_page' ];
 		if ( $query->have_posts() ) {
 			while ( $query->have_posts() ) {
 				$query->the_post();
 				$post_lists .= sprintf( '<a href="%s" class="eael-advanced-search-content-item">', esc_url( get_the_permalink() ) );
-				if ( has_post_thumbnail() && !empty( $_POST[ 'settings' ][ 'show_content_image' ] ) ) {
-					$image      = wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID() ), 'single-post-thumbnail' );
-					$post_lists .= sprintf( '<div class="item-thumb"><img src="%s"></div>', current( $image ) );
-				}
+				if ( !empty( $_POST[ 'settings' ][ 'show_content_image' ] ) ) {
+					$image      =  has_post_thumbnail() ? wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID() ), 'single-post-thumbnail' ) : ( get_post_type() == 'attachment' ? wp_get_attachment_image_src( get_the_ID(), 'thumbnail', true ) : '' );
+                    $post_lists .= is_array( $image ) ? sprintf( '<div class="item-thumb"><img src="%s"></div>', current( $image ) ) : '';
+                }
 
-				$post_lists .= '<div class="item-content"><h4>' . strip_tags( get_the_title() ) . '</h4><p>' . wp_trim_words( strip_shortcodes( get_the_excerpt() ), 30 ) . '</p></div>';
+                $title = '<h4>' . $this->highlight_search_keyword( strip_tags( get_the_title() ), ucwords( $search ) ) . '</h4>';
+
+                $content = '<p>' . $this->highlight_search_keyword( wp_trim_words( strip_shortcodes( get_the_excerpt() ), 30 ), $search ) . '</p>';
+
+                $post_lists .= sprintf( '<div class="item-content">%s %s</div>', $title , $content );
 				$post_lists .= '</a>';
 			}
 			wp_reset_postdata();
+
 			$response[ 'post_lists' ] = $post_lists;
+            $response['offset'] = isset( $post_args[ 'offset' ] ) ? $post_args[ 'offset' ] : 0;
+            $response['post_count'] = $query->post_count;
 		}
 
 		$show_popular_keyword = !empty( $_POST[ 'settings' ][ 'show_popular_keyword' ] );
@@ -446,9 +514,21 @@ trait Helper
 			}
 		}
 
-		wp_send_json_success( $response );
-
+        wp_send_json_success( $response );
 	}
+
+    /**
+     * Highlight search keyword
+     * @param $content
+     * @param $search
+     * @return string
+     */
+    public function highlight_search_keyword( $content, $search ) {
+        $search_keys = implode('|', explode(' ', $search));
+        $content = preg_replace('/(' . $search_keys .')/iu', "<strong>$1</strong>", $content);
+
+        return $content;
+    }
 
     /**
      * manage_include_exclude_category

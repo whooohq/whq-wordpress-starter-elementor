@@ -24,6 +24,8 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Frontend' ) ) {
 
 		private $reset_excerpt_flag = false;
 
+		private $inner_templates = array();
+
 		/**
 		 * Constructor for the class
 		 */
@@ -144,9 +146,13 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Frontend' ) ) {
 			$initial_processed_listing_id = $this->processed_listing_id;
 			$this->processed_listing_id   = $listing_id;
 
+			$initial_inner_templates = $this->inner_templates;
+			$this->inner_templates   = array();
+
 			add_filter( 'elementor/frontend/the_content', array( $this, 'add_link_to_content' ) );
 
 			add_action( 'elementor/frontend/before_get_builder_content', array( $this, 'maybe_reset_excerpt_flag' ), 10, 2 );
+			add_action( 'elementor/frontend/before_get_builder_content', array( $this, 'find_inner_templates' ) );
 
 			$content = Elementor\Plugin::instance()->frontend->get_builder_content_for_display( $listing_id, $is_edit_mode );
 
@@ -158,11 +164,15 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Frontend' ) ) {
 			if ( null === $initial_processed_listing_id ) {
 				remove_filter( 'elementor/frontend/the_content', array( $this, 'add_link_to_content' ) );
 				remove_action( 'elementor/frontend/before_get_builder_content', array( $this, 'maybe_reset_excerpt_flag' ), 10 );
+				remove_action( 'elementor/frontend/before_get_builder_content', array( $this, 'find_inner_templates' ) );
 			}
 
-			$this->processed_listing_id = $initial_processed_listing_id;
+			$inner_templates = array_unique( $this->inner_templates );
 
-			return apply_filters( 'jet-engine/elementor-views/frontend/listing-content', $content, $listing_id );
+			$this->processed_listing_id = $initial_processed_listing_id;
+			$this->inner_templates      = $initial_inner_templates;
+
+			return apply_filters( 'jet-engine/elementor-views/frontend/listing-content', $content, $listing_id, $inner_templates );
 		}
 
 		/**
@@ -199,6 +209,50 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Frontend' ) ) {
 
 				$this->reset_excerpt_flag = true;
 				$this->add_to_css_added( $post_id );
+			}
+		}
+
+		/**
+		 * Find inner templates ids in listing item.
+		 *
+		 * @param $document
+		 */
+		public function find_inner_templates( $document ) {
+
+			$doc_name = $document->get_name();
+			$doc_id   = $document->get_main_id();
+
+			if ( in_array( $doc_name, array( 'section', 'page' ) ) && ! in_array( $doc_id, $this->inner_templates ) ) {
+
+				$this->inner_templates[] = $doc_id;
+
+				$dynamic_tags = Elementor\Plugin::instance()->dynamic_tags;
+
+				add_action( 'elementor/css-file/post/enqueue', function ( $css_file ) use ( $doc_id, $dynamic_tags ) {
+
+					if ( $css_file instanceof Elementor\Core\DynamicTags\Dynamic_CSS ) {
+						return;
+					}
+
+					if ( (int) $doc_id !== (int) $css_file->get_post_id() ) {
+						return;
+					}
+
+					remove_action( 'elementor/css-file/post/enqueue', array( $dynamic_tags, 'after_enqueue_post_css' ) );
+				}, 9 );
+
+				add_action( 'elementor/css-file/post/enqueue', function ( $css_file ) use ( $doc_id, $dynamic_tags ) {
+
+					if ( $css_file instanceof Elementor\Core\DynamicTags\Dynamic_CSS ) {
+						return;
+					}
+
+					if ( (int) $doc_id !== (int) $css_file->get_post_id() ) {
+						return;
+					}
+
+					add_action( 'elementor/css-file/post/enqueue', array( $dynamic_tags, 'after_enqueue_post_css' ) );
+				}, 11 );
 			}
 		}
 

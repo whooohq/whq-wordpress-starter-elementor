@@ -21,6 +21,16 @@ class Jet_Woo_Builder_Document extends Jet_Woo_Builder_Document_Base {
 		return esc_html__( 'Jet Woo Single Template', 'jet-woo-builder' );
 	}
 
+	public static function get_properties() {
+
+		$properties = parent::get_properties();
+
+		$properties['woo_builder_template_settings'] = true;
+
+		return $properties;
+
+	}
+
 	public function get_wp_preview_url() {
 
 		$main_post_id   = $this->get_main_id();

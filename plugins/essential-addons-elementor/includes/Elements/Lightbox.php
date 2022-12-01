@@ -797,7 +797,6 @@ class Lightbox extends Widget_Base
 			[
 				'name'                  => 'title_typography',
 				'label'                 => __('Typography', 'essential-addons-elementor'),
-				'scheme'                => Typography::TYPOGRAPHY_4,
 				'selector'              => '.eael-lightbox-popup-window-{{ID}} .eael-lightbox-header .eael-lightbox-title, .eael-lightbox-modal-window-{{ID}} .eael-lightbox-header .eael-lightbox-title',
 			]
 		);
@@ -1306,22 +1305,41 @@ class Lightbox extends Widget_Base
 			]
 		);
 
-		$this->add_control(
-			'eael_lightbox_open_btn_border_radius',
-			[
-				'label' => esc_html__('Button Border Radius', 'essential-addons-elementor'),
-				'type'  => Controls_Manager::SLIDER,
-				'range' => [
-					'px' => [
-						'min' => 0,
-						'max' => 100,
-					],
-				],
-				'selectors' => [
-					'{{WRAPPER}} .eael-lightbox-btn > span' => 'border-radius: {{SIZE}}{{UNIT}};',
-				]
-			]
-		);
+        $this->add_control(
+            'eael_lightbox_open_btn_border_radius',
+            [
+                'label' => esc_html__('Button Border Radius', 'essential-addons-elementor'),
+                'type'  => Controls_Manager::SLIDER,
+                'range' => [
+                    'px' => [
+                        'min' => 0,
+                        'max' => 100,
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .eael-lightbox-btn > span' => 'border-radius: {{SIZE}}{{UNIT}};',
+                ]
+            ]
+        );
+
+        $this->add_control(
+            'eael_lightbox_icon_size',
+            [
+                'label' => esc_html__('Icon Size', 'essential-addons-elementor'),
+                'type'  => Controls_Manager::SLIDER,
+                'range' => [
+                    'px' => [
+                        'min' => 0,
+                        'max' => 500,
+                    ],
+                ],
+                'default' => ['size'=>'16','unit'=>'px'],
+                'selectors' => [
+                    '{{WRAPPER}} .eael-lightbox-btn > span i' => 'font-size: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .eael-lightbox-btn > span svg' => 'width: {{SIZE}}{{UNIT}};height: {{SIZE}}{{UNIT}};line-height: {{SIZE}}{{UNIT}};',
+                ]
+            ]
+        );
 
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),

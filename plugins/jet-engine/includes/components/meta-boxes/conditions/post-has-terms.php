@@ -52,6 +52,8 @@ class Post_Has_Terms extends Base {
 			return ! empty( $terms );
 		}
 
+		$terms_to_check = apply_filters( 'jet-engine/meta-boxes/conditions/post-has-terms/check-terms', $terms_to_check, $tax_to_check );
+
 		$intersect = array_intersect( $terms, $terms_to_check );
 
 		return ! empty( $intersect );

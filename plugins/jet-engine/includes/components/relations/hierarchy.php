@@ -67,9 +67,10 @@ class Hierarchy {
 		$current_slug  = 'rel_' . $relation_id;
 		$parent_slug   = 'rel_' . $parent_rel_id;
 
+		// SQL changed in v3.0.4 to fix https://github.com/Crocoblock/issues-tracker/issues/809
 		$result = $child_relation->db->raw_query( "SELECT {$current_slug}.child_object_id AS id FROM {$current_table} AS {$current_slug}
 		INNER JOIN {$parent_table} AS {$parent_slug} ON {$parent_slug}.child_object_id = {$current_slug}.parent_object_id
-		WHERE {$parent_slug}.parent_object_id = {$object_id} AND {$parent_slug}.rel_id = {$parent_rel_id}" );
+		WHERE {$parent_slug}.parent_object_id = {$object_id} AND {$parent_slug}.rel_id = {$parent_rel_id} AND {$current_slug}.parent_rel = {$parent_rel_id} AND {$current_slug}.rel_id = {$relation_id}" );
 
 		if ( empty( $result ) ) {
 			return array( PHP_INT_MAX );
@@ -114,9 +115,10 @@ class Hierarchy {
 		$current_slug  = 'rel_' . $relation_id;
 		$parent_slug   = 'rel_' . $parent_rel_id;
 
+		// SQL changed in v3.0.4 to fix https://github.com/Crocoblock/issues-tracker/issues/809
 		$result = $parent_relation->db->raw_query( "SELECT {$parent_slug}.parent_object_id AS id FROM {$parent_table} AS {$parent_slug}
 		INNER JOIN {$current_table} AS {$current_slug} ON {$current_slug}.parent_object_id = {$parent_slug}.child_object_id
-		WHERE {$current_slug}.child_object_id = {$object_id} AND {$current_slug}.rel_id = {$relation_id}" );
+		WHERE {$current_slug}.child_object_id = {$object_id} AND {$current_slug}.rel_id = {$relation_id} AND {$parent_slug}.rel_id = {$parent_rel_id}" );
 
 		if ( empty( $result ) ) {
 			return array( 'not-found' );

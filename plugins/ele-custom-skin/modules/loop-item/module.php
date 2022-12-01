@@ -81,7 +81,7 @@ final class Ele_Custom_Loop_Item{
 	public function init() {
 
 		// Add Plugin actions
-		add_action( 'elementor/widgets/widgets_registered', [ $this, 'init_widgets' ] );
+		add_action( 'elementor/widgets/register', [ $this, 'init_widgets' ] );
 		add_action( 'elementor/controls/controls_registered', [ $this, 'init_controls' ] );
     $this->init_includes();
  
@@ -103,7 +103,7 @@ final class Ele_Custom_Loop_Item{
 		require_once( __DIR__ . '/widgets/loop-item.php' );
 
 		// Register widget
-		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Ele_Custom_Loop_Item_Widget() );
+		\Elementor\Plugin::instance()->widgets_manager->register( new \Ele_Custom_Loop_Item_Widget() );
 
 	}
 	/**

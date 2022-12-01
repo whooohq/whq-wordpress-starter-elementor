@@ -32,7 +32,75 @@ class Package {
 		require_once $this->package_path( 'query-builder/manager.php' );
 		Query_Builder\Manager::instance();
 
-		add_action( 'jet-engine/elementor-views/dynamic-tags/register', array( $this, 'register_dynamic_tags' ) );
+		add_filter( 'jet-engine/modules/dynamic-visibility/conditions/groups', [ $this, 'register_conditions_group' ] );
+		add_action( 'jet-engine/modules/dynamic-visibility/conditions/register', [ $this, 'register_conditions' ] );
+
+		add_action( 'jet-engine/elementor-views/dynamic-tags/register', [ $this, 'register_dynamic_tags' ] );
+		add_action( 'jet-engine/register-macros', [ $this, 'register_macros' ] );
+
+	}
+
+	public function register_macros() {
+		require_once $this->package_path( 'macros/products-in-cart.php' );
+		new Macros\Products_In_Cart();
+	}
+
+	/**
+	 * Register condition group.
+	 *
+	 * Register and returns specific WooCommerce dynamic visibility conditions group.
+	 *
+	 * @since  3.0.2
+	 * @access public
+	 *
+	 * @param array $groups Predefined groups list.
+	 *
+	 * @return mixed
+	 */
+	public function register_conditions_group( $groups ) {
+
+		$groups['woocommerce'] = [
+			'label'   => __( 'WooCommerce', 'jet-engine' ),
+			'options' => [],
+		];
+
+		return $groups;
+
+	}
+
+	/**
+	 * Register conditions.
+	 *
+	 * Register specific WooCommerce dynamic visibility conditions.
+	 *
+	 * @since  3.0.2
+	 * @access public
+	 *
+	 * @param object $conditions_manager Dynamic visibility condition manager instance.
+	 */
+	public function register_conditions( $conditions_manager ) {
+
+		require_once $this->package_path( 'conditions/has-enough-stock.php' );
+		require_once $this->package_path( 'conditions/is-downloadable.php' );
+		require_once $this->package_path( 'conditions/is-featured.php' );
+		require_once $this->package_path( 'conditions/is-in-stock.php' );
+		require_once $this->package_path( 'conditions/is-on-backorder.php' );
+		require_once $this->package_path( 'conditions/is-on-sale.php' );
+		require_once $this->package_path( 'conditions/is-purchasable.php' );
+		require_once $this->package_path( 'conditions/is-sold-individually.php' );
+		require_once $this->package_path( 'conditions/is-type.php' );
+		require_once $this->package_path( 'conditions/is-virtual.php' );
+
+		$conditions_manager->register_condition( new Conditions\Has_Enough_Stock() );
+		$conditions_manager->register_condition( new Conditions\Is_Downloadable() );
+		$conditions_manager->register_condition( new Conditions\Is_Featured() );
+		$conditions_manager->register_condition( new Conditions\Is_In_Stock() );
+		$conditions_manager->register_condition( new Conditions\Is_On_Backorder() );
+		$conditions_manager->register_condition( new Conditions\Is_On_Sale() );
+		$conditions_manager->register_condition( new Conditions\Is_Purchasable() );
+		$conditions_manager->register_condition( new Conditions\Is_Sold_Individually() );
+		$conditions_manager->register_condition( new Conditions\Is_Type() );
+		$conditions_manager->register_condition( new Conditions\Is_Virtual() );
 
 	}
 

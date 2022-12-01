@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_Archive_Category_Title
- * Name: Title
+ * Name: Archive Category Title
  * Slug: jet-woo-builder-archive-category-title
  */
 
@@ -20,7 +20,7 @@ class Jet_Woo_Builder_Archive_Category_Title extends Widget_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Title', 'jet-woo-builder' );
+		return __( 'Archive Category Title', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
@@ -41,40 +41,26 @@ class Jet_Woo_Builder_Archive_Category_Title extends Widget_Base {
 
 	protected function register_controls() {
 
-		$css_scheme = apply_filters(
-			'jet-woo-builder/jet-archive-category-title/css-scheme',
-			array(
-				'title' => '.jet-woo-builder-archive-category-title',
-			)
-		);
-
 		$this->start_controls_section(
 			'section_general',
-			array(
-				'label' => esc_html__( 'Content', 'jet-woo-builder' ),
-			)
+			[
+				'label' => __( 'Title', 'jet-woo-builder' ),
+			]
 		);
 
 		$this->add_control(
 			'is_linked',
-			array(
-				'label'        => esc_html__( 'Add link to title', 'jet-woo-builder' ),
-				'type'         => Controls_Manager::SWITCHER,
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => '',
-			)
+			[
+				'label' => __( 'Enable Permalink', 'jet-woo-builder' ),
+				'type'  => Controls_Manager::SWITCHER,
+			]
 		);
 
 		$this->add_control(
 			'open_new_tab',
 			[
-				'label'     => esc_html__( 'Open in new window', 'jet-woo-builder' ),
+				'label'     => __( 'Open in New Window', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::SWITCHER,
-				'label_on'  => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off' => esc_html__( 'No', 'jet-woo-builder' ),
-				'default'   => '',
 				'condition' => [
 					'is_linked' => 'yes',
 				],
@@ -83,18 +69,18 @@ class Jet_Woo_Builder_Archive_Category_Title extends Widget_Base {
 
 		$this->add_control(
 			'title_html_tag',
-			array(
-				'label'   => esc_html__( 'Title HTML Tag', 'jet-woo-builder' ),
+			[
+				'label'   => __( 'HTML Tag', 'jet-woo-builder' ),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'h5',
 				'options' => jet_woo_builder_tools()->get_available_title_html_tags(),
-			)
+			]
 		);
 
 		$this->add_control(
 			'title_trim_type',
 			[
-				'label'   => esc_html__( 'Title Trim Type', 'jet-woo-builder' ),
+				'label'   => __( 'Trim Type', 'jet-woo-builder' ),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'word',
 				'options' => jet_woo_builder_tools()->get_available_title_trim_types(),
@@ -104,33 +90,28 @@ class Jet_Woo_Builder_Archive_Category_Title extends Widget_Base {
 		$this->add_control(
 			'title_length',
 			[
-				'label'       => esc_html__( 'Title Words/Letters Count', 'jet-woo-builder' ),
-				'description' => esc_html__( 'Set -1 to show full title and 0 to hide it.', 'jet-woo-builder' ),
+				'label'       => __( 'Length', 'jet-woo-builder' ),
+				'description' => __( 'Set -1 to show full title and 0 to hide it.', 'jet-woo-builder' ),
 				'type'        => Controls_Manager::NUMBER,
 				'min'         => -1,
-				'default'     => -1,
+				'default'     => 10,
+			]
+		);
+
+		$this->add_control(
+			'title_line_wrap',
+			[
+				'label'        => __( 'Enable Line Wrap', 'jet-woo-builder' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'prefix_class' => 'jet-woo-builder-title-line-wrap-',
 			]
 		);
 
 		$this->add_control(
 			'title_tooltip',
 			[
-				'label'        => esc_html__( 'Enable Title Tooltip', 'jet-woo-builder' ),
-				'type'         => Controls_Manager::SWITCHER,
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => '',
-				'conditions'   => [
-					'relation' => 'or',
-					'terms'    => [
-						[
-							'name'     => 'title_length',
-							'operator' => '>',
-							'value'    => 0,
-						],
-					],
-				],
+				'label' => __( 'Enable Tooltip', 'jet-woo-builder' ),
+				'type'  => Controls_Manager::SWITCHER,
 			]
 		);
 
@@ -138,19 +119,18 @@ class Jet_Woo_Builder_Archive_Category_Title extends Widget_Base {
 
 		$this->start_controls_section(
 			'section_archive_category_title_style',
-			array(
-				'label'      => esc_html__( 'Title', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
+			[
+				'label' => __( 'Title', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
 		);
 
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
-			array(
+			[
 				'name'     => 'archive_category_title_typography',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['title'],
-			)
+				'selector' => $this->css_selector(),
+			]
 		);
 
 		$this->start_controls_tabs( 'tabs_archive_category_title_style' );
@@ -164,25 +144,24 @@ class Jet_Woo_Builder_Archive_Category_Title extends Widget_Base {
 
 		$this->add_control(
 			'archive_category_title_color_normal',
-			array(
-				'label'     => esc_html__( 'Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['title'] => 'color: {{VALUE}}',
-				),
-			)
+				'selectors' => [
+					$this->css_selector() => 'color: {{VALUE}}',
+				],
+			]
 		);
 
 		$this->add_control(
 			'archive_category_title_bg_normal',
-			array(
-				'label'     => esc_html__( 'Background Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Background Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['title'] => 'background-color: {{VALUE}}',
-				),
-				'separator' => 'after',
-			)
+				'selectors' => [
+					$this->css_selector() => 'background-color: {{VALUE}}',
+				],
+			]
 		);
 
 		$this->end_controls_tab();
@@ -196,36 +175,38 @@ class Jet_Woo_Builder_Archive_Category_Title extends Widget_Base {
 
 		$this->add_control(
 			'archive_category_title_color_hover',
-			array(
-				'label'     => esc_html__( 'Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['title'] . ':hover' => ' color: {{VALUE}}',
-				),
-			)
+				'selectors' => [
+					$this->css_selector( ':hover' ) => ' color: {{VALUE}}',
+				],
+			]
 		);
 
 		$this->add_control(
 			'archive_category_title_bg_hover',
-			array(
-				'label'     => esc_html__( 'Background Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Background Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['title'] . ':hover' => 'background-color: {{VALUE}}',
-				),
-			)
+				'selectors' => [
+					$this->css_selector( ':hover' ) => 'background-color: {{VALUE}}',
+				],
+			]
 		);
 
 		$this->add_control(
 			'archive_category_title_border_hover',
-			array(
-				'label'     => esc_html__( 'Border Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Border Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['title'] . ':hover' => 'border-color: {{VALUE}}',
-				),
-				'separator' => 'after',
-			)
+				'selectors' => [
+					$this->css_selector( ':hover' ) => 'border-color: {{VALUE}}',
+				],
+				'condition' => [
+					'archive_category_title_border_border!' => '',
+				],
+			]
 		);
 
 		$this->end_controls_tab();
@@ -233,72 +214,71 @@ class Jet_Woo_Builder_Archive_Category_Title extends Widget_Base {
 		$this->end_controls_tabs();
 
 		$this->add_group_control(
-			Group_Control_Box_Shadow::get_type(),
-			array(
-				'name'     => 'archive_category_title_shadow',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['title'],
-			)
-		);
-
-		$this->add_group_control(
 			Group_Control_Border::get_type(),
-			array(
-				'name'        => 'archive_category_title_border',
-				'label'       => esc_html__( 'Border', 'jet-woo-builder' ),
-				'placeholder' => '1px',
-				'default'     => '1px',
-				'selector'    => '{{WRAPPER}} ' . $css_scheme['title'],
-			)
+			[
+				'name'      => 'archive_category_title_border',
+				'label'     => __( 'Border', 'jet-woo-builder' ),
+				'separator' => 'before',
+				'selector'  => $this->css_selector(),
+			]
 		);
 
 		$this->add_control(
 			'archive_category_title_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['title'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; overflow:hidden;',
-				),
-			)
+				'size_units' => [ 'px', '%' ],
+				'selectors'  => [
+					$this->css_selector() => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; overflow:hidden;',
+				],
+			]
 		);
 
-		$this->add_responsive_control(
-			'archive_category_title_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['title'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name'     => 'archive_category_title_shadow',
+				'selector' => $this->css_selector(),
+			]
 		);
 
 		$this->add_responsive_control(
 			'archive_category_title_margin',
-			array(
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
+			[
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['title'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				'size_units' => [ 'px', '%' ],
+				'selectors'  => [
+					$this->css_selector() => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'archive_category_title_padding',
+			[
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%' ],
+				'selectors'  => [
+					$this->css_selector() => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'archive_category_title_alignment',
-			array(
-				'label'     => esc_html__( 'Alignment', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Alignment', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::CHOOSE,
 				'default'   => 'left',
 				'options'   => jet_woo_builder_tools()->get_available_h_align_types( true ),
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['title'] => 'text-align: {{VALUE}};',
-				),
+				'selectors' => [
+					$this->css_selector() => 'text-align: {{VALUE}};',
+				],
 				'classes'   => 'elementor-control-align',
-			)
+			]
 		);
 
 		$this->end_controls_section();
@@ -306,66 +286,66 @@ class Jet_Woo_Builder_Archive_Category_Title extends Widget_Base {
 	}
 
 	/**
-	 * Returns CSS selector for nested element
+	 * CSS selector.
 	 *
-	 * @param null $el
+	 * Returns CSS selector for nested element.
+	 *
+	 * @since  1.3.0
+	 * @access public
+	 *
+	 * @param null $el Selector.
 	 *
 	 * @return string
 	 */
 	public function css_selector( $el = null ) {
-		return sprintf( '{{WRAPPER}} .%1$s %2$s', $this->get_name(), $el );
+		return sprintf( '{{WRAPPER}} .%1$s%2$s', $this->get_name(), $el );
 	}
 
 	public static function render_callback( $settings = array(), $args = [] ) {
 
-		$category    = ! empty( $args ) ? $args['category'] : get_queried_object();
-		$heading_tag = isset( $settings['title_html_tag'] ) ? $settings['title_html_tag'] : 'h5';
-		$open_wrap   = '<' . $heading_tag . '>';
-		$close_wrap  = '</' . $heading_tag . '>';
-		$target_attr = 'yes' === $settings['open_new_tab'] ? 'target="_blank"' : '';
+		$category      = ! empty( $args ) ? $args['category'] : get_queried_object();
+		$open_wrap     = '<' . $settings['html_tag'] . '>';
+		$close_wrap    = '</' . $settings['html_tag'] . '>';
+		$target_attr   = $settings['open_new_tab'] ? 'target="_blank"' : '';
+		$title_tooltip = '';
 
-		if ( isset( $settings['is_linked'] ) && 'yes' === $settings['is_linked'] ) {
+		if ( $settings['enable_permalink'] ) {
 			$open_wrap  = $open_wrap . '<a href="' . jet_woo_builder_tools()->get_term_permalink( $category->term_id ) . '" ' . $target_attr . '>';
 			$close_wrap = '</a>' . $close_wrap;
 		}
 
-		$title         = jet_woo_builder_tools()->trim_text(
+		$title = jet_woo_builder_tools()->trim_text(
 			$category->name,
-			isset ( $settings['title_length'] ) ? $settings['title_length'] : 1,
-			$settings['title_trim_type'],
+			$settings['title_length'],
+			$settings['trim_type'],
 			'...'
 		);
-		$title_tooltip = '';
 
-		if ( -1 !== $settings['title_length'] && 'yes' === $settings['title_tooltip'] ) {
+		if ( $settings['title_tooltip'] ) {
 			$title_tooltip = 'title="' . $category->name . '"';
 		}
 
-		echo $open_wrap;
-		echo '<div class="jet-woo-builder-archive-category-title" ' . $title_tooltip . '>';
-		echo $title;
-		echo '</div>';
-		echo $close_wrap;
+		printf( '%s <div class="jet-woo-builder-archive-category-title" %s> %s </div> %s', $open_wrap, $title_tooltip, $title, $close_wrap );
 
 	}
 
 	protected function render() {
 
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
-		$macros_settings = array(
-			'is_linked'       => $settings['is_linked'],
-			'open_new_tab'    => $settings['open_new_tab'],
-			'title_html_tag'  => jet_woo_builder_tools()->sanitize_html_tag( $settings['title_html_tag'] ),
-			'title_trim_type' => $settings['title_trim_type'],
-			'title_length'    => $settings['title_length'],
-			'title_tooltip'   => $settings['title_tooltip'],
-		);
+		$macros_settings = [
+			'enable_permalink' => isset( $settings['is_linked'] ) ? filter_var( $settings['is_linked'], FILTER_VALIDATE_BOOLEAN ) : false,
+			'open_new_tab'     => isset( $settings['open_new_tab'] ) ? filter_var( $settings['open_new_tab'], FILTER_VALIDATE_BOOLEAN ) : false,
+			'html_tag'         => isset( $settings['title_html_tag'] ) ? jet_woo_builder_tools()->sanitize_html_tag( $settings['title_html_tag'] ) : 'h5',
+			'trim_type'        => isset( $settings['title_trim_type'] ) ? $settings['title_trim_type'] : 'word',
+			'title_length'     => isset( $settings['title_length'] ) ? $settings['title_length'] : 10,
+			'title_tooltip'    => isset( $settings['title_tooltip'] ) ? filter_var( $settings['title_tooltip'], FILTER_VALIDATE_BOOLEAN ) : false,
+		];
 
 		if ( jet_woo_builder_tools()->is_builder_content_save() ) {
 			echo jet_woo_builder()->parser->get_macros_string( $this->get_name(), $macros_settings );
 		} else {
-			echo self::render_callback( $macros_settings, jet_woo_builder_integration_woocommerce()->get_current_args() );
+			echo self::render_callback( $macros_settings, jet_woo_builder()->woocommerce->get_current_args() );
 		}
 
 	}

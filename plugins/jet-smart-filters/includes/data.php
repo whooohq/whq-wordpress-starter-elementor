@@ -17,8 +17,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Data' ) ) {
 
 		/**
 		 * Allowed filter types.
-		 *
-		 * @return array
 		 */
 		public function filter_types() {
 
@@ -34,14 +32,40 @@ if ( ! class_exists( 'Jet_Smart_Filters_Data' ) ) {
 			}
 
 			return $result;
+		}
 
+		/**
+		 * Returns post types list for options
+		 */
+		public function get_post_types_for_options() {
+
+			$args = array(
+				'public' => true,
+			);
+
+			$post_types = get_post_types( $args, 'objects', 'and' );
+			$post_types = wp_list_pluck( $post_types, 'label', 'name' );
+
+			if ( isset( $post_types[ jet_smart_filters()->post_type->slug() ] ) ) {
+				unset( $post_types[jet_smart_filters()->post_type->slug()] );
+			}
+
+			return $post_types;
+		}
+
+		/**
+		 * Get taxonomies list for options.
+		 */
+		public function get_taxonomies_for_options() {
+
+			$taxonomies         = get_taxonomies( array(), 'objects', 'and' );
+			$options_taxonomies = wp_list_pluck( $taxonomies, 'label', 'name' );
+
+			return $options_taxonomies;
 		}
 
 		/**
 		 * Return information about compare data by label
-		 *
-		 * @param  [type] $label [description]
-		 * @return [type]        [description]
 		 */
 		public function parse_comapre_label( $label ) {
 
@@ -88,13 +112,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Data' ) ) {
 			}
 
 			return $result;
-
 		}
 
 		/**
 		 * Returns provider selectors list
-		 *
-		 * @return array
 		 */
 		public function get_provider_selectors() {
 
@@ -113,14 +134,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Data' ) ) {
 			}
 
 			return $result;
-
 		}
 
 		/**
 		 * Find choices for filter from field data
-		 *
-		 * @param  array  $args [description]
-		 * @return [type]       [description]
 		 */
 		public function get_choices_from_field_data( $args = array() ) {
 
@@ -177,22 +194,16 @@ if ( ! class_exists( 'Jet_Smart_Filters_Data' ) ) {
 
 					return $result;
 			}
-
 		}
 
 		/**
 		 * Find choices for filter from custom content types
-		 *
-		 * @param  String $field_key [description]
-		 * @return [type]            [description]
 		 */
 		public function get_choices_from_cct_data( $field_key ) {
 
 			$result             = array();
 			$found_field        = null;
 			$all_content_types  = jet_engine()->modules->get_module( 'custom-content-types' )->instance->manager->get_content_types();
-
-
 
 			foreach ( $all_content_types as $content_type ) {
 				$content_type_fields = property_exists( $content_type, 'fields' ) ? $content_type->fields : array();
@@ -213,13 +224,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Data' ) ) {
 			}
 
 			return $result;
-
 		}
 
 		/**
 		 * Retrun regitered content providers
-		 *
-		 * @return array
 		 */
 		public function content_providers() {
 
@@ -233,13 +241,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Data' ) ) {
 			}
 
 			return $result;
-
 		}
 
 		/**
 		 * Retrun filters by passed type
-		 *
-		 * @return array
 		 */
 		public function get_filters_by_type( $type = null ) {
 
@@ -265,15 +270,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Data' ) ) {
 			}
 
 			return wp_list_pluck( $filters, 'post_title', 'ID' );
-
 		}
 
 		/**
 		 * Returns terms objects list
-		 *
-		 * @param  [type]  $tax              [description]
-		 * @param  boolean $child_of_current [description]
-		 * @return [type]                    [description]
 		 */
 		public function get_terms_objects( $tax = null, $child_of_current = false, $custom_args = array() ) {
 
@@ -299,15 +299,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Data' ) ) {
 				$tax,
 				$child_of_current
 			);
-
 		}
 
 		/**
 		 * Get terms of passed taxonomy for checkbox/select/radio options
-		 *
-		 * @param  [type]  $tax              [description]
-		 * @param  boolean $child_of_current [description]
-		 * @return [type]                    [description]
 		 */
 		public function get_terms_for_options( $tax = null, $child_of_current = false, $custom_args = array() ) {
 
@@ -320,14 +315,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Data' ) ) {
 				$tax,
 				$child_of_current
 			);
-
 		}
 
 		/**
 		 * Prepare repeater options fields
-		 *
-		 * @param  [type] $options [description]
-		 * @return [type]          [description]
 		 */
 		public function maybe_parse_repeater_options( $options ) {
 
@@ -356,17 +347,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Data' ) ) {
 			}
 
 			return $result;
-
 		}
 
 		/**
 		 * Exclude or include items in options list
-		 *
-		 * @param $use_exclude_include
-		 * @param $exclude_include_options
-		 * @param $options
-		 *
-		 * @return array
 		 */
 		public function maybe_include_exclude_options( $use_exclude_include, $exclude_include_options, $options ) {
 
@@ -408,9 +392,18 @@ if ( ! class_exists( 'Jet_Smart_Filters_Data' ) ) {
 			}
 
 			return $options;
-
 		}
 
-	}
+		/**
+		 * Get tabindex attribute
+		 */
+		public function get_tabindex_attr() {
 
+			$use_tabindex = filter_var( jet_smart_filters()->settings->get( 'use_tabindex', false ), FILTER_VALIDATE_BOOLEAN );
+
+			return $use_tabindex
+				? 'tabindex="0"'
+				: '';
+		}
+	}
 }

@@ -1,0 +1,99 @@
+@import "./mixins.scss";
+
+.jet_table {
+	overflow: hidden;
+	color: $color-text-secondary;
+	background-color: $bg-panel;
+	border-radius: $radius;
+	box-shadow: $box-shadow;
+
+	&-thead,
+	&-row {
+		display: flex;
+	}
+
+	&-thead-th,
+	&-tbody-td {
+		box-sizing: border-box;
+		width: 100%;
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+
+	&-thead {
+		height: 67px;
+		align-items: center;
+		font-size: 15px;
+		line-height: 24px;
+		font-weight: 500;
+		color: $color-text-primary;
+
+		&-th {
+			display: flex;
+			align-items: center;
+		}
+	}
+
+	&-tbody {
+		overflow: hidden;
+		position: relative;
+		border-top: $border-width solid $border-color;
+
+		&-td {
+			padding-top: 12px;
+			padding-bottom: 8px;
+			text-transform: capitalize;
+		}
+
+		.jet_preloader {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			margin: 0;
+			background: rgba($color: #fff, $alpha: 0.5);
+
+			svg {
+				width: 50px;
+				height: 50px;
+			}
+		}
+	}
+
+	&-row {
+		&:nth-child(odd) {
+			background: $bg-field;
+		}
+		&.jet_table-row-checked {
+			background-color: #e5f2f8;
+		}
+	}
+
+	// Checkbox
+	&-checkbox {
+		font-size: 0;
+		line-height: 0;
+
+		input {
+			display: none !important;
+		}
+
+		svg path {
+			fill: $color-text-secondary;
+		}
+
+		input:checked ~ svg path {
+			fill: $color-accent;
+		}
+	}
+
+	& &-thead-checkbox,
+	& &-tbody-checkbox {
+		padding-left: 30px;
+		padding-right: 10px;
+		width: 18px;
+		flex-shrink: 0;
+		box-sizing: content-box;
+	}
+}

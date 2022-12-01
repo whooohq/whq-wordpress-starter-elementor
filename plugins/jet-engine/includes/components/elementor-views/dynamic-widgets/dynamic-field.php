@@ -5,7 +5,7 @@ use Elementor\Group_Control_Typography;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class Jet_Listing_Dynamic_Field_Widget extends Widget_Base {
+class Jet_Listing_Dynamic_Field_Widget extends \Jet_Listing_Dynamic_Widget {
 
 	public function get_name() {
 		return 'jet-listing-dynamic-field';
@@ -266,6 +266,7 @@ class Jet_Listing_Dynamic_Field_Widget extends Widget_Base {
 				'default'     => '',
 				'label_block' => true,
 				'description' => __( 'Show this if field value is empty', 'jet-engine' ),
+				'dynamic'     => array( 'active' => true, ),
 				'condition'   => array(
 					'hide_if_empty' => '',
 				),
@@ -651,7 +652,7 @@ class Jet_Listing_Dynamic_Field_Widget extends Widget_Base {
 	}
 
 	protected function render() {
-		jet_engine()->listings->render_item( 'dynamic-field', $this->get_settings() );
+		jet_engine()->listings->render_item( 'dynamic-field', $this->get_settings_for_display() );
 	}
 
 }

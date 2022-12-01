@@ -10,6 +10,7 @@ use Elementor\Repeater;
 use \Elementor\Core\Schemes\Typography;
 use \Elementor\Utils;
 use \Elementor\Widget_Base;
+use \Essential_Addons_Elementor\Classes\Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -718,7 +719,8 @@ class Logo_Carousel extends Widget_Base {
 				'size_units' => [ 'px' ],
 				'selectors'  => [
 					'{{WRAPPER}} .swiper-container-wrap .swiper-button-next, {{WRAPPER}} .swiper-container-wrap .swiper-button-prev' => 'font-size: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .swiper-container-wrap .eael-logo-carousel-svg-icon'                                                => 'width: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .swiper-container-wrap .eael-logo-carousel-svg-icon'                                                => 'width: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .swiper-container-wrap .swiper-button-next svg, {{WRAPPER}} .swiper-container-wrap .swiper-button-prev svg' => 'width: {{SIZE}}{{UNIT}};height: {{SIZE}}{{UNIT}};line-height: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -812,7 +814,8 @@ class Logo_Carousel extends Widget_Base {
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '',
 				'selectors' => [
-					'{{WRAPPER}} .swiper-container-wrap .swiper-button-next, {{WRAPPER}} .swiper-container-wrap .swiper-button-prev' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .swiper-container-wrap .swiper-button-next, {{WRAPPER}} .swiper-container-wrap .swiper-button-prev' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .swiper-container-wrap .swiper-button-next svg, {{WRAPPER}} .swiper-container-wrap .swiper-button-prev svg' => 'fill: {{VALUE}};',
 				],
 			]
 		);
@@ -868,7 +871,8 @@ class Logo_Carousel extends Widget_Base {
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '',
 				'selectors' => [
-					'{{WRAPPER}} .swiper-container-wrap .swiper-button-next:hover, {{WRAPPER}} .swiper-container-wrap .swiper-button-prev:hover' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .swiper-container-wrap .swiper-button-next:hover, {{WRAPPER}} .swiper-container-wrap .swiper-button-prev:hover' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .swiper-container-wrap .swiper-button-next:hover svg, {{WRAPPER}} .swiper-container-wrap .swiper-button-prev:hover svg' => 'fill: {{VALUE}};',
 				],
 			]
 		);
@@ -1297,9 +1301,9 @@ class Logo_Carousel extends Widget_Base {
 		if ( $settings['arrows'] == 'yes' ) { ?>
 			<?php
 			if ( isset( $settings['__fa4_migrated']['arrow_new'] ) || empty( $settings['arrow'] ) ) {
-				$arrow = $settings['arrow_new']['value'];
+				$arrow = Helper::get_render_icon( $settings['arrow_new'] );
 			} else {
-				$arrow = $settings['arrow'];
+                $arrow = '<i class="<?php echo esc_attr( $settings["arrow"] ); ?>"></i>';
 			}
 			?>
             <!-- Add Arrows -->
@@ -1307,16 +1311,19 @@ class Logo_Carousel extends Widget_Base {
 				<?php if ( isset( $arrow['url'] ) ): ?>
                     <img class="eael-logo-carousel-svg-icon" src="<?php echo esc_url( $arrow['url'] ); ?>"
                          alt="<?php echo esc_attr( get_post_meta( $arrow['id'], '_wp_attachment_image_alt', true ) ); ?>">
-				<?php else: ?>
-                    <i class="<?php echo esc_attr( $arrow ); ?>"></i>
-				<?php endif; ?>
+				<?php else:
+                    echo $arrow;
+                endif; ?>
             </div>
             <div class="swiper-button-prev swiper-button-prev-<?php echo esc_attr( $this->get_id() ); ?>">
 				<?php if ( isset( $settings['arrow_previous']['value']['url'] ) ): ?>
                     <img class="eael-logo-carousel-svg-icon"
                          src="<?php echo esc_url( $settings['arrow_previous']['value']['url'] ); ?>"
                          alt="<?php echo esc_attr( get_post_meta( $settings['arrow_previous']['value']['id'], '_wp_attachment_image_alt', true ) ); ?>">
-				<?php else: ?>
+				<?php
+                    elseif ( !empty($settings['arrow_previous']) ):
+                        \Elementor\Icons_Manager::render_icon( $settings['arrow_previous'] );
+                else: ?>
                     <i class="<?php echo esc_attr( $settings['arrow_previous']['value'] ); ?>"></i>
 				<?php endif; ?>
             </div>

@@ -29,11 +29,24 @@ function ECS_clean_selector_value($values){
   }
   return $values;
 }
-function ECS_parse_selector($selector,$wrapper,$value){
+function ECS_media_brakepoint($responsive){
+  if (!isset($responsive)) return "";
+  $condition="";
+  $breakpoints = \Elementor\Plugin::$instance->breakpoints->get_breakpoints();
+  foreach($responsive as $direction => $device) {
+    if(!isset($breakpoints[$device])) return ""; //if we don't have a brakepoint for the desktop / tablet etc we don't offer a query
+    $condition =  $condition ? $condition : "and "; //in case for future multiple directions
+    $condition = "(".$direction."-width: ".$breakpoints[$device]->get_value()."px) ";
+  }
+  return " @media ".$condition."{";
+}
+function ECS_parse_selector($selector,$wrapper,$value,$responsive){
   $clean_value=ECS_clean_selector_value($value);
+  $before =  ECS_media_brakepoint($responsive);// insert media query?
+  $after = $before ? "}" : "";
   $selector = str_replace("{{WRAPPER}}",$wrapper,$selector);
   $selector = str_replace(["{{VALUE}}","{{URL}}","{{UNIT}}"],$clean_value,$selector);
-  return $selector;
+  return $before.$selector.$after;
 }
 function ECS_recursive_unset(&$array, $unwanted_key) {
     unset($array[$unwanted_key]);
@@ -64,7 +77,10 @@ function ECS_set_dynamic_style( \Elementor\Element_Base $element ) {
   foreach($controls as $key => $control){
     if(isset($control["selectors"])){
         foreach($control["selectors"] as $selector => $rules){
-          if(isset($settings[$key])) $ECS_css.= ECS_parse_selector($selector."{".$rules."}",$element_wrapper,$settings[$key]);        
+          if(isset($settings[$key])){
+            $responsive = isset($control["responsive"])? $control["responsive"] : NULL;
+            $ECS_css.= ECS_parse_selector($selector."{".$rules."}",$element_wrapper,$settings[$key],$responsive);        
+          } 
         }
 
     }
@@ -77,6 +93,8 @@ function ECS_set_dynamic_style( \Elementor\Element_Base $element ) {
 
 add_action( 'elementor/frontend/section/before_render', 'ECS_set_dynamic_style' );
 add_action( 'elementor/frontend/column/before_render', 'ECS_set_dynamic_style' );
+
+add_action( 'elementor/frontend/container/before_render', 'ECS_set_dynamic_style' );
 
 add_action( 'elementor/frontend/widget/before_render', 'ECS_set_dynamic_style' );
 

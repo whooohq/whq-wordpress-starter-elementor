@@ -165,13 +165,13 @@ if ( -1 !== window.JetEngineListingData.activeModules.indexOf( 'calendar' ) ) {
 										} }
 									/>
 								}
-								<ToggleControl
+								{ 'meta_date' === attributes.group_by && <ToggleControl
 									label={ __( 'Allow multi-day events' ) }
 									checked={ attributes.allow_multiday }
 									onChange={ () => {
 										props.setAttributes( { allow_multiday: ! attributes.allow_multiday } );
 									} }
-								/>
+								/> }
 								{ 'meta_date' === attributes.group_by && attributes.allow_multiday &&
 									<TextControl
 										type="text"

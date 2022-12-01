@@ -10,12 +10,10 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Shortcode' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Provider_WooCommerce_Shortcode class
 	 */
 	class Jet_Smart_Filters_Provider_WooCommerce_Shortcode extends Jet_Smart_Filters_Provider_Base {
-
 		/**
 		 * Watch for default query
 		 */
@@ -24,16 +22,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Shortcode' ) ) {
 			if ( ! jet_smart_filters()->query->is_ajax_filter() ) {
 				add_filter( 'woocommerce_shortcode_products_query', array( $this, 'store_shortcode_query' ), 0, 3 );
 			}
-
 		}
 
 		/**
 		 * Store default query args
-		 *
-		 * @param  array  $args       Query arguments.
-		 * @param  array  $attributes Shortcode attributes.
-		 * @param  string $type       Shortcode type.
-		 * @return array
 		 */
 		public function store_shortcode_query( $args, $attributes, $type ) {
 
@@ -65,31 +57,26 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Shortcode' ) ) {
 			add_action( 'woocommerce_shortcode_before_' . $type . '_loop', array( $this, 'store_props' ) );
 
 			return $args;
-
 		}
 
 		/**
 		 * Get provider name
-		 *
-		 * @return string
 		 */
 		public function get_name() {
+
 			return __( 'WooCommerce Shortcode', 'jet-smart-filters' );
 		}
 
 		/**
 		 * Get provider ID
-		 *
-		 * @return string
 		 */
 		public function get_id() {
+
 			return 'woocommerce-shortcode';
 		}
 
 		/**
 		 * Get filtered provider content
-		 *
-		 * @return string
 		 */
 		public function ajax_get_content() {
 
@@ -112,15 +99,13 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Shortcode' ) ) {
 
 			$shortcode = new WC_Shortcode_Products( $attributes, $type );
 			echo $shortcode->get_content();
-
 		}
 
 		/**
 		 * Store query ptoperties
-		 *
-		 * @return [type] [description]
 		 */
 		public function store_props() {
+
 			global $woocommerce_loop;
 
 			jet_smart_filters()->query->set_props(
@@ -137,6 +122,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Shortcode' ) ) {
 		 * Сlear store props
 		 */
 		public function сlear_store_props() {
+
 			jet_smart_filters()->query->set_props(
 				$this->get_id(),
 				array(
@@ -149,28 +135,25 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Shortcode' ) ) {
 
 		/**
 		 * Get provider wrapper selector
-		 *
-		 * @return string
 		 */
 		public function get_wrapper_selector() {
+
 			return 'body .woocommerce[class*="columns"]';
 		}
 
 		/**
 		 * Action for wrapper selector - 'insert' into it or 'replace'
-		 *
-		 * @return string
 		 */
 		public function get_wrapper_action() {
+
 			return 'replace';
 		}
 
 		/**
 		 * Set prefix for unique ID selector. Mostly is default '#' sign, but sometimes class '.' sign needed
-		 *
-		 * @return bool
 		 */
 		public function id_prefix() {
+
 			return '.';
 		}
 
@@ -178,6 +161,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Shortcode' ) ) {
 		 * Add custom settings for AJAX request
 		 */
 		public function add_settings( $settings ) {
+
 			return jet_smart_filters()->query->get_query_settings();
 		}
 
@@ -193,13 +177,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Shortcode' ) ) {
 			}
 
 			add_filter( 'woocommerce_shortcode_products_query', array( $this, 'add_query_args' ), 10, 2 );
-
 		}
 
 		/**
 		 * Add custom query arguments
-		 *
-		 * @param array $args [description]
 		 */
 		public function add_query_args( $args = array(), $attributes = array() ) {
 
@@ -235,8 +216,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Shortcode' ) ) {
 			}
 
 			return jet_smart_filters()->utils->merge_query_args( $args, $filter_args );
-
 		}
 	}
-
 }

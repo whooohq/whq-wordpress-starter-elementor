@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'HELLO_ELEMENTOR_VERSION', '2.5.0' );
+define( 'HELLO_ELEMENTOR_VERSION', '2.6.1' );
 
 if ( ! isset( $content_width ) ) {
 	$content_width = 800; // Pixels.
@@ -50,6 +50,8 @@ if ( ! function_exists( 'hello_elementor_setup' ) ) {
 					'comment-list',
 					'gallery',
 					'caption',
+					'script',
+					'style',
 				]
 			);
 			add_theme_support(
@@ -178,7 +180,7 @@ require get_template_directory() . '/includes/elementor-functions.php';
  * Include customizer registration functions
 */
 function hello_register_customizer_functions() {
-	if ( hello_header_footer_experiment_active() && is_customize_preview() ) {
+	if ( is_customize_preview() ) {
 		require get_template_directory() . '/includes/customizer-functions.php';
 	}
 }

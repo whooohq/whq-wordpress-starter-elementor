@@ -227,7 +227,7 @@ if ( ! class_exists( 'Jet_Menu_Tools' ) ) {
 
 			$format = apply_filters( 'jet-menu/tools/badge-format', '<small class="jet-menu-badge%2$s"><span class="jet-menu-badge__inner">%1$s</span></small>', $badge, $depth );
 
-			return sprintf( $format, esc_attr( $badge ), $hide_on_mobile );
+			return sprintf( $format, $badge, $hide_on_mobile );
 		}
 
 		/**
@@ -240,7 +240,7 @@ if ( ! class_exists( 'Jet_Menu_Tools' ) ) {
 
 			$settings = jet_menu()->settings_manager->get_item_settings( $item_id );
 
-			$css_scheme = apply_filters( 'jet-menu/item-css/sheme', array (
+			$css_scheme = apply_filters( 'jet-menu/item-css/scheme', array (
 				'icon_color' => array (
 					'selector' => array (
 						'> a .jet-menu-icon'                                       => 'color',
@@ -277,6 +277,30 @@ if ( ! class_exists( 'Jet_Menu_Tools' ) ) {
 					'rule'     => 'background-color',
 					'value'    => '%1$s !important;',
 				),
+				'badge_svg_size'              => array (
+					'selector' => array (
+						'> a .jet-mega-menu-item__badge svg'                     => 'width',
+						'> .jet-mobile-menu__item-inner > a .jet-menu-badge svg' => 'width',
+					),
+					'rule'     => 'width',
+					'value'    => '%1$spx !important;',
+				),
+				'badge_offset_x'              => array (
+					'selector' => array (
+						'> a .jet-menu-badge'                                => '--jmm-menu-badge-offset-x',
+						'> .jet-mobile-menu__item-inner > a .jet-menu-badge' => '--jmm-menu-badge-offset-x',
+					),
+					'rule'     => '--jmm-menu-badge-offset-x',
+					'value'    => '%1$spx !important;',
+				),
+				'badge_offset_y'              => array (
+					'selector' => array (
+						'> a .jet-menu-badge'                                => '--jmm-menu-badge-offset-y',
+						'> .jet-mobile-menu__item-inner > a .jet-menu-badge' => '--jmm-menu-badge-offset-y',
+					),
+					'rule'     => '--jmm-menu-badge-offset-y',
+					'value'    => '%1$spx !important;',
+				),
 				'item_padding'           => array (
 					'selector' => array (
 						'> a'                                => 'padding-%s',
@@ -290,6 +314,7 @@ if ( ! class_exists( 'Jet_Menu_Tools' ) ) {
 					'selector' => array(
 						'> .jet-sub-mega-menu'        => 'width',
 						'> .jet-custom-nav__mega-sub' => 'width',
+						'> .jet-mega-menu-mega-container' => 'width',
 					),
 					'rule'     => 'width',
 					'value'    => '%1$spx !important;',
@@ -336,6 +361,7 @@ if ( ! class_exists( 'Jet_Menu_Tools' ) ) {
 
 					if ( is_array( $data[ 'selector' ] ) ) {
 						foreach ( $data[ 'selector' ] as $selector => $rule ) {
+
 							jet_menu()->dynamic_css_manager->add_style( sprintf( '%1$s %2$s', $_wrapper, $selector ), array (
 								$rule => sprintf( $data[ 'value' ], esc_attr( $settings[ $setting ] ) ),
 							) );
@@ -402,7 +428,7 @@ if ( ! class_exists( 'Jet_Menu_Tools' ) ) {
 		 */
 		public function get_elementor_templates_select_options() {
 
-			if ( ! jet_menu()->has_elementor() || ! is_admin() ) {
+			if ( ! jet_menu_tools()->has_elementor() || ! is_admin() ) {
 				return array ();
 			}
 
@@ -476,6 +502,91 @@ if ( ! class_exists( 'Jet_Menu_Tools' ) ) {
 			$is_nextgen = ! get_option( jet_menu()->settings_manager->options_manager->options_slug ) ? 'true' : 'false';
 
 			return filter_var( jet_menu()->settings_manager->options_manager->get_option( 'plugin-nextgen-edition', $is_nextgen ), FILTER_VALIDATE_BOOLEAN );
+		}
+
+		/**
+		 * Get available menus list
+		 *
+		 * @return array
+		 */
+		public function get_available_menus_options() {
+
+			$raw_menus = wp_get_nav_menus();
+			$menus     = wp_list_pluck( $raw_menus, 'name', 'term_id' );
+			$parent    = isset( $_GET['parent_menu'] ) ? absint( $_GET['parent_menu'] ) : 0;
+
+			if ( 0 < $parent && isset( $menus[ $parent ] ) ) {
+				unset( $menus[ $parent ] );
+			}
+
+			$options = [];
+
+			if ( ! empty( $menus ) ) {
+				foreach ( $menus as $key => $label ) {
+					$options[] = [
+						'value' => $key,
+						'label' => $label,
+					];
+				}
+			}
+
+			return $options;
+		}
+
+		/**
+		 * @return mixed|void
+		 */
+		public function get_breakpoints() {
+			return apply_filters( 'jet-menu/breakpoints/', [
+				'xs'  => [
+					'size' => 320,
+					'label' => esc_html__( 'X-Small(less then 320px)', 'jet-menu' ),
+				],
+				'sm'  => [
+					'size' => 576,
+					'label' => esc_html__( 'Small(less then 576px)', 'jet-menu' ),
+				],
+				'md'  => [
+					'size' => 768,
+					'label' => esc_html__( 'Medium(less then 768px)', 'jet-menu' ),
+				],
+				'lg'  => [
+					'size' => 992,
+					'label' => esc_html__( 'Large(less then 992px)', 'jet-menu' ),
+				],
+				'xl'  => [
+					'size' => 1200,
+					'label' => esc_html__( 'Extra large(less then 1200px)', 'jet-menu' ),
+				],
+				'xxl' => [
+					'size' => 1400,
+					'label' => esc_html__( 'Extra extra large(less then 1400px)', 'jet-menu' ),
+				],
+			] );
+		}
+
+		/**
+		 * @return array|array[]
+		 */
+		public function get_breakpoints_options() {
+
+			$options = [];
+
+			foreach ( $this->get_breakpoints() as $key => $breakpoint ) {
+				$options[] = [
+					'value' => $breakpoint['size'],
+					'label' => $breakpoint['label'],
+				];
+			}
+
+			return $options;
+		}
+
+		/**
+		 * @return bool
+		 */
+		public function has_elementor() {
+			return defined( 'ELEMENTOR_VERSION' );
 		}
 	}
 

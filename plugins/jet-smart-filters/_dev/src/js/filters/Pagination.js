@@ -29,7 +29,9 @@ export default class Pagination extends Filter {
 		this.nextText = this.controls.next;
 		this.midSize = this.controls.pages_mid_size || 0;
 		this.endSize = this.controls.pages_end_size || 0;
-		this.topOffset = this.controls.provider_top_offset || 0;
+
+		if (undefined !== this.controls.provider_top_offset)
+			this.topOffset = this.controls.provider_top_offset || 0;
 
 		this.buildPagination();
 
@@ -98,6 +100,9 @@ export default class Pagination extends Filter {
 		this.$filter.html(elList);
 
 		this.setCurrentItem();
+
+		// Emit pagination items build event
+		eventBus.publish('pagination/itemsBuilt', this);
 	}
 
 	buildPaginationItem(type, value, clickCallBack, template = false) {
@@ -106,13 +111,16 @@ export default class Pagination extends Filter {
 		if (template) {
 			itemContent = templateParser(template, {
 				$value: value
-			})
+			});
 		}
 
 		const elPaginationItem = document.createElement('div');
 
 		elPaginationItem.className = this.paginationItemClass;
 		elPaginationItem.innerHTML = itemContent;
+
+		if (getNesting(JetSmartFilterSettings, 'plugin_settings', 'use_tabindex') === 'true')
+			elPaginationItem.tabIndex = 0;
 
 		if (type === 'prev' || type === 'next') {
 			elPaginationItem.dataset.value = type;
@@ -155,7 +163,7 @@ export default class Pagination extends Filter {
 				if (this.pageIndex < this.pagesCount) {
 					value = this.pageIndex + 1;
 				} else {
-					value = this.pagesCount
+					value = this.pagesCount;
 				}
 
 				break;

@@ -1,0 +1,8 @@
+*.log
+node_modules
+.sass-cache
+.idea
+package-lock.json
+includes/modules/jet-dashboard/gulpfile.js
+includes/modules/jet-dashboard/package.json
+includes/modules/jet-dashboard/.gitignore

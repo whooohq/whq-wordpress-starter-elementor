@@ -2,7 +2,6 @@
 /**
  * Datepicker style controls
  */
-
 namespace Elementor;
 
 $this->start_controls_section(

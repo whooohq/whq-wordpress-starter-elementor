@@ -30,7 +30,12 @@
 					:error="errors.slug"
 					v-model="generalSettings.slug"
 					@on-focus="handleFocus( 'slug' )"
-				></cx-vui-input>
+					@on-input-change="checkSlug"
+				>
+					<div class="jet-engine-slug-error" v-if="showIncorrectSlug">
+						{{ incorrectSlugMessage }}
+					</div>
+				</cx-vui-input>
 				<cx-vui-switcher
 					label="<?php _e( 'Update Terms', 'jet-engine' ); ?>"
 					description="<?php _e( 'Check this if you already have created terms of this taxonomy and want to automatically change tax for these terms.', 'jet-engine' ); ?>"
@@ -51,9 +56,15 @@
 				></cx-vui-f-select>
 				<cx-vui-switcher
 					label="<?php _e( '`Edit taxonomy/meta box` link', 'jet-engine' ); ?>"
-					description="<?php _e( 'Add `Edit post type/meta box` link to post edit page.', 'jet-engine' ); ?>"
+					description="<?php _e( 'Add `Edit taxonomy/meta box` link to term edit page.', 'jet-engine' ); ?>"
 					:wrapper-css="[ 'equalwidth' ]"
 					v-model="generalSettings.show_edit_link"
+				></cx-vui-switcher>
+				<cx-vui-switcher
+					label="<?php _e( 'Hide meta field names', 'jet-engine' ); ?>"
+					description="<?php _e( 'Hide meta field names on term edit page.', 'jet-engine' ); ?>"
+					:wrapper-css="[ 'equalwidth' ]"
+					v-model="generalSettings.hide_field_names"
 				></cx-vui-switcher>
 			</div>
 		</cx-vui-collapse>

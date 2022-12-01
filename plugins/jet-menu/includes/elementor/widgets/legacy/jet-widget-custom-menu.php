@@ -60,7 +60,7 @@ class Jet_Widget_Custom_Menu extends Widget_Base {
 	 * @return array Widget categories.
 	 */
 	public function get_categories() {
-		return array( 'cherry' );
+		return array( 'jet-menu' );
 	}
 
 	/**

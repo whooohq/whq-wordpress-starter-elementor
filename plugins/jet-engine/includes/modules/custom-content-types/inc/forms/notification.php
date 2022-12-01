@@ -181,7 +181,6 @@ class Notification {
 				return false;
 			}
 
-			$is_admin      = current_user_can( 'manage_options' );
 			$existing_item = $type_object->db->get_item( $item['_ID'] );
 
 			if ( ! $existing_item ) {
@@ -190,8 +189,14 @@ class Notification {
 			}
 
 			$author = absint( $existing_item['cct_author_id'] );
+			$cct = Module::instance()->manager->get_content_types( $existing_item['cct_slug'] );
 
-			if ( $author !== get_current_user_id() && ! $is_admin ) {
+			if ( ! $cct ) {
+				$notifications->log[] = $notifications->set_specific_status( 'Content Type not exists' );
+				return false;
+			}
+
+			if ( $author !== get_current_user_id() && ! $cct->user_has_access() ) {
 				$notifications->log[] = $notifications->set_specific_status( 'Only item author can edit the item' );
 				return false;
 			}

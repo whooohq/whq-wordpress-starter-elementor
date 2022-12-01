@@ -4,25 +4,29 @@ namespace Elementor;
 
 use Elementor\Group_Control_Border;
 
+// Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-} // Exit if accessed directly
-
+}
 class Jet_Smart_Filters_Checkboxes_Widget extends Jet_Smart_Filters_Base_Widget {
 
 	public function get_name() {
+
 		return 'jet-smart-filters-checkboxes';
 	}
 
 	public function get_title() {
+
 		return __( 'Checkboxes Filter', 'jet-smart-filters' );
 	}
 
 	public function get_icon() {
+
 		return 'jet-smart-filters-icon-checkboxes-filter';
 	}
 
 	public function get_help_url() {
+
 		return jet_smart_filters()->widgets->prepare_help_url(
 			'https://crocoblock.com/knowledge-base/articles/jetsmartfilters-how-to-create-a-checkboxes-filter-a-difference-between-checkboxes-select-and-radio-filters/',
 			$this->get_name()
@@ -30,10 +34,8 @@ class Jet_Smart_Filters_Checkboxes_Widget extends Jet_Smart_Filters_Base_Widget 
 	}
 
 	public function register_filter_settings_controls() {
-
 		// Include Additional Filter Settings
 		include jet_smart_filters()->plugin_path( 'includes/widgets/common-controls/additional-filter-settings.php' );
-
 	}
 
 	public function register_filter_style_controls() {
@@ -341,7 +343,8 @@ class Jet_Smart_Filters_Checkboxes_Widget extends Jet_Smart_Filters_Base_Widget 
 					'unit' => 'px',
 				),
 				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['checkbox'] => 'margin-right: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} ' . $css_scheme['checkbox']      => 'margin-right: {{SIZE}}{{UNIT}};',
+					'.rtl {{WRAPPER}} ' . $css_scheme['checkbox'] => 'margin-left: {{SIZE}}{{UNIT}};',
 				),
 			)
 		);
@@ -477,7 +480,5 @@ class Jet_Smart_Filters_Checkboxes_Widget extends Jet_Smart_Filters_Base_Widget 
 
 		// Include Additional Filter Settings Style
 		include jet_smart_filters()->plugin_path( 'includes/widgets/common-controls/additional-filter-style.php' );
-
 	}
-
 }

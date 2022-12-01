@@ -114,12 +114,3 @@
 .datepicker--cell.datepicker--cell-day.-week-end-selected- {
 	border-radius: 0 5px 5px 0;
 }
-
-// RTL
-.rtl {
-	#datepickers-container {
-		.datepicker:not(.active) {
-			left: 100000px !important;
-		}
-	}
-}

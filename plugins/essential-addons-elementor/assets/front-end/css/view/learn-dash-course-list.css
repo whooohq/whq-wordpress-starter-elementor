@@ -1,3 +1,14 @@
+.eael-ld-fit-to-screen-wrap {
+  height: unset !important;
+  position: unset !important;
+}
+
+.eael-ld-fit-to-screen-item {
+  position: unset !important;
+  left: unset !important;
+  top: unset !important;
+}
+
 .eael-learndash-filter-control {
   width: 100%;
   display: -webkit-box;
@@ -16,11 +27,13 @@
   padding: 0px;
   margin: 0px;
 }
+
 .eael-learndash-filter-control ul {
   margin: 0px 0px 20px 0px;
   padding: 0px;
   text-align: center;
 }
+
 .eael-learndash-filter-control ul li {
   list-style: none;
   display: inline-block;
@@ -34,24 +47,30 @@
   margin: 0 5px;
   font-weight: normal;
 }
+
 .eael-learndash-filter-control ul li.control {
   color: #444;
   border-radius: 0px;
 }
+
 .eael-learndash-filter-control ul li.active {
   color: #fff;
 }
+
 .eael-learndash-filter-control ul li.control.active {
   background: #333;
   border-radius: 0px;
 }
+
 .eael-learndash-wrapper {
   overflow: hidden;
 }
+
 .eael-learndash-wrapper.eael-3d-hover {
   -webkit-perspective: 5000px;
           perspective: 5000px;
 }
+
 .eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner {
   background: #fff;
   -webkit-box-shadow: 0px 10px 120px rgba(116, 83, 198, 0.15);
@@ -60,6 +79,7 @@
   border-radius: 10px;
   position: relative;
 }
+
 .eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner .eael_ld_course_list_ribbon {
   background: #5cb85c;
   -webkit-box-shadow: 0 1px rgba(0, 0, 0, 0.2);
@@ -74,6 +94,7 @@
   z-index: 2;
   font-weight: bold;
 }
+
 .eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner .eael_ld_course_list_ribbon:before {
   border: 4px solid transparent;
   border-top: 4px solid #348c34;
@@ -83,17 +104,21 @@
   left: 0;
   bottom: -8px;
 }
+
 .eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner .eael_ld_course_list_ribbon.ribbon-enrolled {
   background: #428bca;
 }
+
 .eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner .eael_ld_course_list_ribbon.ribbon-enrolled:before {
   border-top: 4px solid #357ebd;
   border-right: 4px solid #357ebd;
 }
+
 .eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner .eael-learn-dash-course-header {
   padding: 15px 35px 10px;
   text-align: center;
 }
+
 .eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner .course-tag {
   color: #7453c6;
   display: inline-block;
@@ -107,21 +132,26 @@
   margin-right: 10px;
   margin-bottom: 5px;
 }
+
 .eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner .course-tag:last-child {
   margin-right: 0px;
 }
+
 .eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner .eael-learn-dash-course-thumbnail {
   display: block;
   position: relative;
 }
+
 .eael-learndash-wrapper .eael-learn-dash-course .eael-learn-dash-course-inner .eael-learn-dash-course-thumbnail img {
   width: 100%;
   border-radius: 10px;
 }
+
 .eael-learndash-wrapper .eael-learn-dash-course .eael-learn-deash-course-content-card {
   text-align: center;
   padding: 0 36px 20px;
 }
+
 .eael-learndash-wrapper .eael-learn-dash-course .course-card-title {
   font-size: 18px;
   font-weight: 600;
@@ -129,9 +159,11 @@
   padding-top: 20px;
   margin-bottom: 18px;
 }
+
 .eael-learndash-wrapper .eael-learn-dash-course .course-card-title a {
   color: #485771;
 }
+
 .eael-learndash-wrapper .eael-learn-dash-course .eael-course-button {
   margin-top: 15px;
   color: #fff;
@@ -142,27 +174,34 @@
   -webkit-box-shadow: 0px 10px 15px -5px rgba(116, 83, 198, 0.4);
           box-shadow: 0px 10px 15px -5px rgba(116, 83, 198, 0.4);
 }
+
 .eael-learndash-wrapper .eael-learn-dash-course .layout-button-wrap {
   text-align: center;
 }
+
 .eael-learndash-wrapper.layout__1 .eael-learn-dash-course-inner {
   margin-bottom: 45px;
 }
+
 .eael-learndash-wrapper.layout__1 .eael-learn-deash-course-content-card {
   position: relative;
 }
+
 .eael-learndash-wrapper.layout__1 .course-button-wrap {
   text-align: center;
   position: relative;
   top: 47px;
   margin-top: -47px;
 }
+
 .eael-learndash-wrapper.layout__1 .course-button-wrap .eael-course-button {
   margin-top: 0;
 }
+
 .eael-learndash-wrapper.layout__1 a.eael-learn-dash-course-thumbnail {
   position: relative;
 }
+
 .eael-learndash-wrapper.layout__1 .price-ticker-tag {
   position: absolute;
   left: 0;
@@ -185,6 +224,7 @@
   color: #7453c6;
   font-size: 16px;
 }
+
 .eael-learndash-wrapper.layout__1 .eael-learn-dash-author-meta {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -193,6 +233,7 @@
       flex-wrap: wrap;
   margin-bottom: 30px;
 }
+
 .eael-learndash-wrapper.layout__1 .eael-learn-dash-author-meta .author-image {
   -ms-flex-preferred-size: 50px;
       flex-basis: 50px;
@@ -201,30 +242,37 @@
   overflow: hidden;
   margin-right: 15px;
 }
+
 .eael-learndash-wrapper.layout__1 .eael-learn-dash-author-meta .author-desc {
   text-align: left;
 }
+
 .eael-learndash-wrapper.layout__1 .eael-learn-dash-author-meta .author-desc h5 {
   font-size: 14px;
   margin: 0;
   text-transform: uppercase;
   font-weight: 500;
 }
+
 .eael-learndash-wrapper.layout__1 .eael-learn-dash-author-meta .author-desc h5 a {
   color: #475671;
 }
+
 .eael-learndash-wrapper.layout__1 .eael-learn-dash-author-meta .author-desc p {
   margin: 0;
   font-size: 13px;
   color: #7484a1;
   font-weight: 500;
 }
+
 .eael-learndash-wrapper.layout__1 .eael-learn-dash-course-short-desc {
   margin-bottom: 20px;
 }
+
 .eael-learndash-wrapper.layout__1 .eael-learn-deash-course-content-card {
   text-align: left;
 }
+
 .eael-learndash-wrapper.layout__2 {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -236,12 +284,15 @@
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
 }
+
 .eael-learndash-wrapper.layout__2 .eael-course-button {
   margin-top: 20px;
 }
+
 .eael-learndash-wrapper.layout__2 .course-card-title {
   margin-bottom: 6px;
 }
+
 .eael-learndash-wrapper.default .card-price, .eael-learndash-wrapper.layout__3 .card-price {
   position: absolute;
   right: 20px;
@@ -262,6 +313,7 @@
   color: #fff;
   font-size: small;
 }
+
 .eael-learndash-wrapper.layout__3 .eael-course-layout-3.card-style .eael-learn-dash-course-inner {
   -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
           box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -273,17 +325,20 @@
   border-radius: 0px;
   position: relative;
 }
+
 .eael-learndash-wrapper.layout__3 a.card-thumb {
   display: block;
   background: #000;
   position: relative;
   overflow: hidden;
 }
+
 .eael-learndash-wrapper.layout__3 a.card-thumb img {
   width: 100%;
   opacity: 1;
   display: block;
 }
+
 .eael-learndash-wrapper.layout__3 .card-body {
   position: relative;
   -webkit-transition: height 0.5s;
@@ -292,32 +347,41 @@
   padding: 15px 30px 24px;
   overflow: hidden;
 }
+
 .eael-learndash-wrapper.layout__3 .eael-learn-dash-course-short-desc {
   line-height: 27px;
 }
+
 .eael-learndash-wrapper.layout__3 .eael-learn-dash-course-meta-card span.enrolled-count {
   margin-left: 0;
 }
+
 .eael-learndash-wrapper.layout__3 .eael-learn-dash-course-meta-card > span {
   color: #4b5981;
   font-size: small;
 }
+
 .eael-learndash-wrapper.layout__3 .eael-learn-dash-course-meta-card span.enrolled-count {
   margin-right: 10px;
 }
+
 .eael-learndash-wrapper.layout__3 .course-card-title {
   padding-top: 0;
   margin-bottom: 14px;
 }
+
 .eael-learndash-wrapper.layout__3 .eael-course-button {
   margin-top: 15px;
 }
+
 .eael-learndash-wrapper.default .eael-learn-dash-course.eael-course-default-layout .eael-learn-deash-course-content-card {
   text-align: left;
 }
+
 .eael-learndash-wrapper.default .eael-learn-dash-course.eael-course-default-layout .eael-learn-dash-course-header {
   padding: 15px 0px 5px;
 }
+
 .eael-learn-dash-course .learndash-wrapper.learndash-widget .ld-progress {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
@@ -325,21 +389,26 @@
   margin-top: 20px;
   margin-bottom: 0;
 }
+
 .eael-learn-dash-course .learndash-wrapper.learndash-widget .ld-progress .ld-progress-percentage {
   color: #7453c6;
   margin: 0;
 }
+
 .eael-learn-dash-course .learndash-wrapper.learndash-widget .ld-progress .ld-progress-bar-percentage {
   background: #7453c6;
 }
+
 .eael-learn-dash-course .learndash-wrapper.learndash-widget .ld-progress .ld-progress-steps {
   display: none;
 }
+
 .eael-learndash-wrapper .learndash-wrapper .ld-progress.ld-progress-inline {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
 }
+
 .card-footer {
   padding: 10px 15px;
   border-top: 1px solid #e5e5f5ef;
@@ -350,6 +419,7 @@
       -ms-flex-pack: justify;
           justify-content: space-between;
 }
+
 .card-footer > a,
 .card-footer > span {
   margin: 0;
@@ -368,52 +438,64 @@
   -o-transition: 300ms;
   transition: 300ms;
 }
+
 .course-price:hover,
 .course-card-cat:hover {
   color: #ffffff;
 }
+
 .card-footer > a:hover,
 .card-footer > span:hover {
   background: #9253c6;
 }
+
 .card-footer a i {
   margin-right: 5px;
 }
+
 a.eael-course-card-button:hover,
 a.eael-course-card-button:hover i {
   color: #ffffff;
 }
+
 .eael-learn-dash-course-meta-card span {
   color: #7453c6;
   font-size: 16px;
 }
+
 .eael-learn-dash-course-meta-card span.price {
   font-size: 24px;
   font-weight: 600;
   position: relative;
   top: 3px;
 }
+
 .eael-learn-dash-course-meta-card span.enrolled-count {
   margin: 0 25px;
 }
+
 .eael-learn-dash-course-meta-card span i {
   margin-right: 8px;
 }
+
 .eael-learn-dash-course-short-desc {
   font-size: 15px;
   line-height: 26px;
   color: #7484a1;
   margin-top: 5px;
 }
+
 .eael-learn-dash-course-short-desc p {
   margin: 0px;
 }
+
 .price-tikcer-position-left-top .eael-learndash-wrapper.layout__1 .price-ticker-tag {
   left: 0;
   right: auto;
   bottom: auto;
   top: 15px;
 }
+
 .price-tikcer-position-right-bottom .eael-learndash-wrapper.layout__1 .price-ticker-tag {
   left: auto;
   right: 0;
@@ -422,6 +504,7 @@ a.eael-course-card-button:hover i {
   margin-right: 0 !important;
   border-radius: 50px 0px 0px 50px;
 }
+
 .price-tikcer-position-right-top .eael-learndash-wrapper.layout__1 .price-ticker-tag {
   left: auto;
   right: 0;
@@ -430,24 +513,29 @@ a.eael-course-card-button:hover i {
   margin-right: 0 !important;
   border-radius: 50px 0px 0px 50px;
 }
+
 .course-author-meta-inline {
   font-size: 14px;
 }
+
 .eael-learn-dash-course-inner .course-author-meta-inline img {
   height: 25px;
   width: 25px;
   border-radius: 50%;
 }
+
 .eael-learn-dash-course-inner .course-author-meta-inline span {
   font-size: 14px;
   color: #929aae;
   margin: 0 2px 0 2px;
 }
+
 .eael-learn-dash-course-inner .course-author-meta-inline > a {
   color: #4b5981;
   font-weight: 500;
   text-transform: capitalize;
 }
+
 .eael-learn-dash-course.eael-course-default-layout .card-footer {
   padding: 15px 0 0 0;
   display: -webkit-box;
@@ -458,14 +546,17 @@ a.eael-course-card-button:hover i {
           justify-content: space-between;
   margin-top: 15px;
 }
+
 .eael-learndash-wrapper.layout__1 .learndash-wrapper .ld-progress.ld-progress-inline {
   margin-top: 0;
   margin-bottom: 15px;
 }
+
 .course-steps-label-yes .eael-learn-dash-course .learndash-wrapper.learndash-widget .ld-progress .ld-progress-steps {
   display: block;
   margin-left: 15px;
 }
+
 .eael-learndash-wrapper.ld-cl-layout-mode-fit-to-screen {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -473,16 +564,38 @@ a.eael-course-card-button:hover i {
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
 }
+
 .eael-learndash-wrapper.ld-cl-layout-mode-fit-to-screen .eael-learn-dash-course {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   width: 100%;
 }
+
 .eael-learndash-wrapper.ld-cl-layout-mode-fit-to-screen .eael-learn-dash-course .eael-learn-dash-course-inner {
   width: 100%;
 }
+
+.eael-d-none {
+  display: none !important;
+}
+
+.eael-d-block {
+  display: block !important;
+}
+
+.eael-d-flex {
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+}
+
+.eael-align-center {
+  text-align: center !important;
+}
+
 /*--- Gallery Column CSS ---*/
+
 @media only screen and (min-width: 1025px) {
   /* For Desktop: */
   .elementor-element.elementor-grid-1 {
@@ -587,6 +700,7 @@ a.eael-course-card-button:hover i {
     clear: left;
   }
 }
+
 @media only screen and (max-width: 1024px) and (min-width: 766px) {
   /* For tablets: */
   .elementor-element.elementor-grid-tablet-1 {
@@ -687,6 +801,7 @@ a.eael-course-card-button:hover i {
     clear: left;
   }
 }
+
 @media only screen and (max-width: 767px) {
   .elementor-element.elementor-grid-mobile-1 {
     position: relative;

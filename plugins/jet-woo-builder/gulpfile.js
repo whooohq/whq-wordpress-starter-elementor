@@ -40,7 +40,7 @@ gulp.task('css-frontend', () => {
 
 // for integrated theme styles
 gulp.task('css-frontend-themes', () => {
-	return gulp.src( './includes/integrations/themes/kava/assets/scss/style.scss' )
+	return gulp.src( './includes/compatibility/packages/themes/kava/assets/scss/style.scss' )
 		.pipe(
 			plumber( {
 				errorHandler: function ( error ) {
@@ -57,7 +57,7 @@ gulp.task('css-frontend-themes', () => {
 		} ) )
 
 		.pipe( rename( 'style.css' ) )
-		.pipe( gulp.dest( './includes/integrations/themes/kava/assets/css/' ) )
+		.pipe( gulp.dest( './includes/compatibility/packages/themes/kava/assets/css/' ) )
 		.pipe( notify( 'Compile Sass Done!' ) );
 } );
 
@@ -150,7 +150,7 @@ gulp.task( 'css-editor', () => {
 } );
 
 gulp.task( 'css-editor-icons', () => {
-	return gulp.src( './assets/scss/editor/jet-woo-builder-icons.scss' )
+	return gulp.src( './assets/scss/editor/icons.scss' )
 		.pipe(
 			plumber( {
 				errorHandler: function( error ) {
@@ -166,7 +166,7 @@ gulp.task( 'css-editor-icons', () => {
 			cascade:  false
 		} ) )
 
-		.pipe( rename( 'jet-woo-builder-icons.css' ) )
+		.pipe( rename( 'icons.css' ) )
 		.pipe( gulp.dest( './assets/css/editor/' ) )
 		.pipe( notify( 'Compile Sass Done!' ) );
 } );

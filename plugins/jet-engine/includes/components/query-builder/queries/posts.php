@@ -70,6 +70,12 @@ class Posts_Query extends Base_Query {
 					}
 				}
 
+				if ( empty( $query_row['terms'] )
+					&& ( empty( $query_row['operator'] ) || ! in_array( $query_row['operator'], array( 'NOT EXISTS', 'EXISTS' ) ) )
+				) {
+					continue;
+				}
+
 				$args['tax_query'][] = $query_row;
 			}
 
@@ -289,6 +295,61 @@ class Posts_Query extends Base_Query {
 		} else {
 			$this->final_query['orderby']['custom'][ $key ] = $value;
 		}
+
+	}
+
+	/**
+	 * Adds date range query arguments to given query parameters.
+	 * Required to allow ech query to ensure compatibility with Dynamic Calendar
+	 * 
+	 * @param array $args [description]
+	 */
+	public function add_date_range_args( $args = array(), $dates_range = array(), $settings = array() ) {
+
+		$group_by = $settings['group_by'];
+
+		switch ( $group_by ) {
+
+			case 'post_date':
+			case 'post_mod':
+
+				if ( 'post_date' === $group_by ) {
+					$db_column = 'post_date';
+				} else {
+					$db_column = 'post_modified';
+				}
+
+				if ( isset( $args['date_query'] ) ) {
+					$date_query = $args['date_query'];
+				} else {
+					$date_query = array();
+				}
+
+				$date_query = array_merge( $date_query, array(
+					array(
+						'column'    => $db_column,
+						'after'     => date( 'Y-m-d', $dates_range['start'] ),
+						'before'    => date( 'Y-m-d', $dates_range['end'] ),
+						'inclusive' => true,
+					),
+				) );
+
+				$args['date_query'] = $date_query;
+
+				break;
+
+			case 'meta_date':
+
+				$args['meta_query'] = $this->get_dates_range_meta_query( $args, $dates_range, $settings );
+
+				break;
+
+		}
+
+		$args['posts_per_page'] = -1;
+		$args['ignore_sticky_posts'] = true;
+
+		return $args;
 
 	}
 

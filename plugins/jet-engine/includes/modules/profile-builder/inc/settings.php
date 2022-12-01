@@ -338,16 +338,18 @@ class Settings {
 
 			if ( ! empty( $pages ) ) {
 
-				$pages = array_values( $pages );
-				$page  = $pages[0];
+				$pages     = array_values( $pages );
+				$page_data = $pages[0];
 
-				/*if ( $page['slug'] === $slug ) {
+				/*if ( $page_data['slug'] === $slug ) {
 					$slug = null;
 				}*/
 
 			}
 
-			return ! empty( $slug ) ? $page_url . $slug . '/' : $page_url;
+			$url = ! empty( $slug ) ? $page_url . $slug . '/' : $page_url;
+
+			return apply_filters( 'jet-engine/profile-builder/subpage-url', $url, $slug, $page, $page_data, $this );
 
 		}
 

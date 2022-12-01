@@ -7,7 +7,7 @@ $checked_icon = apply_filters( 'jet-smart-filters/templates/radio/checked-icon',
 
 ?>
 <div class="jet-radio-list__row jet-filter-row<?php echo $extra_classes; ?>">
-	<label class="jet-radio-list__item">
+	<label class="jet-radio-list__item" <?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>>
 		<input
 			type="radio"
 			class="jet-radio-list__input"

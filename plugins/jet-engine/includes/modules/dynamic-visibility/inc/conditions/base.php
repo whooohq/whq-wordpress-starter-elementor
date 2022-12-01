@@ -156,7 +156,9 @@ abstract class Base {
 					$current_value = strtotime( $current_value );
 				}
 
-				$value_to_compare = strtotime( $value_to_compare );
+				if ( ! \Jet_Engine_Tools::is_valid_timestamp( $value_to_compare ) ) {
+					$value_to_compare = strtotime( $value_to_compare );
+				}
 
 				break;
 

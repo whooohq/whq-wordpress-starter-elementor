@@ -77,7 +77,7 @@
 		
 		<cx-vui-input
 			label="<?php _e( 'From Date', 'jet-engine' ); ?>"
-			description="<?php _e( 'Set date to get records after. You can use exact date or human-readle string like today, today - 7 days etc.', 'jet-engine' ); ?>"
+			description="<?php _e( 'Set date to get records after. You can use exact date or human-readable string like today, today - 7 days etc.', 'jet-engine' ); ?>"
 			:wrapper-css="[ 'equalwidth', 'has-macros' ]"
 			:conditions="[
 				{
@@ -94,7 +94,7 @@
 		</cx-vui-input>
 		<cx-vui-input
 			label="<?php _e( 'Date To', 'jet-engine' ); ?>"
-			description="<?php _e( 'Set date to get records before. You can use exact date or human-readle string like today, today - 7 days etc.', 'jet-engine' ); ?>"
+			description="<?php _e( 'Set date to get records before. You can use exact date or human-readable string like today, today - 7 days etc.', 'jet-engine' ); ?>"
 			:wrapper-css="[ 'equalwidth', 'has-macros' ]"
 			size="fullwidth"
 			:conditions="[

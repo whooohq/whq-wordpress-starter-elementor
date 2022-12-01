@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_Checkout_Login_Form
- * Name: Login Form
+ * Name: Checkout Login Form
  * Slug: jet-checkout-login-form
  */
 
@@ -22,7 +22,7 @@ class Jet_Woo_Builder_Checkout_Login_Form extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return __( 'Login Form', 'jet-woo-builder' );
+		return __( 'Checkout Login Form', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {

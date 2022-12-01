@@ -36,6 +36,13 @@ if ( ! class_exists( 'Jet_Engine_CPT' ) ) {
 		public $meta_boxes = array();
 
 		/**
+		 * Metaboxes args to register
+		 *
+		 * @var array
+		 */
+		public $meta_boxes_args = array();
+
+		/**
 		 * Set object type
 		 * @var string
 		 */
@@ -184,13 +191,15 @@ if ( ! class_exists( 'Jet_Engine_CPT' ) ) {
 						10, 2
 					);
 
+					$args = ! empty( $built_in['args'] ) ? maybe_unserialize( $built_in['args'] ) : array();
+
 					if ( ! empty( $built_in['meta_fields'] ) ) {
 
 						/**
 						 * Anonymus function to register apropriate meta fields.
 						 * Should be called there, if called earlier - jet_engine()->meta_boxes instance is not defined
 						 */
-						add_action( 'jet-engine/meta-boxes/register-instances', function() use ( $built_in, $post_type ) {
+						add_action( 'jet-engine/meta-boxes/register-instances', function() use ( $built_in, $post_type, $args ) {
 
 							$meta_fields = maybe_unserialize( $built_in['meta_fields'] );
 
@@ -200,6 +209,10 @@ if ( ! class_exists( 'Jet_Engine_CPT' ) ) {
 
 							$meta_fields = apply_filters( 'jet-engine/meta-boxes/raw-fields', $meta_fields, $this );
 
+							if ( ! empty( $args['hide_field_names'] ) ) {
+								$this->meta_boxes_args[ $post_type ]['hide_field_names'] = $args['hide_field_names'];
+							}
+
 							$this->meta_boxes[ $post_type ] = $meta_fields;
 							if ( jet_engine()->meta_boxes ) {
 								jet_engine()->meta_boxes->store_fields( $post_type, $meta_fields );
@@ -208,8 +221,6 @@ if ( ! class_exists( 'Jet_Engine_CPT' ) ) {
 						}, 9 );
 
 					}
-
-					$args = ! empty( $built_in['args'] ) ? maybe_unserialize( $built_in['args'] ) : array();
 
 					if ( is_admin() ) {
 
@@ -372,6 +383,10 @@ if ( ! class_exists( 'Jet_Engine_CPT' ) ) {
 
 					$post_type['meta_fields'] = apply_filters( 'jet-engine/meta-boxes/raw-fields', $post_type['meta_fields'], $this );
 
+					if ( ! empty( $post_type['hide_field_names'] ) ) {
+						$this->meta_boxes_args[ $post_type['slug'] ]['hide_field_names'] = $post_type['hide_field_names'];
+					}
+
 					$this->meta_boxes[ $post_type['slug'] ] = $post_type['meta_fields'];
 
 					if ( jet_engine()->meta_boxes ) {
@@ -500,7 +515,10 @@ if ( ! class_exists( 'Jet_Engine_CPT' ) ) {
 			foreach ( $this->meta_boxes as $post_type => $meta_box ) {
 
 				$this->find_meta_fields_with_save_custom( $post_type, $meta_box );
-				$meta_instance = new Jet_Engine_CPT_Meta( $post_type, $meta_box );
+
+				$args = ! empty( $this->meta_boxes_args[ $post_type ] ) ? $this->meta_boxes_args[ $post_type ] : array();
+
+				$meta_instance = new Jet_Engine_CPT_Meta( $post_type, $meta_box, '', 'normal', 'high', $args );
 
 				if ( ! empty( $this->edit_links[ $post_type ] ) ) {
 					$meta_instance->add_edit_link( $this->edit_links[ $post_type ] );

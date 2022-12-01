@@ -1,0 +1,65 @@
+@import "./mixins.scss";
+
+.jet-ui_controls-list {
+	padding: 22px 25px;
+	border-radius: $radius;
+	background: $bg-panel;
+	box-shadow: $box-shadow;
+
+	&-title {
+		margin: 0 0 14px;
+		color: $color-text-heading;
+		font-size: 21px;
+		line-height: 32px;
+		font-weight: 500;
+	}
+
+	&-item {
+		display: flex;
+
+		&-meta {
+			width: 30%;
+		}
+
+		&-control {
+			width: 70%;
+		}
+
+		&-title {
+			margin: 4px 0;
+			color: $color-text-heading;
+			font-size: 15px;
+			line-height: 24px;
+			font-weight: 500;
+		}
+
+		&-description {
+			color: $color-text-secondary;
+		}
+
+		&--fullwidth {
+			flex-direction: column;
+		}
+
+		&--fullwidth &-meta,
+		&--fullwidth &-control {
+			width: auto;
+		}
+
+		&--required-not-filled {
+			.jet-ui_advanced-input-text {
+				border-color: $required-notification-border-color !important;
+			}
+		}
+	}
+
+	> * + * {
+		padding: 24px 0;
+		border-top: $border-width solid $border-color;
+	}
+
+	&-required-notification {
+		margin-top: 4px;
+		color: $required-notification-color;
+	}
+}

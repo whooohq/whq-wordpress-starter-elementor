@@ -60,7 +60,7 @@ class Jet_Widget_Custom_Menu extends Widget_Base {
 	 * @return array Widget categories.
 	 */
 	public function get_categories() {
-		return array( 'cherry' );
+		return array( 'jet-menu' );
 	}
 
 	/**
@@ -1835,6 +1835,8 @@ class Jet_Widget_Custom_Menu extends Widget_Base {
 					'value' => Scheme_Color::COLOR_3,
 				),
 				'selectors' => array(
+					'{{WRAPPER}} ' . $css_scheme['icon'] => 'color: {{VALUE}}',
+					'{{WRAPPER}} ' . $css_scheme['icon_sub']  => 'color: {{VALUE}}',
 					'{{WRAPPER}} ' . $css_scheme['icon'] . ':before' => 'color: {{VALUE}}',
 					'{{WRAPPER}} ' . $css_scheme['icon_sub'] . ':before' => 'color: {{VALUE}}',
 				),
@@ -1873,6 +1875,8 @@ class Jet_Widget_Custom_Menu extends Widget_Base {
 					'value' => Scheme_Color::COLOR_3,
 				),
 				'selectors' => array(
+					'{{WRAPPER}} ' . $css_scheme['icon_hover'] => 'color: {{VALUE}}',
+					'{{WRAPPER}} ' . $css_scheme['icon_sub_hover'] => 'color: {{VALUE}}',
 					'{{WRAPPER}} ' . $css_scheme['icon_hover'] . ':before' => 'color: {{VALUE}}',
 					'{{WRAPPER}} ' . $css_scheme['icon_sub_hover'] . ':before' => 'color: {{VALUE}}',
 				),
@@ -1907,6 +1911,8 @@ class Jet_Widget_Custom_Menu extends Widget_Base {
 				'label' => esc_html__( 'Icon Color', 'jet-menu' ),
 				'type'  => Controls_Manager::COLOR,
 				'selectors' => array(
+					'{{WRAPPER}} ' . $css_scheme['icon_active'] => 'color: {{VALUE}}',
+					'{{WRAPPER}} ' . $css_scheme['icon_sub_active'] => 'color: {{VALUE}}',
 					'{{WRAPPER}} ' . $css_scheme['icon_active'] . ':before' => 'color: {{VALUE}}',
 					'{{WRAPPER}} ' . $css_scheme['icon_sub_active'] . ':before' => 'color: {{VALUE}}',
 				),

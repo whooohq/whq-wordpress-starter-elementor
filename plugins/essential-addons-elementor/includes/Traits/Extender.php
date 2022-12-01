@@ -524,7 +524,10 @@ endforeach;
         $obj->add_group_control(Group_Control_Typography::get_type(), [
             'name' => 'eael_creative_button_secondary_typography',
             'scheme' => Schemes\Typography::TYPOGRAPHY_1,
-            'selector' => '{{WRAPPER}} .eael-creative-button--rayen::before, {{WRAPPER}} .eael-creative-button--winona::after',
+            'selector' => '{{WRAPPER}} .eael-creative-button--rayen::before, 
+                            {{WRAPPER}} .eael-creative-button--winona::after, 
+                            {{WRAPPER}} .eael-creative-button--tamaya .eael-creative-button--tamaya-secondary span,
+                            {{WRAPPER}} .eael-creative-button.eael-creative-button--saqui::after',
         ]);
 
         $obj->end_controls_tab();
@@ -1920,6 +1923,7 @@ endif;
 	                    $col_span       = empty( $merge_data_cell[ $cell ]['colSpan'] ) ? '' : $merge_data_cell[ $cell ]['colSpan'];
 	                    $merge_attr     = " {$row_span} {$col_span}";
 	                    $formattedValue = empty( $td['formattedValue'] ) ? '' : $td['formattedValue'];
+	                    $formattedValue = isset( $td['formattedValue'] ) && '0' === $td['formattedValue'] ? esc_html( $td['formattedValue'] ) : $formattedValue; // Fix for 0 value
 	                    $td             = isset( $td['hyperlink'] ) ? '<a href="' . $td['hyperlink'] . '" target="_blank">' . $formattedValue . '</a>' : $formattedValue;
 
 	                    $tbody .= '<td' . $merge_attr . '>' . $td . '</td>';
@@ -2783,6 +2787,93 @@ endif;
     }
 
     /**
+     * Add spinner control
+     *
+     * @param Login_Register $lr
+     */
+    public function lr_init_content_spinner_controls($lr, $button_type)
+    {
+        $lr->add_control( "{$button_type}_btn_show_spinner", [
+			'label'        => esc_html__( 'Show Spinner', 'essential-addons-for-elementor-lite' ),
+			'type'         => Controls_Manager::SWITCHER,
+			'return_value' => 'true',
+			'default'      => '',
+			'label_on'     => __( 'Show', 'essential-addons-for-elementor-lite' ),
+			'label_off'    => __( 'Hide', 'essential-addons-for-elementor-lite' ),
+		] );
+
+		$lr->add_control( "{$button_type}_btn_spinner_note", [
+			'type'            => Controls_Manager::RAW_HTML,
+			'content_classes' => 'elementor-control-raw-html elementor-panel-alert elementor-panel-alert-info',
+			'raw'             => esc_html__( 'In preview, Spinner is only visible after clicking on the button.', 'essential-addons-for-elementor-lite' ),
+			'condition'       => [
+				"{$button_type}_btn_show_spinner" => 'true',
+			],
+		] );
+
+		$lr->add_control( "{$button_type}_btn_spinner_position", [
+			'label'     => __( 'Position', 'essential-addons-for-elementor-lite' ),
+			'type'      => Controls_Manager::SLIDER,
+			'size_units' => [
+				'px',
+				'%',
+			],
+			'range'      => [
+				'px' => [
+					'min'  => 0,
+					'max'  => 100,
+					'step' => 1,
+				],
+				'%'  => [
+					'min' => 0,
+					'max' => 100,
+				],
+			],
+			'condition' => [
+				"{$button_type}_btn_show_spinner" => 'true',
+			],
+			'selectors' => [
+				"{{WRAPPER}} .eael-lr-form-loader-wrapper .eael-lr-form-loader.eael-lr-{$button_type}-form-loader" => 'right: {{SIZE}}{{UNIT}};',
+			],
+		] );
+
+		$lr->add_control( "{$button_type}_btn_spinner_color", [
+			'label'     => __( 'Color', 'essential-addons-for-elementor-lite' ),
+			'type'      => Controls_Manager::COLOR,
+			'condition' => [
+				"{$button_type}_btn_show_spinner" => 'true',
+			],
+			'selectors' => [
+				"{{WRAPPER}} .eael-lr-form-loader-wrapper .eael-lr-form-loader.eael-lr-{$button_type}-form-loader" => 'color: {{VALUE}};',
+			],
+		] );
+    }
+    
+    /**
+     * Add login button spinner control
+     *
+     * @param Login_Register $lr
+     */
+    public function lr_init_content_login_spinner_controls($lr)
+    {
+        $button_type = 'login';
+
+        $this->lr_init_content_spinner_controls($lr, $button_type);
+    }
+
+    /**
+     * Add register button spinner control
+     *
+     * @param Login_Register $lr
+     */
+    public function lr_init_content_register_spinner_controls($lr)
+    {
+        $button_type = 'register';
+
+        $this->lr_init_content_spinner_controls($lr, $button_type);
+    }
+
+    /**
      * Add Social Login related controls
      *
      * @param Login_Register $lr
@@ -2801,7 +2892,7 @@ endif;
         if (empty(get_option('eael_g_client_id'))) {
             $lr->add_control('eael_g_client_id_missing', [
                 'type' => Controls_Manager::RAW_HTML,
-                'raw' => sprintf(__('Google Client ID is missing. Please add it from %sDashboard >> Essential Addons >> Elements >> Login | Register Form %sSettings', 'essential-addons-for-elementor-lite'), '<strong>', '</strong>'),
+                'raw' => sprintf(__('Google Client ID is missing. Please add it from %sDashboard >> Essential Addons >> Elements >> Login | Register Form %sSettings', 'essential-addons-elementor'), '<strong>', '</strong>'),
                 'content_classes' => 'eael-warning',
                 'condition' => [
                     'enable_google_login' => 'yes',
@@ -2816,7 +2907,7 @@ endif;
         if (empty(get_option('eael_fb_app_id')) || empty(get_option('eael_fb_app_secret'))) {
             $lr->add_control('eael_fb_app_id_missing', [
                 'type' => Controls_Manager::RAW_HTML,
-                'raw' => sprintf(__('Facebook API keys are missing. Please add them from %sDashboard >> Essential Addons >> Elements >> Login | Register Form %sSettings', 'essential-addons-for-elementor-lite'), '<strong>', '</strong>'),
+                'raw' => sprintf(__('Facebook API keys are missing. Please add them from %sDashboard >> Essential Addons >> Elements >> Login | Register Form %sSettings', 'essential-addons-elementor'), '<strong>', '</strong>'),
                 'content_classes' => 'eael-warning',
                 'condition' => [
                     'enable_fb_login' => 'yes',
@@ -3433,6 +3524,36 @@ if ($btn_text) {
 		// Separator
 		$this->lr_init_style_social_separator_controls( $lr );
 		$lr->end_controls_section();
+	}
+    
+    /**
+	 * It adds styling controls for mailchimp integration to Login | Register Form
+	 *
+	 * @param Login_Register $lr
+	 */
+	public function lr_init_mailchimp_integration_controls( Login_Register $lr ) {
+		$lr->add_control( 'eael_register_mailchimp_integration_enable', [
+            'label'        => __( 'Enable Mailchimp Integration', 'essential-addons-elementor' ),
+            'description'  => __( 'Enable to create new Mailchimp audience contact on each user registration.', 'essential-addons-elementor' ),
+            'type'         => Controls_Manager::SWITCHER,
+            'label_on'     => __( 'Yes', 'essential-addons-elementor' ),
+            'label_off'    => __( 'No', 'essential-addons-elementor' ),
+            'return_value' => 'yes',
+        ] );
+        
+        $lr->add_control(
+            'eael_mailchimp_lists',
+            [
+                'label' => esc_html__('Mailchimp List', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SELECT,
+                'label_block' => false,
+                'description' => __( sprintf('Set your API Key from <a class="elementor-control-field-description" href="%s" target="_blank"><strong>EA Dashboard &raquo; Elements &raquo; Login | Register Form Settings</strong></a>', site_url('/wp-admin/admin.php?page=eael-settings') ), 'essential-addons-elementor' ),
+                'options' => Helper::mailchimp_lists('login-register-form'),
+                'condition' => [
+                    'eael_register_mailchimp_integration_enable' => 'yes',
+                ],
+            ]
+        );
 	}
 
 	/**
@@ -4155,16 +4276,99 @@ if ($btn_text) {
 			] );
 		}
 
+        /** Use Weak Password : Starts */
+        $lr->add_control( 'use_weak_password', [
+            'label' => __( 'Enable use of weak Password', 'essential-addons-elementor' ),
+            'type'  => Controls_Manager::SWITCHER,
+            'default' => 'yes',
+        ] );
+
+        $lr->add_control( 'weak_pass_validation_text_type', [
+			'label'     => __( 'Validation Text', 'essential-addons-elementor' ),
+			'type'      => Controls_Manager::SELECT,
+			'default'   => '',
+			'options'   => [
+				'' => __( 'Default', 'essential-addons-elementor' ),
+				'custom'  => __( 'Custom', 'essential-addons-elementor' ),
+			],
+            'condition' => [
+                'use_weak_password' => '',
+            ],
+		] );
+
+		$lr->add_control( "weak_pass_custom_validation_text", [
+			'label'       => __( 'Custom Validation Text', 'essential-addons-elementor' ),
+			'type'        => Controls_Manager::TEXT,
+			'placeholder' => __( 'Your custom validation text...', 'essential-addons-elementor' ),
+			'condition'   => [
+				'weak_pass_validation_text_type' => 'custom',
+                'use_weak_password' => '',
+			],
+		] );
+
+        $lr->add_control( 'weak_pass_min_char', [
+            'label' => __( 'Minimum Password Length', 'essential-addons-elementor' ),
+            'type'  => Controls_Manager::NUMBER,
+            'default' => 12,
+            'min' => 6,
+            'max' => 30,
+            'step' => 1,
+            'condition' => [
+                'use_weak_password' => '',
+            ],
+        ] );
+
+        $lr->add_control( 'weak_pass_one_uppercase', [
+            'label' => __( 'One Uppercase Letter', 'essential-addons-elementor' ),
+            'type'  => Controls_Manager::SWITCHER,
+            'default' => 'yes',
+            'condition' => [
+                'use_weak_password' => '',
+            ],
+        ] );
+
+        $lr->add_control( 'weak_pass_one_lowercase', [
+            'label' => __( 'One Lowercase Letter', 'essential-addons-elementor' ),
+            'type'  => Controls_Manager::SWITCHER,
+            'default' => 'yes',
+            'condition' => [
+                'use_weak_password' => '',
+            ],
+        ] );
+
+        $lr->add_control( 'weak_pass_one_number', [
+            'label' => __( 'One Number', 'essential-addons-elementor' ),
+            'type'  => Controls_Manager::SWITCHER,
+            'default' => 'yes',
+            'condition' => [
+                'use_weak_password' => '',
+            ],
+        ] );
+
+        $lr->add_control( 'weak_pass_one_special', [
+            'label' => __( 'One Special Character', 'essential-addons-elementor' ),
+            'type'  => Controls_Manager::SWITCHER,
+            'default' => 'yes',
+            'condition' => [
+                'use_weak_password' => '',
+            ],
+        ] );
+
+        /** Use Weak Password : Ends */
+
 		$lr->add_control( 'ps_hint_type', [
 			'label'     => __( 'Password Hint', 'essential-addons-elementor' ),
 			'type'      => Controls_Manager::SELECT,
 			'default'   => '',
-			'separator' => 'before',
 			'options'   => [
 				''        => __( 'None', 'essential-addons-elementor' ),
 				'default' => __( 'WordPress Default', 'essential-addons-elementor' ),
 				'custom'  => __( 'Custom', 'essential-addons-elementor' ),
 			],
+            'condition' => [
+                'use_weak_password!' => '',
+            ],
+            'separator' => 'before',
 		] );
 		$lr->add_control( "ps_hint", [
 			'label'       => __( 'Custom Password Hint', 'essential-addons-elementor' ),
@@ -4172,8 +4376,10 @@ if ($btn_text) {
 			'placeholder' => __( 'Your custom password hint...', 'essential-addons-elementor' ),
 			'condition'   => [
 				'ps_hint_type' => 'custom',
+                'use_weak_password!' => '',
 			],
 		] );
+
 	}
 
 	/**
@@ -4373,6 +4579,7 @@ if ($btn_text) {
 			],
 			'condition' => [
 				'ps_hint_type!' => '',
+				'use_weak_password!' => '',
 			],
 		] );
 		$lr->add_group_control( Group_Control_Typography::get_type(), [
@@ -4386,6 +4593,7 @@ if ($btn_text) {
 			'selector' => $hint,
 			'condition' => [
 				'ps_hint_type!' => '',
+                'use_weak_password!' => '',
 			],
 		] );
 		$lr->add_group_control( Group_Control_Border::get_type(), [
@@ -4455,6 +4663,7 @@ if ($btn_text) {
 			'selectors' => $hint,
 			'condition' => [
 				'ps_hint_type!' => '',
+                'use_weak_password!' => '',
 			],
 		] );
 		$lr->add_group_control( Group_Control_Background::get_type(), [
@@ -4543,6 +4752,78 @@ if ($btn_text) {
         </div>
 		<?php
 
+	}
+    
+    /**
+	 * It validates password
+     * 
+     * @param array $settings
+     * @param string $password
+     * @param array $errors
+	 */
+	public function lr_register_user_password_validation( $errors, $settings, $password ) {
+        $use_weak_password = !empty($settings['use_weak_password']) ? $settings['use_weak_password'] : '';
+        $validation_text_condition = [];
+
+        if('yes' !== $use_weak_password) {
+            $weak_pass_min_char = isset($settings['weak_pass_min_char']) ? intval($settings['weak_pass_min_char']) : 12;
+            $weak_pass_one_uppercase = isset($settings['weak_pass_one_uppercase']) ? sanitize_text_field( $settings['weak_pass_one_uppercase'] ) : 'yes';
+            $weak_pass_one_lowercase = isset($settings['weak_pass_one_lowercase']) ? sanitize_text_field( $settings['weak_pass_one_lowercase'] ) : 'yes';
+            $weak_pass_one_number = isset($settings['weak_pass_one_number']) ? sanitize_text_field( $settings['weak_pass_one_number'] ) : 'yes';
+            $weak_pass_one_special = isset($settings['weak_pass_one_special']) ? sanitize_text_field( $settings['weak_pass_one_special'] ) : 'yes';
+            
+            $pattern_init_uppercase = $pattern_init_lowercase = $pattern_init_number = $pattern_init_special = '';
+            
+            if( 'yes' === $weak_pass_one_uppercase ) {
+                $pattern_init_uppercase = '(?=.*[A-Z])';
+                $validation_text_condition[] = 'one uppercase letter';
+            }
+            if( 'yes' === $weak_pass_one_lowercase ) {
+                $pattern_init_lowercase = '(?=.*[a-z])';
+                $validation_text_condition[] = 'one lowercase letter';
+            }
+            if( 'yes' === $weak_pass_one_number ) {
+                $pattern_init_number = '(?=.*[0-9])';
+                $validation_text_condition[] = 'one number';
+            }
+            if( 'yes' === $weak_pass_one_special ) {
+                $pattern_init_special = '(?=.*[!@#$%^&*-])';
+                $validation_text_condition[] = 'one special character';
+            }
+            
+            if($weak_pass_min_char){
+                $pattern_init_min_char = '.{' . $weak_pass_min_char . ',}';
+            }
+            $pattern = '/^' . $pattern_init_special . $pattern_init_number . $pattern_init_uppercase . $pattern_init_lowercase . $pattern_init_min_char . '$/';
+            // Regex Example: $pattern = '/^(?=.*[!@#$%^&*-])(?=.*[0-9])(?=.*[A-Z]).{12,}$/'; // at least 12 characters, one special character, one number, one uppercase letter and one lowercase letter
+
+            if(!preg_match($pattern, $password)) {
+                
+                $validation_text_default = 'Password must be at least ' . intval( $weak_pass_min_char ) . ' characters long';
+                
+                if( count($validation_text_condition) ){
+                    foreach($validation_text_condition as $key => $value) {
+                        if($key === 0) {
+                            $validation_text_default .= ' and contains at least ';
+                        } else if ( $key === count($validation_text_condition) - 1 ) {
+                            $validation_text_default .= ' and ';
+                        } else {
+                            $validation_text_default .= ', ';
+                        }
+
+                        $validation_text_default .= $value;
+                    }
+                }
+                
+                $errors['password'] = $validation_text_default;
+
+                if ( !empty( $settings['weak_pass_validation_text_type'] ) && 'custom' === $settings['weak_pass_validation_text_type'] ) {
+                    $errors['password'] = !empty( $settings['weak_pass_custom_validation_text'] ) ? sanitize_text_field( $settings['weak_pass_custom_validation_text'] ) : $errors['password'];
+                }
+            }
+        }
+
+        return $errors;
 	}
 
 }

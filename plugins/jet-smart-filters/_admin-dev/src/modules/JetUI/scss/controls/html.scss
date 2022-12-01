@@ -1,0 +1,22 @@
+@import "../mixins.scss";
+
+.jet-ui_html {
+	font-size: 13px;
+	line-height: 20px;
+	color: $color-text-secondary;
+
+	h5 {
+		margin: 12px 0 5px;
+		font-size: 13px;
+		line-height: 20px;
+		color: $color-text-primary;
+	}
+
+	p {
+		margin: 0 0 12px;
+	}
+
+	ul {
+		margin: 0;
+	}
+}

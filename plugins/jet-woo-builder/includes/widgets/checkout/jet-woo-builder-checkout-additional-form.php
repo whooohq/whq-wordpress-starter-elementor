@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_Checkout_Additional_Form
- * Name: Additional Form
+ * Name: Checkout Additional Form
  * Slug: jet-checkout-additional-form
  */
 
@@ -20,7 +20,7 @@ class Jet_Woo_Builder_Checkout_Additional_Form extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return __( 'Additional Form', 'jet-woo-builder' );
+		return __( 'Checkout Additional Form', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
@@ -78,7 +78,7 @@ class Jet_Woo_Builder_Checkout_Additional_Form extends Jet_Woo_Builder_Base {
 				'label'     => __( 'Modify', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::SWITCHER,
 				'condition' => [
-					'checkout_additional_form_heading_visibility' => 'yes',
+					'checkout_additional_form_heading_visibility!' => '',
 				],
 			]
 		);
@@ -94,7 +94,8 @@ class Jet_Woo_Builder_Checkout_Additional_Form extends Jet_Woo_Builder_Base {
 					'active' => true,
 				],
 				'condition'   => [
-					'checkout_additional_form_custom_labels' => 'yes',
+					'checkout_additional_form_heading_visibility!' => '',
+					'checkout_additional_form_custom_labels!' => '',
 				],
 			]
 		);

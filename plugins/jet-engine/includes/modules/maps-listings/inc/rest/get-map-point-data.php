@@ -55,7 +55,7 @@ class Get_Map_Point_Data extends \Jet_Engine_Base_API_Endpoint {
 	}
 
 	/**
-	 * Returns endpoint request method - GET/POST/PUT/DELTE
+	 * Returns endpoint request method - GET/POST/PUT/DELETE
 	 *
 	 * @return string
 	 */
@@ -64,11 +64,18 @@ class Get_Map_Point_Data extends \Jet_Engine_Base_API_Endpoint {
 	}
 
 	/**
-	 * Check user access to current end-popint
+	 * Check user access to current end-point
 	 *
 	 * @return bool
 	 */
 	public function permission_callback( $request ) {
+
+		$nonce = $request->get_header( 'nonce' );
+
+		if ( $nonce && wp_verify_nonce( $nonce, 'jet-map-field' ) ) {
+			return true;
+		}
+
 		return current_user_can( 'edit_posts' );
 	}
 

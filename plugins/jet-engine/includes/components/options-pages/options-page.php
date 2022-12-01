@@ -81,6 +81,10 @@ if ( ! class_exists( 'Jet_Engine_Options_Page_Factory' ) ) {
 			$this->page = $page;
 			$this->slug = $page['slug'];
 
+			if ( ! empty( $page['hide_field_names'] ) ) {
+				$this->hide_field_names = $page['hide_field_names'];
+			}
+
 			$page['fields'] = apply_filters( 'jet-engine/options-pages/raw-fields', $page['fields'], $this );
 
 			$this->meta_box       = $page['fields'];

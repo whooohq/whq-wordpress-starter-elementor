@@ -9,12 +9,10 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Indexer_Controls' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Indexer_Controls class
 	 */
 	class Jet_Smart_Filters_Indexer_Controls {
-
 		/**
 		 * Constructor for the class
 		 */
@@ -24,18 +22,22 @@ if ( ! class_exists( 'Jet_Smart_Filters_Indexer_Controls' ) ) {
 				$this,
 				'add_widget_controls',
 			), 10, 2 );
+
 			add_action( 'elementor/element/jet-smart-filters-radio/additional_settings/after_section_end', array(
 				$this,
 				'add_widget_controls',
 			), 10, 2 );
+
 			add_action( 'elementor/element/jet-smart-filters-check-range/additional_settings/after_section_end', array(
 				$this,
 				'add_widget_controls',
 			), 10, 2 );
+
 			add_action( 'elementor/element/jet-smart-filters-color-image/additional_settings/after_section_end', array(
 				$this,
 				'add_widget_controls',
 			), 10, 2 );
+
 			add_action( 'elementor/element/jet-smart-filters-select/section_general/after_section_end', array(
 				$this,
 				'add_widget_controls',
@@ -45,28 +47,27 @@ if ( ! class_exists( 'Jet_Smart_Filters_Indexer_Controls' ) ) {
 				$this,
 				'add_widget_style_controls',
 			), 10, 2 );
+
 			add_action( 'elementor/element/jet-smart-filters-color-image/section_filter_apply_button_style/after_section_end', array(
 				$this,
 				'add_widget_style_controls',
 			), 10, 2 );
+
 			add_action( 'elementor/element/jet-smart-filters-radio/section_filter_apply_button_style/after_section_end', array(
 				$this,
 				'add_widget_style_controls',
 			), 10, 2 );
+
 			add_action( 'elementor/element/jet-smart-filters-check-range/section_filter_apply_button_style/after_section_end', array(
 				$this,
 				'add_widget_style_controls',
 			), 10, 2 );
 
 			add_action( 'jet-smart-filter/templates/counter', array( $this, 'get_counter_html' ), 10, 2 );
-
 		}
 
 		/**
 		 * Add style controls to widgets
-		 *
-		 * @param       $obj
-		 * @param array $args
 		 */
 		public function add_widget_style_controls( $obj, $args = array() ) {
 
@@ -90,7 +91,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Indexer_Controls' ) ) {
 			$obj->add_responsive_control(
 				'counter_offset',
 				array(
-					'label'      => esc_html__( 'Offset Left', 'jet-smart-filters' ),
+					'label'      => esc_html__( 'Horizontal Offset', 'jet-smart-filters' ),
 					'type'       => Elementor\Controls_Manager::SLIDER,
 					'size_units' => array(
 						'px'
@@ -106,7 +107,8 @@ if ( ! class_exists( 'Jet_Smart_Filters_Indexer_Controls' ) ) {
 						'unit' => 'px',
 					),
 					'selectors'  => array(
-						'{{WRAPPER}} .jet-filters-counter' => 'margin-left: {{SIZE}}{{UNIT}};',
+						'{{WRAPPER}} .jet-filters-counter'      => 'margin-left: {{SIZE}}{{UNIT}};',
+						'.rtl {{WRAPPER}} .jet-filters-counter' => 'margin-right: {{SIZE}}{{UNIT}};',
 					),
 				)
 			);
@@ -158,14 +160,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Indexer_Controls' ) ) {
 			$obj->end_controls_tabs();
 
 			$obj->end_controls_section();
-
 		}
 
 		/**
 		 * Add controls to widgets
-		 *
-		 * @param       $obj
-		 * @param array $args
 		 */
 		public function add_widget_controls( $obj, $args = array() ) {
 
@@ -240,13 +238,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Indexer_Controls' ) ) {
 			);
 
 			$obj->end_controls_section();
-
 		}
 
 		/**
 		 * Render counter element html
-		 *
-		 * @param $args
 		 */
 		public function get_counter_html( $args ) {
 
@@ -264,8 +259,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Indexer_Controls' ) ) {
 			if ( $options['show_counter'] ) {
 				echo $counter;
 			}
-
 		}
 	}
-
 }

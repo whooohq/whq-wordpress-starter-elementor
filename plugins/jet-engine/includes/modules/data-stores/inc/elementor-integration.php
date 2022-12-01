@@ -10,7 +10,11 @@ class Elementor_Integration {
 		add_action( 'jet-engine/listing/after-posts-query-fields', array( $this, 'register_listing_controls' ) );
 		add_action( 'jet-engine/elementor-views/dynamic-tags/register', array( $this, 'register_dynamic_tags' ) );
 
-		add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_widgets' ) );
+		if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.5.0', '>=' ) ) {
+			add_action( 'elementor/widgets/register', array( $this, 'register_widgets' ) );
+		} else {
+			add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_widgets' ) );
+		}
 
 		add_filter( 'jet-engine/modules/dynamic-visibility/condition/args', array( $this, 'strip_tags_from_store_count_condition' ) );
 
@@ -38,7 +42,12 @@ class Elementor_Integration {
 	 */
 	public function register_widgets( $widgets_manager ) {
 		require_once jet_engine()->modules->modules_path( 'data-stores/inc/widgets/button.php' );
-		$widgets_manager->register_widget_type( new Widgets\Button() );
+
+		if ( method_exists( $widgets_manager, 'register' ) ) {
+			$widgets_manager->register( new Widgets\Button() );
+		} else {
+			$widgets_manager->register_widget_type( new Widgets\Button() );
+		}
 	}
 
 	/**

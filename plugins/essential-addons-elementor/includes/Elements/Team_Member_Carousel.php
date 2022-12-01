@@ -2334,29 +2334,37 @@ class Team_Member_Carousel extends Widget_Base
 
 		$this->add_render_attribute('team-member-carousel', 'data-id', 'swiper-container-' . esc_attr($this->get_id()));
 
-		if (!empty($settings['items']['size'])) {
-			$this->add_render_attribute('team-member-carousel', 'data-items', $settings['items']['size']);
-		}
+        $default_items = !empty($settings['items']['size']) ? $settings['items']['size'] : 3;
+        $this->add_render_attribute('team-member-carousel', 'data-items', $default_items);
 
-		if (!empty($settings['items_tablet']['size'])) {
-			$this->add_render_attribute('team-member-carousel', 'data-items-tablet', $settings['items_tablet']['size']);
-		}
+        $default_margin = !empty($settings['margin']['size']) ? $settings['margin']['size'] : 10;
+        $this->add_render_attribute('team-member-carousel', 'data-margin', $default_margin);
 
-		if (!empty($settings['items_mobile']['size'])) {
-			$this->add_render_attribute('team-member-carousel', 'data-items-mobile', $settings['items_mobile']['size']);
-		}
+        if (empty($settings['items_mobile']['size'])){
+            $this->add_render_attribute('team-member-carousel', 'data-items-mobile', 1);
+        }
+        if (empty($settings['margin_mobile']['size'])){
+            $this->add_render_attribute('team-member-carousel', 'data-margin-mobile', 10);
+        }
+        if (empty($settings['items_tablet']['size'])){
+            $this->add_render_attribute('team-member-carousel', 'data-items-tablet', 2);
+        }
+        if (empty($settings['margin_tablet']['size'])){
+            $this->add_render_attribute('team-member-carousel', 'data-margin-tablet', 10);
+        }
 
-		if (!empty($settings['margin']['size'])) {
-			$this->add_render_attribute('team-member-carousel', 'data-margin', $settings['margin']['size']);
-		}
-
-		if (!empty($settings['margin_tablet']['size'])) {
-			$this->add_render_attribute('team-member-carousel', 'data-margin-tablet', $settings['margin_tablet']['size']);
-		}
-
-		if (!empty($settings['margin_mobile']['size'])) {
-			$this->add_render_attribute('team-member-carousel', 'data-margin-mobile', $settings['margin_mobile']['size']);
-		}
+        if ( method_exists( \Elementor\Plugin::$instance->breakpoints, 'get_breakpoints_config' ) && ! empty( $breakpoints = \Elementor\Plugin::$instance->breakpoints->get_breakpoints_config() ) ) {
+            foreach ( $breakpoints as $key => $breakpoint ){
+                if ($breakpoint['is_enabled']) {
+                    if (!empty($settings['items_'.$key]['size'])) {
+                        $this->add_render_attribute('team-member-carousel', 'data-items-'.$key, $settings['items_'.$key]['size']);
+                    }
+                    if (!empty($settings['margin_'.$key]['size'])) {
+                        $this->add_render_attribute('team-member-carousel', 'data-margin-'.$key, $settings['margin_'.$key]['size']);
+                    }
+                }
+            }
+        }
 
 		if (!empty($settings['slider_speed']['size'])) {
 			$this->add_render_attribute('team-member-carousel', 'data-speed', $settings['slider_speed']['size']);

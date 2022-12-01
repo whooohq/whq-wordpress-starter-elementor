@@ -21,15 +21,11 @@ class Jet_Woo_Builder_Single_Upsells extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Single Upsells', 'jet-woo-builder' );
+		return __( 'Single Upsells', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
 		return 'jet-woo-builder-icon-single-upsells';
-	}
-
-	public function get_script_depends() {
-		return array();
 	}
 
 	public function get_jet_help_url() {
@@ -55,9 +51,17 @@ class Jet_Woo_Builder_Single_Upsells extends Jet_Woo_Builder_Base {
 
 		$this->start_controls_section(
 			'section_single_upsells_style',
-			array(
-				'label' => esc_html__( 'Title', 'jet-woo-builder' ),
+			[
+				'label' => __( 'Heading', 'jet-woo-builder' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'single_upsells_title_typography',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['title'],
 			)
 		);
 
@@ -69,14 +73,6 @@ class Jet_Woo_Builder_Single_Upsells extends Jet_Woo_Builder_Base {
 				'selectors' => array(
 					'{{WRAPPER}} ' . $css_scheme['title'] => 'color: {{VALUE}}',
 				),
-			)
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			array(
-				'name'     => 'single_upsells_title_typography',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['title'],
 			)
 		);
 
@@ -118,14 +114,14 @@ class Jet_Woo_Builder_Single_Upsells extends Jet_Woo_Builder_Base {
 			return;
 		}
 
-		if ( true === $this->__set_editor_product() ) {
+		if ( $this->__set_editor_product() ) {
 			$this->__open_wrap();
 
 			woocommerce_upsell_display();
 
 			$this->__close_wrap();
 
-			if ( jet_woo_builder_integration()->in_elementor() ) {
+			if ( jet_woo_builder()->elementor_views->in_elementor() ) {
 				$this->__reset_editor_product();
 			}
 		}

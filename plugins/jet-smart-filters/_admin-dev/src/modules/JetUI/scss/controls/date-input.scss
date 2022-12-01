@@ -1,0 +1,77 @@
+@import "../mixins.scss";
+
+// Date input
+.jet-ui_date-input {
+	display: flex;
+	align-items: flex-start;
+	flex-wrap: wrap;
+
+	@include control-disabled();
+
+	.jet-ui_select,
+	.jet-ui_number .jet-ui_number-input {
+		font-size: 13px;
+		line-height: 20px;
+	}
+
+	.jet-ui_select {
+		&-caret {
+			margin-right: -5px;
+			height: 24px;
+		}
+	}
+
+	.jet-ui_number {
+		.jet-ui_number-input {
+			padding-left: 9px;
+			padding-right: 9px;
+		}
+		input::placeholder {
+			font-size: 12px;
+		}
+	}
+
+	input.jet-ui_number-input,
+	input.jet-ui_number-input::-webkit-outer-spin-button,
+	input.jet-ui_number-input::-webkit-inner-spin-button {
+		appearance: none;
+	}
+
+	&-month {
+		width: 60px;
+		margin-right: 6px;
+	}
+
+	&-day,
+	&-hours,
+	&-minute {
+		width: 36px;
+	}
+
+	&-year {
+		width: 51px;
+	}
+
+	&-comma {
+		margin: 4px 4px 0 2px;
+	}
+	&-at {
+		margin: 4px 6px 0 6px;
+	}
+	&-colon {
+		margin: 4px 2px 0 3px;
+	}
+
+	&--incorrect {
+		input.jet-ui_number-input {
+			&,
+			&:focus {
+				border-color: $color-error;
+			}
+		}
+		&.jet-ui_select,
+		&.jet-ui_select--active {
+			border-color: $color-error;
+		}
+	}
+}

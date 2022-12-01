@@ -24,6 +24,7 @@ if ( '' !== $args['button_icon'] ) {
 			name="<?php echo $query_var; ?>"
 			value="<?php echo $current; ?>"
 			placeholder="<?php echo $placeholder; ?>"
+			<?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>
 		>
 		<?php if ( 'ajax-ontyping' === $args['apply_type'] ) : ?>
 			<div class="jet-search-filter__input-clear"></div>
@@ -34,6 +35,7 @@ if ( '' !== $args['button_icon'] ) {
 		<button
 			type="button"
 			class="jet-search-filter__submit apply-filters__button"
+			<?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>
 		>
 			<?php echo 'left' === $args['button_icon_position'] ? $args['button_icon'] : ''; ?>
 			<span class="jet-search-filter__submit-text"><?php echo $args['button_text']; ?></span>

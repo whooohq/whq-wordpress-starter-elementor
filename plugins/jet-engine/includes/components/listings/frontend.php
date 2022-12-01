@@ -80,10 +80,13 @@ if ( ! class_exists( 'Jet_Engine_Frontend' ) ) {
 
 			do_action( 'jet-engine/listings/frontend-scripts' );
 
+			$hover_action_timeout = apply_filters( 'jet-engine/map-popup/timeout', 400 ); // deprecated
+			$hover_action_timeout = apply_filters( 'jet-engine/listings/custom-url-actions/hover-timeout', $hover_action_timeout );
+
 			$localize_data = apply_filters( 'jet-engine/listing/frontend/js-settings', array(
-				'ajaxurl'         => esc_url( admin_url( 'admin-ajax.php' ) ),
-				'ajaxlisting'     => $this->get_ajax_listing_url(),
-				'mapPopupTimeout' => apply_filters( 'jet-engine/map-popup/timeout', 400 ),
+				'ajaxurl'     => esc_url( admin_url( 'admin-ajax.php' ) ),
+				'ajaxlisting' => $this->get_ajax_listing_url(),
+				'hoverActionTimeout' => $hover_action_timeout,
 			) );
 
 			wp_localize_script( 'jet-engine-frontend', 'JetEngineSettings', $localize_data );

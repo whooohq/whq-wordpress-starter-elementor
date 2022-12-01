@@ -33,7 +33,10 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		margin-left: 10px;
+		margin: 0 0 0 10px;
+		.rtl & {
+			margin: 0 10px 0 0;
+		}
 
 		&:hover {
 			svg {
@@ -47,6 +50,14 @@
 		top: 38px;
 		left: 0;
 		z-index: 999;
+		.rtl & {
+			left: auto;
+			right: 0;
+
+			.vc-chrome-toggle-btn {
+				text-align: left;
+			}
+		}
 	}
 
 	&.size-small {

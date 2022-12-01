@@ -30,6 +30,16 @@ class User_Geolocation extends \Jet_Smart_Filters_Filter_Base {
 	}
 
 	/**
+	 * Get icon URL
+	 * 
+	 * @return string
+	 */
+	public function get_icon_url() {
+
+		return jet_engine()->plugin_url( 'assets/img/jet-smart-filters-types/user-geolocation.png' );
+	}
+
+	/**
 	 * Get provider wrapper selector
 	 *
 	 * @return string

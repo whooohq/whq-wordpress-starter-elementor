@@ -51,6 +51,14 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Dynamic_Image' ) ) {
 					'type' => 'number',
 					'default' => 50,
 				),
+				'custom_image_alt' => array(
+					'type' => 'string',
+					'default' => '',
+				),
+				'lazy_load_image' => array(
+					'type' => 'boolean',
+					'default' => wp_lazy_loading_enabled( 'img', 'wp_get_attachment_image' ),
+				),
 				'linked_image' => array(
 					'type' => 'boolean',
 					'default' => true,

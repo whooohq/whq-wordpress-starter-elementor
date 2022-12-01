@@ -6,7 +6,7 @@
 class Jet_Woo_Categories_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 
 	/**
-	 * Shortcode tag
+	 * Shortcode tag.
 	 *
 	 * @return string
 	 */
@@ -27,23 +27,24 @@ class Jet_Woo_Categories_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 
 		$columns = jet_woo_builder_tools()->get_select_range( 12 );
 
-		return apply_filters( 'jet-woo-builder/shortcodes/jet-woo-categories/atts', array(
-			'presets'            => array(
+		return apply_filters( 'jet-woo-builder/shortcodes/jet-woo-categories/atts', [
+			'presets'            => [
 				'type'    => 'select',
-				'label'   => esc_html__( 'Category Presets', 'jet-woo-builder' ),
+				'label'   => __( 'Presets', 'jet-woo-builder' ),
 				'default' => 'preset-1',
-				'options' => array(
-					'preset-1' => esc_html__( 'Preset 1', 'jet-woo-builder' ),
-					'preset-2' => esc_html__( 'Preset 2', 'jet-woo-builder' ),
-					'preset-3' => esc_html__( 'Preset 3', 'jet-woo-builder' ),
-					'preset-4' => esc_html__( 'Preset 4', 'jet-woo-builder' ),
-					'preset-5' => esc_html__( 'Preset 5', 'jet-woo-builder' ),
-				),
-			),
-			'columns'            => array(
+				'options' => [
+					'preset-1' => __( 'Preset 1', 'jet-woo-builder' ),
+					'preset-2' => __( 'Preset 2', 'jet-woo-builder' ),
+					'preset-3' => __( 'Preset 3', 'jet-woo-builder' ),
+					'preset-4' => __( 'Preset 4', 'jet-woo-builder' ),
+					'preset-5' => __( 'Preset 5', 'jet-woo-builder' ),
+				],
+			],
+			'columns'            => [
 				'type'               => 'select',
 				'responsive'         => true,
-				'label'              => esc_html__( 'Columns', 'jet-woo-builder' ),
+				'label'              => __( 'Columns', 'jet-woo-builder' ),
+				'options'            => $columns,
 				'desktop_default'    => 4,
 				'tablet_default'     => 2,
 				'mobile_default'     => 1,
@@ -52,172 +53,149 @@ class Jet_Woo_Categories_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 				'selectors'          => [
 					'{{WRAPPER}} .jet-woo-categories .jet-woo-categories__item' => '--columns: {{VALUE}}',
 				],
-				'options'            => $columns,
-			),
-			'hover_on_touch'     => array(
-				'label'        => esc_html__( 'Mobile Hover on Touch', 'jet-woo-builder' ),
-				'type'         => 'switcher',
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'true',
-				'default'      => '',
-				'condition'    => [
+			],
+			'hover_on_touch'     => [
+				'label'     => __( 'Hover on Touch', 'jet-woo-builder' ),
+				'type'      => 'switcher',
+				'condition' => [
 					'presets' => [ 'preset-2', 'preset-3' ],
 				],
-			),
-			'equal_height_cols'  => array(
-				'label'        => esc_html__( 'Equal Columns Height', 'jet-woo-builder' ),
-				'type'         => 'switcher',
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'true',
-				'default'      => '',
-			),
-			'columns_gap'        => array(
-				'type'         => 'switcher',
-				'label'        => esc_html__( 'Add gap between columns', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => 'yes',
-			),
-			'rows_gap'           => array(
-				'type'         => 'switcher',
-				'label'        => esc_html__( 'Add gap between rows', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => 'yes',
-			),
-			'open_new_tab'       => array(
-				'label'     => esc_html__( 'Open Categories in new window', 'jet-woo-builder' ),
-				'type'      => 'switcher',
-				'label_on'  => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off' => esc_html__( 'No', 'jet-woo-builder' ),
-				'default'   => '',
-			),
-			'number'             => array(
+			],
+			'equal_height_cols'  => [
+				'label' => __( 'Equal Columns Height', 'jet-woo-builder' ),
+				'type'  => 'switcher',
+			],
+			'columns_gap'        => [
+				'type'    => 'switcher',
+				'label'   => __( 'Gap Between Columns', 'jet-woo-builder' ),
+				'default' => 'yes',
+			],
+			'rows_gap'           => [
+				'type'    => 'switcher',
+				'label'   => __( 'Gap Between Rows', 'jet-woo-builder' ),
+				'default' => 'yes',
+			],
+			'clickable_item'     => [
+				'type'  => 'switcher',
+				'label' => __( 'Make Item Clickable', 'jet-woo-builder' ),
+			],
+			'open_new_tab'       => [
+				'label' => __( 'Open in New Window', 'jet-woo-builder' ),
+				'type'  => 'switcher',
+			],
+			'number'             => [
 				'type'      => 'number',
-				'label'     => esc_html__( 'Categories Number', 'jet-woo-builder' ),
+				'label'     => __( 'Categories Number', 'jet-woo-builder' ),
 				'default'   => 4,
 				'min'       => -1,
 				'max'       => 1000,
 				'step'      => 1,
 				'separator' => 'before',
-			),
-			'hide_empty'         => array(
-				'type'         => 'switcher',
-				'label'        => esc_html__( 'Hide Empty', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => '',
-			),
-			'hide_subcategories' => array(
-				'type'         => 'switcher',
-				'label'        => esc_html__( 'Hide Subcategories', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => '',
-				'condition'    => array(
-					'show_by' => array( 'all', 'cat_ids' ),
-				),
-			),
-			'hide_default_cat'   => array(
-				'type'         => 'switcher',
-				'label'        => esc_html__( 'Hide Uncategorized', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => '',
-				'condition'    => array(
-					'show_by' => array( 'all' ),
-				),
-			),
-			'show_by'            => array(
+			],
+			'show_by'            => [
 				'type'    => 'select',
-				'label'   => esc_html__( 'Query by', 'jet-woo-builder' ),
+				'label'   => __( 'Query by', 'jet-woo-builder' ),
 				'default' => 'all',
-				'options' => array(
-					'all'                   => esc_html__( 'All', 'jet-woo-builder' ),
-					'parent_cat'            => esc_html__( 'Parent Category', 'jet-woo-builder' ),
-					'cat_ids'               => esc_html__( 'Categories IDs', 'jet-woo-builder' ),
-					'current_subcategories' => esc_html__( 'Current Subcategories', 'jet-woo-builder' ),
-				),
-			),
-			'parent_cat_ids'     => array(
+				'options' => [
+					'all'                   => __( 'All', 'jet-woo-builder' ),
+					'parent_cat'            => __( 'Parent Category', 'jet-woo-builder' ),
+					'cat_ids'               => __( 'Categories IDs', 'jet-woo-builder' ),
+					'manual_selection'      => __( 'Manual Selection', 'jet-woo-builder' ),
+					'current_subcategories' => __( 'Current Subcategories', 'jet-woo-builder' ),
+				],
+			],
+			'parent_cat_ids'     => [
 				'type'      => 'text',
-				'label'     => esc_html__( 'Set parent category ID', 'jet-woo-builder' ),
-				'default'   => '',
-				'condition' => array(
-					'show_by' => array( 'parent_cat' ),
-				),
-			),
-			'direct_descendants' => array(
-				'type'         => 'switcher',
-				'label'        => esc_html__( 'Show only direct descendants.', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => '',
-				'condition'    => array(
-					'show_by' => array( 'parent_cat' ),
-				),
-			),
-			'cat_ids'            => array(
+				'label'     => __( 'Parent Category ID', 'jet-woo-builder' ),
+				'condition' => [
+					'show_by' => 'parent_cat',
+				],
+			],
+			'direct_descendants' => [
+				'type'      => 'switcher',
+				'label'     => __( 'Show Only Direct Descendants.', 'jet-woo-builder' ),
+				'condition' => [
+					'show_by' => 'parent_cat',
+				],
+			],
+			'cat_ids'            => [
 				'type'        => 'text',
-				'label'       => esc_html__( 'Set comma seprated IDs list (10, 22, 19 etc.)', 'jet-woo-builder' ),
-				'label_block' => true,
-				'default'     => '',
-				'condition'   => array(
-					'show_by' => array( 'cat_ids' ),
-				),
-			),
-			'sort_by'            => array(
+				'label'       => __( 'Include by IDs', 'jet-woo-builder' ),
+				'description' => __( 'Set comma separated categories IDs list (10, 22, 19 etc.).', 'jet-woo-builder' ),
+				'condition'   => [
+					'show_by' => 'cat_ids',
+				],
+			],
+			'cat_selections'     => [
+				'type'      => 'select2',
+				'label'     => __( 'Categories', 'jet-woo-builder' ),
+				'multiple'  => true,
+				'options'   => jet_woo_builder_tools()->get_product_categories(),
+				'condition' => [
+					'show_by' => 'manual_selection',
+				],
+			],
+			'sort_by'            => [
 				'type'    => 'select',
-				'label'   => esc_html__( 'Order by', 'jet-woo-builder' ),
+				'label'   => __( 'Order by', 'jet-woo-builder' ),
 				'default' => 'name',
-				'options' => array(
-					'name'       => esc_html__( 'Name', 'jet-woo-builder' ),
-					'id'         => esc_html__( 'IDs', 'jet-woo-builder' ),
-					'count'      => esc_html__( 'Count', 'jet-woo-builder' ),
-					'menu_order' => esc_html__( 'Menu Order', 'jet-woo-builder' ),
-				),
-			),
-			'order'              => array(
+				'options' => [
+					'name'       => __( 'Name', 'jet-woo-builder' ),
+					'id'         => __( 'IDs', 'jet-woo-builder' ),
+					'count'      => __( 'Count', 'jet-woo-builder' ),
+					'menu_order' => __( 'Menu Order', 'jet-woo-builder' ),
+				],
+			],
+			'order'              => [
 				'type'    => 'select',
-				'label'   => esc_html__( 'Order', 'jet-woo-builder' ),
+				'label'   => __( 'Order', 'jet-woo-builder' ),
 				'default' => 'asc',
 				'options' => jet_woo_builder_tools()->order_arr(),
-			),
-			'thumb_size'         => array(
+			],
+			'hide_empty'         => [
+				'type'  => 'switcher',
+				'label' => __( 'Hide Empty', 'jet-woo-builder' ),
+			],
+			'hide_subcategories' => [
+				'type'      => 'switcher',
+				'label'     => __( 'Hide Subcategories', 'jet-woo-builder' ),
+				'condition' => [
+					'show_by' => [ 'all', 'cat_ids' ],
+				],
+			],
+			'hide_default_cat'   => [
+				'type'      => 'switcher',
+				'label'     => __( 'Hide Uncategorized', 'jet-woo-builder' ),
+				'condition' => [
+					'show_by' => 'all',
+				],
+			],
+			'thumb_size'         => [
 				'type'      => 'select',
-				'label'     => esc_html__( 'Featured Image Size', 'jet-woo-builder' ),
+				'label'     => __( 'Image Size', 'jet-woo-builder' ),
 				'default'   => 'woocommerce_thumbnail',
 				'options'   => jet_woo_builder_tools()->get_image_sizes(),
 				'separator' => 'before',
-			),
-			'show_title'         => array(
-				'type'         => 'switcher',
-				'label'        => esc_html__( 'Show Categories Title', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => 'yes',
-			),
-			'title_html_tag'     => array(
+			],
+			'show_title'         => [
+				'type'      => 'switcher',
+				'label'     => __( 'Title', 'jet-woo-builder' ),
+				'label_on'  => __( 'Show', 'jet-woo-builder' ),
+				'label_off' => __( 'Hide', 'jet-woo-builder' ),
+				'default'   => 'yes',
+			],
+			'title_html_tag'     => [
 				'type'      => 'select',
-				'label'     => esc_html__( 'Title HTML Tag', 'jet-woo-builder' ),
+				'label'     => __( 'HTML Tag', 'jet-woo-builder' ),
 				'default'   => 'h5',
 				'options'   => jet_woo_builder_tools()->get_available_title_html_tags(),
-				'condition' => array(
-					'show_title' => array( 'yes' ),
-				),
-			),
+				'condition' => [
+					'show_title' => 'yes',
+				],
+			],
 			'title_trim_type'    => [
 				'type'      => 'select',
-				'label'     => esc_html__( 'Title Trim Type', 'jet-woo-builder' ),
+				'label'     => __( 'Trim Type', 'jet-woo-builder' ),
 				'default'   => 'word',
 				'options'   => jet_woo_builder_tools()->get_available_title_trim_types(),
 				'condition' => [
@@ -226,76 +204,79 @@ class Jet_Woo_Categories_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 			],
 			'title_length'       => [
 				'type'        => 'number',
-				'label'       => esc_html__( 'Title Words/Letters Count', 'jet-woo-builder' ),
-				'description' => esc_html__( 'Set -1 to show full title and 0 to hide it.', 'jet-woo-builder' ),
+				'label'       => __( 'Length', 'jet-woo-builder' ),
+				'description' => __( 'Set -1 to show full title and 0 to hide it.', 'jet-woo-builder' ),
 				'min'         => -1,
 				'default'     => -1,
 				'condition'   => [
 					'show_title' => 'yes',
 				],
 			],
-			'title_tooltip'      => [
+			'title_line_wrap'    => [
 				'type'         => 'switcher',
-				'label'        => esc_html__( 'Enable Title Tooltip', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => '',
-				'conditions'   => [
-					'relation' => 'or',
-					'terms'    => [
-						[
-							'name'     => 'title_length',
-							'operator' => '>',
-							'value'    => 0,
-						],
-					],
+				'label'        => __( 'Enable Line Wrap', 'jet-woo-builder' ),
+				'prefix_class' => 'jet-woo-builder-title-line-wrap-',
+				'condition'    => [
+					'show_title' => 'yes',
 				],
 			],
-			'show_count'         => array(
-				'type'         => 'switcher',
-				'label'        => esc_html__( 'Show Products Count', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => 'yes',
-			),
-			'count_before_text'  => array(
+			'title_tooltip'      => [
+				'type'      => 'switcher',
+				'label'     => __( 'Enable Title Tooltip', 'jet-woo-builder' ),
+				'separator' => 'after',
+				'condition' => [
+					'show_title' => 'yes',
+				],
+			],
+			'show_count'         => [
+				'type'      => 'switcher',
+				'label'     => __( 'Product Count', 'jet-woo-builder' ),
+				'label_on'  => __( 'Show', 'jet-woo-builder' ),
+				'label_off' => __( 'Hide', 'jet-woo-builder' ),
+				'default'   => 'yes',
+			],
+			'count_before_text'  => [
 				'type'      => 'text',
-				'label'     => esc_html__( 'Count Before Text', 'jet-woo-builder' ),
-				'default'   => ! is_rtl() ? '(' : ')',
-				'condition' => array(
-					'show_count' => array( 'yes' ),
-				),
-			),
-			'count_after_text'   => array(
+				'label'     => __( 'Before Count', 'jet-woo-builder' ),
+				'default'   => '(',
+				'condition' => [
+					'show_count' => 'yes',
+				],
+			],
+			'count_after_text'   => [
 				'type'      => 'text',
-				'label'     => esc_html__( 'Count After Text', 'jet-woo-builder' ),
-				'default'   => ! is_rtl() ? ')' : '(',
-				'condition' => array(
-					'show_count' => array( 'yes' ),
-				),
-			),
-			'desc_length'        => array(
+				'label'     => __( 'After Count', 'jet-woo-builder' ),
+				'default'   => ')',
+				'separator' => 'after',
+				'condition' => [
+					'show_count' => 'yes',
+				],
+			],
+			'desc_length'        => [
 				'type'        => 'number',
-				'label'       => esc_html__( 'Description Words Count', 'jet-woo-builder' ),
-				'description' => esc_html__( 'Set -1 to show full description and 0 to hide it.', 'jet-woo-builder' ),
+				'label'       => __( 'Description Length', 'jet-woo-builder' ),
+				'description' => __( 'Set -1 to show full description and 0 to hide it.', 'jet-woo-builder' ),
 				'min'         => -1,
 				'default'     => 10,
-			),
-			'desc_after_text'    => array(
+			],
+			'desc_after_text'    => [
 				'type'    => 'text',
-				'label'   => esc_html__( 'Trimmed After Text', 'jet-woo-builder' ),
+				'label'   => __( 'Trimmed After', 'jet-woo-builder' ),
 				'default' => '...',
-			),
-		) );
+			],
+		] );
 
 	}
 
 	/**
+	 * Template presets.
+	 *
 	 * Get categories grid preset template.
 	 *
-	 * @return bool|string
+	 * @since  1.12.0
+	 * @access public
+	 *
+	 * @return string
 	 */
 	public function get_category_preset_template() {
 
@@ -309,9 +290,14 @@ class Jet_Woo_Categories_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 	}
 
 	/**
+	 * Legacy template presets.
+	 *
 	 * Get categories grid legacy preset template.
 	 *
-	 * @return bool|string
+	 * @since  1.12.0
+	 * @access public
+	 *
+	 * @return string
 	 */
 	public function get_legacy_category_preset_template() {
 		return jet_woo_builder()->get_template( $this->get_tag() . '/global/presets/' . $this->get_attr( 'presets' ) . '.php' );
@@ -365,6 +351,9 @@ class Jet_Woo_Categories_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 			case 'cat_ids' :
 				$cat_args['include'] = $this->get_attr( 'cat_ids' );
 				break;
+			case 'manual_selection' :
+				$cat_args['include'] = $this->get_attr( 'cat_selections' );
+				break;
 			case 'current_subcategories':
 				$cat_args['parent'] = get_queried_object_id();
 				break;
@@ -405,9 +394,7 @@ class Jet_Woo_Categories_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 
 		ob_start();
 
-		/**
-		 * Hook before loop start template included
-		 */
+		// Hook before loop start template included.
 		do_action( 'jet-woo-builder/shortcodes/jet-woo-categories/loop-start' );
 
 		include $loop_start;
@@ -415,25 +402,19 @@ class Jet_Woo_Categories_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 		foreach ( $query as $category ) {
 			setup_postdata( $category );
 
-			/**
-			 * Hook before loop item template included
-			 */
+			// Hook before loop item template included.
 			do_action( 'jet-woo-builder/shortcodes/jet-woo-categories/loop-item-start' );
 
 			include $loop_item;
 
-			/**
-			 * Hook after loop item template included
-			 */
+			// Hook after loop item template included.
 			do_action( 'jet-woo-builder/shortcodes/jet-woo-categories/loop-item-end' );
 
 		}
 
 		include $loop_end;
 
-		/**
-		 * Hook after loop end template included
-		 */
+		// Hook after loop end template included.
 		do_action( 'jet-woo-builder/shortcodes/jet-woo-categories/loop-end' );
 
 		wp_reset_postdata();

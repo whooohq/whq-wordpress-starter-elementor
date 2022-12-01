@@ -377,9 +377,16 @@ if ( ! class_exists( 'Jet_Engine_CPT_Admin_Filters' ) ) {
 
 						$postmeta = $wpdb->postmeta;
 						$posts    = $wpdb->posts;
+
+						$sql = "SELECT DISTINCT pm.meta_value FROM $postmeta AS pm INNER JOIN $posts AS p ON p.ID = pm.post_id WHERE pm.meta_key = '%s' AND p.post_type = '%s'";
+
+						if ( ! empty( $filter['meta_order'] ) ) {
+							$sql .= " ORDER BY pm.meta_value " . $filter['meta_order'];
+						}
+
 						$result   = $wpdb->get_results(
 							$wpdb->prepare(
-								"SELECT DISTINCT pm.meta_value FROM $postmeta AS pm INNER JOIN $posts AS p ON p.ID = pm.post_id WHERE pm.meta_key = '%s' AND p.post_type = '%s'",
+								$sql,
 								$field,
 								$this->post_type
 							),

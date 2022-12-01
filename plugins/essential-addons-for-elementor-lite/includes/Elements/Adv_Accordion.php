@@ -187,6 +187,18 @@ class Adv_Accordion extends Widget_Base
         );
 
         $this->add_control(
+            'eael_adv_accordion_custom_id_offset',
+            [
+                'label'       => esc_html__('Custom ID offset', 'essential-addons-for-elementor-lite'),
+                'description' => esc_html__('Use offset to set the custom ID target scrolling position.', 'essential-addons-for-elementor-lite'),
+                'type'        => Controls_Manager::NUMBER,
+                'label_block' => false,
+                'default'     => 0,
+                'min'         => 0,
+            ]
+        );
+
+        $this->add_control(
             'eael_adv_accordion_faq_schema_show',
             [
                 'label'        => esc_html__('Enable FAQ Schema', 'essential-addons-for-elementor-lite'),
@@ -513,6 +525,7 @@ class Adv_Accordion extends Widget_Base
                 ],
                 'selectors'  => [
                     '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list .eael-accordion-header .fa-accordion-icon'   => 'font-size: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list .eael-accordion-header svg.fa-accordion-icon'   => 'height: {{SIZE}}{{UNIT}};width: {{SIZE}}{{UNIT}};line-height: {{SIZE}}{{UNIT}};',
                 ],
             ]
         );
@@ -635,6 +648,7 @@ class Adv_Accordion extends Widget_Base
                 'selectors' => [
                     '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list .eael-accordion-header .fa-accordion-icon' => 'color: {{VALUE}};',
                     '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list .eael-accordion-header .fa-accordion-icon-svg svg' => 'color: {{VALUE}}; fill: {{VALUE}};',
+                    '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list .eael-accordion-header svg' => 'fill: {{VALUE}};',
                 ]
             ]
         );
@@ -695,6 +709,7 @@ class Adv_Accordion extends Widget_Base
                 'selectors' => [
                     '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list .eael-accordion-header:hover .fa-accordion-icon' => 'color: {{VALUE}};',
                     '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list .eael-accordion-header:hover .fa-accordion-icon svg' => 'color: {{VALUE}}; fill: {{VALUE}}',
+                    '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list .eael-accordion-header:hover svg.fa-accordion-icon' => 'fill: {{VALUE}}',
                 ]
             ]
         );
@@ -756,6 +771,7 @@ class Adv_Accordion extends Widget_Base
                 'selectors' => [
                     '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list .eael-accordion-header.active .fa-accordion-icon' => 'color: {{VALUE}};',
                     '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list .eael-accordion-header.active .fa-accordion-icon svg' => 'color: {{VALUE}};fill: {{VALUE}}',
+                    '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list .eael-accordion-header.active svg.fa-accordion-icon' => 'fill: {{VALUE}}',
                 ],
             ]
         );
@@ -890,6 +906,7 @@ class Adv_Accordion extends Widget_Base
                 ],
                 'selectors'  => [
                     '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list .eael-accordion-header .fa-toggle, {{WRAPPER}} .eael-adv-accordion .eael-accordion-list .eael-accordion-header > .fa-toggle-svg' => 'font-size: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list .eael-accordion-header svg.fa-toggle' => 'height: {{SIZE}}{{UNIT}};width: {{SIZE}}{{UNIT}};line-height: {{SIZE}}{{UNIT}};',
                 ],
                 'condition'  => [
                     'eael_adv_accordion_icon_show' => 'yes',
@@ -945,6 +962,7 @@ class Adv_Accordion extends Widget_Base
                 'selectors' => [
                     '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list .eael-accordion-header .fa-toggle' => 'color: {{VALUE}};',
                     '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list .eael-accordion-header .fa-toggle svg' => 'color: {{VALUE}}; fill:{{VALUE}}',
+                    '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list .eael-accordion-header svg.fa-toggle' => 'fill:{{VALUE}}',
                 ],
                 'condition' => [
                     'eael_adv_accordion_icon_show' => 'yes',
@@ -990,7 +1008,8 @@ class Adv_Accordion extends Widget_Base
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list:hover .eael-accordion-header .fa-toggle'  => 'color: {{VALUE}};',
-                    '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list:hover .eael-accordion-header .fa-toggle-svg svg'  => 'color: {{VALUE}}; fill: {{VALUE}};',
+                    '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list:hover .eael-accordion-header .fa-toggle svg'  => 'color: {{VALUE}}; fill: {{VALUE}};',
+                    '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list:hover .eael-accordion-header svg.fa-toggle'  => 'fill: {{VALUE}};',
                 ],
                 'condition' => [
                     'eael_adv_accordion_icon_show' => 'yes',
@@ -1037,6 +1056,7 @@ class Adv_Accordion extends Widget_Base
                 'selectors' => [
                     '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list .eael-accordion-header.active .fa-toggle' => 'color: {{VALUE}};',
                     '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list .eael-accordion-header.active .fa-toggle svg' => 'color: {{VALUE}}; fill: {{VALUE}};',
+                    '{{WRAPPER}} .eael-adv-accordion .eael-accordion-list .eael-accordion-header.active svg.fa-toggle' => 'fill: {{VALUE}};',
                 ],
                 'condition' => [
                     'eael_adv_accordion_icon_show' => 'yes',
@@ -1083,6 +1103,10 @@ class Adv_Accordion extends Widget_Base
 
         $this->add_render_attribute('eael-adv-accordion', 'class', 'eael-adv-accordion');
         $this->add_render_attribute('eael-adv-accordion', 'id', 'eael-adv-accordion-' . esc_attr($this->get_id()));
+        
+        if( !empty($settings['eael_adv_accordion_custom_id_offset']) ){
+            $this->add_render_attribute('eael-adv-accordion', 'data-custom-id-offset', esc_attr( $settings['eael_adv_accordion_custom_id_offset'] ) );
+        }
 ?>
         <div <?php echo $this->get_render_attribute_string('eael-adv-accordion'); ?> <?php echo 'data-accordion-id="' . esc_attr($this->get_id()) . '"'; ?> <?php echo !empty($settings['eael_adv_accordion_type']) ? 'data-accordion-type="' . esc_attr($settings['eael_adv_accordion_type']) . '"' : 'accordion'; ?> <?php echo !empty($settings['eael_adv_accordion_toggle_speed']) ? 'data-toogle-speed="' . esc_attr($settings['eael_adv_accordion_toggle_speed']) . '"' : '300'; ?>>
     <?php foreach ($settings['eael_adv_accordion_tab'] as $index => $tab) {
@@ -1138,20 +1162,21 @@ class Adv_Accordion extends Widget_Base
                         echo '<span class="fa-accordion-icon fa-accordion-icon-svg eaa-svg eael-advanced-accordion-icon-closed">';
                         Icons_Manager::render_icon( $tab['eael_adv_accordion_tab_title_icon_new'] );
                         echo '</span>';
-
-                        echo '<span class="fa-accordion-icon fa-accordion-icon-svg eaa-svg eael-advanced-accordion-icon-opened">';
-                        Icons_Manager::render_icon( $tab['eael_adv_accordion_tab_title_icon_new_opened'] );
-                        echo '</span>';
                     }else{
                         echo '<span class="eael-advanced-accordion-icon-closed">';
                         Icons_Manager::render_icon( $tab['eael_adv_accordion_tab_title_icon_new'], [ 'aria-hidden' => 'true', 'class' => "fa-accordion-icon" ] );
                         echo '</span>';
+                    }
 
+                    if ( 'svg' === $tab['eael_adv_accordion_tab_title_icon_new_opened']['library'] ) {
+                        echo '<span class="fa-accordion-icon fa-accordion-icon-svg eaa-svg eael-advanced-accordion-icon-opened">';
+                        Icons_Manager::render_icon( $tab['eael_adv_accordion_tab_title_icon_new_opened'] );
+                        echo '</span>';
+                    }else{
                         echo '<span class="eael-advanced-accordion-icon-opened">';
                         Icons_Manager::render_icon( $tab['eael_adv_accordion_tab_title_icon_new_opened'], [ 'aria-hidden' => 'true', 'class' => "fa-accordion-icon" ] );
                         echo '</span>';
                     }
-
 
                 } else {
                     echo '<span class="eael-advanced-accordion-icon-closed"><i class="' . $tab['eael_adv_accordion_tab_title_icon'] . ' fa-accordion-icon"></i></span>';
@@ -1180,33 +1205,23 @@ class Adv_Accordion extends Widget_Base
                 </div>';
         }
         echo '</div>';
-        ?>
+        
+        // FAQ Schema
+        if ( !empty( $settings['eael_adv_accordion_faq_schema_show'] ) && 'yes' === $settings['eael_adv_accordion_faq_schema_show'] ) {
+            foreach ( $settings['eael_adv_accordion_tab'] as $index => $tab ) {
+                $faq = [
+                    '@type' => 'Question',
+                    'name' => Helper::eael_wp_kses( $tab['eael_adv_accordion_tab_title'] ),
+                    'acceptedAnswer' => [
+                        '@type' => 'Answer',
+                        'text' => ('content' === $tab['eael_adv_accordion_text_type']) ? do_shortcode( $tab['eael_adv_accordion_tab_content'] ) : '',
+                    ],
+                ];
 
-        <!-- FAQ Schema : Starts-->
-        <?php
-			if ( !empty( $settings['eael_adv_accordion_faq_schema_show'] ) && 'yes' === $settings['eael_adv_accordion_faq_schema_show'] ) {
-				$json = [
-					'@context' => 'https://schema.org',
-					'@type' => 'FAQPage',
-					'mainEntity' => [],
-				];
+                Helper::set_eael_advanced_accordion_faq($faq);
+            }	
+        }
 
-				foreach ( $settings['eael_adv_accordion_tab'] as $index => $tab ) {
-					$json['mainEntity'][] = [
-						'@type' => 'Question',
-						'name' => Helper::eael_wp_kses( $tab['eael_adv_accordion_tab_title'] ),
-						'acceptedAnswer' => [
-							'@type' => 'Answer',
-							'text' => ('content' === $tab['eael_adv_accordion_text_type']) ? do_shortcode( $tab['eael_adv_accordion_tab_content'] ) : '',
-						],
-					];
-				}
-				?>
-				<script type="application/ld+json"><?php echo wp_json_encode( $json ); ?></script>
-			<?php } ?>
-        <!-- FAQ Schema : Ends-->
-
-        <?php 
     }
 
     protected function print_toggle_icon($settings)

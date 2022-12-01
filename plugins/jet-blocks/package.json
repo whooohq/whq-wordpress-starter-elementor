@@ -1,0 +1,31 @@
+{
+  "name": "gulp-tasks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZemezLab/jet-blocks.git"
+  },
+  "author": "Shin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ZemezLab/jet-blocks/issues"
+  },
+  "homepage": "https://github.com/ZemezLab/jet-blocks#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^4.1.0",
+    "gulp-notify": "^3.2.0",
+    "gulp-plumber": "^1.2.1",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2"
+  },
+  "dependencies": {
+    "gulp-checktextdomain": "^2.1.1",
+    "gulp-uglify": "^3.0.2"
+  }
+}

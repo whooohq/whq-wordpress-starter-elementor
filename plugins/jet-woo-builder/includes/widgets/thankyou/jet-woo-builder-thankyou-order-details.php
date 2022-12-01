@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_ThankYou_Order_Details
- * Name: Order Details
+ * Name: Thank You Order Details
  * Slug: jet-thankyou-order-details
  */
 
@@ -22,7 +22,7 @@ class Jet_Woo_Builder_ThankYou_Order_Details extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return __( 'Order Details', 'jet-woo-builder' );
+		return __( 'Thank You Order Details', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
@@ -46,9 +46,9 @@ class Jet_Woo_Builder_ThankYou_Order_Details extends Jet_Woo_Builder_Base {
 		$css_scheme = apply_filters(
 			'jet-woo-builder/jet-thankyou-order-details/css-scheme',
 			array(
-				'heading'       => '.woocommerce-order-details .woocommerce-order-details__title',
-				'table_heading' => '.woocommerce-order-details .woocommerce-table.order_details tr th',
-				'table_content' => '.woocommerce-order-details .woocommerce-table.shop_table.order_details tr td',
+				'heading'       => '.elementor-jet-thankyou-order-details h2',
+				'table_heading' => '.elementor-jet-thankyou-order-details .woocommerce-table.order_details tr th',
+				'table_content' => '.elementor-jet-thankyou-order-details .woocommerce-table.shop_table.order_details tr td',
 			)
 		);
 

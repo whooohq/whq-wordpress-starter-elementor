@@ -55,7 +55,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_DB_Upgrader' ) ) {
 			new CX_Db_Updater(
 				array(
 					'slug'      => 'jet-woo-builder',
-					'version'   => '1.5.0',
+					'version'   => '2.1.0',
 					'callbacks' => array(
 						'1.2.0'  => array(
 							array( $this, 'update_db_1_2_0' ),
@@ -142,6 +142,21 @@ if ( ! class_exists( 'Jet_Woo_Builder_DB_Upgrader' ) ) {
 							[ $this, 'clear_elementor_cache' ],
 						],
 						'1.12.4' => [
+							[ $this, 'clear_elementor_cache' ],
+						],
+						'2.0.0'  => [
+							[ $this, 'update_db_2_0_0' ],
+						],
+						'2.0.1' => [
+							[ $this, 'clear_elementor_cache' ],
+						],
+						'2.0.4' => [
+							[ $this, 'clear_elementor_cache' ],
+						],
+						'2.0.5' => [
+							[ $this, 'clear_elementor_cache' ],
+						],
+						'2.1.0' => [
 							[ $this, 'clear_elementor_cache' ],
 						],
 					),
@@ -370,9 +385,36 @@ if ( ! class_exists( 'Jet_Woo_Builder_DB_Upgrader' ) ) {
 				update_option( $this->key, $current_version_settings );
 			}
 
-			if ( class_exists( 'Elementor\Plugin' ) ) {
-				jet_woo_builder()->elementor()->files_manager->clear_cache();
+			$this->clear_elementor_cache();
+
+		}
+
+		public function update_db_2_0_0() {
+
+			$current_version_settings = get_option( $this->key, false );
+
+			if ( ! isset( $current_version_settings['global_available_widgets']['jet-woo-woocommerce-actions'] ) ) {
+				$current_version_settings['global_available_widgets']['jet-woo-woocommerce-actions'] = 'true';
 			}
+
+			$posts = get_posts( [
+				'post_type'   => jet_woo_builder_post_type()->slug(),
+				'numberposts' => -1,
+			] );
+
+			foreach ( $posts as $post ) {
+				$doc_type  = get_post_meta( $post->ID, '_elementor_template_type', true );
+				$post_data = [
+					'ID'        => $post->ID,
+					'tax_input' => [
+						jet_woo_builder_post_type()->type_tax => $doc_type,
+					],
+				];
+
+				wp_update_post( $post_data );
+			}
+
+			$this->clear_elementor_cache();
 
 		}
 

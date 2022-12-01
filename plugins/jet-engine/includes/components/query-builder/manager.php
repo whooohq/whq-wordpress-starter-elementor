@@ -59,6 +59,8 @@ class Manager extends \Jet_Engine_Base_WP_Intance {
 	public $types;
 	public $advanced_fields = array();
 	public $queries = array();
+	public $listings;
+	public $editor;
 
 	/**
 	 * Instance.
@@ -181,6 +183,8 @@ class Manager extends \Jet_Engine_Base_WP_Intance {
 
 		add_filter( 'jet-engine/modules/dynamic-visibility/condition/args', array( $this, 'modify_condition_args_for_query_count' ) );
 
+		add_action( 'jet-engine/register-macros', array( $this, 'register_macros' ) );
+
 	}
 
 	public function register_dynamic_tags( $tags_module ) {
@@ -190,7 +194,16 @@ class Manager extends \Jet_Engine_Base_WP_Intance {
 
 	public function register_visibility_conditions( $manager ) {
 		require $this->component_path( 'conditions/has-items.php' );
+		require $this->component_path( 'conditions/has-not-items.php' );
+
 		$manager->register_condition( new Conditions\Has_Items() );
+		$manager->register_condition( new Conditions\Has_Not_Items() );
+	}
+
+	public function register_macros() {
+		require_once $this->component_path( 'macros/query-count.php' );
+
+		new Macros\Query_Count_Macro();
 	}
 
 	public function modify_condition_args_for_query_count( $args ) {
@@ -213,8 +226,13 @@ class Manager extends \Jet_Engine_Base_WP_Intance {
 	 * @return [type] [description]
 	 */
 	public function include_factory() {
+
 		if ( ! class_exists( 'Jet_Engine\Query_Builder\Query_Factory' ) ) {
 			require $this->component_path( 'query-factory.php' );
+		}
+
+		if ( ! class_exists( 'Jet_Engine\Query_Builder\Helpers\Empty_Items_Replacer' ) ) {
+			require $this->component_path( 'helpers/empty-items-replacer.php' );
 		}
 	}
 
@@ -238,8 +256,12 @@ class Manager extends \Jet_Engine_Base_WP_Intance {
 			$this->queries[ $query['id'] ] = $factory->get_query();
 		}
 
-		// If we have some queries created, add flush cache option to ensure queries data updated when site data is changed
-		add_action( 'save_post', 'wp_cache_flush' );
+		// Enable this only if need from theme or plugin
+		// example: add_filter( 'jet-engine/query-builder/flush-object-cache-on-save', '__return_true' );
+		if ( apply_filters( 'jet-engine/query-builder/flush-object-cache-on-save', false ) ) {
+			// If we have some queries created, add flush cache option to ensure queries data updated when site data is changed
+			add_action( 'save_post', 'wp_cache_flush', 9999 );
+		}
 		
 	}
 
@@ -558,6 +580,31 @@ class Manager extends \Jet_Engine_Base_WP_Intance {
 
 		return array_merge( $default, $config );
 
+	}
+
+	public function get_query_count_html( $query_id = false, $count_type = false ) {
+
+		if ( ! $count_type ) {
+			$count_type = 'total';
+		}
+
+		if ( ! $query_id ) {
+			return 0;
+		}
+
+		$query = Manager::instance()->get_query_by_id( $query_id );
+
+		if ( ! $query ) {
+			return 0;
+		}
+
+		if ( 'visible' === $count_type ) {
+			$result = $query->get_items_page_count();
+		} else {
+			$result = $query->get_items_total_count();
+		}
+
+		return sprintf( '<span class="jet-engine-query-count query-%2$s count-type-%3$s" data-query="%2$s">%1$s</span>', $result, $query_id, $count_type );
 	}
 
 }

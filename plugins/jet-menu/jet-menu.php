@@ -3,7 +3,7 @@
  * Plugin Name: JetMenu
  * Plugin URI: https://crocoblock.com/plugins/jetmenu/
  * Description: A top-notch mega menu addon for Elementor. Use it to create a fully responsive mega menu with drop-down items, rich in content modules, and change your menu style according to your vision without any coding knowledge!
- * Version:     2.1.7
+ * Version:     2.2.4
  * Author:      Crocoblock
  * Author URI:  https://crocoblock.com/
  * Text Domain: jet-menu
@@ -48,7 +48,7 @@ if ( ! class_exists( 'Jet_Menu' ) ) {
 		 *
 		 * @var string
 		 */
-		private $version = '2.1.7';
+		private $version = '2.2.4';
 
 		/**
 		 * Plugin slug
@@ -117,6 +117,11 @@ if ( ! class_exists( 'Jet_Menu' ) ) {
 		public $public_manager = null;
 
 		/**
+		 * @var null
+		 */
+		public $blocks_manager = null;
+
+		/**
 		 * Sets up needed actions/filters for the plugin to initialize.
 		 *
 		 * @since 1.0.0
@@ -179,11 +184,6 @@ if ( ! class_exists( 'Jet_Menu' ) ) {
 		 */
 		public function init() {
 
-			if ( ! $this->has_elementor() ) {
-				add_action( 'admin_notices', array( $this, 'required_plugins_notice' ) );
-				return;
-			}
-
 			$this->load_files();
 
 			$this->dynamic_css_manager = new CX_Dynamic_CSS( array(
@@ -192,14 +192,14 @@ if ( ! class_exists( 'Jet_Menu' ) ) {
 				),
 			) );
 
+			// Menu Post Type Manager
+			$this->post_type_manager = new \Jet_Menu\Menu_Post_Type();
+
 			//Init Settings Manager
 			$this->settings_manager = new \Jet_Menu\Settings_Manager();
 
 			//Init Rest Api
 			new \Jet_Menu\Rest_Api();
-
-			// Menu Post Type Manager
-			$this->post_type_manager = new \Jet_Menu\Menu_Post_Type();
 
 			// Svg Manager
 			$this->svg_manager = new \Jet_Menu\SVG_Manager();
@@ -213,7 +213,11 @@ if ( ! class_exists( 'Jet_Menu' ) ) {
 			jet_menu_assets()->init();
 			jet_menu_css_file()->init();
 
+			// Render Manager
 			$this->render_manager = new \Jet_Menu\Render\Manager();
+
+			// Blocks Manager
+			$this->blocks_manager = new \Jet_Menu\Blocks\Manager();
 
 			if ( is_admin() ) {
 				// Init DB upgrade
@@ -246,6 +250,9 @@ if ( ! class_exists( 'Jet_Menu' ) ) {
 			// Render Manager
 			require $this->plugin_path( 'includes/render/manager.php' );
 
+			// Blocks Manager
+			require $this->plugin_path( 'includes/blocks/manager.php' );
+
 			// Elementor Integration Module
 			require $this->plugin_path( 'includes/elementor/manager.php' );
 
@@ -266,7 +273,8 @@ if ( ! class_exists( 'Jet_Menu' ) ) {
 			// Rest Api
 			require $this->plugin_path( 'includes/rest-api/rest-api.php' );
 			require $this->plugin_path( 'includes/rest-api/endpoints/base.php' );
-			require $this->plugin_path( 'includes/rest-api/endpoints/elementor-template.php' );
+			require $this->plugin_path( 'includes/rest-api/endpoints/get-elementor-template-content.php' );
+			require $this->plugin_path( 'includes/rest-api/endpoints/get-blocks-template-content.php' );
 			require $this->plugin_path( 'includes/rest-api/endpoints/plugin-settings.php' );
 			require $this->plugin_path( 'includes/rest-api/endpoints/get-menu-items.php' );
 
@@ -318,46 +326,6 @@ if ( ! class_exists( 'Jet_Menu' ) ) {
 		}
 
 		/**
-		 * Show recommended plugins notice.
-		 *
-		 * @return void
-		 */
-		public function required_plugins_notice() {
-			$screen = get_current_screen();
-
-			if ( isset( $screen->parent_file ) && 'plugins.php' === $screen->parent_file && 'update' === $screen->id ) {
-				return;
-			}
-
-			$plugin = 'elementor/elementor.php';
-
-			$installed_plugins      = get_plugins();
-			$is_elementor_installed = isset( $installed_plugins[ $plugin ] );
-
-			if ( $is_elementor_installed ) {
-				if ( ! current_user_can( 'activate_plugins' ) ) {
-					return;
-				}
-
-				$activation_url = wp_nonce_url( 'plugins.php?action=activate&amp;plugin=' . $plugin . '&amp;plugin_status=all&amp;paged=1&amp;s', 'activate-plugin_' . $plugin );
-
-				$message = sprintf( '<p>%s</p>', esc_html__( 'JetMenu requires Elementor to be activated.', 'jet-menu' ) );
-				$message .= sprintf( '<p><a href="%s" class="button-primary">%s</a></p>', $activation_url, esc_html__( 'Activate Elementor Now', 'jet-menu' ) );
-			} else {
-				if ( ! current_user_can( 'install_plugins' ) ) {
-					return;
-				}
-
-				$install_url = wp_nonce_url( self_admin_url( 'update.php?action=install-plugin&plugin=elementor' ), 'install-plugin_elementor' );
-
-				$message = sprintf( '<p>%s</p>', esc_html__( 'JetMenu requires Elementor to be installed.', 'jet-menu' ) );
-				$message .= sprintf( '<p><a href="%s" class="button-primary">%s</a></p>', $install_url, esc_html__( 'Install Elementor Now', 'jet-menu' ) );
-			}
-
-			printf( '<div class="notice notice-warning is-dismissible"><p>%s</p></div>', wp_kses_post( $message ) );
-		}
-
-		/**
 		 * Register required plugins
 		 *
 		 * @return void
@@ -398,15 +366,6 @@ if ( ! class_exists( 'Jet_Menu' ) ) {
 
 			tgmpa( $plugins, $config );
 
-		}
-
-		/**
-		 * Check if theme has elementor
-		 *
-		 * @return boolean
-		 */
-		public function has_elementor() {
-			return defined( 'ELEMENTOR_VERSION' );
 		}
 
 		/**

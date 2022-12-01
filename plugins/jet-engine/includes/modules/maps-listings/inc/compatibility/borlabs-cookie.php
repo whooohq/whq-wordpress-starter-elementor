@@ -85,7 +85,7 @@ class Borlabs_Cookie {
 			return $tag;
 		}
 
-		if ( ! in_array( $handle, $this->deps_scripts ) ) {
+		if ( ! in_array( $handle, $this->get_deps_scripts() ) ) {
 			return $tag;
 		}
 

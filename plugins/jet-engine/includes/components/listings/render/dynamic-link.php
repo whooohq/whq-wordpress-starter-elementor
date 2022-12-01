@@ -71,10 +71,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Link' ) ) {
 
 			if ( ! $url ) {
 				if ( $custom ) {
-					$url = jet_engine()->listings->data->get_meta(
-						$custom,
-						jet_engine()->listings->data->get_object_by_context( $object_context )
-					);
+					$url = jet_engine()->listings->data->get_meta_by_context( $custom, $object_context );
 				} elseif ( '_permalink' === $source ) {
 
 					$url = jet_engine()->listings->data->get_current_object_permalink(
@@ -88,10 +85,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Link' ) ) {
 					$option = ! empty( $settings['dynamic_link_option'] ) ? $settings['dynamic_link_option'] : false;
 					$url    = jet_engine()->listings->data->get_option( $option );
 				} elseif ( $source ) {
-					$url = jet_engine()->listings->data->get_meta(
-						$source,
-						jet_engine()->listings->data->get_object_by_context( $object_context )
-					);
+					$url = jet_engine()->listings->data->get_meta_by_context( $source, $object_context );
 				}
 			}
 

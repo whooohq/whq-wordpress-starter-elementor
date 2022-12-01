@@ -46,38 +46,20 @@
 			},
 			copyItem: function( item ) {
 
-				if ( !item ) {
+				if ( !item || !item.id ) {
 					return;
 				}
 
-				var self = this,
-					itemData = JSON.parse( JSON.stringify( item ) ),
-					newSlug = itemData.slug + '_copy';
-
-				itemData.slug = -1 === this.slugsList.indexOf( newSlug ) ? newSlug : newSlug + '_' + Math.floor( ( Math.random() * 99 )  + 1 );
-				itemData.labels.name = itemData.labels.name + ' (Copy)';
+				var self = this;
 
 				wp.apiFetch( {
 					method: 'post',
-					path: JetEngineCPTListConfig.api_path_add,
-					data: {
-						general_settings: {
-							name: itemData.labels.name,
-							slug: itemData.slug,
-							object_type: itemData.object_type,
-							show_edit_link: itemData.show_edit_link,
-						},
-						labels: itemData.labels,
-						advanced_settings: itemData.args,
-						meta_fields: itemData.meta_fields,
-					}
+					path: JetEngineCPTListConfig.api_path_copy + item.id,
 				} ).then( function( response ) {
 
-					if ( response.success && response.item_id ) {
+					if ( response.success && response.item ) {
 
-						itemData.id = response.item_id
-
-						self.itemsList.unshift( itemData );
+						self.engineTypes.unshift( response.item );
 
 						self.$CXNotice.add( {
 							message: JetEngineCPTListConfig.notices.copied,

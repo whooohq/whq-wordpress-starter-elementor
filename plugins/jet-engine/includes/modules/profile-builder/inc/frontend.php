@@ -185,7 +185,10 @@ class Frontend {
 
 			$context = ! empty( $settings['object_context'] ) ? $settings['object_context'] : 'default_object';
 
-			if ( ! in_array( $context, array( 'default_object', 'wp_user' ) ) ) {
+			/*
+			 * Condition changed in v3.0.7 to fix https://github.com/Crocoblock/issues-tracker/issues/1855
+			 */
+			if ( ! in_array( $context, array( 'default_object' ) ) ) {
 				$this->current_user_obj = jet_engine()->listings->data->get_object_by_context( $context );
 			}
 
@@ -323,7 +326,8 @@ class Frontend {
 			'username' => array(
 				'label' => esc_html__( 'User Name', 'jet-engine' ),
 				'cb'    => function() {
-					return Module::instance()->query->get_queried_user()->display_name;
+					$user = Module::instance()->query->get_queried_user();
+					return $user ? $user->display_name : null;
 				},
 			),
 			'pagetitle' => array(

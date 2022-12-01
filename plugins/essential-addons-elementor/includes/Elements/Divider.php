@@ -8,6 +8,7 @@ use \Elementor\Core\Schemes\Typography;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
+use Elementor\Icons_Manager;
 use \Elementor\Utils;
 use \Elementor\Widget_Base;
 use \Elementor\Group_Control_Text_Shadow;
@@ -751,7 +752,8 @@ class Divider extends Widget_Base
 					'divider_type'    => 'icon',
 				],
 				'selectors'             => [
-					'{{WRAPPER}} .eael-divider-icon' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .eael-divider-icon' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .eael-divider-icon svg' => 'fill: {{VALUE}};',
 				],
 			]
 		);
@@ -775,7 +777,8 @@ class Divider extends Widget_Base
 					'divider_type'    => 'icon',
 				],
 				'selectors'             => [
-					'{{WRAPPER}} .eael-divider-icon' => 'font-size: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .eael-divider-icon' => 'font-size: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .eael-divider-icon svg' => 'height: {{SIZE}}{{UNIT}};width: {{SIZE}}{{UNIT}};line-height: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}} .eael-divider-svg-icon'	=> 'height: {{SIZE}}{{UNIT}};'
 				],
 			]
@@ -802,7 +805,8 @@ class Divider extends Widget_Base
 					'unit' => 'px',
 				],
 				'selectors'             => [
-					'{{WRAPPER}} .eael-divider-icon span' => 'transform: rotate( {{SIZE}}deg );',
+                    '{{WRAPPER}} .eael-divider-icon span' => 'transform: rotate( {{SIZE}}deg );',
+                    '{{WRAPPER}} .eael-divider-icon svg' => 'transform: rotate( {{SIZE}}deg );',
 					'{{WRAPPER}} .eael-divider-svg-icon'	=> 'transform: rotate( {{SIZE}}deg );'
 				],
 				'condition'             => [
@@ -1007,9 +1011,9 @@ class Divider extends Widget_Base
 									<?php if ($icon_migrated || $icon_is_new) { ?>
 										<?php if (isset($settings['divider_icon_new']['value']['url'])) : ?>
 											<img class="eael-divider-svg-icon" src="<?php echo esc_attr($settings['divider_icon_new']['value']['url']); ?>" alt="<?php echo esc_attr(get_post_meta($settings['divider_icon_new']['value']['id'], '_wp_attachment_image_alt', true)); ?>" />
-										<?php else : ?>
-											<span class="<?php echo esc_attr($settings['divider_icon_new']['value']); ?>" aria-hidden="true"></span>
-										<?php endif; ?>
+										<?php else :
+                                            Icons_Manager::render_icon($settings['divider_icon_new'], ['aria-hidden'=>'false']);
+                                        endif; ?>
 									<?php } else { ?>
 										<span class="<?php echo esc_attr($settings['divider_icon']); ?>" aria-hidden="true"></span>
 									<?php } ?>

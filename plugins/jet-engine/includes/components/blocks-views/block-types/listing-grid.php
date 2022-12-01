@@ -285,6 +285,10 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Grid' ) ) {
 					'type'    => 'string',
 					'default' => '',
 				),
+				'_element_id' => array(
+					'type'    => 'string',
+					'default' => '',
+				),
 			) );
 		}
 
@@ -683,10 +687,11 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Grid' ) ) {
 			$content = ob_get_clean();
 
 			return sprintf(
-				'<div class="jet-listing-grid--blocks%3$s" data-element-id="%1$s" data-listing-type="blocks">%2$s</div>',
+				'<div class="jet-listing-grid--blocks%3$s" data-element-id="%1$s" data-listing-type="blocks"%4$s>%2$s</div>',
 				$attributes['_block_id'],
 				$content,
-				! empty( $attributes['className'] ) ? ' ' . $attributes['className'] : ''
+				! empty( $attributes['className'] ) ? ' ' . $attributes['className'] : '',
+				! empty( $attributes['_element_id'] ) ? ' id="' . esc_attr( $attributes['_element_id'] ) . '"' : ''
 			);
 		}
 

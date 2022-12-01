@@ -36,3 +36,6 @@ $(window)
 $(document).on('elementor/popup/show', (event, id, instance) => {
 	window.JetSmartFilters.initializeFiltersInContainer(instance.$element);
 });
+
+// Extensions
+import './extensions';

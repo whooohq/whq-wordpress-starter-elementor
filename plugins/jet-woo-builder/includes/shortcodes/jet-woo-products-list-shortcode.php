@@ -19,54 +19,53 @@ class Jet_Woo_Products_List_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 	}
 
 	/**
-	 * Shortcode attributes
+	 * Attributes.
+	 *
+	 * Shortcode attributes.
+	 *
+	 * @since  1.0.0
+	 * @access public
 	 *
 	 * @return array
 	 */
 	public function get_atts() {
-
-		return apply_filters( 'jet-woo-builder/shortcodes/jet-woo-products-list/atts', array(
-			'products_layout'          => array(
+		return apply_filters( 'jet-woo-builder/shortcodes/jet-woo-products-list/atts', [
+			'products_layout'          => [
 				'type'    => 'select',
-				'label'   => esc_html__( 'Layout', 'jet-woo-builder' ),
+				'label'   => __( 'Thumbnail Position', 'jet-woo-builder' ),
 				'default' => 'left',
-				'options' => array(
-					'left'  => esc_html__( 'Image Left', 'jet-woo-builder' ),
-					'right' => esc_html__( 'Image Right', 'jet-woo-builder' ),
-					'top'   => esc_html__( 'Image Top', 'jet-woo-builder' ),
-				),
-			),
-			'hidden_products'          => array(
-				'type'         => 'switcher',
-				'label'        => esc_html__( 'Show Hidden Products', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => '',
-			),
-			'open_new_tab'             => array(
-				'label'     => esc_html__( 'Open Products in new window', 'jet-woo-builder' ),
+				'options' => [
+					'left'  => __( 'Left', 'jet-woo-builder' ),
+					'right' => __( 'Right', 'jet-woo-builder' ),
+					'top'   => __( 'Top', 'jet-woo-builder' ),
+				],
+			],
+			'hidden_products'          => [
 				'type'      => 'switcher',
-				'label_on'  => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off' => esc_html__( 'No', 'jet-woo-builder' ),
-				'default'   => '',
-			),
-			'use_current_query'        => array(
-				'type'         => 'switcher',
-				'label'        => esc_html__( 'Use Current Query', 'jet-woo-builder' ),
-				'description'  => esc_html__( 'This option works only on the shop archive page, and allows you to display products for current categories, tags and taxonomies.', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => '',
-				'separator'    => 'before',
-				'condition'    => [
+				'label'     => __( 'Hidden Products', 'jet-woo-builder' ),
+				'label_on'  => __( 'Show', 'jet-woo-builder' ),
+				'label_off' => __( 'Hide', 'jet-woo-builder' ),
+			],
+			'clickable_item'           => [
+				'type'  => 'switcher',
+				'label' => __( 'Make Product Item Clickable', 'jet-woo-builder' ),
+			],
+			'open_new_tab'             => [
+				'type'  => 'switcher',
+				'label' => __( 'Open in New Window', 'jet-woo-builder' ),
+			],
+			'use_current_query'        => [
+				'type'        => 'switcher',
+				'label'       => __( 'Use Current Query', 'jet-woo-builder' ),
+				'description' => __( 'This option works only on the products archive pages, and allows you to display products for current categories, tags and taxonomies.', 'jet-woo-builder' ),
+				'separator'   => 'before',
+				'condition'   => [
 					'enable_custom_query!' => 'yes',
 				],
-			),
-			'number'                   => array(
+			],
+			'number'                   => [
 				'type'      => 'number',
-				'label'     => esc_html__( 'Products Number', 'jet-woo-builder' ),
+				'label'     => __( 'Products Number', 'jet-woo-builder' ),
 				'default'   => 3,
 				'min'       => 1,
 				'max'       => 1000,
@@ -74,341 +73,369 @@ class Jet_Woo_Products_List_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 				'condition' => [
 					'enable_custom_query!' => 'yes',
 				],
-			),
-			'products_query'           => array(
-				'type'        => 'select2',
-				'label'       => esc_html__( 'Query by', 'jet-woo-builder' ),
-				'default'     => 'all',
-				'multiple'    => true,
-				'label_block' => true,
-				'options'     => jet_woo_builder_shortcodes()->get_products_query_type(),
-				'condition'   => array(
+			],
+			'products_query'           => [
+				'type'      => 'select2',
+				'label'     => __( 'Query by', 'jet-woo-builder' ),
+				'multiple'  => true,
+				'options'   => jet_woo_builder_shortcodes()->get_products_query_type(),
+				'default'   => 'all',
+				'condition' => [
 					'use_current_query!'   => 'yes',
 					'enable_custom_query!' => 'yes',
-				),
-			),
-			'products_exclude_ids'     => array(
+				],
+			],
+			'products_exclude_ids'     => [
 				'type'        => 'text',
-				'label'       => esc_html__( 'Exclude products by IDs', 'jet-woo-builder' ),
-				'description' => esc_html__( 'Eg. 12, 24, 33', 'jet-woo-builder' ),
-				'label_block' => true,
-				'default'     => '',
-				'condition'   => array(
+				'label'       => __( 'Exclude by IDs', 'jet-woo-builder' ),
+				'description' => __( 'Set comma separated products IDs list (10, 22, 19 etc.).', 'jet-woo-builder' ),
+				'dynamic'     => [
+					'active' => true,
+				],
+				'condition'   => [
 					'products_query'       => 'all',
 					'use_current_query!'   => 'yes',
 					'enable_custom_query!' => 'yes',
-				),
-			),
-			'products_ids'             => array(
+				],
+			],
+			'products_ids'             => [
 				'type'        => 'text',
-				'label'       => esc_html__( 'Set comma separated IDs list (10, 22, 19 etc.)', 'jet-woo-builder' ),
-				'label_block' => true,
-				'default'     => '',
-				'condition'   => array(
+				'label'       => __( 'Include by IDs', 'jet-woo-builder' ),
+				'description' => __( 'Set comma separated products IDs list (10, 22, 19 etc.).', 'jet-woo-builder' ),
+				'dynamic'     => [
+					'active' => true,
+				],
+				'condition'   => [
 					'products_query'       => 'ids',
 					'use_current_query!'   => 'yes',
 					'enable_custom_query!' => 'yes',
-				),
-			),
-			'products_cat'             => array(
-				'type'        => 'select2',
-				'label'       => esc_html__( 'Include Category', 'jet-woo-builder' ),
-				'default'     => '',
-				'multiple'    => true,
-				'label_block' => true,
-				'options'     => jet_woo_builder_tools()->get_product_categories(),
-				'condition'   => array(
+				],
+			],
+			'products_cat'             => [
+				'type'      => 'select2',
+				'label'     => __( 'Include Categories', 'jet-woo-builder' ),
+				'multiple'  => true,
+				'options'   => jet_woo_builder_tools()->get_product_categories(),
+				'condition' => [
 					'products_query'       => 'category',
 					'use_current_query!'   => 'yes',
 					'enable_custom_query!' => 'yes',
-				),
-			),
-			'products_cat_exclude'     => array(
-				'type'        => 'select2',
-				'label'       => esc_html__( 'Exclude Category', 'jet-woo-builder' ),
-				'default'     => '',
-				'multiple'    => true,
-				'label_block' => true,
-				'options'     => jet_woo_builder_tools()->get_product_categories(),
-				'condition'   => array(
+				],
+			],
+			'products_cat_exclude'     => [
+				'type'      => 'select2',
+				'label'     => __( 'Exclude Categories', 'jet-woo-builder' ),
+				'multiple'  => true,
+				'options'   => jet_woo_builder_tools()->get_product_categories(),
+				'condition' => [
 					'products_query'       => 'category',
 					'use_current_query!'   => 'yes',
 					'enable_custom_query!' => 'yes',
-				),
-			),
-			'products_tag'             => array(
-				'type'        => 'select2',
-				'label'       => esc_html__( 'Tag', 'jet-woo-builder' ),
-				'default'     => '',
-				'multiple'    => true,
-				'label_block' => true,
-				'options'     => jet_woo_builder_tools()->get_product_tags(),
-				'condition'   => array(
+				],
+			],
+			'products_tag'             => [
+				'type'      => 'select2',
+				'label'     => __( 'Include Tag', 'jet-woo-builder' ),
+				'multiple'  => true,
+				'options'   => jet_woo_builder_tools()->get_product_tags(),
+				'condition' => [
 					'products_query'       => 'tag',
 					'use_current_query!'   => 'yes',
 					'enable_custom_query!' => 'yes',
-				),
-			),
-			'taxonomy_slug'            => array(
-				'type'        => 'text',
-				'label'       => esc_html__( 'Set custom taxonomy slug', 'jet-woo-builder' ),
-				'label_block' => true,
-				'default'     => '',
-				'condition'   => array(
+				],
+			],
+			'taxonomy_slug'            => [
+				'type'      => 'text',
+				'label'     => __( 'Taxonomy Slug', 'jet-woo-builder' ),
+				'condition' => [
 					'products_query'       => 'custom_tax',
 					'use_current_query!'   => 'yes',
 					'enable_custom_query!' => 'yes',
-				),
-			),
-			'taxonomy_id'              => array(
+				],
+			],
+			'taxonomy_id'              => [
 				'type'        => 'text',
-				'label'       => esc_html__( 'Set comma separated ID list (10, 22, 19 etc.)', 'jet-woo-builder' ),
-				'label_block' => true,
-				'default'     => '',
-				'condition'   => array(
+				'label'       => __( 'Include by IDs', 'jet-woo-builder' ),
+				'description' => __( 'Set comma separated taxonomies IDs list (10, 22, 19 etc.).', 'jet-woo-builder' ),
+				'dynamic'     => [
+					'active' => true,
+				],
+				'condition'   => [
 					'products_query'       => 'custom_tax',
 					'use_current_query!'   => 'yes',
 					'enable_custom_query!' => 'yes',
-				),
-			),
-			'products_orderby'         => array(
+				],
+			],
+			'products_stock_status'    => [
+				'type'      => 'select2',
+				'label'     => __( 'Stock Status', 'jet-woo-builder' ),
+				'multiple'  => true,
+				'default'   => 'instock',
+				'options'   => wc_get_product_stock_status_options(),
+				'condition' => [
+					'products_query'       => 'stock_status',
+					'use_current_query!'   => 'yes',
+					'enable_custom_query!' => 'yes',
+				],
+			],
+			'products_orderby'         => [
 				'type'      => 'select',
-				'label'     => esc_html__( 'Order by', 'jet-woo-builder' ),
+				'label'     => __( 'Order by', 'jet-woo-builder' ),
 				'default'   => 'default',
 				'options'   => jet_woo_builder_tools()->orderby_arr(),
-				'separator' => 'before',
-				'condition' => array(
+				'condition' => [
 					'use_current_query!'   => 'yes',
 					'enable_custom_query!' => 'yes',
-				),
-			),
-			'products_order'           => array(
+				],
+			],
+			'products_order'           => [
 				'type'      => 'select',
-				'label'     => esc_html__( 'Order', 'jet-woo-builder' ),
+				'label'     => __( 'Order', 'jet-woo-builder' ),
 				'default'   => 'desc',
 				'options'   => jet_woo_builder_tools()->order_arr(),
-				'condition' => array(
+				'condition' => [
 					'use_current_query!'   => 'yes',
 					'enable_custom_query!' => 'yes',
-				),
-			),
-			'show_title'               => array(
-				'type'         => 'switcher',
-				'label'        => esc_html__( 'Show Products Title', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => 'yes',
-				'separator'    => 'before',
-			),
-			'add_title_link'           => array(
-				'type'         => 'switcher',
-				'label'        => esc_html__( 'Add Link to Title', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => 'yes',
-				'condition'    => array(
-					'show_title' => array( 'yes' ),
-				),
-			),
-			'title_html_tag'           => array(
+				],
+			],
+			'show_title'               => [
+				'type'      => 'switcher',
+				'label'     => __( 'Title', 'jet-woo-builder' ),
+				'label_on'  => __( 'Show', 'jet-woo-builder' ),
+				'label_off' => __( 'Hide', 'jet-woo-builder' ),
+				'default'   => 'yes',
+				'separator' => 'before',
+			],
+			'add_title_link'           => [
+				'type'      => 'switcher',
+				'label'     => __( 'Enable Permalink', 'jet-woo-builder' ),
+				'label_on'  => __( 'Yes', 'jet-woo-builder' ),
+				'label_off' => __( 'No', 'jet-woo-builder' ),
+				'default'   => 'yes',
+				'condition' => [
+					'show_title' => 'yes',
+				],
+			],
+			'title_html_tag'           => [
 				'type'      => 'select',
-				'label'     => esc_html__( 'Title HTML Tag', 'jet-woo-builder' ),
+				'label'     => __( 'HTML Tag', 'jet-woo-builder' ),
 				'default'   => 'h5',
 				'options'   => jet_woo_builder_tools()->get_available_title_html_tags(),
-				'condition' => array(
-					'show_title' => array( 'yes' ),
-				),
-			),
-			'title_trim_type'          => array(
+				'condition' => [
+					'show_title' => 'yes',
+				],
+			],
+			'title_trim_type'          => [
 				'type'      => 'select',
-				'label'     => esc_html__( 'Title Trim Type', 'jet-woo-builder' ),
+				'label'     => __( 'Trim Type', 'jet-woo-builder' ),
 				'default'   => 'word',
 				'options'   => jet_woo_builder_tools()->get_available_title_trim_types(),
-				'condition' => array(
-					'show_title' => array( 'yes' ),
-				),
-			),
+				'condition' => [
+					'show_title' => 'yes',
+				],
+			],
 			'title_length'             => [
 				'type'        => 'number',
-				'label'       => esc_html__( 'Title Words/Letters Count', 'jet-woo-builder' ),
-				'description' => esc_html__( 'Set -1 to show full title and 0 to hide it.', 'jet-woo-builder' ),
+				'label'       => __( 'Length', 'jet-woo-builder' ),
+				'description' => __( 'Set -1 to show full title and 0 to hide it.', 'jet-woo-builder' ),
 				'min'         => -1,
 				'default'     => -1,
 				'condition'   => [
 					'show_title' => 'yes',
 				],
 			],
-			'title_tooltip'            => [
+			'title_line_wrap'          => [
 				'type'         => 'switcher',
-				'label'        => esc_html__( 'Enable Title Tooltip', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => '',
-				'conditions'   => [
-					'relation' => 'or',
-					'terms'    => [
-						[
-							'name'     => 'title_length',
-							'operator' => '>',
-							'value'    => 0,
-						],
-					],
+				'label'        => __( 'Enable Line Wrap', 'jet-woo-builder' ),
+				'prefix_class' => 'jet-woo-builder-title-line-wrap-',
+				'condition'    => [
+					'show_title' => 'yes',
 				],
 			],
-			'show_image'               => array(
-				'type'         => 'switcher',
-				'label'        => esc_html__( 'Show Products Featured Image', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => 'yes',
-			),
-			'is_linked_image'          => array(
-				'type'         => 'switcher',
-				'label'        => esc_html__( 'Add Link to Thumbnail', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => 'no',
-				'condition'    => array(
-					'show_image' => array( 'yes' ),
-				),
-			),
-			'thumb_size'               => array(
+			'title_tooltip'            => [
+				'type'      => 'switcher',
+				'label'     => __( 'Enable Title Tooltip', 'jet-woo-builder' ),
+				'separator' => 'after',
+				'condition' => [
+					'show_title' => 'yes',
+				],
+			],
+			'show_image'               => [
+				'type'      => 'switcher',
+				'label'     => __( 'Thumbnail', 'jet-woo-builder' ),
+				'label_on'  => __( 'Show', 'jet-woo-builder' ),
+				'label_off' => __( 'Hide', 'jet-woo-builder' ),
+				'default'   => 'yes',
+			],
+			'is_linked_image'          => [
+				'type'      => 'switcher',
+				'label'     => __( 'Enable Thumbnail Permalink', 'jet-woo-builder' ),
+				'condition' => [
+					'show_image!' => '',
+				],
+			],
+			'thumb_size'               => [
 				'type'      => 'select',
-				'label'     => esc_html__( 'Featured Image Size', 'jet-woo-builder' ),
+				'label'     => __( 'Image Size', 'jet-woo-builder' ),
 				'default'   => 'woocommerce_thumbnail',
 				'options'   => jet_woo_builder_tools()->get_image_sizes(),
-				'condition' => array(
-					'show_image' => array( 'yes' ),
-				),
-			),
-			'show_cat'                 => array(
-				'type'         => 'switcher',
-				'label'        => esc_html__( 'Show Product Categories', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => 'yes',
-			),
+				'condition' => [
+					'show_image!' => '',
+				],
+			],
+			'show_badges'              => [
+				'type'      => 'switcher',
+				'label'     => __( 'Badges', 'jet-woo-builder' ),
+				'label_on'  => __( 'Show', 'jet-woo-builder' ),
+				'label_off' => __( 'Hide', 'jet-woo-builder' ),
+				'condition' => [
+					'show_image!' => '',
+				],
+			],
+			'sale_badge_text'          => [
+				'type'        => 'text',
+				'label'       => __( 'Badge Label', 'jet-woo-builder' ),
+				'default'     => __( 'Sale!', 'jet-woo-builder' ),
+				'description' => __( 'Use %percentage_sale% and %numeric_sale% macros to display a withdrawal of discounts as a percentage or numeric of the initial price.', 'jet-woo-builder' ),
+				'separator'   => 'after',
+				'condition'   => [
+					'show_badges!' => '',
+					'show_image!'  => '',
+				],
+			],
+			'show_cat'                 => [
+				'type'      => 'switcher',
+				'label'     => __( 'Categories', 'jet-woo-builder' ),
+				'label_on'  => __( 'Show', 'jet-woo-builder' ),
+				'label_off' => __( 'Hide', 'jet-woo-builder' ),
+				'default'   => 'yes',
+			],
 			'categories_count'         => [
 				'type'        => 'number',
-				'label'       => esc_html__( 'Categories Count', 'jet-woo-builder' ),
-				'description' => esc_html__( 'Set 0 to show full list.', 'jet-woo-builder' ),
+				'label'       => __( 'Categories Count', 'jet-woo-builder' ),
+				'description' => __( 'Set 0 to show full categories list.', 'jet-woo-builder' ),
 				'min'         => 0,
 				'default'     => 0,
+				'separator'   => 'after',
 				'condition'   => [
 					'show_cat' => 'yes',
 				],
 			],
-			'show_price'               => array(
-				'type'         => 'switcher',
-				'label'        => esc_html__( 'Show Product Price', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => 'yes',
-			),
-			'show_stock_status'        => array(
-				'type'         => 'switcher',
-				'label'        => esc_html__( 'Show Product Stock Status', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => '',
-			),
-			'in_stock_status_text'     => array(
-				'type'        => 'text',
-				'label'       => esc_html__( 'Set In Stock Status Text', 'jet-woo-builder' ),
-				'default'     => esc_html__( 'In Stock', 'jet-woo-builder' ),
-				'label_block' => true,
-				'condition'   => array(
-					'show_stock_status' => array( 'yes' ),
-				),
-			),
-			'on_backorder_status_text' => array(
-				'type'        => 'text',
-				'label'       => esc_html__( 'Set On Backorder Status Text', 'jet-woo-builder' ),
-				'default'     => esc_html__( 'On Backorder', 'jet-woo-builder' ),
-				'label_block' => true,
-				'condition'   => array(
-					'show_stock_status' => array( 'yes' ),
-				),
-			),
-			'out_of_stock_status_text' => array(
-				'type'        => 'text',
-				'label'       => esc_html__( 'Set Out of Stock Status Text', 'jet-woo-builder' ),
-				'default'     => esc_html__( 'Out of Stock', 'jet-woo-builder' ),
-				'label_block' => true,
-				'condition'   => array(
-					'show_stock_status' => array( 'yes' ),
-				),
-			),
-			'show_rating'              => array(
-				'type'         => 'switcher',
-				'label'        => esc_html__( 'Show Product Rating', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => 'yes',
-			),
-			'show_sku'                 => array(
-				'type'         => 'switcher',
-				'label'        => esc_html__( 'Show SKU', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => '',
-			),
-			'show_button'              => array(
-				'type'         => 'switcher',
-				'label'        => esc_html__( 'Show Add To Cart Button', 'jet-woo-builder' ),
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => 'yes',
-			),
+			'show_price'               => [
+				'type'      => 'switcher',
+				'label'     => __( 'Price', 'jet-woo-builder' ),
+				'label_on'  => __( 'Show', 'jet-woo-builder' ),
+				'label_off' => __( 'Hide', 'jet-woo-builder' ),
+				'default'   => 'yes',
+			],
+			'show_stock_status'        => [
+				'type'      => 'switcher',
+				'label'     => __( 'Stock Status', 'jet-woo-builder' ),
+				'label_on'  => __( 'Show', 'jet-woo-builder' ),
+				'label_off' => __( 'Hide', 'jet-woo-builder' ),
+			],
+			'in_stock_status_text'     => [
+				'type'      => 'text',
+				'label'     => __( 'In Stock Label', 'jet-woo-builder' ),
+				'default'   => __( 'In Stock', 'jet-woo-builder' ),
+				'condition' => [
+					'show_stock_status' => 'yes',
+				],
+			],
+			'on_backorder_status_text' => [
+				'type'      => 'text',
+				'label'     => __( 'On Backorder Label', 'jet-woo-builder' ),
+				'default'   => __( 'On Backorder', 'jet-woo-builder' ),
+				'condition' => [
+					'show_stock_status' => 'yes',
+				],
+			],
+			'out_of_stock_status_text' => [
+				'type'      => 'text',
+				'label'     => __( 'Out of Stock Label', 'jet-woo-builder' ),
+				'default'   => __( 'Out of Stock', 'jet-woo-builder' ),
+				'separator' => 'after',
+				'condition' => [
+					'show_stock_status' => 'yes',
+				],
+			],
+			'show_rating'              => [
+				'type'      => 'switcher',
+				'label'     => __( 'Rating', 'jet-woo-builder' ),
+				'label_on'  => __( 'Show', 'jet-woo-builder' ),
+				'label_off' => __( 'Hide', 'jet-woo-builder' ),
+				'default'   => 'yes',
+			],
+			'show_rating_empty'        => [
+				'type'      => 'switcher',
+				'label'     => __( 'Empty Rating', 'jet-woo-builder' ),
+				'label_on'  => __( 'Show', 'jet-woo-builder' ),
+				'label_off' => __( 'Hide', 'jet-woo-builder' ),
+				'separator' => 'after',
+				'condition' => [
+					'show_rating' => 'yes',
+				],
+			],
+			'show_sku'                 => [
+				'type'      => 'switcher',
+				'label'     => __( 'SKU', 'jet-woo-builder' ),
+				'label_on'  => __( 'Show', 'jet-woo-builder' ),
+				'label_off' => __( 'Hide', 'jet-woo-builder' ),
+			],
+			'show_button'              => [
+				'type'      => 'switcher',
+				'label'     => __( 'Add To Cart Button', 'jet-woo-builder' ),
+				'label_on'  => __( 'Show', 'jet-woo-builder' ),
+				'label_off' => __( 'Hide', 'jet-woo-builder' ),
+				'default'   => 'yes',
+			],
 			'show_quantity'            => [
 				'type'               => 'switcher',
-				'label'              => __( 'Show Quantity Input', 'jet-woo-builder' ),
+				'label'              => __( 'Quantity Input', 'jet-woo-builder' ),
+				'label_on'           => __( 'Show', 'jet-woo-builder' ),
+				'label_off'          => __( 'Hide', 'jet-woo-builder' ),
 				'frontend_available' => true,
 				'condition'          => [
 					'show_button' => 'yes',
 				],
 			],
-			'button_use_ajax_style'    => array(
-				'label'        => esc_html__( 'Use default ajax add to cart styles', 'jet-woo-builder' ),
-				'description'  => esc_html__( 'This option enables default WooCommerce styles for \'Add to Cart\' ajax button (\'Loading\' and \'Added\' statements)', 'jet-woo-builder' ),
-				'type'         => 'switcher',
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => '',
-				'condition'    => array(
-					'show_button' => array( 'yes' ),
-				),
-			),
-			'not_found_message'        => array(
-				'type'    => 'text',
-				'label'   => esc_html__( 'Not found message', 'jet-woo-builder' ),
-				'default' => esc_html__( 'Products not found', 'jet-woo-builder' ),
-			),
-			'query_id'                 => array(
-				'label'       => esc_html__( 'Query ID', 'jet-woo-builder' ),
+			'button_use_ajax_style'    => [
+				'label'       => __( 'Use default ajax add to cart styles', 'jet-woo-builder' ),
+				'description' => __( 'This option enables default WooCommerce styles for \'Add to Cart\' ajax button (\'Loading\' and \'Added\' statements)', 'jet-woo-builder' ),
+				'type'        => 'switcher',
+				'condition'   => [
+					'show_button' => 'yes',
+				],
+			],
+			'not_found_message'        => [
+				'type'      => 'text',
+				'label'     => __( 'Not Found Message', 'jet-woo-builder' ),
+				'default'   => __( 'Products not found.', 'jet-woo-builder' ),
+				'separator' => 'before',
+				'dynamic'   => [
+					'active' => true,
+				],
+			],
+			'query_id'                 => [
 				'type'        => 'text',
-				'default'     => '',
-				'description' => esc_html__( 'Give your Query a custom unique id to allow server side filtering', 'jet-woo-builder' ),
-				'separator'   => 'after',
-			),
-		) );
-
+				'label'       => __( 'Query ID', 'jet-woo-builder' ),
+				'description' => __( 'Give your Query a custom unique id to allow server side filtering', 'jet-woo-builder' ),
+				'dynamic'     => [
+					'active' => true,
+				],
+			],
+		] );
 	}
 
 	/**
-	 * Query products by attributes.
+	 * Query.
+	 *
+	 * Returns products query by attributes.
+	 *
+	 * @since  1.1.0
+	 * @since  2.0.4 Added `jet-woo-builder/shortcodes/jet-woo-products-list/query-type/query-args` hook. New query
+	 *         type `stock_status`.
+	 * @access public
 	 *
 	 * @return object
 	 */
@@ -436,15 +463,15 @@ class Jet_Woo_Products_List_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 			return $query->get_items();
 		}
 
-		$defaults = apply_filters( 'jet-woo-builder/shortcodes/jet-woo-products-list/query-args', array(
+		$defaults = apply_filters( 'jet-woo-builder/shortcodes/jet-woo-products-list/query-args', [
 			'post_status'   => 'publish',
 			'post_type'     => 'product',
 			'no_found_rows' => 1,
-			'meta_query'    => array(),
-			'tax_query'     => array(
+			'meta_query'    => [],
+			'tax_query'     => [
 				'relation' => 'AND',
-			),
-		), $this );
+			],
+		], $this );
 
 		$query_id = $this->get_attr( 'query_id' );
 
@@ -465,7 +492,7 @@ class Jet_Woo_Products_List_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 				$query_args = apply_filters( 'jet-woo-builder/shortcodes/jet-woo-products-list/query-args', $query_args, $this );
 				$query_args = jet_woo_builder_shortcodes()->get_wc_catalog_ordering_args( $query_args );
 
-				add_filter( 'posts_clauses', array( $this, 'price_filter_post_clauses' ), 10, 2 );
+				add_filter( 'posts_clauses', [ $this, 'price_filter_post_clauses' ], 10, 2 );
 
 				return new WP_Query( $query_args );
 			}
@@ -484,7 +511,7 @@ class Jet_Woo_Products_List_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 				return null;
 			}
 
-			if ( $this->is_single_linked_products( $query_type[ $i ] ) ) {
+			if ( $this->is_linked_products( $query_type[ $i ] ) ) {
 				global $product;
 
 				if ( ! is_a( $product, 'WC_Product' ) && ! ( jet_woo_builder()->documents->is_document_type( 'cart' ) || is_cart() ) ) {
@@ -516,7 +543,7 @@ class Jet_Woo_Products_List_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 					if ( '' !== $this->get_attr( 'products_exclude_ids' ) ) {
 						$query_args['post__not_in'] = explode(
 							',',
-							str_replace( ' ', '', $this->get_attr( 'products_exclude_ids' ) )
+							str_replace( ' ', '', jet_woo_builder()->macros->do_macros( $this->get_attr( 'products_exclude_ids' ) ) )
 						);
 					}
 					break;
@@ -552,7 +579,7 @@ class Jet_Woo_Products_List_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 					if ( '' !== $this->get_attr( 'products_ids' ) ) {
 						$query_args['post__in'] = explode(
 							',',
-							str_replace( ' ', '', $this->get_attr( 'products_ids' ) )
+							str_replace( ' ', '', jet_woo_builder()->macros->do_macros( $this->get_attr( 'products_ids' ) ) )
 						);
 					}
 					break;
@@ -582,10 +609,22 @@ class Jet_Woo_Products_List_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 						$query_args['tax_query'][] = array(
 							'taxonomy' => $this->get_attr( 'taxonomy_slug' ),
 							'field'    => 'term_id',
-							'terms'    => explode( ',', str_replace( ' ', '', $this->get_attr( 'taxonomy_id' ) ) ),
+							'terms'    => explode( ',', str_replace( ' ', '', jet_woo_builder()->macros->do_macros( $this->get_attr( 'taxonomy_id' ) ) ) ),
 							'operator' => 'IN',
 						);
 					}
+					break;
+				case 'stock_status':
+					$query_args['meta_query'][] = [
+						'key'   => '_stock_status',
+						'value' => explode( ',', $this->get_attr( 'products_stock_status' ) ),
+					];
+
+					break;
+
+				default:
+					$query_args = apply_filters( 'jet-woo-builder/shortcodes/jet-woo-products-list/query-type/query-args', $query_args, $query_type[ $i ], $this );
+
 					break;
 			}
 		}
@@ -640,8 +679,6 @@ class Jet_Woo_Products_List_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 			case 'asc':
 				$query_args['order'] = 'ASC';
 				break;
-			default :
-				$query_args['order'] = 'DESC';
 		}
 
 		if ( 'yes' == get_option( 'woocommerce_hide_out_of_stock_items' ) ) {
@@ -668,11 +705,9 @@ class Jet_Woo_Products_List_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 		remove_action( 'pre_get_posts', array( $this, 'pre_get_products_query_filter' ) );
 
 		return $query_args;
+
 	}
 
-	/**
-	 * @param \WP_Query $wp_query
-	 */
 	public function pre_get_products_query_filter( $wp_query ) {
 		if ( $this ) {
 			$query_id = $this->get_attr( 'query_id' );
@@ -682,13 +717,18 @@ class Jet_Woo_Products_List_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 	}
 
 	/**
-	 * Return true if linked products query type
+	 * Linked Products.
+	 *
+	 * Return true if linked products query type.
+	 *
+	 * @since  1.0.0
+	 * @access public
 	 *
 	 * @param $query_type
 	 *
 	 * @return bool
 	 */
-	public function is_single_linked_products( $query_type ) {
+	public function is_linked_products( $query_type ) {
 
 		if ( 'related' === $query_type || 'up-sells' === $query_type || 'cross-sells' === $query_type ) {
 			return true;
@@ -706,6 +746,7 @@ class Jet_Woo_Products_List_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 	 * @return string
 	 */
 	public function _shortcode( $content = null ) {
+
 		$query = $this->query();
 
 		if ( is_array( $query ) ) {
@@ -714,11 +755,8 @@ class Jet_Woo_Products_List_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 			$have_posts = $query ? $query->have_posts() : false;
 		}
 
-		$not_found_message = esc_html__( $this->get_attr( 'not_found_message' ), 'jet-woo-builder' );
-		$not_found_message = apply_filters( 'jet-woo-builder/shortcodes/jet-woo-products-list/not-found-message', $not_found_message, $this );
-
 		if ( false === $query || empty( $query ) || is_wp_error( $query ) || ! $have_posts ) {
-			printf( '<div class="jet-woo-products__not-found">%s</div>', $not_found_message );
+			jet_woo_builder_shortcodes()->get_products_not_found_message( $this->get_tag(), $this->get_attr( 'not_found_message' ), $this );
 
 			return false;
 		}
@@ -731,9 +769,7 @@ class Jet_Woo_Products_List_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 
 		ob_start();
 
-		/**
-		 * Hook before loop start template included
-		 */
+		// Hook before loop start template included.
 		do_action( 'jet-woo-builder/shortcodes/jet-woo-products-list/loop-start' );
 
 		include $loop_start;
@@ -750,16 +786,12 @@ class Jet_Woo_Products_List_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 					setup_postdata( $post );
 				}
 
-				/**
-				 * Hook before loop item template included
-				 */
+				// Hook before loop item template included.
 				do_action( 'jet-woo-builder/shortcodes/jet-woo-products-list/loop-item-start' );
 
 				include $loop_item;
 
-				/**
-				 * Hook after loop item template included
-				 */
+				// Hook after loop item template included.
 				do_action( 'jet-woo-builder/shortcodes/jet-woo-products-list/loop-item-end' );
 			}
 		} else {
@@ -770,30 +802,25 @@ class Jet_Woo_Products_List_Shortcode extends Jet_Woo_Builder_Shortcode_Base {
 
 				setup_postdata( $post );
 
-				/**
-				 * Hook before loop item template included
-				 */
+				// Hook before loop item template included.
 				do_action( 'jet-woo-builder/shortcodes/jet-woo-products-list/loop-item-start' );
 
 				include $loop_item;
 
-				/**
-				 * Hook after loop item template included
-				 */
+				// Hook after loop item template included.
 				do_action( 'jet-woo-builder/shortcodes/jet-woo-products-list/loop-item-end' );
 			}
 		}
 
 		include $loop_end;
 
-		/**
-		 * Hook after loop end template included
-		 */
+		// Hook after loop end template included.
 		do_action( 'jet-woo-builder/shortcodes/jet-woo-products-list/loop-end' );
 
 		wp_reset_postdata();
 
 		return ob_get_clean();
+
 	}
 
 }

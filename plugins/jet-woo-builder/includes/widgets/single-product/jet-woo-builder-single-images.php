@@ -50,20 +50,19 @@ class Jet_Woo_Builder_Single_Images extends Jet_Woo_Builder_Base {
 		$css_scheme = apply_filters(
 			'jet-woo-builder/jet-single-images/css-scheme',
 			[
-				'images'               => '.jet-single-images__wrap div.images',
-				'main_image'           => '.jet-single-images__wrap .woocommerce-product-gallery > .flex-viewport',
-				'single_main_image'    => '.jet-single-images__wrap .woocommerce-product-gallery__trigger + .woocommerce-product-gallery__wrapper',
-				'thumbnails_wrapper'   => '.jet-single-images__wrap .flex-control-thumbs',
-				'thumbnails_h_wrapper' => '.jet-single-images__wrap:not(.jet-single-images-nav-vertical) .flex-control-thumbs',
-				'thumbnails'           => '.jet-single-images__wrap .flex-control-thumbs li',
-				'thumbnails_img'       => '.jet-single-images__wrap .flex-control-thumbs li > img',
+				'images'             => '.jet-single-images__wrap div.images',
+				'main_image'         => '.jet-single-images__wrap .woocommerce-product-gallery > .flex-viewport',
+				'single_main_image'  => '.jet-single-images__wrap .woocommerce-product-gallery__trigger + .woocommerce-product-gallery__wrapper',
+				'thumbnails_wrapper' => '.jet-single-images__wrap .flex-control-thumbs',
+				'thumbnails'         => '.jet-single-images__wrap .flex-control-thumbs li',
+				'thumbnails_img'     => '.jet-single-images__wrap .flex-control-thumbs li > img',
 			]
 		);
 
 		$this->start_controls_section(
 			'section_single_main_image_style',
 			[
-				'label' => __( 'Main Image', 'jet-woo-builder' ),
+				'label' => __( 'Featured Image', 'jet-woo-builder' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -73,29 +72,59 @@ class Jet_Woo_Builder_Single_Images extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'main_image_width',
 			[
-				'label'          => __( 'Images Block Width (%)', 'jet-woo-builder' ),
-				'type'           => Controls_Manager::SLIDER,
-				'size_units'     => [ '%' ],
-				'range'          => [
-					'%' => [
+				'label'       => __( 'Width', 'jet-woo-builder' ),
+				'type'        => Controls_Manager::SLIDER,
+				'size_units'  => [ 'px', '%' ],
+				'range'       => [
+					'px' => [
+						'min' => 0,
+						'max' => 1000,
+					],
+					'%'  => [
 						'min' => 0,
 						'max' => 100,
 					],
 				],
-				'default'        => [
+				'default'     => [
 					'unit' => '%',
 					'size' => 100,
 				],
-				'tablet_default' => [
-					'unit' => '%',
-				],
-				'mobile_default' => [
-					'unit' => '%',
-				],
-				'separator'      => 'after',
-				'selectors'      => [
+				'render_type' => 'template',
+				'selectors'   => [
 					'{{WRAPPER}} ' . $css_scheme['images'] => 'width: {{SIZE}}{{UNIT}} !important;',
 				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'product_images_alignment',
+			[
+				'label'                => __( 'Alignment', 'jet-woo-builder' ),
+				'type'                 => Controls_Manager::CHOOSE,
+				'options'              => [
+					'left'   => [
+						'title' => __( 'Left', 'jet-woo-builder' ),
+						'icon'  => 'eicon-text-align-left',
+					],
+					'center' => [
+						'title' => __( 'Center', 'jet-woo-builder' ),
+						'icon'  => 'eicon-text-align-center',
+					],
+					'right'  => [
+						'title' => __( 'Right', 'jet-woo-builder' ),
+						'icon'  => 'eicon-text-align-right',
+					],
+				],
+				'selectors_dictionary' => [
+					'left'   => 'margin-right: auto;',
+					'center' => 'margin: 0 auto;',
+					'right'  => 'margin-left: auto;',
+				],
+				'separator'            => 'after',
+				'selectors'            => [
+					'{{WRAPPER}} ' . $css_scheme['images'] => '{{VALUE}}',
+				],
+				'classes'              => 'elementor-control-align',
 			]
 		);
 
@@ -181,7 +210,7 @@ class Jet_Woo_Builder_Single_Images extends Jet_Woo_Builder_Base {
 				'size_units' => [ 'px', '%' ],
 				'range'      => [
 					'px' => [
-						'min' => 70,
+						'min' => 0,
 						'max' => 500,
 					],
 					'%'  => [
@@ -218,7 +247,6 @@ class Jet_Woo_Builder_Single_Images extends Jet_Woo_Builder_Base {
 						'icon'  => ! is_rtl() ? 'eicon-h-align-right' : 'eicon-h-align-left',
 					],
 				],
-				'separator' => 'after',
 				'condition' => [
 					'control_nav_direction' => 'vertical',
 				],
@@ -232,7 +260,6 @@ class Jet_Woo_Builder_Single_Images extends Jet_Woo_Builder_Base {
 				'type'      => Controls_Manager::CHOOSE,
 				'default'   => 'flex-start',
 				'options'   => jet_woo_builder_tools()->get_available_flex_h_align_types(),
-				'separator' => 'after',
 				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['thumbnails_wrapper'] => 'justify-content: {{VALUE}}',
 				],
@@ -278,6 +305,7 @@ class Jet_Woo_Builder_Single_Images extends Jet_Woo_Builder_Base {
 			[
 				'label'     => __( 'Background Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
+				'separator' => 'before',
 				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['thumbnails'] => 'background-color: {{VALUE}}',
 				],
@@ -290,10 +318,20 @@ class Jet_Woo_Builder_Single_Images extends Jet_Woo_Builder_Base {
 				'label'      => __( 'Padding', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ '%', 'px' ],
-				'separator'  => 'after',
 				'selectors'  => [
-					'{{WRAPPER}} ' . $css_scheme['thumbnails'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; margin:0!important;',
+					'{{WRAPPER}} ' . $css_scheme['thumbnails']                                          => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .jet-single-images-nav-horizontal' . $css_scheme['thumbnails_wrapper'] => 'margin-left: -{{LEFT}}{{UNIT}}; margin-right: -{{RIGHT}}{{UNIT}};',
+					'{{WRAPPER}} .jet-single-images-nav-vertical' . $css_scheme['thumbnails_wrapper']   => 'margin-top: -{{TOP}}{{UNIT}}; margin-bottom: -{{BOTTOM}}{{UNIT}};',
 				],
+			]
+		);
+
+		$this->add_control(
+			'heading_image_thumbnails_style',
+			[
+				'label'     => __( 'Image', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
 			]
 		);
 
@@ -328,7 +366,7 @@ class Jet_Woo_Builder_Single_Images extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'image_thumbnails_images_padding',
 			[
-				'label'      => __( 'Images Padding', 'jet-woo-builder' ),
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ '%', 'px' ],
 				'selectors'  => [
@@ -352,14 +390,14 @@ class Jet_Woo_Builder_Single_Images extends Jet_Woo_Builder_Base {
 			return;
 		}
 
-		if ( true === $this->__set_editor_product() ) {
+		if ( $this->__set_editor_product() ) {
 			$this->__open_wrap();
 
 			include $this->get_template( 'single-product/images.php' );
 
 			$this->__close_wrap();
 
-			if ( jet_woo_builder_integration()->in_elementor() ) {
+			if ( jet_woo_builder()->elementor_views->in_elementor() ) {
 				$this->__reset_editor_product();
 			}
 		}

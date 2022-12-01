@@ -1,6 +1,8 @@
 <?php
 /**
  * JetWooBuilder Single Rating widget template.
+ *
+ * This template can be overridden by copying it to yourtheme/jet-woo-builder/widgets/single-product/rating.php
  */
 
 global $product;
@@ -19,23 +21,33 @@ if ( ! $rating ) {
 	return;
 }
 
-$rating_count = $product->get_rating_count();
-$review_count = $product->get_review_count();
+$classes = [ 'woocommerce-product-rating' ];
+
+if ( $empty_rating && empty( $product->get_average_rating() ) ) {
+	$classes[] = 'empty';
+}
+
+$review_count   = $product->get_review_count();
+$single_caption = $settings['single_rating_reviews_link_caption_single'] ?? ' customer review';
+$plural_caption = $settings['single_rating_reviews_link_caption_plural'] ?? ' customer reviews';
+$before_caption = $settings['single_rating_reviews_link_before_caption'] ?? '(';
+$after_caption  = $settings['single_rating_reviews_link_after_caption'] ?? ')';
 
 $counter_html = sprintf(
-	_n( '(%s customer review)', '(%s customer reviews)', $review_count, 'jet-woo-builder' ),
-	'<span class="count">' . esc_attr( $review_count ) . '</span>'
+	esc_html( $before_caption ) . _n( '%s' . $single_caption, '%s' . $plural_caption, $review_count, 'jet-woo-builder' ) . esc_html( $after_caption ),
+	'<span class="count">' . $review_count . '</span>'
 );
 
 $counter = apply_filters( 'jet-woo-builder/jet-single-rating/rating-counter-label', $counter_html, $review_count );
+$url     = $settings['single_rating_reviews_link_url'] ?? '#reviews';
 ?>
 
-<div class="woocommerce-product-rating">
+<div class="<?php echo implode( ' ', $classes ); ?>">
 	<?php echo $rating; ?>
 
 	<?php if ( comments_open() ) : ?>
-		<a href="#reviews" class="woocommerce-review-link" rel="nofollow">
+		<a href="<?php echo esc_url( $url ) ?>" class="woocommerce-review-link" rel="nofollow">
 			<?php echo $counter; ?>
 		</a>
-	<?php endif ?>
+	<?php endif; ?>
 </div>

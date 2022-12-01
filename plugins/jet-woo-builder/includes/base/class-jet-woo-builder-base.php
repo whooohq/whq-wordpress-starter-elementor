@@ -15,6 +15,18 @@ abstract class Jet_Woo_Builder_Base extends Widget_Base {
 	public $__new_icon_prefix = 'selected_';
 
 	/**
+	 * Current product.
+	 *
+	 * Holder for current product instance.
+	 *
+	 * @since  1.0.0
+	 * @access private
+	 *
+	 * @var bool
+	 */
+	private $current_product = false;
+
+	/**
 	 * Returns JetWooBuilder help url
 	 *
 	 * @return false
@@ -76,6 +88,50 @@ abstract class Jet_Woo_Builder_Base extends Widget_Base {
 	}
 
 	/**
+	 * Set product.
+	 *
+	 * Set current product data.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 *
+	 * @param array $product_data Product data.
+	 *
+	 * @return void
+	 */
+	public function set_current_product( $product_data = [] ) {
+		$this->current_product = $product_data;
+	}
+
+	/**
+	 * Get product.
+	 *
+	 * Get current product data.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 *
+	 * @return array|bool
+	 */
+	public function get_current_product() {
+		return $this->current_product;
+	}
+
+	/**
+	 * Reset product.
+	 *
+	 * Reset current product data.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 *
+	 * @return false
+	 */
+	public function reset_current_product() {
+		return $this->current_product = false;
+	}
+
+	/**
 	 * Open standard wrapper
 	 *
 	 * @return void
@@ -100,14 +156,14 @@ abstract class Jet_Woo_Builder_Base extends Widget_Base {
 	 */
 	public function __set_editor_product() {
 
-		if ( ! jet_woo_builder_integration()->in_elementor() && ! wp_doing_ajax() ) {
+		if ( ! jet_woo_builder()->elementor_views->in_elementor() && ! wp_doing_ajax() ) {
 			return true;
 		}
 
 		global $post, $wp_query, $product;
 
 		$this->__temp_query   = $wp_query;
-		$this->__product_data = jet_woo_builder_integration()->get_current_product();
+		$this->__product_data = $this->get_current_product();
 
 		if ( $this->__product_data === true ) {
 			return true;
@@ -119,11 +175,9 @@ abstract class Jet_Woo_Builder_Base extends Widget_Base {
 			$product  = $this->__product_data['product'];
 
 			return true;
-
 		}
 
 		if ( 'product' === $post->post_type ) {
-
 			$product = wc_get_product( $post );
 
 			$this->__product_data = array(
@@ -132,10 +186,9 @@ abstract class Jet_Woo_Builder_Base extends Widget_Base {
 				'product' => $product,
 			);
 
-			jet_woo_builder_integration()->set_current_product( $this->__product_data );
+			$this->set_current_product( $this->__product_data );
 
 			return true;
-
 		}
 
 		$sample_product = get_post_meta( $post->ID, '_sample_product', true );
@@ -164,12 +217,12 @@ abstract class Jet_Woo_Builder_Base extends Widget_Base {
 				'product' => $product,
 			);
 
-			jet_woo_builder_integration()->set_current_product( $this->__product_data );
+			$this->set_current_product( $this->__product_data );
 
 			return true;
-
 		} else {
 			esc_html_e( 'Please add at least one product with "publish", "pending", "draft" or "future" status', 'jet-woo-builder' );
+
 			return false;
 		}
 

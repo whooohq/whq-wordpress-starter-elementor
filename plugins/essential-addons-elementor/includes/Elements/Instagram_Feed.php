@@ -142,6 +142,17 @@ class Instagram_Feed extends Widget_Base {
         );
 
         $this->add_control(
+            'eael_instafeed_caption_length',
+            [
+                'label'   => esc_html__('Max Caption Length', 'essential-addons-elementor'),
+                'type'    => Controls_Manager::NUMBER,
+                'min' => 1,
+                'max' => 2000,
+			    'default' => 60,
+            ]
+        );
+
+        $this->add_control(
             'eael_instafeed_force_square',
             [
                 'label'        => esc_html__('Force Square Image?', 'essential-addons-elementor'),
@@ -730,6 +741,7 @@ class Instagram_Feed extends Widget_Base {
 				    'eael_instafeed_access_token'       => $settings['eael_instafeed_access_token'],
 				    'eael_instafeed_data_cache_limit'   => $settings['eael_instafeed_data_cache_limit'],
 				    'eael_instafeed_image_count'        => $settings['eael_instafeed_image_count'],
+				    'eael_instafeed_caption_length'        => ! empty( $settings['eael_instafeed_caption_length'] ) ? $settings['eael_instafeed_caption_length'] : 60,
 				    'eael_instafeed_sort_by'            => $settings['eael_instafeed_sort_by'],
 				    'eael_instafeed_link'               => $settings['eael_instafeed_link'],
 				    'eael_instafeed_link_target'        => $settings['eael_instafeed_link_target'],

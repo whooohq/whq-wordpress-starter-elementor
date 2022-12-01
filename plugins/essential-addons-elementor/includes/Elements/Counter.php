@@ -379,6 +379,10 @@ class Counter extends Widget_Base {
                         'step'  => 1,
                     ],
                 ],
+                'default'               => [
+                        'unit' => 'px',
+                        'size' => 40,
+                ],
                 'size_units'            => [ 'px', 'em' ],
                 'selectors'             => [
                     '{{WRAPPER}} .eael-counter-icon' => 'font-size: {{SIZE}}{{UNIT}}',

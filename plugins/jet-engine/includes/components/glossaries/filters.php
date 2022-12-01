@@ -125,8 +125,28 @@ class Filters {
 					'_filter_type' => array( 'checkboxes', 'select', 'radio' ),
 					'_data_source' => 'glossary',
 				),
-			),
-			'_glossary_notice' => array(
+			)
+		);
+
+		if ( jet_smart_filters()->get_version() >= '3.0.0' && ! jet_smart_filters()->is_classic_admin ) {
+			$insert['_glossary_notice'] = array(
+				'title'      => __( 'Coming soon', 'jet-smart-filters' ),
+				'type'       => 'html',
+				'fullwidth'  => true,
+				'html'       => __( 'Support for the Visual filter will be added with future updates', 'jet-smart-filters' ),
+				'conditions' => array(
+					'_filter_type' => 'color-image',
+					'_data_source' => 'glossary',
+				)
+			);
+
+			$fields = jet_smart_filters()->utils->add_control_condition( $fields, '_color_image_type', '_glossary_notice!', 'is_visible' );
+			$fields = jet_smart_filters()->utils->add_control_condition( $fields, '_color_image_behavior', '_glossary_notice!', 'is_visible' );
+			$fields = jet_smart_filters()->utils->add_control_condition( $fields, '_source_color_image_input', '_glossary_notice!', 'is_visible' );
+			$fields = jet_smart_filters()->utils->add_control_condition( $fields, '_is_custom_checkbox', '_glossary_notice!', 'is_visible' );
+			$fields = jet_smart_filters()->utils->add_control_condition( $fields, '_query_var', '_glossary_notice!', 'is_visible' );
+		} else {
+			$insert['_glossary_notice'] = array(
 				'title'       => __( 'Coming soon', 'jet-engine' ),
 				'type'        => 'text',
 				'input_type'  => 'hidden',
@@ -134,13 +154,15 @@ class Filters {
 				'description' => __( 'Support for the Visual filter will be added with future updates', 'jet-engine' ),
 				'class'       => 'cx-control',
 				'conditions'  => array(
+					'_filter_type' => 'color-image',
 					'_data_source' => 'glossary',
-					'_filter_type' => array( 'color-image' ),
 				),
-			),
-		);
+			);
+		}
 
-		return $this->insert_after( $fields, '_source_post_type', $insert );
+		$fields = $this->insert_after( $fields, '_source_post_type', $insert );
+
+		return $fields;
 	}
 
 	public function register_source( $sources = array() ) {

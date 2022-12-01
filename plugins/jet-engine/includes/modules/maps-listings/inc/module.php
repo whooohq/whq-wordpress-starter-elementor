@@ -78,6 +78,11 @@ class Module {
 			new Compatibility\Borlabs_Cookie();
 		}
 
+		if ( function_exists( 'jet_form_builder' ) ) {
+			require jet_engine()->modules->modules_path( 'maps-listings/inc/compatibility/jet-form-builder.php' );
+			new Compatibility\Jet_Form_Builder();
+		}
+
 		$provider = $this->providers->get_active_map_provider();
 		$provider->public_init();
 

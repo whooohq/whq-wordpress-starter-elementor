@@ -40,25 +40,18 @@ class Jet_Woo_Builder_Archive_Document_Category extends Jet_Woo_Builder_Document
 		$this->add_control(
 			'use_custom_template_category_columns',
 			[
-				'label'        => esc_html__( 'Use custom columns count', 'jet-woo-builder' ),
-				'type'         => Controls_Manager::SWITCHER,
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => '',
+				'label' => __( 'Enable Custom Columns Count', 'jet-woo-builder' ),
+				'type'  => Controls_Manager::SWITCHER,
 			]
 		);
 
 		$this->add_control(
 			'equal_columns_height',
 			[
-				'label'        => esc_html__( 'Equal columns height', 'jet-woo-builder' ),
-				'type'         => Controls_Manager::SWITCHER,
-				'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-				'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-				'return_value' => 'yes',
-				'default'      => '',
-				'condition'    => [
+				'label'       => __( 'Enable Equal Columns Height', 'jet-woo-builder' ),
+				'type'        => Controls_Manager::SWITCHER,
+				'description' => __( 'Fits only top level sections of grid item.', 'jet-woo-builder' ),
+				'condition'   => [
 					'use_custom_template_category_columns' => 'yes',
 				],
 			]
@@ -67,11 +60,9 @@ class Jet_Woo_Builder_Archive_Document_Category extends Jet_Woo_Builder_Document
 		$this->add_responsive_control(
 			'template_category_columns_count',
 			[
-				'label'              => esc_html__( 'Template Columns', 'jet-woo-builder' ),
+				'label'              => __( 'Template Columns', 'jet-woo-builder' ),
 				'type'               => Controls_Manager::SELECT,
-				'desktop_default'    => 4,
-				'tablet_default'     => 2,
-				'mobile_default'     => 1,
+				'default'            => 4,
 				'options'            => $columns,
 				'frontend_available' => true,
 				'selectors'          => [
@@ -132,6 +123,25 @@ class Jet_Woo_Builder_Archive_Document_Category extends Jet_Woo_Builder_Document
 				],
 				'condition'          => [
 					'use_custom_template_category_columns' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'archive_link',
+			[
+				'label' => __( 'Make Archive Item Clickable', 'jet-woo-builder' ),
+				'type'  => Controls_Manager::SWITCHER,
+			]
+		);
+
+		$this->add_control(
+			'archive_link_open_in_new_window',
+			[
+				'label'     => __( 'Open in New Window', 'jet-engine' ),
+				'type'      => Controls_Manager::SWITCHER,
+				'condition' => [
+					'archive_link!' => '',
 				],
 			]
 		);

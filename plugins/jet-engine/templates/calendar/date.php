@@ -23,42 +23,46 @@
 
 					$this->maybe_set_listing( $settings['lisitng_id'] );
 					$content = jet_engine()->frontend->get_listing_item( $post );
+					$item_id = jet_engine()->listings->data->get_current_object_id( $post );
 
 					$result = sprintf(
 						'<div class="jet-calendar-week__day-event jet-listing-dynamic-post-%2$s" data-post-id="%2$s">%1$s</div>',
 						$content,
-						$post->ID
+						$item_id
 					);
 
 					echo $result;
 
-					if ( isset( $this->posts_cache[ $post->ID ] ) ) {
-						$this->posts_cache[ $post->ID ] = $result;
+					if ( isset( $this->posts_cache[ $item_id ] ) ) {
+						$this->posts_cache[ $item_id ] = $result;
 					}
 
 				}
 			}
 
 			if ( ! empty( $current_multiday_events ) ) {
-				foreach ( $current_multiday_events as $post_id ) {
+
+				foreach ( $current_multiday_events as $post ) {
+
+					$post_id = jet_engine()->listings->data->get_current_object_id( $post );
+
 					if ( ! empty( $this->posts_cache[ $post_id ] ) ) {
 						echo $this->posts_cache[ $post_id ];
 					} else {
-
-						$post = get_post( $post_id );
-
+						
 						if ( $post ) {
+							
 							$this->maybe_set_listing( $settings['lisitng_id'] );
 							$content = jet_engine()->frontend->get_listing_item( $post );
 
 							$result = sprintf(
 								'<div class="jet-calendar-week__day-event jet-listing-dynamic-post-%2$s" data-post-id="%2$s">%1$s</div>',
 								$content,
-								$post->ID
+								$post_id
 							);
 
 							echo $result;
-							$this->posts_cache[ $post->ID ] = $result;
+							$this->posts_cache[ $post_id ] = $result;
 						}
 
 

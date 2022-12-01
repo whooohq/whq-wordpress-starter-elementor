@@ -1,0 +1,18 @@
+.jet-tooltip-widget {
+
+	&__content {
+		display: none;
+	}
+
+	[data-tippy-root] {
+		.tippy-svg-arrow {
+			display: flex;
+			svg {
+				fill: currentColor;
+				width: 15px;
+				height: auto;
+			}
+		}
+	}
+}
+

@@ -5,6 +5,8 @@ use Jet_Engine\Query_Builder\Manager;
 
 class SQL_Query extends Base_Query {
 
+	private $preview_id;
+
 	/**
 	 * Qery type ID
 	 */
@@ -72,9 +74,33 @@ class SQL_Query extends Base_Query {
 		}
 
 		return apply_filters( 'jet-engine/query-builder/types/sql-query/data', array(
-			'tables'  => $tables_list,
-			'columns' => $columns_list,
+			'tables'       => $tables_list,
+			'columns'      => $columns_list,
+			'cast_objects' => $this->get_cast_objects()
 		) );
+
+	}
+
+	public function get_cast_objects() {
+		
+		$objects = apply_filters( 'jet-engine/query-builder/types/sql-query/cast-objects', array(
+			''           => __( 'Keep stdClass', 'jet-engine' ),
+			'WP_Post'    => __( 'Post', 'jet-engine' ),
+			'WP_User'    => __( 'User', 'jet-engine' ),
+			'WP_Term'    => __( 'Taxonomy Term', 'jet-engine' ),
+			'WP_Comment' => __( 'Comment', 'jet-engine' ),
+		) );
+
+		$result = array();
+
+		foreach ( $objects as $value => $label ) {
+			$result[] = array(
+				'value' => $value,
+				'label' => $label,
+			);
+		}
+
+		return $result;
 
 	}
 
@@ -111,6 +137,10 @@ class SQL_Query extends Base_Query {
 				'__dynamic_' . $this->get_id() => array(),
 			),
 		) );
+
+		if ( $this->preview_id ) {
+			jet_engine()->listings->data->set_current_object( get_post( $this->preview_id ) );
+		}
 
 		$query = $factory->get_query();
 
@@ -182,6 +212,7 @@ class SQL_Query extends Base_Query {
 	public function update_fields_list_for_query( $request ) {
 
 		if ( ! empty( $request['args']['query_type'] ) && $this->get_id() === $request['args']['query_type'] ) {
+			$this->preview_id = ! empty( $request['args']['preview_page'] ) ? absint( $request['args']['preview_page'] ) : false;
 			$request['args']['sql']['default_columns'] = $this->get_default_columns( $request['args']['sql'] );
 		}
 

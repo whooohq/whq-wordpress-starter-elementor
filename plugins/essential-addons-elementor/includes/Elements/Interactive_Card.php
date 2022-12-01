@@ -332,7 +332,7 @@ class Interactive_Card extends Widget_Base
 				'type' => \Elementor\Controls_Manager::ICONS,
 				'default' => [
 					'value' => 'fas fa-arrow-circle-right',
-					'library' => 'solid',
+					'library' => 'fa-solid',
 				],
 				'condition'	=> [
 					'eael_interactive_card_is_show_front_panel_btn_icon'	=> 'yes'
@@ -571,7 +571,7 @@ class Interactive_Card extends Widget_Base
 				'type' => \Elementor\Controls_Manager::ICONS,
 				'default' => [
 					'value' => 'fas fa-arrow-circle-left',
-					'library' => 'solid',
+					'library' => 'fa-solid',
 				],
 				'condition'	=> [
 					'eael_interactive_card_is_show_rear_panel_btn_icon'	=> 'yes'
@@ -1511,8 +1511,8 @@ class Interactive_Card extends Widget_Base
 				'type' => Controls_Manager::COLOR,
 				'default' => '#fff',
 				'selectors' => [
-					'{{WRAPPER}} .interactive-card .interactive-btn i' => 'color: {{VALUE}};',
-					'{{WRAPPER}} .interactive-card .interactive-btn svg' => 'fill: {{VALUE}};',
+					'{{WRAPPER}} .interactive-card .interactive-btn .front-btn-icon i' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .interactive-card .interactive-btn .front-btn-icon svg' => 'fill: {{VALUE}};',
 				],
 				'condition' => [
 					'eael_interactive_card_is_show_rear_panel_btn_icon' => 'yes',
@@ -1601,8 +1601,8 @@ class Interactive_Card extends Widget_Base
 				'type' => Controls_Manager::COLOR,
 				'default' => '#fff',
 				'selectors' => [
-					'{{WRAPPER}} .interactive-card .interactive-btn:hover i' => 'color: {{VALUE}};',
-					'{{WRAPPER}} .interactive-card .interactive-btn:hover svg' => 'fill: {{VALUE}};',
+					'{{WRAPPER}} .interactive-card .interactive-btn:hover .front-btn-icon i' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .interactive-card .interactive-btn:hover .front-btn-icon svg' => 'fill: {{VALUE}};',
 				],
 				'condition' => [
 					'eael_interactive_card_is_show_front_panel_btn_icon' => 'yes',
@@ -1770,8 +1770,8 @@ class Interactive_Card extends Widget_Base
 				'type' => Controls_Manager::COLOR,
 				'default' => '#fff',
 				'selectors' => [
-					'{{WRAPPER}} .interactive-card .interactive-btn i' => 'color: {{VALUE}};',
-					'{{WRAPPER}} .interactive-card .interactive-btn svg' => 'fill: {{VALUE}};',
+					'{{WRAPPER}} .interactive-card .interactive-btn .rear-btn-icon i' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .interactive-card .interactive-btn .rear-btn-icon svg' => 'fill: {{VALUE}};',
 				],
 				'condition' => [
 					'eael_interactive_card_is_show_rear_panel_btn_icon' => 'yes',
@@ -1839,8 +1839,8 @@ class Interactive_Card extends Widget_Base
 				'type' => Controls_Manager::COLOR,
 				'default' => '#fff',
 				'selectors' => [
-					'{{WRAPPER}} .interactive-card .interactive-btn:hover i' => 'color: {{VALUE}};',
-					'{{WRAPPER}} .interactive-card .interactive-btn:hover svg' => 'fill: {{VALUE}};',
+					'{{WRAPPER}} .interactive-card .interactive-btn:hover .rear-btn-icon i' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .interactive-card .interactive-btn:hover .rear-btn-icon svg' => 'fill: {{VALUE}};',
 				],
 				'condition' => [
 					'eael_interactive_card_is_show_rear_panel_btn_icon' => 'yes',
@@ -1908,7 +1908,8 @@ class Interactive_Card extends Widget_Base
 				'type' => Controls_Manager::COLOR,
 				'default' => '#333',
 				'selectors' => [
-					'{{WRAPPER}} .interactive-card .close-me' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .interactive-card .close-me' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .interactive-card .close-me svg' => 'fill: {{VALUE}};',
 				],
 			]
 		);
@@ -1951,7 +1952,8 @@ class Interactive_Card extends Widget_Base
 				'label' => esc_html__('Icon Font Size', 'essential-addons-elementor'),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
-					'size' => 13
+                        'unit' => 'px',
+				    	'size' => 13
 				],
 				'range' => [
 					'px' => [
@@ -1959,7 +1961,8 @@ class Interactive_Card extends Widget_Base
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .interactive-card .close-me' => 'font-size: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .interactive-card .close-me' => 'font-size: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .interactive-card .close-me svg' => 'height: {{SIZE}}{{UNIT}};width: {{SIZE}}{{UNIT}};line-height: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}} .interactive-card .close-me .eael-interactive-card-svg-icon' => 'width: {{SIZE}}{{UNIT}};',
 				],
 			]
@@ -2039,12 +2042,12 @@ class Interactive_Card extends Widget_Base
 
 		if (isset($settings['__fa4_migrated']['eael_interactive_card_close_button_icon_new']) || empty($settings['eael_interactive_card_close_button_icon'])) {
 			if (isset($settings['eael_interactive_card_close_button_icon_new']['value']['url'])) {
-				$icon = $settings['eael_interactive_card_close_button_icon_new']['value'];
+				$icon = Helper::get_render_icon($settings['eael_interactive_card_close_button_icon_new']);
 			} else {
-				$icon = $settings['eael_interactive_card_close_button_icon_new']['value'];
+				$icon = Helper::get_render_icon($settings['eael_interactive_card_close_button_icon_new']);
 			}
 		} else {
-			$icon = $settings['eael_interactive_card_close_button_icon'];
+			$icon = '<i class="'.$settings['eael_interactive_card_close_button_icon'].'"></i>';
 		}
 
 		// Youtube FullScreen
@@ -2123,9 +2126,9 @@ class Interactive_Card extends Widget_Base
 				<span class="close close-me">
 					<?php if (is_array($icon) && isset($icon['url'])) : ?>
 						<img src="<?php echo esc_url($icon['url']); ?>" class="eael-interactive-card-svg-icon" alt="<?php echo esc_attr(get_post_meta($icon['id'], '_wp_attachment_image_alt', true)); ?>" />
-					<?php else : ?>
-						<i class="<?php echo $icon; ?>"></i>
-					<?php endif; ?>
+					<?php else :
+                            echo $icon;
+                        endif; ?>
 				</span>
 				<?php if ('img-grid' === $settings['eael_interactive_card_type']) : ?>
 					<div class="content-inner">

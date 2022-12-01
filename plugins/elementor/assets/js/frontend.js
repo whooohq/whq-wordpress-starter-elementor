@@ -1,4 +1,4 @@
-/*! elementor - v3.6.8 - 27-07-2022 */
+/*! elementor - v3.8.1 - 13-11-2022 */
 (self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["frontend"],{
 
 /***/ "../assets/dev/js/frontend/documents-manager.js":
@@ -224,7 +224,7 @@ module.exports = function ($) {
   };
 
   this.getHandlers = function (handlerName) {
-    elementorCommon.helpers.softDeprecated('getHandlers', '3.1.0', 'elementorFrontend.elementsHandler.getHandler');
+    elementorDevTools.deprecation.deprecated('getHandlers', '3.1.0', 'elementorFrontend.elementsHandler.getHandler');
 
     if (handlerName) {
       return this.getHandler(handlerName);
@@ -321,7 +321,7 @@ class Frontend extends elementorModules.ViewModule {
     this.config.legacyMode = {
       get elementWrappers() {
         if (elementorFrontend.isEditMode()) {
-          elementorCommon.helpers.hardDeprecated('elementorFrontend.config.legacyMode.elementWrappers', '3.1.0', 'elementorFrontend.config.experimentalFeatures.e_dom_optimization');
+          window.top.elementorDevTools.deprecation.deprecated('elementorFrontend.config.legacyMode.elementWrappers', '3.1.0', 'elementorFrontend.config.experimentalFeatures.e_dom_optimization');
         }
 
         return !elementorFrontend.config.experimentalFeatures.e_dom_optimization;
@@ -334,7 +334,7 @@ class Frontend extends elementorModules.ViewModule {
 
   get Module() {
     if (this.isEditMode()) {
-      parent.elementorCommon.helpers.hardDeprecated('elementorFrontend.Module', '2.5.0', 'elementorModules.frontend.handlers.Base');
+      parent.elementorDevTools.deprecation.deprecated('elementorFrontend.Module', '2.5.0', 'elementorModules.frontend.handlers.Base');
     }
 
     return elementorModules.frontend.handlers.Base;
@@ -390,7 +390,7 @@ class Frontend extends elementorModules.ViewModule {
 
   getGeneralSettings(settingName) {
     if (this.isEditMode()) {
-      parent.elementorCommon.helpers.softDeprecated('getGeneralSettings', '3.0.0', 'getKitSettings and remove the `elementor_` prefix');
+      parent.elementorDevTools.deprecation.deprecated('getGeneralSettings', '3.0.0', 'getKitSettings and remove the `elementor_` prefix');
     }
 
     return this.getKitSettings(`elementor_${settingName}`);
@@ -486,7 +486,8 @@ class Frontend extends elementorModules.ViewModule {
       swiper: _swiper.default,
       environment: _environment.default,
       assetsLoader: new _assetsLoader.default(),
-      escapeHTML: _utils.escapeHTML
+      escapeHTML: _utils.escapeHTML,
+      events: _events.default
     }; // TODO: BC since 2.4.0
 
     this.modules = {
@@ -1676,7 +1677,7 @@ module.exports = elementorModules.ViewModule.extend({
     }
 
     event.preventDefault();
-    scrollTop = elementorFrontend.hooks.applyFilters('frontend/handlers/menu_anchor/scroll_top_distance', scrollTop); // on scroll animation start: remove scroll-snap.
+    scrollTop = elementorFrontend.hooks.applyFilters('frontend/handlers/menu_anchor/scroll_top_distance', scrollTop); // On scroll animation start: remove scroll-snap.
 
     if ((0, _utils.isScrollSnapActive)()) {
       elementorFrontend.elements.$body.css('scroll-snap-type', 'none');
@@ -1685,7 +1686,7 @@ module.exports = elementorModules.ViewModule.extend({
     this.elements.$scrollable.animate({
       scrollTop
     }, this.getSettings('scrollDuration'), 'linear', () => {
-      // on scroll animation complete: add scroll-snap back.
+      // On scroll animation complete: add scroll-snap back.
       if ((0, _utils.isScrollSnapActive)()) {
         elementorFrontend.elements.$body.css('scroll-snap-type', '');
       }
@@ -2740,7 +2741,7 @@ var EventManager = function () {
 
 
   function
-    /* action, arg1, arg2, ... */
+    /* Action, arg1, arg2, ... */
   doAction() {
     var args = slice.call(arguments);
     var action = args.shift();
@@ -2792,7 +2793,7 @@ var EventManager = function () {
 
 
   function
-    /* filter, filtered arg, arg2, ... */
+    /* Filter, filtered arg, arg2, ... */
   applyFilters() {
     var args = slice.call(arguments);
     var filter = args.shift();
@@ -2830,7 +2831,7 @@ var EventManager = function () {
     removeAction,
     doAction,
     addAction
-  }; // return all of the publicly available methods
+  }; // Return all of the publicly available methods
 
   return MethodsAvailable;
 };
@@ -2868,7 +2869,7 @@ isSafari = /^((?!chrome|android).)*safari/i.test(userAgent) || /constructor/i.te
 })(!window.safari || typeof safari !== 'undefined' && safari.pushNotification),
       // Internet Explorer 6-11
 isIE = /Trident|MSIE/.test(userAgent) && (
-/*@cc_on!@*/
+/* @cc_on!@*/
  false || !!document.documentMode),
       // Edge 20+
 isEdge = !isIE && !!window.StyleMedia || matchUserAgent('Edg'),

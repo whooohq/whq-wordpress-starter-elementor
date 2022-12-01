@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: Ele Custom Skin
- * Version: 3.1.5
+ * Version: 3.1.7
  * Description: Elementor Custom Skin for Posts and Archive Posts. You can create a skin as you want.
  * Plugin URI: https://dudaster.com
  * Author: Dudaster.com
@@ -10,8 +10,8 @@
  * Domain Path: /languages
  * License: GPLv3
  * License URI: http://www.gnu.org/licenses/gpl-3.0
- * Elementor tested up to: 3.7.0
- * Elementor Pro tested up to: 3.7.0
+ * Elementor tested up to: 3.8.0
+ * Elementor Pro tested up to: 3.8.0
 */
 
 
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 define( 'ELECS_DIR', plugin_dir_path( __FILE__ ));
 define( 'ELECS_NAME', plugin_basename( __FILE__ ));
 define( 'ELECS_URL', plugin_dir_url( __FILE__ ));
-define ('ELECS_VER','3.1.5');
+define ('ELECS_VER','3.1.7');
 
 include_once ELECS_DIR.'includes/ecs-notices.php';
 include_once ELECS_DIR.'includes/ecs-dependencies.php';
@@ -40,7 +40,7 @@ if (ecs_dependencies()) {
 
   }
 
-  add_action('elementor/widgets/widgets_registered','elecs_add_skins');
+  add_action('elementor/widgets/register','elecs_add_skins');
   function elecs_add_skins(){
     require_once ELECS_DIR.'skins/skin-custom.php';
   }

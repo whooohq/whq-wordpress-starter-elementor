@@ -58,7 +58,7 @@
 				<cx-vui-component-wrapper
 					v-if="'meta_clause' === query.orderby && ! metaClauses.length"
 					label="<?php _e( 'Warning', 'jet-engine' ); ?>"
-					description="<?php _e( 'You not created any meta clauses yet. You can do this at the Meta Query tab. Note that Clause name option is required for the meta query if you want to use it for ordering', 'jet-engine' ); ?>"
+					description="<?php _e( 'You have not created any meta clauses yet. You can do this at the Meta Query tab. Note that Clause name option is required for the meta query if you want to use it for ordering', 'jet-engine' ); ?>"
 					:wrapper-css="[ 'equalwidth' ]"
 				></cx-vui-component-wrapper>
 				<cx-vui-select

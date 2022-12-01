@@ -134,6 +134,16 @@ class Manager extends \Jet_Engine_Base_WP_Intance {
 
 		}
 
+		do_action( 'jet-engine/custom-content-types/after-register-instances', $this );
+
+	}
+
+	/**
+	 * Returns all post ypes with related CCTs
+	 * @return [type] [description]
+	 */
+	public function get_post_types_map() {
+		return $this->_post_types_map;
 	}
 
 	public function register_instance( $slug, $instance ) {

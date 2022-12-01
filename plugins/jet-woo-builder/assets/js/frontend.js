@@ -452,7 +452,7 @@
 
 				defaultOptions.breakpoints[ eBreakpoints[ breakpointName ].value ] = {
 					slidesPerView: bpSlidesToShow + bpSlideOverflow,
-					slidesPerGroup: +settings[ 'slides_to_scroll_' + breakpointName ] || 1,
+					slidesPerGroup: +settings[ 'slides_to_scroll_' + breakpointName ] || options.slidesPerGroup,
 					spaceBetween: undefined !== settings['space_between_slides_' + breakpointName] ? +settings['space_between_slides_' + breakpointName] : spaceBetween
 				};
 
@@ -463,7 +463,8 @@
 			if ( options.paginationEnable ) {
 				defaultOptions.pagination = {
 					el: '.swiper-pagination',
-					clickable: true
+					clickable: true,
+					dynamicBullets: options.dynamicBullets
 				}
 			}
 
@@ -479,7 +480,13 @@
 			if ( slidesCount > currentDeviceSlidePerView ) {
 				const Swiper = elementorFrontend.utils.swiper;
 
-				new Swiper( $target, $.extend( {}, defaultOptions, options ) );
+				new Swiper( $target, $.extend( {}, defaultOptions, options ) ).then( swiper => {
+					$( document ).trigger( 'jet-woo-builder-swiper-initialized', swiper );
+
+					if ( 'vertical' === options.direction && options.paginationEnable && options.dynamicBullets ) {
+						$target.find( '.swiper-pagination' ).css( 'width', $target.find( '.swiper-pagination-bullet-active' ).width() );
+					}
+				} );
 
 				$target.find( '.jet-arrow' ).show();
 			} else if ( options.direction === 'vertical' ) {
@@ -540,7 +547,9 @@
 
 		singleProductAjaxAddToCart: function( event ) {
 
-			event.preventDefault();
+			if ( event ) {
+				event.preventDefault();
+			}
 
 			let $form = $( this ).closest('form');
 
@@ -566,22 +575,24 @@
 				},
 				success: function ( response ) {
 
+					if ( ! response ) {
+						return;
+					}
+
 					if ( response.error && response.product_url ) {
 						window.location = response.product_url;
 
 						return;
 					}
 
-					setTimeout( function () {
-						$thisBtn.removeClass( 'added' );
-					}, 1000 );
+					if ( 'undefined' === typeof wc_add_to_cart_params ) {
+						return;
+					}
 
 					$( document.body ).trigger( 'wc_fragment_refresh' );
 					$( document.body ).trigger( 'added_to_cart', [ response.fragments, response.cart_hash, $thisBtn ] );
 
-					if ( typeof wc_add_to_cart_params === 'undefined' ) {
-						return false;
-					}
+					$( '.woocommerce-notices-wrapper' ).html( response.fragments.notices_html );
 
 				},
 			} );
@@ -707,5 +718,7 @@
 	$( window ).on( 'elementor/frontend/init', JetWooBuilder.init );
 
 	JetWooBuilder.commonInit();
+
+	window.JetWooBuilder = JetWooBuilder;
 
 }( jQuery, window.elementorFrontend ) );

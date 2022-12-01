@@ -74,7 +74,7 @@ if ( ! class_exists( 'CX_Control_Wysiwyg' ) ) {
 				$editor_id .= $this->get_rand_str();
 
 				if ( '' !== $this->settings['label'] ) {
-					$html .= '<label class="cx-label" for="' . esc_attr( $editor_id )  .'">' . $this->settings['label'] . '</label>';
+					$html .= '<label class="cx-label" for="' . esc_attr( $editor_id )  .'">' . wp_kses_post( $this->settings['label'] ) . '</label>';
 				}
 
 				$html .= sprintf( '<textarea id="%1$s" class="cx-ui-wysiwyg wp-editor-area" name="%2$s" rows="%3$s">%4$s</textarea>',

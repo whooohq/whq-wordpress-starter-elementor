@@ -21,7 +21,7 @@ class Jet_Woo_Builder_Single_Content extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Single Content', 'jet-woo-builder' );
+		return __( 'Single Content', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
@@ -55,22 +55,10 @@ class Jet_Woo_Builder_Single_Content extends Jet_Woo_Builder_Base {
 
 		$this->start_controls_section(
 			'section_single_content_style',
-			array(
-				'label' => esc_html__( 'General', 'jet-woo-builder' ),
+			[
+				'label' => __( 'Style', 'jet-woo-builder' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
-			)
-		);
-
-		$this->add_control(
-			'single_content_text_color',
-			array(
-				'label'     => esc_html__( 'Text Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'default'   => '',
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['content_wrapper'] => 'color: {{VALUE}};',
-				),
-			)
+			]
 		);
 
 		$this->add_group_control(
@@ -79,6 +67,17 @@ class Jet_Woo_Builder_Single_Content extends Jet_Woo_Builder_Base {
 				'name'     => 'typography',
 				'selector' => '{{WRAPPER}} ' . $css_scheme['content_wrapper'],
 			)
+		);
+
+		$this->add_control(
+			'single_content_text_color',
+			[
+				'label'     => __( 'Text Color', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['content_wrapper'] => 'color: {{VALUE}};',
+				],
+			]
 		);
 
 		$this->add_responsive_control(
@@ -99,14 +98,14 @@ class Jet_Woo_Builder_Single_Content extends Jet_Woo_Builder_Base {
 	}
 
 	protected function render() {
-		if ( true === $this->__set_editor_product() ) {
+		if ( $this->__set_editor_product() ) {
 			$this->__open_wrap();
 
 			include $this->get_template( 'single-product/content.php' );
 
 			$this->__close_wrap();
 
-			if ( jet_woo_builder_integration()->in_elementor() ) {
+			if ( jet_woo_builder()->elementor_views->in_elementor() ) {
 				$this->__reset_editor_product();
 			}
 		}

@@ -3,7 +3,7 @@
  * Plugin Name: JetWooBuilder For Elementor
  * Plugin URI:  https://crocoblock.com/plugins/jetwoobuilder/
  * Description: Your perfect asset in creating WooCommerce page templates using loads of special widgets & stylish page layouts
- * Version:     1.12.4
+ * Version:     2.1.0
  * Author:      Crocoblock
  * Author URI:  https://crocoblock.com/
  * Text Domain: jet-woo-builder
@@ -11,11 +11,11 @@
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path: /languages
  *
- * WC tested up to: 6.2
+ * WC tested up to: 7.1
  * WC requires at least: 3.0
  *
- * Elementor tested up to: 3.5
- * Elementor Pro tested up to: 3.6
+ * Elementor tested up to: 3.8
+ * Elementor Pro tested up to: 3.8
  */
 
 // If this file is called directly, abort.
@@ -45,7 +45,7 @@ if ( ! class_exists( 'Jet_Woo_Builder' ) ) {
 		 *
 		 * @var string
 		 */
-		private $version = '1.12.4';
+		private $version = '2.1.0';
 
 		/**
 		 * Require Elementor Version
@@ -104,11 +104,26 @@ if ( ! class_exists( 'Jet_Woo_Builder' ) ) {
 		public $export_import;
 
 		/**
+		 * @var Jet_Woo_Builder_Components
+		 */
+		public $components;
+
+		/**
+		 * @var Jet_Woo_Builder_Dynamic_Tags_Manager
+		 */
+		public $dynamic_tags;
+
+		/**
+		 * @var Jet_Woo_Builder_Compatibility
+		 */
+		public $compatibility;
+
+		/**
 		 * Sets up needed actions/filters for the plugin to initialize.
 		 *
-		 * @return void
 		 * @since  1.0.0
 		 * @access public
+		 * @return void
 		 */
 		public function __construct() {
 
@@ -165,7 +180,7 @@ if ( ! class_exists( 'Jet_Woo_Builder' ) ) {
 					$this->plugin_path( 'includes/modules/admin-bar/jet-admin-bar.php' ),
 				)
 			);
-			
+
 		}
 
 		/**
@@ -185,20 +200,18 @@ if ( ! class_exists( 'Jet_Woo_Builder' ) ) {
 				$this->load_files();
 
 				jet_woo_builder_assets()->init();
-				jet_woo_builder_integration()->init();
-				jet_woo_builder_integration_woocommerce()->init();
 				jet_woo_builder_post_type()->init();
 				jet_woo_builder_settings()->init();
 				jet_woo_builder_shortcodes()->init();
 				jet_woo_builder_shop_settings()->init();
-				jet_woo_builder_compatibility()->init();
-				jet_woo_builder_elementor_views()->init();
 
 				$this->documents     = new Jet_Woo_Builder_Documents();
 				$this->parser        = new Jet_Woo_Builder_Parser();
 				$this->macros        = new Jet_Woo_Builder_Macros();
 				$this->ajax_handlers = new Jet_Woo_Builder_Ajax_Handlers();
 				$this->export_import = new Jet_Woo_Builder_Export_Import();
+				$this->components    = new Jet_Woo_Builder_Components();
+				$this->compatibility = new Jet_Woo_Builder_Compatibility();
 				$this->admin_bar     = Jet_Admin_Bar::get_instance();
 
 				if ( is_admin() ) {
@@ -403,22 +416,17 @@ if ( ! class_exists( 'Jet_Woo_Builder' ) ) {
 			require $this->plugin_path( 'includes/class-jet-woo-builder-parser.php' );
 			require $this->plugin_path( 'includes/class-jet-woo-builder-macros.php' );
 			require $this->plugin_path( 'includes/class-jet-woo-builder-common-controls.php' );
-			require $this->plugin_path( 'includes/export-import.php' );
-
-			require $this->plugin_path( 'includes/components/elementor-views/manager.php' );
-			require $this->plugin_path( 'includes/components/wc-pages/manager.php' );
-
-			require $this->plugin_path( 'includes/integrations/base/class-jet-woo-builder-integration.php' );
-			require $this->plugin_path( 'includes/integrations/base/class-jet-woo-builder-integration-woocommerce.php' );
-
 			require $this->plugin_path( 'includes/class-jet-woo-builder-template-functions.php' );
 			require $this->plugin_path( 'includes/class-jet-woo-builder-shortcodes.php' );
+			require $this->plugin_path( 'includes/export-import.php' );
+
+			require $this->plugin_path( 'includes/compatibility/manager.php' );
+
+			require $this->plugin_path( 'includes/components/manager.php' );
 
 			require $this->plugin_path( 'includes/settings/manager.php' );
 			require $this->plugin_path( 'includes/settings/class-jet-woo-builder-settings.php' );
 			require $this->plugin_path( 'includes/settings/class-jet-woo-builder-shop-settings.php' );
-
-			require $this->plugin_path( 'includes/lib/compatibility/class-jet-woo-builder-compatibility.php' );
 
 			require $this->plugin_path( 'includes/rest-api/rest-api.php' );
 			require $this->plugin_path( 'includes/rest-api/endpoints/base.php' );
@@ -522,19 +530,19 @@ if ( ! class_exists( 'Jet_Woo_Builder' ) ) {
 		}
 
 		/**
-		 * Do some stuff on plugin activation
+		 * Do some stuff on plugin activation.
 		 *
-		 * @return void
 		 * @since  1.0.0
+		 * @return void
 		 */
 		public function activation() {
 		}
 
 		/**
-		 * Do some stuff on plugin activation
+		 * Do some stuff on plugin activation.
 		 *
-		 * @return void
 		 * @since  1.0.0
+		 * @return void
 		 */
 		public function deactivation() {
 		}
@@ -542,9 +550,9 @@ if ( ! class_exists( 'Jet_Woo_Builder' ) ) {
 		/**
 		 * Returns the instance.
 		 *
-		 * @return object
 		 * @since  1.0.0
 		 * @access public
+		 * @return object
 		 */
 		public static function get_instance() {
 
@@ -556,19 +564,23 @@ if ( ! class_exists( 'Jet_Woo_Builder' ) ) {
 			return self::$instance;
 
 		}
+
 	}
+
 }
 
 if ( ! function_exists( 'jet_woo_builder' ) ) {
+
 	/**
 	 * Returns instance of the plugin class.
 	 *
-	 * @return object
 	 * @since  1.0.0
+	 * @return object
 	 */
 	function jet_woo_builder() {
 		return Jet_Woo_Builder::get_instance();
 	}
+
 }
 
 jet_woo_builder();

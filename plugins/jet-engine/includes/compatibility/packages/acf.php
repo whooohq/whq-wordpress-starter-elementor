@@ -39,7 +39,7 @@ if ( ! class_exists( 'Jet_Engine_ACF_Package' ) ) {
 			add_action( 'jet-engine/listings/dynamic-image/source-controls', array( $this, 'image_controls' ) );
 			add_action( 'jet-engine/listings/dynamic-image/link-source-controls', array( $this, 'linked_image_controls' ) );
 
-			add_filter( 'jet-engine/listings/dynamic-image/custom-image', array( $this, 'image_render' ), 10, 3 );
+			add_filter( 'jet-engine/listings/dynamic-image/custom-image', array( $this, 'image_render' ), 10, 4 );
 			add_filter( 'jet-engine/listings/dynamic-image/custom-url', array( $this, 'image_url_render' ), 10, 2 );
 			add_filter( 'jet-engine/listings/dynamic-link/custom-url', array( $this, 'link_render' ), 10, 2 );
 			add_filter( 'jet-engine/listings/dynamic-field/field-value', array( $this, 'field_render' ), 10, 2 );
@@ -59,6 +59,59 @@ if ( ! class_exists( 'Jet_Engine_ACF_Package' ) ) {
 			add_filter( 'jet-engine/blocks-views/block-types/attributes/dynamic-link',     array( $this, 'add_block_attr' ) );
 			add_filter( 'jet-engine/blocks-views/block-types/attributes/dynamic-repeater', array( $this, 'add_block_attr' ) );
 
+			// For compatibility with ACF Dynamic Tags (Elementor Pro v3.8)
+			add_filter( 'acf/pre_load_post_id', array( $this, 'set_post_id_in_listing' ), 10, 2 );
+
+		}
+
+		public function set_post_id_in_listing( $result, $post_id ) {
+
+			if ( ! $post_id ) {
+				return $result;
+			}
+
+			if ( in_array( $post_id, array( 'option', 'options' ) ) ) {
+				return $result;
+			}
+
+			$is_in_stack = jet_engine()->listings->objects_stack->is_in_stack();
+
+			if ( ! $is_in_stack ) {
+				return $result;
+			}
+
+			$listing      = jet_engine()->listings->data->get_listing();
+			$listing_type = jet_engine()->listings->data->get_listing_type( $listing->get_main_id() );
+
+			if ( 'elementor' !== $listing_type ) {
+				return $result;
+			}
+
+			$current_obj = jet_engine()->listings->data->get_current_object();
+			$class       = get_class( $current_obj );
+
+			switch ( $class ) {
+				case 'WP_Post':
+					$post_id = $current_obj->ID;
+					break;
+
+				case 'WP_User':
+					$post_id = 'user_' . $current_obj->ID;
+					break;
+
+				case 'WP_Term':
+					$post_id = 'term_' . $current_obj->term_id;
+					break;
+
+				case 'WP_Comment':
+					$post_id = 'comment_' . $current_obj->comment_ID;
+					break;
+
+				default:
+					$post_id = null;
+			}
+
+			return $post_id;
 		}
 
 		/**
@@ -179,7 +232,7 @@ if ( ! class_exists( 'Jet_Engine_ACF_Package' ) ) {
 		 * @param  [type] $size     [description]
 		 * @return [type]           [description]
 		 */
-		public function image_render( $result, $settings, $size ) {
+		public function image_render( $result, $settings, $size, $render ) {
 
 			if ( 'acf_field_groups' !== $settings['dynamic_image_source'] ) {
 				return $result;
@@ -230,7 +283,7 @@ if ( ! class_exists( 'Jet_Engine_ACF_Package' ) ) {
 				return $result;
 			}
 
-			return wp_get_attachment_image( $image, $size, false, array( 'alt' => get_the_title() ) );
+			return wp_get_attachment_image( $image, $size, false, array( 'alt' => $render->get_image_alt( $image, $settings ) ) );
 
 		}
 

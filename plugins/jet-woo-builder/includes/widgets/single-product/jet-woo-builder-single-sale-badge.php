@@ -23,15 +23,11 @@ class Jet_Woo_Builder_Single_Sale_Badge extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Single Sale Badge', 'jet-woo-builder' );
+		return __( 'Single Sale Badge', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
 		return 'jet-woo-builder-icon-sale-badge';
-	}
-
-	public function get_script_depends() {
-		return array();
 	}
 
 	public function get_jet_help_url() {
@@ -57,31 +53,37 @@ class Jet_Woo_Builder_Single_Sale_Badge extends Jet_Woo_Builder_Base {
 
 		$this->start_controls_section(
 			'section_badge_content',
-			array(
-				'label'      => esc_html__( 'Content', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_CONTENT,
-				'show_label' => false,
-			)
+			[
+				'label' => __( 'Product Sale Badge', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_CONTENT,
+			]
 		);
 
 		$this->add_control(
 			'single_badge_text',
-			array(
+			[
 				'type'        => Controls_Manager::TEXT,
-				'label'       => esc_html__( 'Sale Badge Text', 'jet-woo-builder' ),
-				'default'     => 'Sale!',
-				'description' => esc_html__( 'Use %percentage_sale% and %numeric_sale% macros to display a withdrawal of discounts as a percentage or numeric of the initial price.', 'jet-woo-builder' ),
-			)
+				'label'       => __( 'Label', 'jet-woo-builder' ),
+				'default'     => __( 'Sale!', 'jet-woo-builder' ),
+				'description' => __( 'Use %percentage_sale% and %numeric_sale% macros to display a withdrawal of discounts as a percentage or numeric of the initial price.', 'jet-woo-builder' ),
+			]
 		);
 
 		$this->end_controls_section();
 
 		$this->start_controls_section(
 			'section_single_badge_style',
+			[
+				'label' => __( 'Product Sale Badge', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
 			array(
-				'label'      => esc_html__( 'General', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
+				'name'     => 'single_badge_typography',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['badge'],
 			)
 		);
 
@@ -108,22 +110,12 @@ class Jet_Woo_Builder_Single_Sale_Badge extends Jet_Woo_Builder_Base {
 		);
 
 		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			array(
-				'name'     => 'single_badge_typography',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['badge'],
-			)
-		);
-
-		$this->add_group_control(
 			Group_Control_Border::get_type(),
-			array(
+			[
 				'name'        => 'single_badge_border',
-				'label'       => esc_html__( 'Border', 'jet-woo-builder' ),
-				'placeholder' => '1px',
-				'default'     => '1px',
+				'label'       => __( 'Border', 'jet-woo-builder' ),
 				'selector'    => '{{WRAPPER}} ' . $css_scheme['badge'],
-			)
+			]
 		);
 
 		$this->add_responsive_control(
@@ -175,14 +167,14 @@ class Jet_Woo_Builder_Single_Sale_Badge extends Jet_Woo_Builder_Base {
 	}
 
 	protected function render() {
-		if ( true === $this->__set_editor_product() ) {
+		if ( $this->__set_editor_product() ) {
 			$this->__open_wrap();
 
 			include $this->get_template( 'single-product/sale-badge.php' );
 
 			$this->__close_wrap();
 
-			if ( jet_woo_builder_integration()->in_elementor() ) {
+			if ( jet_woo_builder()->elementor_views->in_elementor() ) {
 				$this->__reset_editor_product();
 			}
 		}

@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_Cart_Empty_Message
- * Name: Empty Message
+ * Name: Cart Empty Message
  * Slug: jet-cart-empty-message
  */
 
@@ -22,7 +22,7 @@ class Jet_Woo_Builder_Cart_Empty_Message extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return __( 'Empty Message', 'jet-woo-builder' );
+		return __( 'Cart Empty Message', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {

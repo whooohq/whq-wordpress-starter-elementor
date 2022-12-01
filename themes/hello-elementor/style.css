@@ -4,15 +4,16 @@
 	Description: A plain-vanilla & lightweight theme for Elementor page builder
 	Author: Elementor Team
 	Author URI: https://elementor.com/?utm_source=wp-themes&utm_campaign=author-uri&utm_medium=wp-dash
-	Version: 2.5.0
-	Stable tag: 2.5.0
+	Version: 2.6.1
+	Stable tag: 2.6.1
 	Requires at least: 4.7
 	Tested up to: 5.9
 	Requires PHP: 5.6
 	License: GNU General Public License v3 or later.
 	License URI: https://www.gnu.org/licenses/gpl-3.0.html
 	Text Domain: hello-elementor
-	Tags: flexible-header, custom-colors, custom-menu, custom-logo, featured-images, rtl-language-support, threaded-comments, translation-ready
+	Description: A lightweight, plain-vanilla, best suited for building your site using Elementor website builder. Visit https://elementor.com/hello-theme/ to learn more.
+	Tags: accessibility-ready, flexible-header, custom-colors, custom-menu, custom-logo, featured-images, rtl-language-support, threaded-comments, translation-ready,
 */
 /**
  * DO NOT CHANGE THIS FILE!
@@ -519,7 +520,7 @@ table {
     padding: 15px;
     line-height: 1.5;
     vertical-align: top;
-    border: 1px solid #cccccc; }
+    border: 1px solid #80808080; }
   table th {
     font-weight: bold; }
   table thead th,
@@ -537,15 +538,15 @@ table {
   table thead:first-child tr:first-child td,
   table thead:first-child tr:first-child th,
   table thead:first-child tr:first-child td {
-    border-top: 1px solid #cccccc; }
+    border-top: 1px solid #80808080; }
   table tbody > tr:nth-child(odd) > td,
   table tbody > tr:nth-child(odd) > th {
-    background-color: #f7f7f7; }
+    background-color: #80808012; }
   table tbody tr:hover > td,
   table tbody tr:hover > th {
-    background-color: #e9e9e9; }
+    background-color: #8080801a; }
   table tbody + tbody {
-    border-top: 2px solid #cccccc; }
+    border-top: 2px solid #80808080; }
   @media (max-width: 767px) {
     table table {
       font-size: 0.8em; }

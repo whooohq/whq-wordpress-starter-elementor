@@ -112,9 +112,13 @@ class WC_Product_Query extends \Jet_Engine\Query_Builder\Queries\Base_Query {
 			$raw               = $args['tax_query'];
 			$args['tax_query'] = [];
 
-			if ( ! empty( $args['tax_query_relation'] ) ) {
-				$args['tax_query']['relation'] = $args['tax_query_relation'];
+			if ( isset( $args['tax_query_relation'] ) ) {
+				unset( $args['tax_query_relation'] );
 			}
+			// Uncomment when WooCommerce will handle `tax_query` relation.
+			/*if ( ! empty( $args['tax_query_relation'] ) ) {
+				$args['tax_query']['relation'] = $args['tax_query_relation'];
+			}*/
 
 			foreach ( $raw as $query_row ) {
 				// 'exclude_children' => true  is replaced to 'include_children' => false
@@ -124,11 +128,11 @@ class WC_Product_Query extends \Jet_Engine\Query_Builder\Queries\Base_Query {
 					unset( $query_row['exclude_children'] );
 				}
 
-				if ( empty( $query_row['terms'] ) ) {
-					continue;
+				if ( empty( $query_row['operator'] ) || in_array( $query_row['operator'], [ 'IN', 'NOT IN' ] ) ) {
+					if ( ! empty( $query_row['terms'] ) && ! is_array( $query_row['terms'] ) ) {
+						$query_row['terms'] = $this->explode_string( $query_row['terms'] );
+					}
 				}
-
-				$query_row['terms'] = $this->explode_string( $query_row['terms'] );
 
 				$args['tax_query'][] = $query_row;
 			}
@@ -278,33 +282,33 @@ class WC_Product_Query extends \Jet_Engine\Query_Builder\Queries\Base_Query {
 				break;
 
 			case 'post__in':
-			
+
 				if ( ! empty( $this->final_query['include'] ) ) {
 					$this->final_query['include'] = array_intersect( $this->final_query['include'], $value );
-					
+
 					if ( empty( $this->final_query['include'] ) ) {
 						$this->final_query['include'] = array( PHP_INT_MAX );
 					}
-					
+
 				} else {
 					$this->final_query['include'] = $value;
 				}
-				
+
 				break;
-				
+
 			case 'post__not_in ':
-				
+
 				if ( ! empty( $this->final_query['exclude'] ) ) {
 					$this->final_query['exclude'] = array_intersect( $this->final_query['exclude'], $value );
-					
+
 					if ( empty( $this->final_query['exclude'] ) ) {
 						$this->final_query['exclude'] = array( PHP_INT_MAX );
 					}
-					
+
 				} else {
 					$this->final_query['exclude'] = $value;
 				}
-				
+
 				break;
 
 			case 'orderby':
@@ -364,6 +368,20 @@ class WC_Product_Query extends \Jet_Engine\Query_Builder\Queries\Base_Query {
 			'parent_exclude',
 			'shipping_class',
 		];
+	}
+
+	/**
+	 * Reset Query.
+	 *
+	 * Reset WC Product Query in the loop.
+	 *
+	 * @since  3.0.6
+	 * @access public
+	 *
+	 * @return void
+	 */
+	public function reset_query() {
+		$this->current_wc_query = null;
 	}
 
 }

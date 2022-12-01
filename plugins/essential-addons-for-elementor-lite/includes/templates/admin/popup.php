@@ -54,11 +54,15 @@
                 </div>
 				<?php
 				$eael_recaptcha_sitekey  = get_option( 'eael_recaptcha_sitekey' );
+				$eael_recaptcha_sitekey_v3  = get_option( 'eael_recaptcha_sitekey_v3' );
 				$eael_recaptcha_secret   = get_option( 'eael_recaptcha_secret' );
+				$eael_recaptcha_secret_v3   = get_option( 'eael_recaptcha_secret_v3' );
 				$eael_recaptcha_language = get_option( 'eael_recaptcha_language' );
+				$eael_recaptcha_language_v3 = get_option( 'eael_recaptcha_language_v3' );
 				$eael_g_client_id        = get_option( 'eael_g_client_id' );
 				$eael_fb_app_id          = get_option( 'eael_fb_app_id' );
 				$eael_fb_app_secret      = get_option( 'eael_fb_app_secret' );
+				$eael_lr_mailchimp_api_key      = get_option( 'eael_lr_mailchimp_api_key' );
 				?>
                 <div id="eael-login-register-popup" class="modal__content__popup">
                     <div class="modal__head">
@@ -91,6 +95,36 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="border__line"><span></span></div>
+
+                    <div class="modal__content">
+                        <div class="eael-login__setup">
+                            <span class="login__setup__header">
+                                <img src="<?php echo esc_url( EAEL_PLUGIN_URL . 'assets/admin/images/recaptcha.svg' ); ?>"
+                                     alt="">
+                                <?php _e( 'reCAPTCHA v3', 'essential-addons-for-elementor-lite' ); ?>
+                            </span>
+                            <div class="eael-input__inline mb15">
+                                <label><?php _e( 'Site Key:', 'essential-addons-for-elementor-lite' ); ?></label>
+                                <input name="lr_recaptcha_sitekey_v3" id="lr_recaptcha_sitekey_v3"
+                                       value="<?php echo esc_attr( get_option( 'eael_recaptcha_sitekey_v3' ) ); ?>"
+                                       class="eael-form__control" type="text" placeholder="Site key">
+                            </div>
+                            <div class="eael-input__inline mb15">
+                                <label><?php _e( 'Site Secret:', 'essential-addons-for-elementor-lite' ); ?></label>
+                                <input name="lr_recaptcha_secret_v3" id="lr_recaptcha_secret_v3"
+                                       value="<?php echo esc_attr( get_option( 'eael_recaptcha_secret_v3' ) ); ?>"
+                                       class="eael-form__control" type="text" placeholder="Site Secret">
+                            </div>
+                            <div class="eael-input__inline">
+                                <label><?php _e( 'Language:', 'essential-addons-for-elementor-lite' ); ?></label>
+                                <input name="lr_recaptcha_language_v3" id="lr_recaptcha_language_v3"
+                                       value="<?php echo esc_attr( get_option( 'eael_recaptcha_language_v3' ) ); ?>"
+                                       class="eael-form__control" type="text" placeholder="reCAPTCHA Language Code">
+                            </div>
+                        </div>
+                    </div>
 					<?php if ( $this->pro_enabled ): ?>
                         <div class="border__line"><span></span></div>
                         <div class="modal__content">
@@ -115,7 +149,7 @@
                                 <span class="login__setup__header">
                                     <img src="<?php echo esc_url( EAEL_PLUGIN_URL . 'assets/admin/images/facebook.svg' ); ?>"
                                          alt="">
-                                    <?php _e( 'facebook Login', 'essential-addons-for-elementor-lite' ); ?>
+                                    <?php _e( 'Facebook Login', 'essential-addons-for-elementor-lite' ); ?>
                                 </span>
                                 <div class="eael-input__inline mb15">
                                     <label><?php _e( 'Facebook App ID:', 'essential-addons-for-elementor-lite' ); ?></label>
@@ -131,10 +165,45 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="border__line"><span></span></div>
+
+                        <div class="modal__content">
+                            <div class="eael-login__setup">
+                                <span class="login__setup__header">
+                                    <img src="<?php echo esc_url( EAEL_PLUGIN_URL . 'assets/admin/images/mailchimp.svg' ); ?>"
+                                         alt=""  width="20">
+                                    <?php _e( 'Mailchimp Integration', 'essential-addons-for-elementor-lite' ); ?>
+                                </span>
+                                <div class="eael-input__inline mb15">
+                                    <label><?php _e( 'Mailchimp API Key:', 'essential-addons-for-elementor-lite' ); ?></label>
+                                    <input name="lr_mailchimp_api_key" id="lr_mailchimp_api_key"
+                                           value="<?php echo esc_attr( get_option( 'eael_lr_mailchimp_api_key' ) ); ?>"
+                                           class="eael-form__control" type="text" placeholder="Mailchimp API">
+                                </div>
+                            </div>
+                        </div>
 					<?php endif; ?>
 
                     <div class="border__line"><span></span></div>
 
+                    <div class="eael-element__wrap eael-d-block eael-element__wrap-popup">
+                        <div class="eael-element__item">
+                            <div class="element__content">
+                                <h4><?php esc_html_e( 'Enable Custom Fields', 'essential-addons-for-elementor-lite' ); ?></h4>
+                                <div class="element__options">
+                                    <p class="element__icon">
+                                        <i class="eicon-info login-register-info-icon"></i>
+                                        <span class="tooltip-text"><?php esc_attr_e('Fields will be available on both the edit profile page and the EA Login | Register Form.', 'essential-addons-for-elementor-lite') ?></span>
+                                    </p>
+                                    <label class="eael-switch">
+                                        <input name="lr_custom_profile_fields" id="lr_custom_profile_fields" <?php if( 'on' === get_option( 'eael_custom_profile_fields' ) ) : ?> checked <?php endif; ?> class="eael-form__control eael-elements-list" type="checkbox">  <span class="switch__box "></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <!-- <div class="border__line"><span></span></div> -->
                     <div class="modal__content">
                         <div class="eael__flex align__center justify__center">

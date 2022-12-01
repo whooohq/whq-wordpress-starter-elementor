@@ -181,7 +181,7 @@ const JetMapboxMarkerClusterer = function( data ) {
 		const features = this.map.queryRenderedFeatures( e.point, {
 			layers: ['clusters']
 		});
-		
+
 		const clusterId = features[0].properties.cluster_id;
 
 		this.map.getSource( 'markerClusters' ).getClusterExpansionZoom(

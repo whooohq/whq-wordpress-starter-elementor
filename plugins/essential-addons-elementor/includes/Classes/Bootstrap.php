@@ -113,11 +113,14 @@ class Bootstrap
         add_action('eael_woo_checkout_pro_enabled_steps_btn_styles', [$this, 'add_woo_checkout_steps_btn_styles']);
 
         add_action('eael/login-register/after-general-controls', [$this, 'lr_init_content_ajax_controls']);
+        add_action('eael/login-register/after-init-login-button-style', [$this, 'lr_init_content_login_spinner_controls']);
+        add_action('eael/login-register/after-init-register-button-style', [$this, 'lr_init_content_register_spinner_controls']);
         add_action('eael/login-register/after-login-controls-section', [$this, 'lr_init_content_social_login_controls']);
         add_action('eael/login-register/after-login-footer', [$this, 'lr_print_social_login']);
         add_action('eael/login-register/after-register-footer', [$this, 'lr_print_social_login_on_register']);
         add_action('eael/login-register/after-style-controls', [$this, 'lr_init_style_social_controls']);
         add_action('eael/login-register/after-style-controls', [$this, 'lr_init_style_pass_strength_controls']);
+        add_action('eael/login-register/mailchimp-integration', [$this, 'lr_init_mailchimp_integration_controls']);
         add_action('eael/login-register/after-register-options-controls', [$this, 'lr_init_content_pass_strength_controls']);
         add_action('eael/login-register/after-pass-visibility-controls', [$this, 'lr_init_content_icon_controls']);
         add_filter('eael/login-register/scripts', [$this, 'lr_load_pro_scripts']);
@@ -125,6 +128,8 @@ class Bootstrap
         add_action('eael/login-register/register-repeater', [$this, 'lr_add_register_fields_icons']);
         add_action('eael/login-register/register-rf-default', [$this, 'lr_add_register_fields_default_icons']);
         add_action('eael/login-register/after-password-field', [$this, 'lr_show_password_strength_meter']);
+        add_action('eael/login-register/mailchimp-integration-action', [$this, 'login_register_mailchimp_integration_subscribe'], 10, 3);
+        add_filter('eael/login-register/register-user-password-validation', [$this, 'lr_register_user_password_validation'], 10, 3);
 
         // ajax
         add_action('wp_ajax_eael_woo_checkout_post_code_validate', [$this, 'eael_woo_checkout_post_code_validate']);

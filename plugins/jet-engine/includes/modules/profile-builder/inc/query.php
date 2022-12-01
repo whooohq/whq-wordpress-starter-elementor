@@ -74,11 +74,15 @@ class Query {
 			}
 		}
 
-		if ( $this->subpagenow && empty( $this->subpage ) ) {
+		if ( ( $this->subpagenow && empty( $this->subpage ) )
+			|| ( $this->is_single_user_page && ! $this->get_queried_user() )
+		) {
 			global $wp_query;
 			$wp_query->set_404();
 			status_header( 404 );
 			nocache_headers();
+			get_template_part( 404 );
+			exit;
 		}
 
 		if ( $this->pagenow ) {
@@ -133,7 +137,7 @@ class Query {
 
 		$pages = array_values( $pages );
 
-		// If first page is accessible for any role - use it as defaut
+		// If first page is accessible for any role - use it as default
 		if ( ! empty( $pages[0] ) && empty( $pages[0]['roles'] ) ) {
 
 			$this->subpage    = $pages[0];

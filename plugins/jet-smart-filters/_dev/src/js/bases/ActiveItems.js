@@ -8,7 +8,7 @@ import {
 export default class ActiveItems {
 	activeItemsСollection = {};
 
-	constructor ($activeItems, props = {}) {
+	constructor($activeItems, props = {}) {
 		const {
 			separateMultiple = false,
 			templateName = false,
@@ -95,7 +95,7 @@ export default class ActiveItems {
 			elList.appendChild(this.buildItem({
 				value: this.clearItemLabel,
 				itemClass: this.clearClass,
-				callback: () => { eventBus.publish('fiters/remove', this) }
+				callback: () => { eventBus.publish('fiters/remove', this); }
 			}));
 		}
 
@@ -115,6 +115,9 @@ export default class ActiveItems {
 		});
 
 		this.$activeItemsContainer.html(elList);
+
+		// Emit active items build event
+		eventBus.publish('activeItems/itemsBuilt', this);
 	}
 
 	buildItem(props) {
@@ -132,13 +135,16 @@ export default class ActiveItems {
 			activeItemContent = templateParser(template, {
 				$label: label,
 				$value: value
-			})
+			});
 		}
 
 		const elActiveItem = document.createElement('div');
 
 		elActiveItem.className = itemClass;
 		elActiveItem.innerHTML = activeItemContent;
+
+		if (getNesting(JetSmartFilterSettings, 'plugin_settings', 'use_tabindex') === 'true')
+			elActiveItem.tabIndex = 0;
 
 		// add jQuery click event once
 		$(elActiveItem).one('click', callback);
@@ -156,7 +162,7 @@ export default class ActiveItems {
 		return this.buildItem({
 			value,
 			label,
-			callback: () => { this.removeFilter(filter) }
+			callback: () => { this.removeFilter(filter); }
 		});
 	}
 
@@ -171,7 +177,7 @@ export default class ActiveItems {
 				items.appendChild(this.buildItem({
 					value,
 					label,
-					callback: () => { this.removeFilter(filter, itemValue) }
+					callback: () => { this.removeFilter(filter, itemValue); }
 				}));
 		});
 
@@ -200,7 +206,7 @@ export default class ActiveItems {
 		return this.buildItem({
 			value,
 			label,
-			callback: () => { this.removeFilter(filtersGroup[0]) }
+			callback: () => { this.removeFilter(filtersGroup[0]); }
 		});
 	}
 
@@ -237,7 +243,7 @@ export default class ActiveItems {
 	isThereHierarchicalFilters(filters) {
 		return filters.some(filter => {
 			return filter.isHierarchy;
-		})
+		});
 	}
 
 	isCurrentProvider(filter = { provider: false, queryId: false }) {

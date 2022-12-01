@@ -77,6 +77,12 @@ if ( ! class_exists( 'Jet_Engine_Meta_Boxes' ) ) {
 
 			$this->data = new Jet_Engine_Meta_Boxes_Data( $this );
 
+			add_action( 'jet-engine/post-types/deleted-post-type',      array( $this, 'remove_deleted_post_type_from_meta_boxes' ) );
+			add_action( 'jet-engine/post-types/updated-post-type-slug', array( $this, 'update_post_type_in_meta_boxes' ), 10, 2 );
+
+			add_action( 'jet-engine/taxonomies/deleted-taxonomy',      array( $this, 'remove_deleted_tax_from_meta_boxes' ) );
+			add_action( 'jet-engine/taxonomies/updated-taxonomy-slug', array( $this, 'update_tax_in_meta_boxes' ), 10, 2 );
+
 		}
 
 		/**
@@ -960,6 +966,110 @@ if ( ! class_exists( 'Jet_Engine_Meta_Boxes' ) ) {
 			);
 
 			return array_merge( $default, $config );
+
+		}
+
+		/**
+		 * Remove post type from `allowed_post_type` param in the meta boxes.
+		 *
+		 * @param $deleted_post_type
+		 */
+		public function remove_deleted_post_type_from_meta_boxes( $deleted_post_type ) {
+			$this->update_object_type_in_meta_boxes( false, $deleted_post_type );
+		}
+
+		/**
+		 * Update the post type slug in the meta boxes after it has been changed.
+		 *
+		 * @param $new_post_type
+		 * @param $initial_post_type
+		 */
+		public function update_post_type_in_meta_boxes( $new_post_type, $initial_post_type ) {
+			$this->update_object_type_in_meta_boxes( $new_post_type, $initial_post_type );
+		}
+
+		/**
+		 * Remove tax from `allowed_tax` param in meta boxes.
+		 *
+		 * @param $deleted_tax
+		 */
+		public function remove_deleted_tax_from_meta_boxes( $deleted_tax ) {
+			$this->update_object_type_in_meta_boxes( false, $deleted_tax, 'tax' );
+		}
+
+		/**
+		 * Update the tax slug in the meta boxes after it has been changed.
+		 *
+		 * @param $new_tax
+		 * @param $initial_tax
+		 */
+		public function update_tax_in_meta_boxes( $new_tax, $initial_tax ) {
+			$this->update_object_type_in_meta_boxes( $new_tax, $initial_tax, 'tax' );
+		}
+
+		/**
+		 * Update the post type/taxonomy slug in the meta boxes after it has been changed.
+		 *
+		 * To delete the post type/taxonomy in the meta boxes, set $new_obj_slug to false.
+		 *
+		 * @param $new_obj_slug
+		 * @param $obj_slug
+		 * @param $type
+		 */
+		public function update_object_type_in_meta_boxes( $new_obj_slug = null, $obj_slug = null, $type = 'post' ) {
+
+			$meta_boxes = jet_engine()->meta_boxes->data->get_raw();
+
+			if ( empty( $meta_boxes ) ) {
+				return;
+			}
+
+			foreach ( $meta_boxes as $meta_box ) {
+				$args        = $meta_box['args'];
+				$object_type = isset( $args['object_type'] ) ? esc_attr( $args['object_type'] ) : 'post';
+
+				switch ( $type ) {
+					case 'post':
+						$allowed_obj_types = array( 'post' );
+						$setting_key       = 'allowed_post_type';
+						break;
+
+					case 'tax':
+						$allowed_obj_types = array( 'tax', 'taxonomy' );
+						$setting_key       = 'allowed_tax';
+						break;
+
+					default:
+						$allowed_obj_types = false;
+						$setting_key       = false;
+				}
+
+				if ( empty( $allowed_obj_types ) || empty( $setting_key ) ) {
+					continue;
+				}
+
+				if ( ! in_array( $object_type, $allowed_obj_types ) ) {
+					continue;
+				}
+
+				$allowed_obj = ! empty( $args[ $setting_key ] ) ? $args[ $setting_key ] : array();
+
+				if ( ! in_array( $obj_slug, $allowed_obj ) ) {
+					continue;
+				}
+
+				$allowed_obj = array_combine( $allowed_obj, $allowed_obj );
+
+				if ( ! $new_obj_slug ) {
+					unset( $allowed_obj[ $obj_slug ] );
+				} else {
+					$allowed_obj[ $obj_slug ] = $new_obj_slug;
+				}
+
+				$meta_box['args'][ $setting_key ] = array_values( $allowed_obj );
+
+				jet_engine()->meta_boxes->data->update_item_in_db( $meta_box );
+			}
 
 		}
 

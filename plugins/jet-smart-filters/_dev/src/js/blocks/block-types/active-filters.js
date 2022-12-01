@@ -36,7 +36,8 @@ registerBlockType('jet-smart-filters/active', {
 		// General
 		content_provider: attributes.content_provider,
 		apply_type: attributes.apply_type,
-		filters_label: attributes.filters_label
+		filters_label: attributes.filters_label,
+		query_id: attributes.query_id,
 	},
 	className: 'jet-smart-filters-active',
 	edit: class extends wp.element.Component {

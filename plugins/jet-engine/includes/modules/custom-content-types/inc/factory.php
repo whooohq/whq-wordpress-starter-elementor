@@ -106,7 +106,7 @@ class Factory {
 	 * @return [type]       [description]
 	 */
 	public function prepare_query_args( $args ) {
-
+		$args       = wp_unslash( $args );
 		$prepared   = array();
 		$all_fields = $this->get_formatted_fields();
 

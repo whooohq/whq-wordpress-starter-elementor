@@ -1010,12 +1010,6 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 		 */
 		public function is_lazy_load_enabled( $settings ) {
 
-			if ( wp_doing_ajax() ) {
-				$result = false;
-			} else {
-				$result = ! empty( $settings['lazy_load'] ) ? filter_var( $settings['lazy_load'], FILTER_VALIDATE_BOOLEAN ) : false;
-			}
-
 			$result = ! empty( $settings['lazy_load'] ) ? filter_var( $settings['lazy_load'], FILTER_VALIDATE_BOOLEAN ) : false;
 
 			return apply_filters( 'jet-engine/listing/grid/is_lazy_load', $result, $settings );
@@ -1070,6 +1064,8 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 				$default_query = apply_filters( 'jet-engine/listing/grid/posts-query-args', $default_query, $this, $settings );
 				$options['query'] = $default_query;
 			}
+
+			$options = apply_filters( 'jet-engine/listing/grid/lazy-load/options', $options, $settings );
 
 			printf(
 				'<div class="%1$s %1$s--lazy-load jet-listing jet-listing-grid-loading" data-lazy-load="%2$s">%3$s</div>',
@@ -1323,14 +1319,15 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 
 				if ( $carousel_enabled ) {
 
-					$is_rtl                  = is_rtl();
-					$dir                     = $is_rtl ? 'rtl' : 'ltr';
 					$settings['items_count'] = count( $query );
+					$slider_options          = $this->get_slider_options( $settings );
+					$is_rtl                  = isset( $slider_options['rtl'] ) ? $slider_options['rtl'] : is_rtl();
+					$dir                     = $is_rtl ? 'rtl' : 'ltr';
 
 					printf(
 						'<div class="%1$s__slider" data-slider_options="%2$s" dir="%3$s">',
 						$base_class,
-						$this->get_slider_options( $settings, $is_rtl ),
+						htmlspecialchars( json_encode( $slider_options ) ),
 						$dir
 					);
 
@@ -1702,13 +1699,13 @@ M1536 1120v-960q0 -119 -84.5 -203.5t-203.5 -84.5h-960q-119 0 -203.5 84.5t-84.5 2
 		 * Returns formatted slider options
 		 *
 		 * @param  array $settings
-		 * @param  bool  $is_rtl
-		 * @return string
+		 * @return array
 		 */
-		public function get_slider_options( $settings = array(), $is_rtl = false ) {
+		public function get_slider_options( $settings = array() ) {
 
 			$fade   = false;
 			$effect = isset( $settings['effect'] ) ? $settings['effect'] : 'slide';
+
 			if ( 1 === absint( $settings['columns'] ) && 'fade' === $effect ) {
 				$fade = true;
 			}
@@ -1725,12 +1722,12 @@ M1536 1120v-960q0 -119 -84.5 -203.5t-203.5 -84.5h-960q-119 0 -203.5 84.5t-84.5 2
 				'slidesToScroll' => absint( $settings['slides_to_scroll'] ),
 				'prevArrow'      => $this->get_arrow_icon( 'prev', $settings ),
 				'nextArrow'      => $this->get_arrow_icon( 'next', $settings ),
-				'rtl'            => $is_rtl,
+				'rtl'            => is_rtl(),
 				'itemsCount'     => absint( $settings['items_count'] ),
 				'fade'           => $fade,
-			) );
+			), $settings );
 
-			return htmlspecialchars( json_encode( $options ) );
+			return $options;
 
 		}
 

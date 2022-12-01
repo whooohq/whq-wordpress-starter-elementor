@@ -129,6 +129,10 @@ window.JetEngineMapsProvider = function() {
 		trigger.bindPopup( infobox.popup );
 	}
 
+	this.triggerOpenPopup = function( trigger ) {
+		trigger.openPopup();
+	}
+
 	this.getMarkerCluster = function( data ) {
 		var markersGrpup = L.markerClusterGroup();
 		markersGrpup.addLayers( data.markers );
@@ -187,6 +191,16 @@ window.JetEngineMapsProvider = function() {
 
 		return new JetLeafletPopup( {
 			popup: popup
+		} );
+	}
+
+	this.getMarkerMap = function( marker ) {
+		return marker._map;
+	}
+
+	this.fitMapToMarker = function( marker, markersClusterer ) {
+		markersClusterer.zoomToShowLayer( marker, () => {
+			markersClusterer._map.setView( this.getMarkerPosition( marker ) );
 		} );
 	}
 

@@ -397,6 +397,7 @@ if ( ! class_exists( 'Jet_Engine_Dynamic_Functions' ) ) {
 				'type'   => 'text',
 				'label_block' => true,
 				'description' => __( 'Leave empty to get term dynamically. Use prefix <b>slug::</b> to set term by slug instead of ID, for example - slug::term-slug', 'jet-engine' ),
+				'has_html'    => true,
 				'condition' => array(
 					'data_source'    => 'post_meta',
 					'data_context'   => 'current_term',
@@ -409,6 +410,7 @@ if ( ! class_exists( 'Jet_Engine_Dynamic_Functions' ) ) {
 				'type'   => 'text',
 				'label_block' => true,
 				'description' => __( 'Leave empty to get user ID dynamically. Use prefixes <b>login::</b> or <b>email::</b> to set user by login or email instead of ID, for example - email::admin@demolink.org', 'jet-engine' ),
+				'has_html'    => true,
 				'condition' => array(
 					'data_source'    => 'post_meta',
 					'data_context'   => 'queried_user',
@@ -536,6 +538,11 @@ if ( ! class_exists( 'Jet_Engine_Dynamic_Functions' ) ) {
 					$settings[ $setting_key ] = $tag->get_settings( $setting_key );
 				} else {
 					$settings[ $setting_key ] = isset( $all_settings[ $setting_key ] ) ? $all_settings[ $setting_key ] : false;
+				}
+
+				// Added to prevent SQL error if required sql setting is empty.
+				if ( Jet_Engine_Tools::is_empty( $settings[ $setting_key ] ) && isset( $setting_data['default'] ) ) {
+					$settings[ $setting_key ] = $setting_data['default'];
 				}
 			}
 

@@ -2,6 +2,8 @@
 
 namespace Essential_Addons_Elementor\Pro\Classes;
 
+use Elementor\Plugin;
+
 if (!defined('ABSPATH')) {
     exit;
 } // Exit if accessed directly
@@ -55,9 +57,9 @@ class Helper extends \Essential_Addons_Elementor\Classes\Helper
      */
     public static function get_woo_product_atts()
     {
-        if (!apply_filters('eael/is_plugin_active', 'woocommerce/woocommerce.php')) {
-            return [];
-        }
+	    if ( ! apply_filters( 'eael/is_plugin_active', 'woocommerce/woocommerce.php' ) || ! function_exists( 'wc_get_attribute_taxonomies' ) ) {
+		    return [];
+	    }
 
         $options = [];
         $taxonomies = wc_get_attribute_taxonomies();
@@ -148,10 +150,14 @@ class Helper extends \Essential_Addons_Elementor\Classes\Helper
     }
 
     // Get Mailchimp list
-    public static function mailchimp_lists()
+    public static function mailchimp_lists($element = 'mailchimp')
     {
         $lists = [];
         $api_key = get_option('eael_save_mailchimp_api');
+
+        if($element === 'login-register-form'){
+            $api_key = get_option('eael_lr_mailchimp_api_key');
+        }
 
         if (empty($api_key)) {
             return $lists;
@@ -221,4 +227,38 @@ class Helper extends \Essential_Addons_Elementor\Classes\Helper
 	public static function eael_pro_validate_html_tag( $tag ){
 		return in_array( strtolower( $tag ), self::EAEL_PRO_ALLOWED_HTML_TAGS ) ? $tag : 'div';
 	}
+
+    /**
+     * Get all dropdown options of elementor breakpoints.
+     *
+     * @return array of breakpoint options.
+     */
+    public static function get_breakpoint_dropdown_options(){
+        $breakpoints = Plugin::$instance->breakpoints->get_active_breakpoints();
+
+        $dropdown_options = [];
+        $excluded_breakpoints = [
+            'laptop',
+            'widescreen',
+        ];
+
+        foreach ( $breakpoints as $breakpoint_key => $breakpoint_instance ) {
+            // Do not include laptop and widscreen in the options since this feature is for mobile devices.
+            if ( in_array( $breakpoint_key, $excluded_breakpoints, true ) ) {
+                continue;
+            }
+
+            $dropdown_options[ $breakpoint_key ] = sprintf(
+                /* translators: 1: Breakpoint label, 2: `>` character, 3: Breakpoint value */
+                esc_html__( '%1$s (%2$s %3$dpx)', 'essential-addons-elementor' ),
+                $breakpoint_instance->get_label(),
+                '>',
+                $breakpoint_instance->get_value()
+            );
+        }
+
+        $dropdown_options['none'] = esc_html__( 'None', 'essential-addons-elementor' );
+        
+        return $dropdown_options;
+    }
 }

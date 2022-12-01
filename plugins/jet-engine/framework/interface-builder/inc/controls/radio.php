@@ -75,7 +75,7 @@ if ( ! class_exists( 'CX_Control_Radio' ) ) {
 			$html .= '<div class="cx-ui-container ' . esc_attr( $class ) . '" >';
 				if ( $this->settings['options'] && ! empty( $this->settings['options'] ) && is_array( $this->settings['options'] ) ) {
 					if ( '' !== $this->settings['label'] ) {
-						$html .= '<label class="cx-label" for="' . esc_attr( $this->settings['id'] ) . '">' . $this->settings['label'] . '</label> ';
+						$html .= '<label class="cx-label" for="' . esc_attr( $this->settings['id'] ) . '">' . wp_kses_post( $this->settings['label'] ) . '</label> ';
 					}
 					$html .= '<div class="cx-radio-group cx-check-radio-group--' . esc_attr( $layout ) . '">';
 						foreach ( $this->settings['options'] as $option => $option_value ) {

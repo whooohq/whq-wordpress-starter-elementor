@@ -6,9 +6,12 @@ use Elementor\Repeater;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+// Ensure required files are included
+jet_engine()->elementor_views->include_base_widget();
+
 if ( ! class_exists( 'Elementor\Jet_Listing_Grid_Widget' ) ) {
 
-	class Jet_Listing_Grid_Widget extends Widget_Base {
+	class Jet_Listing_Grid_Widget extends \Jet_Listing_Dynamic_Widget {
 
 		public $is_first     = false;
 		public $data         = false;

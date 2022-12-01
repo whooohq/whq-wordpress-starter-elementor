@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: JetSmartFilters for Elementor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-05 18:07+0300\n"
+"POT-Creation-Date: 2022-11-21 17:02+0200\n"
 "PO-Revision-Date: 2018-11-27 12:00+0200\n"
 "Last-Translator: \n"
 "Language-Team: Zemez\n"
@@ -11,1542 +11,3010 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
 "esc_attr__;esc_attr_e;esc_attr_x:1,2c;_ex:1,2c;_n:1,2;_nx:4c,1,2;"
 "_n_noop:1,2;_nx_noop:4c,1,2\n"
 "esc_attr__;_x: 1,2c;_n:1,2\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.8.8\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: cherry-framework\n"
 "X-Poedit-SearchPathExcluded-1: node_modules\n"
 
-#: includes/compatibility.php:32
-msgid "Done"
+#: framework/jet-dashboard/assets/js/welcome-page.js:46
+msgid "Go to docs"
 msgstr ""
 
-#: includes/compatibility.php:33 includes/widgets/pagination.php:127
-msgid "Prev"
-msgstr ""
-
-#: includes/compatibility.php:34 includes/widgets/pagination.php:136
-msgid "Next"
-msgstr ""
-
-#: includes/compatibility.php:35
-msgid "Today"
-msgstr ""
-
-#: includes/compatibility.php:37
-msgid "January"
-msgstr ""
-
-#: includes/compatibility.php:38
-msgid "February"
-msgstr ""
-
-#: includes/compatibility.php:39
-msgid "March"
-msgstr ""
-
-#: includes/compatibility.php:40
-msgid "April"
-msgstr ""
-
-#: includes/compatibility.php:41 includes/compatibility.php:55
-msgid "May"
-msgstr ""
-
-#: includes/compatibility.php:42
-msgid "June"
-msgstr ""
-
-#: includes/compatibility.php:43
-msgid "July"
-msgstr ""
-
-#: includes/compatibility.php:44
-msgid "August"
-msgstr ""
-
-#: includes/compatibility.php:45
-msgid "September"
-msgstr ""
-
-#: includes/compatibility.php:46
-msgid "October"
-msgstr ""
-
-#: includes/compatibility.php:47
-msgid "November"
-msgstr ""
-
-#: includes/compatibility.php:48
-msgid "December"
-msgstr ""
-
-#: includes/compatibility.php:51
-msgid "Jan"
-msgstr ""
-
-#: includes/compatibility.php:52
-msgid "Feb"
-msgstr ""
-
-#: includes/compatibility.php:53
-msgid "Mar"
-msgstr ""
-
-#: includes/compatibility.php:54
-msgid "Apr"
-msgstr ""
-
-#: includes/compatibility.php:56
-msgid "Jun"
-msgstr ""
-
-#: includes/compatibility.php:57
-msgid "Jul"
-msgstr ""
-
-#: includes/compatibility.php:58
-msgid "Aug"
-msgstr ""
-
-#: includes/compatibility.php:59
-msgid "Sep"
-msgstr ""
-
-#: includes/compatibility.php:60
-msgid "Oct"
-msgstr ""
-
-#: includes/compatibility.php:61
-msgid "Nov"
-msgstr ""
-
-#: includes/compatibility.php:62
-msgid "Dec"
-msgstr ""
-
-#: includes/compatibility.php:65
-msgid "Sunday"
-msgstr ""
-
-#: includes/compatibility.php:66
-msgid "Monday"
-msgstr ""
-
-#: includes/compatibility.php:67
-msgid "Tuesday"
-msgstr ""
-
-#: includes/compatibility.php:68
-msgid "Wednesday"
-msgstr ""
-
-#: includes/compatibility.php:69
-msgid "Thursday"
-msgstr ""
-
-#: includes/compatibility.php:70
-msgid "Friday"
-msgstr ""
-
-#: includes/compatibility.php:71
-msgid "Saturday"
-msgstr ""
-
-#: includes/compatibility.php:74
-msgid "Mon"
-msgstr ""
-
-#: includes/compatibility.php:75
-msgid "Tue"
-msgstr ""
-
-#: includes/compatibility.php:76
-msgid "Wed"
-msgstr ""
-
-#: includes/compatibility.php:77
-msgid "Thu"
-msgstr ""
+#: framework/jet-dashboard/assets/js/welcome-page.js:329
+#, javascript-format
+msgid "You can update <b>%s plugin</b>"
+msgid_plural "You can update <b>%s plugins</b>"
+msgstr[0] ""
+msgstr[1] ""
 
-#: includes/compatibility.php:78
-msgid "Fri"
+#: framework/jet-dashboard/assets/js/welcome-page.js:330
+msgid "All plugins updated"
 msgstr ""
 
-#: includes/compatibility.php:79
-msgid "Sat"
+#: framework/jet-dashboard/assets/js/welcome-page.js:334
+msgid "Activate license to update your JetPlugins"
 msgstr ""
 
-#: includes/compatibility.php:82
-msgid "Su"
-msgstr ""
-
-#: includes/compatibility.php:83
-msgid "Mo"
-msgstr ""
-
-#: includes/compatibility.php:84
-msgid "Tu"
-msgstr ""
-
-#: includes/compatibility.php:85
-msgid "We"
-msgstr ""
-
-#: includes/compatibility.php:86
-msgid "Th"
-msgstr ""
-
-#: includes/compatibility.php:87
-msgid "Fr"
-msgstr ""
-
-#: includes/compatibility.php:88
-msgid "Sa"
-msgstr ""
-
-#: includes/compatibility.php:90
-msgid "Wk"
-msgstr ""
-
-#: includes/filters/check-range.php:24 includes/widgets/check-range.php:15
-msgid "Check Range"
-msgstr ""
-
-#: includes/filters/checkboxes.php:24
-msgid "Checkboxes list"
-msgstr ""
-
-#: includes/filters/color-image.php:24
-msgid "Visual"
-msgstr ""
-
-#: includes/filters/date-range.php:24
-msgid "Date Range"
-msgstr ""
-
-#: includes/filters/date-range.php:67
-msgctxt "After date"
-msgid "After"
-msgstr ""
-
-#: includes/filters/date-range.php:71
-msgctxt "Before date"
-msgid "Before"
-msgstr ""
-
-#: includes/filters/radio.php:24 includes/post-type.php:344
-#: includes/widgets/radio.php:118
-msgid "Radio"
-msgstr ""
-
-#: includes/filters/range.php:24 includes/widgets/range.php:121
-msgid "Range"
-msgstr ""
-
-#: includes/filters/rating.php:24
-msgid "Rating"
-msgstr ""
-
-#: includes/filters/search.php:24
-msgid "Search"
-msgstr ""
-
-#: includes/filters/select.php:24 includes/widgets/select.php:112
-msgid "Select"
-msgstr ""
-
-#: includes/post-type.php:122 includes/post-type.php:132
-msgid "Smart Filters"
-msgstr ""
-
-#: includes/post-type.php:123
-msgid "Filter"
-msgstr ""
-
-#: includes/post-type.php:124
-msgid "Add New"
-msgstr ""
-
-#: includes/post-type.php:125
-msgid "Add New Filter"
-msgstr ""
-
-#: includes/post-type.php:126
-msgid "Edit Filter"
-msgstr ""
-
-#: includes/post-type.php:127
-msgid "Add New Item"
-msgstr ""
-
-#: includes/post-type.php:128
-msgid "View Filter"
-msgstr ""
-
-#: includes/post-type.php:129 includes/widgets/search.php:18
-msgid "Search Filter"
-msgstr ""
-
-#: includes/post-type.php:130
-msgid "No Filters Found"
-msgstr ""
-
-#: includes/post-type.php:131
-msgid "No Filters Found In Trash"
-msgstr ""
-
-#: includes/post-type.php:166
-msgid "Select filter type..."
-msgstr ""
-
-#: includes/post-type.php:170
-msgid "Filter Label"
-msgstr ""
-
-#: includes/post-type.php:176
-msgid "Active Filter Label"
-msgstr ""
-
-#: includes/post-type.php:185
-msgid "Filter Type"
-msgstr ""
-
-#: includes/post-type.php:191
-msgid "Filter by"
-msgstr ""
-
-#: includes/post-type.php:195
-msgid "Meta Date"
-msgstr ""
-
-#: includes/post-type.php:196
-msgid "Post Date"
-msgstr ""
-
-#: includes/post-type.php:203
-msgid "Data Source"
-msgstr ""
+#: framework/jet-dashboard/assets/js/welcome-page.js:341
+#, javascript-format
+msgid "You can install <b>%s more Plugin</b> with your licence"
+msgid_plural "You can install <b>%s more Plugins</b>  with your licence"
+msgstr[0] ""
+msgstr[1] ""
 
-#: includes/post-type.php:208
-msgid "Select data source..."
+#: framework/jet-dashboard/assets/js/welcome-page.js:342
+msgid "All available plugins are already installed"
 msgstr ""
 
-#: includes/post-type.php:209
-msgid "Manual Input"
+#: framework/jet-dashboard/assets/js/welcome-page.js:372
+#: framework/jet-dashboard/assets/js/welcome-page.js:380
+msgid "Try quickstart installation"
 msgstr ""
 
-#: includes/post-type.php:210
-msgid "Taxonomies"
+#: framework/jet-dashboard/assets/js/welcome-page.js:377
+msgid "Unpack Free All-inclusive items"
 msgstr ""
 
-#: includes/post-type.php:211
-msgid "Posts"
+#: framework/jet-dashboard/assets/js/welcome-page.js:451
+msgid "<b class=\"lifetime\">Lifetime</b>"
 msgstr ""
 
-#: includes/post-type.php:212
-msgid "Custom Fields"
+#: framework/jet-dashboard/assets/js/welcome-page.js:454
+#, javascript-format
+msgid "Licence expires <b class=\"expire-date\">%s</b>"
 msgstr ""
 
-#: includes/post-type.php:219
-msgid "Is Checkbox Meta Field (Jet Engine)"
+#: framework/jet-dashboard/inc/license-manager.php:253
+msgid "License expires soon!"
 msgstr ""
 
-#: includes/post-type.php:220
+#: framework/jet-dashboard/inc/license-manager.php:254
 msgid ""
-"This option should to be enabled if you need to filter data from Checkbox "
-"meta fields type, created with JetEngine plugin."
+"Your primary license will expire in 30 days. You can renew you current "
+"licese in your crocoblock account"
 msgstr ""
 
-#: includes/post-type.php:228
-msgid "Stars count"
+#: framework/jet-dashboard/inc/license-manager.php:257
+msgid "Go to account"
 msgstr ""
 
-#: includes/post-type.php:240
-msgid "Inequality operator"
+#: framework/jet-dashboard/inc/modules/license/module.php:37
+msgid "Plugin Manager"
 msgstr ""
 
-#: includes/post-type.php:241
-msgid "Set relation between values"
+#: framework/jet-dashboard/inc/modules/license/module.php:65
+#: framework/jet-dashboard/inc/modules/license/module.php:66
+msgid "Update & Installation"
 msgstr ""
 
-#: includes/post-type.php:244
-msgid "Greater than or equals (>=)"
+#: framework/jet-dashboard/inc/modules/license/module.php:84
+#: framework/jet-dashboard/inc/modules/license/module.php:85
+msgid "License"
 msgstr ""
 
-#: includes/post-type.php:245
-msgid "Less than or equals (<=)"
+#: framework/jet-dashboard/inc/modules/settings/module.php:43
+#: jet-smart-filters.php:262
+msgid "Settings"
 msgstr ""
 
-#: includes/post-type.php:246
-msgid "Equals (=)"
+#: framework/jet-dashboard/inc/modules/settings/module.php:74
+#: framework/jet-dashboard/inc/modules/settings/module.php:75
+msgid "JetPlugins Settings"
 msgstr ""
 
-#: includes/post-type.php:254
-msgid "Taxonomy"
+#: framework/jet-dashboard/inc/modules/upsale/module.php:49
+#: framework/jet-dashboard/inc/modules/upsale/module.php:189
+#: framework/jet-dashboard/views/upsale/main.php:38
+msgid "Get Crocoblock"
 msgstr ""
 
-#: includes/post-type.php:264
-msgid "Post Type"
+#: framework/jet-dashboard/inc/modules/upsale/module.php:110
+#: framework/jet-dashboard/inc/modules/upsale/module.php:111
+#: framework/jet-dashboard/inc/modules/upsale/module.php:183
+msgid "Go Lifetime"
 msgstr ""
 
-#: includes/post-type.php:274
-msgid "Show only children of current term"
+#: framework/jet-dashboard/inc/modules/upsale/module.php:128
+#: framework/jet-dashboard/inc/modules/upsale/module.php:129
+#: framework/jet-dashboard/inc/modules/upsale/module.php:186
+msgid "Go All-Inclusive"
 msgstr ""
 
-#: includes/post-type.php:283
-msgid "Group terms by parents"
+#: framework/jet-dashboard/inc/modules/welcome/dev-test.php:37
+msgid "Dev Test Page"
 msgstr ""
 
-#: includes/post-type.php:292
-msgid "Custom Field Key"
+#: framework/jet-dashboard/inc/modules/welcome/module.php:37
+msgid "Welcome"
 msgstr ""
 
-#: includes/post-type.php:301 includes/post-type.php:353
-#: includes/post-type.php:406
-msgid "Options List"
-msgstr ""
-
-#: includes/post-type.php:304 includes/post-type.php:356
-#: includes/post-type.php:409
-msgid "New Option"
-msgstr ""
-
-#: includes/post-type.php:311 includes/post-type.php:371
-#: includes/post-type.php:379 includes/widgets/active-filters.php:611
-msgid "Value"
-msgstr ""
-
-#: includes/post-type.php:317 includes/post-type.php:364
-#: includes/widgets/active-filters.php:84
-#: includes/widgets/active-filters.php:550 includes/widgets/base.php:182
-#: includes/widgets/date-range.php:1134 includes/widgets/rating.php:308
-#: includes/widgets/search.php:709
-msgid "Label"
-msgstr ""
-
-#: includes/post-type.php:326
-msgid "Type"
-msgstr ""
-
-#: includes/post-type.php:329
-msgid "Choose Type"
-msgstr ""
-
-#: includes/post-type.php:330 includes/post-type.php:386
-#: includes/widgets/active-filters.php:122
-#: includes/widgets/active-filters.php:576
-#: includes/widgets/active-filters.php:596
-#: includes/widgets/active-filters.php:637
-#: includes/widgets/active-filters.php:657
-#: includes/widgets/active-filters.php:754
-#: includes/widgets/active-filters.php:785 includes/widgets/base.php:199
-#: includes/widgets/check-range.php:234 includes/widgets/check-range.php:297
-#: includes/widgets/check-range.php:317 includes/widgets/checkboxes.php:264
-#: includes/widgets/checkboxes.php:327 includes/widgets/checkboxes.php:347
-#: includes/widgets/color-image.php:519 includes/widgets/color-image.php:539
-#: includes/widgets/date-range.php:452 includes/widgets/date-range.php:507
-#: includes/widgets/date-range.php:643 includes/widgets/date-range.php:821
-#: includes/widgets/date-range.php:853 includes/widgets/date-range.php:897
-#: includes/widgets/date-range.php:938 includes/widgets/date-range.php:1061
-#: includes/widgets/date-range.php:1151 includes/widgets/radio.php:280
-#: includes/widgets/radio.php:343 includes/widgets/radio.php:363
-#: includes/widgets/range.php:97 includes/widgets/range.php:128
-#: includes/widgets/range.php:285 includes/widgets/rating.php:325
-#: includes/widgets/search.php:324 includes/widgets/search.php:726
-msgid "Color"
-msgstr ""
-
-#: includes/post-type.php:331 includes/post-type.php:395
-msgid "Image"
-msgstr ""
-
-#: includes/post-type.php:340
-msgid "Behavior"
-msgstr ""
-
-#: includes/post-type.php:343 includes/widgets/check-range.php:88
-#: includes/widgets/checkboxes.php:118
-msgid "Checkbox"
-msgstr ""
-
-#: includes/post-type.php:416 includes/post-type.php:524
-msgid "Min Value"
-msgstr ""
-
-#: includes/post-type.php:422 includes/post-type.php:532
-msgid "Max Value"
-msgstr ""
-
-#: includes/post-type.php:430 includes/post-type.php:439
-msgid "Placeholder"
-msgstr ""
-
-#: includes/post-type.php:432 includes/post-type.php:554
-msgid "Select..."
-msgstr ""
-
-#: includes/post-type.php:441
-msgid "Search..."
-msgstr ""
-
-#: includes/post-type.php:448
-msgid "Search by"
-msgstr ""
-
-#: includes/post-type.php:452
-msgid "Default WordPress search"
-msgstr ""
-
-#: includes/post-type.php:453
-msgid "By Custom Field (from Query Variable)"
-msgstr ""
-
-#: includes/post-type.php:460
-msgid "From Placeholder"
-msgstr ""
-
-#: includes/post-type.php:469
-msgid "To Placeholder"
-msgstr ""
-
-#: includes/post-type.php:478
-msgid "Values prefix"
-msgstr ""
-
-#: includes/post-type.php:487
-msgid "Values suffix"
-msgstr ""
-
-#: includes/post-type.php:496
-msgid "Thousands separator"
-msgstr ""
-
-#: includes/post-type.php:498
-msgid "Use &amp;nbsp; for space"
-msgstr ""
-
-#: includes/post-type.php:506
-msgid "Decimal separator"
-msgstr ""
-
-#: includes/post-type.php:515
-msgid "Number of decimals"
-msgstr ""
-
-#: includes/post-type.php:540
-msgid "Step"
-msgstr ""
-
-#: includes/post-type.php:545
-msgid "1, 10, 100, 0.1 etc"
-msgstr ""
-
-#: includes/post-type.php:551
-msgid "Get min/max dynamically"
-msgstr ""
-
-#: includes/post-type.php:555
-msgid "WooCommerce min/max prices"
-msgstr ""
-
-#: includes/post-type.php:563
-msgid "Exclude/Include"
-msgstr ""
-
-#: includes/post-type.php:566
-msgid "None"
-msgstr ""
-
-#: includes/post-type.php:567
-msgid "Exclude"
-msgstr ""
-
-#: includes/post-type.php:568
-msgid "Include"
-msgstr ""
-
-#: includes/post-type.php:577
-msgid "Exclude Or Include Items"
-msgstr ""
-
-#: includes/post-type.php:594
-msgid "Query Variable *"
-msgstr ""
-
-#: includes/post-type.php:596
-msgid "Set queried field key."
-msgstr ""
-
-#: includes/post-type.php:604
-msgid "Filter Labels"
-msgstr ""
-
-#: includes/post-type.php:615
-msgid "Filter Settings"
-msgstr ""
-
-#: includes/post-type.php:641
-msgid "Notes"
-msgstr ""
-
-#: includes/providers/epro-archive-products.php:143
-msgid "Elementor Pro Archive Products"
-msgstr ""
-
-#: includes/providers/epro-archive.php:169
-msgid "Elementor Pro Archive"
-msgstr ""
-
-#: includes/providers/epro-posts.php:136
-msgid "Elementor Pro Posts"
-msgstr ""
-
-#: includes/providers/epro-products.php:78
-msgid "Elementor Pro Products"
-msgstr ""
-
-#: includes/providers/jet-engine-calendar.php:135
-msgid "JetEngine Calendar"
-msgstr ""
-
-#: includes/providers/jet-engine.php:101
-msgid "JetEngine"
-msgstr ""
-
-#: includes/providers/jet-woo-products-grid.php:239
-msgid "JetWooBuilder Products Grid"
-msgstr ""
-
-#: includes/providers/jet-woo-products-list.php:149
-msgid "JetWooBuilder Products List"
-msgstr ""
-
-#: includes/providers/woocommerce-archive.php:104
-msgid "WooCommerce Archive (by JetWooBuilder)"
-msgstr ""
-
-#: includes/providers/woocommerce-shortcode.php:78
-msgid "WooComerce Shortcode"
-msgstr ""
-
-#: includes/render.php:181
-msgid "Incorrect input data"
-msgstr ""
-
-#: includes/settings.php:102
-msgid "Settings saved"
-msgstr ""
-
-#: includes/settings.php:185 includes/settings.php:186
-#: includes/settings.php:210
-msgid "Jet Smart Filters Settings"
-msgstr ""
-
-#: includes/settings.php:254 includes/settings.php:268
-msgid "Use filters for widgets"
-msgstr ""
-
-#: includes/settings.php:269
-msgid "List of content widgets that available for filtering."
-msgstr ""
-
-#: includes/settings.php:283
-msgid "Save"
-msgstr ""
-
-#: includes/updater/plugin-changelog.php:127
+#: framework/jet-dashboard/inc/plugin-manager.php:224
 #, php-format
 msgid "More information about %s"
 msgstr ""
 
-#: includes/updater/plugin-changelog.php:129
-msgid "View details"
+#: framework/jet-dashboard/jet-dashboard.php:244
+#: framework/jet-dashboard/jet-dashboard.php:245
+msgid "Crocoblock"
 msgstr ""
 
-#: includes/widgets.php:61 includes/widgets/active-filters.php:147
+#: framework/jet-dashboard/jet-dashboard.php:257
+#: framework/jet-dashboard/jet-dashboard.php:258
+msgid "Dashboard"
+msgstr ""
+
+#: framework/jet-dashboard/views/common/sidebar.php:28
+msgid "New to Crocoblock?"
+msgstr ""
+
+#: framework/jet-dashboard/views/common/sidebar.php:29
+msgid "Start Here"
+msgstr ""
+
+#: framework/jet-dashboard/views/common/sidebar.php:63
+msgid "Support & Info"
+msgstr ""
+
+#: framework/jet-dashboard/views/common/sidebar.php:64
+msgid "Help Center"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/license-item.php:9
+msgid "JetPlugins License Activation"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/license-item.php:10
+msgid "Congratulations!"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/license-item.php:10
+msgid "Your license has been activated!"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/license-item.php:13
+msgid "Activate license for automatic updates and awesome support"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/license-item.php:32
+#: framework/jet-dashboard/views/license/license-item.php:103
+#: framework/jet-dashboard/views/license/main.php:146
+msgid "Activate License"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/license-item.php:33
+#: framework/jet-dashboard/views/license/license-item.php:104
+msgid "Deactivate License"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/license-item.php:44
+msgid "License Key:"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/license-item.php:48
+msgid "Product Name:"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/license-item.php:52
+msgid "Status:"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/license-item.php:56
+msgid "Type:"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/license-item.php:60
+msgid "Expiration Date:"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/license-item.php:64
+msgid "Included Plugins:"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/license-item.php:84
+msgid ""
+"This license will activate licenses for all plugins included in this set."
+msgstr ""
+
+#: framework/jet-dashboard/views/license/license-item.php:94
+#: framework/jet-dashboard/views/license/main.php:35
+#: framework/jet-dashboard/views/license/main.php:115
+msgid "License Manager"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/main.php:10
+msgid "Your Installed JetPlugins"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/main.php:22
+msgid "Check For Updates"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/main.php:54
+msgid "More included JetPlugins with your licence"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/main.php:70
+#: framework/jet-dashboard/views/welcome/main.php:207
+msgid "Get More Plugins"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/main.php:105
+msgid "JetPlugins License Deactivation"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/main.php:108
+msgid ""
+"Your license includes several plugins within the package. License "
+"deactivation in one plugin disables it in the rest of them. You can manage "
+"it through the License Manager."
+msgstr ""
+
+#: framework/jet-dashboard/views/license/main.php:128
+msgid "JetPlugin’s Update"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/main.php:139
+msgid "Sorry, but you need to activate license to update your JetPlugin"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/main.php:160
+msgid "Your Licenses"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/main.php:169
+msgid "Add New License"
+msgstr ""
+
+#: framework/jet-dashboard/views/license/main.php:174
+msgid ""
+"Add and Activate license for automatic updates, awesome support, useful "
+"features and more"
+msgstr ""
+
+#: framework/jet-dashboard/views/upsale/main.php:12
+msgid "Dynamic"
+msgstr ""
+
+#: framework/jet-dashboard/views/upsale/main.php:18
+msgid "E-commerce"
+msgstr ""
+
+#: framework/jet-dashboard/views/upsale/main.php:24
+msgid "Design"
+msgstr ""
+
+#: framework/jet-dashboard/views/upsale/main.php:27
+msgid "18 Advanced JetPlugins"
+msgstr ""
+
+#: framework/jet-dashboard/views/upsale/main.php:28
+msgid ""
+"Unlock the ultimate website building toolkit for Elementor 150+ widgets "
+"and 50+ templates"
+msgstr ""
+
+#: framework/jet-dashboard/views/welcome/main.php:20
+msgid "Manage plugins"
+msgstr ""
+
+#: framework/jet-dashboard/views/welcome/main.php:21
+msgid "Updates"
+msgstr ""
+
+#: framework/jet-dashboard/views/welcome/main.php:35
+msgid "Update Now"
+msgstr ""
+
+#: framework/jet-dashboard/views/welcome/main.php:45
+#: framework/jet-dashboard/views/welcome/main.php:95
+msgid "Activate Now"
+msgstr ""
+
+#: framework/jet-dashboard/views/welcome/main.php:60
+msgid "Manage license"
+msgstr ""
+
+#: framework/jet-dashboard/views/welcome/main.php:61
+msgid "Active Licence"
+msgstr ""
+
+#: framework/jet-dashboard/views/welcome/main.php:85
+msgid "License not active"
+msgstr ""
+
+#: framework/jet-dashboard/views/welcome/main.php:94
+msgid "Manage Now"
+msgstr ""
+
+#: framework/jet-dashboard/views/welcome/main.php:109
+msgid "Installed JetPlugins"
+msgstr ""
+
+#: framework/jet-dashboard/views/welcome/main.php:135
+msgid "Install"
+msgstr ""
+
+#: framework/jet-dashboard/views/welcome/main.php:168
+msgid "Install Wizard"
+msgstr ""
+
+#: framework/jet-dashboard/views/welcome/main.php:179
+msgid "Activate Wizard"
+msgstr ""
+
+#: framework/jet-dashboard/views/welcome/main.php:191
+msgid "Enjoy the perks of All-inclusive"
+msgstr ""
+
+#: framework/jet-dashboard/views/welcome/main.php:223
+msgid "Get a JetPlugins bundle"
+msgstr ""
+
+#: framework/jet-dashboard/views/welcome/main.php:224
+msgid "Save up to 60%"
+msgstr ""
+
+#: framework/jet-dashboard/views/welcome/main.php:234
+msgid "See all plans"
+msgstr ""
+
+#: framework/jet-dashboard/views/welcome/main.php:246
+msgid "Hot Deals"
+msgstr ""
+
+#: framework/jet-dashboard/views/welcome/plugin-item-registered.php:29
+msgid "Documentation"
+msgstr ""
+
+#: framework/jet-dashboard/views/welcome/plugin-item-registered.php:55
+msgid "Plugin pages"
+msgstr ""
+
+#: includes/blocks.php:76
+msgid "Select filter..."
+msgstr ""
+
+#: includes/blocks.php:89
+msgid "Select provider..."
+msgstr ""
+
+#: includes/blocks.php:93
+msgid "Listing Grid"
+msgstr ""
+
+#: includes/blocks.php:97 includes/providers/woocommerce-shortcode.php:67
+msgid "WooCommerce Shortcode"
+msgstr ""
+
+#: includes/blocks.php:113
+msgid "Jet Smart Filters"
+msgstr ""
+
+#: includes/blocks/active-filters.php:47 includes/blocks/active-tags.php:46
+#: includes/filters/sorting.php:63 includes/widgets/active-filters.php:119
+#: includes/widgets/active-tags.php:143 includes/widgets/sorting.php:192
+msgid "Title"
+msgstr ""
+
+#: includes/blocks/active-filters.php:63
+#: includes/blocks/active-filters.php:488
+#: includes/blocks/active-filters.php:507
+#: includes/blocks/active-filters.php:551
+#: includes/blocks/active-filters.php:570
+#: includes/blocks/active-filters.php:683
+#: includes/blocks/active-filters.php:711 includes/blocks/active-tags.php:62
+#: includes/blocks/active-tags.php:510 includes/blocks/active-tags.php:529
+#: includes/blocks/active-tags.php:573 includes/blocks/active-tags.php:592
+#: includes/blocks/active-tags.php:705 includes/blocks/active-tags.php:733
+#: includes/blocks/apply-button.php:74 includes/blocks/check-range.php:230
+#: includes/blocks/check-range.php:259 includes/blocks/check-range.php:593
+#: includes/blocks/check-range.php:653 includes/blocks/checkboxes.php:656
+#: includes/blocks/checkboxes.php:716
+#: includes/blocks/common-controls/additional-filter-style.php:76
+#: includes/blocks/common-controls/additional-filter-style.php:198
+#: includes/blocks/common-controls/additional-filter-style.php:222
+#: includes/blocks/common-controls/additional-filter-style.php:291
+#: includes/blocks/common-controls/additional-filter-style.php:537
+#: includes/blocks/date-period.php:1039 includes/blocks/date-period.php:1143
+#: includes/blocks/date-range.php:362 includes/blocks/date-range.php:418
+#: includes/blocks/date-range.php:513 includes/blocks/date-range.php:663
+#: includes/blocks/date-range.php:855 includes/blocks/radio.php:228
+#: includes/blocks/radio.php:257 includes/blocks/radio.php:297
+#: includes/blocks/radio.php:573 includes/blocks/radio.php:633
+#: includes/blocks/range.php:104 includes/blocks/range.php:123
+#: includes/blocks/range.php:243 includes/blocks/range.php:415
+#: includes/blocks/range.php:468 includes/blocks/range.php:549
+#: includes/blocks/rating.php:217 includes/blocks/remove-filters.php:74
+#: includes/blocks/search.php:202 includes/blocks/search.php:309
+#: includes/blocks/select.php:416 includes/blocks/sorting.php:211
+#: includes/blocks/visual.php:200 includes/blocks/visual.php:502
+#: includes/indexer/controls.php:128 includes/indexer/controls.php:148
+#: includes/widgets/active-filters.php:136
+#: includes/widgets/active-filters.php:590
+#: includes/widgets/active-filters.php:610
+#: includes/widgets/active-filters.php:651
+#: includes/widgets/active-filters.php:671
+#: includes/widgets/active-filters.php:768
+#: includes/widgets/active-filters.php:799
+#: includes/widgets/active-tags.php:160 includes/widgets/active-tags.php:711
+#: includes/widgets/active-tags.php:742 includes/widgets/alphabet.php:161
+#: includes/widgets/alphabet.php:192 includes/widgets/base.php:212
+#: includes/widgets/check-range.php:137 includes/widgets/check-range.php:168
+#: includes/widgets/check-range.php:445 includes/widgets/checkboxes.php:162
+#: includes/widgets/checkboxes.php:193 includes/widgets/checkboxes.php:471
+#: includes/widgets/color-image.php:376 includes/widgets/color-image.php:407
+#: includes/widgets/common-controls/additional-filter-style.php:70
+#: includes/widgets/common-controls/additional-filter-style.php:206
+#: includes/widgets/common-controls/additional-filter-style.php:226
+#: includes/widgets/common-controls/air-datepicker-style.php:348
+#: includes/widgets/common-controls/air-datepicker-style.php:379
+#: includes/widgets/common-controls/air-datepicker-style.php:472
+#: includes/widgets/common-controls/air-datepicker-style.php:492
+#: includes/widgets/common-controls/air-datepicker-style.php:531
+#: includes/widgets/common-controls/air-datepicker-style.php:586
+#: includes/widgets/common-controls/air-datepicker-style.php:758
+#: includes/widgets/common-controls/datepicker-style.php:128
+#: includes/widgets/common-controls/datepicker-style.php:183
+#: includes/widgets/common-controls/datepicker-style.php:319
+#: includes/widgets/common-controls/datepicker-style.php:497
+#: includes/widgets/common-controls/datepicker-style.php:529
+#: includes/widgets/common-controls/datepicker-style.php:576
+#: includes/widgets/common-controls/datepicker-style.php:617
+#: includes/widgets/date-period.php:460 includes/widgets/date-period.php:549
+#: includes/widgets/date-range.php:400 includes/widgets/date-range.php:489
+#: includes/widgets/radio.php:165 includes/widgets/radio.php:196
+#: includes/widgets/radio.php:490 includes/widgets/range.php:99
+#: includes/widgets/range.php:119 includes/widgets/range.php:314
+#: includes/widgets/range.php:483 includes/widgets/range.php:567
+#: includes/widgets/rating.php:340 includes/widgets/search.php:360
+#: includes/widgets/search.php:767 includes/widgets/sorting.php:499
+msgid "Color"
+msgstr ""
+
+#: includes/blocks/active-filters.php:73 includes/blocks/active-tags.php:72
+#: includes/blocks/apply-button.php:156 includes/blocks/check-range.php:683
+#: includes/blocks/check-range.php:805 includes/blocks/checkboxes.php:749
+#: includes/blocks/checkboxes.php:881
+#: includes/blocks/common-controls/additional-filter-style.php:120
+#: includes/blocks/date-period.php:493 includes/blocks/date-period.php:1080
+#: includes/blocks/date-period.php:1173 includes/blocks/date-period.php:1314
+#: includes/blocks/date-range.php:247 includes/blocks/date-range.php:885
+#: includes/blocks/date-range.php:1037 includes/blocks/radio.php:663
+#: includes/blocks/radio.php:785 includes/blocks/range.php:252
+#: includes/blocks/range.php:356 includes/blocks/range.php:579
+#: includes/blocks/range.php:701 includes/blocks/rating.php:247
+#: includes/blocks/rating.php:369 includes/blocks/remove-filters.php:156
+#: includes/blocks/search.php:247 includes/blocks/search.php:340
+#: includes/blocks/search.php:459 includes/blocks/select.php:450
+#: includes/blocks/select.php:580 includes/blocks/sorting.php:241
+#: includes/blocks/sorting.php:371 includes/blocks/visual.php:532
+#: includes/blocks/visual.php:654 includes/widgets/active-filters.php:147
+#: includes/widgets/active-tags.php:171 includes/widgets/apply-button.php:295
+#: includes/widgets/base.php:259 includes/widgets/base.php:445
+#: includes/widgets/common-controls/additional-filter-style.php:141
+#: includes/widgets/common-controls/air-datepicker-style.php:172
+#: includes/widgets/common-controls/air-datepicker-style.php:814
+#: includes/widgets/date-period.php:584 includes/widgets/date-period.php:769
+#: includes/widgets/date-range.php:524 includes/widgets/date-range.php:712
+#: includes/widgets/pagination.php:264 includes/widgets/range.php:325
+#: includes/widgets/range.php:422 includes/widgets/rating.php:280
+#: includes/widgets/rating.php:375 includes/widgets/rating.php:561
+#: includes/widgets/remove-filters.php:260 includes/widgets/search.php:432
+#: includes/widgets/search.php:589 includes/widgets/search.php:802
+#: includes/widgets/sorting.php:510 includes/widgets/sorting.php:702
+msgid "Margin"
+msgstr ""
+
+#: includes/blocks/active-filters.php:88 includes/blocks/active-tags.php:87
+#: includes/elementor/widgets.php:70 includes/widgets/active-filters.php:161
 msgid "Filters"
 msgstr ""
 
-#: includes/widgets/active-filters.php:18
-msgid "Active Filters"
+#: includes/blocks/active-filters.php:95 includes/blocks/active-tags.php:94
+#: includes/blocks/check-range.php:64 includes/blocks/checkboxes.php:63
+#: includes/blocks/date-range.php:63 includes/blocks/radio.php:62
+#: includes/blocks/visual.php:60 includes/widgets/active-filters.php:170
+#: includes/widgets/base.php:545 includes/widgets/color-image.php:218
+msgid "Filters Position"
 msgstr ""
 
-#: includes/widgets/active-filters.php:54
-#: includes/widgets/apply-button.php:41 includes/widgets/base.php:39
-#: includes/widgets/color-image.php:80 includes/widgets/date-range.php:58
-#: includes/widgets/date-range.php:166 includes/widgets/pagination.php:52
-#: includes/widgets/rating.php:50 includes/widgets/remove-filters.php:41
-#: includes/widgets/search.php:49 includes/widgets/search.php:143
-#: includes/widgets/select.php:45
-msgid "Content"
+#: includes/blocks/active-filters.php:99
+#: includes/blocks/active-filters.php:310 includes/blocks/active-tags.php:98
+#: includes/blocks/active-tags.php:311 includes/blocks/check-range.php:68
+#: includes/blocks/checkboxes.php:67 includes/blocks/date-range.php:67
+#: includes/blocks/radio.php:66 includes/blocks/search.php:60
+#: includes/blocks/select.php:56 includes/blocks/select.php:125
+#: includes/blocks/visual.php:63 includes/widgets/active-filters.php:176
+#: includes/widgets/active-filters.php:395
+#: includes/widgets/active-tags.php:201 includes/widgets/base.php:550
+#: includes/widgets/color-image.php:223 includes/widgets/date-range.php:206
+#: includes/widgets/range.php:621 includes/widgets/search.php:193
+#: includes/widgets/select.php:66 includes/widgets/select.php:300
+msgid "Line"
 msgstr ""
 
-#: includes/widgets/active-filters.php:61
-msgid "Show active filters for:"
+#: includes/blocks/active-filters.php:103
+#: includes/blocks/active-filters.php:314 includes/blocks/active-tags.php:102
+#: includes/blocks/active-tags.php:315 includes/blocks/check-range.php:72
+#: includes/blocks/checkboxes.php:71 includes/blocks/date-range.php:71
+#: includes/blocks/radio.php:70 includes/blocks/search.php:64
+#: includes/blocks/select.php:60 includes/blocks/select.php:129
+#: includes/blocks/visual.php:67 includes/widgets/active-filters.php:180
+#: includes/widgets/active-filters.php:399
+#: includes/widgets/active-tags.php:205 includes/widgets/base.php:554
+#: includes/widgets/color-image.php:227
+msgid "Column"
 msgstr ""
 
-#: includes/widgets/active-filters.php:71
-#: includes/widgets/apply-button.php:69 includes/widgets/base.php:81
-#: includes/widgets/color-image.php:122 includes/widgets/date-range.php:96
-#: includes/widgets/pagination.php:80 includes/widgets/rating.php:78
-#: includes/widgets/remove-filters.php:69 includes/widgets/search.php:87
-msgid "Apply type"
+#: includes/blocks/active-filters.php:121 includes/blocks/active-tags.php:120
+#: includes/blocks/check-range.php:90 includes/blocks/checkboxes.php:89
+#: includes/blocks/date-period.php:211 includes/blocks/radio.php:88
+#: includes/blocks/visual.php:84 includes/indexer/controls.php:94
+#: includes/widgets/active-filters.php:194
+#: includes/widgets/active-tags.php:219 includes/widgets/base.php:578
+#: includes/widgets/check-range.php:305 includes/widgets/checkboxes.php:330
+#: includes/widgets/color-image.php:240 includes/widgets/color-image.php:542
+#: includes/widgets/date-period.php:265 includes/widgets/radio.php:333
+msgid "Horizontal Offset"
 msgstr ""
 
-#: includes/widgets/active-filters.php:75
-#: includes/widgets/apply-button.php:73 includes/widgets/base.php:85
-#: includes/widgets/color-image.php:126 includes/widgets/date-range.php:100
-#: includes/widgets/pagination.php:84 includes/widgets/rating.php:82
-#: includes/widgets/remove-filters.php:73 includes/widgets/search.php:91
-msgid "AJAX"
+#: includes/blocks/active-filters.php:150 includes/blocks/active-tags.php:149
+#: includes/blocks/visual.php:111 includes/widgets/active-filters.php:221
+#: includes/widgets/active-tags.php:246 includes/widgets/check-range.php:285
+#: includes/widgets/color-image.php:268 includes/widgets/radio.php:313
+msgid "Vertical Offset"
 msgstr ""
 
-#: includes/widgets/active-filters.php:76
-#: includes/widgets/apply-button.php:74 includes/widgets/base.php:86
-#: includes/widgets/color-image.php:127 includes/widgets/date-range.php:101
-#: includes/widgets/pagination.php:85 includes/widgets/rating.php:83
-#: includes/widgets/remove-filters.php:74 includes/widgets/search.php:92
-msgid "Page reload"
+#: includes/blocks/active-filters.php:179
+#: includes/blocks/active-filters.php:407
+#: includes/blocks/active-filters.php:426
+#: includes/blocks/active-filters.php:692
+#: includes/blocks/active-filters.php:720 includes/blocks/active-tags.php:178
+#: includes/blocks/active-tags.php:357 includes/blocks/active-tags.php:376
+#: includes/blocks/active-tags.php:439 includes/blocks/active-tags.php:467
+#: includes/blocks/active-tags.php:714 includes/blocks/active-tags.php:742
+#: includes/blocks/apply-button.php:84 includes/blocks/apply-button.php:113
+#: includes/blocks/check-range.php:240 includes/blocks/check-range.php:269
+#: includes/blocks/check-range.php:471 includes/blocks/check-range.php:490
+#: includes/blocks/check-range.php:733 includes/blocks/check-range.php:761
+#: includes/blocks/check-range.php:883 includes/blocks/checkboxes.php:519
+#: includes/blocks/checkboxes.php:543 includes/blocks/checkboxes.php:799
+#: includes/blocks/checkboxes.php:832 includes/blocks/checkboxes.php:959
+#: includes/blocks/common-controls/additional-filter-style.php:89
+#: includes/blocks/common-controls/additional-filter-style.php:305
+#: includes/blocks/common-controls/additional-filter-style.php:344
+#: includes/blocks/common-controls/additional-filter-style.php:552
+#: includes/blocks/date-period.php:109 includes/blocks/date-period.php:294
+#: includes/blocks/date-period.php:545 includes/blocks/date-period.php:674
+#: includes/blocks/date-period.php:1049 includes/blocks/date-period.php:1232
+#: includes/blocks/date-period.php:1265 includes/blocks/date-range.php:216
+#: includes/blocks/date-range.php:321 includes/blocks/date-range.php:523
+#: includes/blocks/date-range.php:674 includes/blocks/date-range.php:964
+#: includes/blocks/date-range.php:993 includes/blocks/pagination.php:57
+#: includes/blocks/pagination.php:131 includes/blocks/pagination.php:160
+#: includes/blocks/pagination.php:197 includes/blocks/pagination.php:234
+#: includes/blocks/radio.php:238 includes/blocks/radio.php:268
+#: includes/blocks/radio.php:307 includes/blocks/radio.php:455
+#: includes/blocks/radio.php:474 includes/blocks/radio.php:503
+#: includes/blocks/radio.php:713 includes/blocks/radio.php:741
+#: includes/blocks/radio.php:863 includes/blocks/range.php:201
+#: includes/blocks/range.php:424 includes/blocks/range.php:477
+#: includes/blocks/range.php:629 includes/blocks/range.php:657
+#: includes/blocks/rating.php:297 includes/blocks/rating.php:325
+#: includes/blocks/remove-filters.php:84
+#: includes/blocks/remove-filters.php:113 includes/blocks/search.php:217
+#: includes/blocks/search.php:387 includes/blocks/search.php:415
+#: includes/blocks/select.php:280 includes/blocks/select.php:508
+#: includes/blocks/select.php:536 includes/blocks/sorting.php:106
+#: includes/blocks/sorting.php:299 includes/blocks/sorting.php:327
+#: includes/blocks/visual.php:210 includes/blocks/visual.php:582
+#: includes/blocks/visual.php:610 includes/blocks/visual.php:732
+#: includes/widgets/active-filters.php:245
+#: includes/widgets/active-filters.php:475
+#: includes/widgets/active-filters.php:495
+#: includes/widgets/active-tags.php:270 includes/widgets/active-tags.php:443
+#: includes/widgets/active-tags.php:474 includes/widgets/active-tags.php:572
+#: includes/widgets/active-tags.php:603 includes/widgets/alphabet.php:172
+#: includes/widgets/alphabet.php:203 includes/widgets/apply-button.php:190
+#: includes/widgets/apply-button.php:221 includes/widgets/base.php:340
+#: includes/widgets/base.php:371 includes/widgets/check-range.php:148
+#: includes/widgets/check-range.php:179 includes/widgets/check-range.php:338
+#: includes/widgets/check-range.php:358 includes/widgets/checkboxes.php:173
+#: includes/widgets/checkboxes.php:204 includes/widgets/checkboxes.php:364
+#: includes/widgets/checkboxes.php:384 includes/widgets/color-image.php:387
+#: includes/widgets/color-image.php:418
+#: includes/widgets/common-controls/additional-filter-style.php:85
+#: includes/widgets/common-controls/additional-filter-style.php:294
+#: includes/widgets/common-controls/additional-filter-style.php:325
+#: includes/widgets/common-controls/additional-filter-style.php:401
+#: includes/widgets/common-controls/additional-filter-style.php:541
+#: includes/widgets/common-controls/additional-filter-style.php:648
+#: includes/widgets/common-controls/additional-filter-style.php:679
+#: includes/widgets/common-controls/additional-filter-style.php:786
+#: includes/widgets/common-controls/air-datepicker-style.php:61
+#: includes/widgets/common-controls/air-datepicker-style.php:126
+#: includes/widgets/common-controls/air-datepicker-style.php:220
+#: includes/widgets/common-controls/air-datepicker-style.php:251
+#: includes/widgets/common-controls/air-datepicker-style.php:359
+#: includes/widgets/common-controls/air-datepicker-style.php:390
+#: includes/widgets/common-controls/air-datepicker-style.php:507
+#: includes/widgets/common-controls/air-datepicker-style.php:543
+#: includes/widgets/common-controls/air-datepicker-style.php:597
+#: includes/widgets/common-controls/air-datepicker-style.php:769
+#: includes/widgets/common-controls/datepicker-style.php:63
+#: includes/widgets/common-controls/datepicker-style.php:330
+#: includes/widgets/common-controls/datepicker-style.php:509
+#: includes/widgets/common-controls/datepicker-style.php:542
+#: includes/widgets/common-controls/datepicker-style.php:587
+#: includes/widgets/common-controls/datepicker-style.php:629
+#: includes/widgets/date-period.php:122 includes/widgets/date-period.php:153
+#: includes/widgets/date-period.php:324 includes/widgets/date-period.php:355
+#: includes/widgets/date-period.php:471 includes/widgets/date-period.php:664
+#: includes/widgets/date-period.php:695 includes/widgets/date-range.php:411
+#: includes/widgets/date-range.php:607 includes/widgets/date-range.php:638
+#: includes/widgets/pagination.php:210 includes/widgets/pagination.php:304
+#: includes/widgets/pagination.php:337 includes/widgets/pagination.php:382
+#: includes/widgets/pagination.php:427 includes/widgets/radio.php:176
+#: includes/widgets/radio.php:207 includes/widgets/radio.php:367
+#: includes/widgets/radio.php:395 includes/widgets/range.php:219
+#: includes/widgets/range.php:494 includes/widgets/range.php:578
+#: includes/widgets/rating.php:456 includes/widgets/rating.php:487
+#: includes/widgets/remove-filters.php:155
+#: includes/widgets/remove-filters.php:186 includes/widgets/search.php:376
+#: includes/widgets/search.php:484 includes/widgets/search.php:515
+#: includes/widgets/select.php:176 includes/widgets/sorting.php:374
+#: includes/widgets/sorting.php:597 includes/widgets/sorting.php:628
+msgid "Background Color"
 msgstr ""
 
-#: includes/widgets/active-filters.php:86
+#: includes/blocks/active-filters.php:189
+#: includes/blocks/active-filters.php:382
+#: includes/blocks/active-filters.php:742 includes/blocks/active-tags.php:188
+#: includes/blocks/active-tags.php:332 includes/blocks/active-tags.php:764
+#: includes/blocks/alphabet.php:259 includes/blocks/apply-button.php:136
+#: includes/blocks/check-range.php:357 includes/blocks/check-range.php:547
+#: includes/blocks/check-range.php:662 includes/blocks/check-range.php:785
+#: includes/blocks/check-range.php:908 includes/blocks/checkboxes.php:405
+#: includes/blocks/checkboxes.php:605 includes/blocks/checkboxes.php:728
+#: includes/blocks/checkboxes.php:861 includes/blocks/checkboxes.php:984
+#: includes/blocks/common-controls/additional-filter-style.php:99
+#: includes/blocks/common-controls/additional-filter-style.php:377
+#: includes/blocks/common-controls/additional-filter-style.php:567
+#: includes/blocks/date-period.php:151 includes/blocks/date-period.php:345
+#: includes/blocks/date-period.php:431 includes/blocks/date-period.php:473
+#: includes/blocks/date-period.php:596 includes/blocks/date-period.php:725
+#: includes/blocks/date-period.php:1152 includes/blocks/date-period.php:1294
+#: includes/blocks/date-range.php:227 includes/blocks/date-range.php:330
+#: includes/blocks/date-range.php:486 includes/blocks/date-range.php:532
+#: includes/blocks/date-range.php:564 includes/blocks/date-range.php:600
+#: includes/blocks/date-range.php:811 includes/blocks/date-range.php:864
+#: includes/blocks/date-range.php:1017 includes/blocks/pagination.php:66
+#: includes/blocks/pagination.php:322 includes/blocks/radio.php:341
+#: includes/blocks/radio.php:526 includes/blocks/radio.php:642
+#: includes/blocks/radio.php:765 includes/blocks/radio.php:888
+#: includes/blocks/range.php:136 includes/blocks/range.php:212
+#: includes/blocks/range.php:434 includes/blocks/range.php:558
+#: includes/blocks/range.php:681 includes/blocks/rating.php:226
+#: includes/blocks/rating.php:349 includes/blocks/remove-filters.php:136
+#: includes/blocks/search.php:227 includes/blocks/search.php:319
+#: includes/blocks/search.php:439 includes/blocks/select.php:291
+#: includes/blocks/select.php:429 includes/blocks/select.php:560
+#: includes/blocks/sorting.php:128 includes/blocks/sorting.php:220
+#: includes/blocks/sorting.php:351 includes/blocks/visual.php:313
+#: includes/blocks/visual.php:400 includes/blocks/visual.php:511
+#: includes/blocks/visual.php:634 includes/blocks/visual.php:757
+#: includes/widgets/active-filters.php:257
+#: includes/widgets/active-filters.php:522
+#: includes/widgets/active-filters.php:837
+#: includes/widgets/active-tags.php:282 includes/widgets/active-tags.php:501
+#: includes/widgets/active-tags.php:780 includes/widgets/alphabet.php:243
+#: includes/widgets/apply-button.php:251 includes/widgets/base.php:224
+#: includes/widgets/base.php:401 includes/widgets/check-range.php:219
+#: includes/widgets/check-range.php:385 includes/widgets/checkboxes.php:244
+#: includes/widgets/checkboxes.php:411 includes/widgets/color-image.php:458
+#: includes/widgets/color-image.php:577
+#: includes/widgets/common-controls/additional-filter-style.php:97
+#: includes/widgets/common-controls/additional-filter-style.php:706
+#: includes/widgets/common-controls/air-datepicker-style.php:73
+#: includes/widgets/common-controls/air-datepicker-style.php:138
+#: includes/widgets/common-controls/air-datepicker-style.php:281
+#: includes/widgets/common-controls/air-datepicker-style.php:420
+#: includes/widgets/common-controls/datepicker-style.php:75
+#: includes/widgets/common-controls/datepicker-style.php:262
+#: includes/widgets/common-controls/datepicker-style.php:342
+#: includes/widgets/common-controls/datepicker-style.php:432
+#: includes/widgets/common-controls/datepicker-style.php:657
+#: includes/widgets/date-period.php:483 includes/widgets/date-period.php:561
+#: includes/widgets/date-period.php:725 includes/widgets/date-range.php:423
+#: includes/widgets/date-range.php:501 includes/widgets/date-range.php:668
+#: includes/widgets/pagination.php:222 includes/widgets/pagination.php:536
+#: includes/widgets/radio.php:247 includes/widgets/radio.php:430
+#: includes/widgets/range.php:135 includes/widgets/range.php:233
+#: includes/widgets/range.php:506 includes/widgets/rating.php:352
+#: includes/widgets/rating.php:517 includes/widgets/remove-filters.php:216
+#: includes/widgets/search.php:388 includes/widgets/search.php:545
+#: includes/widgets/search.php:779 includes/widgets/sorting.php:658
+msgid "Border"
+msgstr ""
+
+#: includes/blocks/active-filters.php:199
+#: includes/blocks/active-filters.php:448
+#: includes/blocks/active-filters.php:752 includes/blocks/active-tags.php:197
+#: includes/blocks/active-tags.php:398 includes/blocks/active-tags.php:773
+#: includes/blocks/alphabet.php:248 includes/blocks/apply-button.php:145
+#: includes/blocks/check-range.php:346 includes/blocks/check-range.php:672
+#: includes/blocks/check-range.php:794 includes/blocks/check-range.php:897
+#: includes/blocks/checkboxes.php:394 includes/blocks/checkboxes.php:738
+#: includes/blocks/checkboxes.php:870 includes/blocks/checkboxes.php:973
+#: includes/blocks/common-controls/additional-filter-style.php:109
+#: includes/blocks/common-controls/additional-filter-style.php:387
+#: includes/blocks/common-controls/additional-filter-style.php:577
+#: includes/blocks/date-period.php:160 includes/blocks/date-period.php:440
+#: includes/blocks/date-period.php:482 includes/blocks/date-period.php:605
+#: includes/blocks/date-period.php:734 includes/blocks/date-period.php:954
+#: includes/blocks/date-period.php:981 includes/blocks/date-period.php:1008
+#: includes/blocks/date-period.php:1069 includes/blocks/date-period.php:1162
+#: includes/blocks/date-period.php:1303 includes/blocks/date-range.php:236
+#: includes/blocks/date-range.php:340 includes/blocks/date-range.php:476
+#: includes/blocks/date-range.php:542 includes/blocks/date-range.php:590
+#: includes/blocks/date-range.php:820 includes/blocks/date-range.php:874
+#: includes/blocks/date-range.php:1026 includes/blocks/pagination.php:76
+#: includes/blocks/pagination.php:256 includes/blocks/radio.php:330
+#: includes/blocks/radio.php:652 includes/blocks/radio.php:774
+#: includes/blocks/radio.php:877 includes/blocks/range.php:443
+#: includes/blocks/range.php:486 includes/blocks/range.php:568
+#: includes/blocks/range.php:690 includes/blocks/rating.php:236
+#: includes/blocks/rating.php:358 includes/blocks/remove-filters.php:145
+#: includes/blocks/search.php:236 includes/blocks/search.php:329
+#: includes/blocks/search.php:448 includes/blocks/select.php:300
+#: includes/blocks/select.php:439 includes/blocks/select.php:569
+#: includes/blocks/sorting.php:116 includes/blocks/sorting.php:230
+#: includes/blocks/sorting.php:360 includes/blocks/visual.php:302
+#: includes/blocks/visual.php:521 includes/blocks/visual.php:643
+#: includes/blocks/visual.php:746 includes/widgets/active-filters.php:287
+#: includes/widgets/active-filters.php:552
+#: includes/widgets/active-filters.php:859
+#: includes/widgets/active-tags.php:312 includes/widgets/active-tags.php:531
+#: includes/widgets/active-tags.php:802 includes/widgets/alphabet.php:229
+#: includes/widgets/apply-button.php:282 includes/widgets/base.php:246
+#: includes/widgets/base.php:432 includes/widgets/check-range.php:205
+#: includes/widgets/checkboxes.php:230 includes/widgets/color-image.php:444
+#: includes/widgets/common-controls/additional-filter-style.php:128
+#: includes/widgets/common-controls/additional-filter-style.php:380
+#: includes/widgets/common-controls/additional-filter-style.php:420
+#: includes/widgets/common-controls/additional-filter-style.php:581
+#: includes/widgets/common-controls/additional-filter-style.php:727
+#: includes/widgets/common-controls/air-datepicker-style.php:103
+#: includes/widgets/common-controls/air-datepicker-style.php:160
+#: includes/widgets/common-controls/air-datepicker-style.php:301
+#: includes/widgets/common-controls/air-datepicker-style.php:440
+#: includes/widgets/common-controls/air-datepicker-style.php:664
+#: includes/widgets/common-controls/air-datepicker-style.php:695
+#: includes/widgets/common-controls/air-datepicker-style.php:726
+#: includes/widgets/common-controls/air-datepicker-style.php:801
+#: includes/widgets/common-controls/datepicker-style.php:105
+#: includes/widgets/common-controls/datepicker-style.php:249
+#: includes/widgets/common-controls/datepicker-style.php:364
+#: includes/widgets/common-controls/datepicker-style.php:419
+#: includes/widgets/common-controls/datepicker-style.php:680
+#: includes/widgets/date-period.php:212 includes/widgets/date-period.php:514
+#: includes/widgets/date-period.php:571 includes/widgets/date-period.php:756
+#: includes/widgets/date-range.php:454 includes/widgets/date-range.php:511
+#: includes/widgets/date-range.php:699 includes/widgets/pagination.php:252
+#: includes/widgets/pagination.php:467 includes/widgets/radio.php:233
+#: includes/widgets/range.php:537 includes/widgets/range.php:589
+#: includes/widgets/rating.php:362 includes/widgets/rating.php:548
+#: includes/widgets/remove-filters.php:247 includes/widgets/search.php:419
+#: includes/widgets/search.php:576 includes/widgets/search.php:789
+#: includes/widgets/select.php:219 includes/widgets/sorting.php:417
+#: includes/widgets/sorting.php:689
+msgid "Padding"
+msgstr ""
+
+#: includes/blocks/active-filters.php:210 includes/blocks/active-tags.php:208
+#: includes/blocks/search.php:114 includes/widgets/date-range.php:289
+#: includes/widgets/search.php:276
+msgid "Vertical Alignment"
+msgstr ""
+
+#: includes/blocks/active-filters.php:214 includes/blocks/active-tags.php:212
+#: includes/blocks/common-controls/additional-filter-style.php:437
+#: includes/widgets/date-range.php:294 includes/widgets/search.php:281
+msgid "Top"
+msgstr ""
+
+#: includes/blocks/active-filters.php:218
+#: includes/blocks/active-filters.php:246 includes/blocks/active-tags.php:216
+#: includes/blocks/active-tags.php:244 includes/blocks/alphabet.php:85
+#: includes/blocks/apply-button.php:176 includes/blocks/check-range.php:130
+#: includes/blocks/check-range.php:632 includes/blocks/check-range.php:824
+#: includes/blocks/checkboxes.php:129 includes/blocks/checkboxes.php:695
+#: includes/blocks/checkboxes.php:900
+#: includes/blocks/common-controls/additional-filter-style.php:441
+#: includes/blocks/date-period.php:179 includes/blocks/date-period.php:1121
+#: includes/blocks/date-period.php:1333 includes/blocks/date-range.php:99
+#: includes/blocks/date-range.php:134 includes/blocks/date-range.php:904
+#: includes/blocks/date-range.php:1056 includes/blocks/pagination.php:339
+#: includes/blocks/radio.php:125 includes/blocks/radio.php:612
+#: includes/blocks/radio.php:804 includes/blocks/range.php:271
+#: includes/blocks/range.php:375 includes/blocks/range.php:527
+#: includes/blocks/range.php:720 includes/blocks/rating.php:144
+#: includes/blocks/rating.php:195 includes/blocks/rating.php:388
+#: includes/blocks/remove-filters.php:175 includes/blocks/search.php:122
+#: includes/blocks/search.php:158 includes/blocks/search.php:288
+#: includes/blocks/search.php:478 includes/blocks/select.php:319
+#: includes/blocks/select.php:395 includes/blocks/select.php:599
+#: includes/blocks/sorting.php:184 includes/blocks/sorting.php:390
+#: includes/blocks/visual.php:145 includes/blocks/visual.php:481
+#: includes/blocks/visual.php:673 includes/widgets/active-filters.php:307
+#: includes/widgets/active-filters.php:335
+#: includes/widgets/active-tags.php:332 includes/widgets/active-tags.php:360
+#: includes/widgets/alphabet.php:96 includes/widgets/apply-button.php:315
+#: includes/widgets/base.php:279 includes/widgets/base.php:465
+#: includes/widgets/base.php:613 includes/widgets/color-image.php:303
+#: includes/widgets/common-controls/additional-filter-style.php:442
+#: includes/widgets/date-period.php:233 includes/widgets/date-period.php:604
+#: includes/widgets/date-range.php:265 includes/widgets/date-range.php:330
+#: includes/widgets/date-range.php:544 includes/widgets/pagination.php:567
+#: includes/widgets/range.php:347 includes/widgets/range.php:444
+#: includes/widgets/rating.php:301 includes/widgets/rating.php:395
+#: includes/widgets/rating.php:581 includes/widgets/remove-filters.php:280
+#: includes/widgets/search.php:252 includes/widgets/search.php:317
+#: includes/widgets/search.php:609 includes/widgets/search.php:822
+#: includes/widgets/select.php:240 includes/widgets/sorting.php:319
+#: includes/widgets/sorting.php:438 includes/widgets/sorting.php:531
+#: includes/widgets/sorting.php:722
+msgid "Center"
+msgstr ""
+
+#: includes/blocks/active-filters.php:222 includes/blocks/active-tags.php:220
+#: includes/blocks/common-controls/additional-filter-style.php:445
+#: includes/widgets/date-range.php:302 includes/widgets/search.php:289
+msgid "Bottom"
+msgstr ""
+
+#: includes/blocks/active-filters.php:239 includes/blocks/active-tags.php:237
+#: includes/blocks/date-period.php:171 includes/blocks/date-range.php:92
+#: includes/blocks/date-range.php:127 includes/blocks/search.php:150
+#: includes/widgets/date-range.php:257 includes/widgets/date-range.php:322
+#: includes/widgets/search.php:244 includes/widgets/search.php:309
+msgid "Horizontal Alignment"
+msgstr ""
+
+#: includes/blocks/active-filters.php:242 includes/blocks/active-tags.php:240
+#: includes/blocks/alphabet.php:81 includes/blocks/apply-button.php:172
+#: includes/blocks/check-range.php:126 includes/blocks/check-range.php:628
+#: includes/blocks/check-range.php:820 includes/blocks/checkboxes.php:125
+#: includes/blocks/checkboxes.php:691 includes/blocks/checkboxes.php:896
+#: includes/blocks/date-period.php:175 includes/blocks/date-period.php:1117
+#: includes/blocks/date-period.php:1329 includes/blocks/date-range.php:95
+#: includes/blocks/date-range.php:130 includes/blocks/date-range.php:900
+#: includes/blocks/date-range.php:1052 includes/blocks/pagination.php:335
+#: includes/blocks/radio.php:121 includes/blocks/radio.php:608
+#: includes/blocks/radio.php:800 includes/blocks/range.php:267
+#: includes/blocks/range.php:371 includes/blocks/range.php:523
+#: includes/blocks/range.php:716 includes/blocks/rating.php:140
+#: includes/blocks/rating.php:191 includes/blocks/rating.php:384
+#: includes/blocks/remove-filters.php:171 includes/blocks/search.php:118
+#: includes/blocks/search.php:154 includes/blocks/search.php:284
+#: includes/blocks/search.php:474 includes/blocks/select.php:315
+#: includes/blocks/select.php:391 includes/blocks/select.php:595
+#: includes/blocks/sorting.php:180 includes/blocks/sorting.php:386
+#: includes/blocks/visual.php:141 includes/blocks/visual.php:477
+#: includes/blocks/visual.php:669 includes/widgets/active-filters.php:303
+#: includes/widgets/active-filters.php:331
+#: includes/widgets/active-tags.php:328 includes/widgets/active-tags.php:356
+#: includes/widgets/alphabet.php:92 includes/widgets/apply-button.php:311
+#: includes/widgets/base.php:275 includes/widgets/base.php:461
+#: includes/widgets/base.php:609 includes/widgets/color-image.php:299
+#: includes/widgets/common-controls/additional-filter-style.php:438
+#: includes/widgets/date-period.php:229 includes/widgets/date-period.php:600
+#: includes/widgets/date-period.php:798 includes/widgets/date-range.php:261
+#: includes/widgets/date-range.php:326 includes/widgets/date-range.php:540
+#: includes/widgets/date-range.php:741 includes/widgets/pagination.php:563
+#: includes/widgets/range.php:343 includes/widgets/range.php:440
+#: includes/widgets/rating.php:297 includes/widgets/rating.php:391
+#: includes/widgets/rating.php:577 includes/widgets/remove-filters.php:276
+#: includes/widgets/search.php:248 includes/widgets/search.php:313
+#: includes/widgets/search.php:605 includes/widgets/search.php:646
+#: includes/widgets/search.php:818 includes/widgets/select.php:236
+#: includes/widgets/sorting.php:315 includes/widgets/sorting.php:434
+#: includes/widgets/sorting.php:527 includes/widgets/sorting.php:718
+msgid "Left"
+msgstr ""
+
+#: includes/blocks/active-filters.php:250 includes/blocks/active-tags.php:248
+#: includes/blocks/alphabet.php:89 includes/blocks/apply-button.php:180
+#: includes/blocks/check-range.php:134 includes/blocks/check-range.php:636
+#: includes/blocks/check-range.php:828 includes/blocks/checkboxes.php:133
+#: includes/blocks/checkboxes.php:699 includes/blocks/checkboxes.php:904
+#: includes/blocks/date-period.php:183 includes/blocks/date-period.php:1125
+#: includes/blocks/date-period.php:1337 includes/blocks/date-range.php:103
+#: includes/blocks/date-range.php:138 includes/blocks/date-range.php:908
+#: includes/blocks/date-range.php:1060 includes/blocks/pagination.php:343
+#: includes/blocks/radio.php:129 includes/blocks/radio.php:616
+#: includes/blocks/radio.php:808 includes/blocks/range.php:275
+#: includes/blocks/range.php:379 includes/blocks/range.php:531
+#: includes/blocks/range.php:724 includes/blocks/rating.php:148
+#: includes/blocks/rating.php:199 includes/blocks/rating.php:392
+#: includes/blocks/remove-filters.php:179 includes/blocks/search.php:126
+#: includes/blocks/search.php:162 includes/blocks/search.php:292
+#: includes/blocks/search.php:482 includes/blocks/select.php:323
+#: includes/blocks/select.php:399 includes/blocks/select.php:603
+#: includes/blocks/sorting.php:188 includes/blocks/sorting.php:394
+#: includes/blocks/visual.php:149 includes/blocks/visual.php:485
+#: includes/blocks/visual.php:677 includes/widgets/active-filters.php:311
+#: includes/widgets/active-filters.php:339
+#: includes/widgets/active-tags.php:336 includes/widgets/active-tags.php:364
+#: includes/widgets/alphabet.php:100 includes/widgets/apply-button.php:319
+#: includes/widgets/base.php:283 includes/widgets/base.php:469
+#: includes/widgets/base.php:617 includes/widgets/color-image.php:307
+#: includes/widgets/common-controls/additional-filter-style.php:446
+#: includes/widgets/date-period.php:237 includes/widgets/date-period.php:608
+#: includes/widgets/date-period.php:802 includes/widgets/date-range.php:269
+#: includes/widgets/date-range.php:334 includes/widgets/date-range.php:548
+#: includes/widgets/date-range.php:745 includes/widgets/pagination.php:571
+#: includes/widgets/range.php:351 includes/widgets/range.php:448
+#: includes/widgets/rating.php:305 includes/widgets/rating.php:399
+#: includes/widgets/rating.php:585 includes/widgets/remove-filters.php:284
+#: includes/widgets/search.php:256 includes/widgets/search.php:321
+#: includes/widgets/search.php:613 includes/widgets/search.php:650
+#: includes/widgets/search.php:826 includes/widgets/select.php:244
+#: includes/widgets/sorting.php:323 includes/widgets/sorting.php:442
+#: includes/widgets/sorting.php:535 includes/widgets/sorting.php:726
+msgid "Right"
+msgstr ""
+
+#: includes/blocks/active-filters.php:274 includes/blocks/active-tags.php:272
+#: includes/blocks/alphabet.php:44 includes/blocks/check-range.php:57
+#: includes/blocks/checkboxes.php:56 includes/blocks/pagination.php:90
+#: includes/blocks/radio.php:55 includes/blocks/visual.php:53
+#: includes/widgets/active-filters.php:357 includes/widgets/alphabet.php:52
+#: includes/widgets/check-range.php:60 includes/widgets/checkboxes.php:61
+#: includes/widgets/color-image.php:209 includes/widgets/pagination.php:278
+#: includes/widgets/radio.php:62
+msgid "Items"
+msgstr ""
+
+#: includes/blocks/active-filters.php:281 includes/blocks/active-tags.php:279
+#: includes/blocks/alphabet.php:116 includes/widgets/active-filters.php:366
+#: includes/widgets/active-tags.php:391 includes/widgets/alphabet.php:124
+msgid "Minimal Width"
+msgstr ""
+
+#: includes/blocks/active-filters.php:306 includes/blocks/active-tags.php:307
+#: includes/widgets/active-filters.php:390
+msgid "Filter Content Position"
+msgstr ""
+
+#: includes/blocks/active-filters.php:331
+msgid "Horizontal Space Between Content"
+msgstr ""
+
+#: includes/blocks/active-filters.php:357
+msgid "Vertical Space Between Content"
+msgstr ""
+
+#: includes/blocks/active-filters.php:400
+#: includes/blocks/active-filters.php:481
+#: includes/blocks/active-filters.php:544
+#: includes/blocks/active-filters.php:676 includes/blocks/active-tags.php:350
+#: includes/blocks/active-tags.php:423 includes/blocks/active-tags.php:503
+#: includes/blocks/active-tags.php:566 includes/blocks/active-tags.php:698
+#: includes/blocks/alphabet.php:159 includes/blocks/apply-button.php:67
+#: includes/blocks/check-range.php:223 includes/blocks/check-range.php:464
+#: includes/blocks/check-range.php:717 includes/blocks/checkboxes.php:251
+#: includes/blocks/checkboxes.php:512 includes/blocks/checkboxes.php:783
+#: includes/blocks/common-controls/additional-filter-style.php:191
+#: includes/blocks/common-controls/additional-filter-style.php:284
+#: includes/blocks/common-controls/additional-filter-style.php:634
+#: includes/blocks/date-period.php:92 includes/blocks/date-period.php:277
+#: includes/blocks/date-period.php:528 includes/blocks/date-period.php:657
+#: includes/blocks/date-period.php:1216 includes/blocks/date-range.php:948
+#: includes/blocks/pagination.php:114 includes/blocks/radio.php:221
+#: includes/blocks/radio.php:448 includes/blocks/radio.php:697
+#: includes/blocks/range.php:613 includes/blocks/rating.php:281
+#: includes/blocks/remove-filters.php:67 includes/blocks/search.php:371
+#: includes/blocks/select.php:492 includes/blocks/sorting.php:283
+#: includes/blocks/visual.php:193 includes/blocks/visual.php:393
+#: includes/blocks/visual.php:566 includes/indexer/controls.php:121
+#: includes/widgets/active-filters.php:468
+#: includes/widgets/active-filters.php:583
+#: includes/widgets/active-filters.php:644
+#: includes/widgets/active-filters.php:761
+#: includes/widgets/active-tags.php:425 includes/widgets/active-tags.php:554
+#: includes/widgets/active-tags.php:704 includes/widgets/alphabet.php:154
+#: includes/widgets/apply-button.php:172 includes/widgets/base.php:322
+#: includes/widgets/check-range.php:130 includes/widgets/check-range.php:331
+#: includes/widgets/checkboxes.php:155 includes/widgets/checkboxes.php:357
+#: includes/widgets/color-image.php:369 includes/widgets/color-image.php:569
+#: includes/widgets/common-controls/additional-filter-style.php:199
+#: includes/widgets/common-controls/additional-filter-style.php:276
+#: includes/widgets/common-controls/additional-filter-style.php:630
+#: includes/widgets/common-controls/air-datepicker-style.php:202
+#: includes/widgets/common-controls/air-datepicker-style.php:341
+#: includes/widgets/date-period.php:104 includes/widgets/date-period.php:306
+#: includes/widgets/date-period.php:646 includes/widgets/date-range.php:589
+#: includes/widgets/pagination.php:297 includes/widgets/radio.php:158
+#: includes/widgets/radio.php:360 includes/widgets/rating.php:438
+#: includes/widgets/remove-filters.php:137 includes/widgets/search.php:466
+#: includes/widgets/sorting.php:579
+msgid "Normal"
+msgstr ""
+
+#: includes/blocks/active-filters.php:419
+#: includes/blocks/active-filters.php:500
+#: includes/blocks/active-filters.php:563
+#: includes/blocks/active-filters.php:704 includes/blocks/active-tags.php:369
+#: includes/blocks/active-tags.php:451 includes/blocks/active-tags.php:522
+#: includes/blocks/active-tags.php:585 includes/blocks/active-tags.php:726
+#: includes/blocks/apply-button.php:96 includes/blocks/check-range.php:746
+#: includes/blocks/checkboxes.php:817
+#: includes/blocks/common-controls/additional-filter-style.php:215
+#: includes/blocks/common-controls/additional-filter-style.php:323
+#: includes/blocks/common-controls/additional-filter-style.php:673
+#: includes/blocks/date-period.php:121 includes/blocks/date-period.php:306
+#: includes/blocks/date-period.php:557 includes/blocks/date-period.php:686
+#: includes/blocks/date-period.php:785 includes/blocks/date-period.php:1250
+#: includes/blocks/date-range.php:687 includes/blocks/date-range.php:977
+#: includes/blocks/pagination.php:144 includes/blocks/radio.php:726
+#: includes/blocks/range.php:642 includes/blocks/rating.php:310
+#: includes/blocks/remove-filters.php:96 includes/blocks/search.php:400
+#: includes/blocks/select.php:521 includes/blocks/sorting.php:312
+#: includes/blocks/visual.php:595 includes/widgets/active-filters.php:488
+#: includes/widgets/active-filters.php:603
+#: includes/widgets/active-filters.php:664
+#: includes/widgets/active-filters.php:792
+#: includes/widgets/active-tags.php:456 includes/widgets/active-tags.php:585
+#: includes/widgets/active-tags.php:735 includes/widgets/apply-button.php:203
+#: includes/widgets/base.php:353
+#: includes/widgets/common-controls/additional-filter-style.php:219
+#: includes/widgets/common-controls/additional-filter-style.php:307
+#: includes/widgets/common-controls/additional-filter-style.php:661
+#: includes/widgets/common-controls/air-datepicker-style.php:233
+#: includes/widgets/common-controls/air-datepicker-style.php:372
+#: includes/widgets/common-controls/air-datepicker-style.php:485
+#: includes/widgets/common-controls/datepicker-style.php:522
+#: includes/widgets/date-period.php:135 includes/widgets/date-period.php:337
+#: includes/widgets/date-period.php:677 includes/widgets/date-range.php:620
+#: includes/widgets/pagination.php:330 includes/widgets/rating.php:469
+#: includes/widgets/remove-filters.php:168 includes/widgets/search.php:497
+#: includes/widgets/sorting.php:610
+msgid "Hover"
+msgstr ""
+
+#: includes/blocks/active-filters.php:435
+#: includes/blocks/active-filters.php:729 includes/blocks/active-tags.php:385
+#: includes/blocks/active-tags.php:751 includes/blocks/apply-button.php:123
+#: includes/blocks/check-range.php:279 includes/blocks/check-range.php:500
+#: includes/blocks/check-range.php:771 includes/blocks/checkboxes.php:558
+#: includes/blocks/checkboxes.php:847
+#: includes/blocks/common-controls/additional-filter-style.php:358
+#: includes/blocks/date-period.php:1280 includes/blocks/date-range.php:1003
+#: includes/blocks/pagination.php:169 includes/blocks/pagination.php:206
+#: includes/blocks/pagination.php:243 includes/blocks/radio.php:278
+#: includes/blocks/radio.php:317 includes/blocks/radio.php:484
+#: includes/blocks/radio.php:513 includes/blocks/radio.php:751
+#: includes/blocks/range.php:667 includes/blocks/rating.php:335
+#: includes/blocks/remove-filters.php:123 includes/blocks/search.php:425
+#: includes/blocks/select.php:546 includes/blocks/sorting.php:337
+#: includes/blocks/visual.php:419 includes/blocks/visual.php:620
+#: includes/widgets/active-filters.php:506
+#: includes/widgets/active-filters.php:821
+#: includes/widgets/active-tags.php:485 includes/widgets/active-tags.php:614
+#: includes/widgets/active-tags.php:764 includes/widgets/alphabet.php:214
+#: includes/widgets/apply-button.php:232 includes/widgets/base.php:382
+#: includes/widgets/check-range.php:190 includes/widgets/check-range.php:369
+#: includes/widgets/checkboxes.php:215 includes/widgets/checkboxes.php:395
+#: includes/widgets/color-image.php:429 includes/widgets/color-image.php:596
+#: includes/widgets/common-controls/additional-filter-style.php:336
+#: includes/widgets/common-controls/additional-filter-style.php:690
+#: includes/widgets/common-controls/air-datepicker-style.php:262
+#: includes/widgets/common-controls/air-datepicker-style.php:401
+#: includes/widgets/common-controls/datepicker-style.php:555
+#: includes/widgets/common-controls/datepicker-style.php:598
+#: includes/widgets/common-controls/datepicker-style.php:641
+#: includes/widgets/date-period.php:164 includes/widgets/date-period.php:366
+#: includes/widgets/date-period.php:706 includes/widgets/date-range.php:649
+#: includes/widgets/pagination.php:359 includes/widgets/pagination.php:404
+#: includes/widgets/pagination.php:449 includes/widgets/radio.php:218
+#: includes/widgets/radio.php:406 includes/widgets/rating.php:498
+#: includes/widgets/remove-filters.php:197 includes/widgets/search.php:526
+#: includes/widgets/sorting.php:639
+msgid "Border Color"
+msgstr ""
+
+#: includes/blocks/active-filters.php:458 includes/blocks/active-tags.php:480
+#: includes/blocks/check-range.php:606 includes/blocks/checkboxes.php:669
+#: includes/blocks/date-period.php:1095 includes/blocks/date-range.php:836
+#: includes/blocks/radio.php:586 includes/blocks/range.php:501
+#: includes/blocks/rating.php:169 includes/blocks/search.php:262
+#: includes/blocks/select.php:369 includes/blocks/sorting.php:161
+#: includes/blocks/visual.php:455 includes/widgets/active-filters.php:95
+#: includes/widgets/active-filters.php:564
+#: includes/widgets/active-tags.php:95 includes/widgets/base.php:195
+#: includes/widgets/common-controls/additional-filter-style.php:512
+#: includes/widgets/date-period.php:532 includes/widgets/date-range.php:472
+#: includes/widgets/rating.php:323 includes/widgets/search.php:750
+#: includes/widgets/sorting.php:133 includes/widgets/sorting.php:482
+msgid "Label"
+msgstr ""
+
+#: includes/blocks/active-filters.php:521 includes/blocks/active-tags.php:543
+#: includes/elementor/dynamic-tags/tags/filter-url-tag.php:79
+#: includes/widgets/active-filters.php:625
+msgid "Value"
+msgstr ""
+
+#: includes/blocks/active-filters.php:584 includes/blocks/active-tags.php:606
+#: includes/widgets/active-filters.php:686
+#: includes/widgets/active-tags.php:629
+#: includes/widgets/common-controls/additional-filter-style.php:154
+msgid "Remove"
+msgstr ""
+
+#: includes/blocks/active-filters.php:590 includes/blocks/active-tags.php:612
+#: includes/blocks/check-range.php:377 includes/blocks/check-range.php:567
+#: includes/blocks/checkboxes.php:425 includes/blocks/checkboxes.php:630
+#: includes/blocks/date-period.php:622 includes/blocks/date-range.php:391
+#: includes/blocks/radio.php:361 includes/blocks/radio.php:547
+#: includes/blocks/rating.php:54 includes/blocks/visual.php:333
+#: includes/widgets/active-filters.php:695
+#: includes/widgets/active-tags.php:638 includes/widgets/check-range.php:261
+#: includes/widgets/check-range.php:421 includes/widgets/checkboxes.php:286
+#: includes/widgets/checkboxes.php:447 includes/widgets/color-image.php:497
+#: includes/widgets/common-controls/additional-filter-style.php:162
+#: includes/widgets/common-controls/air-datepicker-style.php:322
+#: includes/widgets/common-controls/datepicker-style.php:158
+#: includes/widgets/date-period.php:817 includes/widgets/date-range.php:760
+#: includes/widgets/radio.php:289 includes/widgets/radio.php:466
+#: includes/widgets/rating.php:205 includes/widgets/search.php:665
+msgid "Size"
+msgstr ""
+
+#: includes/blocks/active-filters.php:616 includes/blocks/active-tags.php:638
+#: includes/blocks/check-range.php:403 includes/blocks/checkboxes.php:451
+#: includes/blocks/date-period.php:367 includes/blocks/date-range.php:269
+#: includes/blocks/radio.php:387 includes/widgets/active-filters.php:719
+#: includes/widgets/active-tags.php:662
+#: includes/widgets/common-controls/air-datepicker-style.php:20
+#: includes/widgets/common-controls/datepicker-style.php:19
+msgid "Offset Top"
+msgstr ""
+
+#: includes/blocks/active-filters.php:642 includes/blocks/active-tags.php:664
+#: includes/blocks/check-range.php:429 includes/blocks/checkboxes.php:477
+#: includes/blocks/radio.php:413 includes/blocks/visual.php:359
+#: includes/widgets/active-filters.php:739
+#: includes/widgets/active-tags.php:682
+msgid "Offset Right"
+msgstr ""
+
+#: includes/blocks/active-filters.php:770 includes/blocks/active-tags.php:791
+#: includes/blocks/apply-button.php:209 includes/blocks/base.php:331
+#: includes/blocks/date-range.php:1093 includes/blocks/pagination.php:369
+#: includes/blocks/remove-filters.php:208 includes/blocks/search.php:511
+#: includes/blocks/sorting.php:423
+msgid "Please select a provider"
+msgstr ""
+
+#: includes/blocks/active-tags.php:408 includes/widgets/active-tags.php:104
+#: includes/widgets/active-tags.php:543
+msgid "Clear Item"
+msgstr ""
+
+#: includes/blocks/active-tags.php:430 includes/blocks/active-tags.php:458
+#: includes/blocks/apply-button.php:103 includes/blocks/check-range.php:724
+#: includes/blocks/check-range.php:752 includes/blocks/check-range.php:873
+#: includes/blocks/checkboxes.php:790 includes/blocks/checkboxes.php:823
+#: includes/blocks/checkboxes.php:949
+#: includes/blocks/common-controls/additional-filter-style.php:330
+#: includes/blocks/date-period.php:99 includes/blocks/date-period.php:284
+#: includes/blocks/date-period.php:535 includes/blocks/date-period.php:664
+#: includes/blocks/date-period.php:771 includes/blocks/date-period.php:1223
+#: includes/blocks/date-period.php:1256 includes/blocks/date-range.php:205
+#: includes/blocks/date-range.php:955 includes/blocks/date-range.php:984
+#: includes/blocks/pagination.php:121 includes/blocks/pagination.php:151
+#: includes/blocks/pagination.php:188 includes/blocks/pagination.php:225
+#: includes/blocks/radio.php:704 includes/blocks/radio.php:732
+#: includes/blocks/radio.php:853 includes/blocks/range.php:620
+#: includes/blocks/range.php:648 includes/blocks/rating.php:288
+#: includes/blocks/rating.php:316 includes/blocks/remove-filters.php:103
+#: includes/blocks/search.php:378 includes/blocks/search.php:406
+#: includes/blocks/select.php:260 includes/blocks/select.php:499
+#: includes/blocks/select.php:527 includes/blocks/sorting.php:96
+#: includes/blocks/sorting.php:290 includes/blocks/sorting.php:318
+#: includes/blocks/visual.php:573 includes/blocks/visual.php:601
+#: includes/blocks/visual.php:722 includes/widgets/active-tags.php:432
+#: includes/widgets/active-tags.php:463 includes/widgets/active-tags.php:561
+#: includes/widgets/active-tags.php:592 includes/widgets/apply-button.php:179
+#: includes/widgets/apply-button.php:210 includes/widgets/base.php:329
+#: includes/widgets/base.php:360
+#: includes/widgets/common-controls/additional-filter-style.php:283
+#: includes/widgets/common-controls/additional-filter-style.php:314
+#: includes/widgets/common-controls/additional-filter-style.php:529
+#: includes/widgets/common-controls/additional-filter-style.php:637
+#: includes/widgets/common-controls/additional-filter-style.php:668
+#: includes/widgets/common-controls/air-datepicker-style.php:209
+#: includes/widgets/common-controls/air-datepicker-style.php:240
+#: includes/widgets/date-period.php:111 includes/widgets/date-period.php:142
+#: includes/widgets/date-period.php:313 includes/widgets/date-period.php:344
+#: includes/widgets/date-period.php:653 includes/widgets/date-period.php:684
+#: includes/widgets/date-range.php:596 includes/widgets/date-range.php:627
+#: includes/widgets/pagination.php:316 includes/widgets/pagination.php:348
+#: includes/widgets/pagination.php:393 includes/widgets/pagination.php:438
+#: includes/widgets/rating.php:445 includes/widgets/rating.php:476
+#: includes/widgets/remove-filters.php:144
+#: includes/widgets/remove-filters.php:175 includes/widgets/search.php:473
+#: includes/widgets/search.php:504 includes/widgets/select.php:137
+#: includes/widgets/sorting.php:362 includes/widgets/sorting.php:586
+#: includes/widgets/sorting.php:617
+msgid "Text Color"
+msgstr ""
+
+#: includes/blocks/alphabet.php:51 includes/blocks/check-range.php:151
+#: includes/blocks/checkboxes.php:150 includes/blocks/radio.php:146
+#: includes/widgets/alphabet.php:61 includes/widgets/check-range.php:71
+#: includes/widgets/checkboxes.php:72 includes/widgets/color-image.php:320
+#: includes/widgets/radio.php:73
+msgid "Space Between"
+msgstr ""
+
+#: includes/blocks/alphabet.php:77 includes/blocks/apply-button.php:168
+#: includes/blocks/check-range.php:122 includes/blocks/check-range.php:624
+#: includes/blocks/check-range.php:816 includes/blocks/checkboxes.php:121
+#: includes/blocks/checkboxes.php:687 includes/blocks/checkboxes.php:892
+#: includes/blocks/common-controls/additional-filter-style.php:434
+#: includes/blocks/date-period.php:1113 includes/blocks/date-period.php:1325
+#: includes/blocks/date-range.php:896 includes/blocks/date-range.php:1048
+#: includes/blocks/pagination.php:331 includes/blocks/radio.php:117
+#: includes/blocks/radio.php:604 includes/blocks/radio.php:796
+#: includes/blocks/range.php:263 includes/blocks/range.php:367
+#: includes/blocks/range.php:519 includes/blocks/range.php:712
+#: includes/blocks/rating.php:136 includes/blocks/rating.php:187
+#: includes/blocks/rating.php:380 includes/blocks/remove-filters.php:167
+#: includes/blocks/search.php:280 includes/blocks/search.php:470
+#: includes/blocks/select.php:311 includes/blocks/select.php:387
+#: includes/blocks/select.php:591 includes/blocks/sorting.php:176
+#: includes/blocks/sorting.php:382 includes/blocks/visual.php:137
+#: includes/blocks/visual.php:473 includes/blocks/visual.php:665
+#: includes/widgets/active-filters.php:299
+#: includes/widgets/active-filters.php:327
+#: includes/widgets/active-tags.php:324 includes/widgets/active-tags.php:352
+#: includes/widgets/alphabet.php:86 includes/widgets/apply-button.php:307
+#: includes/widgets/base.php:271 includes/widgets/base.php:457
+#: includes/widgets/base.php:605 includes/widgets/color-image.php:295
+#: includes/widgets/common-controls/additional-filter-style.php:432
+#: includes/widgets/date-period.php:225 includes/widgets/pagination.php:558
+#: includes/widgets/range.php:337 includes/widgets/range.php:434
+#: includes/widgets/rating.php:293 includes/widgets/rating.php:387
+#: includes/widgets/rating.php:573 includes/widgets/remove-filters.php:272
+#: includes/widgets/search.php:601 includes/widgets/search.php:814
+#: includes/widgets/select.php:232 includes/widgets/sorting.php:311
+#: includes/widgets/sorting.php:430 includes/widgets/sorting.php:523
+#: includes/widgets/sorting.php:714
+msgid "Alignment"
+msgstr ""
+
+#: includes/blocks/alphabet.php:109 includes/blocks/check-range.php:180
+#: includes/blocks/checkboxes.php:207 includes/blocks/radio.php:177
+#: includes/blocks/visual.php:169 includes/widgets/alphabet.php:115
+#: includes/widgets/check-range.php:98 includes/widgets/checkboxes.php:123
+#: includes/widgets/color-image.php:350 includes/widgets/radio.php:126
+msgid "Item"
+msgstr ""
+
+#: includes/blocks/alphabet.php:166 includes/blocks/checkboxes.php:258
+msgid "Normal Color"
+msgstr ""
+
+#: includes/blocks/alphabet.php:176 includes/blocks/checkboxes.php:268
+msgid "Normal Background Color"
+msgstr ""
+
+#: includes/blocks/alphabet.php:193 includes/blocks/check-range.php:252
+#: includes/blocks/check-range.php:483 includes/blocks/checkboxes.php:285
+#: includes/blocks/checkboxes.php:536 includes/blocks/radio.php:250
+#: includes/blocks/radio.php:467 includes/blocks/visual.php:222
+#: includes/blocks/visual.php:412 includes/indexer/controls.php:141
+#: includes/widgets/alphabet.php:185 includes/widgets/check-range.php:161
+#: includes/widgets/check-range.php:351 includes/widgets/checkboxes.php:186
+#: includes/widgets/checkboxes.php:377 includes/widgets/color-image.php:400
+#: includes/widgets/color-image.php:589 includes/widgets/radio.php:189
+#: includes/widgets/radio.php:388
+msgid "Checked"
+msgstr ""
+
+#: includes/blocks/alphabet.php:200 includes/blocks/checkboxes.php:292
+#: includes/blocks/visual.php:229
+msgid "Checked Color"
+msgstr ""
+
+#: includes/blocks/alphabet.php:215 includes/blocks/checkboxes.php:307
+#: includes/blocks/visual.php:239
+msgid "Checked Background Color"
+msgstr ""
+
+#: includes/blocks/alphabet.php:230 includes/blocks/checkboxes.php:322
+#: includes/blocks/visual.php:249
+msgid "Checked Border Color"
+msgstr ""
+
+#: includes/blocks/apply-button.php:43 includes/blocks/check-range.php:698
+#: includes/blocks/checkboxes.php:764 includes/blocks/date-period.php:1189
+#: includes/blocks/date-range.php:929 includes/blocks/radio.php:678
+#: includes/blocks/range.php:594 includes/blocks/rating.php:262
+#: includes/blocks/remove-filters.php:43 includes/blocks/search.php:355
+#: includes/blocks/select.php:465 includes/blocks/sorting.php:256
+#: includes/blocks/visual.php:547 includes/widgets/apply-button.php:152
+#: includes/widgets/base.php:302 includes/widgets/date-period.php:627
+#: includes/widgets/date-range.php:570 includes/widgets/rating.php:418
+#: includes/widgets/remove-filters.php:117 includes/widgets/search.php:446
+#: includes/widgets/sorting.php:559
+msgid "Button"
+msgstr ""
+
+#: includes/blocks/apply-button.php:184 includes/blocks/check-range.php:832
+#: includes/blocks/checkboxes.php:908 includes/blocks/date-period.php:1341
+#: includes/blocks/date-range.php:107 includes/blocks/date-range.php:142
+#: includes/blocks/date-range.php:1064 includes/blocks/radio.php:812
+#: includes/blocks/range.php:728 includes/blocks/rating.php:396
+#: includes/blocks/remove-filters.php:183 includes/blocks/search.php:166
+#: includes/blocks/select.php:607 includes/blocks/sorting.php:398
+#: includes/blocks/visual.php:681 includes/widgets/apply-button.php:323
+#: includes/widgets/base.php:473 includes/widgets/date-range.php:306
+#: includes/widgets/date-range.php:338 includes/widgets/rating.php:589
+#: includes/widgets/remove-filters.php:288 includes/widgets/search.php:293
+#: includes/widgets/search.php:325 includes/widgets/sorting.php:730
+msgid "Stretch"
+msgstr ""
+
+#: includes/blocks/base.php:106 includes/widgets/base.php:134
+#: includes/widgets/color-image.php:136 includes/widgets/rating.php:139
+#: includes/widgets/search.php:128 includes/widgets/sorting.php:123
+msgid "Apply filter"
+msgstr ""
+
+#: includes/blocks/base.php:118 includes/widgets/remove-filters.php:86
+msgid "Remove filters"
+msgstr ""
+
+#: includes/blocks/base.php:126 includes/widgets/active-filters.php:97
 msgid "Active filters:"
 msgstr ""
 
-#: includes/widgets/active-filters.php:93
-#: includes/widgets/apply-button.php:92 includes/widgets/base.php:148
-#: includes/widgets/color-image.php:189 includes/widgets/date-range.php:140
-#: includes/widgets/pagination.php:93 includes/widgets/rating.php:154
-#: includes/widgets/remove-filters.php:92 includes/widgets/search.php:131
+#: includes/blocks/base.php:134 includes/widgets/active-tags.php:97
+msgid "Active tags:"
+msgstr ""
+
+#: includes/blocks/base.php:142 includes/widgets/active-tags.php:118
+msgid "Clear"
+msgstr ""
+
+#: includes/blocks/base.php:154 includes/blocks/sorting.php:429
+#: includes/widgets/sorting.php:160 includes/widgets/sorting.php:161
+#: includes/widgets/sorting.php:752
+msgid "Sort..."
+msgstr ""
+
+#: includes/blocks/base.php:160 includes/widgets/sorting.php:244
+msgid "By title from lowest to highest"
+msgstr ""
+
+#: includes/blocks/base.php:165 includes/widgets/sorting.php:249
+msgid "By title from highest to lowest"
+msgstr ""
+
+#: includes/blocks/base.php:170 includes/widgets/sorting.php:254
+msgid "By date from lowest to highest"
+msgstr ""
+
+#: includes/blocks/base.php:175 includes/widgets/sorting.php:259
+msgid "By date from highest to lowest"
+msgstr ""
+
+#: includes/blocks/base.php:221 includes/widgets/pagination.php:133
+msgid "Prev Text"
+msgstr ""
+
+#: includes/blocks/base.php:225 includes/widgets/pagination.php:142
+msgid "Next Text"
+msgstr ""
+
+#: includes/blocks/base.php:246
+#: includes/widgets/common-controls/additional-filter-settings.php:32
+msgid "Search..."
+msgstr ""
+
+#: includes/blocks/base.php:258 includes/filters/check-range.php:60
+#: includes/filters/checkboxes.php:68 includes/filters/color-image.php:89
+#: includes/filters/radio.php:61
+#: includes/widgets/common-controls/additional-filter-settings.php:76
+msgid "More"
+msgstr ""
+
+#: includes/blocks/base.php:262 includes/filters/check-range.php:61
+#: includes/filters/checkboxes.php:69 includes/filters/color-image.php:90
+#: includes/filters/radio.php:62
+#: includes/widgets/common-controls/additional-filter-settings.php:88
+msgid "Less"
+msgstr ""
+
+#: includes/blocks/base.php:270 includes/filters/instance.php:151
+#: includes/widgets/common-controls/additional-filter-settings.php:117
+msgid "Select some options"
+msgstr ""
+
+#: includes/blocks/base.php:327 includes/blocks/date-range.php:1089
+#: includes/blocks/search.php:507
+msgid "Please select a filter"
+msgstr ""
+
+#: includes/blocks/check-range.php:91 includes/blocks/checkboxes.php:90
+#: includes/blocks/radio.php:89 includes/widgets/base.php:568
+msgid "Horizontal Offset control works only with Line Filters Position"
+msgstr ""
+
+#: includes/blocks/check-range.php:196 includes/blocks/checkboxes.php:223
+#: includes/widgets/check-range.php:107 includes/widgets/checkboxes.php:132
+msgid "Show Checkbox"
+msgstr ""
+
+#: includes/blocks/check-range.php:291 includes/blocks/check-range.php:512
+#: includes/blocks/checkboxes.php:339 includes/blocks/checkboxes.php:570
+#: includes/blocks/radio.php:290 includes/blocks/radio.php:496
+msgid "Disable"
+msgstr ""
+
+#: includes/blocks/check-range.php:298 includes/blocks/checkboxes.php:346
+msgid "Disable Color"
+msgstr ""
+
+#: includes/blocks/check-range.php:313 includes/blocks/check-range.php:519
+#: includes/blocks/checkboxes.php:361 includes/blocks/checkboxes.php:577
+msgid "Disable Background Color"
+msgstr ""
+
+#: includes/blocks/check-range.php:328 includes/blocks/check-range.php:534
+#: includes/blocks/checkboxes.php:376 includes/blocks/checkboxes.php:592
+msgid "Disable Border Color"
+msgstr ""
+
+#: includes/blocks/check-range.php:370 includes/blocks/checkboxes.php:418
+#: includes/widgets/check-range.php:249 includes/widgets/checkboxes.php:274
+msgid "Checkbox"
+msgstr ""
+
+#: includes/blocks/check-range.php:560 includes/blocks/checkboxes.php:623
+#: includes/widgets/check-range.php:409 includes/widgets/checkboxes.php:435
+msgid "Checkbox Icon"
+msgstr ""
+
+#: includes/blocks/check-range.php:852 includes/blocks/checkboxes.php:928
+#: includes/blocks/radio.php:832 includes/blocks/visual.php:701
+#: includes/indexer/controls.php:77
+msgid "Counter"
+msgstr ""
+
+#: includes/blocks/checkboxes.php:179 includes/widgets/checkboxes.php:97
+#: includes/widgets/radio.php:100
+msgid "Children Offset Left"
+msgstr ""
+
+#: includes/blocks/common-controls/additional-filter-style.php:20
+#: includes/widgets/common-controls/additional-filter-style.php:21
+msgid "Search Items"
+msgstr ""
+
+#: includes/blocks/common-controls/additional-filter-style.php:30
+#: includes/blocks/common-controls/additional-filter-style.php:491
+#: includes/blocks/search.php:87
+#: includes/widgets/common-controls/additional-filter-style.php:32
+#: includes/widgets/search.php:215
+msgid "Input Width"
+msgstr ""
+
+#: includes/blocks/common-controls/additional-filter-style.php:131
+msgid "Remove Size"
+msgstr ""
+
+#: includes/blocks/common-controls/additional-filter-style.php:157
+msgid "Remove Right Offset"
+msgstr ""
+
+#: includes/blocks/common-controls/additional-filter-style.php:256
+#: includes/widgets/common-controls/additional-filter-style.php:254
+msgid "More Less Toggle"
+msgstr ""
+
+#: includes/blocks/common-controls/additional-filter-style.php:398
+msgid "Container Background Color"
+msgstr ""
+
+#: includes/blocks/common-controls/additional-filter-style.php:413
+msgid "Container Border"
+msgstr ""
+
+#: includes/blocks/common-controls/additional-filter-style.php:423
+msgid "Container Padding"
+msgstr ""
+
+#: includes/blocks/common-controls/additional-filter-style.php:481
+#: includes/widgets/common-controls/additional-filter-style.php:476
+msgid "Dropdown"
+msgstr ""
+
+#: includes/blocks/common-controls/additional-filter-style.php:588
+msgid "Active Item Offset"
+msgstr ""
+
+#: includes/blocks/common-controls/additional-filter-style.php:615
+msgid "Active Item Typography"
+msgstr ""
+
+#: includes/blocks/common-controls/additional-filter-style.php:641
+#: includes/blocks/common-controls/additional-filter-style.php:680
+msgid "Active Item Color"
+msgstr ""
+
+#: includes/blocks/common-controls/additional-filter-style.php:655
+#: includes/blocks/common-controls/additional-filter-style.php:694
+msgid "Active Item Background Color"
+msgstr ""
+
+#: includes/blocks/common-controls/additional-filter-style.php:708
+msgid "Active Item Border Color"
+msgstr ""
+
+#: includes/blocks/common-controls/additional-filter-style.php:727
+msgid "Active Item Border"
+msgstr ""
+
+#: includes/blocks/common-controls/additional-filter-style.php:737
+msgid "Active Item Padding"
+msgstr ""
+
+#: includes/blocks/common-controls/additional-filter-style.php:748
+msgid "Dropdown Body Offset"
+msgstr ""
+
+#: includes/blocks/common-controls/additional-filter-style.php:774
+msgid "Dropdown Body Border"
+msgstr ""
+
+#: includes/blocks/common-controls/additional-filter-style.php:784
+msgid "Dropdown Body Background Color"
+msgstr ""
+
+#: includes/blocks/common-controls/additional-filter-style.php:799
+msgid "Dropdown Body Items Padding"
+msgstr ""
+
+#: includes/blocks/date-period.php:67 includes/widgets/date-period.php:86
+msgid "Datepicker Button"
+msgstr ""
+
+#: includes/blocks/date-period.php:128 includes/blocks/date-period.php:313
+#: includes/blocks/date-period.php:564 includes/blocks/date-period.php:693
+#: includes/blocks/date-period.php:792
+msgid "Hover Text Color"
+msgstr ""
+
+#: includes/blocks/date-period.php:138 includes/blocks/date-period.php:323
+#: includes/blocks/date-period.php:574 includes/blocks/date-period.php:703
+#: includes/blocks/date-period.php:806 includes/blocks/date-range.php:705
+msgid "Hover Background Color"
+msgstr ""
+
+#: includes/blocks/date-period.php:203 includes/widgets/date-period.php:257
+msgid "Prev/Next Buttons"
+msgstr ""
+
+#: includes/blocks/date-period.php:240
+#: includes/widgets/common-controls/additional-filter-style.php:487
+#: includes/widgets/date-period.php:287 includes/widgets/date-period.php:428
+#: includes/widgets/date-range.php:368 includes/widgets/range.php:643
+msgid "Width"
+msgstr ""
+
+#: includes/blocks/date-period.php:332 includes/blocks/date-period.php:583
+#: includes/blocks/date-period.php:712 includes/blocks/date-range.php:716
+msgid "Hover Border Color"
+msgstr ""
+
+#: includes/blocks/date-period.php:359 includes/blocks/date-range.php:262
+#: includes/widgets/common-controls/air-datepicker-style.php:11
+#: includes/widgets/common-controls/datepicker-style.php:10
+msgid "Calendar"
+msgstr ""
+
+#: includes/blocks/date-period.php:392 includes/blocks/date-range.php:295
+#: includes/widgets/common-controls/air-datepicker-style.php:40
+#: includes/widgets/common-controls/datepicker-style.php:39
+msgid "Calendar Width"
+msgstr ""
+
+#: includes/blocks/date-period.php:421 includes/blocks/date-period.php:463
+#: includes/widgets/active-filters.php:779
+#: includes/widgets/active-filters.php:810
+#: includes/widgets/active-tags.php:722 includes/widgets/active-tags.php:753
+msgid "Background"
+msgstr ""
+
+#: includes/blocks/date-period.php:455
+#: includes/widgets/common-controls/air-datepicker-style.php:117
+msgid "Calendar Header"
+msgstr ""
+
+#: includes/blocks/date-period.php:505
+#: includes/widgets/common-controls/air-datepicker-style.php:183
+msgid "Caption"
+msgstr ""
+
+#: includes/blocks/date-period.php:617
+#: includes/widgets/common-controls/air-datepicker-style.php:313
+msgid "Navigation Arrows"
+msgstr ""
+
+#: includes/blocks/date-period.php:748
+#: includes/widgets/common-controls/air-datepicker-style.php:454
+msgid "Calendar Cell"
+msgstr ""
+
+#: includes/blocks/date-period.php:764 includes/blocks/date-range.php:656
+#: includes/blocks/range.php:97
+#: includes/widgets/common-controls/air-datepicker-style.php:465
+#: includes/widgets/common-controls/datepicker-style.php:490
+#: includes/widgets/range.php:92
+msgid "Default"
+msgstr ""
+
+#: includes/blocks/date-period.php:824 includes/blocks/date-range.php:730
+#: includes/widgets/common-controls/air-datepicker-style.php:524
+#: includes/widgets/common-controls/datepicker-style.php:569
+msgid "Active"
+msgstr ""
+
+#: includes/blocks/date-period.php:831
+msgid "Active Text Color"
+msgstr ""
+
+#: includes/blocks/date-period.php:842 includes/blocks/date-range.php:747
+msgid "Active Background Color"
+msgstr ""
+
+#: includes/blocks/date-period.php:853
+#: includes/widgets/common-controls/air-datepicker-style.php:555
+msgid "In Range Color"
+msgstr ""
+
+#: includes/blocks/date-period.php:863
+#: includes/widgets/common-controls/air-datepicker-style.php:566
+msgid "In Range Background Color"
+msgstr ""
+
+#: includes/blocks/date-period.php:877 includes/blocks/date-range.php:769
+#: includes/blocks/pagination.php:181
+#: includes/widgets/common-controls/air-datepicker-style.php:579
+#: includes/widgets/common-controls/datepicker-style.php:610
+#: includes/widgets/pagination.php:375
+msgid "Current"
+msgstr ""
+
+#: includes/blocks/date-period.php:884
+msgid "Current Text Color"
+msgstr ""
+
+#: includes/blocks/date-period.php:894 includes/blocks/date-range.php:787
+msgid "Current Background Color"
+msgstr ""
+
+#: includes/blocks/date-period.php:907
+#: includes/widgets/active-filters.php:267
+#: includes/widgets/active-filters.php:532
+#: includes/widgets/active-filters.php:847
+#: includes/widgets/active-tags.php:292 includes/widgets/active-tags.php:511
+#: includes/widgets/active-tags.php:790 includes/widgets/alphabet.php:256
+#: includes/widgets/apply-button.php:262 includes/widgets/base.php:234
+#: includes/widgets/base.php:412 includes/widgets/check-range.php:227
+#: includes/widgets/check-range.php:395 includes/widgets/checkboxes.php:252
+#: includes/widgets/checkboxes.php:421 includes/widgets/color-image.php:466
+#: includes/widgets/color-image.php:611
+#: includes/widgets/common-controls/additional-filter-style.php:108
+#: includes/widgets/common-controls/additional-filter-style.php:360
+#: includes/widgets/common-controls/additional-filter-style.php:561
+#: includes/widgets/common-controls/additional-filter-style.php:715
+#: includes/widgets/common-controls/additional-filter-style.php:774
+#: includes/widgets/common-controls/air-datepicker-style.php:83
+#: includes/widgets/common-controls/air-datepicker-style.php:148
+#: includes/widgets/common-controls/air-datepicker-style.php:290
+#: includes/widgets/common-controls/air-datepicker-style.php:429
+#: includes/widgets/common-controls/air-datepicker-style.php:612
+#: includes/widgets/common-controls/air-datepicker-style.php:790
+#: includes/widgets/common-controls/datepicker-style.php:85
+#: includes/widgets/common-controls/datepicker-style.php:352
+#: includes/widgets/common-controls/datepicker-style.php:667
+#: includes/widgets/date-period.php:192 includes/widgets/date-period.php:394
+#: includes/widgets/date-period.php:494 includes/widgets/date-period.php:736
+#: includes/widgets/date-range.php:434 includes/widgets/date-range.php:679
+#: includes/widgets/pagination.php:232 includes/widgets/pagination.php:545
+#: includes/widgets/radio.php:255 includes/widgets/radio.php:440
+#: includes/widgets/range.php:145 includes/widgets/range.php:258
+#: includes/widgets/range.php:517 includes/widgets/rating.php:528
+#: includes/widgets/remove-filters.php:227 includes/widgets/search.php:399
+#: includes/widgets/search.php:556 includes/widgets/select.php:199
+#: includes/widgets/sorting.php:397 includes/widgets/sorting.php:669
+msgid "Border Radius"
+msgstr ""
+
+#: includes/blocks/date-period.php:919
+#: includes/widgets/common-controls/air-datepicker-style.php:624
+msgid "Days"
+msgstr ""
+
+#: includes/blocks/date-period.php:934
+#: includes/widgets/common-controls/air-datepicker-style.php:641
+msgid "Weekend Color"
+msgstr ""
+
+#: includes/blocks/date-period.php:944
+#: includes/widgets/common-controls/air-datepicker-style.php:653
+msgid "Other Month Color"
+msgstr ""
+
+#: includes/blocks/date-period.php:966
+#: includes/widgets/common-controls/air-datepicker-style.php:677
+msgid "Month"
+msgstr ""
+
+#: includes/blocks/date-period.php:993
+#: includes/widgets/common-controls/air-datepicker-style.php:708
+msgid "Year"
+msgstr ""
+
+#: includes/blocks/date-period.php:1022 includes/blocks/date-range.php:443
+#: includes/widgets/common-controls/air-datepicker-style.php:741
+#: includes/widgets/common-controls/datepicker-style.php:209
+msgid "Calendar Week Days"
+msgstr ""
+
+#: includes/blocks/date-period.php:1060 includes/blocks/date-range.php:450
+#: includes/widgets/common-controls/air-datepicker-style.php:781
+#: includes/widgets/common-controls/datepicker-style.php:219
+msgid "Header Border"
+msgstr ""
+
+#: includes/blocks/date-range.php:56 includes/blocks/search.php:49
+#: includes/blocks/select.php:45 includes/blocks/sorting.php:44
+#: includes/widgets/active-filters.php:65 includes/widgets/active-tags.php:65
+#: includes/widgets/apply-button.php:48 includes/widgets/base.php:56
+#: includes/widgets/color-image.php:58 includes/widgets/date-range.php:63
+#: includes/widgets/date-range.php:192 includes/widgets/pagination.php:59
+#: includes/widgets/rating.php:56 includes/widgets/remove-filters.php:54
+#: includes/widgets/search.php:57 includes/widgets/search.php:179
+#: includes/widgets/select.php:50 includes/widgets/sorting.php:50
+#: includes/widgets/sorting.php:273
+msgid "Content"
+msgstr ""
+
+#: includes/blocks/date-range.php:163 includes/blocks/range.php:401
+#: includes/blocks/search.php:187 includes/widgets/range.php:466
+#: includes/widgets/search.php:343
+msgid "Input"
+msgstr ""
+
+#: includes/blocks/date-range.php:169 includes/widgets/date-range.php:228
+msgid "Inputs Width"
+msgstr ""
+
+#: includes/blocks/date-range.php:355
+#: includes/widgets/common-controls/datepicker-style.php:119
+msgid "Calendar Caption"
+msgstr ""
+
+#: includes/blocks/date-range.php:384
+#: includes/widgets/common-controls/datepicker-style.php:149
+msgid "Calendar Navigation Arrows"
+msgstr ""
+
+#: includes/blocks/date-range.php:429 includes/blocks/date-range.php:694
+#: includes/widgets/common-controls/datepicker-style.php:195
+#: includes/widgets/date-period.php:886 includes/widgets/date-range.php:829
+#: includes/widgets/search.php:734
+msgid "Hover Color"
+msgstr ""
+
+#: includes/blocks/date-range.php:461
+#: includes/widgets/common-controls/datepicker-style.php:229
+msgid "Header Background Color"
+msgstr ""
+
+#: includes/blocks/date-range.php:470 includes/blocks/date-range.php:584
+#: includes/widgets/common-controls/datepicker-style.php:240
+#: includes/widgets/common-controls/datepicker-style.php:410
+msgid "Day"
+msgstr ""
+
+#: includes/blocks/date-range.php:498 includes/blocks/date-range.php:633
+#: includes/widgets/common-controls/datepicker-style.php:302
+#: includes/widgets/common-controls/datepicker-style.php:472
+msgid "Day Content"
+msgstr ""
+
+#: includes/blocks/date-range.php:557
+#: includes/widgets/common-controls/datepicker-style.php:379
+msgid "Calendar Days"
+msgstr ""
+
+#: includes/blocks/date-range.php:574
+#: includes/widgets/common-controls/datepicker-style.php:399
+msgid "Body Background Color"
+msgstr ""
+
+#: includes/blocks/date-range.php:610
+#: includes/widgets/common-controls/datepicker-style.php:272
+#: includes/widgets/common-controls/datepicker-style.php:442
+msgid "First Item Border Width"
+msgstr ""
+
+#: includes/blocks/date-range.php:621
+#: includes/widgets/common-controls/datepicker-style.php:287
+#: includes/widgets/common-controls/datepicker-style.php:457
+msgid "Last Item Border Width"
+msgstr ""
+
+#: includes/blocks/date-range.php:737
+msgid "Active Color"
+msgstr ""
+
+#: includes/blocks/date-range.php:757
+msgid "Active Border Color"
+msgstr ""
+
+#: includes/blocks/date-range.php:776
+msgid "Current Color"
+msgstr ""
+
+#: includes/blocks/date-range.php:798
+msgid "Current Border Color"
+msgstr ""
+
+#: includes/blocks/pagination.php:46 includes/widgets/pagination.php:21
+#: includes/widgets/pagination.php:201
+msgid "Pagination"
+msgstr ""
+
+#: includes/blocks/pagination.php:218 includes/widgets/pagination.php:420
+msgid "Dots"
+msgstr ""
+
+#: includes/blocks/pagination.php:267 includes/widgets/pagination.php:487
+msgid "Horizontal Gap Between Items"
+msgstr ""
+
+#: includes/blocks/pagination.php:294 includes/widgets/pagination.php:511
+msgid "Vertical Gap Between Items"
+msgstr ""
+
+#: includes/blocks/radio.php:193 includes/widgets/radio.php:135
+msgid "Show Radio"
+msgstr ""
+
+#: includes/blocks/radio.php:354 includes/filters/radio.php:22
+#: includes/widgets/radio.php:277
+msgid "Radio"
+msgstr ""
+
+#: includes/blocks/radio.php:540 includes/widgets/radio.php:454
+msgid "Radio Icon"
+msgstr ""
+
+#: includes/blocks/range.php:56 includes/widgets/range.php:57
+msgid "Slider"
+msgstr ""
+
+#: includes/blocks/range.php:63 includes/widgets/range.php:66
+msgid "Stroke"
+msgstr ""
+
+#: includes/blocks/range.php:116 includes/filters/range.php:21
+#: includes/widgets/range.php:112
+msgid "Range"
+msgstr ""
+
+#: includes/blocks/range.php:145 includes/widgets/range.php:166
+msgid "Points Width"
+msgstr ""
+
+#: includes/blocks/range.php:173 includes/widgets/range.php:192
+msgid "Points Height"
+msgstr ""
+
+#: includes/blocks/range.php:228 includes/widgets/range.php:297
+msgid "Values"
+msgstr ""
+
+#: includes/blocks/range.php:296 includes/widgets/date-period.php:419
+#: includes/widgets/date-range.php:359 includes/widgets/range.php:366
+msgid "Inputs"
+msgstr ""
+
+#: includes/blocks/range.php:303 includes/widgets/range.php:375
+msgid "Container Width"
+msgstr ""
+
+#: includes/blocks/range.php:328 includes/blocks/select.php:150
+#: includes/widgets/base.php:502 includes/widgets/range.php:672
+#: includes/widgets/select.php:403
+msgid "Vertical Space Between"
+msgstr ""
+
+#: includes/blocks/range.php:454 includes/widgets/range.php:550
+msgid "Prefix/Suffix"
+msgstr ""
+
+#: includes/blocks/rating.php:47 includes/widgets/rating.php:196
+msgid "Stars"
+msgstr ""
+
+#: includes/blocks/rating.php:79 includes/widgets/rating.php:225
+msgid "Gutter"
+msgstr ""
+
+#: includes/blocks/rating.php:104 includes/widgets/date-period.php:872
+#: includes/widgets/date-range.php:815 includes/widgets/rating.php:245
+#: includes/widgets/search.php:720
+msgid "Default Color"
+msgstr ""
+
+#: includes/blocks/rating.php:113 includes/widgets/rating.php:256
+msgid "Selected Color"
+msgstr ""
+
+#: includes/blocks/rating.php:124 includes/widgets/rating.php:268
+msgid "Selected On Hover Color"
+msgstr ""
+
+#: includes/blocks/search.php:56 includes/blocks/select.php:52
+#: includes/widgets/date-period.php:793 includes/widgets/date-range.php:201
+#: includes/widgets/date-range.php:736 includes/widgets/range.php:616
+#: includes/widgets/search.php:188 includes/widgets/search.php:641
+#: includes/widgets/select.php:59 includes/widgets/select.php:293
+msgid "Position"
+msgstr ""
+
+#: includes/blocks/search.php:130 includes/widgets/date-range.php:273
+#: includes/widgets/search.php:260
+msgid "Justify"
+msgstr ""
+
+#: includes/blocks/select.php:82 includes/blocks/sorting.php:51
+#: includes/widgets/select.php:89 includes/widgets/sorting.php:282
+msgid "Select Width"
+msgstr ""
+
+#: includes/blocks/select.php:114
+msgid "Hierarchical"
+msgstr ""
+
+#: includes/blocks/select.php:121
+msgid "Hierarchical Position"
+msgstr ""
+
+#: includes/blocks/select.php:180
+msgid "Item Width"
+msgstr ""
+
+#: includes/blocks/select.php:211 includes/widgets/select.php:373
+msgid "Horizontal Space Between"
+msgstr ""
+
+#: includes/blocks/select.php:245 includes/blocks/sorting.php:81
+#: includes/filters/select.php:29 includes/widgets/select.php:121
+#: includes/widgets/sorting.php:346
+msgid "Select"
+msgstr ""
+
+#: includes/blocks/select.php:270 includes/widgets/select.php:151
+msgid "Disabled Text Color"
+msgstr ""
+
+#: includes/blocks/select.php:345 includes/blocks/sorting.php:137
+#: includes/widgets/select.php:262 includes/widgets/sorting.php:463
+msgid "Reset Field Appearance"
+msgstr ""
+
+#: includes/blocks/select.php:346 includes/blocks/sorting.php:138
+#: includes/widgets/select.php:263 includes/widgets/sorting.php:464
+msgid ""
+"Check this option to reset field appearance CSS value. This will make "
+"field appearance the same for all browsers"
+msgstr ""
+
+#: includes/blocks/visual.php:326 includes/widgets/color-image.php:488
+msgid "Color / Image"
+msgstr ""
+
+#: includes/compatibility.php:111
+msgid "Done"
+msgstr ""
+
+#: includes/compatibility.php:112 includes/widgets/pagination.php:135
+msgid "Prev"
+msgstr ""
+
+#: includes/compatibility.php:113 includes/widgets/pagination.php:144
+msgid "Next"
+msgstr ""
+
+#: includes/compatibility.php:114
+msgid "Today"
+msgstr ""
+
+#: includes/compatibility.php:116
+msgid "January"
+msgstr ""
+
+#: includes/compatibility.php:117
+msgid "February"
+msgstr ""
+
+#: includes/compatibility.php:118
+msgid "March"
+msgstr ""
+
+#: includes/compatibility.php:119
+msgid "April"
+msgstr ""
+
+#: includes/compatibility.php:120 includes/compatibility.php:134
+msgid "May"
+msgstr ""
+
+#: includes/compatibility.php:121
+msgid "June"
+msgstr ""
+
+#: includes/compatibility.php:122
+msgid "July"
+msgstr ""
+
+#: includes/compatibility.php:123
+msgid "August"
+msgstr ""
+
+#: includes/compatibility.php:124
+msgid "September"
+msgstr ""
+
+#: includes/compatibility.php:125
+msgid "October"
+msgstr ""
+
+#: includes/compatibility.php:126
+msgid "November"
+msgstr ""
+
+#: includes/compatibility.php:127
+msgid "December"
+msgstr ""
+
+#: includes/compatibility.php:130
+msgid "Jan"
+msgstr ""
+
+#: includes/compatibility.php:131
+msgid "Feb"
+msgstr ""
+
+#: includes/compatibility.php:132
+msgid "Mar"
+msgstr ""
+
+#: includes/compatibility.php:133
+msgid "Apr"
+msgstr ""
+
+#: includes/compatibility.php:135
+msgid "Jun"
+msgstr ""
+
+#: includes/compatibility.php:136
+msgid "Jul"
+msgstr ""
+
+#: includes/compatibility.php:137
+msgid "Aug"
+msgstr ""
+
+#: includes/compatibility.php:138
+msgid "Sep"
+msgstr ""
+
+#: includes/compatibility.php:139
+msgid "Oct"
+msgstr ""
+
+#: includes/compatibility.php:140
+msgid "Nov"
+msgstr ""
+
+#: includes/compatibility.php:141
+msgid "Dec"
+msgstr ""
+
+#: includes/compatibility.php:144
+msgid "Sunday"
+msgstr ""
+
+#: includes/compatibility.php:145
+msgid "Monday"
+msgstr ""
+
+#: includes/compatibility.php:146
+msgid "Tuesday"
+msgstr ""
+
+#: includes/compatibility.php:147
+msgid "Wednesday"
+msgstr ""
+
+#: includes/compatibility.php:148
+msgid "Thursday"
+msgstr ""
+
+#: includes/compatibility.php:149
+msgid "Friday"
+msgstr ""
+
+#: includes/compatibility.php:150
+msgid "Saturday"
+msgstr ""
+
+#: includes/compatibility.php:153
+msgid "Sun"
+msgstr ""
+
+#: includes/compatibility.php:154
+msgid "Mon"
+msgstr ""
+
+#: includes/compatibility.php:155
+msgid "Tue"
+msgstr ""
+
+#: includes/compatibility.php:156
+msgid "Wed"
+msgstr ""
+
+#: includes/compatibility.php:157
+msgid "Thu"
+msgstr ""
+
+#: includes/compatibility.php:158
+msgid "Fri"
+msgstr ""
+
+#: includes/compatibility.php:159
+msgid "Sat"
+msgstr ""
+
+#: includes/compatibility.php:162
+msgid "Su"
+msgstr ""
+
+#: includes/compatibility.php:163
+msgid "Mo"
+msgstr ""
+
+#: includes/compatibility.php:164
+msgid "Tu"
+msgstr ""
+
+#: includes/compatibility.php:165
+msgid "We"
+msgstr ""
+
+#: includes/compatibility.php:166
+msgid "Th"
+msgstr ""
+
+#: includes/compatibility.php:167
+msgid "Fr"
+msgstr ""
+
+#: includes/compatibility.php:168
+msgid "Sa"
+msgstr ""
+
+#: includes/compatibility.php:170
+msgid "Wk"
+msgstr ""
+
+#: includes/compatibility.php:179
+msgid "JetEngine Custom Content Types"
+msgstr ""
+
+#: includes/compatibility.php:190
+msgid "Coming soon"
+msgstr ""
+
+#: includes/compatibility.php:193
+msgid "Support for the Visual filter will be added with future updates"
+msgstr ""
+
+#: includes/data.php:236 includes/filters/select.php:192
+#: includes/hierarchy.php:123 includes/widgets/base.php:636
+msgid "Select..."
+msgstr ""
+
+#: includes/elementor/dynamic-tags/module.php:22
+msgid "JetSmartFilters"
+msgstr ""
+
+#: includes/elementor/dynamic-tags/tags/filter-url-tag.php:16
+msgid "URL with filtered value"
+msgstr ""
+
+#: includes/elementor/dynamic-tags/tags/filter-url-tag.php:43
+msgid ""
+"<b>Please note!</b> <i>Apply type</i> option for the destination filter "
+"should be set into <b>Mixed</b> or <b>Reload</b> type "
+msgstr ""
+
+#: includes/elementor/dynamic-tags/tags/filter-url-tag.php:50
+msgid "Base URL"
+msgstr ""
+
+#: includes/elementor/dynamic-tags/tags/filter-url-tag.php:53
+msgid "URL of the page where filter should be applied"
+msgstr ""
+
+#: includes/elementor/dynamic-tags/tags/filter-url-tag.php:60
+#: includes/widgets/apply-button.php:55 includes/widgets/base.php:68
+#: includes/widgets/color-image.php:70 includes/widgets/date-range.php:80
+#: includes/widgets/rating.php:73 includes/widgets/remove-filters.php:61
+#: includes/widgets/search.php:74 includes/widgets/sorting.php:57
+msgid "This filter for"
+msgstr ""
+
+#: includes/elementor/dynamic-tags/tags/filter-url-tag.php:70
+#: includes/post-type.php:42
+msgid "Filter"
+msgstr ""
+
+#: includes/elementor/dynamic-tags/tags/filter-url-tag.php:82
+msgid ""
+"You can use JetEngine macros as field value. For example %current_id% - to "
+"get ID of the current post or term, %object_id% - ID of any current "
+"object, %current_meta|meta_key% - current meta value, etc."
+msgstr ""
+
+#: includes/elementor/dynamic-tags/tags/filter-url-tag.php:89
+#: includes/widgets/active-filters.php:104
+#: includes/widgets/active-tags.php:128 includes/widgets/apply-button.php:128
+#: includes/widgets/base.php:157 includes/widgets/color-image.php:159
+#: includes/widgets/date-range.php:163 includes/widgets/pagination.php:101
+#: includes/widgets/rating.php:172 includes/widgets/remove-filters.php:93
+#: includes/widgets/search.php:164 includes/widgets/sorting.php:168
 msgid "Query ID"
 msgstr ""
 
-#: includes/widgets/active-filters.php:96
-#: includes/widgets/apply-button.php:95 includes/widgets/base.php:151
-#: includes/widgets/color-image.php:192 includes/widgets/date-range.php:143
-#: includes/widgets/pagination.php:96 includes/widgets/rating.php:157
-#: includes/widgets/remove-filters.php:95 includes/widgets/search.php:134
+#: includes/elementor/dynamic-tags/tags/filter-url-tag.php:92
+msgid ""
+"If your filter on the destination page uses some custom query ID, you can "
+"set it here."
+msgstr ""
+
+#: includes/filters/active-filters.php:31
+#: includes/filters/active-filters.php:65
+msgid "Categories"
+msgstr ""
+
+#: includes/filters/active-filters.php:32
+#: includes/filters/active-filters.php:66
+msgid "Active Category"
+msgstr ""
+
+#: includes/filters/active-filters.php:35
+#: includes/filters/active-filters.php:69
+msgid "Tags"
+msgstr ""
+
+#: includes/filters/active-filters.php:36
+#: includes/filters/active-filters.php:70
+msgid "Active Tag"
+msgstr ""
+
+#: includes/filters/alphabet.php:21
+msgid "Alphabet"
+msgstr ""
+
+#: includes/filters/check-range.php:21 includes/widgets/check-range.php:20
+msgid "Check Range Filter"
+msgstr ""
+
+#: includes/filters/checkboxes.php:21
+msgid "Checkboxes list"
+msgstr ""
+
+#: includes/filters/color-image.php:23
+msgid "Visual"
+msgstr ""
+
+#: includes/filters/date-period.php:21
+msgid "Date Period"
+msgstr ""
+
+#: includes/filters/date-range.php:21
+msgid "Date Range"
+msgstr ""
+
+#: includes/filters/rating.php:21
+msgid "Rating"
+msgstr ""
+
+#: includes/filters/search.php:21
+msgid "Search"
+msgstr ""
+
+#: includes/filters/sorting.php:60
+msgid "No order (by ID)"
+msgstr ""
+
+#: includes/filters/sorting.php:61
+msgid "Random"
+msgstr ""
+
+#: includes/filters/sorting.php:62
+msgid "Author"
+msgstr ""
+
+#: includes/filters/sorting.php:64
+msgid "Name (post slug)"
+msgstr ""
+
+#: includes/filters/sorting.php:65
+msgid "Date"
+msgstr ""
+
+#: includes/filters/sorting.php:66
+msgid "Last modified date"
+msgstr ""
+
+#: includes/filters/sorting.php:67
+msgid "Number of comments"
+msgstr ""
+
+#: includes/filters/sorting.php:72
+msgid "Product price"
+msgstr ""
+
+#: includes/filters/sorting.php:73
+msgid "Product sales number"
+msgstr ""
+
+#: includes/filters/sorting.php:74
+msgid "Product rating"
+msgstr ""
+
+#: includes/filters/sorting.php:75
+msgid "Product reviews number"
+msgstr ""
+
+#: includes/filters/sorting.php:79
+msgid "Meta key"
+msgstr ""
+
+#: includes/filters/sorting.php:80
+msgid "Meta key numeric"
+msgstr ""
+
+#: includes/filters/sorting.php:83
+msgid "Clause key"
+msgstr ""
+
+#: includes/indexer/controls.php:173
+msgid "Indexer Options"
+msgstr ""
+
+#: includes/indexer/controls.php:180
+msgid "Apply Indexer"
+msgstr ""
+
+#: includes/indexer/controls.php:183 includes/indexer/controls.php:196
+#: includes/widgets/active-tags.php:106 includes/widgets/apply-button.php:90
+#: includes/widgets/apply-button.php:115 includes/widgets/base.php:122
+#: includes/widgets/base.php:147 includes/widgets/check-range.php:110
+#: includes/widgets/checkboxes.php:135 includes/widgets/color-image.php:124
+#: includes/widgets/color-image.php:149 includes/widgets/color-image.php:184
+#: includes/widgets/common-controls/additional-filter-settings.php:20
+#: includes/widgets/common-controls/additional-filter-settings.php:48
+#: includes/widgets/common-controls/additional-filter-settings.php:104
+#: includes/widgets/common-controls/additional-filter-settings.php:133
+#: includes/widgets/common-controls/additional-providers.php:10
+#: includes/widgets/date-range.php:153 includes/widgets/pagination.php:123
+#: includes/widgets/radio.php:138 includes/widgets/rating.php:127
+#: includes/widgets/rating.php:152 includes/widgets/search.php:154
+#: includes/widgets/sorting.php:111 includes/widgets/sorting.php:145
+msgid "Yes"
+msgstr ""
+
+#: includes/indexer/controls.php:184 includes/indexer/controls.php:197
+#: includes/widgets/active-tags.php:107 includes/widgets/apply-button.php:91
+#: includes/widgets/apply-button.php:116 includes/widgets/base.php:123
+#: includes/widgets/base.php:148 includes/widgets/check-range.php:111
+#: includes/widgets/checkboxes.php:136 includes/widgets/color-image.php:125
+#: includes/widgets/color-image.php:150 includes/widgets/color-image.php:185
+#: includes/widgets/common-controls/additional-filter-settings.php:21
+#: includes/widgets/common-controls/additional-filter-settings.php:49
+#: includes/widgets/common-controls/additional-filter-settings.php:105
+#: includes/widgets/common-controls/additional-filter-settings.php:134
+#: includes/widgets/common-controls/additional-providers.php:11
+#: includes/widgets/date-range.php:154 includes/widgets/pagination.php:124
+#: includes/widgets/radio.php:139 includes/widgets/rating.php:128
+#: includes/widgets/rating.php:153 includes/widgets/search.php:155
+#: includes/widgets/sorting.php:112 includes/widgets/sorting.php:146
+msgid "No"
+msgstr ""
+
+#: includes/indexer/controls.php:193
+msgid "Show Counter"
+msgstr ""
+
+#: includes/indexer/controls.php:209
+msgid "If Item Empty"
+msgstr ""
+
+#: includes/indexer/controls.php:226
+msgid "Change Counters"
+msgstr ""
+
+#: includes/post-type.php:41 jet-smart-filters.php:252
+msgid "Smart Filters"
+msgstr ""
+
+#: includes/providers/epro-archive-products.php:149
+msgid "Elementor Pro Archive Products"
+msgstr ""
+
+#: includes/providers/epro-archive.php:175
+msgid "Elementor Pro Archive"
+msgstr ""
+
+#: includes/providers/epro-portfolio.php:129
+msgid "Elementor Pro Portfolio"
+msgstr ""
+
+#: includes/providers/epro-posts.php:129
+msgid "Elementor Pro Posts"
+msgstr ""
+
+#: includes/providers/epro-products.php:68
+msgid "Elementor Pro Products"
+msgstr ""
+
+#: includes/providers/jet-engine-calendar.php:120
+msgid "JetEngine Calendar"
+msgstr ""
+
+#: includes/providers/jet-engine.php:113
+msgid "JetEngine"
+msgstr ""
+
+#: includes/providers/jet-woo-products-grid.php:259
+msgid "JetWooBuilder Products Grid"
+msgstr ""
+
+#: includes/providers/jet-woo-products-list.php:161
+msgid "JetWooBuilder Products List"
+msgstr ""
+
+#: includes/providers/woocommerce-archive.php:171
+msgid "WooCommerce Archive (by JetWooBuilder)"
+msgstr ""
+
+#: includes/render.php:230
+msgid "Incorrect input data"
+msgstr ""
+
+#: includes/rest-api/endpoints/plugin-settings.php:30
+msgid "Server Error"
+msgstr ""
+
+#: includes/rest-api/endpoints/plugin-settings.php:42
+msgid "Settings have been saved"
+msgstr ""
+
+#: includes/tax-query/dynamic-var.php:17
+#: includes/tax-query/dynamic-var.php:29
+msgid "Taxonomy"
+msgstr ""
+
+#: includes/tax-query/dynamic-var.php:30
+msgid "Select taxonomy..."
+msgstr ""
+
+#: includes/utils.php:67
+msgid "Full"
+msgstr ""
+
+#: includes/widgets/active-filters.php:21
+msgid "Active Filters"
+msgstr ""
+
+#: includes/widgets/active-filters.php:72
+msgid "Show active filters for:"
+msgstr ""
+
+#: includes/widgets/active-filters.php:82 includes/widgets/active-tags.php:82
+#: includes/widgets/apply-button.php:65 includes/widgets/base.php:89
+#: includes/widgets/color-image.php:91 includes/widgets/date-range.php:101
+#: includes/widgets/pagination.php:87 includes/widgets/rating.php:94
+#: includes/widgets/remove-filters.php:71 includes/widgets/search.php:95
+#: includes/widgets/sorting.php:78
+msgid "Apply type"
+msgstr ""
+
+#: includes/widgets/active-filters.php:86 includes/widgets/active-tags.php:86
+#: includes/widgets/apply-button.php:69 includes/widgets/base.php:93
+#: includes/widgets/color-image.php:95 includes/widgets/date-range.php:105
+#: includes/widgets/pagination.php:91 includes/widgets/rating.php:98
+#: includes/widgets/remove-filters.php:75 includes/widgets/search.php:99
+#: includes/widgets/sorting.php:82
+msgid "AJAX"
+msgstr ""
+
+#: includes/widgets/active-filters.php:87 includes/widgets/active-tags.php:87
+#: includes/widgets/apply-button.php:70 includes/widgets/base.php:94
+#: includes/widgets/color-image.php:96 includes/widgets/date-range.php:106
+#: includes/widgets/pagination.php:92 includes/widgets/rating.php:99
+#: includes/widgets/remove-filters.php:76 includes/widgets/search.php:101
+#: includes/widgets/sorting.php:83
+msgid "Page reload"
+msgstr ""
+
+#: includes/widgets/active-filters.php:107
+#: includes/widgets/active-tags.php:131 includes/widgets/apply-button.php:131
+#: includes/widgets/base.php:160 includes/widgets/color-image.php:162
+#: includes/widgets/date-range.php:166 includes/widgets/pagination.php:104
+#: includes/widgets/rating.php:175 includes/widgets/remove-filters.php:96
+#: includes/widgets/search.php:167 includes/widgets/sorting.php:171
 msgid ""
 "Set unique query ID if you use multiple widgets of same provider on the "
 "page. Same ID you need to set for filtered widget."
 msgstr ""
 
-#: includes/widgets/active-filters.php:105
-msgid "Title"
-msgstr ""
-
-#: includes/widgets/active-filters.php:133
-#: includes/widgets/apply-button.php:256 includes/widgets/base.php:234
-#: includes/widgets/base.php:420 includes/widgets/date-range.php:1186
-#: includes/widgets/date-range.php:1371 includes/widgets/pagination.php:234
-#: includes/widgets/range.php:296 includes/widgets/rating.php:264
-#: includes/widgets/rating.php:360 includes/widgets/rating.php:546
-#: includes/widgets/remove-filters.php:256 includes/widgets/search.php:394
-#: includes/widgets/search.php:551 includes/widgets/search.php:761
-msgid "Margin"
-msgstr ""
-
-#: includes/widgets/active-filters.php:156 includes/widgets/base.php:519
-#: includes/widgets/color-image.php:242
-msgid "Filters Position"
-msgstr ""
-
-#: includes/widgets/active-filters.php:161
-#: includes/widgets/active-filters.php:381 includes/widgets/base.php:524
-#: includes/widgets/color-image.php:247 includes/widgets/date-range.php:180
-#: includes/widgets/search.php:157 includes/widgets/select.php:59
-msgid "Line"
-msgstr ""
-
-#: includes/widgets/active-filters.php:165
-#: includes/widgets/active-filters.php:385 includes/widgets/base.php:528
-#: includes/widgets/color-image.php:251
-msgid "Column"
-msgstr ""
-
-#: includes/widgets/active-filters.php:179 includes/widgets/base.php:542
-#: includes/widgets/color-image.php:264
-msgid "Horizontal Offset"
-msgstr ""
-
-#: includes/widgets/active-filters.php:206 includes/widgets/base.php:571
-#: includes/widgets/color-image.php:292
-msgid "Vertical Offset"
-msgstr ""
-
-#: includes/widgets/active-filters.php:230
-#: includes/widgets/active-filters.php:461
-#: includes/widgets/active-filters.php:481
-#: includes/widgets/apply-button.php:151
-#: includes/widgets/apply-button.php:182 includes/widgets/base.php:315
-#: includes/widgets/base.php:346 includes/widgets/check-range.php:130
-#: includes/widgets/check-range.php:150 includes/widgets/checkboxes.php:160
-#: includes/widgets/checkboxes.php:180 includes/widgets/date-range.php:387
-#: includes/widgets/date-range.php:654 includes/widgets/date-range.php:833
-#: includes/widgets/date-range.php:865 includes/widgets/date-range.php:908
-#: includes/widgets/date-range.php:950 includes/widgets/date-range.php:1072
-#: includes/widgets/date-range.php:1266 includes/widgets/date-range.php:1297
-#: includes/widgets/pagination.php:185 includes/widgets/pagination.php:268
-#: includes/widgets/pagination.php:297 includes/widgets/pagination.php:337
-#: includes/widgets/pagination.php:377 includes/widgets/radio.php:160
-#: includes/widgets/radio.php:188 includes/widgets/range.php:224
-#: includes/widgets/rating.php:441 includes/widgets/rating.php:472
-#: includes/widgets/remove-filters.php:151
-#: includes/widgets/remove-filters.php:182 includes/widgets/search.php:338
-#: includes/widgets/search.php:446 includes/widgets/search.php:477
-#: includes/widgets/select.php:140
-msgid "Background Color"
-msgstr ""
-
-#: includes/widgets/active-filters.php:242
-#: includes/widgets/active-filters.php:508
-#: includes/widgets/active-filters.php:823
-#: includes/widgets/apply-button.php:212 includes/widgets/base.php:211
-#: includes/widgets/base.php:376 includes/widgets/check-range.php:177
-#: includes/widgets/checkboxes.php:207 includes/widgets/color-image.php:421
-#: includes/widgets/date-range.php:399 includes/widgets/date-range.php:586
-#: includes/widgets/date-range.php:666 includes/widgets/date-range.php:756
-#: includes/widgets/date-range.php:978 includes/widgets/date-range.php:1084
-#: includes/widgets/date-range.php:1163 includes/widgets/date-range.php:1327
-#: includes/widgets/pagination.php:196 includes/widgets/pagination.php:477
-#: includes/widgets/radio.php:223 includes/widgets/range.php:109
-#: includes/widgets/range.php:140 includes/widgets/range.php:236
-#: includes/widgets/rating.php:337 includes/widgets/rating.php:502
-#: includes/widgets/remove-filters.php:212 includes/widgets/search.php:350
-#: includes/widgets/search.php:507 includes/widgets/search.php:738
-msgid "Border"
-msgstr ""
-
-#: includes/widgets/active-filters.php:252
-#: includes/widgets/active-filters.php:518
-#: includes/widgets/active-filters.php:833
-#: includes/widgets/apply-button.php:223 includes/widgets/base.php:387
-#: includes/widgets/check-range.php:187 includes/widgets/checkboxes.php:217
-#: includes/widgets/color-image.php:455 includes/widgets/date-range.php:409
-#: includes/widgets/date-range.php:676 includes/widgets/date-range.php:988
-#: includes/widgets/date-range.php:1095 includes/widgets/date-range.php:1338
-#: includes/widgets/pagination.php:205 includes/widgets/pagination.php:485
-#: includes/widgets/radio.php:233 includes/widgets/range.php:154
-#: includes/widgets/range.php:246 includes/widgets/rating.php:513
-#: includes/widgets/remove-filters.php:223 includes/widgets/search.php:361
-#: includes/widgets/search.php:518 includes/widgets/select.php:163
-msgid "Border Radius"
-msgstr ""
-
-#: includes/widgets/active-filters.php:272
-#: includes/widgets/active-filters.php:538
-#: includes/widgets/active-filters.php:845
-#: includes/widgets/apply-button.php:243 includes/widgets/base.php:221
-#: includes/widgets/base.php:407 includes/widgets/date-range.php:429
-#: includes/widgets/date-range.php:573 includes/widgets/date-range.php:688
-#: includes/widgets/date-range.php:743 includes/widgets/date-range.php:1001
-#: includes/widgets/date-range.php:1115 includes/widgets/date-range.php:1173
-#: includes/widgets/date-range.php:1358 includes/widgets/pagination.php:223
-#: includes/widgets/pagination.php:412 includes/widgets/rating.php:347
-#: includes/widgets/rating.php:533 includes/widgets/remove-filters.php:243
-#: includes/widgets/search.php:381 includes/widgets/search.php:538
-#: includes/widgets/search.php:748 includes/widgets/select.php:183
-msgid "Padding"
-msgstr ""
-
-#: includes/widgets/active-filters.php:284
-#: includes/widgets/active-filters.php:312
-#: includes/widgets/apply-button.php:268 includes/widgets/base.php:246
-#: includes/widgets/base.php:432 includes/widgets/base.php:598
-#: includes/widgets/color-image.php:319 includes/widgets/pagination.php:497
-#: includes/widgets/range.php:308 includes/widgets/rating.php:277
-#: includes/widgets/rating.php:372 includes/widgets/rating.php:558
-#: includes/widgets/remove-filters.php:268 includes/widgets/search.php:563
-#: includes/widgets/search.php:773 includes/widgets/select.php:196
-msgid "Alignment"
-msgstr ""
-
-#: includes/widgets/active-filters.php:288
-#: includes/widgets/active-filters.php:316
-#: includes/widgets/apply-button.php:272 includes/widgets/base.php:250
-#: includes/widgets/base.php:436 includes/widgets/base.php:602
-#: includes/widgets/color-image.php:323 includes/widgets/date-range.php:235
-#: includes/widgets/date-range.php:300 includes/widgets/date-range.php:1202
-#: includes/widgets/date-range.php:1400 includes/widgets/pagination.php:502
-#: includes/widgets/range.php:312 includes/widgets/rating.php:281
-#: includes/widgets/rating.php:376 includes/widgets/rating.php:562
-#: includes/widgets/remove-filters.php:272 includes/widgets/search.php:212
-#: includes/widgets/search.php:277 includes/widgets/search.php:567
-#: includes/widgets/search.php:605 includes/widgets/search.php:777
-#: includes/widgets/select.php:200
-msgid "Left"
-msgstr ""
-
-#: includes/widgets/active-filters.php:292
-#: includes/widgets/active-filters.php:320
-#: includes/widgets/apply-button.php:276 includes/widgets/base.php:254
-#: includes/widgets/base.php:440 includes/widgets/base.php:606
-#: includes/widgets/color-image.php:327 includes/widgets/date-range.php:239
-#: includes/widgets/date-range.php:304 includes/widgets/date-range.php:1206
-#: includes/widgets/pagination.php:506 includes/widgets/range.php:316
-#: includes/widgets/rating.php:285 includes/widgets/rating.php:380
-#: includes/widgets/rating.php:566 includes/widgets/remove-filters.php:276
-#: includes/widgets/search.php:216 includes/widgets/search.php:281
-#: includes/widgets/search.php:571 includes/widgets/search.php:781
-#: includes/widgets/select.php:204
-msgid "Center"
-msgstr ""
-
-#: includes/widgets/active-filters.php:296
-#: includes/widgets/active-filters.php:324
-#: includes/widgets/apply-button.php:280 includes/widgets/base.php:258
-#: includes/widgets/base.php:444 includes/widgets/base.php:610
-#: includes/widgets/color-image.php:331 includes/widgets/date-range.php:243
-#: includes/widgets/date-range.php:308 includes/widgets/date-range.php:1210
-#: includes/widgets/date-range.php:1404 includes/widgets/pagination.php:510
-#: includes/widgets/range.php:320 includes/widgets/rating.php:289
-#: includes/widgets/rating.php:384 includes/widgets/rating.php:570
-#: includes/widgets/remove-filters.php:280 includes/widgets/search.php:220
-#: includes/widgets/search.php:285 includes/widgets/search.php:575
-#: includes/widgets/search.php:609 includes/widgets/search.php:785
-#: includes/widgets/select.php:208
-msgid "Right"
-msgstr ""
-
-#: includes/widgets/active-filters.php:343
-#: includes/widgets/check-range.php:47 includes/widgets/checkboxes.php:51
-#: includes/widgets/color-image.php:233 includes/widgets/pagination.php:246
-#: includes/widgets/radio.php:51
-msgid "Items"
-msgstr ""
-
-#: includes/widgets/active-filters.php:352
-msgid "Minimal Width"
-msgstr ""
-
-#: includes/widgets/active-filters.php:376
-msgid "Filter Content Position"
-msgstr ""
-
-#: includes/widgets/active-filters.php:398
-#: includes/widgets/active-filters.php:425
+#: includes/widgets/active-filters.php:412
+#: includes/widgets/active-filters.php:439
 msgid "Space Between Content"
 msgstr ""
 
-#: includes/widgets/active-filters.php:454
-#: includes/widgets/active-filters.php:569
-#: includes/widgets/active-filters.php:630
-#: includes/widgets/active-filters.php:747
-#: includes/widgets/apply-button.php:133 includes/widgets/base.php:297
-#: includes/widgets/check-range.php:123 includes/widgets/check-range.php:290
-#: includes/widgets/checkboxes.php:153 includes/widgets/checkboxes.php:320
-#: includes/widgets/color-image.php:413 includes/widgets/color-image.php:512
-#: includes/widgets/date-range.php:1248 includes/widgets/pagination.php:262
-#: includes/widgets/radio.php:153 includes/widgets/radio.php:336
-#: includes/widgets/rating.php:423 includes/widgets/remove-filters.php:133
-#: includes/widgets/search.php:428
-msgid "Normal"
+#: includes/widgets/active-tags.php:21
+msgid "Active Tags"
 msgstr ""
 
-#: includes/widgets/active-filters.php:474
-#: includes/widgets/active-filters.php:589
-#: includes/widgets/active-filters.php:650
-#: includes/widgets/active-filters.php:778
-#: includes/widgets/apply-button.php:164 includes/widgets/base.php:328
-#: includes/widgets/date-range.php:846 includes/widgets/date-range.php:1279
-#: includes/widgets/pagination.php:291 includes/widgets/rating.php:454
-#: includes/widgets/remove-filters.php:164 includes/widgets/search.php:459
-msgid "Hover"
+#: includes/widgets/active-tags.php:72
+msgid "Show active tags for:"
 msgstr ""
 
-#: includes/widgets/active-filters.php:492
-#: includes/widgets/active-filters.php:807
-#: includes/widgets/apply-button.php:193 includes/widgets/base.php:357
-#: includes/widgets/check-range.php:161 includes/widgets/checkboxes.php:191
-#: includes/widgets/color-image.php:440 includes/widgets/date-range.php:877
-#: includes/widgets/date-range.php:919 includes/widgets/date-range.php:962
-#: includes/widgets/date-range.php:1308 includes/widgets/pagination.php:317
-#: includes/widgets/pagination.php:357 includes/widgets/pagination.php:397
-#: includes/widgets/radio.php:199 includes/widgets/rating.php:483
-#: includes/widgets/remove-filters.php:193 includes/widgets/search.php:488
-msgid "Border Color"
+#: includes/widgets/active-tags.php:116
+msgid "Clear Item Label"
 msgstr ""
 
-#: includes/widgets/active-filters.php:672
-msgid "Remove"
+#: includes/widgets/active-tags.php:185
+msgid "Tags List"
 msgstr ""
 
-#: includes/widgets/active-filters.php:681
-#: includes/widgets/check-range.php:97 includes/widgets/check-range.php:210
-#: includes/widgets/checkboxes.php:127 includes/widgets/checkboxes.php:240
-#: includes/widgets/color-image.php:386 includes/widgets/date-range.php:482
-#: includes/widgets/date-range.php:1419 includes/widgets/radio.php:127
-#: includes/widgets/radio.php:256 includes/widgets/rating.php:186
-#: includes/widgets/search.php:624
-msgid "Size"
+#: includes/widgets/active-tags.php:194
+msgid "Tags Position"
 msgstr ""
 
-#: includes/widgets/active-filters.php:705
-#: includes/widgets/date-range.php:343
-msgid "Offset Top"
+#: includes/widgets/active-tags.php:382
+msgid "Tag Item"
 msgstr ""
 
-#: includes/widgets/active-filters.php:725
-msgid "Offset Right"
+#: includes/widgets/alphabet.php:21
+msgid "Alphabet Filter"
 msgstr ""
 
-#: includes/widgets/active-filters.php:765
-#: includes/widgets/active-filters.php:796
-msgid "Background"
-msgstr ""
-
-#: includes/widgets/active-filters.php:884
-msgid "Categories"
-msgstr ""
-
-#: includes/widgets/active-filters.php:885
-msgid "Active Category"
-msgstr ""
-
-#: includes/widgets/active-filters.php:888
-msgid "Tags"
-msgstr ""
-
-#: includes/widgets/active-filters.php:889
-msgid "Active Tag"
-msgstr ""
-
-#: includes/widgets/apply-button.php:18
+#: includes/widgets/apply-button.php:22
 msgid "Apply Button"
 msgstr ""
 
-#: includes/widgets/apply-button.php:48 includes/widgets/base.php:60
-#: includes/widgets/color-image.php:101 includes/widgets/date-range.php:75
-#: includes/widgets/rating.php:68 includes/widgets/remove-filters.php:48
-#: includes/widgets/search.php:66
-msgid "This filter for"
+#: includes/widgets/apply-button.php:78 includes/widgets/base.php:132
+#: includes/widgets/color-image.php:134 includes/widgets/date-range.php:125
+#: includes/widgets/rating.php:137 includes/widgets/sorting.php:121
+msgid "Apply button text"
 msgstr ""
 
-#: includes/widgets/apply-button.php:59 includes/widgets/base.php:71
-#: includes/widgets/color-image.php:112 includes/widgets/date-range.php:86
-#: includes/widgets/pagination.php:70 includes/widgets/remove-filters.php:59
-#: includes/widgets/search.php:77
+#: includes/widgets/apply-button.php:80
+msgid "Apply filters"
+msgstr ""
+
+#: includes/widgets/apply-button.php:87
+msgid "Apply Redirect"
+msgstr ""
+
+#: includes/widgets/apply-button.php:100
+msgid "Redirect Path"
+msgstr ""
+
+#: includes/widgets/apply-button.php:112
+msgid "Open in new window"
+msgstr ""
+
+#: includes/widgets/base.php:31
+msgid "Select filter"
+msgstr ""
+
+#: includes/widgets/base.php:79 includes/widgets/color-image.php:81
+#: includes/widgets/date-range.php:91 includes/widgets/pagination.php:77
+#: includes/widgets/rating.php:84 includes/widgets/search.php:85
+#: includes/widgets/sorting.php:68
 msgid ""
 "Please set <b>jet-smart-filters</b> into Query ID option of Posts widget "
 "you want to filter"
 msgstr ""
 
-#: includes/widgets/apply-button.php:82 includes/widgets/base.php:123
-#: includes/widgets/color-image.php:164 includes/widgets/date-range.php:109
-#: includes/widgets/rating.php:120
-msgid "Apply button text"
+#: includes/widgets/base.php:95 includes/widgets/color-image.php:97
+#: includes/widgets/date-range.php:107 includes/widgets/pagination.php:93
+#: includes/widgets/rating.php:100 includes/widgets/search.php:102
+#: includes/widgets/sorting.php:84
+msgid "Mixed"
 msgstr ""
 
-#: includes/widgets/apply-button.php:84 includes/widgets/base.php:125
-#: includes/widgets/color-image.php:166 includes/widgets/rating.php:122
-#: includes/widgets/search.php:102
-msgid "Apply filters"
-msgstr ""
-
-#: includes/widgets/apply-button.php:113 includes/widgets/base.php:277
-#: includes/widgets/date-range.php:1229 includes/widgets/rating.php:403
-#: includes/widgets/remove-filters.php:113 includes/widgets/search.php:408
-msgid "Button"
-msgstr ""
-
-#: includes/widgets/apply-button.php:140
-#: includes/widgets/apply-button.php:171 includes/widgets/base.php:304
-#: includes/widgets/base.php:335 includes/widgets/date-range.php:1255
-#: includes/widgets/date-range.php:1286 includes/widgets/pagination.php:279
-#: includes/widgets/pagination.php:307 includes/widgets/pagination.php:347
-#: includes/widgets/pagination.php:387 includes/widgets/rating.php:430
-#: includes/widgets/rating.php:461 includes/widgets/remove-filters.php:140
-#: includes/widgets/remove-filters.php:171 includes/widgets/search.php:435
-#: includes/widgets/search.php:466 includes/widgets/select.php:128
-msgid "Text Color"
-msgstr ""
-
-#: includes/widgets/apply-button.php:284 includes/widgets/base.php:448
-#: includes/widgets/date-range.php:280 includes/widgets/date-range.php:312
-#: includes/widgets/rating.php:574 includes/widgets/remove-filters.php:284
-#: includes/widgets/search.php:257 includes/widgets/search.php:289
-msgid "Stretch"
-msgstr ""
-
-#: includes/widgets/base.php:48 includes/widgets/color-image.php:89
-#: includes/widgets/date-range.php:65 includes/widgets/rating.php:57
-#: includes/widgets/search.php:56
-msgid "Select filter"
-msgstr ""
-
-#: includes/widgets/base.php:94 includes/widgets/color-image.php:135
-#: includes/widgets/rating.php:91
+#: includes/widgets/base.php:103 includes/widgets/color-image.php:105
+#: includes/widgets/rating.php:108 includes/widgets/sorting.php:92
 msgid "Apply on"
 msgstr ""
 
-#: includes/widgets/base.php:98 includes/widgets/color-image.php:139
-#: includes/widgets/rating.php:95
+#: includes/widgets/base.php:107 includes/widgets/color-image.php:109
+#: includes/widgets/rating.php:112 includes/widgets/sorting.php:96
 msgid "Value change"
 msgstr ""
 
-#: includes/widgets/base.php:99 includes/widgets/color-image.php:140
-#: includes/widgets/rating.php:96
+#: includes/widgets/base.php:108 includes/widgets/color-image.php:110
+#: includes/widgets/rating.php:113 includes/widgets/sorting.php:97
 msgid "Click on apply button"
 msgstr ""
 
-#: includes/widgets/base.php:110 includes/widgets/color-image.php:151
-#: includes/widgets/rating.php:107
+#: includes/widgets/base.php:119 includes/widgets/color-image.php:121
+#: includes/widgets/rating.php:124 includes/widgets/sorting.php:108
 msgid "Show apply button"
 msgstr ""
 
-#: includes/widgets/base.php:113 includes/widgets/base.php:138
-#: includes/widgets/color-image.php:154 includes/widgets/color-image.php:179
-#: includes/widgets/color-image.php:211 includes/widgets/date-range.php:130
-#: includes/widgets/pagination.php:115 includes/widgets/rating.php:110
-#: includes/widgets/rating.php:135 includes/widgets/search.php:121
-msgid "Yes"
-msgstr ""
-
-#: includes/widgets/base.php:114 includes/widgets/base.php:139
-#: includes/widgets/color-image.php:155 includes/widgets/color-image.php:180
-#: includes/widgets/color-image.php:212 includes/widgets/date-range.php:131
-#: includes/widgets/pagination.php:116 includes/widgets/rating.php:111
-#: includes/widgets/rating.php:136 includes/widgets/search.php:122
-msgid "No"
-msgstr ""
-
-#: includes/widgets/base.php:135 includes/widgets/color-image.php:176
-#: includes/widgets/date-range.php:127 includes/widgets/rating.php:132
-#: includes/widgets/search.php:118
+#: includes/widgets/base.php:144 includes/widgets/color-image.php:146
+#: includes/widgets/date-range.php:150 includes/widgets/rating.php:149
+#: includes/widgets/search.php:151
 msgid "Show filter label"
 msgstr ""
 
-#: includes/widgets/base.php:467
+#: includes/widgets/base.php:492 includes/widgets/range.php:607
+#: includes/widgets/select.php:284
 msgid "Grouped Filters"
 msgstr ""
 
-#: includes/widgets/base.php:476
-msgid "Vertical Space Between"
-msgstr ""
-
-#: includes/widgets/check-range.php:58 includes/widgets/checkboxes.php:62
-#: includes/widgets/color-image.php:347 includes/widgets/radio.php:62
-msgid "Space Between"
-msgstr ""
-
-#: includes/widgets/check-range.php:143 includes/widgets/check-range.php:310
-#: includes/widgets/checkboxes.php:173 includes/widgets/checkboxes.php:340
-#: includes/widgets/color-image.php:433 includes/widgets/color-image.php:532
-#: includes/widgets/radio.php:181 includes/widgets/radio.php:356
-msgid "Checked"
-msgstr ""
-
-#: includes/widgets/check-range.php:201 includes/widgets/checkboxes.php:231
-msgid "Checkbox Icon"
-msgstr ""
-
-#: includes/widgets/check-range.php:247 includes/widgets/checkboxes.php:277
-msgid "Checkbox Label"
-msgstr ""
-
-#: includes/widgets/check-range.php:264 includes/widgets/checkboxes.php:294
-#: includes/widgets/color-image.php:486 includes/widgets/radio.php:310
-msgid "Offset Left"
-msgstr ""
-
-#: includes/widgets/checkboxes.php:18
+#: includes/widgets/checkboxes.php:20
 msgid "Checkboxes Filter"
 msgstr ""
 
-#: includes/widgets/checkboxes.php:92 includes/widgets/radio.php:92
-msgid "Children Offset Left"
+#: includes/widgets/checkboxes.php:310 includes/widgets/color-image.php:522
+msgid "Vertical Offset "
 msgstr ""
 
-#: includes/widgets/color-image.php:18
+#: includes/widgets/color-image.php:21
 msgid "Visual Filter"
 msgstr ""
 
-#: includes/widgets/color-image.php:57
-msgid "Full"
-msgstr ""
-
-#: includes/widgets/color-image.php:201
+#: includes/widgets/color-image.php:174
 msgid "Filter Options"
 msgstr ""
 
-#: includes/widgets/color-image.php:208
+#: includes/widgets/color-image.php:181
 msgid "Show items label"
 msgstr ""
 
-#: includes/widgets/color-image.php:222
+#: includes/widgets/color-image.php:195
 msgid "Image Size"
 msgstr ""
 
-#: includes/widgets/color-image.php:377
-msgid "Item"
+#: includes/widgets/common-controls/additional-filter-settings.php:7
+msgid "Additional Settings"
 msgstr ""
 
-#: includes/widgets/color-image.php:469
-msgid "Item Label"
+#: includes/widgets/common-controls/additional-filter-settings.php:17
+msgid "Search Enabled"
 msgstr ""
 
-#: includes/widgets/date-range.php:18
-msgid "Date Range Filter"
+#: includes/widgets/common-controls/additional-filter-settings.php:30
+msgid "Search Placeholder"
 msgstr ""
 
-#: includes/widgets/date-range.php:111
-msgid "Apply"
+#: includes/widgets/common-controls/additional-filter-settings.php:45
+msgid "More/Less Enabled"
 msgstr ""
 
-#: includes/widgets/date-range.php:118
-msgid "Apply button icon"
+#: includes/widgets/common-controls/additional-filter-settings.php:59
+msgid "Less Items Count"
 msgstr ""
 
-#: includes/widgets/date-range.php:175 includes/widgets/date-range.php:1395
-#: includes/widgets/search.php:152 includes/widgets/search.php:600
-#: includes/widgets/select.php:54
-msgid "Position"
+#: includes/widgets/common-controls/additional-filter-settings.php:74
+msgid "More Text"
 msgstr ""
 
-#: includes/widgets/date-range.php:184 includes/widgets/search.php:161
-#: includes/widgets/select.php:63
-msgid "Columns"
+#: includes/widgets/common-controls/additional-filter-settings.php:86
+msgid "Less Text"
 msgstr ""
 
-#: includes/widgets/date-range.php:202
-msgid "Inputs Width"
+#: includes/widgets/common-controls/additional-filter-settings.php:101
+msgid "Dropdown Enabled"
 msgstr ""
 
-#: includes/widgets/date-range.php:231 includes/widgets/date-range.php:296
-#: includes/widgets/search.php:208 includes/widgets/search.php:273
-msgid "Horizontal Alignment"
+#: includes/widgets/common-controls/additional-filter-settings.php:115
+#: includes/widgets/sorting.php:158
+msgid "Placeholder"
 msgstr ""
 
-#: includes/widgets/date-range.php:247 includes/widgets/search.php:224
-msgid "Justify"
+#: includes/widgets/common-controls/additional-filter-settings.php:130
+msgid "Scroll Enabled"
 msgstr ""
 
-#: includes/widgets/date-range.php:263 includes/widgets/search.php:240
-msgid "Vertical Alignment"
+#: includes/widgets/common-controls/additional-filter-settings.php:144
+msgid "Scroll Height(px)"
 msgstr ""
 
-#: includes/widgets/date-range.php:268 includes/widgets/search.php:245
-msgid "Top"
+#: includes/widgets/common-controls/additional-filter-style.php:179
+msgid "Horizontal offset"
 msgstr ""
 
-#: includes/widgets/date-range.php:272 includes/widgets/search.php:249
-msgid "Middle"
+#: includes/widgets/common-controls/additional-filter-style.php:352
+msgid "Button Border"
 msgstr ""
 
-#: includes/widgets/date-range.php:276 includes/widgets/search.php:253
-msgid "Bottom"
+#: includes/widgets/common-controls/additional-filter-style.php:392
+msgid "Holder"
 msgstr ""
 
-#: includes/widgets/date-range.php:334
-msgid "Calendar"
+#: includes/widgets/common-controls/additional-filter-style.php:593
+msgid "Active Items"
 msgstr ""
 
-#: includes/widgets/date-range.php:363
-msgid "Calendar Width"
+#: includes/widgets/common-controls/additional-filter-style.php:602
+#: includes/widgets/common-controls/additional-filter-style.php:748
+msgid "Offset"
 msgstr ""
 
-#: includes/widgets/date-range.php:443
-msgid "Calendar Caption"
+#: includes/widgets/common-controls/additional-filter-style.php:739
+msgid "Dropdown Body"
 msgstr ""
 
-#: includes/widgets/date-range.php:473
-msgid "Calendar Navigation Arrows"
+#: includes/widgets/common-controls/additional-filter-style.php:797
+msgid "Items Padding"
 msgstr ""
 
-#: includes/widgets/date-range.php:519 includes/widgets/date-range.php:1488
-#: includes/widgets/search.php:693
-msgid "Hover Color"
+#: includes/widgets/common-controls/additional-providers.php:7
+msgid "Additional Providers Enabled"
 msgstr ""
 
-#: includes/widgets/date-range.php:533
-msgid "Calendar Week Days"
+#: includes/widgets/common-controls/additional-providers.php:22
+msgid "Additional Provider"
 msgstr ""
 
-#: includes/widgets/date-range.php:543
-msgid "Header Border"
+#: includes/widgets/common-controls/additional-providers.php:33
+msgid "Additional Query ID"
 msgstr ""
 
-#: includes/widgets/date-range.php:553
-msgid "Header Background Color"
+#: includes/widgets/common-controls/additional-providers.php:42
+msgid "Additional Providers List"
 msgstr ""
 
-#: includes/widgets/date-range.php:564 includes/widgets/date-range.php:734
-msgid "Day"
-msgstr ""
-
-#: includes/widgets/date-range.php:596 includes/widgets/date-range.php:766
-msgid "First Item Border Width"
-msgstr ""
-
-#: includes/widgets/date-range.php:611 includes/widgets/date-range.php:781
-msgid "Last Item Border Width"
-msgstr ""
-
-#: includes/widgets/date-range.php:626 includes/widgets/date-range.php:796
-msgid "Day Content"
-msgstr ""
-
-#: includes/widgets/date-range.php:703
-msgid "Calendar Days"
-msgstr ""
-
-#: includes/widgets/date-range.php:713
+#: includes/widgets/common-controls/datepicker-style.php:389
 msgid "Body Border"
 msgstr ""
 
-#: includes/widgets/date-range.php:723
-msgid "Body Background Color"
+#: includes/widgets/date-period.php:21
+msgid "Date Period Filter"
 msgstr ""
 
-#: includes/widgets/date-range.php:814 includes/widgets/range.php:90
-msgid "Default"
-msgstr ""
-
-#: includes/widgets/date-range.php:890
-msgid "Active"
-msgstr ""
-
-#: includes/widgets/date-range.php:931 includes/widgets/pagination.php:331
-msgid "Current"
-msgstr ""
-
-#: includes/widgets/date-range.php:1020
-msgid "Inputs"
-msgstr ""
-
-#: includes/widgets/date-range.php:1029
-msgid "Width"
-msgstr ""
-
-#: includes/widgets/date-range.php:1198
+#: includes/widgets/date-period.php:596 includes/widgets/date-range.php:536
 msgid "Text Alignment"
 msgstr ""
 
-#: includes/widgets/date-range.php:1383 includes/widgets/search.php:588
+#: includes/widgets/date-period.php:781 includes/widgets/date-range.php:724
+#: includes/widgets/search.php:629
 msgid "Icon"
 msgstr ""
 
-#: includes/widgets/date-range.php:1446 includes/widgets/search.php:651
+#: includes/widgets/date-period.php:844 includes/widgets/date-range.php:787
+#: includes/widgets/search.php:692
 msgid "Icon Offset"
 msgstr ""
 
-#: includes/widgets/date-range.php:1474 includes/widgets/rating.php:226
-#: includes/widgets/search.php:679
-msgid "Default Color"
+#: includes/widgets/date-range.php:21
+msgid "Date Range Filter"
 msgstr ""
 
-#: includes/widgets/pagination.php:18 includes/widgets/pagination.php:177
-msgid "Pagination"
+#: includes/widgets/date-range.php:115
+msgid "Hide apply button"
 msgstr ""
 
-#: includes/widgets/pagination.php:59
+#: includes/widgets/date-range.php:127
+msgid "Apply"
+msgstr ""
+
+#: includes/widgets/date-range.php:137
+msgid "Apply button icon"
+msgstr ""
+
+#: includes/widgets/date-range.php:210 includes/widgets/range.php:625
+#: includes/widgets/search.php:197 includes/widgets/select.php:70
+#: includes/widgets/select.php:304
+msgid "Columns"
+msgstr ""
+
+#: includes/widgets/date-range.php:298 includes/widgets/search.php:285
+msgid "Middle"
+msgstr ""
+
+#: includes/widgets/pagination.php:66
 msgid "Pagination for:"
 msgstr ""
 
-#: includes/widgets/pagination.php:105
+#: includes/widgets/pagination.php:113
 msgid "Controls"
 msgstr ""
 
-#: includes/widgets/pagination.php:112
+#: includes/widgets/pagination.php:120
 msgid "Enable Prev/Next buttons"
 msgstr ""
 
-#: includes/widgets/pagination.php:125
-msgid "Prev Text"
-msgstr ""
-
-#: includes/widgets/pagination.php:134
-msgid "Next Text"
-msgstr ""
-
-#: includes/widgets/pagination.php:143
+#: includes/widgets/pagination.php:151
 msgid "Items center offset"
 msgstr ""
 
-#: includes/widgets/pagination.php:144
+#: includes/widgets/pagination.php:152
 msgid ""
 "Set number of items to either side of current page, not including current "
 "page.Set 0 to show all items."
 msgstr ""
 
-#: includes/widgets/pagination.php:156
+#: includes/widgets/pagination.php:164
 msgid "Items edge offset"
 msgstr ""
 
-#: includes/widgets/pagination.php:157
+#: includes/widgets/pagination.php:165
 msgid "Set number of items on either the start and the end list edges."
 msgstr ""
 
-#: includes/widgets/pagination.php:371
-msgid "Dots"
+#: includes/widgets/pagination.php:177
+msgid "Provider top offset"
 msgstr ""
 
-#: includes/widgets/pagination.php:431
-msgid "Horizontal Gap Between Items"
+#: includes/widgets/pagination.php:178
+msgid ""
+"Set the distance from the top edge when reloading the content via AJAX."
 msgstr ""
 
-#: includes/widgets/pagination.php:454
-msgid "Vertical Gap Between Items"
-msgstr ""
-
-#: includes/widgets/radio.php:18
+#: includes/widgets/radio.php:21
 msgid "Radio Filter"
 msgstr ""
 
-#: includes/widgets/radio.php:247
-msgid "Radio Icon"
-msgstr ""
-
-#: includes/widgets/radio.php:293
-msgid "Radio Label"
-msgstr ""
-
-#: includes/widgets/range.php:18
+#: includes/widgets/range.php:21
 msgid "Range Filter"
 msgstr ""
 
-#: includes/widgets/range.php:55
-msgid "Slider"
-msgstr ""
-
-#: includes/widgets/range.php:64
-msgid "Stroke"
-msgstr ""
-
-#: includes/widgets/range.php:167
+#: includes/widgets/range.php:157
 msgid "Range Points"
 msgstr ""
 
-#: includes/widgets/range.php:176
-msgid "Points Width"
+#: includes/widgets/range.php:399
+msgid "Inputs Offset"
 msgstr ""
 
-#: includes/widgets/range.php:200
-msgid "Points Height"
-msgstr ""
-
-#: includes/widgets/range.php:268
-msgid "Values"
-msgstr ""
-
-#: includes/widgets/rating.php:18
+#: includes/widgets/rating.php:22
 msgid "Rating Filter"
 msgstr ""
 
-#: includes/widgets/rating.php:145
+#: includes/widgets/rating.php:162
 msgid "Rating icon"
 msgstr ""
 
-#: includes/widgets/rating.php:177
-msgid "Stars"
-msgstr ""
-
-#: includes/widgets/rating.php:206
-msgid "Gutter"
-msgstr ""
-
-#: includes/widgets/rating.php:237
-msgid "Selected Color"
-msgstr ""
-
-#: includes/widgets/rating.php:250
-msgid "Selected On Hover Color"
-msgstr ""
-
-#: includes/widgets/remove-filters.php:18
+#: includes/widgets/remove-filters.php:23
 msgid "Remove Filters"
 msgstr ""
 
-#: includes/widgets/remove-filters.php:82
+#: includes/widgets/remove-filters.php:84
 msgid "Remove button text"
 msgstr ""
 
-#: includes/widgets/remove-filters.php:84
-msgid "Remove filters"
+#: includes/widgets/search.php:22
+msgid "Search Filter"
 msgstr ""
 
 #: includes/widgets/search.php:100
+msgid "AJAX on typing"
+msgstr ""
+
+#: includes/widgets/search.php:110
+msgid "Min number of letters"
+msgstr ""
+
+#: includes/widgets/search.php:111
+msgid "The minimum number of letters to start the search."
+msgstr ""
+
+#: includes/widgets/search.php:126
 msgid "Search button text"
 msgstr ""
 
-#: includes/widgets/search.php:109
+#: includes/widgets/search.php:138
 msgid "Search button icon"
 msgstr ""
 
-#: includes/widgets/search.php:179
-msgid "Input Width"
-msgstr ""
-
-#: includes/widgets/search.php:307
-msgid "Input"
-msgstr ""
-
-#: includes/widgets/select.php:18
+#: includes/widgets/select.php:21
 msgid "Select Filter"
 msgstr ""
 
-#: includes/widgets/select.php:81
-msgid "Select Width"
+#: includes/widgets/select.php:322
+msgid "Group Item Width"
 msgstr ""
 
-#: templates/admin/filter-notes.php:6
-msgid ""
-"you need to add the meta field name by which you want to filter the data, "
-"into the field. The Query Variable is set automatically for taxonomies, "
-"search filters and filters via the post publication date."
+#: includes/widgets/select.php:323
+msgid "Leave blank for auto width"
 msgstr ""
 
-#: templates/admin/filter-notes.php:7
-msgid "Popular plugins fields"
+#: includes/widgets/select.php:355
+msgid "Wrap"
 msgstr ""
 
-#: templates/admin/filter-notes.php:8
-msgid "WooCommerce:"
+#: includes/widgets/sorting.php:22
+msgid "Sorting Filter"
 msgstr ""
 
-#: templates/admin/filter-notes.php:10
-msgid "filter by product price;"
+#: includes/widgets/sorting.php:142
+msgid "Label Block"
 msgstr ""
 
-#: templates/admin/filter-notes.php:11
-msgid "filter by product rating;"
+#: includes/widgets/sorting.php:183 includes/widgets/sorting.php:239
+msgid "Sorting List"
 msgstr ""
 
-#: templates/admin/filter-notes.php:12
-msgid "filter by sales count;"
+#: includes/widgets/sorting.php:201
+msgid "Order By"
 msgstr ""
 
-#: templates/admin/filter-notes.php:13
-msgid "product weight;"
+#: includes/widgets/sorting.php:211
+msgid "Key"
 msgstr ""
 
-#: templates/admin/filter-notes.php:14
-msgid "product length;"
+#: includes/widgets/sorting.php:223
+msgid "Order"
 msgstr ""
 
-#: templates/admin/filter-notes.php:15
-msgid "product width;"
+#: includes/widgets/sorting.php:227
+msgid "ASC"
 msgstr ""
 
-#: templates/admin/filter-notes.php:16
-msgid "product height;"
+#: includes/widgets/sorting.php:228
+msgid "DESC"
 msgstr ""
 
-#: templates/admin/filter-notes.php:17
-msgid "filter by product sale start date;"
+#: jet-smart-filters.php:257
+msgid "Add New Filter"
 msgstr ""
 
-#: templates/admin/filter-notes.php:18
-msgid "filter by product sale end date;"
+#: templates/filters/date-period.php:12
+msgid "Select Date"
 msgstr ""
 
-#: templates/common/pagination.php:55
-msgid "&hellip;"
+#: templates/filters/select.php:31
+msgid "Loading..."
 msgstr ""

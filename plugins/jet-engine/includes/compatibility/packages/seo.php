@@ -34,6 +34,8 @@ if ( ! class_exists( 'Jet_Engine_Seo_Package' ) ) {
 			// SEOPress Content Analysis.
 			add_filter( 'seopress_content_analysis_content', array( $this, 'seopress_analysis_content' ), 10, 2 );
 
+			// RankMath Snippets
+			add_action( 'rank_math/vars/register_extra_replacements', array( $this, 'register_rank_math_cct_field_snippet' ) );
 		}
 
 		/**
@@ -478,6 +480,44 @@ if ( ! class_exists( 'Jet_Engine_Seo_Package' ) ) {
 			}
 
 			return $content;
+		}
+
+		public function register_rank_math_cct_field_snippet() {
+
+			if ( ! class_exists( '\Jet_Engine\Modules\Custom_Content_Types\Module' ) ) {
+				return;
+			}
+
+			if ( ! function_exists( 'rank_math_register_var_replacement' ) ) {
+				return;
+			}
+
+			rank_math_register_var_replacement(
+				'jet_cct_field',
+				array(
+					'name'        => esc_html__( 'Custom Content Type Field', 'jet-engine' ),
+					'description' => esc_html__( 'Custom Content Type Field value. Separate cct slug and field name with ::', 'jet-engine' ),
+					'variable'    => 'jet_cct_field(cct-slug::field-name)',
+					'example'     => esc_html__( 'Custom Content Type Field value', 'jet-engine' ),
+				),
+				array( $this, 'get_cct_field_value' )
+			);
+		}
+
+		public function get_cct_field_value( $field ) {
+
+			if ( empty( $field ) ) {
+				return null;
+			}
+
+			$field = str_replace( '::', '__', $field );
+			$value = jet_engine()->listings->data->get_prop( $field );
+
+			if ( is_array( $value ) ) {
+				return jet_engine_render_checkbox_values( $value );
+			}
+
+			return wp_kses_post( $value );
 		}
 
 	}

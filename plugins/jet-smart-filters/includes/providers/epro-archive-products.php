@@ -10,12 +10,10 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Archive_Products' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Provider_EPro_Archive_Products class
 	 */
 	class Jet_Smart_Filters_Provider_EPro_Archive_Products extends Jet_Smart_Filters_Provider_Base {
-
 		/**
 		 * Watch for default query
 		 */
@@ -26,16 +24,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Archive_Products' ) ) {
 				add_filter( 'woocommerce_product_query', array( $this, 'store_archive_query' ) );
 				add_action( 'elementor/widget/before_render_content', array( $this, 'store_default_settings' ), 0 );
 			}
-
 		}
 
 		/**
 		 * Store default query args
-		 *
-		 * @param  array  $args       Query arguments.
-		 * @param  array  $attributes Shortcode attributes.
-		 * @param  string $type       Shortcode type.
-		 * @return array
 		 */
 		public function store_archive_query( $query ) {
 
@@ -84,14 +76,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Archive_Products' ) ) {
 			add_action( 'woocommerce_shortcode_before_current_query_loop', array( $this, 'store_props' ) );
 
 			$query->set( 'jet_smart_filters', $this->get_id() );
-
 		}
 
 		/**
 		 * Save default widget settings
-		 *
-		 * @param  [type] $widget [description]
-		 * @return [type]         [description]
 		 */
 		public function store_default_settings( $widget ) {
 
@@ -116,14 +104,13 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Archive_Products' ) ) {
 			$default_settings['_el_widget_id'] = $widget->get_id();
 
 			jet_smart_filters()->providers->store_provider_settings( $this->get_id(), $default_settings, $query_id );
-
 		}
 
 		/**
 		 * Returns settings to store list
-		 * @return [type] [description]
 		 */
 		public function settings_to_store() {
+
 			return array(
 				'rows',
 				'paginate',
@@ -148,33 +135,30 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Archive_Products' ) ) {
 
 		/**
 		 * Returns Elementor Pro apropriate widget name
-		 * @return [type] [description]
 		 */
 		public function widget_name() {
+
 			return 'wc-archive-products';
 		}
 
 		/**
 		 * Get provider name
-		 *
-		 * @return string
 		 */
 		public function get_name() {
+
 			return __( 'Elementor Pro Archive Products', 'jet-smart-filters' );
 		}
 
 		/**
 		 * Get provider ID
-		 *
-		 * @return string
 		 */
 		public function get_id() {
+
 			return 'epro-archive-products';
 		}
 
 		/**
 		 * Ensure all settings are passed
-		 * @return [type] [description]
 		 */
 		public function ensure_settings( $settings ) {
 
@@ -189,13 +173,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Archive_Products' ) ) {
 			}
 
 			return $settings;
-
 		}
 
 		/**
 		 * Get filtered provider content
-		 *
-		 * @return string
 		 */
 		public function ajax_get_content() {
 
@@ -240,15 +221,13 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Archive_Products' ) ) {
 			}
 
 			do_action( 'jet-smart-filters/providers/epro-archive-products/after-ajax-content' );
-
 		}
 
 		/**
 		 * Store query ptoperties
-		 *
-		 * @return [type] [description]
 		 */
 		public function store_props() {
+
 			global $woocommerce_loop;
 
 			jet_smart_filters()->query->set_props(
@@ -259,33 +238,29 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Archive_Products' ) ) {
 					'page'          => $woocommerce_loop['current_page'],
 				)
 			);
-
 		}
 
 		/**
 		 * Get provider wrapper selector
-		 *
-		 * @return string
 		 */
 		public function get_wrapper_selector() {
+
 			return '.elementor-widget-wc-archive-products .elementor-widget-container';
 		}
 
 		/**
 		 * Action for wrapper selector - 'insert' into it or 'replace'
-		 *
-		 * @return string
 		 */
 		public function get_wrapper_action() {
+
 			return 'replace';
 		}
 
 		/**
 		 * If added unique ID this paramter will determine - search selector inside this ID, or is the same element
-		 *
-		 * @return bool
 		 */
 		public function in_depth() {
+
 			return false;
 		}
 
@@ -301,13 +276,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Archive_Products' ) ) {
 			}
 
 			add_filter( 'pre_get_posts', array( $this, 'add_query_args' ), 10 );
-
 		}
 
 		/**
 		 * Add custom query arguments
-		 *
-		 * @param array $args [description]
 		 */
 		public function add_query_args( $query ) {
 
@@ -327,8 +299,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_EPro_Archive_Products' ) ) {
 					break;
 				}
 			}
-
 		}
 	}
-
 }

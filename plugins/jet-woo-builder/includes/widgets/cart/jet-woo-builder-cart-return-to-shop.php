@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_Cart_Return_To_Shop
- * Name: Return To Shop
+ * Name: Cart Return To Shop
  * Slug: jet-cart-return-to-shop
  */
 
@@ -20,7 +20,7 @@ class Jet_Woo_Builder_Cart_Return_To_Shop extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Return To Shop', 'jet-woo-builder' );
+		return __( 'Cart Return To Shop', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {

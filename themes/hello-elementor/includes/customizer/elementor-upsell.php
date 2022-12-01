@@ -23,15 +23,9 @@ class Elementor_Upsell extends \WP_Customize_Control {
 		$this->print_customizer_upsell();
 
 		if ( isset( $this->description ) ) {
-			echo '<span class="description customize-control-description">' . $this->description . '</span>';
+			echo '<span class="description customize-control-description">' . wp_kses_post( $this->description ) . '</span>';
 		}
 	}
-
-	/**
-	 * Customizer deeplinks HTML
-	 *
-	 * @return string HTML to use in the customizer panel
-	 */
 
 	private function print_customizer_upsell() {
 		if ( ! function_exists( 'get_plugins' ) ) {
@@ -46,7 +40,7 @@ class Elementor_Upsell extends \WP_Customize_Control {
 		if ( ! isset( $plugins['elementor/elementor.php'] ) ) {
 			$customizer_content .= $this->get_customizer_upsell_html(
 				__( 'Install Elementor', 'hello-elementor' ),
-				__( 'Create a cross-site Header and Footer using Elementor & Hello theme', 'hello-elementor' ),
+				__( 'Create a cross-site Header and Footer using Elementor & Hello theme.', 'hello-elementor' ),
 				wp_nonce_url(
 					add_query_arg(
 						[
@@ -63,7 +57,7 @@ class Elementor_Upsell extends \WP_Customize_Control {
 		} elseif ( ! defined( 'ELEMENTOR_VERSION' ) ) {
 			$customizer_content .= $this->get_customizer_upsell_html(
 				__( 'Activate Elementor', 'hello-elementor' ),
-				__( 'Create a cross-site Header and Footer using Elementor & Hello theme', 'hello-elementor' ),
+				__( 'Create a cross-site Header and Footer using Elementor & Hello theme.', 'hello-elementor' ),
 				wp_nonce_url( 'plugins.php?action=activate&plugin=elementor/elementor.php', 'activate-plugin_elementor/elementor.php' ),
 				__( 'Activate Elementor', 'hello-elementor' ),
 				get_template_directory_uri() . '/assets/images/go-pro.svg'
@@ -76,17 +70,25 @@ class Elementor_Upsell extends \WP_Customize_Control {
 				__( 'Update Elementor', 'hello-elementor' ),
 				get_template_directory_uri() . '/assets/images/go-pro.svg'
 			);
+		} elseif ( ! hello_header_footer_experiment_active() ) {
+			$customizer_content .= $this->get_customizer_upsell_html(
+				__( 'Set Your Header &amp; Footer', 'hello-elementor' ),
+				__( 'Create cross-site Header and Footer using Elementor & Hello theme.', 'hello-elementor' ),
+				wp_nonce_url( 'admin.php?page=elementor#tab-experiments' ),
+				__( 'Activate Now', 'hello-elementor' ),
+				get_template_directory_uri() . '/assets/images/go-pro.svg'
+			);
 		} else {
 			$customizer_content .= $this->get_customizer_upsell_html(
 				__( 'Set Your Header &amp; Footer', 'hello-elementor' ),
-				__( 'Create cross-site Header and Footer using Elementor & Hello theme', 'hello-elementor' ),
+				__( 'Create cross-site Header and Footer using Elementor & Hello theme.', 'hello-elementor' ),
 				wp_nonce_url( 'post.php?post=' . get_option( 'elementor_active_kit' ) . '&action=elementor' ),
 				__( 'Start Here', 'hello-elementor' ),
 				get_template_directory_uri() . '/assets/images/go-pro.svg'
 			);
 		}
 
-		echo $customizer_content;
+		echo wp_kses_post( $customizer_content );
 	}
 
 	private function get_customizer_upsell_html( $title, $text, $url, $button_text, $image ) {

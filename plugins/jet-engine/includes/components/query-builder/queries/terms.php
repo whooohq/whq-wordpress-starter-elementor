@@ -2,6 +2,7 @@
 namespace Jet_Engine\Query_Builder\Queries;
 
 use Jet_Engine\Query_Builder\Manager;
+use Jet_Engine\Query_Builder\Helpers\Empty_Items_Replacer;
 
 class Terms_Query extends Base_Query {
 
@@ -49,7 +50,9 @@ class Terms_Query extends Base_Query {
 			}
 		}
 
-		return $args;
+		$args_replacer = new Empty_Items_Replacer( $args, array( 'include', 'exclude', 'object_ids' ) );
+
+		return $args_replacer->replace();
 	}
 
 	public function get_current_items_page() {
@@ -165,6 +168,28 @@ class Terms_Query extends Base_Query {
 				$this->merge_default_props( $prop, $value );
 				break;
 		}
+
+	}
+
+	/**
+	 * Adds date range query arguments to given query parameters.
+	 * Required to allow ech query to ensure compatibility with Dynamic Calendar
+	 * 
+	 * @param array $args [description]
+	 */
+	public function add_date_range_args( $args = array(), $dates_range = array(), $settings = array() ) {
+
+		$group_by = $settings['group_by'];
+
+		switch ( $group_by ) {
+
+			case 'meta_date':
+				$args['meta_query'] = $this->get_dates_range_meta_query( $args, $dates_range, $settings );
+				break;
+
+		}
+
+		return $args;
 
 	}
 

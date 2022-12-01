@@ -36,11 +36,6 @@
 				&::before {
 					content: "\f00d";
 				}
-
-				.rtl & {
-					right: initial;
-					left: 5px;
-				}
 			}
 
 			&-loading {
@@ -54,11 +49,6 @@
 				border-bottom: 3px solid currentColor;
 				border-radius: 50%;
 				animation: loading-spin 1s infinite linear;
-
-				.rtl & {
-					right: initial;
-					left: 6px;
-				}
 
 				@keyframes loading-spin {
 					from {

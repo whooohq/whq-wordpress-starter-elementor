@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_MyAccount_Addresses
- * Name: Addresses
+ * Name: Account Addresses
  * Slug: jet-myaccount-addresses
  */
 
@@ -22,7 +22,7 @@ class Jet_Woo_Builder_MyAccount_Addresses extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return __( 'Addresses', 'jet-woo-builder' );
+		return __( 'Account Addresses', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {

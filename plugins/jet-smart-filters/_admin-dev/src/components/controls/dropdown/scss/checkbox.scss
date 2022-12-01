@@ -1,0 +1,13 @@
+.jet_checkbox {
+	cursor: pointer;
+	user-select: none;
+	white-space: nowrap;
+
+	input {
+		margin: 0 0 1px 0;
+	}
+
+	input + label {
+		margin-left: 7px;
+	}
+}

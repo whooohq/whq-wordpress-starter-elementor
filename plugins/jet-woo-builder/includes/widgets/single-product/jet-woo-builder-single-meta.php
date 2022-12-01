@@ -21,15 +21,11 @@ class Jet_Woo_Builder_Single_Meta extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Single Meta', 'jet-woo-builder' );
+		return __( 'Single Meta', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
 		return 'jet-woo-builder-icon-single-meta';
-	}
-
-	public function get_script_depends() {
-		return array();
 	}
 
 	public function get_jet_help_url() {
@@ -48,358 +44,208 @@ class Jet_Woo_Builder_Single_Meta extends Jet_Woo_Builder_Base {
 
 		$css_scheme = apply_filters(
 			'jet-woo-builder/jet-single-meta/css-scheme',
-			array(
-				'sku'             => '.jet-woo-builder .product_meta .sku_wrapper',
-				'sku_value'       => '.jet-woo-builder .product_meta .sku_wrapper .sku',
-				'categories'      => '.jet-woo-builder .product_meta .posted_in',
-				'categories_link' => '.jet-woo-builder .product_meta .posted_in a',
-				'tags'            => '.jet-woo-builder .product_meta .tagged_as',
-				'tags_link'       => '.jet-woo-builder .product_meta .tagged_as a',
-			)
+			[
+				'meta' => '.elementor-jet-single-meta .product_meta',
+			]
 		);
 
 		$this->start_controls_section(
-			'section_sku_styles',
-			array(
-				'label'      => esc_html__( 'SKU', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
+			'section_product_meta_style',
+			[
+				'label' => __( 'Style', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
 		);
 
-		$this->add_control(
-			'sku_color',
-			array(
-				'label'     => esc_html__( 'Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['sku'] => 'color: {{VALUE}}',
-				),
-			)
+		$this->add_responsive_control(
+			'product_meta_display_type',
+			[
+				'label'     => __( 'Display', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::SELECT,
+				'default'   => 'column',
+				'options'   => jet_woo_builder_tools()->get_available_flex_directions_types(),
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['meta'] => 'flex-direction: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'product_meta_space_between',
+			[
+				'label'     => __( 'Space Between', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::SLIDER,
+				'range'     => [
+					'px' => [
+						'max' => 50,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['meta'] => 'gap: {{SIZE}}{{UNIT}};',
+				],
+			]
 		);
 
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
-			array(
-				'name'     => 'sku_typography',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['sku'],
-			)
+			[
+				'name'     => 'product_meta_typography',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['meta'],
+			]
+		);
+
+		$this->add_control(
+			'product_meta_color',
+			[
+				'label'     => __( 'Color', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['meta'] => 'color: {{VALUE}}',
+				],
+			]
 		);
 
 		$this->add_responsive_control(
-			'sku_margin',
-			array(
+			'product_meta_margin',
+			[
 				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['sku'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				'size_units' => [ 'px', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} ' . $css_scheme['meta'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
 		);
 
 		$this->add_responsive_control(
-			'sku__alignment',
-			array(
-				'label'     => esc_html__( 'Alignment', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::CHOOSE,
-				'default'   => 'left',
-				'options'   => jet_woo_builder_tools()->get_available_h_align_types(),
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['sku'] => 'text-align: {{VALUE}};',
-				),
-				'classes'   => 'elementor-control-align',
-			)
-		);
-
-		$this->add_control(
-			'heading_sku_value_styles',
-			array(
-				'label'     => esc_html__( 'Value', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::HEADING,
-				'separator' => 'before',
-			)
-		);
-
-		$this->add_control(
-			'sku_value_color',
-			array(
-				'label'     => esc_html__( 'Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['sku_value'] => 'color: {{VALUE}}',
-				),
-			)
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			array(
-				'name'     => 'sku_value_typography',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['sku_value'],
-			)
-		);
-
-		$this->end_controls_section();
-
-		/**
-		 * Categories Style Section
-		 */
-		$this->start_controls_section(
-			'section_categories_styles',
-			array(
-				'label'      => esc_html__( 'Categories', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
-		);
-
-		$this->add_control(
-			'categories_color',
-			array(
-				'label'     => esc_html__( 'Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['categories'] => 'color: {{VALUE}}',
-				),
-			)
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			array(
-				'name'     => 'categories_typography',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['categories'],
-			)
-		);
-
-		$this->add_responsive_control(
-			'categories_margin',
-			array(
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
+			'product_meta_padding',
+			[
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['categories'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				'size_units' => [ 'px', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} ' . $css_scheme['meta'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
 		);
 
 		$this->add_responsive_control(
-			'categories_alignment',
-			array(
-				'label'     => esc_html__( 'Alignment', 'jet-woo-builder' ),
+			'product_meta__inline_alignment',
+			[
+				'label'     => __( 'Alignment', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::CHOOSE,
-				'default'   => 'left',
-				'options'   => jet_woo_builder_tools()->get_available_h_align_types(),
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['categories'] => 'text-align: {{VALUE}};',
-				),
-				'classes'   => 'elementor-control-align',
-			)
+				'options'   => jet_woo_builder_tools()->get_available_flex_h_align_types( true ),
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['meta'] => 'justify-content: {{VALUE}};',
+				],
+				'condition' => [
+					'product_meta_display_type' => 'row',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'product_meta__block_alignment',
+			[
+				'label'     => __( 'Alignment', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::CHOOSE,
+				'options'   => jet_woo_builder_tools()->get_available_flex_h_align_types(),
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['meta'] => 'align-items: {{VALUE}};',
+				],
+				'condition' => [
+					'product_meta_display_type' => 'column',
+				],
+			]
 		);
 
 		$this->add_control(
-			'heading_link_categories_styles',
-			array(
-				'label'     => esc_html__( 'Link', 'jet-woo-builder' ),
+			'heading_product_meta_value_styles',
+			[
+				'label'     => __( 'Value', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::HEADING,
 				'separator' => 'before',
-			)
+			]
 		);
 
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
-			array(
-				'name'     => 'categories_link_typography',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['categories_link'],
-			)
+			[
+				'name'     => 'product_meta_value_typography',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['meta'] . ' a, {{WRAPPER}} ' . $css_scheme['meta'] . ' > span span',
+			]
 		);
 
-		$this->start_controls_tabs( 'tabs_categories_link_style' );
+		$this->add_control(
+			'product_meta__value_color',
+			[
+				'label'     => __( 'Color', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['meta'] . ' > span span' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_control(
+			'heading_product_meta_value_link_styles',
+			[
+				'label' => __( 'Link', 'jet-woo-builder' ),
+				'type'  => Controls_Manager::HEADING,
+			]
+		);
+
+		$this->start_controls_tabs( 'tabs_product_meta_value_link_style' );
 
 		$this->start_controls_tab(
-			'tab_categories_link_normal',
-			array(
-				'label' => esc_html__( 'Normal', 'jet-woo-builder' ),
-			)
+			'tab_product_meta_value_link_normal',
+			[
+				'label' => __( 'Normal', 'jet-woo-builder' ),
+			]
 		);
 
 		$this->add_control(
-			'categories_link_color',
-			array(
-				'label'     => esc_html__( 'Color', 'jet-woo-builder' ),
+			'product_meta__value_link_color',
+			[
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['categories_link'] => 'color: {{VALUE}}',
-				),
-			)
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['meta'] . ' a' => 'color: {{VALUE}}',
+				],
+			]
 		);
 
 		$this->end_controls_tab();
 
 		$this->start_controls_tab(
-			'tab_categories_link_hover',
-			array(
-				'label' => esc_html__( 'Hover', 'jet-woo-builder' ),
-			)
+			'tab_product_meta_value_link_hover',
+			[
+				'label' => __( 'Hover', 'jet-woo-builder' ),
+			]
 		);
 
 		$this->add_control(
-			'categories_link_hover_color',
-			array(
-				'label'     => esc_html__( 'Color', 'jet-woo-builder' ),
+			'product_meta_value_link_hover_color',
+			[
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['categories_link'] . ':hover' => 'color: {{VALUE}}',
-				),
-			)
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['meta'] . ' a:hover' => 'color: {{VALUE}}',
+				],
+			]
 		);
 
 		$this->add_control(
-			'categories_link_hover_decoration',
-			array(
-				'label'     => esc_html__( 'Text Decoration', 'jet-woo-builder' ),
+			'product_meta_value_link_hover_decoration',
+			[
+				'label'     => __( 'Text Decoration', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::SELECT,
 				'default'   => 'none',
 				'options'   => jet_woo_builder_tools()->get_available_text_decoration_types(),
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['categories_link'] . ':hover' => 'text-decoration: {{VALUE}}',
-				),
-			)
-		);
-
-		$this->end_controls_tab();
-
-		$this->end_controls_tabs();
-
-		$this->end_controls_section();
-
-		/**
-		 * Tags Style Section
-		 */
-		$this->start_controls_section(
-			'section_tags_styles',
-			array(
-				'label'      => esc_html__( 'Tags', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
-		);
-
-		$this->add_control(
-			'tags_color',
-			array(
-				'label'     => esc_html__( 'Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['tags'] => 'color: {{VALUE}}',
-				),
-			)
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			array(
-				'name'     => 'tags_typography',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['tags'],
-			)
-		);
-
-		$this->add_responsive_control(
-			'tags_margin',
-			array(
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['tags'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
-		);
-
-		$this->add_responsive_control(
-			'tags_alignment',
-			array(
-				'label'     => esc_html__( 'Alignment', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::CHOOSE,
-				'default'   => 'left',
-				'options'   => jet_woo_builder_tools()->get_available_h_align_types(),
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['tags'] => 'text-align: {{VALUE}};',
-				),
-				'classes'   => 'elementor-control-align',
-			)
-		);
-
-		$this->add_control(
-			'heading_link_tags_styles',
-			array(
-				'label'     => esc_html__( 'Link', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::HEADING,
-				'separator' => 'before',
-			)
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			array(
-				'name'     => 'tags_link_typography',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['tags_link'],
-			)
-		);
-
-		$this->start_controls_tabs( 'tabs_tags_link_style' );
-
-		$this->start_controls_tab(
-			'tab_tags_link_normal',
-			array(
-				'label' => esc_html__( 'Normal', 'jet-woo-builder' ),
-			)
-		);
-
-		$this->add_control(
-			'tags_link_color',
-			array(
-				'label'     => esc_html__( 'Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['tags_link'] => 'color: {{VALUE}}',
-				),
-			)
-		);
-
-		$this->end_controls_tab();
-
-		$this->start_controls_tab(
-			'tab_tags_link_hover',
-			array(
-				'label' => esc_html__( 'Hover', 'jet-woo-builder' ),
-			)
-		);
-
-		$this->add_control(
-			'tags_link_hover_color',
-			array(
-				'label'     => esc_html__( 'Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['tags_link'] . ':hover' => 'color: {{VALUE}}',
-				),
-			)
-		);
-
-		$this->add_control(
-			'tags_link_hover_decoration',
-			array(
-				'label'     => esc_html__( 'Text Decoration', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::SELECT,
-				'default'   => 'none',
-				'options'   => jet_woo_builder_tools()->get_available_text_decoration_types(),
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['tags_link'] . ':hover' => 'text-decoration: {{VALUE}}',
-				),
-			)
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['meta'] . ' a:hover' => 'text-decoration: {{VALUE}}',
+				],
+			]
 		);
 
 		$this->end_controls_tab();
@@ -418,14 +264,14 @@ class Jet_Woo_Builder_Single_Meta extends Jet_Woo_Builder_Base {
 			return;
 		}
 
-		if ( true === $this->__set_editor_product() ) {
+		if ( $this->__set_editor_product() ) {
 			$this->__open_wrap();
 
 			woocommerce_template_single_meta();
 
 			$this->__close_wrap();
 
-			if ( jet_woo_builder_integration()->in_elementor() ) {
+			if ( jet_woo_builder()->elementor_views->in_elementor() ) {
 				$this->__reset_editor_product();
 			}
 		}

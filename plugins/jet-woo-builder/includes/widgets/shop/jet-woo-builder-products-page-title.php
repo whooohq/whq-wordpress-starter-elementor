@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_Products_Page_Title
- * Name: Page Title
+ * Name: Products Page Title
  * Slug: jet-woo-builder-products-page-title
  */
 
@@ -21,15 +21,11 @@ class Jet_Woo_Builder_Products_Page_Title extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Products Page Title', 'jet-woo-builder' );
+		return __( 'Products Page Title', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
 		return 'jet-woo-builder-icon-title';
-	}
-
-	public function get_script_depends() {
-		return array();
 	}
 
 	public function get_jet_help_url() {
@@ -37,7 +33,7 @@ class Jet_Woo_Builder_Products_Page_Title extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_categories() {
-		return array( 'jet-woo-builder' );
+		return [ 'jet-woo-builder' ];
 	}
 
 	public function show_in_panel() {
@@ -63,12 +59,12 @@ class Jet_Woo_Builder_Products_Page_Title extends Jet_Woo_Builder_Base {
 
 		$this->add_control(
 			'page_title_tag',
-			array(
-				'label'   => esc_html__( 'Tag', 'jet-woo-builder' ),
+			[
+				'label'   => __( 'HTML Tag', 'jet-woo-builder' ),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'h1',
 				'options' => jet_woo_builder_tools()->get_available_title_html_tags(),
-			)
+			]
 		);
 
 		$this->end_controls_section();
@@ -80,17 +76,18 @@ class Jet_Woo_Builder_Products_Page_Title extends Jet_Woo_Builder_Base {
 				'tab'   => Controls_Manager::TAB_STYLE,
 			)
 		);
+
 		$this->add_control(
 			'page_title_text_color',
-			array(
-				'label'     => esc_html__( 'Text Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Text Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'default'   => '',
-				'selectors' => array(
+				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['page_title'] => 'color: {{VALUE}};',
-				),
-			)
+				],
+			]
 		);
+
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			array(
@@ -98,36 +95,46 @@ class Jet_Woo_Builder_Products_Page_Title extends Jet_Woo_Builder_Base {
 				'selector' => '{{WRAPPER}} ' . $css_scheme['page_title'],
 			)
 		);
+
+		$this->add_group_control(
+			Group_Control_Text_Shadow::get_type(),
+			[
+				'name'     => 'page_title_text_shadow',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['page_title'],
+			]
+		);
+
 		$this->add_responsive_control(
 			'page_title_align',
-			array(
-				'label'     => esc_html__( 'Alignment', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Alignment', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::CHOOSE,
-				'options'   => jet_woo_builder_tools()->get_available_h_align_types(),
-				'selectors' => array(
+				'options'   => jet_woo_builder_tools()->get_available_h_align_types( true ),
+				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['page_title'] => 'text-align: {{VALUE}};',
-				),
+				],
 				'classes'   => 'elementor-control-align',
-			)
+			]
 		);
 
 	}
 
 	protected function render() {
 
-		$this->__context = 'render';
+		$settings = $this->get_settings_for_display();
 
-		$settings = $this->get_settings();
-
-		$tag = jet_woo_builder_tools()->sanitize_html_tag( $settings['page_title_tag'] );
+		$tag = isset( $settings['page_title_tag'] ) ? jet_woo_builder_tools()->sanitize_html_tag( $settings['page_title_tag'] ) : 'h1';
 
 		$this->__open_wrap();
 
 		echo '<' . $tag . ' class="woocommerce-products-header__title page-title">';
+
 		woocommerce_page_title();
+
 		echo '</' . $tag . '>';
 
 		$this->__close_wrap();
 
 	}
+
 }

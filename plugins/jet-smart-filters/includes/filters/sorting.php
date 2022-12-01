@@ -9,7 +9,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Sorting_Filter' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Sorting_Filter class
 	 */
@@ -17,17 +16,14 @@ if ( ! class_exists( 'Jet_Smart_Filters_Sorting_Filter' ) ) {
 
 		/**
 		 * Get provider ID
-		 *
-		 * @return string
 		 */
 		public function get_id() {
+
 			return 'sorting';
 		}
 
 		/**
 		 * Returns sorting data options
-		 *
-		 * @return array
 		 */
 		public function sorting_options( $options_list = array() ) {
 
@@ -53,13 +49,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Sorting_Filter' ) ) {
 			}
 
 			return $options;
-
 		}
 
 		/**
 		 * Retrun orderby data options
-		 *
-		 * @return array
 		 */
 		public function orderby_options() {
 
@@ -91,16 +84,13 @@ if ( ! class_exists( 'Jet_Smart_Filters_Sorting_Filter' ) ) {
 			}
 
 			return $options_list;
-
 		}
 
 		/**
 		 * Returns option data value
-		 *
-		 * @param array  $option
-		 * @return array
 		 */
 		private function option_value( $option ) {
+
 			$output = array();
 
 			if ( in_array( $option['orderby'], ['none', 'rand'] ) ) {
@@ -118,10 +108,9 @@ if ( ! class_exists( 'Jet_Smart_Filters_Sorting_Filter' ) ) {
 
 		/**
 		 * Sorting container data attributes
-		 *
-		 * @return String
 		 */
 		public function container_data_atts( $settings = array() ) {
+
 			$output = '';
 
 			if ( 'submit' === $settings['apply_on'] && in_array( $settings['apply_type'], ['ajax', 'mixed'] ) ) {
@@ -146,7 +135,5 @@ if ( ! class_exists( 'Jet_Smart_Filters_Sorting_Filter' ) ) {
 
 			return $output;
 		}
-
 	}
-
 }

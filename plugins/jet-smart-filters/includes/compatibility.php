@@ -40,12 +40,15 @@ if ( ! class_exists( 'Jet_Smart_Filters_Compatibility' ) ) {
 		}
 
 		public function add_action_to_multi_currency_ajax( $ajax_actions = array() ) {
+
 			$ajax_actions[] = 'jet_smart_filters';
+			
 			return $ajax_actions;
 		}
 
 		public function modify_filter_id( $filter_id ) {
-			return apply_filters( 'wpml_object_id', $filter_id, jet_smart_filters()->post_type->post_type, true );
+
+			return apply_filters( 'wpml_object_id', $filter_id, jet_smart_filters()->post_type->slug(), true );
 		}
 
 		public function modify_posts_source_args( $args ) {
@@ -79,9 +82,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Compatibility' ) ) {
 			global $woocommerce_wpml;
 			$providers = strtok( $args['jet_smart_filters'], '/' );
 
-			if ( $woocommerce_wpml && in_array( $providers, ['jet-woo-products-grid', 'jet-woo-products-list', 'epro-products', 'epro-archive-products', 'woocommerce-shortcode', 'woocommerce-archive'] ) ) {
-				$currency = $woocommerce_wpml->multi_currency->get_client_currency();
-
+			if ( $woocommerce_wpml && $woocommerce_wpml->multi_currency && in_array( $providers, ['jet-woo-products-grid', 'jet-woo-products-list', 'epro-products', 'epro-archive-products', 'woocommerce-shortcode', 'woocommerce-archive'] ) ) {
 				if ( $currency !== wcml_get_woocommerce_currency_option() ) {
 					if ( ! empty( $args['meta_query'] ) && is_array( $args['meta_query'] ) ) {
 						for ( $i = 0; $i < count( $args['meta_query'] ); $i++ ) {
@@ -173,6 +174,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Compatibility' ) ) {
 		}
 
 		public function cct_data_sources( $data_sources ) {
+
 			if ( function_exists( 'jet_engine' ) && jet_engine()->modules->is_module_active( 'custom-content-types' ) ) {
 				$data_sources['cct'] = __( 'JetEngine Custom Content Types', 'jet-smart-filters' );
 			}
@@ -181,22 +183,33 @@ if ( ! class_exists( 'Jet_Smart_Filters_Compatibility' ) ) {
 		}
 
 		public function cct_register_controls( $fields ) {
+
 			if ( function_exists( 'jet_engine' ) && jet_engine()->modules->is_module_active( 'custom-content-types' ) ) {
 				$fields = jet_smart_filters()->utils->array_insert_after( $fields, '_data_source', array(
 					'_cct_notice' => array(
-						'title'       => __( 'Coming soon', 'jet-smart-filters' ),
-						'type'        => 'text',
-						'input_type'  => 'hidden',
-						'element'     => 'control',
-						'description' => __( 'Support for the Visual filter will be added with future updates', 'jet-smart-filters' ),
-						'class'       => 'cx-control',
-						'conditions'  => array(
+						'title'      => __( 'Coming soon', 'jet-smart-filters' ),
+						'type'       => 'html',
+						'fullwidth'  => true,
+						'html'       => __( 'Support for the Visual filter will be added with future updates', 'jet-smart-filters' ),
+						'conditions' => array(
+							'_filter_type' => 'color-image',
 							'_data_source' => 'cct',
-							'_filter_type' => array( 'color-image' ),
 						),
 					),
 				) );
+
+				if ( jet_smart_filters()->is_classic_admin ) {
+					$fields['_cct_notice']['type']        = 'text';
+					$fields['_cct_notice']['input_type']  = 'hidden';
+					$fields['_cct_notice']['description'] = $fields['_cct_notice']['html'];
+					unset( $fields['_cct_notice']['html'] );
+				}
 			}
+
+			$fields = jet_smart_filters()->utils->add_control_condition( $fields, '_color_image_type', '_cct_notice!', 'is_visible' );
+			$fields = jet_smart_filters()->utils->add_control_condition( $fields, '_color_image_behavior', '_cct_notice!', 'is_visible' );
+			$fields = jet_smart_filters()->utils->add_control_condition( $fields, '_source_color_image_input', '_cct_notice!', 'is_visible' );
+			$fields = jet_smart_filters()->utils->add_control_condition( $fields, '_query_var', '_cct_notice!', 'is_visible' );
 
 			return $fields;
 		}

@@ -338,15 +338,17 @@ class Settings_Manager {
 						'jet-open-editor' => 1,
 						'item'            => '%id%',
 						'menu'            => '%menuid%',
+						'content'         => '%content%',
 					),
 					esc_url( admin_url( '/' ) )
 				),
-				'optionMenuList'   => $this->get_menu_select_options(),
-				'optionPresetList' => jet_menu()->settings_manager->options_manager->get_presets_select_options(),
-				'controlData'      => $this->default_nav_item_controls_data(),
-				'locationSettings' => $this->get_nav_location_data(),
-				'iconsFetchJson'   => jet_menu()->plugin_url( 'assets/public/lib/font-awesome/js/solid.js' ),
-				'itemsSettings'    => $this->get_menu_items_settings(),
+				'optionMenuList'     => $this->get_menu_select_options(),
+				'optionPresetList'   => jet_menu()->settings_manager->options_manager->get_presets_select_options(),
+				'controlData'        => $this->default_nav_item_controls_data(),
+				'locationSettings'   => $this->get_nav_location_data(),
+				'iconsFetchJson'     => jet_menu()->plugin_url( 'assets/public/lib/font-awesome/js/solid.js' ),
+				'itemsSettings'      => $this->get_menu_items_settings(),
+				'contentTypeOptions' => $this->get_content_type_options(),
 			) )
 		);
 	}
@@ -453,6 +455,18 @@ class Settings_Manager {
 	}
 
 	/**
+	 * @return mixed|void
+	 */
+	public function get_content_type_options() {
+		return apply_filters( 'jet-menu/admin/content-type-options', [
+			[
+				'label' => __( 'Block Editor', 'jet-menu' ),
+				'value' => 'default',
+			],
+		] );
+	}
+
+	/**
 	 * [get_controls_localize_data description]
 	 * @return [type] [description]
 	 */
@@ -460,6 +474,10 @@ class Settings_Manager {
 		return array(
 			'enabled' => array(
 				'value' => false,
+			),
+			'content_type' => array(
+				'value'   => jet_menu_tools()->is_nextgen_mode() ? 'default' : 'elementor',
+				'options' => $this->get_content_type_options(),
 			),
 			'custom_mega_menu_position' => array(
 				'value'   => 'default',
@@ -502,6 +520,19 @@ class Settings_Manager {
 			'icon_size' => array(
 				'value' => '',
 			),
+			'menu_badge_type' => array(
+				'value' => 'text',
+				'options' => array(
+					array(
+						'label' => esc_html__( 'Text', 'jet-menu' ),
+						'value' => 'text',
+					),
+					array(
+						'label' => esc_html__( 'Svg', 'jet-menu' ),
+						'value' => 'svg',
+					)
+				),
+			),
 			'menu_badge' => array(
 				'value' => '',
 			),
@@ -511,7 +542,19 @@ class Settings_Manager {
 			'badge_bg_color' => array(
 				'value' => '',
 			),
+			'badge_svg' => array(
+				'value' => '',
+			),
+			'badge_svg_size' => array(
+				'value' => '',
+			),
 			'hide_item_text' => array(
+				'value' => '',
+			),
+			'badge_offset_x' => array(
+				'value' => '',
+			),
+			'badge_offset_y' => array(
 				'value' => '',
 			),
 			'item_padding' => array(
@@ -591,7 +634,9 @@ class Settings_Manager {
 	public function get_item_settings( $id ) {
 		$settings = get_post_meta( $id, $this->menu_item_meta_key, true );
 
-		return ! empty( $settings ) ? $settings : array();
+		$settings = ! empty( $settings ) ? $settings : [];
+
+		return $settings;
 	}
 
 	/**
@@ -647,20 +692,49 @@ class Settings_Manager {
 			) );
 		}
 
-		$default_settings = array();
-
-		foreach ( $this->default_nav_item_controls_data() as $key => $value ) {
-			$default_settings[ $key ] = $value['value'];
+		if ( ! isset( $data['itemId'] ) ) {
+			wp_send_json_error( array(
+				'message' => esc_html__( 'itemId is empty', 'jet-menu' ),
+			) );
 		}
 
-		$current_settings = $this->get_item_settings( absint( $data['itemId'] ) );
-
-		$current_settings = wp_parse_args( $current_settings, $default_settings );
+		$current_settings = $this->get_menu_item_settings( $data['itemId'] );
 
 		wp_send_json_success( array(
 			'message'  => esc_html__( 'Success!', 'jet-menu' ),
 			'settings' => $current_settings,
 		) );
+	}
+
+	/**
+	 * @param false $menu_item_id
+	 *
+	 * @return array|false|object
+	 */
+	public function get_menu_item_settings( $menu_item_id = false ) {
+
+		if ( ! $menu_item_id ) {
+			return false;
+		}
+
+		$default_settings = [];
+
+		foreach ( $this->default_nav_item_controls_data() as $key => $value ) {
+			$default_settings[ $key ] = $value['value'];
+		}
+
+		$current_settings = $this->get_item_settings( absint( $menu_item_id ) );
+		$current_settings = wp_parse_args( $current_settings, $default_settings );
+
+		$template_content_type = get_post_meta( $menu_item_id, '_content_type', true );
+		$mega_elementor_template_id = get_post_meta( $menu_item_id, 'jet-menu-item', true );
+
+		if ( ( $mega_elementor_template_id && empty( $template_content_type ) ) || 'elementor' === $template_content_type ) {
+			$current_settings['content_type'] = 'elementor';
+		}
+
+		return $current_settings;
+
 	}
 
 	/**
@@ -749,6 +823,7 @@ class Settings_Manager {
 			'message' => esc_html__( 'Menu settings have been saved', 'jet-menu' ),
 		) );
 	}
+
 
 }
 

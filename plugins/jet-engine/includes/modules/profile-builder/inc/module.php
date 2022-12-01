@@ -61,6 +61,10 @@ class Module {
 			require $this->module_path( 'forms-integration.php' );
 			new Forms_Integration();
 		}
+		if ( function_exists( 'jet_form_builder' ) ) {
+			require $this->module_path( 'forms-jfb-integration.php' );
+			new Forms_Jfb_Integration();
+		}
 
 		add_action( 'jet-engine/modules/dynamic-visibility/conditions/register', function( $conditions_manager ) {
 

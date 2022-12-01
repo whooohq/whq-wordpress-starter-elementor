@@ -96,9 +96,15 @@
 			.cx-vui-button__content {
 				.dashicons {
 					margin: 0 5px 0 -8px;
+					.rtl & {
+						margin: 0 -8px 0 5px;
+					}
 				}
 				span + .dashicons {
 					margin: -8px 0 0 5px;
+					.rtl & {
+						margin: -8px 5px 0 0;
+					}
 				}
 			}
 		}
@@ -108,9 +114,15 @@
 			.cx-vui-button__content {
 				svg {
 					margin: 0 5px 1px 0;
+					.rtl & {
+						margin: 0 0 1px 5px;
+					}
 				}
 				span + svg {
 					margin: 0 0 1px 5px;
+					.rtl & {
+						margin: 0 5px 1px 0;
+					}
 				}
 			}
 		}
@@ -121,9 +133,15 @@
 			.cx-vui-button__content {
 				.dashicons {
 					margin: 0 4px 0 -5px;
+					.rtl & {
+						margin: 0 -5px 0 4px;
+					}
 				}
 				span + .dashicons {
 					margin: -5px 0 0 4px;
+					.rtl & {
+						margin: -5px 4px 0 0;
+					}
 				}
 			}
 

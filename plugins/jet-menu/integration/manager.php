@@ -28,6 +28,12 @@ class Integration {
 	private $dir = null;
 
 	/**
+	 * [$registered_subpage_modules description]
+	 * @var array
+	 */
+	private $registered_plugins = array();
+
+	/**
 	 * Returns the instance.
 	 *
 	 * @since  1.0.0
@@ -46,8 +52,40 @@ class Integration {
 	 * Settings constructor.
 	 */
 	public function __construct() {
+		$this->registered_plugins = apply_filters( 'jet-menu/integration-manager/registered-plugins', [
+			'jet-form-builder' => array(
+				'class'    => '\\Jet_Menu\\Integration\\Jet_Form_Builder',
+				'instance' => false,
+				'path'     => jet_menu()->plugin_path( 'integration/plugins/jet-form-builder/manager.php' ),
+			),
+		] );
+
+		$this->load_compatibility_modules();
+
 		$this->include_integration_theme_file();
 		$this->include_integration_plugin_file();
+	}
+
+	/**
+	 * [maybe_load_theme_module description]
+	 * @return [type] [description]
+	 */
+	public function load_compatibility_modules() {
+
+		$this->registered_plugins = array_map( function( $module_data ) {
+			$class = $module_data['class'];
+
+			if ( file_exists( $module_data['path'] ) ) {
+				require $module_data['path'];
+			}
+
+			if ( ! $module_data['instance'] && class_exists( $class ) ) {
+				$module_data['instance'] = new $class();
+			}
+
+			return $module_data;
+		}, $this->registered_plugins );
+
 	}
 
 	/**

@@ -51,6 +51,15 @@ class Include_User_Roles extends Base {
 		$roles = (array) $user->roles;
 		$roles_to_check = ! empty( $settings[ $this->get_key() ] ) ? $settings[ $this->get_key() ] : array();
 
+		// Added in v3.0.4
+		// See: https://github.com/Crocoblock/issues-tracker/issues/1072
+		global $pagenow;
+
+		if ( 'user-edit.php' === $pagenow && ! empty( $_GET['user_id'] ) ) {
+			$user_page_data = get_userdata( $_GET['user_id'] );
+			$roles = (array) $user_page_data->roles;
+		}
+
 		if ( $this->check( $roles, $roles_to_check ) ) {
 			return true;
 		} else {

@@ -5,29 +5,35 @@ namespace Elementor;
 use Elementor\Group_Control_Border;
 use Elementor\Core\Schemes\Typography as Scheme_Typography;
 
+// Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-} // Exit if accessed directly
+}
 
 class Jet_Smart_Filters_Sorting_Widget extends Widget_Base {
 
 	public function get_name() {
+
 		return 'jet-smart-filters-sorting';
 	}
 
 	public function get_title() {
+
 		return __( 'Sorting Filter', 'jet-smart-filters' );
 	}
 
 	public function get_icon() {
+
 		return 'jet-smart-filters-icon-sorting-filter';
 	}
 
 	public function get_categories() {
+
 		return array( jet_smart_filters()->widgets->get_category() );
 	}
 
 	protected function register_controls() {
+
 		$css_scheme = apply_filters(
 			'jet-smart-filters/widgets/sorting/css-scheme',
 			array(
@@ -748,7 +754,5 @@ class Jet_Smart_Filters_Sorting_Widget extends Widget_Base {
 
 		include jet_smart_filters()->get_template( 'filters/sorting.php' );
 		include jet_smart_filters()->get_template( 'common/apply-filters.php' );
-
 	}
-
 }

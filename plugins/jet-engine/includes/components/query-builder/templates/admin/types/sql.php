@@ -378,11 +378,7 @@
 			v-if="query.advanced_mode"
 			label="<?php _e( 'Please note:', 'jet-engine' ); ?>"
 			description="<?php _e( 'You need to add WordPress Database Table prefix to all tables used in query. You can find it config.php file. Or you can use string {prefix} before table name and it will be automatically replaced with your actual prefix. For example <code>SELECT * FROM {prefix}posts</code>', 'jet-engine' ); ?>"
-		>
-			<div>
-				<code v-for="column in availableColumns" :style="{ display: 'inline-block', marginBottom: '2px' }">{{ column.label }}</code>
-			</div>
-		</cx-vui-component-wrapper>
+		></cx-vui-component-wrapper>
 		<cx-vui-textarea
 			label="<?php _e( 'SQL Query', 'jet-engine' ); ?>"
 			name="query_manual_query"
@@ -403,5 +399,13 @@
 			rows="10"
 			v-model="query.count_query"
 		></cx-vui-textarea>
+		<cx-vui-select
+			label="<?php _e( 'Cast result to instance of object', 'jet-engine' ); ?>"
+			description="<?php _e( 'With this option you can use query results as regular posts, users, terms queries etc.', 'jet-engine' ); ?>"
+			:wrapper-css="[ 'equalwidth' ]"
+			:options-list="castObjectsList"
+			size="fullwidth"
+			v-model="query.cast_object_to"
+		></cx-vui-select>
 	</div>
 </div>

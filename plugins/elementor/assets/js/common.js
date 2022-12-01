@@ -1,4 +1,4 @@
-/*! elementor - v3.6.8 - 27-07-2022 */
+/*! elementor - v3.8.1 - 13-11-2022 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -2059,7 +2059,7 @@ var ArgsObject = /*#__PURE__*/function (_InstanceType) {
     value: function requireArgument(property) {
       var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.args;
 
-      if (!args.hasOwnProperty(property)) {
+      if (!Object.prototype.hasOwnProperty.call(args, property)) {
         throw Error("".concat(property, " is required."));
       }
     }
@@ -2475,21 +2475,25 @@ exports["default"] = getUserTimestamp;
  *
  * @since 3.6.0
  *
+ * @param {Date} date
  * @return {Date} timestamp
  */
 function getUserTimestamp() {
-  var date = new Date(),
-      timezoneOffset = date.getTimezoneOffset(); // Local time for the user
+  var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Date();
+  var timezoneOffset = date.getTimezoneOffset(); // Local time for the user
 
   var UTCTimestamp = new Date(date.getTime() - timezoneOffset * 60000).toISOString(); // Remove the Z suffix from the string.
 
   UTCTimestamp = UTCTimestamp.slice(0, -1); // Create the offset string in the format `+HH:00` (or minus (-) prefix for negative offset instead of plus)
 
-  var timezoneOffsetInHours = timezoneOffset / 60,
+  var decimalTimezoneOffset = timezoneOffset / 60,
       // Negative offsets include a '-' sign in the getTimezoneOffset value, positive values need a '+' prefix (ISO8601).
-  sign = 0 <= timezoneOffsetInHours ? '+' : '',
-      addedZero = 10 < timezoneOffsetInHours ? '0' : '';
-  var formattedTimezoneOffset = sign + addedZero + timezoneOffsetInHours + ':00';
+  sign = 0 <= decimalTimezoneOffset ? '+' : '-',
+      hours = Math.abs(Math.floor(decimalTimezoneOffset)),
+      minutes = Math.abs(decimalTimezoneOffset % 1) * 60,
+      addZeroToHour = 10 > hours ? '0' : '',
+      addZeroToMinutes = 10 > minutes ? '0' : '';
+  var formattedTimezoneOffset = sign + addZeroToHour + hours + ':' + addZeroToMinutes + minutes;
   return UTCTimestamp + formattedTimezoneOffset;
 }
 
@@ -2914,63 +2918,48 @@ var Helpers = /*#__PURE__*/function () {
   (0, _createClass2.default)(Helpers, [{
     key: "softDeprecated",
     value: function softDeprecated(name, version, replacement) {
-      if (elementorCommon.config.isDebug) {
-        this.deprecatedMessage('soft', name, version, replacement);
-      }
+      elementorDevTools.deprecation.deprecated(name, version, replacement); // This is is self is deprecated.
+
+      elementorDevTools.deprecation.deprecated('elementorCommon.helpers.softDeprecated', '3.7.0', 'elementorDevTools.deprecation.deprecated');
     }
   }, {
     key: "hardDeprecated",
     value: function hardDeprecated(name, version, replacement) {
-      this.deprecatedMessage('hard', name, version, replacement);
+      elementorDevTools.deprecation.deprecated(name, version, replacement); // This is is self is deprecated.
+
+      elementorDevTools.deprecation.deprecated('elementorCommon.helpers.hardDeprecated', '3.7.0', 'elementorDevTools.deprecation.deprecated');
     }
   }, {
     key: "deprecatedMessage",
     value: function deprecatedMessage(type, name, version, replacement) {
-      var message = "`".concat(name, "` is ").concat(type, " deprecated since ").concat(version);
+      elementorDevTools.deprecation.deprecated(name, version, replacement); // This is is self is deprecated.
 
-      if (replacement) {
-        message += " - Use `".concat(replacement, "` instead");
-      }
-
-      this.consoleWarn(message);
+      elementorDevTools.deprecation.deprecated('elementorCommon.helpers.deprecatedMessage', '3.7.0', 'elementorDevTools.deprecation.deprecated');
     }
   }, {
     key: "consoleWarn",
     value: function consoleWarn() {
-      var _console;
+      var _elementorDevTools;
 
-      var style = "font-size: 12px; background-image: url(\"".concat(elementorCommon.config.urls.assets, "images/logo-icon.png\"); background-repeat: no-repeat; background-size: contain;");
+      (_elementorDevTools = elementorDevTools).consoleWarn.apply(_elementorDevTools, arguments); // This is is self is deprecated.
 
-      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
 
-      args.unshift('%c  %c', style, '');
-
-      (_console = console).warn.apply(_console, args); // eslint-disable-line no-console
-
+      elementorDevTools.deprecation.deprecated('elementorCommon.helpers.consoleWarn', '3.7.0', 'elementorDevTools.consoleWarn');
     }
   }, {
     key: "consoleError",
     value: function consoleError(message) {
-      // TODO: function is part of $e.
-      // Show an error if devTools is available.
-      if ($e.devTools) {
-        $e.devTools.log.error(message);
-      } // If not a 'Hook-Break' then show error.
+      // eslint-disable-next-line no-console
+      console.error(message); // This is is self is deprecated.
 
-
-      if (!(message instanceof $e.modules.HookBreak)) {
-        // eslint-disable-next-line no-console
-        console.error(message);
-      }
+      elementorDevTools.deprecation.deprecated('elementorCommon.helpers.consoleError', '3.7.0', 'console.error');
     }
   }, {
     key: "deprecatedMethod",
     value: function deprecatedMethod(methodName, version, replacement) {
-      this.deprecatedMessage('hard', methodName, version, replacement); // This itself is deprecated.
+      elementorDevTools.deprecation.deprecated(methodName, version, replacement); // This itself is deprecated.
 
-      this.softDeprecated('elementorCommon.helpers.deprecatedMethod', '2.8.0', 'elementorCommon.helpers.softDeprecated || elementorCommon.helpers.hardDeprecated');
+      elementorDevTools.deprecation.deprecated('elementorCommon.helpers.deprecatedMethod', '2.8.0', 'elementorDevTools.deprecation.deprecated');
     }
   }, {
     key: "cloneObject",
@@ -4043,15 +4032,15 @@ var Component = /*#__PURE__*/function (_ComponentModalBase) {
       var modalCommands = (0, _get2.default)((0, _getPrototypeOf2.default)(Component.prototype), "defaultCommands", this).call(this);
       return _objectSpread(_objectSpread({
         'navigate/down': function navigateDown() {
-          elementorCommon.helpers.softDeprecated("$e.run( 'finder/navigate/down' )", '3.0.0', "$e.run( 'finder/navigate-down' )");
+          elementorDevTools.deprecation.deprecated("$e.run( 'finder/navigate/down' )", '3.0.0', "$e.run( 'finder/navigate-down' )");
           $e.run('finder/navigate-down');
         },
         'navigate/up': function navigateUp() {
-          elementorCommon.helpers.softDeprecated("$e.run( 'finder/navigate/up' )", '3.0.0', "$e.run( 'finder/navigate-up' )");
+          elementorDevTools.deprecation.deprecated("$e.run( 'finder/navigate/up' )", '3.0.0', "$e.run( 'finder/navigate-up' )");
           $e.run('finder/navigate-up');
         },
         'navigate/select': function navigateSelect(event) {
-          elementorCommon.helpers.softDeprecated("$e.run( 'finder/navigate/select', event )", '3.0.0', "$e.run( 'finder/navigate-select', event )"); // TODO: Fix $e.shortcuts use args. ( args.event ).
+          elementorDevTools.deprecation.deprecated("$e.run( 'finder/navigate/select', event )", '3.0.0', "$e.run( 'finder/navigate-select', event )"); // TODO: Fix $e.shortcuts use args. ( args.event ).
 
           $e.run('finder/navigate-select', event);
         }
@@ -4187,7 +4176,8 @@ var _default = /*#__PURE__*/function (_Backbone$Model) {
         icon: 'settings',
         url: '',
         keywords: [],
-        actions: []
+        actions: [],
+        lock: null
       };
     }
   }]);
@@ -4691,6 +4681,7 @@ exports["default"] = _default;
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
@@ -4733,6 +4724,48 @@ var _default = /*#__PURE__*/function (_Marionette$ItemView) {
     key: "getTemplate",
     value: function getTemplate() {
       return '#tmpl-elementor-finder__results__item';
+    }
+  }, {
+    key: "events",
+    value: function events() {
+      this.$el[0].addEventListener('click', this.onClick.bind(this), true);
+    }
+  }, {
+    key: "onClick",
+    value: function onClick(e) {
+      var _this = this;
+
+      var lockOptions = this.model.get('lock');
+
+      if (!(lockOptions !== null && lockOptions !== void 0 && lockOptions.is_locked)) {
+        return;
+      }
+
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      elementorCommon.dialogsManager.createWidget('confirm', {
+        id: 'elementor-finder__lock-dialog',
+        headerMessage: lockOptions.content.heading,
+        message: lockOptions.content.description,
+        position: {
+          my: 'center center',
+          at: 'center center'
+        },
+        strings: {
+          confirm: lockOptions.button.text,
+          cancel: __('Cancel', 'elementor')
+        },
+        onConfirm: function onConfirm() {
+          var link = _this.replaceLockLinkPlaceholders(lockOptions.button.url);
+
+          window.open(link, '_blank');
+        }
+      }).show();
+    }
+  }, {
+    key: "replaceLockLinkPlaceholders",
+    value: function replaceLockLinkPlaceholders(link) {
+      return link.replace(/%%utm_source%%/g, 'finder').replace(/%%utm_medium%%/g, 'wp-dash');
     }
   }]);
   return _default;
@@ -4881,7 +4914,7 @@ var _wrapNativeSuper2 = _interopRequireDefault(__webpack_require__(/*! @babel/ru
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
 
-var _helpers = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/helpers */ "../modules/web-cli/assets/js/utils/helpers.js"));
+var _console = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/console */ "../modules/web-cli/assets/js/utils/console.js"));
 
 var _forceMethodImplementation = _interopRequireDefault(__webpack_require__(/*! ../../../utils/force-method-implementation */ "../modules/web-cli/assets/js/utils/force-method-implementation.js"));
 
@@ -4927,7 +4960,7 @@ var BaseError = /*#__PURE__*/function (_Error) {
   (0, _createClass2.default)(BaseError, [{
     key: "notify",
     value: function notify() {
-      _helpers.default.consoleError(_objectSpread({
+      _console.default.error(_objectSpread({
         message: this.message
       }, this));
     }
@@ -5061,7 +5094,7 @@ var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/run
 
 var _baseError = _interopRequireDefault(__webpack_require__(/*! ./base-error */ "../modules/web-cli/assets/js/core/data/errors/base-error.js"));
 
-var _helpers = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/helpers */ "../modules/web-cli/assets/js/utils/helpers.js"));
+var _console = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/console */ "../modules/web-cli/assets/js/utils/console.js"));
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
@@ -5080,7 +5113,7 @@ var Error404 = /*#__PURE__*/function (_BaseError) {
   (0, _createClass2.default)(Error404, [{
     key: "notify",
     value: function notify() {
-      _helpers.default.consoleWarn(this.message);
+      _console.default.warn(this.message);
     }
   }], [{
     key: "getHTTPErrorCode",
@@ -5144,17 +5177,9 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports["default"] = void 0;
 
-var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "../node_modules/@babel/runtime/regenerator/index.js"));
-
-var _typeof2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js"));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "../node_modules/@babel/runtime/helpers/asyncToGenerator.js"));
-
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
 
 var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
-var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ "../node_modules/@babel/runtime/helpers/assertThisInitialized.js"));
 
 var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
 
@@ -5162,76 +5187,90 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _commandInfra = _interopRequireDefault(__webpack_require__(/*! ./command-infra */ "../modules/web-cli/assets/js/modules/command-infra.js"));
 
-var _argsObject = _interopRequireDefault(__webpack_require__(/*! elementor-assets-js/modules/imports/args-object */ "../assets/dev/js/modules/imports/args-object.js"));
-
-var _helpers = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/helpers */ "../modules/web-cli/assets/js/utils/helpers.js"));
-
-var _forceMethodImplementation = _interopRequireDefault(__webpack_require__(/*! ../utils/force-method-implementation */ "../modules/web-cli/assets/js/utils/force-method-implementation.js"));
+var _deprecation = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/deprecation */ "../modules/web-cli/assets/js/utils/deprecation.js"));
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 /**
- * @typedef {import('../modules/component-base')} ComponentBase
+ * @name $e.modules.CommandBase
  */
-
-/**
- * @typedef {{}} Component
- */
-var CommandBase = /*#__PURE__*/function (_ArgsObject) {
-  (0, _inherits2.default)(CommandBase, _ArgsObject);
+var CommandBase = /*#__PURE__*/function (_CommandInfra) {
+  (0, _inherits2.default)(CommandBase, _CommandInfra);
 
   var _super = _createSuper(CommandBase);
 
-  /**
-   * Function constructor().
-   *
-   * Create Commands Base.
-   *
-   * @param {*} [args={}]
-   * @param {*} [commandsAPI={}]
-   */
-  function CommandBase(args) {
-    var _this;
-
-    var commandsAPI = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : $e.commands;
+  function CommandBase() {
     (0, _classCallCheck2.default)(this, CommandBase);
-    _this = _super.call(this, args); // Acknowledge self about which command it run.
-
-    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "component", void 0);
-    _this.currentCommand = commandsAPI.getCurrentLast(); // Assign instance of current component.
-
-    _this.component = commandsAPI.getComponent(_this.currentCommand); // Who ever need do something before without `super` the constructor can use `initialize` method.
-
-    _this.initialize(args); // Refresh args, maybe the changed via `initialize`.
-
-
-    args = _this.args; // Validate args before run.
-
-    _this.validateArgs(args);
-
-    return _this;
+    return _super.apply(this, arguments);
   }
-  /**
-   * Function requireContainer().
-   *
-   * Validate `arg.container` & `arg.containers`.
-   *
-   * @param {{}} args
-   *
-   * @throws {Error}
-   */
-
 
   (0, _createClass2.default)(CommandBase, [{
+    key: "onBeforeRun",
+    value: function onBeforeRun() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      $e.hooks.runUIBefore(this.command, args);
+    }
+  }, {
+    key: "onAfterRun",
+    value: function onAfterRun() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var result = arguments.length > 1 ? arguments[1] : undefined;
+      $e.hooks.runUIAfter(this.command, args, result);
+    }
+  }, {
+    key: "onBeforeApply",
+    value: function onBeforeApply() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      $e.hooks.runDataDependency(this.command, args);
+    }
+  }, {
+    key: "onAfterApply",
+    value: function onAfterApply() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var result = arguments.length > 1 ? arguments[1] : undefined;
+      $e.hooks.runDataAfter(this.command, args, result);
+    }
+  }, {
+    key: "onCatchApply",
+    value: function onCatchApply(e) {
+      this.runCatchHooks(e);
+    }
+    /**
+     * Run all the catch hooks.
+     *
+     * @param {Error} e
+     */
+
+  }, {
+    key: "runCatchHooks",
+    value: function runCatchHooks(e) {
+      $e.hooks.runDataCatch(this.command, this.args, e);
+      $e.hooks.runUICatch(this.command, this.args, e);
+    }
+    /**
+     * TODO - Remove - Backwards compatibility.
+     *
+     * Function requireContainer().
+     *
+     * Validate `arg.container` & `arg.containers`.
+     *
+     * @param {{}} args
+     *
+     * @throws {Error}
+     */
+
+  }, {
     key: "requireContainer",
     value: function requireContainer() {
-      var _this2 = this;
+      var _this = this;
 
       var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.args;
+
+      _deprecation.default.deprecated('requireContainer', '3.7.0', 'Extend `$e.modules.editor.CommandContainerBase` or `$e.modules.editor.CommandContainerInternalBase`');
 
       if (!args.container && !args.containers) {
         throw Error('container or containers are required.');
@@ -5243,315 +5282,98 @@ var CommandBase = /*#__PURE__*/function (_ArgsObject) {
 
       var containers = args.containers || [args.container];
       containers.forEach(function (container) {
-        _this2.requireArgumentInstance('container', elementorModules.editor.Container, {
+        _this.requireArgumentInstance('container', elementorModules.editor.Container, {
           container: container
         });
       });
-    }
-    /**
-     * Function initialize().
-     *
-     * Initialize command, called after construction.
-     *
-     * @param {*} [args={}]
-     */
-
-  }, {
-    key: "initialize",
-    value: function initialize() {
-      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    } // eslint-disable-line no-unused-vars
-
-    /**
-     * Function validateArgs().
-     *
-     * Validate command arguments.
-     *
-     * @param {*} [args={}]
-     */
-
-  }, {
-    key: "validateArgs",
-    value: function validateArgs() {
-      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    } // eslint-disable-line no-unused-vars
-
-    /**
-     * Function isDataChanged().
-     *
-     * Whether the editor needs to set change flag on/off.
-     *
-     * @return {boolean} Whether the editor needs to set change flag on/off.
-     */
-
-  }, {
-    key: "isDataChanged",
-    value: function isDataChanged() {
-      return false;
-    } // eslint-disable-next-line jsdoc/require-returns-check
-
-    /**
-     * Function apply().
-     *
-     * Do the actual command.
-     *
-     * @param {*} [args={}]
-     *
-     * @return {*} callback
-     */
-
-  }, {
-    key: "apply",
-    value: function apply() {
-      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      // eslint-disable-line no-unused-vars
-      (0, _forceMethodImplementation.default)();
-    }
-    /**
-     * Function run().
-     *
-     * Run command with history & hooks.
-     *
-     * @return {*} run results
-     */
-
-  }, {
-    key: "run",
-    value: function run() {
-      var result; // For UI Hooks.
-
-      this.onBeforeRun(this.args);
-
-      try {
-        // For Data hooks.
-        this.onBeforeApply(this.args);
-        result = this.apply(this.args);
-      } catch (e) {
-        this.onCatchApply(e); // Catch 'Hook-Break' that comes from hooks base.
-
-        if (e instanceof $e.modules.HookBreak) {
-          // Bypass.
-          return false;
-        }
-      }
-
-      return this.runAfter(result);
-    }
-  }, {
-    key: "runAfter",
-    value: function runAfter(result) {
-      var _this3 = this;
-
-      var onAfter = function onAfter(_result) {
-        // Run Data hooks.
-        _this3.onAfterApply(_this3.args, _result); // TODO: Create Command-Base for Command-Document and apply it on after.
-
-
-        if (_this3.isDataChanged()) {
-          $e.internal('document/save/set-is-modified', {
-            status: true
-          });
-        } // For UI hooks.
-
-
-        _this3.onAfterRun(_this3.args, _result);
-      },
-          asyncOnAfter = /*#__PURE__*/function () {
-        var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(_result) {
-          var results, promises;
-          return _regenerator.default.wrap(function _callee$(_context) {
-            while (1) {
-              switch (_context.prev = _context.next) {
-                case 0:
-                  // Run Data hooks.
-                  results = _this3.onAfterApply(_this3.args, _result), promises = Array.isArray(results) ? results.flat().filter(function (filtered) {
-                    return filtered instanceof Promise;
-                  }) : [];
-
-                  if (!promises.length) {
-                    _context.next = 4;
-                    break;
-                  }
-
-                  _context.next = 4;
-                  return Promise.all(promises);
-
-                case 4:
-                  if (_this3.isDataChanged()) {
-                    // TODO: Create Command-Base for Command-Document and apply it on after.
-                    $e.internal('document/save/set-is-modified', {
-                      status: true
-                    });
-                  } // For UI hooks.
-
-
-                  _this3.onAfterRun(_this3.args, _result);
-
-                case 6:
-                case "end":
-                  return _context.stop();
-              }
-            }
-          }, _callee);
-        }));
-
-        return function asyncOnAfter(_x) {
-          return _ref.apply(this, arguments);
-        };
-      }(); // TODO: Temp code determine if it's a jQuery deferred object.
-
-
-      if (result && 'object' === (0, _typeof2.default)(result) && result.promise && result.then && result.fail) {
-        result.fail(this.onCatchApply.bind(this));
-        result.done(onAfter);
-      } else if (result instanceof Promise) {
-        // Override initial result ( promise ) to await onAfter promises, first!.
-        return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2() {
-          return _regenerator.default.wrap(function _callee2$(_context2) {
-            while (1) {
-              switch (_context2.prev = _context2.next) {
-                case 0:
-                  _context2.next = 2;
-                  return result.catch(_this3.onCatchApply.bind(_this3));
-
-                case 2:
-                  _context2.next = 4;
-                  return result.then(function (_result) {
-                    return asyncOnAfter(_result);
-                  });
-
-                case 4:
-                  return _context2.abrupt("return", result);
-
-                case 5:
-                case "end":
-                  return _context2.stop();
-              }
-            }
-          }, _callee2);
-        }))();
-      } else {
-        onAfter(result);
-      }
-
-      return result;
-    }
-    /**
-     * Run all the catch hooks.
-     *
-     * @param {Error} e
-     */
-
-  }, {
-    key: "runCatchHooks",
-    value: function runCatchHooks(e) {
-      $e.hooks.runDataCatch(this.currentCommand, this.args, e);
-      $e.hooks.runUICatch(this.currentCommand, this.args, e);
-    }
-    /**
-     * Function onBeforeRun.
-     *
-     * Called before run().
-     *
-     * @param {*} [args={}]
-     */
-
-  }, {
-    key: "onBeforeRun",
-    value: function onBeforeRun() {
-      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      $e.hooks.runUIBefore(this.currentCommand, args);
-    }
-    /**
-     * Function onAfterRun.
-     *
-     * Called after run().
-     *
-     * @param {*} [args={}]
-     * @param {*} [result={*}]
-     */
-
-  }, {
-    key: "onAfterRun",
-    value: function onAfterRun() {
-      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var result = arguments.length > 1 ? arguments[1] : undefined;
-      $e.hooks.runUIAfter(this.currentCommand, args, result);
-    }
-    /**
-     * Function onBeforeApply.
-     *
-     * Called before apply().
-     *
-     * @param {*} [args={}]
-     */
-
-  }, {
-    key: "onBeforeApply",
-    value: function onBeforeApply() {
-      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      $e.hooks.runDataDependency(this.currentCommand, args);
-    }
-    /**
-     * Function onAfterApply.
-     *
-     * Called after apply().
-     *
-     * @param {*} [args={}]
-     * @param {*} [result={*}]
-     */
-
-  }, {
-    key: "onAfterApply",
-    value: function onAfterApply() {
-      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var result = arguments.length > 1 ? arguments[1] : undefined;
-      return $e.hooks.runDataAfter(this.currentCommand, args, result);
-    }
-    /**
-     * Function onCatchApply.
-     *
-     * Called after apply() failed.
-     *
-     * @param {Error} e
-     */
-
-  }, {
-    key: "onCatchApply",
-    value: function onCatchApply(e) {
-      this.runCatchHooks(e);
-
-      _helpers.default.consoleError(e);
     }
   }], [{
     key: "getInstanceType",
     value: function getInstanceType() {
       return 'CommandBase';
     }
+  }]);
+  return CommandBase;
+}(_commandInfra.default);
+
+exports["default"] = CommandBase;
+
+/***/ }),
+
+/***/ "../modules/web-cli/assets/js/modules/command-callback-base.js":
+/*!*********************************************************************!*\
+  !*** ../modules/web-cli/assets/js/modules/command-callback-base.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _commandBase = _interopRequireDefault(__webpack_require__(/*! ./command-base */ "../modules/web-cli/assets/js/modules/command-base.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+/**
+ * To support pure callbacks in the API(commands.js), to ensure they have registered with the proper context.
+ */
+var CommandCallbackBase = /*#__PURE__*/function (_CommandBase) {
+  (0, _inherits2.default)(CommandCallbackBase, _CommandBase);
+
+  var _super = _createSuper(CommandCallbackBase);
+
+  function CommandCallbackBase() {
+    (0, _classCallCheck2.default)(this, CommandCallbackBase);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(CommandCallbackBase, [{
+    key: "apply",
+    value: function apply() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      return this.constructor.getCallback()(args);
+    }
+  }], [{
+    key: "getInstanceType",
+    value: function getInstanceType() {
+      return 'CommandCallbackBase';
+    }
     /**
-     * Get info of command.
+     * Get original callback of the command.
      *
-     * Use to provide 'extra' information about the command.
+     * Support pure callbacks ( Non command-base ).
      *
-     * @return {Object} info of command
+     * @return {()=>{}} Command Results.
      */
 
   }, {
-    key: "getInfo",
-    value: function getInfo() {
-      return {};
+    key: "getCallback",
+    value: function getCallback() {
+      return this.registerConfig.callback;
     }
-    /**
-     * Current component.
-     *
-     * @type {Component}
-     */
-
   }]);
-  return CommandBase;
-}(_argsObject.default);
+  return CommandCallbackBase;
+}(_commandBase.default);
 
-exports["default"] = CommandBase;
+exports["default"] = CommandCallbackBase;
 
 /***/ }),
 
@@ -5591,8 +5413,6 @@ var _commandBase = _interopRequireDefault(__webpack_require__(/*! ./command-base
 
 var errors = _interopRequireWildcard(__webpack_require__(/*! ../core/data/errors/ */ "../modules/web-cli/assets/js/core/data/errors/index.js"));
 
-var _helpers = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/helpers */ "../modules/web-cli/assets/js/utils/helpers.js"));
-
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -5600,6 +5420,10 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+/**
+ * @name $e.modules.CommandData
+ */
 
 /**
  * @typedef {('create'|'delete'|'get'|'update'|'options')} DataTypes
@@ -5698,12 +5522,12 @@ var CommandData = /*#__PURE__*/function (_CommandBase) {
     key: "getRequestData",
     value: function getRequestData() {
       return {
-        component: this.component,
-        command: this.currentCommand,
         type: this.type,
         args: this.args,
         timestamp: new Date().getTime(),
-        endpoint: $e.data.commandToEndpoint(this.currentCommand, _helpers.default.cloneObject(this.args), this.constructor.getEndpointFormat())
+        component: this.component,
+        command: this.command,
+        endpoint: $e.data.commandToEndpoint(this.command, JSON.parse(JSON.stringify(this.args)), this.constructor.getEndpointFormat())
       };
     }
   }, {
@@ -5904,6 +5728,274 @@ var CommandData = /*#__PURE__*/function (_CommandBase) {
 }(_commandBase.default);
 
 exports["default"] = CommandData;
+
+/***/ }),
+
+/***/ "../modules/web-cli/assets/js/modules/command-infra.js":
+/*!*************************************************************!*\
+  !*** ../modules/web-cli/assets/js/modules/command-infra.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+
+var _argsObject = _interopRequireDefault(__webpack_require__(/*! elementor-assets-js/modules/imports/args-object */ "../assets/dev/js/modules/imports/args-object.js"));
+
+var _deprecation = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/deprecation */ "../modules/web-cli/assets/js/utils/deprecation.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+/**
+ * @typedef {import('../modules/component-base')} ComponentBase
+ */
+var CommandInfra = /*#__PURE__*/function (_ArgsObject) {
+  (0, _inherits2.default)(CommandInfra, _ArgsObject);
+
+  var _super = _createSuper(CommandInfra);
+
+  /**
+   * Function constructor().
+   *
+   * Create Commands Base.
+   *
+   * @param {{}} args
+   */
+  function CommandInfra() {
+    var _this;
+
+    var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    (0, _classCallCheck2.default)(this, CommandInfra);
+    _this = _super.call(this, args);
+
+    if (!_this.constructor.registerConfig) {
+      throw RangeError('Doing it wrong: Each command type should have `registerConfig`.');
+    } // Acknowledge self about which command it run.
+
+
+    _this.command = _this.constructor.getCommand(); // Assign instance of current component.
+
+    _this.component = _this.constructor.getComponent(); // Who ever need do something before without `super` the constructor can use `initialize` method.
+
+    _this.initialize(args); // Refresh args, maybe the changed via `initialize`.
+
+
+    args = _this.args; // Validate args before run.
+
+    _this.validateArgs(args);
+
+    return _this;
+  }
+  /**
+   * Function initialize().
+   *
+   * Initialize command, called after construction.
+   *
+   * @param {{}} args
+   */
+
+
+  (0, _createClass2.default)(CommandInfra, [{
+    key: "currentCommand",
+    get: // TODO - Remove backwards compatibility.
+    function get() {
+      _deprecation.default.deprecated('this.currentCommand', '3.7.0', 'this.command');
+
+      return this.command;
+    }
+  }, {
+    key: "initialize",
+    value: function initialize() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    } // eslint-disable-line no-unused-vars
+
+    /**
+     * Function validateArgs().
+     *
+     * Validate command arguments.
+     *
+     * @param {{}} args
+     */
+
+  }, {
+    key: "validateArgs",
+    value: function validateArgs() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    } // eslint-disable-line no-unused-vars
+    // eslint-disable-next-line jsdoc/require-returns-check
+
+    /**
+     * Function apply().
+     *
+     * Do the actual command.
+     *
+     * @param {{}} args
+     *
+     * @return {*} Command results.
+     */
+
+  }, {
+    key: "apply",
+    value: function apply() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      // eslint-disable-line no-unused-vars
+      elementorModules.ForceMethodImplementation();
+    }
+    /**
+     * Function run().
+     *
+     * Run command with history & hooks.
+     *
+     * @return {*} Command results.
+     */
+
+  }, {
+    key: "run",
+    value: function run() {
+      return this.apply(this.args);
+    }
+    /**
+     * Function onBeforeRun.
+     *
+     * Called before run().
+     *
+     * @param {{}} args
+     */
+
+  }, {
+    key: "onBeforeRun",
+    value: function onBeforeRun() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    } // eslint-disable-line no-unused-vars
+
+    /**
+     * Function onAfterRun.
+     *
+     * Called after run().
+     *
+     * @param {{}} args
+     * @param {*}  result
+     */
+
+  }, {
+    key: "onAfterRun",
+    value: function onAfterRun() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var result = arguments.length > 1 ? arguments[1] : undefined;
+    } // eslint-disable-line no-unused-vars
+
+    /**
+     * Function onBeforeApply.
+     *
+     * Called before apply().
+     *
+     * @param {{}} args
+     */
+
+  }, {
+    key: "onBeforeApply",
+    value: function onBeforeApply() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    } // eslint-disable-line no-unused-vars
+
+    /**
+     * Function onAfterApply.
+     *
+     * Called after apply().
+     *
+     * @param {{}} args
+     * @param {*}  result
+     */
+
+  }, {
+    key: "onAfterApply",
+    value: function onAfterApply() {
+      var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var result = arguments.length > 1 ? arguments[1] : undefined;
+    } // eslint-disable-line no-unused-vars
+
+    /**
+     * Function onCatchApply.
+     *
+     * Called after apply() failed.
+     *
+     * @param {Error} e
+     */
+
+  }, {
+    key: "onCatchApply",
+    value: function onCatchApply(e) {} // eslint-disable-line no-unused-vars
+
+  }], [{
+    key: "getInstanceType",
+    value:
+    /**
+     * @type {Object}
+     */
+    function getInstanceType() {
+      return 'CommandInfra';
+    }
+    /**
+     * Get info of command.
+     *
+     * @return {Object} Extra information about the command.
+     */
+
+  }, {
+    key: "getInfo",
+    value: function getInfo() {
+      return {};
+    }
+    /**
+     * @return {string} Self command name.
+     */
+
+  }, {
+    key: "getCommand",
+    value: function getCommand() {
+      return this.registerConfig.command;
+    }
+    /**
+     * @return {ComponentBase} Self component
+     */
+
+  }, {
+    key: "getComponent",
+    value: function getComponent() {
+      return this.registerConfig.component;
+    }
+  }, {
+    key: "setRegisterConfig",
+    value: function setRegisterConfig(config) {
+      this.registerConfig = Object.freeze(config);
+    }
+  }]);
+  return CommandInfra;
+}(_argsObject.default);
+
+exports["default"] = CommandInfra;
+(0, _defineProperty2.default)(CommandInfra, "registerConfig", null);
 
 /***/ }),
 
@@ -6151,11 +6243,15 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
+var _commandCallbackBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/command-callback-base */ "../modules/web-cli/assets/js/modules/command-callback-base.js"));
+
 var _toolkit = __webpack_require__(/*! @reduxjs/toolkit */ "../node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 
-var _module = _interopRequireDefault(__webpack_require__(/*! elementor-assets-js/modules/imports/module.js */ "../assets/dev/js/modules/imports/module.js"));
+var _module = _interopRequireDefault(__webpack_require__(/*! elementor/assets/dev/js/modules/imports/module.js */ "../assets/dev/js/modules/imports/module.js"));
 
 var _forceMethodImplementation = _interopRequireDefault(__webpack_require__(/*! ../utils/force-method-implementation */ "../modules/web-cli/assets/js/utils/force-method-implementation.js"));
+
+var _deprecation = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/deprecation */ "../modules/web-cli/assets/js/utils/deprecation.js"));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
@@ -6166,10 +6262,8 @@ function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflec
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 /**
+ * @typedef {import('./command-infra')} CommandInfra
  * @typedef {import('./hook-base')} HookBase
- */
-
-/**
  * @typedef {import('../core/states/ui-state-base')} UiStateBase
  */
 var ComponentBase = /*#__PURE__*/function (_Module) {
@@ -6267,8 +6361,19 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
   }, {
     key: "getRootContainer",
     value: function getRootContainer() {
-      var parts = this.getNamespace().split('/');
-      return parts[0];
+      _deprecation.default.deprecated('getRootContainer()', '3.7.0', 'getServiceName()');
+
+      return this.getServiceName();
+    }
+  }, {
+    key: "getServiceName",
+    value: function getServiceName() {
+      return this.getNamespace().split('/')[0];
+    }
+  }, {
+    key: "store",
+    get: function get() {
+      return $e.store.get(this.getNamespace());
     }
   }, {
     key: "defaultTabs",
@@ -6389,10 +6494,65 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
     value: function getData() {
       return this.data;
     }
+    /**
+     * @param {string}                      command
+     * @param {(()=>{}|CommandInfra)}       context
+     * @param {'default'|'internal'|'data'} commandsType
+     */
+
   }, {
     key: "registerCommand",
-    value: function registerCommand(command, callback) {
-      $e.commands.register(this, command, callback);
+    value: function registerCommand(command, context) {
+      var commandsType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'default';
+      var commandsManager;
+
+      switch (commandsType) {
+        case 'default':
+          commandsManager = $e.commands;
+          break;
+
+        case 'internal':
+          commandsManager = $e.commandsInternal;
+          break;
+
+        case 'data':
+          commandsManager = $e.data;
+          break;
+
+        default:
+          throw new Error("Invalid commands type: '".concat(command, "'"));
+      }
+
+      var fullCommand = this.getNamespace() + '/' + command,
+          instanceType = context.getInstanceType ? context.getInstanceType() : false,
+          registerConfig = {
+        command: fullCommand,
+        component: this
+      }; // Support pure callback.
+
+      if (!instanceType) {
+        if ($e.devTools) {
+          $e.devTools.log.warn("Attach command-callback-base, on command: '".concat(fullCommand, "', context is unknown type."));
+        }
+
+        registerConfig.callback = context; // Unique class.
+
+        context = /*#__PURE__*/function (_CommandCallbackBase) {
+          (0, _inherits2.default)(context, _CommandCallbackBase);
+
+          var _super2 = _createSuper(context);
+
+          function context() {
+            (0, _classCallCheck2.default)(this, context);
+            return _super2.apply(this, arguments);
+          }
+
+          return (0, _createClass2.default)(context);
+        }(_commandCallbackBase.default);
+      }
+
+      context.setRegisterConfig(registerConfig);
+      commandsManager.register(this, command, context);
     }
     /**
      * @param {HookBase} instance
@@ -6402,6 +6562,11 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
     key: "registerHook",
     value: function registerHook(instance) {
       return instance.register();
+    }
+  }, {
+    key: "registerCommandInternal",
+    value: function registerCommandInternal(command, context) {
+      this.registerCommand(command, context, 'internal');
     }
     /**
      * Register a UI state.
@@ -6435,19 +6600,14 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
       $e.store.register(id, slice);
     }
   }, {
-    key: "registerCommandInternal",
-    value: function registerCommandInternal(command, callback) {
-      $e.commandsInternal.register(this, command, callback);
-    }
-  }, {
     key: "registerRoute",
     value: function registerRoute(route, callback) {
       $e.routes.register(this, route, callback);
     }
   }, {
     key: "registerData",
-    value: function registerData(command, callback) {
-      $e.data.register(this, command, callback);
+    value: function registerData(command, context) {
+      this.registerCommand(command, context, 'data');
     }
   }, {
     key: "unregisterRoute",
@@ -6483,7 +6643,7 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
       this.isOpen = false;
       this.inactivate();
       $e.routes.clearCurrent(this.getNamespace());
-      $e.routes.clearHistory(this.getRootContainer());
+      $e.routes.clearHistory(this.getServiceName());
       return true;
     }
   }, {
@@ -6608,6 +6768,11 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
         return (offset > 0 ? '-' : '') + match.toLowerCase();
       });
     }
+    /**
+     * @param {{}} commandsFromImport
+     * @return {{}} imported commands
+     */
+
   }, {
     key: "importCommands",
     value: function importCommands(commandsFromImport) {
@@ -6622,13 +6787,7 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
 
         var command = _this5.normalizeCommandName(className);
 
-        commands[command] = function (args) {
-          return new Class(args).run();
-        }; // TODO: Temporary code, remove after merge with 'require-commands-base' branch.
-        // should not return callback, but Class or Instance without run ( gain performance ).
-
-
-        $e.commands.classes[_this5.getNamespace() + '/' + command] = Class;
+        commands[command] = Class;
       });
       return commands;
     }
@@ -6688,7 +6847,7 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
   }, {
     key: "toggleHistoryClass",
     value: function toggleHistoryClass() {
-      document.body.classList.toggle('e-routes-has-history', !!$e.routes.getHistory(this.getRootContainer()).length);
+      document.body.classList.toggle('e-routes-has-history', !!$e.routes.getHistory(this.getServiceName()).length);
     }
   }]);
   return ComponentBase;
@@ -6820,6 +6979,237 @@ exports["default"] = ComponentModalBase;
 
 /***/ }),
 
+/***/ "../modules/web-cli/assets/js/utils/console.js":
+/*!*****************************************************!*\
+  !*** ../modules/web-cli/assets/js/utils/console.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var Console = /*#__PURE__*/function () {
+  function Console() {
+    (0, _classCallCheck2.default)(this, Console);
+  }
+
+  (0, _createClass2.default)(Console, null, [{
+    key: "error",
+    value: function error(message) {
+      // Show an error if devTools is available.
+      if ($e.devTools) {
+        $e.devTools.log.error(message);
+      } // If not a 'Hook-Break' then show error.
+
+
+      if (!(message instanceof $e.modules.HookBreak)) {
+        // eslint-disable-next-line no-console
+        console.error(message);
+      }
+    }
+  }, {
+    key: "warn",
+    value: function warn() {
+      var _console;
+
+      var style = "font-size: 12px; background-image: url(\"".concat(elementorWebCliConfig.urls.assets, "images/logo-icon.png\"); background-repeat: no-repeat; background-size: contain;");
+
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      args.unshift('%c  %c', style, '');
+
+      (_console = console).warn.apply(_console, args); // eslint-disable-line no-console
+
+    }
+  }]);
+  return Console;
+}();
+
+exports["default"] = Console;
+
+/***/ }),
+
+/***/ "../modules/web-cli/assets/js/utils/deprecation.js":
+/*!*********************************************************!*\
+  !*** ../modules/web-cli/assets/js/utils/deprecation.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _console = _interopRequireDefault(__webpack_require__(/*! elementor-api/utils/console */ "../modules/web-cli/assets/js/utils/console.js"));
+
+// Copied from `modules/dev-tools/assets/js/deprecation.js`
+
+/**
+ * @typedef {Object} Version
+ * @property {number} major1 The first number
+ * @property {number} major2 The second number
+ * @property {number} minor  The third number
+ * @property {string} build  The fourth number
+ */
+var softDeprecated = function softDeprecated(name, version, replacement) {
+  if (elementorWebCliConfig.isDebug) {
+    deprecatedMessage('soft', name, version, replacement);
+  }
+};
+
+var hardDeprecated = function hardDeprecated(name, version, replacement) {
+  deprecatedMessage('hard', name, version, replacement);
+};
+
+var deprecatedMessage = function deprecatedMessage(type, name, version, replacement) {
+  var message = "`".concat(name, "` is ").concat(type, " deprecated since ").concat(version);
+
+  if (replacement) {
+    message += " - Use `".concat(replacement, "` instead");
+  }
+
+  _console.default.warn(message);
+};
+
+var Deprecation = /*#__PURE__*/function () {
+  function Deprecation() {
+    (0, _classCallCheck2.default)(this, Deprecation);
+  }
+
+  (0, _createClass2.default)(Deprecation, null, [{
+    key: "deprecated",
+    value: function deprecated(name, version, replacement) {
+      if (this.isHardDeprecated(version)) {
+        hardDeprecated(name, version, replacement);
+      } else {
+        softDeprecated(name, version, replacement);
+      }
+    }
+    /**
+     * @param {string} version
+     *
+     * @return {Version}
+     */
+
+  }, {
+    key: "parseVersion",
+    value: function parseVersion(version) {
+      var versionParts = version.split('.');
+
+      if (versionParts.length < 3 || versionParts.length > 4) {
+        throw new RangeError('Invalid Semantic Version string provided');
+      }
+
+      var _versionParts = (0, _slicedToArray2.default)(versionParts, 4),
+          major1 = _versionParts[0],
+          major2 = _versionParts[1],
+          minor = _versionParts[2],
+          _versionParts$ = _versionParts[3],
+          build = _versionParts$ === void 0 ? '' : _versionParts$;
+
+      return {
+        major1: parseInt(major1),
+        major2: parseInt(major2),
+        minor: parseInt(minor),
+        build: build
+      };
+    }
+    /**
+     * Get total of major.
+     *
+     * Since `get_total_major` cannot determine how much really versions between 2.9.0 and 3.3.0 if there is 2.10.0 version for example,
+     * versions with major2 more then 9 will be added to total.
+     *
+     * @param {Version} versionObj
+     *
+     * @return {number}
+     */
+
+  }, {
+    key: "getTotalMajor",
+    value: function getTotalMajor(versionObj) {
+      var total = parseInt("".concat(versionObj.major1).concat(versionObj.major2, "0"));
+      total = Number((total / 10).toFixed(0));
+
+      if (versionObj.major2 > 9) {
+        total = versionObj.major2 - 9;
+      }
+
+      return total;
+    }
+    /**
+     * @param {string} version1
+     * @param {string} version2
+     *
+     * @return {number}
+     */
+
+  }, {
+    key: "compareVersion",
+    value: function compareVersion(version1, version2) {
+      var _this = this;
+
+      return [this.parseVersion(version1), this.parseVersion(version2)].map(function (versionObj) {
+        return _this.getTotalMajor(versionObj);
+      }).reduce(function (acc, major) {
+        return acc - major;
+      });
+    }
+    /**
+     * @param {string} version
+     *
+     * @return {boolean}
+     */
+
+  }, {
+    key: "isSoftDeprecated",
+    value: function isSoftDeprecated(version) {
+      var total = this.compareVersion(version, elementorWebCliConfig.version);
+      return total <= 4;
+    }
+    /**
+     * @param {string} version
+     * @return {boolean}
+     */
+
+  }, {
+    key: "isHardDeprecated",
+    value: function isHardDeprecated(version) {
+      var total = this.compareVersion(version, elementorWebCliConfig.version);
+      return total < 0 || total >= 8;
+    }
+  }]);
+  return Deprecation;
+}();
+
+exports["default"] = Deprecation;
+
+/***/ }),
+
 /***/ "../modules/web-cli/assets/js/utils/force-method-implementation.js":
 /*!*************************************************************************!*\
   !*** ../modules/web-cli/assets/js/utils/force-method-implementation.js ***!
@@ -6895,118 +7285,6 @@ var _default = function _default() {
 };
 
 exports["default"] = _default;
-
-/***/ }),
-
-/***/ "../modules/web-cli/assets/js/utils/helpers.js":
-/*!*****************************************************!*\
-  !*** ../modules/web-cli/assets/js/utils/helpers.js ***!
-  \*****************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
-// TODO: Copied from `core/common/assets/js/utils/helpers.js` and modified into static functions.
-var Helpers = /*#__PURE__*/function () {
-  function Helpers() {
-    (0, _classCallCheck2.default)(this, Helpers);
-  }
-
-  (0, _createClass2.default)(Helpers, null, [{
-    key: "softDeprecated",
-    value: function softDeprecated(name, version, replacement) {
-      if (elementorWebCliConfig.isDebug) {
-        this.deprecatedMessage('soft', name, version, replacement);
-      }
-    }
-  }, {
-    key: "hardDeprecated",
-    value: function hardDeprecated(name, version, replacement) {
-      this.deprecatedMessage('hard', name, version, replacement);
-    }
-  }, {
-    key: "deprecatedMessage",
-    value: function deprecatedMessage(type, name, version, replacement) {
-      var message = "`".concat(name, "` is ").concat(type, " deprecated since ").concat(version);
-
-      if (replacement) {
-        message += " - Use `".concat(replacement, "` instead");
-      }
-
-      this.consoleWarn(message);
-    }
-  }, {
-    key: "consoleWarn",
-    value: function consoleWarn() {
-      var _console;
-
-      var style = "font-size: 12px; background-image: url(\"".concat(elementorWebCliConfig.urls.assets, "images/logo-icon.png\"); background-repeat: no-repeat; background-size: contain;");
-
-      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      args.unshift('%c  %c', style, '');
-
-      (_console = console).warn.apply(_console, args); // eslint-disable-line no-console
-
-    }
-  }, {
-    key: "consoleError",
-    value: function consoleError(message) {
-      // TODO: function is part of $e.
-      // Show an error if devTools is available.
-      if ($e.devTools) {
-        $e.devTools.log.error(message);
-      } // If not a 'Hook-Break' then show error.
-
-
-      if (!(message instanceof $e.modules.HookBreak)) {
-        // eslint-disable-next-line no-console
-        console.error(message);
-      }
-    }
-  }, {
-    key: "deprecatedMethod",
-    value: function deprecatedMethod(methodName, version, replacement) {
-      this.deprecatedMessage('hard', methodName, version, replacement); // This itself is deprecated.
-
-      this.softDeprecated('Helpers.deprecatedMethod', '2.8.0', 'Helpers.softDeprecated || Helpers.hardDeprecated');
-    }
-  }, {
-    key: "cloneObject",
-    value: function cloneObject(object) {
-      return JSON.parse(JSON.stringify(object));
-    }
-  }, {
-    key: "upperCaseWords",
-    value: function upperCaseWords(string) {
-      return (string + '').replace(/^(.)|\s+(.)/g, function ($1) {
-        return $1.toUpperCase();
-      });
-    }
-  }, {
-    key: "getUniqueId",
-    value: function getUniqueId() {
-      return Math.random().toString(16).substr(2, 7);
-    }
-  }]);
-  return Helpers;
-}();
-
-exports["default"] = Helpers;
 
 /***/ }),
 

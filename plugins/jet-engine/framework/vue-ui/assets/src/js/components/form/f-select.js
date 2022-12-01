@@ -172,7 +172,10 @@ const FilterableSelect = {
 					if ( this.remote ) {
 						return true;
 					} else {
-						return option.label.includes( this.query ) || option.value.includes( this.query );
+						let optionValue = '' + option.value,
+						    optionLabel = option.label;
+
+						return optionLabel.includes( this.query ) || optionValue.includes( this.query );
 					}
 				});
 			}
@@ -372,7 +375,6 @@ const FilterableSelect = {
 						if ( value.length ) {
 							value.forEach( singleVal => {
 								if ( ! oneOf( singleVal, this.currentValues ) ) {
-									console.log(singleVal)
 									this.currentValues.push( singleVal );
 									this.pushToSelected( singleVal );
 								}

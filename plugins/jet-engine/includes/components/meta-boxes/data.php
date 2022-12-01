@@ -127,7 +127,7 @@ if ( ! class_exists( 'Jet_Engine_Meta_Boxes_Data' ) ) {
 
 			if ( ! empty( $request['args'] ) ) {
 				foreach ( $request['args'] as $arg => $value ) {
-					if ( in_array( $arg, array( 'show_edit_link' ) ) ) {
+					if ( in_array( $arg, array( 'show_edit_link', 'hide_field_names' ) ) ) {
 						$args[ $arg ] = filter_var( $value, FILTER_VALIDATE_BOOLEAN );
 					} else if ( in_array( $arg, array( 'name' ) ) ) {
 						$args[ $arg ] = sanitize_text_field( $value );

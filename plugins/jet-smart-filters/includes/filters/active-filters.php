@@ -9,25 +9,20 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Active_Filters' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Active_Filters class
 	 */
 	class Jet_Smart_Filters_Active_Filters {
-
 		/**
 		 * Get provider ID
-		 *
-		 * @return string
 		 */
 		public function get_id() {
+
 			return 'active-filters';
 		}
 
 		/**
 		 * Render filters smaple to style them in editor
-		 *
-		 * @return void
 		 */
 		public function render_filters_sample( $settings = array() ) {
 
@@ -58,13 +53,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Active_Filters' ) ) {
 			}
 
 			echo '<div>';
-
 		}
 
 		/**
 		 * Render tags smaple to style them in editor
-		 *
-		 * @return void
 		 */
 		public function render_tags_sample( $settings = array() ) {
 
@@ -107,9 +99,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Active_Filters' ) ) {
 			}
 
 			echo '<div>';
-
 		}
-
 	}
-
 }

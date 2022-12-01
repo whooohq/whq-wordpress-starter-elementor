@@ -90,7 +90,9 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Meta' ) ) {
 		 */
 		public function render_meta( $settings ) {
 
-			if ( 'posts' !== jet_engine()->listings->data->get_listing_source() ) {
+			$listing_source = jet_engine()->listings->data->get_listing_source();
+
+			if ( ! in_array( $listing_source, array( 'posts', null ) ) ) {
 				return $this->wrong_source_notice();
 			}
 
@@ -249,14 +251,28 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Meta' ) ) {
 			$this->render_prefix( $item );
 
 			$link   = ! empty( $settings['author_link'] ) ? esc_attr( $settings['author_link'] ) : 'archive';
-			$author = get_the_author();
+			$author = null;
+
+			global $authordata;
+
+			if ( $authordata ) {
+				$author = get_the_author();
+			} else {
+
+				$post = get_post();
+
+				if ( $post ) {
+					$author    = get_the_author_meta( 'display_name', $post->post_author );
+					$author_id = $post->post_author;
+				}
+			}
 
 			if ( 'no-link' === $link ) {
 				printf( '<span class="%1$s__item-val">%2$s</span>', $this->get_name(), $author );
 			} else {
 
 				if ( 'archive' === $link ) {
-					$id  = get_the_author_meta( 'ID' );
+					$id  = isset( $author_id ) ? $author_id : get_the_author_meta( 'ID' );
 					$url = get_author_posts_url( $id );
 				} else {
 					$url = get_permalink();

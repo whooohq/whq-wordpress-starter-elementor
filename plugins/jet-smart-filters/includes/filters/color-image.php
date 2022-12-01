@@ -9,42 +9,51 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Color_Image_Filter' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Color_Image_Filter class
 	 */
 	class Jet_Smart_Filters_Color_Image_Filter extends Jet_Smart_Filters_Filter_Base {
-
 		/**
 		 * Get provider name
 		 *
 		 * @return string
 		 */
 		public function get_name() {
+
 			return __( 'Visual', 'jet-smart-filters' );
 		}
 
 		/**
 		 * Get provider ID
-		 *
-		 * @return string
 		 */
 		public function get_id() {
+
 			return 'color-image';
 		}
 
 		/**
+		 * Get icon URL
+		 */
+		public function get_icon_url() {
+
+			return jet_smart_filters()->plugin_url( 'admin/assets/img/filter-types/color-image.png' );
+		}
+
+		/**
 		 * Get provider wrapper selector
-		 *
-		 * @return string
 		 */
 		public function get_scripts() {
+
 			return false;
 		}
 
 		public function prepare_options( $options, $source ) {
 
 			$_options = array();
+
+			if ( empty( $options ) ) {
+				return $_options;
+			}
 
 			foreach ( $options as $key => $option ) {
 
@@ -63,14 +72,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Color_Image_Filter' ) ) {
 			}
 
 			return $_options;
-
 		}
 
 		/**
 		 * Prepare filter template argumnets
-		 *
-		 * @param  [type] $args [description]
-		 * @return [type]       [description]
 		 */
 		public function prepare_args( $args ) {
 
@@ -79,13 +84,13 @@ if ( ! class_exists( 'Jet_Smart_Filters_Color_Image_Filter' ) ) {
 			$additional_providers = isset( $args['additional_providers'] ) ? $args['additional_providers'] : false;
 			$apply_type           = isset( $args['apply_type'] ) ? $args['apply_type'] : false;
 			$search_enabled       = isset( $args['search_enabled'] ) ? $args['search_enabled'] : false;
-			$search_placeholder   = isset( $args['search_placeholder'] ) ?  $args['search_placeholder'] : false;
+			$search_placeholder   = isset( $args['search_placeholder'] ) ? $args['search_placeholder'] : __( 'Search...', 'jet-smart-filters' );
 			$less_items_count     = isset( $args['less_items_count'] ) ? $args['less_items_count'] : false;
 			$more_text            = isset( $args['more_text'] ) ? $args['more_text'] : __( 'More', 'jet-smart-filters' );
 			$less_text            = isset( $args['less_text'] ) ? $args['less_text'] : __( 'Less', 'jet-smart-filters' );
 			$scroll_height        = isset( $args['scroll_height'] ) ? $args['scroll_height'] : false;
 			$dropdown_enabled     = isset( $args['dropdown_enabled'] ) ? filter_var( $args['dropdown_enabled'], FILTER_VALIDATE_BOOLEAN ) : false;
-			$dropdown_placeholder = isset( $args['dropdown_placeholder'] ) ? $args['dropdown_placeholder'] : false;
+			$dropdown_placeholder = isset( $args['dropdown_placeholder'] ) ? $args['dropdown_placeholder'] : __( 'Select some options', 'jet-smart-filters' );
 
 			if ( ! $filter_id ) {
 				return false;
@@ -165,9 +170,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Color_Image_Filter' ) ) {
 				'dropdown_enabled'     => $dropdown_enabled,
 				'dropdown_placeholder' => $dropdown_placeholder,
 			);
-
 		}
-
 	}
-
 }

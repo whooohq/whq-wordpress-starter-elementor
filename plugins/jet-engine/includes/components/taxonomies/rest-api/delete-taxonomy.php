@@ -62,11 +62,12 @@ class Jet_Engine_CPT_Rest_Delete_Taxonomy extends Jet_Engine_Base_API_Endpoint {
 			$this->delete_terms( $from_tax );
 		}
 
-		$this->remove_tax_from_meta_boxes_comp( $from_tax );
-
 		jet_engine()->taxonomies->data->set_request( array( 'id' => $id ) );
 
 		if ( jet_engine()->taxonomies->data->delete_item( false ) ) {
+
+			do_action( 'jet-engine/taxonomies/deleted-taxonomy', $from_tax );
+
 			return rest_ensure_response( array(
 				'success' => true,
 			) );
@@ -98,43 +99,6 @@ class Jet_Engine_CPT_Rest_Delete_Taxonomy extends Jet_Engine_Base_API_Endpoint {
 
 		foreach ( $terms as $term_id ) {
 			wp_delete_term( $term_id, $from_tax );
-		}
-
-	}
-
-	/**
-	 * Remove tax from `allowed_tax` param in meta boxes component
-	 *
-	 * @param $deleted_tax
-	 */
-	public function remove_tax_from_meta_boxes_comp( $deleted_tax ) {
-
-		$meta_boxes = jet_engine()->meta_boxes->data->get_raw();
-
-		if ( empty( $meta_boxes ) ) {
-			return;
-		}
-
-		foreach ( $meta_boxes as $meta_box ) {
-			$args        = $meta_box['args'];
-			$object_type = isset( $args['object_type'] ) ? esc_attr( $args['object_type'] ) : 'post';
-
-			if ( ! in_array( $object_type, array( 'tax', 'taxonomy' ) ) ) {
-				continue;
-			}
-
-			$allowed_tax = ! empty( $args['allowed_tax'] ) ? $args['allowed_tax'] : array();
-
-			if ( ! in_array( $deleted_tax, $allowed_tax ) ) {
-				continue;
-			}
-
-			$allowed_tax = array_combine( $allowed_tax, $allowed_tax );
-			unset( $allowed_tax[ $deleted_tax ] );
-
-			$meta_box['args']['allowed_tax'] = array_values( $allowed_tax );
-
-			jet_engine()->meta_boxes->data->update_item_in_db( $meta_box );
 		}
 
 	}

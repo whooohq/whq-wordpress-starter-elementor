@@ -14,7 +14,13 @@ class EAEL_Particle_Section
     {
         add_action('elementor/frontend/section/before_render', array($this, 'before_render'));
         add_action('elementor/element/section/section_layout/after_section_end', array($this, 'register_controls'), 10);
+        add_action('elementor/element/container/section_layout/after_section_end', array($this, 'register_controls'), 10);
         add_action('elementor/frontend/section/after_render', array($this, 'after_render'));
+
+        //Elementor Flexbox Container
+        add_action('elementor/frontend/container/before_render', array($this, 'before_render'));
+        add_action('elementor/element/container/section_layout/after_section_end', array($this, 'register_controls'), 10);
+        add_action('elementor/frontend/container/after_render', array($this, 'after_render'));
     }
 
     public function register_controls($element)
@@ -174,8 +180,7 @@ class EAEL_Particle_Section
         $settings = $element->get_settings_for_display();
         $type = $data['elType'];
         $zindex = !empty($settings['eael_particle_area_zindex']) ? $settings['eael_particle_area_zindex'] : 0;
-
-        if (('section' == $type) && ($element->get_settings('eael_particle_switch') == 'yes')) { ?>
+        if (('section' == $type || 'container' == $type ) && ($element->get_settings('eael_particle_switch') == 'yes')) { ?>
             <style>
                 .elementor-element-<?php echo $element->get_id(); ?>.eael-particles-section > canvas {
                     z-index: <?php echo $zindex; ?>;

@@ -49,7 +49,7 @@ $current = $this->get_current_filter_value( $args );
 				value="<?php echo $value; ?>"
 				<?php echo $checked; ?>
 			/>
-			<label class="jet-rating-star__label" for="jet-rating-<?php echo $widget_id . '-' . $value ?>"><span class="jet-rating-star__icon"><?php echo $args['rating_icon']; ?></span></label>
+			<label class="jet-rating-star__label" for="jet-rating-<?php echo $widget_id . '-' . $value ?>" <?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>><span class="jet-rating-star__icon"><?php echo $args['rating_icon']; ?></span></label>
 		<?php } ?>
 			</fieldset>
 		</div>

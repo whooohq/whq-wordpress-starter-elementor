@@ -115,6 +115,10 @@ if ( ! class_exists( 'Jet_Menu_DB_Upgrader' ) ) {
 		 */
 		public function update_db_2_0_2() {
 
+			if ( ! jet_menu_tools()->has_elementor() ) {
+				return false;
+			}
+
 			/**
 			 * Regenerate elementor css files
 			 */

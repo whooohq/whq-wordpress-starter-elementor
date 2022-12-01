@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_ThankYou_Order
- * Name: Order
+ * Name: Thank You Order
  * Slug: jet-thankyou-order
  */
 
@@ -22,7 +22,7 @@ class Jet_Woo_Builder_ThankYou_Order extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return __( 'Order', 'jet-woo-builder' );
+		return __( 'Thank You Order', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {

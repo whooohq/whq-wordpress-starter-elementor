@@ -56,9 +56,7 @@ class Jet_Engine_Macros_Tag extends Elementor\Core\DynamicTags\Data_Tag {
 
 				if ( empty( $controls[ $control_id ] ) ) {
 
-					$control_data['condition'] = array(
-						'macros' => array( $macros ),
-					);
+					$control_data['condition']['macros'] = array( $macros );
 
 					$controls[ $control_id ] = $control_data;
 				} else {

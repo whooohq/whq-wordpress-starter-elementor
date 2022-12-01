@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_Archive_Product_Price
- * Name: Price
+ * Name: Archive Price
  * Slug: jet-woo-builder-archive-product-price
  */
 
@@ -20,7 +20,7 @@ class Jet_Woo_Builder_Archive_Product_Price extends Widget_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Price', 'jet-woo-builder' );
+		return __( 'Archive Price', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
@@ -43,49 +43,27 @@ class Jet_Woo_Builder_Archive_Product_Price extends Widget_Base {
 
 		$css_scheme = apply_filters(
 			'jet-woo-builder/jet-archive-product-price/css-scheme',
-			array(
+			[
 				'price'    => '.jet-woo-product-price',
 				'currency' => '.jet-woo-product-price .woocommerce-Price-currencySymbol',
-
-			)
+			]
 		);
 
 		$this->start_controls_section(
 			'section_archive_price_style',
-			array(
-				'label'      => esc_html__( 'Price', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			array(
-				'name'     => 'archive_price_typography',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['price'],
-			)
-		);
-
-		$this->add_control(
-			'archive_price_color',
-			array(
-				'label'     => esc_html__( 'Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['price'] => 'color: {{VALUE}}',
-				),
-			)
+			[
+				'label' => __( 'Price', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
 		);
 
 		$this->add_control(
 			'archive_price_sale_display_type',
 			[
-				'label'     => __( 'Sale Price Display Type', 'jet-woo-builder' ),
+				'label'     => __( 'Display Type', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::SELECT,
 				'options'   => jet_woo_builder_tools()->get_available_display_types(),
 				'default'   => 'inline-block',
-				'separator' => 'before',
 				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['price'] . ' del' => 'display: {{VALUE}};',
 					'{{WRAPPER}} ' . $css_scheme['price'] . ' ins' => 'display: {{VALUE}};',
@@ -96,7 +74,7 @@ class Jet_Woo_Builder_Archive_Product_Price extends Widget_Base {
 		$this->add_responsive_control(
 			'archive_price_space_between',
 			[
-				'label'     => __( 'Space Between Prices', 'jet-woo-builder' ),
+				'label'     => __( 'Space Between', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::SLIDER,
 				'range'     => [
 					'px' => [
@@ -116,7 +94,7 @@ class Jet_Woo_Builder_Archive_Product_Price extends Widget_Base {
 		$this->add_responsive_control(
 			'archive_price_space_between_block',
 			[
-				'label'     => __( 'Space Between Prices', 'jet-woo-builder' ),
+				'label'     => __( 'Space Between', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::SLIDER,
 				'range'     => [
 					'px' => [
@@ -131,6 +109,26 @@ class Jet_Woo_Builder_Archive_Product_Price extends Widget_Base {
 					'archive_price_sale_display_type' => 'block',
 				],
 			]
+		);
+
+		$this->add_control(
+			'archive_price_color',
+			[
+				'label'     => __( 'Color', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::COLOR,
+				'separator' => 'before',
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['price'] => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'archive_price_typography',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['price'],
+			)
 		);
 
 		$this->start_controls_tabs( 'tabs_archive_price_style' );
@@ -153,34 +151,21 @@ class Jet_Woo_Builder_Archive_Product_Price extends Widget_Base {
 			)
 		);
 
-		$this->add_control(
-			'archive_price_regular_decoration',
-			array(
-				'label'     => esc_html__( 'Text Decoration', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::SELECT,
-				'default'   => 'line-through',
-				'options'   => jet_woo_builder_tools()->get_available_text_decoration_types(),
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['price'] . ' del' => 'text-decoration: {{VALUE}}',
-				),
-			)
-		);
-
 		$this->add_responsive_control(
 			'archive_price_regular_size',
-			array(
-				'label'     => esc_html__( 'Size', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Font Size', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::SLIDER,
-				'range'     => array(
-					'px' => array(
+				'range'     => [
+					'px' => [
 						'min' => 6,
 						'max' => 90,
-					),
-				),
-				'selectors' => array(
+					],
+				],
+				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['price'] . ' del .amount' => 'font-size: {{SIZE}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_control(
@@ -192,6 +177,19 @@ class Jet_Woo_Builder_Archive_Product_Price extends Widget_Base {
 				'options'   => jet_woo_builder_tools()->get_available_font_weight_types(),
 				'selectors' => array(
 					'{{WRAPPER}} ' . $css_scheme['price'] . ' del .amount' => 'font-weight: {{VALUE}}',
+				),
+			)
+		);
+
+		$this->add_control(
+			'archive_price_regular_decoration',
+			array(
+				'label'     => esc_html__( 'Text Decoration', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::SELECT,
+				'default'   => 'line-through',
+				'options'   => jet_woo_builder_tools()->get_available_text_decoration_types(),
+				'selectors' => array(
+					'{{WRAPPER}} ' . $css_scheme['price'] . ' del' => 'text-decoration: {{VALUE}}',
 				),
 			)
 		);
@@ -216,34 +214,21 @@ class Jet_Woo_Builder_Archive_Product_Price extends Widget_Base {
 			)
 		);
 
-		$this->add_control(
-			'archive_price_sale_decoration',
-			array(
-				'label'     => esc_html__( 'Text Decoration', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::SELECT,
-				'default'   => 'none',
-				'options'   => jet_woo_builder_tools()->get_available_text_decoration_types(),
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['price'] . ' ins .amount' => 'text-decoration: {{VALUE}}',
-				),
-			)
-		);
-
 		$this->add_responsive_control(
 			'archive_price_sale_size',
-			array(
-				'label'     => esc_html__( 'Size', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Font Size', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::SLIDER,
-				'range'     => array(
-					'px' => array(
+				'range'     => [
+					'px' => [
 						'min' => 6,
 						'max' => 90,
-					),
-				),
-				'selectors' => array(
+					],
+				],
+				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['price'] . ' ins' => 'font-size: {{SIZE}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_control(
@@ -259,33 +244,45 @@ class Jet_Woo_Builder_Archive_Product_Price extends Widget_Base {
 			)
 		);
 
+		$this->add_control(
+			'archive_price_sale_decoration',
+			array(
+				'label'     => esc_html__( 'Text Decoration', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::SELECT,
+				'default'   => 'none',
+				'options'   => jet_woo_builder_tools()->get_available_text_decoration_types(),
+				'selectors' => array(
+					'{{WRAPPER}} ' . $css_scheme['price'] . ' ins .amount' => 'text-decoration: {{VALUE}}',
+				),
+			)
+		);
+
 		$this->end_controls_tab();
 
 		$this->end_controls_tabs();
 
 		$this->add_responsive_control(
 			'archive_price_item_alignment',
-			array(
-				'label'     => esc_html__( 'Alignment', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Alignment', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::CHOOSE,
-				'default'   => 'left',
 				'options'   => jet_woo_builder_tools()->get_available_h_align_types(),
-				'selectors' => array(
+				'separator' => 'before',
+				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['price'] => 'text-align: {{VALUE}};',
-				),
+				],
 				'classes'   => 'elementor-control-align',
-			)
+			]
 		);
 
 		$this->end_controls_section();
 
 		$this->start_controls_section(
 			'section_currency_sign_style',
-			array(
-				'label'      => esc_html__( 'Currency Sign', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
+			[
+				'label' => __( 'Currency Sign', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
 		);
 
 		$this->add_control(
@@ -312,19 +309,6 @@ class Jet_Woo_Builder_Archive_Product_Price extends Widget_Base {
 				),
 				'selectors' => array(
 					'{{WRAPPER}} ' . $css_scheme['currency'] => 'font-size: {{SIZE}}{{UNIT}};',
-				),
-			)
-		);
-
-		$this->add_control(
-			'currency_sign_vertical_align',
-			array(
-				'label'     => esc_html__( 'Vertical Alignment', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::SELECT,
-				'options'   => jet_woo_builder_tools()->vertical_align_attr(),
-				'default'   => 'baseline',
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['currency'] => 'vertical-align: {{VALUE}};',
 				),
 			)
 		);
@@ -407,22 +391,48 @@ class Jet_Woo_Builder_Archive_Product_Price extends Widget_Base {
 
 		$this->end_controls_tabs();
 
+		$this->add_control(
+			'currency_sign_vertical_align',
+			[
+				'label'     => __( 'Alignment', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::SELECT,
+				'options'   => jet_woo_builder_tools()->vertical_align_attr(),
+				'default'   => 'baseline',
+				'separator' => 'before',
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['currency'] => 'vertical-align: {{VALUE}};',
+				],
+			]
+		);
+
 		$this->end_controls_section();
 
 	}
 
 	/**
-	 * Returns CSS selector for nested element
+	 * CSS selector.
 	 *
-	 * @param null $el
+	 * Returns CSS selector for nested element.
+	 *
+	 * @since  1.2.0
+	 * @access public
+	 *
+	 * @param null $el Selector.
 	 *
 	 * @return string
 	 */
 	public function css_selector( $el = null ) {
-		return sprintf( '{{WRAPPER}} .%1$s %2$s', $this->get_name(), $el );
+		return sprintf( '{{WRAPPER}} .%1$s%2$s', $this->get_name(), $el );
 	}
 
 	public static function render_callback() {
+
+		$pre_get_price = apply_filters( 'jet-woo-builder/widgets/archive/pre-product-price', false );
+
+		if ( $pre_get_price ) {
+			echo $pre_get_price;
+			return;
+		}
 
 		echo '<div class="jet-woo-builder-archive-product-price">';
 		echo '<div class="jet-woo-product-price">';

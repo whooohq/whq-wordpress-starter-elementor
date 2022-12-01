@@ -63,7 +63,7 @@ class Rewrite {
 			}
 		}
 
-		return array_filter( $result );
+		return apply_filters( 'jet-engine/profile-builder/rewrite-rules', array_filter( $result ), $this );
 
 	}
 

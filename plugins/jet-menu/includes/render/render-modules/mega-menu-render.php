@@ -52,10 +52,28 @@ class Mega_Menu_Render extends Base_Render {
 
 		$menu_id = $this->get( 'menu', false );
 
+		if ( ! isset( $menu_id ) || empty( $menu_id ) ) {
+			$available_menus_options = jet_menu_tools()->get_available_menus_options();
+
+			if ( ! empty( $available_menus_options ) ) {
+				$menu_id = $available_menus_options[0]['value'];
+			} else {
+				echo sprintf(
+					'<span>' . esc_html__( '%3$s Go to the %1$sMenus screen%2$s to create one.', 'jet-menu' )  . '</span>',
+					sprintf( '<a href="%s" target="_blank">', admin_url( 'nav-menus.php?action=edit&menu=0' ) ),
+					'</a>',
+					'<span>' . esc_html__( 'There are no menus in your site.', 'jet-menu' ) . '</span>'
+				);
+
+				return;
+			}
+		}
+
 		$menu_uniqid = uniqid();
 
-		// Get animation type for mega menu instance
 		$roll_up = filter_var( $this->get( 'roll-up', true ), FILTER_VALIDATE_BOOLEAN );
+
+		$ajax_loading = filter_var( $this->get( 'ajax-loading', false ), FILTER_VALIDATE_BOOLEAN );
 
 		$list_attributes = apply_filters( 'jet-menu/mega-menu-render/list-attr', array(
 			'class' => array(
@@ -78,6 +96,7 @@ class Mega_Menu_Render extends Base_Render {
 
 		$menu_args = array(
 			'menu'            => $menu_id,
+            'container'       => 'nav',
 			'container_class' => 'jet-mega-menu-container',
 			'menu_class'      => '',
 			'items_wrap'      => $items_wrap,
@@ -89,7 +108,7 @@ class Mega_Menu_Render extends Base_Render {
 				'roll-up'            => filter_var( $roll_up, FILTER_VALIDATE_BOOLEAN ),
 				'use-dropdown-icon'  => $this->get( 'use-dropdown-icon', true ),
 				'dropdown-icon'      => $dropdown_icon,
-				'ajax-loading'       => $this->get( 'ajax-loading', false ),
+				'ajax-loading'       => $ajax_loading,
 			)
 		);
 
@@ -97,6 +116,7 @@ class Mega_Menu_Render extends Base_Render {
 			'menuId'            => $menu_id,
 			'menuUniqId'        => $menu_uniqid,
 			'rollUp'            => filter_var( $roll_up, FILTER_VALIDATE_BOOLEAN ),
+			'megaAjaxLoad'      => $ajax_loading,
 			'layout'            => $this->get( 'layout', 'horizontal' ),
 			'subEvent'          => $this->get( 'sub-event', 'hover' ),
 			'subTrigger'        => $this->get( 'sub-trigger', 'item' ),
@@ -117,6 +137,7 @@ class Mega_Menu_Render extends Base_Render {
 			'jet-mega-menu--animation-' . $this->get( 'sub-animation', 'none' ),
 			'jet-mega-menu--location-' . $this->get( 'location', 'wp-nav' ),
 			$roll_up ? 'jet-mega-menu--roll-up' : '',
+			$ajax_loading ? 'jet-mega-menu--ajax-loading' : '',
 			filter_var( $is_iphone, FILTER_VALIDATE_BOOLEAN ) ? 'jet-mega-menu--iphone-mode' : '',
 		) );
 
@@ -243,6 +264,27 @@ class Mega_Menu_Render extends Base_Render {
 				),
 				'rule'     => 'background-color',
 				'value'    => '%1$s !important;',
+			),
+			'badge_svg_size'              => array (
+				'selector' => array (
+					'> .jet-mega-menu-item__inner > a .jet-mega-menu-item__badge svg' => 'width',
+				),
+				'rule'     => 'width',
+				'value'    => '%1$spx !important;',
+			),
+			'badge_offset_x'              => array (
+				'selector' => array (
+					'> .jet-mega-menu-item__inner > a .jet-mega-menu-item__badge' => '--jmm-menu-badge-offset-x',
+				),
+				'rule'     => '--jmm-menu-badge-offset-x',
+				'value'    => '%1$spx !important;',
+			),
+			'badge_offset_y'              => array (
+				'selector' => array (
+					'> .jet-mega-menu-item__inner > a .jet-mega-menu-item__badge' => '--jmm-menu-badge-offset-y',
+				),
+				'rule'     => '--jmm-menu-badge-offset-y',
+				'value'    => '%1$spx !important;',
 			),
 			'item_padding'           => array (
 				'selector' => array (

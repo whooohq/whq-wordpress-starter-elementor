@@ -37,7 +37,8 @@ registerBlockType('jet-smart-filters/search', {
 		apply_type: attributes.apply_type,
 		apply_button_text: attributes.apply_button_text,
 		typing_min_letters_count: attributes.typing_min_letters_count,
-		show_label: attributes.show_label
+		show_label: attributes.show_label,
+		query_id: attributes.query_id,
 	},
 	className: 'jet-smart-filters-search',
 	edit: class extends wp.element.Component {

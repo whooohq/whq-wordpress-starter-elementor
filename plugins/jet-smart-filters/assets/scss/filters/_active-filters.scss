@@ -30,11 +30,4 @@
 	align-items: flex-start;
 	flex-wrap: wrap;
 	width: 100%;
-
-	body.rtl & {
-		.jet-active-filters__title + .jet-active-filter,
-		.jet-active-filter:first-child {
-			margin-right: 0 !important;
-		}
-	}
 }

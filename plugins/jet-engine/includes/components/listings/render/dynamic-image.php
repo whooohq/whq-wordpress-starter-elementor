@@ -15,6 +15,8 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Image' ) ) {
 		private $source     = false;
 		private $show_field = true;
 
+		public $full_image_src = null;
+
 		public function get_name() {
 			return 'jet-listing-dynamic-image';
 		}
@@ -25,6 +27,8 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Image' ) ) {
 				'image_url_prefix'            => '',
 				'dynamic_image_size'          => 'full',
 				'dynamic_avatar_size'         => 50,
+				'custom_image_alt'            => '',
+				'lazy_load_image'             => wp_lazy_loading_enabled( 'img', 'wp_get_attachment_image' ),
 				'dynamic_image_source_custom' => '',
 				'linked_image'                => true,
 				'image_link_source'           => '_permalink',
@@ -76,7 +80,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Image' ) ) {
 
 					$thumbnail_id = get_post_thumbnail_id( $post );
 
-					echo get_the_post_thumbnail( $post->ID, $size, array( 'alt' => $this->get_image_alt( $thumbnail_id ) ) );
+					echo get_the_post_thumbnail( $post->ID, $size, array( 'alt' => $this->get_image_alt( $thumbnail_id, $settings ) ) );
 
 					return;
 
@@ -90,12 +94,18 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Image' ) ) {
 
 				$size = ! empty( $settings['dynamic_avatar_size'] ) ? $settings['dynamic_avatar_size'] : array( 'size' => 50 );
 				$size = ! empty( $size['size'] ) ? $size['size'] : 50;
+				$alt  = $this->get_image_alt( null, $settings );
+				$args = array(
+					'loading' => filter_var( $settings['lazy_load_image'], FILTER_VALIDATE_BOOLEAN ) ? 'lazy' : 'eager',
+				);
 
 				if ( $user && 'WP_User' === get_class( $user ) ) {
-					echo str_replace( 'avatar ', 'jet-avatar ', get_avatar( $user->ID, $size ) );
+					$this->full_image_src = get_avatar_url( $user->ID, array( 'size' => $size * 2 ) );
+					echo str_replace( 'avatar ', 'jet-avatar ', get_avatar( $user->ID, $size, '', $alt, $args ) );
 				} elseif ( $user && 'WP_User' !== get_class( $user ) && is_user_logged_in() ) {
 					$user = wp_get_current_user();
-					echo str_replace( 'avatar ', 'jet-avatar ', get_avatar( $user->ID, $size ) );
+					$this->full_image_src = get_avatar_url( $user->ID, array( 'size' => $size * 2 ) );
+					echo str_replace( 'avatar ', 'jet-avatar ', get_avatar( $user->ID, $size, '', $alt, $args ) );
 				} else {
 					return $this->process_fallback_image( $settings );
 				}
@@ -112,7 +122,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Image' ) ) {
 					$image_data = Jet_Engine_Tools::get_attachment_image_data_array( $image, 'id' );
 					$image      = $image_data['id'];
 
-					echo wp_get_attachment_image( $image, $size, false, array( 'alt' => $this->get_image_alt( $image ) ) );
+					echo wp_get_attachment_image( $image, $size, false, array( 'alt' => $this->get_image_alt( $image, $settings ) ) );
 				}
 
 			} else {
@@ -141,7 +151,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Image' ) ) {
 					return;
 				}
 
-				echo wp_get_attachment_image( $attachment_id, $size );
+				echo wp_get_attachment_image( $attachment_id, $size, false, array( 'alt' => $this->get_image_alt( $attachment_id, $settings ) ) );
 
 			}
 
@@ -153,7 +163,8 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Image' ) ) {
 				'jet-engine/listings/dynamic-image/custom-image',
 				false,
 				$this->get_settings(),
-				$size
+				$size,
+				$this
 			);
 
 			if ( $custom_output ) {
@@ -174,10 +185,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Image' ) ) {
 					}
 				}
 			} else {
-				$image = jet_engine()->listings->data->get_meta(
-					$field,
-					jet_engine()->listings->data->get_object_by_context( $object_context )
-				);
+				$image = jet_engine()->listings->data->get_meta_by_context( $field, $object_context );
 			}
 
 			if ( is_array( $image ) && isset( $image['url'] ) ) {
@@ -202,11 +210,34 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Image' ) ) {
 			}
 
 			if ( filter_var( $image, FILTER_VALIDATE_URL ) ) {
-				printf( '<img src="%1$s" alt="%2$s">', $image, get_the_title() );
+				$this->print_image_html_by_src( $image );
 			} else {
-				echo wp_get_attachment_image( $image, $size, false, array( 'alt' => $this->get_image_alt( $image ) ) );
+				echo wp_get_attachment_image( $image, $size, false, array( 'alt' => $this->get_image_alt( $image, $settings ) ) );
 			}
 
+		}
+
+		public function print_image_html_by_src( $src = null, $alt = null ) {
+
+			$attr = array(
+				'src'   => $src,
+				'class' => $this->get_image_css_class(),
+				'alt'   => $alt
+			);
+
+			$this->full_image_src = $src;
+
+			$custom_alt = $this->get_image_alt( null, $this->get_settings() );
+
+			if ( ! empty( $custom_alt ) ) {
+				$attr['alt'] = $custom_alt;
+			}
+
+			printf( '<img %s>', Jet_Engine_Tools::get_attr_string( $attr ) );
+		}
+
+		public function get_image_css_class() {
+			return apply_filters( 'jet-engine/listings/dynamic-image/css-class', 'jet-listing-dynamic-image__img' );
 		}
 
 		public function get_image_size( $settings = array() ) {
@@ -215,14 +246,31 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Image' ) ) {
 			return apply_filters( 'jet-engine/listings/dynamic-image/size', $size, 'dynamic_image', $settings );
 		}
 
-		public function get_image_alt( $img_id ) {
+		public function get_image_alt( $img_id = null, $settings = array() ) {
+
+			if ( empty( $img_id ) ) {
+				return ! empty( $settings['custom_image_alt'] ) ? $settings['custom_image_alt'] : null;
+			}
+
 			$alt = get_post_meta( $img_id, '_wp_attachment_image_alt', true );
 
 			if ( ! $alt ) {
-				$alt = get_the_title();
+				$image = get_post( $img_id );
+
+				if ( $image ) {
+					$alt = $image->post_title;
+				}
+
+				if ( ! $alt ) {
+					$alt = get_the_title();
+				}
 			}
 
 			return $alt;
+		}
+
+		public function get_custom_image_alt( $settings = array() ) {
+			return ! empty( $settings['custom_image_alt'] ) ? $settings['custom_image_alt'] : '';
 		}
 
 		public function get_image_url( $settings ) {
@@ -248,22 +296,18 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Image' ) ) {
 			}
 
 			if ( $custom ) {
-				$url = jet_engine()->listings->data->get_meta(
-					$custom,
-					jet_engine()->listings->data->get_object_by_context( $object_context )
-				);
+				$url = jet_engine()->listings->data->get_meta_by_context( $custom, $object_context );
 			} elseif ( '_permalink' === $source ) {
 				$url = jet_engine()->listings->data->get_current_object_permalink(
 					jet_engine()->listings->data->get_object_by_context( $object_context )
 				);
+			} elseif ( '_file' === $source ) {
+				$url = $this->full_image_src;
 			} elseif ( 'options_page' === $source ) {
 				$option = ! empty( $settings['image_link_option'] ) ? $settings['image_link_option'] : false;
 				$url    = jet_engine()->listings->data->get_option( $option );
 			} elseif ( $source ) {
-				$url = jet_engine()->listings->data->get_meta(
-					$source,
-					jet_engine()->listings->data->get_object_by_context( $object_context )
-				);
+				$url = jet_engine()->listings->data->get_meta_by_context( $source, $object_context );
 			}
 
 			if ( is_array( $url ) ) {
@@ -292,6 +336,8 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Image' ) ) {
 				$classes[] = esc_attr( $settings['className'] );
 			}
 
+			$image_html = $this->get_image_html( $settings );
+
 			printf( '<div class="%1$s">', implode( ' ', $classes ) );
 
 				do_action( 'jet-engine/listing/dynamic-image/before-image', $this );
@@ -302,21 +348,26 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Image' ) ) {
 
 					$open_in_new = isset( $settings['open_in_new'] ) ? $settings['open_in_new'] : '';
 					$rel_attr    = isset( $settings['rel_attr'] ) ? esc_attr( $settings['rel_attr'] ) : '';
-					$rel         = '';
-					$target      = '';
+
+					$link_attr = array(
+						'href'  => $image_url,
+						'class' => $base_class . '__link',
+					);
 
 					if ( $rel_attr ) {
-						$rel = sprintf( ' rel="%s"', $rel_attr );
+						$link_attr['rel'] = $rel_attr;
 					}
 
 					if ( $open_in_new ) {
-						$target = ' target="_blank"';
+						$link_attr['target'] = '_blank';
 					}
 
-					printf( '<a href="%1$s" class="%2$s__link"%3$s%4$s>', $image_url, $base_class, $rel, $target );
+					$link_attr = apply_filters( 'jet-engine/listings/dynamic-image/link-attr', $link_attr, $settings );
+
+					printf( '<a %s>', Jet_Engine_Tools::get_attr_string( $link_attr ) );
 				}
 
-				$this->render_image( $settings );
+				echo $image_html;
 
 				if ( $image_url ) {
 					echo '</a>';
@@ -326,6 +377,61 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Image' ) ) {
 
 			echo '</div>';
 
+		}
+
+		public function get_image_html( $settings ) {
+
+			ob_start();
+
+			$this->add_image_hooks();
+
+			$this->render_image( $settings );
+
+			$this->remove_image_hooks();
+
+			return ob_get_clean();
+		}
+
+		public function add_image_hooks() {
+			add_filter( 'wp_get_attachment_image_attributes', array( $this, 'modify_image_attrs' ) );
+			add_filter( 'wp_get_attachment_image',            array( $this, 'store_full_image_src' ), 10, 2 );
+		}
+
+		public function remove_image_hooks() {
+			remove_filter( 'wp_get_attachment_image_attributes', array( $this, 'modify_image_attrs' ) );
+			remove_filter( 'wp_get_attachment_image',            array( $this, 'store_full_image_src' ), 10 );
+		}
+
+		public function modify_image_attrs( $attr ) {
+			$settings = $this->get_settings();
+
+			// Add CSS Class
+			$attr['class'] = $this->get_image_css_class() . ' ' . $attr['class'];
+
+			// Add Custom Alt
+			if ( ! empty( $settings['custom_image_alt'] ) ) {
+				$attr['alt'] = $settings['custom_image_alt'];
+			}
+
+			// Modify the `loading` attr
+			if ( isset( $settings['lazy_load_image'] ) ) {
+				$lazy_load = filter_var( $settings['lazy_load_image'], FILTER_VALIDATE_BOOLEAN );
+
+				$attr['loading'] = $lazy_load ? 'lazy' : 'eager';
+			}
+
+			return $attr;
+		}
+
+		public function store_full_image_src( $html, $attachment_id ) {
+
+			$image_src = wp_get_attachment_image_src( $attachment_id, 'full' );
+
+			if ( $image_src && isset( $image_src[0] ) ) {
+				$this->full_image_src = $image_src[0];
+			}
+
+			return $html;
 		}
 
 	}

@@ -158,13 +158,21 @@ if ( ! class_exists( 'Jet_Engine_CPT_Page_List' ) ) {
 					continue;
 				}
 
-				$result[] = array(
+				$post_type_config = array(
 					'slug'   => $post_type->name,
 					'id'     => -1,
 					'labels' => array(
 						'name' => $post_type->label,
 					),
 				);
+
+				if ( ! empty( $post_type->rewrite ) && ! empty( $post_type->rewrite['slug'] )
+					&& $post_type->name !== $post_type->rewrite['slug']
+				) {
+					$post_type_config['rewrite_slug'] = $post_type->rewrite['slug'];
+				}
+
+				$result[] = $post_type_config;
 
 			}
 
@@ -190,6 +198,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Page_List' ) ) {
 				foreach ( $items as $item ) {
 
 					$item['labels'] = maybe_unserialize( $item['labels'] );
+					$item['args']   = maybe_unserialize( $item['args'] );
 
 					$this->engine_types[ $item['slug'] ] = array(
 						'slug'   => $item['slug'],
@@ -198,6 +207,12 @@ if ( ! class_exists( 'Jet_Engine_CPT_Page_List' ) ) {
 							'name' => $item['labels']['name'],
 						),
 					);
+
+					if ( ! empty( $item['args']['rewrite'] ) && ! empty( $item['args']['rewrite_slug'] )
+						&& $item['slug'] !== $item['args']['rewrite_slug']
+					) {
+						$this->engine_types[ $item['slug'] ]['rewrite_slug'] = $item['args']['rewrite_slug'];
+					}
 				}
 			}
 

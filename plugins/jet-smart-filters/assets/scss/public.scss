@@ -13,6 +13,8 @@
 @import "filters/sorting";
 @import "filters/alphabet";
 @import "common/additional-filter-settings.scss";
+@import "tabindex-focus.scss";
+@import "rtl.scss";
 
 .jet-filters-loading {
 	opacity: 0.6 !important;

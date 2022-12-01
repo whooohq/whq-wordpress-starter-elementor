@@ -18,6 +18,7 @@ if ( !$edit_mode ) {
 		data-additional-providers="<?php echo $additional_providers; ?>"
 		data-apply-type="<?php echo $settings['apply_type']; ?>"
 		data-query-id="<?php echo $query_id; ?>"
+		<?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>
 	>
 		<?php echo $settings['remove_filters_text']; ?>
 	</button>

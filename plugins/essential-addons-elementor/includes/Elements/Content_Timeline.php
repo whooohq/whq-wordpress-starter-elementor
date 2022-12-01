@@ -124,7 +124,7 @@ class Content_Timeline extends Widget_Base
 				'label' => esc_html__('Content', 'essential-addons-elementor'),
 				'type' => Controls_Manager::WYSIWYG,
 				'label_block' => true,
-				'default' => esc_html__('A new concept of showing content in your web page with more interactive way.', 'essential-addons-elementor'),
+				'default' => __('<p>A new concept of showing content in your web page with more interactive way.</p>', 'essential-addons-elementor'),
 			]
 		);
 
@@ -264,7 +264,7 @@ class Content_Timeline extends Widget_Base
 				'default' => [
 					[
 						'eael_custom_title' => __('The Ultimate Addons For Elementor', 'essential-addons-elementor'),
-						'eael_custom_excerpt' => __('A new concept of showing content in your web page with more interactive way.', 'essential-addons-elementor'),
+						'eael_custom_excerpt' => __('<p>A new concept of showing content in your web page with more interactive way.</p>', 'essential-addons-elementor'),
 						'eael_custom_post_date' => 'Nov 09, 2017',
 						'eael_read_more_text_link' => '#',
 						'eael_show_custom_read_more' => '1',
@@ -432,6 +432,7 @@ class Content_Timeline extends Widget_Base
 				],
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-line' => 'width: {{SIZE}}px;',
+					'{{WRAPPER}} .eael-horizontal-timeline__line' => 'height: {{SIZE}}px;',
 					'{{WRAPPER}} .eael-content-timeline-line .eael-content-timeline-inner' => 'width: {{SIZE}}px;',
 				],
 			]
@@ -454,6 +455,32 @@ class Content_Timeline extends Widget_Base
 					'{{WRAPPER}} .eael-content-timeline-line' => 'margin-left: -{{SIZE}}px;',
 				],
 				'description' => __('Use half of the Line size for perfect centering', 'essential-addons-elementor'),
+				'condition' => [
+					'eael_dynamic_template_Layout' => 'default',
+				],
+			]
+		);
+
+		$this->add_control(
+			'eael_timeline_line_from_top',
+			[
+				'label' => esc_html__('Position From Top', 'essential-addons-elementor'),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => 2,
+				],
+				'range' => [
+					'px' => [
+						'max' => 50,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .eael-horizontal-timeline__line' => 'top: {{SIZE}}px;',
+				],
+				'description' => __('Use half of the Line size for perfect centering', 'essential-addons-elementor'),
+				'condition' => [
+					'eael_dynamic_template_Layout' => 'horizontal',
+				],
 			]
 		);
 
@@ -465,6 +492,7 @@ class Content_Timeline extends Widget_Base
 				'default' => '#d7e4ed',
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-line' => 'background: {{VALUE}}',
+					'{{WRAPPER}} .eael-horizontal-timeline__line' => 'background: {{VALUE}}',
 				]
 
 			]
@@ -478,6 +506,8 @@ class Content_Timeline extends Widget_Base
 				'default' => '#3CCD94',
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-line .eael-content-timeline-inner' => 'background: {{VALUE}}',
+					// '{{WRAPPER}} .eael-horizontal-timeline__line' => 'background: {{VALUE}}',
+					'{{WRAPPER}} .eael-horizontal-timeline__line::after' => 'background: {{VALUE}}; border: 3px solid {{VALUE}};',
 				]
 
 			]
@@ -504,6 +534,7 @@ class Content_Timeline extends Widget_Base
 				'default' => '#f1f2f3',
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-content' => 'background: {{VALUE}};',
+					'{{WRAPPER}} .eael-horizontal-timeline-item__card-inner' => 'background: {{VALUE}};',
 					'{{WRAPPER}} .eael-content-timeline-content::before' => 'border-left-color: {{VALUE}}; border-right-color: {{VALUE}};',
 				]
 
@@ -518,6 +549,7 @@ class Content_Timeline extends Widget_Base
 				'size_units' => ['px', 'em', '%'],
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .eael-horizontal-timeline-item__card-inner' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -530,6 +562,7 @@ class Content_Timeline extends Widget_Base
 				'size_units' => ['px', 'em', '%'],
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-content' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .eael-horizontal-timeline-item__card-inner' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -539,7 +572,7 @@ class Content_Timeline extends Widget_Base
 			[
 				'name' => 'eael_card_border',
 				'label' => esc_html__('Border', 'essential-addons-elementor'),
-				'selector' => '{{WRAPPER}} .eael-content-timeline-content',
+				'selector' => '{{WRAPPER}} .eael-content-timeline-content, {{WRAPPER}} .eael-horizontal-timeline-item__card-inner',
 			]
 		);
 
@@ -551,6 +584,8 @@ class Content_Timeline extends Widget_Base
 				'size_units' => ['px', 'em', '%'],
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-content' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .eael-horizontal-timeline-item__card' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .eael-horizontal-timeline-item__card-inner' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -559,7 +594,7 @@ class Content_Timeline extends Widget_Base
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'eael_card_shadow',
-				'selector' => '{{WRAPPER}} .eael-content-timeline-content',
+				'selector' => '{{WRAPPER}} .eael-content-timeline-content, {{WRAPPER}} .eael-horizontal-timeline-item__card-inner',
 			]
 		);
 
@@ -602,6 +637,7 @@ class Content_Timeline extends Widget_Base
                 ],
                 'selectors' => [
                     '{{WRAPPER}} .eael-content-timeline-content::before' => 'border-width: {{SIZE}}px;',
+                    '{{WRAPPER}} .eael-horizontal-timeline-item__card-arrow' => 'width: {{SIZE}}px; height: {{SIZE}}px;',
                 ],
                 'condition' => [
 //                    'eael_content_timeline_tab_caret_show' => 'yes',
@@ -614,7 +650,7 @@ class Content_Timeline extends Widget_Base
                 'label' => esc_html__('Caret Position', 'essential-addons-elementor'),
                 'type' => Controls_Manager::SLIDER,
                 'default' => [
-                    'size' => 24,
+                    'size' => 13,
                 ],
                 'range' => [
                     'px' => [
@@ -623,6 +659,7 @@ class Content_Timeline extends Widget_Base
                 ],
                 'selectors' => [
                     '{{WRAPPER}} .eael-content-timeline-content::before' => 'top: {{SIZE}}%;',
+                    '{{WRAPPER}} .eael-horizontal-timeline-item__card-arrow' => 'left: {{SIZE}}%;',
                 ],
                 'condition' => [
 //                    'eael_content_timeline_tab_caret_show' => 'yes',
@@ -638,6 +675,7 @@ class Content_Timeline extends Widget_Base
                 'default' => '#f1f2f3',
                 'selectors' => [
                     '{{WRAPPER}} .eael-content-timeline-content::before' => 'border-left-color: {{VALUE}};border-right-color: {{VALUE}};',
+                    '{{WRAPPER}} .eael-horizontal-timeline-item__card-arrow:before' => 'background: {{VALUE}};',
                 ],
                 'condition' => [
 //                    'eael_content_timeline_tab_caret_show' => 'yes',
@@ -672,6 +710,7 @@ class Content_Timeline extends Widget_Base
 				],
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-img' => 'width: {{SIZE}}px; height: {{SIZE}}px;',
+					'{{WRAPPER}} .eael-horizontal-timeline-item__point-content .eael-elements-icon' => 'width: {{SIZE}}px; height: {{SIZE}}px;',
 				],
 			]
 		);
@@ -691,7 +730,10 @@ class Content_Timeline extends Widget_Base
 				],
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-img i' => 'font-size: {{SIZE}}px;',
-					'{{WRAPPER}} .eael-content-timeline-img .content-timeline-bullet-svg' => 'height: {{SIZE}}{{UNIT}}; width: {{SIZE}}{{UNIT}};'
+                    '{{WRAPPER}} .eael-content-timeline-img .content-timeline-bullet-svg' => 'height: {{SIZE}}{{UNIT}}; width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .eael-content-timeline-img svg' => 'height: {{SIZE}}{{UNIT}}; width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .eael-horizontal-timeline-item__point-content .eael-elements-icon i' => 'font-size: {{SIZE}}px;',
+					'{{WRAPPER}} .eael-horizontal-timeline-item__point-content .eael-elements-icon svg' => 'height: {{SIZE}}{{UNIT}}; width: {{SIZE}}{{UNIT}}; vertical-align:middle;',
 				],
 			]
 		);
@@ -702,7 +744,7 @@ class Content_Timeline extends Widget_Base
 				'label' => esc_html__('Position From Top', 'essential-addons-elementor'),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
-					'size' => 8,
+					'size' => 20,
 				],
 				'range' => [
 					'px' => [
@@ -711,7 +753,9 @@ class Content_Timeline extends Widget_Base
 				],
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-img' => 'margin-top: {{SIZE}}px;',
+					// '{{WRAPPER}} .eael-horizontal-timeline-item__point-content .eael-elements-icon' => 'margin-top: {{SIZE}}px;',
 					'{{WRAPPER}} .eael-content-timeline-line' => 'margin-top: {{SIZE}}px;',
+					'{{WRAPPER}} .eael-horizontal-timeline__line' => 'margin-top: {{SIZE}}px;',
 					'{{WRAPPER}} ..eael-content-timeline-line .eael-content-timeline-inner' => 'margin-top: {{SIZE}}px;',
 				],
 			]
@@ -730,6 +774,7 @@ class Content_Timeline extends Widget_Base
 				],
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-img' => 'margin-left: -{{SIZE}}px;',
+					'{{WRAPPER}} .eael-horizontal-timeline-item__point-content .eael-elements-icon' => 'margin-left: -{{SIZE}}px;',
 				],
 			]
 		);
@@ -749,6 +794,7 @@ class Content_Timeline extends Widget_Base
 				],
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-img.eael-picture' => 'border-width: {{SIZE}}px;',
+					'{{WRAPPER}} .eael-horizontal-timeline-item__point-content .eael-elements-icon' => 'border-width: {{SIZE}}px;',
 				],
 			]
 		);
@@ -761,6 +807,7 @@ class Content_Timeline extends Widget_Base
 				'default' => '#f1f2f3',
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-img.eael-picture' => 'background: {{VALUE}}',
+					'{{WRAPPER}} .eael-horizontal-timeline-item__point-content .eael-elements-icon' => 'background: {{VALUE}}',
 				]
 
 			]
@@ -775,6 +822,7 @@ class Content_Timeline extends Widget_Base
 				'default' => '#f9f9f9',
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-img.eael-picture' => 'border-color: {{VALUE}}',
+					'{{WRAPPER}} .eael-horizontal-timeline-item__point-content .eael-elements-icon' => 'border-color: {{VALUE}}',
 				]
 
 			]
@@ -788,7 +836,10 @@ class Content_Timeline extends Widget_Base
 				'type' => Controls_Manager::COLOR,
 				'default' => '#fff',
 				'selectors' => [
-					'{{WRAPPER}} .eael-content-timeline-img i' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-content-timeline-img i' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-content-timeline-img svg' => 'fill: {{VALUE}}',
+					'{{WRAPPER}} .eael-horizontal-timeline-item__point-content .eael-elements-icon i' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .eael-horizontal-timeline-item__point-content .eael-elements-icon svg' => 'fill: {{VALUE}}',
 				]
 
 			]
@@ -812,6 +863,7 @@ class Content_Timeline extends Widget_Base
 				'default' => '#3CCD94',
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-block.eael-highlight .eael-content-timeline-img.eael-picture' => 'background: {{VALUE}}',
+					'{{WRAPPER}} .eael-horizontal-timeline-item.is-active .eael-horizontal-timeline-item__point-content .eael-elements-icon' => 'background: {{VALUE}}',
 				]
 
 			]
@@ -826,6 +878,7 @@ class Content_Timeline extends Widget_Base
 				'default' => '#fff',
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-block.eael-highlight .eael-content-timeline-img.eael-picture' => 'border-color: {{VALUE}}',
+					'{{WRAPPER}} .eael-horizontal-timeline-item.is-active .eael-horizontal-timeline-item__point-content .eael-elements-icon' => 'border-color: {{VALUE}}',
 				]
 
 			]
@@ -838,7 +891,10 @@ class Content_Timeline extends Widget_Base
 				'type' => Controls_Manager::COLOR,
 				'default' => '#fff',
 				'selectors' => [
-					'{{WRAPPER}} .eael-content-timeline-block.eael-highlight .eael-content-timeline-img i' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-content-timeline-block.eael-highlight .eael-content-timeline-img i' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-content-timeline-block.eael-highlight .eael-content-timeline-img svg' => 'fill: {{VALUE}}',
+					'{{WRAPPER}} .eael-horizontal-timeline-item.is-active .eael-horizontal-timeline-item__point-content .eael-elements-icon i' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .eael-horizontal-timeline-item.is-active .eael-horizontal-timeline-item__point-content .eael-elements-icon svg' => 'fill: {{VALUE}}',
 				]
 
 			]
@@ -846,6 +902,116 @@ class Content_Timeline extends Widget_Base
 
 
 		$this->end_controls_section();
+
+		/**
+         * -------------------------------------------
+         * Scrollbar Style
+         * -------------------------------------------
+         */
+        $this->start_controls_section(
+            'eael_section_content_timeline_hor_scrollbar_style',
+            [
+                'label' => esc_html__('Scrollbar Style', 'essential-addons-elementor'),
+                'tab' => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'eael_dynamic_template_Layout' => 'horizontal',
+				],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'eael_content_timeline_hor_scrollbar_height',
+            [
+                'label' => esc_html__('Height', 'essential-addons-elementor'),
+                'type' => Controls_Manager::SLIDER,
+                'default' => [
+                    'size' => 8,
+                ],
+                'range' => [
+                    'px' => [
+                        'max' => 100,
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .eael-horizontal-timeline--scroll-bar .eael-horizontal-timeline-track::-webkit-scrollbar' => 'height: {{SIZE}}px;',
+                ],
+            ]
+        );
+
+		$this->add_control(
+			'eael_content_timeline_hor_scrollbar_background',
+			[
+				'label' => __('Background Color', 'essential-addons-elementor'),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#D7E4ED',
+				'selectors' => [
+					'{{WRAPPER}} .eael-horizontal-timeline--scroll-bar .eael-horizontal-timeline-track::-webkit-scrollbar' => 'background: {{VALUE}};',
+				]
+
+			]
+		);
+
+		$this->add_control(
+			'eael_content_timeline_hor_scrollbar_border_radius',
+			[
+				'label' => esc_html__('Border Radius', 'essential-addons-elementor'),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+                    'size' => 4,
+                ],
+				'range' => [
+					'px' => [
+						'max' => 100,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .eael-horizontal-timeline--scroll-bar .eael-horizontal-timeline-track::-webkit-scrollbar' => 'border-radius: {{SIZE}}px;',
+				],
+			]
+		);
+
+		$this->add_control(
+			'eael_content_timeline_hor_scrollbar_thumb_style',
+			[
+				'label' => __('Scrollbar Thumb', 'essential-addons-elementor'),
+				'type' => Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_control(
+			'eael_content_timeline_hor_scrollbar_thumb_background',
+			[
+				'label' => __('Color', 'essential-addons-elementor'),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#3CCD94',
+				'selectors' => [
+					'{{WRAPPER}} .eael-horizontal-timeline--scroll-bar .eael-horizontal-timeline-track::-webkit-scrollbar-thumb' => 'background-color: {{VALUE}};',
+				]
+
+			]
+		);
+
+		$this->add_control(
+			'eael_content_timeline_hor_scrollbar_thumb_border_radius',
+			[
+				'label' => esc_html__('Border Radius', 'essential-addons-elementor'),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+                    'size' => 4,
+                ],
+				'range' => [
+					'px' => [
+						'max' => 100,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .eael-horizontal-timeline--scroll-bar .eael-horizontal-timeline-track::-webkit-scrollbar-thumb' => 'border-radius: {{SIZE}}px;',
+				],
+			]
+		);
+        
+        $this->end_controls_section();
 
 		$this->start_controls_section(
 			'eael_section_typography',
@@ -873,6 +1039,8 @@ class Content_Timeline extends Widget_Base
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-content .eael-timeline-title' => 'color: {{VALUE}};',
 					'{{WRAPPER}} .eael-content-timeline-content .eael-timeline-title a' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .eael-horizontal-timeline-item .eael-horizontal-timeline-item__card-title' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .eael-horizontal-timeline-item .eael-horizontal-timeline-item__card-title a' => 'color: {{VALUE}};',
 				]
 
 			]
@@ -901,6 +1069,8 @@ class Content_Timeline extends Widget_Base
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-content .eael-timeline-title' => 'text-align: {{VALUE}};',
 					'{{WRAPPER}} .eael-content-timeline-content .eael-timeline-title a' => 'text-align: {{VALUE}};',
+					'{{WRAPPER}} .eael-horizontal-timeline-item .eael-horizontal-timeline-item__card-title' => 'text-align: {{VALUE}};',
+					'{{WRAPPER}} .eael-horizontal-timeline-item .eael-horizontal-timeline-item__card-title a' => 'text-align: {{VALUE}};',
 				]
 			]
 		);
@@ -911,7 +1081,7 @@ class Content_Timeline extends Widget_Base
 				'name' => 'eael_timeline_title_typography',
 				'label' => __('Typography', 'essential-addons-elementor'),
 				'scheme' => Typography::TYPOGRAPHY_1,
-                'selector' =>'{{WRAPPER}} .eael-content-timeline-content .eael-timeline-title',
+                'selector' =>'{{WRAPPER}} .eael-content-timeline-content .eael-timeline-title, {{WRAPPER}} .eael-horizontal-timeline-item .eael-horizontal-timeline-item__card-title',
 			]
 		);
 
@@ -932,6 +1102,7 @@ class Content_Timeline extends Widget_Base
 				'default' => '#333',
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-content p' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .eael-horizontal-timeline-item__card-inner p' => 'color: {{VALUE}};',
 				]
 			]
 		);
@@ -962,6 +1133,7 @@ class Content_Timeline extends Widget_Base
 				'default' => 'left',
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-content' => 'text-align: {{VALUE}};',
+					'{{WRAPPER}} .eael-horizontal-timeline-item__card-inner' => 'text-align: {{VALUE}};',
 				],
 			]
 		);
@@ -972,7 +1144,7 @@ class Content_Timeline extends Widget_Base
 				'name' => 'eael_timeline_excerpt_typography',
 				'label' => __('Excerpt Typography', 'essential-addons-elementor'),
 				'scheme' => Typography::TYPOGRAPHY_3,
-				'selector' => '{{WRAPPER}} .eael-content-timeline-content p',
+				'selector' => '{{WRAPPER}} .eael-content-timeline-content p, {{WRAPPER}} .eael-horizontal-timeline-item__card-inner p',
 			]
 		);
 
@@ -993,6 +1165,7 @@ class Content_Timeline extends Widget_Base
 				'size_units' => ['px', 'em', '%'],
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-content .eael-date' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .eael-horizontal-timeline-item .eael-horizontal-timeline-item__meta' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -1005,6 +1178,7 @@ class Content_Timeline extends Widget_Base
 				'default' => '#4d4d4d',
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-content .eael-date' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .eael-horizontal-timeline-item .eael-horizontal-timeline-item__meta' => 'color: {{VALUE}};',
 				]
 			]
 		);
@@ -1015,7 +1189,7 @@ class Content_Timeline extends Widget_Base
 				'name' => 'eael_timeline_date_typography',
 				'label' => __('Date Typography', 'essential-addons-elementor'),
 				'scheme' => Typography::TYPOGRAPHY_3,
-				'selector' => '{{WRAPPER}} .eael-content-timeline-content .eael-date',
+				'selector' => '{{WRAPPER}} .eael-content-timeline-content .eael-date, {{WRAPPER}} .eael-horizontal-timeline-item .eael-horizontal-timeline-item__meta',
 			]
 		);
 
@@ -1244,6 +1418,7 @@ class Content_Timeline extends Widget_Base
 				'size_units' => ['px', 'em', '%'],
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-content .eael-read-more' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .eael-horizontal-timeline-item .eael-read-more' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -1256,6 +1431,7 @@ class Content_Timeline extends Widget_Base
 				'size_units' => ['px', 'em', '%'],
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-content .eael-read-more' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .eael-horizontal-timeline-item .eael-read-more' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -1263,7 +1439,7 @@ class Content_Timeline extends Widget_Base
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'eael_read_more_typography',
-				'selector' => '{{WRAPPER}} .eael-content-timeline-content .eael-read-more',
+				'selector' => '{{WRAPPER}} .eael-content-timeline-content .eael-read-more, {{WRAPPER}} .eael-horizontal-timeline-item .eael-read-more',
 			]
 		);
 
@@ -1279,7 +1455,7 @@ class Content_Timeline extends Widget_Base
 				'type' => Controls_Manager::COLOR,
 				'default' => '#fff',
 				'selectors' => [
-					'{{WRAPPER}} .eael-content-timeline-content .eael-read-more' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .eael-content-timeline-content .eael-read-more, {{WRAPPER}} .eael-horizontal-timeline-item .eael-read-more' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -1292,6 +1468,7 @@ class Content_Timeline extends Widget_Base
 				'default' => '#3CCD94',
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-content .eael-read-more' => 'background: {{VALUE}};',
+					'{{WRAPPER}} .eael-horizontal-timeline-item .eael-read-more' => 'background: {{VALUE}};',
 				],
 			]
 		);
@@ -1301,7 +1478,7 @@ class Content_Timeline extends Widget_Base
 			[
 				'name' => 'eael_read_more_normal_border',
 				'label' => esc_html__('Border', 'essential-addons-elementor'),
-				'selector' => '{{WRAPPER}} .eael-content-timeline-content .eael-read-more',
+				'selector' => '{{WRAPPER}} .eael-content-timeline-content .eael-read-more, {{WRAPPER}} .eael-horizontal-timeline-item .eael-read-more',
 			]
 		);
 
@@ -1317,6 +1494,7 @@ class Content_Timeline extends Widget_Base
 				],
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-content .eael-read-more' => 'border-radius: {{SIZE}}px;',
+					'{{WRAPPER}} .eael-horizontal-timeline-item .eael-read-more' => 'border-radius: {{SIZE}}px;',
 				],
 			]
 		);
@@ -1334,6 +1512,7 @@ class Content_Timeline extends Widget_Base
 				'default' => '#f9f9f9',
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-content .eael-read-more:hover' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .eael-horizontal-timeline-item .eael-read-more:hover' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -1346,6 +1525,7 @@ class Content_Timeline extends Widget_Base
 				'default' => '#bac4cb',
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-content .eael-read-more:hover' => 'background: {{VALUE}};',
+					'{{WRAPPER}} .eael-horizontal-timeline-item .eael-read-more:hover' => 'background: {{VALUE}};',
 				],
 			]
 		);
@@ -1358,6 +1538,7 @@ class Content_Timeline extends Widget_Base
 				'default' => '',
 				'selectors' => [
 					'{{WRAPPER}} .eael-content-timeline-content .eael-read-more:hover' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}} .eael-horizontal-timeline-item .eael-read-more:hover' => 'border-color: {{VALUE}};',
 				],
 			]
 
@@ -1371,7 +1552,7 @@ class Content_Timeline extends Widget_Base
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'eael_read_more_shadow',
-				'selector' => '{{WRAPPER}} .eael-content-timeline-content .eael-read-more',
+				'selector' => '{{WRAPPER}} .eael-content-timeline-content .eael-read-more, {{WRAPPER}} .eael-horizontal-timeline-item .eael-read-more',
 				'separator' => 'before'
 			]
 		);
@@ -1396,7 +1577,8 @@ class Content_Timeline extends Widget_Base
 				]
 			]
 		);
-		$template = $this->get_template($this->get_settings('eael_dynamic_template_Layout'));
+		$template_layout = $this->get_settings('eael_dynamic_template_Layout');
+		$template = $this->get_template( esc_html( $template_layout ) );
 		?>
 		<div <?php echo $this->get_render_attribute_string('timeline-wrapper'); ?>>
 			<div class="eael-content-timeline-container">
@@ -1406,10 +1588,14 @@ class Content_Timeline extends Widget_Base
 						if (file_exists($template)) {
 							$query = new \WP_Query($args);
 							if ($query->have_posts()) {
-								while ($query->have_posts()) {
-									$query->the_post();
-									$content = $this->dynamic_content_manager( $query->ID, $settings ) ;
+								if( 'horizontal' === $template_layout && !wp_is_mobile() ) {
 									include($template);
+								} else {
+									while ($query->have_posts()) {
+										$query->the_post();
+										$content = $this->dynamic_content_manager( $query->ID, $settings ) ;
+										include($template);
+									}
 								}
 							} else {
 								_e('<p class="no-posts-found">No posts found!</p>', 'essential-addons-elementor');
@@ -1421,11 +1607,17 @@ class Content_Timeline extends Widget_Base
 
 					elseif ('custom' === $settings['eael_content_timeline_choose']) :
 						if (file_exists($template)) :
-							foreach ($settings['eael_coustom_content_posts'] as $custom_content) : ?>
-								<?php
-								$content = $this->custom_content_manager( $custom_content, $settings );
+							if( 'horizontal' === $template_layout && !wp_is_mobile() ) {
 								include($template);
-							endforeach; 
+							} else {
+								foreach ($settings['eael_coustom_content_posts'] as $custom_content) : ?>
+									<?php
+									$content = $this->custom_content_manager( $custom_content, $settings );
+									?>
+									<?php 
+									include($template);
+								endforeach; 
+							}
 						endif;
 					endif; ?>
 				</div>
@@ -1440,7 +1632,7 @@ class Content_Timeline extends Widget_Base
 		$the_content  = get_the_content( $post_ID );
 		$nofollow     = $settings['read_more_link_nofollow'] ? 'rel="nofollow"' : '';
 		$target_blank = $settings['read_more_link_target_blank'] ? 'target="_blank"' : '';
-		$circle_icon  = $settings['eael_show_image_or_icon'] !== 'icon' ? '' : ( isset( $settings['__fa4_migrated']['eael_content_timeline_circle_icon_new'] ) || empty( $settings['eael_content_timeline_circle_icon'] ) ? $settings['eael_content_timeline_circle_icon_new']['value'] : $settings['eael_content_timeline_circle_icon'] );
+		$circle_icon  = $settings['eael_show_image_or_icon'] !== 'icon' ? '' : ( isset( $settings['__fa4_migrated']['eael_content_timeline_circle_icon_new'] ) || empty( $settings['eael_content_timeline_circle_icon'] ) ? \Essential_Addons_Elementor\Classes\Helper::get_render_icon( $settings['eael_content_timeline_circle_icon_new'] ) : '<i class="'.esc_attr( $settings['eael_content_timeline_circle_icon'] ).'"></i>' );
 
 		$content = [
 			'title'          => get_the_title( $post_ID ),
@@ -1462,7 +1654,7 @@ class Content_Timeline extends Widget_Base
 		    if( isset($circle_icon['url'])) {
 		        $content['image'] = '<img class="content-timeline-bullet-svg" src="'.esc_attr( $circle_icon['url'] ).'" alt="'.esc_attr(get_post_meta($circle_icon['id'], '_wp_attachment_image_alt', true)).'"/>';
 		    }else {
-		        $content['image'] = '<i class="'.esc_attr( $circle_icon ).'"></i>';
+		        $content['image'] = $circle_icon;
 		    }
 		}
 
@@ -1502,7 +1694,7 @@ class Content_Timeline extends Widget_Base
 					if (isset($custom_content['eael_custom_content_timeline_circle_icon_new']['value']['url'])) :
 					$content['image'] = '<img class="content-timeline-bullet-svg" src="'. esc_attr($custom_content['eael_custom_content_timeline_circle_icon_new']['value']['url']) .'" alt="'. esc_attr(get_post_meta($custom_content['eael_custom_content_timeline_circle_icon_new']['value']['id'], '_wp_attachment_image_alt', true)) .'" />';
 				else :
-					$content['image'] = '<i class="'. esc_attr($custom_content['eael_custom_content_timeline_circle_icon_new']['value']) .'"></i>';
+					$content['image'] = \Essential_Addons_Elementor\Classes\Helper::get_render_icon( $custom_content['eael_custom_content_timeline_circle_icon_new'] );# '<i class="'. esc_attr($custom_content['eael_custom_content_timeline_circle_icon_new']['value']) .'"></i>';
 				endif;
 			} else {
 				$content['image'] = '<i class="'. esc_attr($custom_content['eael_custom_content_timeline_circle_icon']) .'"></i>';
@@ -1514,5 +1706,122 @@ class Content_Timeline extends Widget_Base
 		endif;
 
 		return $content;
+	}
+
+	public function print_horizontal_timeline_content( $settings, $query, $part = 'top' ){
+		$available_parts = ['top', 'middle', 'bottom'];
+		if( !in_array( $part, $available_parts) ) {
+			return false;
+		}
+
+		$counter = 0;
+		if( 'dynamic' === $settings['eael_content_timeline_choose'] ){
+			while ($query->have_posts()) {
+				$counter++;
+				$part1 = $this->fetch_horizontal_layout_part_name( $settings, $counter, $part );
+
+				$query->the_post();
+				$content = $this->dynamic_content_manager( $query->ID, $settings ) ;
+				$this->print_horizontal_timeline_content_inner( $settings, $content,$part1, $counter );
+			}
+		} else if( 'custom' === $settings['eael_content_timeline_choose'] ) {
+			foreach ($settings['eael_coustom_content_posts'] as $custom_content) {
+				$counter++;
+				$part1 = $this->fetch_horizontal_layout_part_name( $settings, $counter, $part );
+				
+				$content = $this->custom_content_manager( $custom_content, $settings );
+				$this->print_horizontal_timeline_content_inner( $settings, $content, $part1, $counter );
+			}
+		}
+	}
+
+	public function print_horizontal_timeline_content_inner( $settings, $content, $part = 'top', $counter = 0 ){
+		$available_parts = ['top', 'middle', 'bottom'];
+		if( !in_array( $part, $available_parts) ) {
+			return false;
+		}
+		$show_date_inside = ! empty( $settings['date_position_horizontal'] ) && 'inside' === $settings['date_position_horizontal'] ? 1 : 0;
+		$horizontal_layout = ! empty( $settings['content_timeline_layout_horizontal'] ) ? esc_html( $settings['content_timeline_layout_horizontal'] ) : esc_html('middle');
+		$horizontal_layout_middle = 'middle' === $horizontal_layout ? 1 : 0;
+		
+		$arrow_direction = esc_html( $horizontal_layout );
+						
+		if( 'middle' === $horizontal_layout ) {
+			$arrow_direction = $counter % 2 === 1 ? 'top' : 'bottom';
+		}
+						
+		switch ( $part ) {
+			case 'top':
+				?>
+				<div class="eael-horizontal-timeline-item <?php echo esc_attr( $arrow_direction ) ?> <?php echo 1 === $counter ? esc_attr('is-active') : '' ?>">
+					<div class="eael-horizontal-timeline-item__card <?php echo esc_attr( $arrow_direction ) ?>">
+						<div class="eael-horizontal-timeline-item__card-inner">
+							<?php if ( $show_date_inside && !$horizontal_layout_middle ) : ?>
+								<div class="eael-horizontal-timeline-item__meta">
+									<?php echo esc_html( $content['date'] ); ?>
+								</div>
+							<?php endif; ?>
+
+							<?php 
+							if ( 'yes' == $settings['eael_show_title'] ) {
+								echo '<' . Helper::eael_pro_validate_html_tag( $settings['title_tag'] ) . ' class="eael-horizontal-timeline-item__card-title"><a href="' . esc_url( $content['permalink'] ) . '"' . $content['nofollow'] . '' . $content['target_blank'] . '>' . esc_html( $content['title'] ) . '</a></' . Helper::eael_pro_validate_html_tag( $settings['title_tag'] ) . '>';
+							} 
+
+							printf( '%s', $content['post_thumbnail'] );
+							?>
+							<div class="eael-horizontal-timeline-item__card-desc">
+								<?php 
+								if ( 'yes' == $settings['eael_show_excerpt'] ) {
+									echo Helper::eael_wp_kses( $content['excerpt'] );
+								}
+
+								printf( '%s', $content['read_more_btn'] );
+								?>
+							</div>
+						</div>
+						
+						<div class="eael-horizontal-timeline-item__card-arrow <?php echo esc_attr( $arrow_direction ) ?>"></div>
+					</div>
+				</div>
+				<?php
+				break;
+			case 'middle':
+				?>
+				<div class="eael-horizontal-timeline-item <?php echo 1 === $counter ? esc_attr('is-active') : '' ?>">
+					<div class="eael-horizontal-timeline-item__point">
+						<div class="eael-horizontal-timeline-item__point-content">
+							<span class="eael-elements-icon"> <?php printf( '%s', $content['image'] ); ?> </span>
+						</div>
+					</div>
+				</div>
+				<?php 
+				break;
+			case 'bottom':
+				?>
+				<div class="eael-horizontal-timeline-item <?php echo 1 === $counter ? esc_attr('is-active') : '' ?>">
+					<?php if ( !$show_date_inside || $horizontal_layout_middle ) : ?>
+						<div class="eael-horizontal-timeline-item__meta">
+							<?php echo esc_html( $content['date'] ); ?>
+						</div>
+					<?php endif; ?>
+				</div>
+				<?php 
+				break;
+		}
+	}
+
+	public function fetch_horizontal_layout_part_name( $settings, $counter, $part ){
+		$part1 = $part;
+		$horizontal_layout = ! empty( $settings['content_timeline_layout_horizontal'] ) ? esc_html( $settings['content_timeline_layout_horizontal'] ) : esc_html( 'center' );
+		
+		if( 'middle' === $horizontal_layout ) {
+			if ( 'top' === $part ) {
+				$part1 =  $counter % 2 === 1 ? 'top' : 'bottom';
+			} elseif( 'bottom' === $part ) {
+				$part1 =  $counter % 2 === 1 ? 'bottom' : 'top';
+			} 
+		}
+
+		return $part1;
 	}
 }

@@ -1,0 +1,19 @@
+@import "../mixins.scss";
+
+.jet-ui_controls-repeater {
+	&-list {
+		margin-bottom: 8px;
+
+		&-item + &-item {
+			margin-top: 15px;
+		}
+	}
+
+	&-title {
+		margin: 0 0 8px;
+		color: $color-text-heading;
+		font-size: 15px;
+		line-height: 24px;
+		font-weight: 400;
+	}
+}

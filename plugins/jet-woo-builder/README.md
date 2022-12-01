@@ -1,5 +1,89 @@
 # ChangeLog
 
+## [2.1.0](https://github.com/ZemezLab/jet-woo-builder/archive/2.1.0.zip)
+* Added: Product not found message templates in Products Grid/List widgets;
+* Added: Dynamic tags functionality for not found message and Query ID controls in Products Grid/List widgets;
+* Added: Line Wrap control for some widgets titles;
+* Added: JS trigger `jet-woo-builder-swiper-initialized` after Swiper slider init;
+* Added: Archive items clickable item functionality;
+* Added: Badges to Products List widget;
+* Added: Dynamic bullets functionality for the carousel;
+* Added: Single Add to Cart widget view cart link;
+* Updated: WPML widgets translatable nodes;
+* Updated: Single Rating widget;
+* Updated: Categories Grid widget;
+* Updated: WC templates;
+* Fixed: WC notice after single ajax add to cart;
+* Fixed: Cart table widget actions row display;
+* Fixed: Slides per group bug in the carousel;
+* Fixed: Single form stars rating display in the editor;
+* Fixed: Price styles in Products Grid widget;
+* Fixed: Wishlist custom template option wrong index;
+* Fixed: WC query after template switching;
+* Fixed: Template type check with active Elementor Pro;
+* Fixed: Elementor Pro Custom fonts with Archive items templates;
+* Fixed: JetEngine compatibility error;
+
+## [2.0.5](https://github.com/ZemezLab/jet-woo-builder/archive/2.0.5.zip)
+* Updated: Allow accessing JetWooBuilder JS object from the global scope;
+* Tweak: Better WPML compatibility;
+* Tweak: Better Astra theme compatibility;
+* Fixed: Empty favourites query;
+* Fixed: My account controls ID conflict;
+* Fixed: Product variation metadata output in Cart Table widget;
+
+## [2.0.4](https://github.com/ZemezLab/jet-woo-builder/archive/2.0.4.zip)
+* Added: Favourites query type for Product Grid/List widgets;
+* Added: New query type Stock Status for Products Grid/List widgets;
+* Tweak: Custom stock status functionality in Products Grid/List widgets;
+* Fixed: Custom taxonomy template functionality works separately from shop template functionality;
+* Fixed: Ajax add to cart spinner styles;
+* Fixed: Carousel render with overflow option;
+
+## [2.0.3](https://github.com/ZemezLab/jet-woo-builder/archive/2.0.3.zip)
+* Fixed: Products Grid badges align;
+* Fixed: Archive Rating widget missing global `$product` variable;
+* Fixed: Compatibility with Elementor 3.7;
+* Fixed: Additional minor bugs;
+
+## [2.0.2](https://github.com/ZemezLab/jet-woo-builder/archive/2.0.2.zip)
+* Fixed: Products Grid widget box-shadow controls visibility;
+
+## [2.0.1](https://github.com/ZemezLab/jet-woo-builder/archive/2.0.1.zip)
+* Added: `jet-woo-builder/widgets/archive/pre-product-price` hook to rewrite archive product price output;
+* Fixed: Themes compatibilities issues;
+* Fixed: Variation product single AJAX add to cart;
+* Fixed: Carousels pagination styles section visibility;
+* Fixed: Display Archive widgets in JetEngine listing;
+
+## [2.0.0](https://github.com/ZemezLab/jet-woo-builder/archive/2.0.0.zip)
+* Added: Woo Page Builder template tabs;
+* Added: WooCommerce placeholder image handling in widgets;
+* Added: Single Rating widget reviews link captions;
+* Added: Style & Advanced tabs to custom templates in Elementor editor;
+* Added: Single Template Elementor editor settings;
+* Added:  Style controls for Single Tabs widget;
+* Added: Empty rating functionality in Products Grid/List widgets;
+* Added: Products List & Categories Grid widgets clickable item functionality;
+* Added: Products List widget content elements align controls;
+* Added: Manual selection of categories in Categories Grid widget;
+* Added: Archive items templates editor canvas view;
+* Added: Responsiveness in checkout forms;
+* Added: WooCommerce action widget;
+* Added: Dynamic & macros functionalities for IDs fields in Products List/Grid widgets;
+* Updated: Better JetEngine compatibility;
+* Updated: Better Elementor 3.6 compatibility;
+* Updated: Widgets controls and templates;
+* Updated: Better Blocksy theme compatibility;
+* Updated: JetDashboard to 2.0.9;
+* Tweak: Widget accessibility for different template types;
+* Tweak: Single Add to Cart widget styles;
+* Tweak: Single Images widget;
+* Tweak: Single Meta widget;
+* Tweak: Refactor and restructure compatibility, integration, components and predesigned files and folders;
+* Fixed: Cart Table widget thumbnail width;
+* Fixed: Quick view popup with OceanWP theme.
+
 ## [1.12.4](https://github.com/ZemezLab/jet-woo-builder/archive/1.12.4.zip)
 * Added: Products Grid&List compatibility with `woocommerce_product_is_visible` hook;
 * Tweak: Remove button color styles in Cart Table widget;

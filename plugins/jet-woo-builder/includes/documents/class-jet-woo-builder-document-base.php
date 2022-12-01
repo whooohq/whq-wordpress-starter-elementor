@@ -20,7 +20,7 @@ class Jet_Woo_Builder_Document_Base extends Elementor\Core\Base\Document {
 	public $first_category = null;
 
 	public function get_name() {
-		return 'jet-woo-builder-archive-document';
+		return '';
 	}
 
 	public static function get_properties() {
@@ -70,6 +70,7 @@ class Jet_Woo_Builder_Document_Base extends Elementor\Core\Base\Document {
 			[
 				'label'   => __( 'Template Layout', 'jet-woo-builder' ),
 				'type'    => Controls_Manager::SELECT,
+				'default' => '',
 				'options' => [
 					''                                          => __( 'Default', 'jet-woo-builder' ),
 					PageTemplatesModule::TEMPLATE_CANVAS        => __( 'Elementor Canvas', 'jet-woo-builder' ),
@@ -118,6 +119,44 @@ class Jet_Woo_Builder_Document_Base extends Elementor\Core\Base\Document {
 		);
 
 		$this->end_injection();
+
+		self::register_style_controls( $this );
+
+	}
+
+	public static function register_style_controls( $document ) {
+
+		$document->start_controls_section(
+			'section_page_style',
+			[
+				'label' => __( 'Body Style', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$document->add_group_control(
+			Elementor\Group_Control_Background::get_type(),
+			[
+				'name'     => 'background',
+				'selector' => 'body',
+			]
+		);
+
+		$document->add_responsive_control(
+			'padding',
+			[
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', 'em', '%' ],
+				'selectors'  => [
+					'body' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+				],
+			]
+		);
+
+		$document->end_controls_section();
+
+		Elementor\Plugin::$instance->controls_manager->add_custom_css_controls( $document );
 
 	}
 
@@ -200,19 +239,6 @@ class Jet_Woo_Builder_Document_Base extends Elementor\Core\Base\Document {
 
 	}
 
-	public function enqueue_custom_fonts_epro( $post_css ) {
-		if ( class_exists( 'ElementorPro\Modules\AssetsManager\AssetTypes\Fonts\Custom_Fonts' ) ) {
-			$custom_fonts_manager = new ElementorPro\Modules\AssetsManager\AssetTypes\Fonts\Custom_Fonts();
-			$fonts                = $custom_fonts_manager->get_fonts();
-
-			if ( ! empty( $fonts ) ) {
-				foreach ( $fonts as $font => $font_data ) {
-					$custom_fonts_manager->enqueue_font( $font, $font_data, $post_css );
-				}
-			}
-		}
-	}
-
 	/**
 	 * Save data for archive document types
 	 *
@@ -244,17 +270,18 @@ class Jet_Woo_Builder_Document_Base extends Elementor\Core\Base\Document {
 		}
 
 		$this->save_template_type();
-
 		$this->save_version();
-
 		$this->save_template_item_to_meta( $this->post->ID );
 
 		// Update Post CSS
-		$post_css = new Elementor\Core\Files\CSS\Post( $this->post->ID );
+		if ( class_exists( 'Elementor\Core\Files\CSS\Post' ) ) {
+			$css_file = new Elementor\Core\Files\CSS\Post( $this->post->ID );
+		} else {
+			$css_file = new Elementor\Post_CSS_File( $this->post->ID );
+		}
 
-		$this->enqueue_custom_fonts_epro( $post_css );
-
-		$post_css->update();
+		$css_file->enqueue();
+		$css_file->update();
 
 		return true;
 
@@ -409,7 +436,7 @@ class Jet_Woo_Builder_Document_Base extends Elementor\Core\Base\Document {
 
 				break;
 			case 'jet-woo-builder-checkout':
-				if ( jet_woo_builder_integration()->in_elementor() ) {
+				if ( jet_woo_builder()->elementor_views->in_elementor() ) {
 					$content = sprintf( '<form class="checkout woocommerce-checkout">%s</form>', $content );
 				}
 

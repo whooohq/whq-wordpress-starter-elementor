@@ -1,0 +1,134 @@
+@import "../mixins.scss";
+
+// Type selector list
+.jet-ui_type-selector-list {
+	display: flex;
+	flex-wrap: wrap;
+	margin: -8px;
+
+	&-item {
+		width: 108px;
+		height: 108px;
+		margin: 8px;
+	}
+
+	&-item + &-item {
+		margin-top: 10px;
+	}
+}
+
+// Type selector item
+.jet-ui_type-selector {
+	cursor: pointer;
+	user-select: none;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+	padding: 10px;
+	font-size: 13px;
+	line-height: 16px;
+	color: $color-text-secondary;
+	border: $border-width solid $bg-panel;
+	border-radius: $radius;
+	background-color: $bg-panel;
+	box-shadow: 0px 2px 2px rgba(22, 43, 64, 0.1);
+
+	&-label {
+		text-align: center;
+	}
+
+	&-img {
+		max-width: 90px;
+		max-height: 40px;
+		padding: 5px;
+	}
+
+	&-img + &-label {
+		margin-top: 5px;
+	}
+
+	&-marker {
+		display: none;
+		position: absolute;
+		top: 7px;
+		left: 6px;
+
+		path {
+			fill: $color-accent;
+		}
+	}
+
+	&-input {
+		display: none !important;
+	}
+
+	&--checked {
+		border-color: $color-accent;
+	}
+
+	&--checked &-marker {
+		display: block;
+	}
+
+	&--disabled {
+		cursor: default;
+		pointer-events: none;
+		opacity: 0.5;
+	}
+
+	// Info
+	&-info {
+		&-button {
+			position: absolute;
+			top: 5px;
+			right: 5px;
+
+			svg path {
+				fill: $border-color;
+				transition: $transition;
+			}
+
+			&:hover {
+				svg path {
+					fill: $color-accent;
+				}
+			}
+		}
+
+		&-title {
+			display: flex;
+			margin: 0;
+			padding-bottom: 15px;
+			font-weight: 500;
+			font-size: 21px;
+			line-height: 32px;
+			color: $color-text-primary;
+			border-bottom: $border-width solid $border-color;
+
+			&-icon {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: 32px;
+				height: 32px;
+				margin-right: 10px;
+				border-radius: $radius;
+				background-color: #f0f0f1;
+
+				img {
+					max-width: 24px;
+					max-height: 24px;
+				}
+			}
+		}
+
+		&-content {
+			margin-top: 20px;
+			color: $color-text-secondary;
+		}
+	}
+}

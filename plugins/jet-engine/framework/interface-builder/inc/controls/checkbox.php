@@ -72,7 +72,7 @@ if ( ! class_exists( 'CX_Control_Checkbox' ) ) {
 				}
 
 				if ( '' !== $this->settings['label'] ) {
-					$html .= '<label class="cx-label" for="' . esc_attr( $this->settings['id'] ) . '">' . esc_html( $this->settings['label'] ) . '</label> ';
+					$html .= '<label class="cx-label" for="' . esc_attr( $this->settings['id'] ) . '">' . wp_kses_post( $this->settings['label'] ) . '</label> ';
 				}
 
 				$html .= '<div class="cx-checkbox-group cx-check-radio-group--' . esc_attr( $layout ) . '">';

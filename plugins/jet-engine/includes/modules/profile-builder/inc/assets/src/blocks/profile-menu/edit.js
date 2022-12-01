@@ -109,21 +109,21 @@ const Edit = function( props ) {
 				/>
 				<SelectControl
 					label={ __( 'Layout Tablet' ) }
-					value={ attributes.menu_layout }
+					value={ attributes.menu_layout_tablet }
 					options={ layoutOptions }
 					onChange={ newValue => {
 						setAttributes({
-							menu_layout: newValue,
+							menu_layout_tablet: newValue,
 						});
 					} }
 				/>
 				<SelectControl
 					label={ __( 'Layout Mobile' ) }
-					value={ attributes.menu_layout }
+					value={ attributes.menu_layout_mobile }
 					options={ layoutOptions }
 					onChange={ newValue => {
 						setAttributes({
-							menu_layout: newValue,
+							menu_layout_mobile: newValue,
 						});
 					} }
 				/>

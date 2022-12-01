@@ -35,6 +35,7 @@
 					breakpoint: settings.breakpoint,
 					megaWidthType: settings.megaWidthType,
 					megaWidthSelector: settings.megaWidthSelector,
+					megaAjaxLoad: settings.megaAjaxLoad,
 					classes: {
 						instance: 'jet-mega-menu',
 						menuContainer: 'jet-mega-menu-container',

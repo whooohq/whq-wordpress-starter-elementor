@@ -2,8 +2,6 @@
 /**
  * Create JetWooBuilder Template Popup template.
  */
-
-$doc_types = jet_woo_builder()->documents->get_document_types();
 ?>
 
 <div class="jet-woo-builder-template-popup">
@@ -19,7 +17,12 @@ $doc_types = jet_woo_builder()->documents->get_document_types();
 			<select id="template_type" name="template_type">
 				<?php
 				foreach ( $doc_types as $type ) {
-					printf( '<option value="%s">%s</option>', $type['slug'], $type['name'] );
+					printf(
+						'<option value="%1$s" %3$s>%2$s</option>',
+						$type['slug'],
+						$type['name'],
+						selected( $selected, $type['slug'], false )
+					);
 				}
 				?>
 			</select>
@@ -37,7 +40,7 @@ $doc_types = jet_woo_builder()->documents->get_document_types();
 		</h4>
 
 		<div class="jet-woo-builder-create-form__row predesigned-row template-<?php echo $doc_types['single']['slug']; ?> is-active">
-			<?php foreach ( $this->predesigned_single_templates() as $id => $data ) : ?>
+			<?php foreach ( $this->predesigned_templates( 'single', 8 ) as $id => $data ) : ?>
 				<div class="jet-woo-builder-create-form__item">
 					<label class="jet-woo-builder-create-form__label">
 						<input type="radio" name="template_single" value="<?php echo $id; ?>">
@@ -49,7 +52,7 @@ $doc_types = jet_woo_builder()->documents->get_document_types();
 		</div>
 
 		<div class="jet-woo-builder-create-form__row predesigned-row template-<?php echo $doc_types['archive']['slug']; ?>">
-			<?php foreach ( $this->predesigned_archive_templates() as $id => $data ) : ?>
+			<?php foreach ( $this->predesigned_templates( 'archive' ) as $id => $data ) : ?>
 				<div class="jet-woo-builder-create-form__item">
 					<label class="jet-woo-builder-create-form__label">
 						<input type="radio" name="template_archive" value="<?php echo $id; ?>">
@@ -61,7 +64,7 @@ $doc_types = jet_woo_builder()->documents->get_document_types();
 		</div>
 
 		<div class="jet-woo-builder-create-form__row predesigned-row template-<?php echo $doc_types['category']['slug']; ?>">
-			<?php foreach ( $this->predesigned_category_templates() as $id => $data ) : ?>
+			<?php foreach ( $this->predesigned_templates( 'category' ) as $id => $data ) : ?>
 				<div class="jet-woo-builder-create-form__item">
 					<label class="jet-woo-builder-create-form__label">
 						<input type="radio" name="template_category" value="<?php echo $id; ?>">
@@ -73,7 +76,7 @@ $doc_types = jet_woo_builder()->documents->get_document_types();
 		</div>
 
 		<div class="jet-woo-builder-create-form__row predesigned-row template-<?php echo $doc_types['shop']['slug']; ?>">
-			<?php foreach ( $this->predesigned_shop_templates() as $id => $data ) : ?>
+			<?php foreach ( $this->predesigned_templates( 'shop' ) as $id => $data ) : ?>
 				<div class="jet-woo-builder-create-form__item">
 					<label class="jet-woo-builder-create-form__label">
 						<input type="radio" name="template_shop" value="<?php echo $id; ?>">

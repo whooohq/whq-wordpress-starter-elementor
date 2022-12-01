@@ -133,7 +133,8 @@ trait Instagram_Feed
                 }
 
                 $image_src = ($item['media_type'] == 'VIDEO') ? $item['thumbnail_url'] : $item['media_url'];
-
+                $caption_length = ( ! empty( $settings['eael_instafeed_caption_length'] ) & $settings['eael_instafeed_caption_length'] > 0 )  ? $settings['eael_instafeed_caption_length'] : 60;
+                
                 if ($settings['eael_instafeed_layout'] == 'overlay') {
                     $html .= '<a href="' . $item['permalink'] . '" ' . esc_attr($target) . ' class="eael-instafeed-item">
                         <div class="eael-instafeed-item-inner">
@@ -148,8 +149,7 @@ trait Instagram_Feed
                     } else {
                         if ($settings['eael_instafeed_overlay_style'] == 'basic') {
                             if ($settings['eael_instafeed_caption'] && !empty($item['caption'])) {
-                                $html .= '<p class="eael-instafeed-caption-text">' . substr($item['caption'], 0,
-                                    60) . '...</p>';
+                                $html .= '<p class="eael-instafeed-caption-text">' . substr( $item['caption'], 0, intval( $caption_length ) ) . '...</p>';
                             }
                         }
                     }
@@ -161,8 +161,7 @@ trait Instagram_Feed
                     }
                     if ($settings['eael_instafeed_overlay_style'] == 'standard') {
                         if ($settings['eael_instafeed_caption'] && !empty($item['caption'])) {
-                            $html .= '<p class="eael-instafeed-caption-text">' . substr($item['caption'], 0,
-                                60) . '...</p>';
+                            $html .= '<p class="eael-instafeed-caption-text">' . substr( $item['caption'], 0, intval( $caption_length ) ) . '...</p>';
                         }
                     }
                     $html .= '</div>';
@@ -198,8 +197,7 @@ trait Instagram_Feed
                         $html .= '<div class="eael-instafeed-caption">
                                         <div class="eael-instafeed-caption-inner">
                                             <div class="eael-instafeed-meta">
-                                                <p class="eael-instafeed-caption-text">' . substr($item['caption'], 0,
-                            60) . '...</p>
+                                                <p class="eael-instafeed-caption-text">' . substr( $item['caption'], 0, intval( $caption_length ) ) . '...</p>
                                             </div>
                                         </div>
                                     </div>';
@@ -214,7 +212,7 @@ trait Instagram_Feed
                     $html .= '</div>';
 
                     if ($settings['eael_instafeed_card_style'] == 'outer' && $settings['eael_instafeed_caption'] && !empty($item['caption'])) {
-                        $html .= '<p class="eael-instafeed-caption-text">' . substr($item['caption'], 0, 60) . '...</p>';
+                        $html .= '<p class="eael-instafeed-caption-text">' . substr( $item['caption'], 0, intval( $caption_length ) ) . '...</p>';
                     }
                     $html .= '</footer>
                         </div>

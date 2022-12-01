@@ -816,9 +816,10 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Editor' ) ) {
 						'label' => __( 'Grandchildren Posts', 'jet-engine' ),
 					),
 				),
-				'listingOptions' => jet_engine()->listings->get_listings_for_options( 'blocks' ),
-				'hideOptions'    => jet_engine()->listings->get_widget_hide_options( 'blocks' ),
-				'activeModules'  => jet_engine()->modules->get_active_modules(),
+				'listingOptions'   => jet_engine()->listings->get_listings_for_options( 'blocks' ),
+				'hideOptions'      => jet_engine()->listings->get_widget_hide_options( 'blocks' ),
+				'activeModules'    => jet_engine()->modules->get_active_modules(),
+				'blocksWithIdAttr' => jet_engine()->blocks_views->block_types->get_blocks_with_id_attr(),
 			) );
 
 			wp_localize_script(

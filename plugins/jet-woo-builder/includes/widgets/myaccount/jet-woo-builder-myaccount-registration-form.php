@@ -1,7 +1,7 @@
 <?php
 /**
  * Class: Jet_Woo_Builder_MyAccount_Registration_Form
- * Name: Registration Form
+ * Name: Account Registration Form
  * Slug: jet-myaccount-registration-form
  */
 
@@ -21,7 +21,7 @@ class Jet_Woo_Builder_MyAccount_Registration_Form extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return __( 'Registration Form', 'jet-woo-builder' );
+		return __( 'Account Registration Form', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {

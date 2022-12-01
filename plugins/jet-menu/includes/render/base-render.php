@@ -112,17 +112,33 @@ abstract class Base_Render {
 	}
 
 	/**
+	 * @return false
+	 */
+	public function get_render_data() {
+		return false;
+	}
+
+	/**
 	 * [get_name description]
 	 * @return [type] [description]
 	 */
 	abstract public function get_name();
 
 	/**
-	 * Render listing item content
+	 * Render content
 	 *
 	 * @return [type] [description]
 	 */
 	abstract public function render();
+
+	/**
+	 * Is editor context
+	 *
+	 * @return boolean
+	 */
+	public function is_editor() {
+		return isset( $_REQUEST['context'] ) && $_REQUEST['context'] === 'edit' ? true : false;
+	}
 
 }
 

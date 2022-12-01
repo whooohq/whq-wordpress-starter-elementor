@@ -3,7 +3,7 @@
  * Plugin Name: JetSmartFilters
  * Plugin URI:  https://crocoblock.com/plugins/jetsmartfilters/
  * Description: Adds easy-to-use AJAX filters to the pages built with Elementor which contain the dynamic listings.
- * Version:     2.3.12
+ * Version:     3.0.2
  * Author:      Crocoblock
  * Author URI:  https://crocoblock.com/
  * Text Domain: jet-smart-filters
@@ -19,52 +19,40 @@ if ( ! defined( 'WPINC' ) ) {
 
 // If class `Jet_Smart_Filters` doesn't exists yet.
 if ( ! class_exists( 'Jet_Smart_Filters' ) ) {
-
 	/**
 	 * Sets up and initializes the plugin.
 	 */
 	class Jet_Smart_Filters {
 
 		/**
-		 * A reference to an instance of this class.
-		 *
-		 * @since  1.0.0
-		 * @access private
-		 * @var    object
+		 * Plugin version
 		 */
-		private static $instance = null;
+		private $version = '3.0.2';
 
 		/**
 		 * Holder for base plugin URL
-		 *
-		 * @since  1.0.0
-		 * @access private
-		 * @var    string
 		 */
 		private $plugin_url = null;
 
 		/**
-		 * Plugin version
-		 *
-		 * @var string
-		 */
-		private $version = '2.3.12';
-
-		/**
 		 * Holder for base plugin path
-		 *
-		 * @since  1.0.0
-		 * @access private
-		 * @var    string
 		 */
 		private $plugin_path = null;
 
 		/**
+		 * A reference to an instance of this class.
+		 */
+		private static $instance = null;
+
+		/**
 		 * Plugin base name
-		 *
-		 * @var string
 		 */
 		public $plugin_name = null;
+
+		/**
+		 * Сlassic admin panel switcher
+		 */
+		public $is_classic_admin = null;
 
 		/**
 		 * Components
@@ -77,17 +65,15 @@ if ( ! class_exists( 'Jet_Smart_Filters' ) ) {
 		public $widgets;
 		public $query;
 		public $render;
+		public $services;
 		public $settings;
 		public $indexer;
+		public $rest_api;
 
-		public $filters_not_used = true
-;
+		public $filters_not_used = true;
+
 		/**
 		 * Sets up needed actions/filters for the plugin to initialize.
-		 *
-		 * @since 1.0.0
-		 * @access public
-		 * @return void
 		 */
 		public function __construct() {
 
@@ -100,8 +86,6 @@ if ( ! class_exists( 'Jet_Smart_Filters' ) ) {
 			add_action( 'init', array( $this, 'lang' ), -999 );
 			// Load files.
 			add_action( 'init', array( $this, 'init' ), -999 );
-			// Jet Dashboard Init
-			add_action( 'init', array( $this, 'jet_dashboard_init' ), -999 );
 
 			// Set that filters are used for editors
 			add_action( 'elementor/preview/init', array( $this, 'set_filters_used' ) );
@@ -116,21 +100,25 @@ if ( ! class_exists( 'Jet_Smart_Filters' ) ) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 			add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_assets' ) );
 
+			if ( is_admin() ) {
+				// Jet Dashboard Init
+				add_action( 'init', array( $this, 'jet_dashboard_init' ), -999 );
+
+				// Admin Init
+				add_action( 'init', array( $this, 'admin_init' ), -999 );
+			}
 		}
 
 		/**
 		 * Returns plugin version
-		 *
-		 * @return string
 		 */
 		public function get_version() {
+
 			return $this->version;
 		}
 
 		/**
 		 * Load framework modules
-		 *
-		 * @return [type] [description]
 		 */
 		public function framework_loader() {
 
@@ -140,25 +128,22 @@ if ( ! class_exists( 'Jet_Smart_Filters' ) ) {
 				array(
 					$this->plugin_path( 'framework/interface-builder/cherry-x-interface-builder.php' ),
 					$this->plugin_path( 'framework/post-meta/cherry-x-post-meta.php' ),
-					$this->plugin_path( 'framework/term-meta/cherry-x-term-meta.php' ),
 					$this->plugin_path( 'framework/vue-ui/cherry-x-vue-ui.php' ),
 					$this->plugin_path( 'framework/jet-dashboard/jet-dashboard.php' ),
 					$this->plugin_path( 'framework/jet-elementor-extension/jet-elementor-extension.php' ),
 					$this->plugin_path( 'framework/admin-bar/jet-admin-bar.php' ),
 				)
 			);
-
 		}
 
 		/**
 		 * Manually init required modules.
-		 *
-		 * @return void
 		 */
 		public function init() {
 
 			$this->load_files();
 
+			$this->services     = new Jet_Smart_Filters_Services();
 			$this->settings     = new Jet_Smart_Filters_Settings();
 			$this->post_type    = new Jet_Smart_Filters_Post_Type();
 			$this->query        = new Jet_Smart_Filters_Query_Manager();
@@ -171,36 +156,27 @@ if ( ! class_exists( 'Jet_Smart_Filters' ) ) {
 			$this->utils        = new Jet_Smart_Filters_Utils();
 			$this->admin_bar    = Jet_Admin_Bar::get_instance();
 
+			//Init Rest Api
+			$this->rest_api     = new \Jet_Smart_Filters\Rest_Api();
+
 			new Jet_Smart_Filters_Elementor_Manager();
 
 			new Jet_Smart_Filters_Rewrite_Rules();
 			new Jet_Smart_Filters_Compatibility();
 			new Jet_Smart_Filters_Referrer_Manager();
+			new Jet_Smart_Filters_Tax_Query_Manager();
 
-			//Init Rest Api
-			new \Jet_Smart_Filters\Rest_Api();
-
-			if ( is_admin() ) {
-
-				require $this->plugin_path( 'includes/admin.php' );
-
-				new Jet_Smart_Filters_Admin();
-
-				//Init Settings
-				new \Jet_Smart_Filters\Settings();
-
-			}
+			$admin_mode             = $this->settings->get( 'admin_mode', '$mode' );
+			$this->is_classic_admin = $admin_mode === 'classic' ? true : false;
 
 			do_action( 'jet-smart-filters/init', $this );
-
 		}
 
 		/**
 		 * Load required files
-		 *
-		 * @return void
 		 */
 		public function load_files() {
+
 			require $this->plugin_path( 'includes/rest-api/manager.php' );
 			require $this->plugin_path( 'includes/post-type.php' );
 			require $this->plugin_path( 'includes/functions.php' );
@@ -213,19 +189,19 @@ if ( ! class_exists( 'Jet_Smart_Filters' ) ) {
 			require $this->plugin_path( 'includes/filters/manager.php' );
 			require $this->plugin_path( 'includes/providers/manager.php' );
 			require $this->plugin_path( 'includes/settings.php' );
-			require $this->plugin_path( 'includes/settings/manager.php' );
+			require $this->plugin_path( 'includes/services/services.php' );
 			require $this->plugin_path( 'includes/rewrite.php' );
 			require $this->plugin_path( 'includes/compatibility.php' );
 			require $this->plugin_path( 'includes/indexer/manager.php' );
 			require $this->plugin_path( 'includes/utils.php' );
+			require $this->plugin_path( 'includes/tax-query/manager.php' );
 		}
 
 		/**
 		 * Register assets
-		 *
-		 * @return void
 		 */
 		public function enqueue_assets() {
+
 			$suffix = '.min';
 
 			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
@@ -250,8 +226,6 @@ if ( ! class_exists( 'Jet_Smart_Filters' ) ) {
 
 		/**
 		 * Set that filters are used
-		 *
-		 * @return boolean
 		 */
 		public function set_filters_used() {
 			$this->filters_not_used = false;
@@ -259,72 +233,89 @@ if ( ! class_exists( 'Jet_Smart_Filters' ) ) {
 
 		/**
 		 * Init the JetDashboard module
-		 *
-		 * @return void
 		 */
 		public function jet_dashboard_init() {
 
-			if ( is_admin() ) {
+			$jet_dashboard_module_data = $this->framework->get_included_module_data( 'jet-dashboard.php' );
+			$jet_dashboard             = \Jet_Dashboard\Dashboard::get_instance();
 
-				$jet_dashboard_module_data = $this->framework->get_included_module_data( 'jet-dashboard.php' );
-
-				$jet_dashboard = \Jet_Dashboard\Dashboard::get_instance();
-
-				$jet_dashboard->init( array(
-					'path'           => $jet_dashboard_module_data['path'],
-					'url'            => $jet_dashboard_module_data['url'],
-					'cx_ui_instance' => array( $this, 'jet_dashboard_ui_instance_init' ),
-					'plugin_data'    => array(
-						'slug'    => 'jet-smart-filters',
-						'file'    => 'jet-smart-filters/jet-smart-filters.php',
-						'version' => $this->get_version(),
-						'plugin_links' => array(
-							array(
-								'label'  => esc_html__( 'Smart Filters', 'jet-smart-filters' ),
-								'url'    => add_query_arg( array( 'post_type' => 'jet-smart-filters' ), admin_url( 'edit.php' ) ),
-								'target' => '_self',
-							),
-							array(
-								'label'  => esc_html__( 'Add New Filter', 'jet-smart-filters' ),
-								'url'    => add_query_arg( array( 'post_type' => 'jet-smart-filters' ), admin_url( 'post-new.php' ) ),
-								'target' => '_self',
-							),
-							array(
-								'label'  => esc_html__( 'Settings', 'jet-smart-filters' ),
-								'url'    => add_query_arg( array( 'page' => 'jet-dashboard-settings-page', 'subpage' => 'jet-smart-filters-general-settings' ), admin_url( 'admin.php' ) ),
-								'target' => '_self',
-							),
+			$jet_dashboard->init( array(
+				'path'           => $jet_dashboard_module_data['path'],
+				'url'            => $jet_dashboard_module_data['url'],
+				'cx_ui_instance' => array( $this, 'jet_dashboard_ui_instance_init' ),
+				'plugin_data'    => array(
+					'slug'    => 'jet-smart-filters',
+					'file'    => 'jet-smart-filters/jet-smart-filters.php',
+					'version' => $this->get_version(),
+					'plugin_links' => array(
+						array(
+							'label'  => esc_html__( 'Smart Filters', 'jet-smart-filters' ),
+							'url'    => add_query_arg( array( 'post_type' => 'jet-smart-filters' ), admin_url( 'edit.php' ) ),
+							'target' => '_self',
+						),
+						array(
+							'label'  => esc_html__( 'Add New Filter', 'jet-smart-filters' ),
+							'url'    => add_query_arg( array( 'post_type' => 'jet-smart-filters' ), admin_url( 'post-new.php' ) ),
+							'target' => '_self',
+						),
+						array(
+							'label'  => esc_html__( 'Settings', 'jet-smart-filters' ),
+							'url'    => add_query_arg( array( 'page' => 'jet-dashboard-settings-page', 'subpage' => 'jet-smart-filters-general-settings' ), admin_url( 'admin.php' ) ),
+							'target' => '_self',
 						),
 					),
-				) );
-			}
+				),
+			) );
 		}
 
 		/**
 		 * Get Vue UI Instance for JetDashboard module
-		 *
-		 * @return CX_Vue_UI
 		 */
 		public function jet_dashboard_ui_instance_init() {
+
 			$cx_ui_module_data = $this->framework->get_included_module_data( 'cherry-x-vue-ui.php' );
 
 			return new CX_Vue_UI( $cx_ui_module_data );
 		}
 
 		/**
+		 * Init Admin
+		 */
+		public function admin_init() {
+
+			if ( $this->is_classic_admin ) {
+				require jet_smart_filters()->plugin_path( 'admin/admin-classic/admin.php' );
+				new Jet_Smart_Filters_Сlassic_Admin();
+			} else {
+				require $this->plugin_path( 'admin/admin.php' );
+				new Jet_Smart_Filters_Admin();
+			}
+		}
+
+		/**
 		 * Check if theme has elementor
-		 *
-		 * @return boolean
 		 */
 		public function has_elementor() {
+
 			return defined( 'ELEMENTOR_VERSION' );
 		}
 
 		/**
+		 * Register filter item for admin bar
+		 */
+		public function admin_bar_register_item( $filter_id ) {
+
+			$href = $this->is_classic_admin
+				? get_admin_url() . 'post.php?post=' . $filter_id . '&action=edit'
+				: get_admin_url() . 'admin.php?page=jet-smart-filters#/' . $filter_id;
+			
+			$this->admin_bar->register_post_item( $filter_id, array(
+				'href' => $href
+			) );
+		}
+
+		/**
 		 * Returns path to file or dir inside plugin folder
-		 *
-		 * @param  string $path Path inside plugin dir.
-		 * @return string
 		 */
 		public function plugin_path( $path = null ) {
 
@@ -336,9 +327,6 @@ if ( ! class_exists( 'Jet_Smart_Filters' ) ) {
 		}
 		/**
 		 * Returns url to file or dir inside plugin folder
-		 *
-		 * @param  string $path Path inside plugin dir.
-		 * @return string
 		 */
 		public function plugin_url( $path = null ) {
 
@@ -351,12 +339,9 @@ if ( ! class_exists( 'Jet_Smart_Filters' ) ) {
 
 		/**
 		 * Loads the translation files.
-		 *
-		 * @since 1.0.0
-		 * @access public
-		 * @return void
 		 */
 		public function lang() {
+
 			load_plugin_textdomain(
 				'jet-smart-filters',
 				false,
@@ -370,13 +355,12 @@ if ( ! class_exists( 'Jet_Smart_Filters' ) ) {
 		 * @return string
 		 */
 		public function template_path() {
+
 			return apply_filters( 'jet-smart-filters/template-path', 'jet-smart-filters/' );
 		}
 
 		/**
 		 * Returns path to template file.
-		 *
-		 * @return string|bool
 		 */
 		public function get_template( $name = null ) {
 
@@ -395,22 +379,18 @@ if ( ! class_exists( 'Jet_Smart_Filters' ) ) {
 
 		/**
 		 * Do some stuff on plugin activation
-		 *
-		 * @since  1.0.0
-		 * @return void
 		 */
 		public function plugin_activation() {
+
 			require $this->plugin_path( 'includes/db.php' );
 			Jet_Smart_Filters_DB::create_all_tables();
 		}
 
 		/**
 		 * Do some stuff on plugin deactivation
-		 *
-		 * @since  1.0.0
-		 * @return void
 		 */
 		public function plugin_deactivation() {
+
 			require $this->plugin_path( 'includes/db.php' );
 			Jet_Smart_Filters_DB::drop_all_tables();
 
@@ -418,12 +398,10 @@ if ( ! class_exists( 'Jet_Smart_Filters' ) ) {
 		}
 
 		/**
-		 * Do some stuff on plugin activation/update
-		 *
-		 * @since  1.0.0
-		 * @return void
+		 * Do some stuff on plugin update
 		 */
 		public function plugin_update() {
+
 			if ( get_site_option( 'jet_smart_filters_version' ) === $this->version ) {
 				return;
 			}
@@ -437,12 +415,9 @@ if ( ! class_exists( 'Jet_Smart_Filters' ) ) {
 
 		/**
 		 * Returns the instance.
-		 *
-		 * @since  1.0.0
-		 * @access public
-		 * @return object
 		 */
 		public static function get_instance() {
+
 			// If the single instance hasn't been set, set it now.
 			if ( null == self::$instance ) {
 				self::$instance = new self;
@@ -456,9 +431,6 @@ if ( ! function_exists( 'jet_smart_filters' ) ) {
 
 	/**
 	 * Returns instanse of the plugin class.
-	 *
-	 * @since  1.0.0
-	 * @return object
 	 */
 	function jet_smart_filters() {
 		return Jet_Smart_Filters::get_instance();
@@ -466,13 +438,3 @@ if ( ! function_exists( 'jet_smart_filters' ) ) {
 }
 
 jet_smart_filters();
-
-//add_filter( 'generate_rewrite_rules', 'custom_rewrite' );
-function custom_rewrite( $wp_rewrite ) {
-
-	foreach ($wp_rewrite->rules as $key => $item) {
-		echo '<div>' . $key . ' --- ' . $item . '</div>';
-	}
-
-	return $wp_rewrite;
-}

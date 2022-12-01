@@ -50,6 +50,11 @@ if ( ! class_exists( 'Jet_Engine_Smart_Filters_Package' ) ) {
 				10, 3
 			);
 
+			add_filter(
+				'jet-engine/listing/grid/lazy-load/options',
+				array( $this, 'add_redirect_filter_data' )
+			);
+
 		}
 
 		public function maybe_enable_users_count( $args, $widget ) {
@@ -198,6 +203,24 @@ if ( ! class_exists( 'Jet_Engine_Smart_Filters_Package' ) ) {
 			}
 
 			return $stored_settings;
+		}
+
+		public function add_redirect_filter_data( $options ) {
+
+			if ( empty( $_POST['jet-smart-filters-redirect'] ) ) {
+				return $options;
+			}
+
+			if ( ! empty( $_POST['jsf'] ) || ! empty( $_POST['jet-smart-filters'] ) ) {
+
+				if ( empty( $options['extra_props'] ) ) {
+					$options['extra_props'] = array();
+				}
+
+				$options['extra_props'] = array_merge( $options['extra_props'], $_POST );
+			}
+
+			return $options;
 		}
 
 	}

@@ -1,0 +1,21 @@
+@import "../mixins.scss";
+
+.jet-ui_сolorpicker {
+	@include input();
+	@include input-focus();
+	display: inline-flex;
+	align-items: center;
+	width: auto;
+
+	&-color {
+		.box {
+			width: 25px;
+			height: 25px;
+		}
+	}
+	input#{&}-text {
+		@include input-cleaning();
+		margin-left: 10px;
+		width: 65px;
+	}
+}

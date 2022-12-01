@@ -56,6 +56,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Data' ) ) {
 				'author',
 				'order',
 				'theme',
+				'themes',
 			);
 		}
 
@@ -241,6 +242,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Data' ) ) {
 				'exclude_from_search',
 				'with_front',
 				'show_edit_link',
+				'hide_field_names',
 			);
 
 			foreach ( $ensure_bool as $key ) {
@@ -420,10 +422,11 @@ if ( ! class_exists( 'Jet_Engine_CPT_Data' ) ) {
 			}
 
 			$result['general_settings'] = array(
-				'name'           => $name,
-				'slug'           => $item['slug'],
-				'id'             => $item['id'],
-				'show_edit_link' => isset( $args['show_edit_link'] ) ? $args['show_edit_link'] : false,
+				'name'             => $name,
+				'slug'             => $item['slug'],
+				'id'               => $item['id'],
+				'show_edit_link'   => isset( $args['show_edit_link'] ) ? $args['show_edit_link'] : false,
+				'hide_field_names' => isset( $args['hide_field_names'] ) ? $args['hide_field_names'] : false,
 			);
 
 			$meta_fields = array();
@@ -605,8 +608,10 @@ if ( ! class_exists( 'Jet_Engine_CPT_Data' ) ) {
 
 			$post_type_data = array(
 				'general_settings' => array(
-					'name' => $post_type_object['label'],
-					'slug' => $post_type_object['name'],
+					'name'             => $post_type_object['label'],
+					'slug'             => $post_type_object['name'],
+					'show_edit_link'   => false,
+					'hide_field_names' => false,
 				),
 				'labels'        => $post_type_object['labels'],
 				'meta_fields'   => array(),

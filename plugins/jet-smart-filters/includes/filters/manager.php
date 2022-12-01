@@ -9,7 +9,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Smart_Filters_Filter_Manager' ) ) {
-
 	/**
 	 * Define Jet_Smart_Filters_Filter_Manager class
 	 */
@@ -43,7 +42,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Filter_Manager' ) ) {
 			$dependencies = array( 'jquery' );
 
 			foreach ( $this->get_filter_types() as $filter ) {
-
 				if ( ! method_exists( $filter, 'get_scripts' ) ) {
 					continue;
 				}
@@ -53,7 +51,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Filter_Manager' ) ) {
 				if ( $assets ) {
 					$dependencies = array_merge( $dependencies, $assets );
 				}
-
 			}
 
 			wp_enqueue_script(
@@ -65,22 +62,24 @@ if ( ! class_exists( 'Jet_Smart_Filters_Filter_Manager' ) ) {
 			);
 
 			$localized_data = apply_filters( 'jet-smart-filters/filters/localized-data', array(
-				'ajaxurl'     => admin_url( 'admin-ajax.php' ),
-				'siteurl'     => get_site_url(),
-				'selectors'   => jet_smart_filters()->data->get_provider_selectors(),
-				'queries'     => jet_smart_filters()->query->get_default_queries(),
-				'settings'    => jet_smart_filters()->providers->get_provider_settings(),
-				'misc'        => array(
+				'ajaxurl'         => admin_url( 'admin-ajax.php' ),
+				'siteurl'         => get_site_url(),
+				'selectors'       => jet_smart_filters()->data->get_provider_selectors(),
+				'queries'         => jet_smart_filters()->query->get_default_queries(),
+				'settings'        => jet_smart_filters()->providers->get_provider_settings(),
+				'misc'            => array(
 					'week_start' => get_option( 'start_of_week' ),
 					'url_type'   => jet_smart_filters()->settings->get( 'url_structure_type' ),
 				),
-				'props'       => jet_smart_filters()->query->get_query_props(),
-				'extra_props' => array(),
-				'templates'   => $this->get_localization_templates(),
+				'props'           => jet_smart_filters()->query->get_query_props(),
+				'extra_props'     => array(),
+				'templates'       => $this->get_localization_templates(),
+				'plugin_settings' => array(
+					'use_tabindex' => jet_smart_filters()->settings->get( 'use_tabindex', false )
+				)
 			) );
 
 			wp_localize_script( 'jet-smart-filters', 'JetSmartFilterSettings', $localized_data );
-
 		}
 
 		public function get_localization_templates() {
@@ -93,7 +92,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Filter_Manager' ) ) {
 			$templates['pagination_item_dots'] = jet_smart_filters()->utils->get_template_html( 'for-js/pagination-item-dots.php' );
 
 			return $templates;
-
 		}
 
 		/**
@@ -119,6 +117,17 @@ if ( ! class_exists( 'Jet_Smart_Filters_Filter_Manager' ) ) {
 				jet_smart_filters()->get_version()
 			);
 
+			// Filter inline styles
+			$tabindex_color = jet_smart_filters()->settings->get( 'tabindex_color', '#0085f2' );
+
+			$filter_inline_styles = "
+				.jet-filter {
+					--tabindex-color: $tabindex_color;
+					--tabindex-shadow-color: " . jet_smart_filters()->utils->hex2rgba( $tabindex_color, 0.4 ) . ";
+				}
+			";
+
+			wp_add_inline_style( 'jet-smart-filters', $filter_inline_styles );
 		}
 
 		/**
@@ -132,7 +141,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Filter_Manager' ) ) {
 				array(),
 				jet_smart_filters()->get_version()
 			);
-
 		}
 
 		/**
@@ -171,16 +179,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Filter_Manager' ) ) {
 			 * Register custom filter types on this hook
 			 */
 			do_action( 'jet-smart-filters/filter-types/register', $this );
-
 		}
 
 		/**
 		 * Register new filter.
-		 *
-		 * @param  string $filter_class Filter class name.
-		 * @param  string $filter_file Path to file with filter class.
-		 *
-		 * @return void
 		 */
 		public function register_filter_type( $filter_class, $filter_file ) {
 
@@ -194,15 +196,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Filter_Manager' ) ) {
 				$instance                                   = new $filter_class();
 				$this->_filter_types[ $instance->get_id() ] = $instance;
 			}
-
 		}
 
 		/**
 		 * Return all filter types list or specific filter by ID
-		 *
-		 * @param  string $filter optional, filter ID.
-		 *
-		 * @return array|filter object|false
 		 */
 		public function get_filter_types( $filter = null ) {
 
@@ -211,15 +208,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Filter_Manager' ) ) {
 			}
 
 			return $this->_filter_types;
-
 		}
 
 		/**
 		 * Return suffix for query modify
-		 *
-		 * @param  string $filter, filter ID.
-		 *
-		 * @return string query_var_suffix for filter
 		 */
 		public function get_filter_query_var_suffix( $filter ) {
 
@@ -273,14 +265,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Filter_Manager' ) ) {
 			}
 
 			return $query_var_suffix ? implode( ',', $query_var_suffix ) : false;
-
 		}
 
 		/**
 		 * Returns filter instance by filter post ID
-		 *
-		 * @param  [type] $filter_id [description]
-		 * @return [type]            [description]
 		 */
 		public function get_filter_instance( $filter_id, $type = null, $args = array() ) {
 
@@ -297,24 +285,15 @@ if ( ! class_exists( 'Jet_Smart_Filters_Filter_Manager' ) ) {
 			}
 
 			return new Jet_Smart_Filters_Filter_Instance( $filter_id, $type, $args );
-
 		}
 
 		/**
 		 * Render fiter type template
-		 *
-		 * @param  int $filter_id filter ID.
-		 * @param  array $args arguments.
-		 *
-		 * @return void
 		 */
 		public function render_filter_template( $filter_type, $args = array() ) {
 
 			$filter = $this->get_filter_instance( $args['filter_id'], $filter_type, $args );
 			$filter->render();
-
 		}
-
 	}
-
 }

@@ -42,7 +42,12 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Views' ) ) {
 			add_action( 'elementor/documents/register', array( $this, 'register_document_type' ) );
 
 			add_action( 'elementor/elements/categories_registered', array( $this, 'register_category' ) );
-			add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_widgets' ), 10 );
+
+			if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.5.0', '>=' ) ) {
+				add_action( 'elementor/widgets/register', array( $this, 'register_widgets' ), 10 );
+			} else {
+				add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_widgets' ), 10 );
+			}
 
 			add_filter( 'body_class', array( $this, 'add_body_classes' ) );
 
@@ -77,6 +82,7 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Views' ) ) {
 
 
 			add_filter( 'jet-engine/listings/dynamic-image/size', array( $this, 'prepare_custom_image_size' ), 10, 3 );
+			add_filter( 'jet-engine/listings/dynamic-image/link-attr', array( $this, 'add_lightbox_attr' ), 10, 2 );
 
 		}
 
@@ -300,6 +306,18 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Views' ) ) {
 			);
 		}
 
+		public function include_base_widget() {
+		
+			if ( ! class_exists( '\Jet_Elementor_Widgets_Storage' ) ) {
+				require jet_engine()->plugin_path( 'includes/components/elementor-views/widgets-storage.php' );
+			}
+
+			if ( ! class_exists( '\Jet_Listing_Dynamic_Widget' ) ) {
+				require jet_engine()->plugin_path( 'includes/components/elementor-views/dynamic-widgets/dynamic-widget.php' );
+			}
+			
+		}
+
 		/**
 		 * Register listing widgets
 		 *
@@ -309,6 +327,8 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Views' ) ) {
 
 			$base      = jet_engine()->plugin_path( 'includes/components/elementor-views/' );
 			$post_type = get_post_type();
+
+			$this->include_base_widget();
 
 			foreach ( glob( $base . 'dynamic-widgets/*.php' ) as $file ) {
 				$slug = basename( $file, '.php' );
@@ -340,7 +360,12 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Views' ) ) {
 			require_once $file;
 
 			if ( class_exists( $class ) ) {
-				$widgets_manager->register_widget_type( new $class );
+
+				if ( method_exists( $widgets_manager, 'register' ) ) {
+					$widgets_manager->register( new $class );
+				} else {
+					$widgets_manager->register_widget_type( new $class );
+				}
 			}
 
 		}
@@ -493,6 +518,35 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Views' ) ) {
 			}
 
 			return $attachment_size;
+		}
+
+		/**
+		 * Add lightbox attr for Dynamic Image Link.
+		 *
+		 * @param $attr
+		 * @param $settings
+		 *
+		 * @return mixed
+		 */
+		public function add_lightbox_attr( $attr, $settings ) {
+
+			if ( empty( $settings['image_link_source'] ) ) {
+				return $attr;
+			}
+
+			if ( '_file' !== $settings['image_link_source'] ) {
+				return $attr;
+			}
+
+			if ( ! isset( $settings['lightbox'] ) ) {
+				return $attr;
+			}
+
+			$lightbox = filter_var( $settings['lightbox'], FILTER_VALIDATE_BOOLEAN );
+
+			$attr['data-elementor-open-lightbox'] = $lightbox ? 'yes' : 'no';
+
+			return $attr;
 		}
 
 	}

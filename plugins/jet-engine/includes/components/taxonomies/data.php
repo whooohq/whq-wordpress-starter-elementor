@@ -57,7 +57,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax_Data' ) ) {
 
 			if ( empty( $request['slug'] ) ) {
 				$valid = false;
-				$this->cpt->add_notice(
+				$this->parent->add_notice(
 					'error',
 					__( 'Please set taxonomy slug', 'jet-engine' )
 				);
@@ -65,7 +65,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax_Data' ) ) {
 
 			if ( empty( $request['slug'] ) ) {
 				$valid = false;
-				$this->cpt->add_notice(
+				$this->parent->add_notice(
 					'error',
 					__( 'Please set taxonomy name', 'jet-engine' )
 				);
@@ -73,7 +73,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax_Data' ) ) {
 
 			if ( empty( $request['object_type'] ) ) {
 				$valid = false;
-				$this->cpt->add_notice(
+				$this->parent->add_notice(
 					'error',
 					__( 'Please set post type for taxonomy', 'jet-engine' )
 				);
@@ -81,7 +81,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax_Data' ) ) {
 
 			if ( isset( $request['slug'] ) && in_array( $request['slug'], $this->items_blacklist() ) ) {
 				$valid = false;
-				$this->cpt->add_notice(
+				$this->parent->add_notice(
 					'error',
 					__( 'Please change taxonomy slug. Current is reserved for WordPress needs', 'jet-engine' )
 				);
@@ -241,6 +241,8 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax_Data' ) ) {
 				return false;
 			}
 
+			$labels = array();
+
 			if ( $is_built_in ) {
 
 				if ( $name ) {
@@ -296,6 +298,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax_Data' ) ) {
 				'hierarchical',
 				'with_front',
 				'show_edit_link',
+				'hide_field_names',
 			);
 
 			foreach ( $ensure_bool as $key ) {
@@ -313,6 +316,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax_Data' ) ) {
 			$regular_args = array(
 				'rewrite_slug'    => $slug,
 				'capability_type' => '',
+				'description'     => '',
 			);
 
 			foreach ( $regular_args as $key => $default ) {
@@ -395,11 +399,12 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax_Data' ) ) {
 			$name        = ! empty( $labels['name'] ) ? $labels['name'] : '';
 
 			$result['general_settings'] = array(
-				'name'           => $name,
-				'slug'           => $item['slug'],
-				'id'             => $item['id'],
-				'object_type'    => $object_type,
-				'show_edit_link' => isset( $args['show_edit_link'] ) ? $args['show_edit_link'] : false,
+				'name'             => $name,
+				'slug'             => $item['slug'],
+				'id'               => $item['id'],
+				'object_type'      => $object_type,
+				'show_edit_link'   => isset( $args['show_edit_link'] ) ? $args['show_edit_link'] : false,
+				'hide_field_names' => isset( $args['hide_field_names'] ) ? $args['hide_field_names'] : false,
 			);
 
 			$meta_fields = array();
@@ -722,9 +727,11 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax_Data' ) ) {
 
 			$data = array(
 				'general_settings' => array(
-					'name'        => $object['label'],
-					'slug'        => $object['name'],
-					'object_type' => $object['object_type'],
+					'name'             => $object['label'],
+					'slug'             => $object['name'],
+					'object_type'      => $object['object_type'],
+					'show_edit_link'   => false,
+					'hide_field_names' => false,
 				),
 				'labels'        => $object['labels'],
 				'meta_fields'   => array(),

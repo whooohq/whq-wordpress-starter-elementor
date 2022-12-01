@@ -662,7 +662,7 @@
 									:value="query.date_query[ index ].after"
 									@input="setFieldProp( dateClause._id, 'after', $event, query.date_query )"
 								>
-									<jet-query-dynamic-args v-model="dynamicQuery.date_query[ dateClause._id ].day"></jet-query-dynamic-args>
+									<jet-query-dynamic-args v-model="dynamicQuery.date_query[ dateClause._id ].after"></jet-query-dynamic-args>
 								</cx-vui-input>
 								<cx-vui-input
 									label="<?php _e( 'Before', 'jet-engine' ); ?>"
@@ -904,24 +904,27 @@
 						</cx-vui-repeater>
 					</div>
 				</cx-vui-component-wrapper>
-				<cx-vui-select
+				<div class="cx-vui-component__desc" v-if="1 < query.tax_query.length">
+					<?php _e( 'At the moment, WooCommerce partially supports the `tax_query` functionality and does not provide the ability to use the relation property. The relation option will be hidden until its functionality is implemented.', 'jet-engine' ); ?>
+				</div>
+				<!--<cx-vui-select
 					v-if="1 < query.tax_query.length"
-					label="<?php _e( 'Relation', 'jet-engine' ); ?>"
-					description="<?php _e( 'The logical relationship between tax query clauses', 'jet-engine' ); ?>"
+					label="<?php /*_e( 'Relation', 'jet-engine' ); */?>"
+					description="<?php /*_e( 'The logical relationship between tax query clauses', 'jet-engine' ); */?>"
 					:wrapper-css="[ 'equalwidth' ]"
 					:options-list="[
 						{
 							value: 'and',
-							label: '<?php _e( 'And', 'jet-engine' ); ?>',
+							label: '<?php /*_e( 'And', 'jet-engine' ); */?>',
 						},
 						{
 							value: 'or',
-							label: '<?php _e( 'Or', 'jet-engine' ); ?>',
+							label: '<?php /*_e( 'Or', 'jet-engine' ); */?>',
 						},
 					]"
 					size="fullwidth"
 					v-model="query.tax_query_relation"
-				></cx-vui-select>
+				></cx-vui-select>-->
 			</cx-vui-tabs-panel>
 		</cx-vui-tabs>
 	</div>

@@ -46,7 +46,7 @@ class Listing {
 
 		// Process meta value
 		add_filter( 'jet-engine/listings/dynamic-field/field-value', array( $this, 'return_meta_value' ), 10, 2 );
-		add_filter( 'jet-engine/listings/dynamic-image/custom-image', array( $this, 'custom_image_renderer' ), 10, 3 );
+		add_filter( 'jet-engine/listings/dynamic-image/custom-image', array( $this, 'custom_image_renderer' ), 10, 4 );
 		add_filter( 'jet-engine/listings/dynamic-image/custom-url', array( $this, 'custom_image_url' ), 10, 2 );
 		add_filter( 'jet-engine/listings/dynamic-link/custom-url', array( $this, 'custom_link_url' ), 10, 2 );
 
@@ -272,7 +272,7 @@ class Listing {
 	 *
 	 * @return [type] [description]
 	 */
-	public function custom_image_renderer( $result = false, $settings = array(), $size = 'full' ) {
+	public function custom_image_renderer( $result = false, $settings = array(), $size = 'full', $render = null ) {
 
 		$image = $this->get_meta_from( 'dynamic_image_source', $settings );
 
@@ -295,12 +295,17 @@ class Listing {
 
 		ob_start();
 
-		if ( filter_var( $image, FILTER_VALIDATE_URL ) ) {
-			printf( '<img src="%1$s" alt="%2$s">', $image, '' );
-		} else {
-			$current_object = jet_engine()->listings->data->get_current_object();
-			$alt            = apply_filters( 'jet-engine/relations/meta/image-alt/', false );
+		$current_object = jet_engine()->listings->data->get_current_object();
 
+		$alt = apply_filters(
+			'jet-engine/relations/meta/image-alt/',
+			false,
+			$current_object
+		);
+
+		if ( filter_var( $image, FILTER_VALIDATE_URL ) ) {
+			$render->print_image_html_by_src( $image, $alt );
+		} else {
 			echo wp_get_attachment_image( $image, $size, false, array( 'alt' => $alt ) );
 		}
 

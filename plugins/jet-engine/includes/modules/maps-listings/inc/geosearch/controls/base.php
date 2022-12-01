@@ -34,7 +34,7 @@ class Base {
 		/>
 		<cx-vui-input
 			label="<?php _e( 'Address Field', 'jet-engine' ); ?>"
-			description="<?php _e( 'If you set address fields to preload in Maps Settings - you can use them there. To get latitude and longtitude values from separate meta fields - separate these field namse with `,` sign, latitude field should be first, longtitude - second', 'jet-engine' ); ?>"
+			description="<?php _e( 'If you set address fields to preload in Maps Settings - you can use them there. To get latitude and longitude values from separate meta fields - separate these field names with `,` sign, latitude field should be first, longitude - second', 'jet-engine' ); ?>"
 			:wrapper-css="[ 'equalwidth' ]"
 			size="fullwidth"
 			v-model="query.geosearch_field"

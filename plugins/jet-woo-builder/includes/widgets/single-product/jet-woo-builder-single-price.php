@@ -21,7 +21,7 @@ class Jet_Woo_Builder_Single_Price extends Jet_Woo_Builder_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Single Price', 'jet-woo-builder' );
+		return __( 'Single Price', 'jet-woo-builder' );
 	}
 
 	public function get_icon() {
@@ -52,40 +52,19 @@ class Jet_Woo_Builder_Single_Price extends Jet_Woo_Builder_Base {
 
 		$this->start_controls_section(
 			'section_single_price_style',
-			array(
-				'label'      => esc_html__( 'Price', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			array(
-				'name'     => 'single_price_typography',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['price'],
-			)
-		);
-
-		$this->add_control(
-			'single_price_color',
-			array(
-				'label'     => esc_html__( 'Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['price'] => 'color: {{VALUE}}',
-				),
-			)
+			[
+				'label' => esc_html__( 'Price', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
 		);
 
 		$this->add_control(
 			'single_price_sale_display_type',
 			[
-				'label'     => __( 'Sale Price Display Type', 'jet-woo-builder' ),
+				'label'     => __( 'Display Type', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::SELECT,
 				'options'   => jet_woo_builder_tools()->get_available_display_types(),
 				'default'   => 'inline-block',
-				'separator' => 'before',
 				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['price'] . ' del' => 'display: {{VALUE}};',
 					'{{WRAPPER}} ' . $css_scheme['price'] . ' ins' => 'display: {{VALUE}};',
@@ -96,7 +75,7 @@ class Jet_Woo_Builder_Single_Price extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'single_price_space_between',
 			[
-				'label'     => __( 'Space Between Prices', 'jet-woo-builder' ),
+				'label'     => __( 'Space Between', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::SLIDER,
 				'range'     => [
 					'px' => [
@@ -116,7 +95,7 @@ class Jet_Woo_Builder_Single_Price extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'single_price_space_between_block',
 			[
-				'label'     => __( 'Space Between Prices', 'jet-woo-builder' ),
+				'label'     => __( 'Space Between', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::SLIDER,
 				'range'     => [
 					'px' => [
@@ -133,17 +112,23 @@ class Jet_Woo_Builder_Single_Price extends Jet_Woo_Builder_Base {
 			]
 		);
 
-		$this->add_responsive_control(
-			'single_price_item_alignment',
+		$this->add_control(
+			'single_price_color',
+			[
+				'label'     => __( 'Color', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::COLOR,
+				'separator' => 'before',
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['price'] => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
 			array(
-				'label'     => esc_html__( 'Alignment', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::CHOOSE,
-				'default'   => 'left',
-				'options'   => jet_woo_builder_tools()->get_available_h_align_types(),
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['price'] => 'text-align: {{VALUE}};',
-				),
-				'classes'   => 'elementor-control-align',
+				'name'     => 'single_price_typography',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['price'],
 			)
 		);
 
@@ -167,34 +152,21 @@ class Jet_Woo_Builder_Single_Price extends Jet_Woo_Builder_Base {
 			)
 		);
 
-		$this->add_control(
-			'single_price_regular_decoration',
-			array(
-				'label'     => esc_html__( 'Text Decoration', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::SELECT,
-				'default'   => 'line-through',
-				'options'   => jet_woo_builder_tools()->get_available_text_decoration_types(),
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['price'] . ' del' => 'text-decoration: {{VALUE}}',
-				),
-			)
-		);
-
 		$this->add_responsive_control(
 			'single_price_regular_size',
-			array(
-				'label'     => esc_html__( 'Size', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Font Size', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::SLIDER,
-				'range'     => array(
-					'px' => array(
+				'range'     => [
+					'px' => [
 						'min' => 6,
 						'max' => 90,
-					),
-				),
-				'selectors' => array(
+					],
+				],
+				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['price'] . ' del' => 'font-size: {{SIZE}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_control(
@@ -206,6 +178,19 @@ class Jet_Woo_Builder_Single_Price extends Jet_Woo_Builder_Base {
 				'options'   => jet_woo_builder_tools()->get_available_font_weight_types(),
 				'selectors' => array(
 					'{{WRAPPER}} ' . $css_scheme['price'] . ' del' => 'font-weight: {{VALUE}}',
+				),
+			)
+		);
+
+		$this->add_control(
+			'single_price_regular_decoration',
+			array(
+				'label'     => esc_html__( 'Text Decoration', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::SELECT,
+				'default'   => 'line-through',
+				'options'   => jet_woo_builder_tools()->get_available_text_decoration_types(),
+				'selectors' => array(
+					'{{WRAPPER}} ' . $css_scheme['price'] . ' del' => 'text-decoration: {{VALUE}}',
 				),
 			)
 		);
@@ -230,34 +215,21 @@ class Jet_Woo_Builder_Single_Price extends Jet_Woo_Builder_Base {
 			)
 		);
 
-		$this->add_control(
-			'single_price_sale_decoration',
-			array(
-				'label'     => esc_html__( 'Text Decoration', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::SELECT,
-				'default'   => 'none',
-				'options'   => jet_woo_builder_tools()->get_available_text_decoration_types(),
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['price'] . ' ins' => 'text-decoration: {{VALUE}}',
-				),
-			)
-		);
-
 		$this->add_responsive_control(
 			'single_price_sale_size',
-			array(
-				'label'     => esc_html__( 'Size', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Font Size', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::SLIDER,
-				'range'     => array(
-					'px' => array(
+				'range'     => [
+					'px' => [
 						'min' => 6,
 						'max' => 90,
-					),
-				),
-				'selectors' => array(
+					],
+				],
+				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['price'] . ' ins' => 'font-size: {{SIZE}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_control(
@@ -273,19 +245,45 @@ class Jet_Woo_Builder_Single_Price extends Jet_Woo_Builder_Base {
 			)
 		);
 
+		$this->add_control(
+			'single_price_sale_decoration',
+			array(
+				'label'     => esc_html__( 'Text Decoration', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::SELECT,
+				'default'   => 'none',
+				'options'   => jet_woo_builder_tools()->get_available_text_decoration_types(),
+				'selectors' => array(
+					'{{WRAPPER}} ' . $css_scheme['price'] . ' ins' => 'text-decoration: {{VALUE}}',
+				),
+			)
+		);
+
 		$this->end_controls_tab();
 
 		$this->end_controls_tabs();
+
+		$this->add_responsive_control(
+			'single_price_item_alignment',
+			[
+				'label'     => __( 'Alignment', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::CHOOSE,
+				'options'   => jet_woo_builder_tools()->get_available_h_align_types(),
+				'separator' => 'before',
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['price'] => 'text-align: {{VALUE}};',
+				],
+				'classes'   => 'elementor-control-align',
+			]
+		);
 
 		$this->end_controls_section();
 
 		$this->start_controls_section(
 			'section_currency_sign_style',
-			array(
-				'label'      => esc_html__( 'Currency Sign', 'jet-woo-builder' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
-				'show_label' => false,
-			)
+			[
+				'label' => __( 'Currency Sign', 'jet-woo-builder' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
 		);
 
 		$this->add_control(
@@ -312,19 +310,6 @@ class Jet_Woo_Builder_Single_Price extends Jet_Woo_Builder_Base {
 				),
 				'selectors' => array(
 					'{{WRAPPER}} ' . $css_scheme['currency'] => 'font-size: {{SIZE}}{{UNIT}};',
-				),
-			)
-		);
-
-		$this->add_control(
-			'currency_sign_vertical_align',
-			array(
-				'label'     => esc_html__( 'Vertical Alignment', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::SELECT,
-				'options'   => jet_woo_builder_tools()->vertical_align_attr(),
-				'default'   => 'baseline',
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['currency'] => 'vertical-align: {{VALUE}};',
 				),
 			)
 		);
@@ -407,6 +392,20 @@ class Jet_Woo_Builder_Single_Price extends Jet_Woo_Builder_Base {
 
 		$this->end_controls_tabs();
 
+		$this->add_control(
+			'currency_sign_vertical_align',
+			[
+				'label'     => __( 'Alignment', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::SELECT,
+				'options'   => jet_woo_builder_tools()->vertical_align_attr(),
+				'default'   => 'baseline',
+				'separator' => 'before',
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['currency'] => 'vertical-align: {{VALUE}};',
+				],
+			]
+		);
+
 		$this->end_controls_section();
 
 	}
@@ -419,14 +418,14 @@ class Jet_Woo_Builder_Single_Price extends Jet_Woo_Builder_Base {
 			return;
 		}
 
-		if ( true === $this->__set_editor_product() ) {
+		if ( $this->__set_editor_product() ) {
 			$this->__open_wrap();
 
 			woocommerce_template_single_price();
 
 			$this->__close_wrap();
 
-			if ( jet_woo_builder_integration()->in_elementor() ) {
+			if ( jet_woo_builder()->elementor_views->in_elementor() ) {
 				$this->__reset_editor_product();
 			}
 		}

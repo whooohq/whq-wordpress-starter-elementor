@@ -28,8 +28,8 @@ if ( $current ) {
 		<div class="jet-range__slider__track">
 			<div class="jet-range__slider__track__range"></div>
 		</div>
-		<input type="range" class="jet-range__slider__input jet-range__slider__input--min" step="<?php echo $args['step']; ?>" min="<?php echo $args['min']; ?>" max="<?php echo $args['max']; ?>" value="<?php echo $slider_val[0] ?>" tabindex="-1">
-		<input type="range" class="jet-range__slider__input jet-range__slider__input--max" step="<?php echo $args['step']; ?>" min="<?php echo $args['min']; ?>" max="<?php echo $args['max']; ?>" value="<?php echo $slider_val[1] ?>" tabindex="-1">
+		<input type="range" class="jet-range__slider__input jet-range__slider__input--min" step="<?php echo $args['step']; ?>" min="<?php echo $args['min']; ?>" max="<?php echo $args['max']; ?>" value="<?php echo $slider_val[0] ?>" <?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>>
+		<input type="range" class="jet-range__slider__input jet-range__slider__input--max" step="<?php echo $args['step']; ?>" min="<?php echo $args['min']; ?>" max="<?php echo $args['max']; ?>" value="<?php echo $slider_val[1] ?>" <?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>>
 	</div>
 	<?php if ( $inputs_enabled ) : ?>
 	<div class="jet-range__inputs">
@@ -38,7 +38,7 @@ if ( $current ) {
 				<?php if ( $prefix ) : ?>
 				<span class="jet-range__inputs__group__text"><?php echo $prefix; ?></span>
 				<?php endif; ?>
-				<input type="number" class="jet-range__inputs__min" step="<?php echo $args['step']; ?>" min="<?php echo $args['min']; ?>" max="<?php echo $args['max']; ?>" value="<?php echo $slider_val[0]; ?>"/>
+				<input type="number" class="jet-range__inputs__min" step="<?php echo $args['step']; ?>" min="<?php echo $args['min']; ?>" max="<?php echo $args['max']; ?>" value="<?php echo $slider_val[0]; ?>" <?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>/>
 				<?php if ( $suffix ) : ?>
 				<span class="jet-range__inputs__group__text"><?php echo $suffix ?></span>
 				<?php endif; ?>
@@ -47,7 +47,7 @@ if ( $current ) {
 				<?php if ( $prefix ) : ?>
 				<span class="jet-range__inputs__group__text"><?php echo $prefix; ?></span>
 				<?php endif; ?>
-				<input type="number" class="jet-range__inputs__max" step="<?php echo $args['step']; ?>" min="<?php echo $args['min']; ?>" max="<?php echo $args['max']; ?>" value="<?php echo $slider_val[1]; ?>"/>
+				<input type="number" class="jet-range__inputs__max" step="<?php echo $args['step']; ?>" min="<?php echo $args['min']; ?>" max="<?php echo $args['max']; ?>" value="<?php echo $slider_val[1]; ?>" <?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>/>
 				<?php if ( $suffix ) : ?>
 				<span class="jet-range__inputs__group__text"><?php echo $suffix ?></span>
 				<?php endif; ?>

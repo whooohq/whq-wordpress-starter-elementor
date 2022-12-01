@@ -79,7 +79,8 @@ class Posts extends Base {
 		if ( empty( $res ) ) {
 			return array();
 		} else {
-			return array_map( function( $item ) {
+
+			$items = array_map( function( $item ) {
 
 				if ( empty( $item['label'] ) ) {
 					$item['label'] = '#' . $item['value'];
@@ -88,6 +89,8 @@ class Posts extends Base {
 				return $item;
 
 			}, array_values( $res ) );
+
+			return apply_filters( 'jet-engine/relations/types/posts/get-items', $items, $object_name );
 		}
 	}
 

@@ -1,4 +1,4 @@
-/*! elementor - v3.6.8 - 27-07-2022 */
+/*! elementor - v3.8.1 - 13-11-2022 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -49,22 +49,11 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 /**
  * @typedef {import('../../../../lib/backbone/backbone.marionette')} Backbone
- */
-
-/**
  * @typedef {import('../../../../lib/backbone/backbone.marionette')} Marionette
- */
-
-/**
  * @typedef {import('../elements/views/base')} BaseElementView
- */
-
-/**
  * @typedef {import('../elements/views/section')} SectionView
- */
-
-/**
  * @typedef {import('../views/base-container')} BaseContainer
+ * @typedef {import('../elements/models/base-element-model')} BaseElementModel
  */
 
 /**
@@ -100,7 +89,7 @@ var Container = /*#__PURE__*/function (_ArgsObject) {
   /**
    * Container model.
    *
-   * @type {Backbone.Model}
+   * @type {(Backbone.Model|BaseElementModel)}
    */
 
   /**
@@ -258,7 +247,11 @@ var Container = /*#__PURE__*/function (_ArgsObject) {
       this.requireArgumentType('type', 'string', args);
       this.requireArgumentType('id', 'string', args);
       this.requireArgumentInstance('settings', Backbone.Model, args);
-      this.requireArgumentInstance('model', Backbone.Model, args);
+      this.requireArgumentInstance('model', Backbone.Model, args); // Require it, unless it's forced to be `false`.
+
+      if (false !== args.parent) {
+        this.requireArgumentInstance('parent', elementorModules.editor.Container, args);
+      }
     }
     /**
      * Function getGroupRelatedControls().
@@ -299,7 +292,7 @@ var Container = /*#__PURE__*/function (_ArgsObject) {
     /**
      * Function getAffectingControls().
      *
-     * Should return all controls that effecting the container.
+     * @return {{}} All controls that effecting the container.
      */
 
   }, {
@@ -348,6 +341,27 @@ var Container = /*#__PURE__*/function (_ArgsObject) {
 
         result[controlName] = control;
       });
+      return result;
+    }
+    /**
+     * Function getParentAncestry().
+     *
+     * Recursively run over all parents from current container till the top
+     *
+     * @return {Array.<Container>} All parent as flat array.
+     */
+
+  }, {
+    key: "getParentAncestry",
+    value: function getParentAncestry() {
+      var result = [];
+      var parent = this;
+
+      while (parent) {
+        result.push(parent);
+        parent = parent.parent;
+      }
+
       return result;
     }
   }, {
@@ -436,7 +450,7 @@ var Container = /*#__PURE__*/function (_ArgsObject) {
         if (1 === repeaters.length) {
           Object.defineProperty(this, 'children', {
             get: function get() {
-              elementorCommon.helpers.softDeprecated('children', '3.0.0', 'container.repeaters[ repeaterName ].children');
+              elementorDevTools.deprecation.deprecated('children', '3.0.0', 'container.repeaters[ repeaterName ].children');
               return this.repeaters[repeaters[0].name].children;
             }
           });
@@ -539,13 +553,13 @@ var Container = /*#__PURE__*/function (_ArgsObject) {
   }, {
     key: "findChildrenRecursive",
     value: function findChildrenRecursive(callback) {
-      elementorCommon.helpers.softDeprecated('container.findChildrenRecursive( callback )', '3.5.0', 'container.children.findRecursive( callback )');
+      elementorDevTools.deprecation.deprecated('container.findChildrenRecursive( callback )', '3.5.0', 'container.children.findRecursive( callback )');
       return this.children.findRecursive(callback);
     }
   }, {
     key: "forEachChildrenRecursive",
     value: function forEachChildrenRecursive(callback) {
-      elementorCommon.helpers.softDeprecated('container.forEachChildrenRecursive( callback )', '3.5.0', 'container.children.forEachRecursive( callback )');
+      elementorDevTools.deprecation.deprecated('container.forEachChildrenRecursive( callback )', '3.5.0', 'container.children.forEachRecursive( callback )');
       return this.children.forEachRecursive(callback);
     }
     /**
@@ -638,7 +652,7 @@ var Container = /*#__PURE__*/function (_ArgsObject) {
       }
 
       var id = data.id;
-      var value; // it's a global settings with additional controls in group.
+      var value; // It's a global settings with additional controls in group.
 
       if (control.groupType) {
         // A regex containing all of the active breakpoints' prefixes ('_mobile', '_tablet' etc.).
@@ -986,6 +1000,10 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 var _typeof2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js"));
 
 var BaseSettingsModel;
+/**
+ * @name BaseSettingsModel
+ */
+
 BaseSettingsModel = Backbone.Model.extend({
   options: {},
   initialize: function initialize(data, options) {
@@ -1347,6 +1365,10 @@ BaseSettingsModel = Backbone.Model.extend({
     return elementorCommon.helpers.cloneObject(data);
   }
 });
+/**
+ * @name BaseSettingsModel
+ */
+
 module.exports = BaseSettingsModel;
 
 /***/ }),
@@ -1800,12 +1822,17 @@ exports["default"] = ControlsPopover;
 /*!*******************************************************!*\
   !*** ../assets/dev/js/editor/views/controls-stack.js ***!
   \*******************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
 
 var _controlsPopover = _interopRequireDefault(__webpack_require__(/*! ./controls-popover */ "../assets/dev/js/editor/views/controls-popover.js"));
 
@@ -2003,7 +2030,8 @@ ControlsStack = Marionette.CompositeView.extend({
     });
   }
 });
-module.exports = ControlsStack;
+var _default = ControlsStack;
+exports["default"] = _default;
 
 /***/ }),
 
@@ -2081,7 +2109,7 @@ var ArgsObject = /*#__PURE__*/function (_InstanceType) {
     value: function requireArgument(property) {
       var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.args;
 
-      if (!args.hasOwnProperty(property)) {
+      if (!Object.prototype.hasOwnProperty.call(args, property)) {
         throw Error("".concat(property, " is required."));
       }
     }

@@ -32,6 +32,7 @@ class Jet_Engine_CPT_Rest_Add_Taxonomy extends Jet_Engine_Base_API_Endpoint {
 			'slug'                       => $this->safe_get( $params, 'general_settings', 'slug' ),
 			'object_type'                => $this->safe_get( $params, 'general_settings', 'object_type' ),
 			'show_edit_link'             => $this->safe_get( $params, 'general_settings', 'show_edit_link' ),
+			'hide_field_names'           => $this->safe_get( $params, 'general_settings', 'hide_field_names' ),
 			'singular_name'              => $this->safe_get( $params, 'labels', 'singular_name' ),
 			'menu_name'                  => $this->safe_get( $params, 'labels', 'menu_name' ),
 			'all_items'                  => $this->safe_get( $params, 'labels', 'all_items' ),

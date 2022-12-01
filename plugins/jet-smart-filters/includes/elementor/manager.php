@@ -20,10 +20,10 @@ class Jet_Smart_Filters_Elementor_Manager {
 		jet_smart_filters()->widgets = new Jet_Smart_Filters_Widgets_Manager();
 
 		$this->init_dynamic_tags();
-
 	}
 
 	public function init_dynamic_tags() {
+
 		$init_action = 'elementor/init';
 
 		// Init a module early on Elementor Data Updater
@@ -35,8 +35,8 @@ class Jet_Smart_Filters_Elementor_Manager {
 	}
 
 	public function init_dynamic_tags_module() {
+
 		require jet_smart_filters()->plugin_path( 'includes/elementor/dynamic-tags/module.php' );
 		new Jet_Smart_Filters_Elementor_Dynamic_Tags_Module();
 	}
-
 }

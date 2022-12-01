@@ -178,7 +178,7 @@
 					isStore = $this.data( 'is-store-listing' ),
 					query   = nav.query;
 
-				if ( query.post__in && query.post__in.length && 0 >= query.post__in.indexOf( 'is-front' ) ) {
+				if ( query && query.post__in && query.post__in.length && 0 >= query.post__in.indexOf( 'is-front' ) ) {
 
 					var storeType  = query.post__in[1],
 						storeSlug  = query.post__in[2],
@@ -675,7 +675,7 @@
 					return;
 				}
 
-				if ( -1 !== url.indexOf( 'action=open_map_listing_popup' ) ) {
+				if ( -1 !== url.indexOf( '#jet-engine-action' ) ) {
 
 					JetEngine.customUrlActions.runAction( url );
 
@@ -719,7 +719,7 @@
 
 						timeout = setTimeout( function() {
 							JetEngine.customUrlActions.actionHandler( event )
-						}, window.JetEngineSettings.mapPopupTimeout );
+						}, window.JetEngineSettings.hoverActionTimeout );
 					},
 					'mouseleave.JetEngine': function() {
 						if ( timeout ) {
@@ -730,39 +730,10 @@
 				}, this.selectorOnHover );
 			},
 
-			actions: {
-				'open_map_listing_popup': function( settings ) {
+			actions: {},
 
-					if ( ! window.google || ! window.JetEngineMaps ) {
-						return;
-					}
-
-					if ( ! settings.id ) {
-						return;
-					}
-
-					var popupID = settings.id;
-
-					if ( undefined === JetEngineMaps.markersData[ popupID ] ) {
-						return;
-					}
-
-					for ( var i = 0; i < JetEngineMaps.markersData[ popupID ].length; i++ ) {
-
-						var marker = JetEngineMaps.markersData[ popupID ][i].marker,
-							map = marker.getMap();
-
-						if ( !map ) {
-							// A marker inside a cluster
-							var clustererIndex   = JetEngineMaps.markersData[ popupID ][i].clustererIndex,
-								markersClusterer = JetEngineMaps.clusterersData[ clustererIndex ];
-
-							JetEngineMaps.fitMapToMarker( marker, markersClusterer );
-						}
-
-						google.maps.event.trigger( marker, 'click' );
-					}
-				}
+			addAction: function( name, callback ) {
+				this.actions[ name ] = callback;
 			},
 
 			actionHandler: function( event ) {
@@ -893,7 +864,7 @@
 				}
 
 				if ( ! $container.length ) {
-					$container = $wrapper;
+					$container = $scope;
 					widgetSettings = $scope.data( 'widget-settings' );
 				}
 
@@ -911,6 +882,7 @@
 					query:          lazyLoadOptions.query || {},
 					listingType:    listingType,
 					widgetSettings: widgetSettings,
+					extraProps:     lazyLoadOptions.extra_props || false,
 				} );
 
 				return;
@@ -1073,6 +1045,7 @@
 				page = options.page || 1,
 				preventCSS = options.preventCSS || false,
 				listingType = options.listingType || false,
+				extraProps = options.extraProps || false,
 				isEditMode = window.elementorFrontend && window.elementorFrontend.isEditMode();
 
 			doneCallback = doneCallback || function( response ) {};
@@ -1089,11 +1062,7 @@
 				});
 			}
 
-			$.ajax({
-				url: JetEngineSettings.ajaxlisting,
-				type: 'POST',
-				dataType: 'json',
-				data: {
+			var requestData = {
 					action: 'jet_engine_ajax',
 					handler: handler,
 					query: query,
@@ -1107,7 +1076,17 @@
 					listing_type: listingType,
 					isEditMode: isEditMode,
 					addedPostCSS: JetEngine.addedPostCSS
-				},
+				};
+
+			if ( extraProps ) {
+				Object.assign( requestData, extraProps );
+			}
+
+			$.ajax({
+				url: JetEngineSettings.ajaxlisting,
+				type: 'POST',
+				dataType: 'json',
+				data: requestData,
 			}).done( function( response ) {
 
 				// container.removeAttr( 'style' );
@@ -1304,6 +1283,7 @@
 								widgetSettings: args.widgetSettings,
 								listingType: args.listingType,
 								preventCSS: true,
+								extraProps: args.extraProps,
 							}, function( response ) {
 
 								$wrapper.removeClass( 'jet-listing-grid-loading' );
@@ -1838,5 +1818,7 @@
 	window.addEventListener( 'DOMContentLoaded', function() {
 		JetEngine.initBlocks()
 	} );
+
+	$( window ).trigger( 'jet-engine/frontend/loaded' );
 
 }( jQuery ) );

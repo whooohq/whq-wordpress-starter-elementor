@@ -2,7 +2,7 @@
 /**
  * Jet Elementor Extension Module.
  *
- * Version: 1.0.5
+ * Version: 1.0.7
  */
 
 namespace Jet_Elementor_Extension;
@@ -35,7 +35,7 @@ if ( ! class_exists( 'Jet_Elementor_Extension\Module' ) ) {
 		 *
 		 * @var string
 		 */
-		protected $version = '1.0.5';
+		protected $version = '1.0.7';
 
 		/**
 		 * Module directory path.
@@ -72,7 +72,13 @@ if ( ! class_exists( 'Jet_Elementor_Extension\Module' ) ) {
 
 			new Ajax_Handlers();
 
-			add_action( 'elementor/controls/controls_registered',  array( $this, 'register_controls' ) );
+			$register_controls_action = 'elementor/controls/controls_registered';
+
+			if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.5.0', '>=' ) ) {
+				$register_controls_action = 'elementor/controls/register';
+			}
+
+			add_action( $register_controls_action, array( $this, 'register_controls' ) );
 			add_action( 'elementor/editor/before_enqueue_scripts', array( $this, 'enqueue_editor_scripts' ) );
 		}
 
@@ -92,8 +98,14 @@ if ( ! class_exists( 'Jet_Elementor_Extension\Module' ) ) {
 		 * @return void
 		 */
 		public function register_controls( $controls_manager ) {
-			$controls_manager->register_control( 'jet-query',    new Query_Control() );
-			$controls_manager->register_control( 'jet-repeater', new Repeater_Control() );
+
+			if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.5.0', '>=' ) ) {
+				$controls_manager->register( new Query_Control() );
+				$controls_manager->register( new Repeater_Control() );
+			} else {
+				$controls_manager->register_control( 'jet-query',    new Query_Control() );
+				$controls_manager->register_control( 'jet-repeater', new Repeater_Control() );
+			}
 		}
 
 		/**

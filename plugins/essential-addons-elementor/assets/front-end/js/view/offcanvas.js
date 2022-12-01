@@ -93,7 +93,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("var EaelOffcanvas = function EaelOffcanvas($scope, $) {\n  new window.EAELOffcanvasContent($scope);\n};\n\njQuery(window).on(\"elementor/frontend/init\", function () {\n  elementorFrontend.hooks.addAction(\"frontend/element_ready/eael-offcanvas.default\", EaelOffcanvas);\n});\n\n//# sourceURL=webpack:///./src/js/view/offcanvas.js?");
+eval("var EaelOffcanvas = function EaelOffcanvas($scope, $) {\n  new window.EAELOffcanvasContent($scope);\n};\n\njQuery(window).on(\"elementor/frontend/init\", function () {\n  if (ea.elementStatusCheck(\"offcanvasLoad\")) {\n    return false;\n  }\n\n  elementorFrontend.hooks.addAction(\"frontend/element_ready/eael-offcanvas.default\", EaelOffcanvas);\n});\n\n//# sourceURL=webpack:///./src/js/view/offcanvas.js?");
 
 /***/ })
 

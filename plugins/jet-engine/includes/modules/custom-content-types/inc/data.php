@@ -126,6 +126,7 @@ class Data extends \Jet_Engine_Base_Data {
 			'rest_put_enabled',
 			'rest_post_enabled',
 			'rest_delete_enabled',
+			'hide_field_names',
 		);
 
 		foreach ( $ensure_bool as $key ) {

@@ -19,6 +19,28 @@
   left: 10px;
   color: inherit;
 }
+.eael-lr-form-wrapper.lr-icon-showing svg {
+  position: absolute;
+  bottom: 20px;
+  left: 10px;
+  color: inherit;
+  height: 1rem;
+  width: 1rem;
+  line-height: 1rem;
+}
+.eael-lr-form-wrapper .eael-lr-form-loader-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: relative;
+}
+.eael-lr-form-wrapper .eael-lr-form-loader-wrapper .eael-lr-form-loader {
+  position: absolute;
+  right: 10px;
+}
 .eael-lr-form-wrapper meter {
   /* Reset the default appearance */
   display: block;

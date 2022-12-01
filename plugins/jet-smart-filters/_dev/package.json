@@ -6,8 +6,8 @@
 	"license": "MIT",
 	"private": true,
 	"scripts": {
-		"dev": "webpack --mode development --progress --hide-modules -w",
-		"build": "webpack --mode production --progress --hide-modules"
+		"dev": "webpack --mode development --progress --stats minimal -w",
+		"build": "webpack --mode production --progress --stats minimal"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.8.4",

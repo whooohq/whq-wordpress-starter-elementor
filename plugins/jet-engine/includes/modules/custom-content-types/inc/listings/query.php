@@ -30,11 +30,6 @@ class Query {
 			array( $this, 'prepare_object_vars' ), 10
 		);
 
-		add_action(
-			'the_post',
-			array( $this, 'maybe_add_item_to_post' )
-		);
-
 		add_action( 'jet-engine/listings/frontend/reset-data', function( $data ) {
 			if ( $this->source === $data->get_listing_source() ) {
 				wp_reset_postdata();
@@ -42,6 +37,23 @@ class Query {
 		} );
 
 		add_filter( 'jet-smart-filters/pre-get-indexed-data', array( $this, 'get_indexed_data' ), 10, 4 );
+
+		
+
+		add_action( 'jet-engine/custom-content-types/after-register-instances', function( $manager ) {
+
+			$post_types = $manager->get_post_types_map();
+
+			if ( empty( $post_types ) ) {
+				return;
+			}
+
+			add_action(
+				'the_post',
+				array( $this, 'maybe_add_item_to_post' )
+			);
+
+		} );
 
 	}
 
@@ -78,7 +90,7 @@ class Query {
 		}
 
 		$query_id = ! empty( $props['query_id'] ) ? $props['query_id'] : false;
-		
+
 		if ( $query_id ) {
 			$query_object = \Jet_Engine\Query_Builder\Manager::instance()->get_query_by_id( $query_id );
 		} else {
@@ -215,8 +227,10 @@ class Query {
 			$group_by = "GROUP BY $group";
 		}
 
-		$query_object->setup_query();
-		$content_type->db->set_query_object( $query_object );
+		if ( $query_object ) {
+			$query_object->setup_query();
+			$content_type->db->set_query_object( $query_object );
+		}
 
 		$sql_query = apply_filters( 'jet-engine/custom-content-types/sql-query-parts', array(
 			'select' => "SELECT $select",
@@ -374,7 +388,7 @@ class Query {
 	 * @param  [type] &$post [description]
 	 * @return [type]        [description]
 	 */
-	public function maybe_add_item_to_post( &$post ) {
+	public function maybe_add_item_to_post( $post ) {
 
 		$post_id   = $post->ID;
 		$post_type = $post->post_type;
@@ -387,6 +401,8 @@ class Query {
 		foreach ( $item as $prop => $value ) {
 			$post->$prop = $value;
 		}
+
+		return $post;
 
 	}
 
@@ -563,7 +579,11 @@ class Query {
 		$prepared_args = array();
 
 		foreach ( $args as $arg ) {
-			$arg['value'] = jet_engine()->listings->macros->do_macros( $arg['value'] );
+
+			if ( ! empty( $arg['value'] ) ) {
+				$arg['value'] = jet_engine()->listings->macros->do_macros( $arg['value'] );
+			}
+
 			$prepared_args[] = $arg;
 		}
 
@@ -588,10 +608,10 @@ class Query {
 
 			foreach ( $row as $inner_row ) {
 				$new_row[] = array(
-					'field'    => $inner_row['key'],
-					'operator' => $inner_row['compare'],
-					'value'    => $inner_row['value'],
-					'type'     => $inner_row['type'],
+					'field'    => ! empty( $inner_row['key'] ) ? $inner_row['key'] : false,
+					'operator' => ! empty( $inner_row['compare'] ) ? $inner_row['compare'] : '=',
+					'value'    => ! empty( $inner_row['value'] ) ? $inner_row['value'] : '',
+					'type'     => ! empty( $inner_row['type'] ) ? $inner_row['type'] : false,
 				);
 			}
 
@@ -622,8 +642,6 @@ class Query {
 					$found = true;
 				}
 			}
-
-
 
 			if ( ! $found ) {
 				$query[] = $row;

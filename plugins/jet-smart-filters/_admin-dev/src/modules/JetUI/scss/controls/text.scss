@@ -1,0 +1,31 @@
+@import "../mixins.scss";
+
+.jet-ui_text {
+	position: relative;
+
+	input#{&}-input {
+		@include input();
+		@include input-placeholder();
+		@include input-focus();
+	}
+
+	@include control-disabled();
+
+	// Clear
+	&-clear {
+		cursor: pointer;
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 18px;
+		height: 100%;
+		padding: 0 10px 0 5px;
+		background-repeat: no-repeat;
+		background-position: center;
+		background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24'%3E%3Cg data-name='Layer 2'%3E%3Cg data-name='close'%3E%3Crect opacity='0' transform='rotate(180 12 12)'/%3E%3Cpath d='M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z' fill='%237B7E81'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+
+		& ~ input.jet-ui_text-input {
+			padding-right: 28px;
+		}
+	}
+}

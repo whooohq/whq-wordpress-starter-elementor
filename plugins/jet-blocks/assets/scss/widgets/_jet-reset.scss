@@ -1,0 +1,87 @@
+.jet-reset {
+	label {
+		display: block;
+	}
+
+	legend {
+		border-width: 3px;
+	}
+
+	p {
+		margin: 0;
+		padding: 0;
+	}
+
+	&__form {
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__submit {
+		margin-top: 20px;
+	}
+
+	.jet-reset__demo-messages {
+		margin: 15px 0;
+		font-size: 18px;
+		line-height: 1;
+		font-weight: 500;
+	}
+
+	&__success-message {
+		& + {
+			.jet-reset__error-message {
+				margin-top: 20px;
+			}
+		}
+	}
+
+	&__field-wrapper {
+		position: relative;
+
+		.password-visibility {
+			&__icon {
+				display: none;
+				position: absolute;
+				top: calc(50% - 10px);
+				right: 10px;
+				width: 20px;
+				height: 20px;
+				font-size: 20px;
+				line-height: 20px;
+				cursor: pointer;
+
+				svg {
+					display: block;
+					fill: currentColor;
+				}
+
+				&.show {
+					display: block;
+				}
+			}
+		}
+	}
+}
+
+.jet-reset-password-requirements {
+	.rtl & {
+		text-align: right;
+	}
+
+	.jet-password-requirements {
+		margin: 0;
+		padding: 0;
+
+		&__item {
+			list-style: none;
+			margin: 5px 0;
+		}
+	}
+}
+
+.jet-reset-message {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	color: #f00;
+}

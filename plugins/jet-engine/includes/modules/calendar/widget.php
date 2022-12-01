@@ -82,6 +82,15 @@ if ( ! class_exists( 'Elementor\Jet_Listing_Calendar_Widget' ) ) {
 			);
 
 			$this->add_control(
+				'query_notice',
+				array(
+					'type'            => \Elementor\Controls_Manager::RAW_HTML,
+					'raw'             => __( '<b>Please note:</b> For non-posts listings (users, terms, CCT etc.) set Query with Custom Query settings', 'jet-engine' ),
+					'content_classes' => 'elementor-descriptor',
+				)
+			);
+
+			$this->add_control(
 				'group_by',
 				array(
 					'label'   => __( 'Group posts by', 'jet-engine' ),
@@ -98,7 +107,7 @@ if ( ! class_exists( 'Elementor\Jet_Listing_Calendar_Widget' ) ) {
 					'type'        => Controls_Manager::TEXT,
 					'default'     => '',
 					'label_block' => true,
-					'description' => __( 'This field must contain date to group posts by. Works only if "Save as timestamp" option for meta field is active', 'jet-engine' ),
+					'description' => __( 'Could be meta field or item peroperty field (depende on query used). This field must contain date to group items by. Works only if "Save as timestamp" option for this field is active', 'jet-engine' ),
 					'condition'   => array(
 						'group_by' => 'meta_date'
 					),

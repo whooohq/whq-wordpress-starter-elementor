@@ -269,8 +269,15 @@ if ( ! class_exists( 'Jet_Engine_Woo_Package' ) ) {
 			if ( wp_doing_ajax() ) {
 
 				if ( isset( $args['wc_query'] ) ) {
+
 					if ( isset( $args['orderby'] ) && isset( $args['order'] ) ) {
 						$ordering_args = WC()->query->get_catalog_ordering_args( $args['orderby'], $args['order'] );
+
+						// Prevent rewrite the order only to DESC if the orderby is relevance.
+						if ( 'relevance' === $args['orderby'] && ! empty( $args['order'] ) ) {
+							$ordering_args['order'] = $args['order'];
+						}
+
 					} else {
 						$ordering_args = WC()->query->get_catalog_ordering_args();
 					}

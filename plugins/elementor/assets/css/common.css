@@ -1,4 +1,4 @@
-/*! elementor - v3.6.8 - 27-07-2022 */
+/*! elementor - v3.8.1 - 13-11-2022 */
 .dialog-widget-content {
   background-color: #fff;
   position: absolute;
@@ -95,6 +95,23 @@
 
 .dialog-confirm-widget .dialog-button:first-child {
   border-right: 1px solid #e6e9ec;
+}
+
+#elementor-change-exit-preference-dialog .dialog-message a {
+  cursor: pointer;
+}
+#elementor-change-exit-preference-dialog .dialog-message > div {
+  margin-bottom: 10px;
+}
+#elementor-change-exit-preference-dialog .dialog-ok {
+  color: #39b54a;
+}
+
+#e-experiments-dependency-dialog .dialog-confirm-header {
+  font-weight: 600;
+}
+#e-experiments-dependency-dialog .dialog-ok {
+  color: #39b54a;
 }
 
 .dialog-prevent-scroll {
@@ -220,7 +237,7 @@
 .elementor-templates-modal .dialog-message {
   height: 750px;
   max-height: 85vh;
-  overflow: auto;
+  overflow-y: scroll;
   padding-top: 25px;
 }
 .elementor-templates-modal .dialog-content {
@@ -467,6 +484,9 @@
   padding: 20px;
   color: #a4afb7;
 }
+#elementor-finder__lock-dialog {
+  z-index: 100000;
+}
 
 .elementor-finder__results__category {
   position: relative;
@@ -538,6 +558,21 @@
   margin-left: 5px;
   color: #a4afb7;
   font-style: italic;
+}
+.elementor-finder__results__item__badge {
+  text-transform: uppercase;
+  position: absolute;
+  inset-inline-end: 16px;
+  color: #556068;
+  font-size: 8px;
+  font-weight: 500;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 4px;
 }
 .elementor-finder__results__item__actions {
   display: -webkit-box;

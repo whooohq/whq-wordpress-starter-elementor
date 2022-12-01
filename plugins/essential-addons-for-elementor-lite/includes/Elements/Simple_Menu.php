@@ -8,8 +8,8 @@ use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Typography;
 use Elementor\Icons_Manager;
+use Elementor\Plugin;
 use Elementor\Widget_Base;
-
 use Essential_Addons_Elementor\Classes\Helper as HelperClass;
 use Essential_Addons_Elementor\Traits\Helper;
 
@@ -52,7 +52,7 @@ class Simple_Menu extends Widget_Base
 
     public function get_categories()
     {
-        return ['essential-addons-elementor'];
+        return ['essential-addons-for-elementor-lite'];
     }
 
     public function get_keywords()
@@ -169,9 +169,6 @@ class Simple_Menu extends Widget_Base
             'eael_simple_menu_section_hamburger',
             [
                 'label' => esc_html__('Hamburger Options', 'essential-addons-for-elementor-lite'),
-                'condition'    => [
-                    'eael_simple_menu_layout' => 'horizontal',
-                ],
             ]
         );
 
@@ -207,7 +204,7 @@ class Simple_Menu extends Widget_Base
                         'icon'  => 'eicon-text-align-right',
                     ],
                 ],
-                'default'      => 'eael-simple-menu-hamburger-align-right',
+                'default'      => 'right',
                 'prefix_class' => 'eael-simple-menu-hamburger-align-',
 //                'condition'    => [
 //                    'eael_simple_menu_hamburger_disable_selected_menu' => 'hide',
@@ -239,6 +236,28 @@ class Simple_Menu extends Widget_Base
 	       ]
 	   );
 
+       $this->add_control(
+            'eael_simple_menu_heading_mobile_dropdown',
+            [
+                'label' => esc_html__( 'Mobile Dropdown', 'essential-addons-for-elementor-lite' ),
+                'type' => Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        $default_value = 'tablet';
+
+        $this->add_control(
+            'eael_simple_menu_dropdown',
+            [
+                'label' => esc_html__( 'Breakpoint', 'essential-addons-for-elementor-lite' ),
+                'type' => Controls_Manager::SELECT,
+                'default' => esc_html( $default_value ),
+                'options' => $this->get_dropdown_options(),
+                'prefix_class' => 'eael-hamburger--',
+            ]
+        );
+
         $this->end_controls_section();
 
         /**
@@ -268,7 +287,7 @@ class Simple_Menu extends Widget_Base
 	    $this->add_responsive_control(
 		    'eael_simple_menu_hamburger_min_height',
 		    [
-			    'label' => esc_html__( 'Min Height', 'essential-addons-elementor' ),
+			    'label' => esc_html__( 'Min Height', 'essential-addons-for-elementor-lite' ),
 			    'type' => Controls_Manager::SLIDER,
 //			    'devices' => [ 'tablet', 'mobile' ],
 //			    'devices' => [ 'desktop', 'mobile' ],
@@ -298,7 +317,7 @@ class Simple_Menu extends Widget_Base
 	    $this->add_control(
 		    'eael_simple_menu_hamburger_size',
 		    [
-			    'label' => esc_html__( 'Icon Size', 'essential-addons-elementor' ),
+			    'label' => esc_html__( 'Icon Size', 'essential-addons-for-elementor-lite' ),
 			    'type' => Controls_Manager::SLIDER,
 			    'range' => [
 				    'px' => [
@@ -320,6 +339,7 @@ class Simple_Menu extends Widget_Base
                 'default'   => '#ffffff',
                 'selectors' => [
                     '{{WRAPPER}} .eael-simple-menu-container .eael-simple-menu-toggle i' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-simple-menu-container .eael-simple-menu-toggle svg' => 'fill: {{VALUE}}',
                 ],
 
             ]
@@ -455,8 +475,8 @@ class Simple_Menu extends Widget_Base
 			    'type'      => Controls_Manager::COLOR,
 //                'default' => '#ffffff',
 			    'selectors' => [
-				    '{{WRAPPER}} .eael-simple-menu.eael-simple-menu-responsive li.current-menu-item > a'      => 'color: {{VALUE}}',
-				    '{{WRAPPER}} .eael-simple-menu.eael-simple-menu-responsive li.current-menu-item > a > span svg'      => 'fill: {{VALUE}}',
+				    '{{WRAPPER}} .eael-simple-menu.eael-simple-menu-responsive li.current-menu-item > a.eael-item-active'      => 'color: {{VALUE}}',
+				    '{{WRAPPER}} .eael-simple-menu.eael-simple-menu-responsive li.current-menu-item > a.eael-item-active > span svg'      => 'fill: {{VALUE}}',
 			    ],
 		    ]
 	    );
@@ -468,7 +488,7 @@ class Simple_Menu extends Widget_Base
 			    'type'      => Controls_Manager::COLOR,
 			    'default'   => '',
 			    'selectors' => [
-				    '{{WRAPPER}} .eael-simple-menu.eael-simple-menu-responsive li.current-menu-item > a' => 'background-color: {{VALUE}}',
+				    '{{WRAPPER}} .eael-simple-menu.eael-simple-menu-responsive li.current-menu-item > a.eael-item-active' => 'background-color: {{VALUE}}',
 			    ],
 		    ]
 	    );
@@ -580,7 +600,7 @@ class Simple_Menu extends Widget_Base
 	    $this->add_control(
 		    'eael_simple_menu_hamburger_indicator_possition',
 		    [
-			    'label' => esc_html__( 'Top Position', 'essential-addons-elementor' ),
+			    'label' => esc_html__( 'Top Position', 'essential-addons-for-elementor-lite' ),
 			    'type' => Controls_Manager::SLIDER,
 //			    'range' => [
 //				    'px' => [
@@ -921,7 +941,7 @@ class Simple_Menu extends Widget_Base
 	    $this->add_control(
 		    'eael_simple_menu_item_indicator_size',
 		    [
-			    'label' => esc_html__( 'Icon Size', 'essential-addons-elementor' ),
+			    'label' => esc_html__( 'Icon Size', 'essential-addons-for-elementor-lite' ),
 			    'type' => Controls_Manager::SLIDER,
 			    'default' => [
 				    'size' => '15'
@@ -1002,8 +1022,8 @@ class Simple_Menu extends Widget_Base
                 'selectors' => [
                     '{{WRAPPER}} .eael-simple-menu li:hover > a'                 => 'color: {{VALUE}}',
                     '{{WRAPPER}} .eael-simple-menu li:hover > a > span svg'                 => 'fill: {{VALUE}}',
-                    '{{WRAPPER}} .eael-simple-menu li.current-menu-item > a'     => 'color: {{VALUE}}',
-                    '{{WRAPPER}} .eael-simple-menu li.current-menu-ancestor > a' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-simple-menu li.current-menu-item > a.eael-item-active'     => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-simple-menu li.current-menu-ancestor > a.eael-item-active' => 'color: {{VALUE}}',
                 ],
             ]
         );
@@ -1016,8 +1036,8 @@ class Simple_Menu extends Widget_Base
 //                'default' => '#ee355f',
                 'selectors' => [
                     '{{WRAPPER}} .eael-simple-menu li:hover > a'                 => 'background-color: {{VALUE}}',
-                    '{{WRAPPER}} .eael-simple-menu li.current-menu-item > a'     => 'background-color: {{VALUE}}',
-                    '{{WRAPPER}} .eael-simple-menu li.current-menu-ancestor > a' => 'background-color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-simple-menu li.current-menu-item > a.eael-item-active'     => 'background-color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-simple-menu li.current-menu-ancestor > a.eael-item-active' => 'background-color: {{VALUE}}',
                 ],
             ]
         );
@@ -1230,7 +1250,7 @@ class Simple_Menu extends Widget_Base
 	    $this->add_control(
 		    'eael_simple_menu_dropdown_item_indicator_size',
 		    [
-			    'label' => esc_html__( 'Icon Size', 'essential-addons-elementor' ),
+			    'label' => esc_html__( 'Icon Size', 'essential-addons-for-elementor-lite' ),
 			    'type' => Controls_Manager::SLIDER,
 			    'default' => [
 				    'size' => '12'
@@ -1310,8 +1330,8 @@ class Simple_Menu extends Widget_Base
 //                'default' => '#ee355f',
                 'selectors' => [
                     '{{WRAPPER}} .eael-simple-menu li ul li:hover > a'                 => 'color: {{VALUE}}',
-                    '{{WRAPPER}} .eael-simple-menu li ul li.current-menu-item > a'     => 'color: {{VALUE}}',
-                    '{{WRAPPER}} .eael-simple-menu li ul li.current-menu-ancestor > a' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-simple-menu li ul li.current-menu-item > a.eael-item-active'     => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-simple-menu li ul li.current-menu-ancestor > a.eael-item-active' => 'color: {{VALUE}}',
                 ],
             ]
         );
@@ -1324,8 +1344,8 @@ class Simple_Menu extends Widget_Base
 //                'default' => 'rgba(255,255,255,0)',
                 'selectors' => [
                     '{{WRAPPER}} .eael-simple-menu li ul li:hover > a'                 => 'background-color: {{VALUE}}',
-                    '{{WRAPPER}} .eael-simple-menu li ul li.current-menu-item > a'     => 'background-color: {{VALUE}}',
-                    '{{WRAPPER}} .eael-simple-menu li ul li.current-menu-ancestor > a' => 'background-color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-simple-menu li ul li.current-menu-item > a.eael-item-active'     => 'background-color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-simple-menu li ul li.current-menu-ancestor > a.eael-item-active' => 'background-color: {{VALUE}}',
                 ],
             ]
         );
@@ -1396,10 +1416,40 @@ class Simple_Menu extends Widget_Base
         $this->end_controls_section();
     }
 
+    public function get_dropdown_options(){
+        $breakpoints = Plugin::$instance->breakpoints->get_active_breakpoints();
+
+        $dropdown_options = [];
+        $excluded_breakpoints = [
+            'laptop',
+            'widescreen',
+        ];
+
+        foreach ( $breakpoints as $breakpoint_key => $breakpoint_instance ) {
+            // Do not include laptop and widscreen in the options since this feature is for mobile devices.
+            if ( in_array( $breakpoint_key, $excluded_breakpoints, true ) ) {
+                continue;
+            }
+
+            $dropdown_options[ $breakpoint_key ] = sprintf(
+                /* translators: 1: Breakpoint label, 2: `>` character, 3: Breakpoint value */
+                esc_html__( '%1$s (%2$s %3$dpx)', 'essential-addons-for-elementor-lite' ),
+                $breakpoint_instance->get_label(),
+                '>',
+                $breakpoint_instance->get_value()
+            );
+        }
+
+        $dropdown_options['none'] = esc_html__( 'None', 'essential-addons-for-elementor-lite' );
+        
+        return $dropdown_options;
+    }
+
     protected function render()
     {
         $settings = $this->get_settings();
-
+        $hamburger_device = !empty( $settings['eael_simple_menu_dropdown'] ) ? esc_html( $settings['eael_simple_menu_dropdown'] ) : esc_html( 'tablet' );
+        
         if ($settings['eael_simple_menu_preset'] == 'preset-2') {
             $align = $settings['eael_simple_menu_item_alignment_center'];
         } elseif ($settings['eael_simple_menu_preset'] == 'preset-3') {
@@ -1453,13 +1503,15 @@ class Simple_Menu extends Widget_Base
 	    } else {
 		    $this->add_render_attribute( 'eael-simple-menu', 'data-dropdown-indicator-class', $settings['eael_simple_menu_dropdown_item_indicator']['value'] );
 	    }
-
+        
         $this->add_render_attribute('eael-simple-menu', [
             'class'                         => implode(' ', array_filter($container_classes)),
 //            'data-indicator-class'          => $settings['eael_simple_menu_item_indicator'],
 //            'data-dropdown-indicator-class' => $settings['eael_simple_menu_dropdown_item_indicator'],
+            'data-hamburger-breakpoints' => wp_json_encode( $this->get_dropdown_options() ),
+            'data-hamburger-device' => $hamburger_device,
         ]);
-
+        
         if ($settings['eael_simple_menu_menu']) {
             $args = [
                 'menu'        => $settings['eael_simple_menu_menu'],

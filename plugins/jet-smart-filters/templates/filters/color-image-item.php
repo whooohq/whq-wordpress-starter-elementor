@@ -15,7 +15,7 @@ if ( ! empty( $image[0] ) ) {
 
 ?>
 <div class="jet-color-image-list__row jet-filter-row<?php echo $extra_classes; ?>">
-	<label class="jet-color-image-list__item">
+	<label class="jet-color-image-list__item" <?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>>
 		<input
 			type="<?php echo $filter_type; ?>"
 			class="jet-color-image-list__input"

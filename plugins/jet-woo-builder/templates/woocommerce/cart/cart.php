@@ -4,12 +4,12 @@
  *
  * This template can be overridden by copying it to yourtheme/jet-woo-builder/woocommerce/cart/cart.php.
  *
- * @version 3.8.0
+ * @version 7.0.1
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$template = apply_filters( 'jet-woo-builder/current-template/template-id', jet_woo_builder_integration_woocommerce()->get_current_cart_template() );
+$template = apply_filters( 'jet-woo-builder/current-template/template-id', jet_woo_builder()->woocommerce->get_custom_cart_template() );
 
 jet_woo_builder()->admin_bar->register_post_item( $template );
 

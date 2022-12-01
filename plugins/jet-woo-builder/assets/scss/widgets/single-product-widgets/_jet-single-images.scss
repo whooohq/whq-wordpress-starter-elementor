@@ -1,4 +1,4 @@
-.elementor-jet-single-images {
+.product .elementor-jet-single-images {
 	.jet-single-images {
 		&__wrap {
 			&:after {
@@ -10,6 +10,7 @@
 
 			div.images {
 				float: none !important;
+				margin: 0;
 			}
 
 			.woocommerce-product-gallery {

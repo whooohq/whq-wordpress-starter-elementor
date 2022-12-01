@@ -706,7 +706,7 @@
                 </cx-vui-input>
                 <cx-vui-input
                     name="jet-mega-menu-dropdown-toggle-distance"
-                    label="<?php _e( 'Toggle Size', 'jet-menu' ); ?>"
+                    label="<?php _e( 'Toggle Distance', 'jet-menu' ); ?>"
                     :wrapper-css="[ 'equalwidth' ]"
                     size="fullwidth"
                     type="number"

@@ -178,6 +178,29 @@
 				:value="adminFilters[ index ].glossary_id"
 				@input="setFieldProp( filter._id, 'glossary_id', $event, adminFilters )"
 			></cx-vui-select>
+			<cx-vui-select
+				label="<?php _e( 'Order', 'jet-engine' ); ?>"
+				description="<?php _e( 'Designates the ascending or descending order', 'jet-engine' ); ?>"
+				v-if="'db' === filter.options_source"
+				:wrapper-css="[ 'equalwidth' ]"
+				:options-list="[
+					{
+						value: '',
+						label: '<?php _e( 'Default', 'jet-engine' ); ?>',
+					},
+					{
+						value: 'ASC',
+						label: 'From lowest to highest values (1, 2, 3; a, b, c)',
+					},
+					{
+						value: 'DESC',
+						label: 'From highest to lowest values (3, 2, 1; c, b, a)',
+					},
+				]"
+				size="fullwidth"
+				:value="adminFilters[ index ].meta_order"
+				@input="setFieldProp( filter._id, 'meta_order', $event, adminFilters )"
+			></cx-vui-select>
 		</template>
 		<?php do_action( 'jet-engine/post-types/admin-filters/custom-controls' ); ?>
 	</cx-vui-repeater-item>

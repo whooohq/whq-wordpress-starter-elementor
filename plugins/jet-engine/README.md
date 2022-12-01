@@ -1,5 +1,105 @@
 # ChangeLog
 
+## 3.0.7
+* ADD: Dynamic Image for Elementor - allow to open image in Lightbox;
+* ADD: New Dynamic Visibility conditions (Greater or equal, Less or equal, Between, Not Between, Regexp, Not Regexp);
+* UPD: Dynamic Feilds for Elementor - add dynamic data support for Fallback option;
+* UPD: Allow to select context for Dynamic Terms;
+* FIX: Profile builder, URL for deleted user;
+* FIX: Taxonomies, allow to add more then 32 symbols to slug;
+* FIX: Listing Item + Kadence Blocks (PRO) background image;
+* FIX: Repeater Field delimiter Trims intentionall whitespaces;
+* FIX: PHP error with JSF version less 3.0.0;
+* FIX: Elementor 3.8.0 compatibility;
+* FIX: Map listing with Elementor sticky option.
+
+## 3.0.6.1
+* FIX: Calendar navigation for some cases.
+
+## 3.0.6
+* ADD: Macro Query Results Count;
+* ADD: JSF compatibility - Query Builder source for filter options;
+* ADD: Crocoblock/suggestions#2288;
+* UPD: Show pop-up Jet Engine Map Listing;
+* FIX: Dynamic meta block error in the posts content;
+* FIX: Load more doesnt work for listing with query builder after filtering by checkbox field;
+* FIX: Lazy load listing is not filtered with redirect;
+* FIX: Query builder: Random order + Load More + Filters;
+* FIX: Listing Grid with WC Query inside Listing Grid;
+* FIX: Map Settings issue with the listing;
+* FIX: Borlabs Cookies and Maps Listing;
+* FIX: Geolocation filter initizliation;
+* FIX: Load more and nested listings;
+* FIX: Use local timestamp instead of universal time in the Dynamic calendar;
+* FIX: Fatal error if received post terms is WP_ERROR;
+* FIX: WPML issue;
+* FIX: Dynamic visibility is_in_stock error.
+
+## 3.0.5
+* ADD: `Current Object Field` Dynamic Tag;
+* ADD: An ability to sort glossary list;
+* ADD: Show glossary ID in UI;
+* FIX: Meta field conditional logic & required attribute;
+* FIX: Advanced SQL query and Include Columns option conflict;
+* FIX: Dynamic Calendar days check;
+* FIX: Query builder dynamic Date query parameters;
+* FIX: Related Items callback error if in listing item has nested listing;
+* FIX: Dynamic Visibility: Datetime Data type issue;
+* FIX: Reset Query Builder query for some edge cases;
+* FIX: Calendar error if there is no custom queries;
+* FIX: Dynamic function in blocks editor.
+
+## 3.0.4
+* ADD: Query Builder + Dynamic Calendar compatibility;
+* ADD: allow to cast SQL query results into specific object;
+* ADD: Crocoblock/suggestions#5682;
+* ADD: Custom image Alt setting for Dynamic Image Crocoblock/suggestions#5551;
+* ADD: `Lazy Load` setting for Dynamic Image Crocoblock/suggestions#5522;
+* ADD: `Data type` setting for `Equal` condition;
+* ADD: dynamic css for inner templates in listing items;
+* ADD: sync the relations with translated post (WPML);
+* UPD: WC Products properties handling in dynamic image and link widgets;
+* FIX: Gutenberg listing breaks layout after filtering;
+* FIX: Listing + load more in Gutenberg;
+* FIX: Relations - Add New CCT item from related post;
+* FIX: Search Filter and users query compatibility;
+* FIX: Getting comment meta;
+* FIX: Glossary long labels + WPML;
+* FIX: Description of the taxonomy doesn't save;
+* FIX: CCT listing with filters critical error in some cases;
+* FIX: WC Product Query tax_query relation issue.
+
+## 3.0.3.1
+* FIX: Elementor Dynamic Visibility conditions processing for some cases;
+
+## 3.0.3
+* ADD: New Dynamic Visibility conditions for posts;
+* ADD: `CSS ID` setting for listings blocks in the Block Editor;
+* ADD: Compatibility with Search Exclude plugin;
+* UPD: Ability to hide "Name:" for meta fields in the CPT interface;
+* UPD: Some performance optimization for Dynamic Widgets;
+* UPD: `jet-engine/query-builder/query/items` hook, allow to filter query results before return items;
+* UPD: Hide Empty Terms option is disabled by default for Terms Query;
+* UPD: `permission_callback` for maps api;
+* FIX: Dynamic Meta widget doesn't display author on single post;
+* FIX: %queried_term% macros behavior;
+* FIX: JetEngine SQL advanced query gets cached when not supposed to;
+* FIX: Compatibility with Elementor 3.7;
+* FIX: Minor bug fixes and improvements.
+
+## 3.0.2
+* ADD: Allow to create listing for non-public post type;
+* ADD: Add to cart source for dynamic link widget;
+* ADD: WooCommerce specific dynamic visibility conditions;
+* ADD: WC Products In Cart macros;
+* UPD: Ability to hide Delete Item button in Relations UI;
+* FIX: Better relations and WPML compatibility;
+* FIX: Conditions for macros dynamic tags;
+* FIX: Load more doesn't work for CCT listing after filtering;
+* FIX: Dynamic settings for Order By query arguments;
+* FIX: Load more with the Listing Grid on the products page;
+* FIX: WC Product Query dynamic data.
+
 ## 3.0.1
 * ADD: Has terms, Post Type and Term Taxonomy conditions for listing injections;
 * ADD: JetFormBuilder Records Query type;

@@ -74,6 +74,11 @@ class Map_Field {
 		}
 
 		if ( ! $is_repeater_field ) {
+
+			if ( empty( $args['description'] ) ) {
+				$args['description'] = '';
+			}
+
 			$args['description'] .= $this->get_field_description( $field_prefix );
 		}
 

@@ -22,6 +22,7 @@
 				mouseLeaveDelay: 500,
 				megaWidthType: 'container',
 				megaWidthSelector: '',
+				megaAjaxLoad: false,
 				classes: {
 					instance: 'menu',
 					menuContainer: 'menu-container',
@@ -64,6 +65,12 @@
 			this.rebuildSubContainers();
 			this.watchTick();
 
+			document.addEventListener( 'DOMContentLoaded', ( event ) => {
+				setTimeout( () => {
+					this.watchTick();
+				}, 100 );
+			} );
+
 			this.$instance.addClass( `${ this.settings.classes.instance }--inited` );
 			this.$document.trigger( 'JetMegaMenuInited' );
 		}
@@ -79,6 +86,7 @@
 						let $target       = $( event.target ),
 							$menuItem     = $target.parents( `.${ this.settings.classes.menuItem }` ),
 							$subContainer = $( `.${ this.settings.classes.subMenuContainer }:first, .${ this.settings.classes.megaContainer }:first`, $menuItem ),
+							templateContent = $subContainer.data( 'template-content' ) || false,
 							templateId    = $subContainer.data( 'template-id' ) || false;
 
 						$( `.${ this.settings.classes.menuItem }--hover`, this.$instance ).removeClass( `${ this.settings.classes.menuItem }--hover` );
@@ -87,7 +95,7 @@
 							$menuItem.addClass( `${ this.settings.classes.menuItem }--hover` );
 
 							if ( templateId ) {
-								//instance.maybeTemplateLoad( templateId, subMenu );
+								this.maybeTemplateLoad( templateId, templateContent, $subContainer );
 							}
 						}
 					} );
@@ -101,11 +109,13 @@
 						event.preventDefault();
 						event.stopPropagation();
 
-						let $currentTarget = $( event.currentTarget ),
-							$menuItem      = $currentTarget.closest( `.${ this.settings.classes.menuItem }` ),
-							$siblingsItems = $menuItem.siblings(`.${ this.settings.classes.menuItem }-has-children` ),
-							$subContainer  = $( `.${ this.settings.classes.subMenuContainer }:first, .${ this.settings.classes.megaContainer }`, $menuItem ),
-							templateId     = $subContainer.data( 'template-id' ) || false;
+						let $currentTarget  = $( event.currentTarget ),
+						    $menuItem       = $currentTarget.closest( `.${this.settings.classes.menuItem}` ),
+						    $menuItemLink   = $( '.jet-mega-menu-item__link', $menuItem ).first(),
+						    $siblingsItems  = $menuItem.siblings( `.${this.settings.classes.menuItem}-has-children` ),
+						    $subContainer   = $( `.${this.settings.classes.subMenuContainer}:first, .${this.settings.classes.megaContainer}`, $menuItem ),
+						    templateContent = $subContainer.data( 'template-content' ) || false,
+						    templateId      = $subContainer.data( 'template-id' ) || false;
 
 						if ( $siblingsItems.length ) {
 							$siblingsItems.removeClass( `${ this.settings.classes.menuItem }--hover` );
@@ -120,10 +130,15 @@
 							}
 
 							if ( templateId ) {
-								//instance.maybeTemplateLoad( templateId, subMenu );
+								this.maybeTemplateLoad( templateId, templateContent, $subContainer );
 							}
 						} else {
-							
+							let itemLink = $menuItemLink.attr( 'href' ) || '#',
+							    target   = $menuItemLink.attr( 'target' ) || '_self';
+
+							window.open( itemLink, target );
+
+							return false;
 						}
 					} );
 					break;
@@ -247,6 +262,8 @@
 				    visibleItemsArray = [],
 				    hiddenItemsArray  = [];
 
+				console.log(this.$rollUpItem)
+
 				for ( let index = 0; index < this.menuItemsData.length; index++ ) {
 					let itemData     = this.menuItemsData[ index ],
 					    nextItemData = this.menuItemsData[ index + 1 ] || false,
@@ -262,7 +279,10 @@
 					}
 				}
 
+				console.log(hiddenItemsArray)
+
 				$( `.${ this.settings.classes.subMenuList }:first`, this.$rollUpItem ).empty();
+
 				for ( let hiddenMenuItem of hiddenItemsArray ) {
 					let $hiddenClone = $( hiddenMenuItem ).clone();
 
@@ -272,7 +292,9 @@
 					$( `.${ this.settings.classes.subMenuList }:first`, this.$rollUpItem ).append( $hiddenClone );
 				}
 
-				this.$rollUpItem[0].hidden = hiddenItemsArray.length ? false : true;
+				if ( this.$rollUpItem[0] ) {
+					this.$rollUpItem[0].hidden = hiddenItemsArray.length ? false : true;
+				}
 
 				this.$instance.trigger( 'rollUpItemsEvent' );
 			} )
@@ -478,6 +500,49 @@
 				timeout = setTimeout( delayed, threshold );
 			};
 		}
+
+		maybeTemplateLoad( templateId, templateContent, $templateContainer ) {
+
+			if ( ! this.settings.megaAjaxLoad ) {
+				return;
+			}
+
+			if ( $templateContainer.hasClass( 'template-loaded' ) ) {
+				return;
+			}
+
+			let getMegaContentUrl = 'default' === templateContent ? window.jetMenuPublicSettings.getBlocksTemplateApiUrl : window.jetMenuPublicSettings.getElementorTemplateApiUrl;
+
+			$.ajax( {
+				type: 'GET',
+				url: getMegaContentUrl,
+				dataType: 'json',
+				data: {
+					'id': templateId,
+					'dev': window.jetMenuPublicSettings.devMode
+				},
+				beforeSend: function( jqXHR, ajaxSettings ) {
+					jqXHR.setRequestHeader( 'X-WP-Nonce', window.jetMenuPublicSettings.restNonce );
+				},
+				success: function( responce, textStatus, jqXHR ) {
+					var templateContent   = responce['template_content'],
+					    templateScripts   = responce['template_scripts'],
+					    templateStyles    = responce['template_styles'];
+
+					for ( var scriptHandler in templateScripts ) {
+						jetMenu.addedAssetsPromises.push( jetMenu.loadScriptAsync( scriptHandler, templateScripts[ scriptHandler ] ) );
+					}
+
+					for ( var styleHandler in templateStyles ) {
+						jetMenu.addedAssetsPromises.push( jetMenu.loadStyle( styleHandler, templateStyles[ styleHandler ] ) );
+					}
+
+					$templateContainer.addClass( 'template-loaded' );
+
+					jetMenu.megaContentRender( $( '.jet-mega-menu-mega-container__inner', $templateContainer ), templateContent );
+				}
+			} );
+		}
 	}
 
 	// jQuery plugin
@@ -516,16 +581,38 @@
 			this.initLocationMenuRender();
 			this.mobileVueComponents();
 			this.initMobileRender();
+
+			window.addEventListener( 'jetMenu/editor/templateRenderer/renderSuccess', ( event ) => {
+				this.initLocationMenuRender();
+				this.mobileVueComponents();
+				this.initMobileRender();
+			}, false );
+
+			$( window ).on( 'jet-menu/ajax/frontend-init', ( event, payload ) => {
+				jetMenu.maybeElementorFrontendInit( payload.$container );
+			} );
+
+			$( window ).on( 'jet-menu/ajax/frontend-init/after', ( event, payload ) => {
+				this.initLocationMenuRender();
+				this.mobileVueComponents();
+				this.initMobileRender();
+			} );
+
 		},
 
 		initLocationMenuRender: function() {
 
-			let $megaMenu = $( '.jet-mega-menu--location-wp-nav' );
+			let $megaMenuList = $( '.jet-mega-menu--location-wp-nav' );
 
-			if ( $megaMenu[0] ) {
-				let settings = $megaMenu.data( 'settings' );
+			if ( ! $megaMenuList[0] ) {
+				return false;
+			}
 
-				$megaMenu.JetMegaMenu( {
+			$megaMenuList.each( function() {
+				let $this    = $( this ),
+				    settings = $this.data( 'settings' );
+
+				$this.JetMegaMenu( {
 					rollUp: settings.rollUp,
 					layout: settings.layout,
 					subTrigger: settings.subTrigger,
@@ -533,6 +620,7 @@
 					breakpoint: settings.breakpoint,
 					megaWidthType: settings.megaWidthType,
 					megaWidthSelector: settings.megaWidthSelector,
+					megaAjaxLoad: settings.megaAjaxLoad,
 					classes: {
 						instance: 'jet-mega-menu',
 						menuContainer: 'jet-mega-menu-container',
@@ -544,8 +632,7 @@
 						megaContainer: 'jet-mega-menu-mega-container',
 					}
 				} );
-			}
-
+			} );
 		},
 
 		initMobileRender: function() {
@@ -651,7 +738,11 @@
 					},
 
 					isTemplateDefine: function() {
-						return false !== this.itemDataObject.elementorTemplateId ? true : false;
+						return false !== this.itemDataObject.megaTemplateId ? true : false;
+					},
+
+					getTemplateUrl: function() {
+						return 'default' === this.itemDataObject.megaContentType ? window.jetMenuPublicSettings.getBlocksTemplateApiUrl : window.jetMenuPublicSettings.getElementorTemplateApiUrl;
 					},
 
 					isSub: function() {
@@ -694,7 +785,7 @@
 					isBadgeVisible: function() {
 						let badgeVisible = this.$root.menuOptions.itemBadgeVisible;
 
-						return false === badgeVisible || '' === this.itemDataObject.badgeText || ! this.itemDataObject.badgeText ? false : true;
+						return false === badgeVisible || '' === this.itemDataObject.badgeContent || ! this.itemDataObject.badgeContent ? false : true;
 					},
 
 					isDescVisible: function() {
@@ -759,32 +850,30 @@
 								name: this.itemDataObject.name,
 								children: this.itemDataObject.children || false
 							} );
-
 						} else {
 
-							if ( ! this.itemDataObject.elementorContent ) {
-								this.getElementorTemplate();
+							if ( ! this.itemDataObject.megaContent ) {
+								this.getMegaTemplate();
 							} else {
-
 								jetMenu.eventBus.$emit( 'showTemplateContent', {
 									menuUniqId: this.$root.menuOptions.menuUniqId,
 									id: this.itemDataObject.id,
 									name: this.itemDataObject.name,
-									elementorContent: this.itemDataObject.elementorContent
+									megaContent: this.itemDataObject.megaContent
 								} );
 							}
 						}
 					},
 
-					getElementorTemplate: function() {
+					getMegaTemplate: function() {
 						var vueInstance = this;
 
 						vueInstance.ajaxRequest = $.ajax( {
 							type: 'GET',
-							url: window.jetMenuPublicSettings.templateApiUrl,
+							url: vueInstance.getTemplateUrl,
 							dataType: 'json',
 							data: {
-								'id': vueInstance.itemDataObject.elementorTemplateId,
+								'id': vueInstance.itemDataObject.megaTemplateId,
 								'dev': window.jetMenuPublicSettings.devMode
 							},
 							beforeSend: function( jqXHR, ajaxSettings ) {
@@ -798,27 +887,27 @@
 								jqXHR.setRequestHeader( 'X-WP-Nonce', window.jetMenuPublicSettings.restNonce );
 							},
 							success: function( responce, textStatus, jqXHR ) {
-								var templateContent   = responce['template_content'],
+								let templateContent   = responce['template_content'],
 									templateScripts   = responce['template_scripts'],
 									templateStyles    = responce['template_styles'];
 
-								for ( var scriptHandler in templateScripts ) {
+								for ( const scriptHandler in templateScripts ) {
 									jetMenu.addedAssetsPromises.push( jetMenu.loadScriptAsync( scriptHandler, templateScripts[ scriptHandler ] ) );
 								}
 
-								for ( var styleHandler in templateStyles ) {
+								for ( const styleHandler in templateStyles ) {
 									jetMenu.addedAssetsPromises.push( jetMenu.loadStyle( styleHandler, templateStyles[ styleHandler ] ) );
 								}
 
 								vueInstance.templateLoadStatus = false;
 
-								vueInstance.itemDataObject.elementorContent = templateContent;
+								vueInstance.itemDataObject.megaContent = templateContent;
 
 								jetMenu.eventBus.$emit( 'showTemplateContent', {
 									menuUniqId: vueInstance.$root.menuOptions.menuUniqId,
 									id: vueInstance.itemDataObject.id,
 									name: vueInstance.itemDataObject.name,
-									elementorContent: vueInstance.itemDataObject.elementorContent
+									megaContent: vueInstance.itemDataObject.megaContent
 								} );
 							}
 						} );
@@ -902,7 +991,7 @@
 							new Promise( function( resolve, reject ) {
 								$.ajax( {
 									type: 'GET',
-									url: window.jetMenuPublicSettings.templateApiUrl,
+									url: window.jetMenuPublicSettings.getElementorTemplateApiUrl,
 									dataType: 'json',
 									data: {
 										'id': vueInstance.headerTemplate,
@@ -939,7 +1028,7 @@
 							new Promise( function( resolve, reject ) {
 								$.ajax( {
 									type: 'GET',
-									url: window.jetMenuPublicSettings.templateApiUrl,
+									url: window.jetMenuPublicSettings.getElementorTemplateApiUrl,
 									dataType: 'json',
 									data: {
 										'id': vueInstance.beforeTemplate,
@@ -975,7 +1064,7 @@
 							new Promise( function( resolve, reject ) {
 								$.ajax( {
 									type: 'GET',
-									url: window.jetMenuPublicSettings.templateApiUrl,
+									url: window.jetMenuPublicSettings.getElementorTemplateApiUrl,
 									dataType: 'json',
 									data: {
 										'id': vueInstance.afterTemplate,
@@ -1031,7 +1120,7 @@
 							return;
 						}
 
-						vueInstance.itemTemplateContent = payLoad.elementorContent;
+						vueInstance.itemTemplateContent = payLoad.megaContent;
 						vueInstance.templateVisible = true;
 						vueInstance.breadcrumbsData.push( payLoad.name );
 						vueInstance.animation = 'items-next-animation';
@@ -1270,7 +1359,7 @@
 						this.$nextTick( function() {
 							let $templateContainer = $( vueInstance.$refs['template-content'] ).find( '.jet-mobile-menu__template-content' );
 
-							jetMenu.elementorContentRender( $templateContainer );
+							jetMenu.megaContentRender( $templateContainer );
 						} );
 					},
 
@@ -1282,19 +1371,19 @@
 							if ( vueInstance.headerContent ) {
 								let $headerContainer = $( vueInstance.$refs['header-template-content'] );
 
-								jetMenu.elementorContentRender( $headerContainer );
+								jetMenu.megaContentRender( $headerContainer );
 							}
 
 							if ( vueInstance.beforeContent ) {
 								let $beforeContainer = $( vueInstance.$refs['before-template-content'] );
 
-								jetMenu.elementorContentRender( $beforeContainer );
+								jetMenu.megaContentRender( $beforeContainer );
 							}
 
 							if ( vueInstance.afterContent ) {
 								let $afterContainer = $( vueInstance.$refs['after-template-content'] );
 
-								jetMenu.elementorContentRender( $afterContainer );
+								jetMenu.megaContentRender( $afterContainer );
 							}
 						} );
 					},
@@ -1367,7 +1456,7 @@
 			});
 		},
 
-		elementorContentRender: function( $templateContainer, templateContent ) {
+		megaContentRender: function( $templateContainer, templateContent ) {
 			let content = templateContent || false;
 
 			Promise.all( jetMenu.addedAssetsPromises ).then( function( value ) {
@@ -1382,9 +1471,13 @@
 					content: content,
 				} );
 
-				jetMenu.elementorFrontendInit( $templateContainer );
+				// Frontend init
+				$( window ).trigger( 'jet-menu/ajax/frontend-init', {
+					$container: $templateContainer,
+					content: content,
+				} );
 
-				// Before ajax frontend init
+				// after ajax frontend init
 				$( window ).trigger( 'jet-menu/ajax/frontend-init/after', {
 					$container: $templateContainer,
 					content: content,
@@ -1394,7 +1487,7 @@
 			});
 		},
 
-		elementorFrontendInit: function( $templateContainer ) {
+		maybeElementorFrontendInit: function( $templateContainer ) {
 
 			$templateContainer.find( 'div[data-element_type]' ).each( function() {
 				var $this       = $( this ),

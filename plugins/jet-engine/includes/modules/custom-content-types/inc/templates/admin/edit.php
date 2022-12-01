@@ -321,6 +321,12 @@
 						}
 					]"
 				></cx-vui-component-wrapper>
+				<cx-vui-switcher
+					label="<?php _e( 'Hide field names', 'jet-engine' ); ?>"
+					description="<?php _e( 'Hide field names on content type edit page.', 'jet-engine' ); ?>"
+					:wrapper-css="[ 'equalwidth' ]"
+					v-model="generalSettings.hide_field_names"
+				></cx-vui-switcher>
 			</div>
 		</cx-vui-collapse>
 		<cx-vui-popup

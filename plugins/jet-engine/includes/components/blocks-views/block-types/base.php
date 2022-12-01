@@ -223,7 +223,15 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Base' ) ) {
 
 			$render->setup_listing( $listing, $object_id, true, $listing_id );
 
-			return $render->get_content();
+			$content = $render->get_content();
+
+			$add_wrapper = ! empty( $attributes['_element_id'] );
+
+			if ( $add_wrapper ) {
+				$content = sprintf( '<div id="%1$s">%2$s</div>', esc_attr( $attributes['_element_id'] ), $content );
+			}
+
+			return $content;
 
 		}
 

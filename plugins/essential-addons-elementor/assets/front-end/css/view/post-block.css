@@ -1,4 +1,3 @@
-@charset "UTF-8";
 .eael-post-block-grid {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -153,7 +152,7 @@
   padding-right: 5px;
 }
 .eael-post-block .eael-entry-header .eael-entry-meta span.eael-posted-on::before {
-  content: "";
+  content: "\f111";
   font-family: "Font Awesome 5 Free";
   color: inherit;
   opacity: 0.4;

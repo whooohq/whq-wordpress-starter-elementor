@@ -7,6 +7,7 @@
 @import "widgets/single-product-widgets/jet-single-tabs";
 @import "widgets/single-product-widgets/jet-single-badge";
 @import "widgets/single-product-widgets/jet-single-attributes";
+@import "widgets/single-product-widgets/jet-single-meta";
 
 @import 'widgets/global-widgets/jet-woo-products';
 @import 'widgets/global-widgets/jet-woo-categories';
@@ -82,11 +83,11 @@
 .product-star-rating {
 	position: relative;
 	display: inline-flex;
+	align-items: center;
 
 	&__rated {
 		display: flex;
 		position: absolute;
-		top: 0;
 		left: 0;
 		overflow: hidden;
 
@@ -119,5 +120,36 @@
 		width: 1em;
 		height: 1em;
 		fill: currentColor;
+	}
+}
+
+.jet-woo-item-overlay-wrap {
+	position: relative;
+	cursor: pointer;
+
+	.jet-woo-item-overlay-link {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index: -1;
+	}
+}
+
+.jet-woo-builder-title-line-wrap-yes {
+	.jet-woo-product-title,
+	.jet-woo-category-title,
+	.jet-woo-builder-archive-product-title,
+	.jet-woo-builder-archive-category-title {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.jet-woo-products-list {
+		.jet-woo-product-title {
+			max-width: 100%;
+		}
 	}
 }
