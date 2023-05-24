@@ -100,6 +100,11 @@ class On_View {
 		if ( false === $this->stores ) {
 			foreach ( $this->manager->get_stores() as $store ) {
 				if ( $store->get_arg( 'store_on_view' ) ) {
+
+					if ( ! is_array( $this->stores ) ) {
+						$this->stores = array();
+					}
+
 					$this->stores[] = $store;
 				}
 			}

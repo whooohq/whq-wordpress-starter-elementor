@@ -67,6 +67,22 @@
 	}
 }
 
+.jet-media-icon-control {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+
+	.components-base-control__label {
+		width: 100%;
+	}
+
+	img {
+		width: 32px;
+		height: auto;
+	}
+
+}
+
 .jet-engine-heading {
 	padding: 0 0 10px;
 	font-weight: bold;
@@ -106,6 +122,10 @@
 	}
 	.components-panel__body {
 		width: 200px;
+
+		&.is-opened > .components-panel__body-title {
+			margin: 0 0 5px 0;
+		}
 	}
 	.components-base-control__help {
 		margin-top: 0;
@@ -124,3 +144,7 @@ button.components-button.jet-engine-dynamic-source--reset {
 	}
 }
 
+.components-base-control .je-grouped-select {
+	width: 100%;
+	max-width: 100%;
+}

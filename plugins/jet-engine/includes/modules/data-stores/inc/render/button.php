@@ -79,6 +79,7 @@ class Button extends \Jet_Engine_Render_Base {
 		$label = ! empty( $settings['label'] ) ? $this->get_label_html( $settings['label'] ) : '';
 		$icon  = ! empty( $settings['icon'] ) ? $this->get_icon_html( $settings['icon'] ) : '';
 
+
 		$action_after_added = ! empty( $settings['action_after_added'] ) ? $settings['action_after_added'] : 'remove_from_store';
 
 		$added_url   = ! empty( $settings['added_to_store_url'] ) ? $settings['added_to_store_url'] : '';

@@ -46,6 +46,7 @@
 		v-if="showDeleteDialog"
 		v-model="showDeleteDialog"
 		:item-id="deletedItem.id"
+		:item-name="deletedItem.args.name"
 	></jet-cct-delete-dialog>
 	<jet-cct-copy-dialog
 		v-if="showCopyDialog"

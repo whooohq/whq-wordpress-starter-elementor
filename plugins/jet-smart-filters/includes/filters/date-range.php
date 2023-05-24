@@ -85,6 +85,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Date_Range_Filter' ) ) {
 				'date_format'          => $date_format,
 				'from_placeholder'     => $from,
 				'to_placeholder'       => $to,
+				'accessibility_label'  => $this->get_accessibility_label( $filter_id )
 			);
 		}
 	}

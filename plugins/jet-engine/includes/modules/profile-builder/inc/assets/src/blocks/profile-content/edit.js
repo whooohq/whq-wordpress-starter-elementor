@@ -1,7 +1,10 @@
 const {
-	ServerSideRender,
 	Disabled
 } = wp.components;
+
+const {
+	serverSideRender: ServerSideRender
+} = wp;
 
 const Edit = function( props ) {
 

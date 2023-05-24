@@ -385,7 +385,7 @@ class Jet_Listing_Dynamic_Meta_Widget extends Widget_Base {
 			array(
 				'label'      => __( 'Padding', 'jet-engine' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', '%', 'em' ) ),
 				'selectors'  => array(
 					$this->css_selector( '__item' ) => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -397,7 +397,7 @@ class Jet_Listing_Dynamic_Meta_Widget extends Widget_Base {
 			array(
 				'label'      => __( 'Margin', 'jet-engine' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', '%', 'em' ) ),
 				'selectors'  => array(
 					$this->css_selector( '__item' ) => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -419,7 +419,7 @@ class Jet_Listing_Dynamic_Meta_Widget extends Widget_Base {
 			array(
 				'label'      => __( 'Border Radius', 'jet-engine' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', '%' ) ),
 				'selectors'  => array(
 					$this->css_selector( '__item' ) => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -590,7 +590,7 @@ class Jet_Listing_Dynamic_Meta_Widget extends Widget_Base {
 			array(
 				'label'      => __( 'Padding', 'jet-engine' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', '%', 'em' ) ),
 				'selectors'  => array(
 					$this->css_selector( '__item-val' ) => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -602,7 +602,7 @@ class Jet_Listing_Dynamic_Meta_Widget extends Widget_Base {
 			array(
 				'label'      => __( 'Margin', 'jet-engine' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', '%', 'em' ) ),
 				'selectors'  => array(
 					$this->css_selector( '__item-val' ) => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -624,7 +624,7 @@ class Jet_Listing_Dynamic_Meta_Widget extends Widget_Base {
 			array(
 				'label'      => __( 'Border Radius', 'jet-engine' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', '%' ) ),
 				'selectors'  => array(
 					$this->css_selector( '__item-val' ) => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),

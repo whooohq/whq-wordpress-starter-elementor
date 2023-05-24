@@ -69,5 +69,19 @@ if ( ! class_exists( 'Jet_Smart_Filters_Filter_Base' ) ) {
 
 			return $custom_query_var;
 		}
+
+		/**
+		 * Get filter accessibility label
+		 */
+		public function get_accessibility_label( $filter_id ) {
+
+			$label = get_post_meta( $filter_id, '_filter_label', true );
+
+			if ( !$label ) {
+				$label = get_the_title( $filter_id );
+			}
+
+			return $label;
+		}
 	}
 }

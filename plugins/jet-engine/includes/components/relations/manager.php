@@ -75,6 +75,13 @@ class Manager extends \Jet_Engine_Base_WP_Intance {
 	public $hierachy = null;
 
 	/**
+	 * Types helper instance
+	 *
+	 * @var null
+	 */
+	public $types_helper = null;
+
+	/**
 	 * Constructor for the class
 	 */
 	function __construct() {
@@ -107,10 +114,12 @@ class Manager extends \Jet_Engine_Base_WP_Intance {
 		require_once $this->component_path( 'macros/get-related-items.php' );
 		require_once $this->component_path( 'macros/get-related-siblings.php' );
 		require_once $this->component_path( 'macros/get-related-items-count.php' );
+		require_once $this->component_path( 'macros/get-related-item-meta.php' );
 
 		new Macros\Get_Related_Items();
 		new Macros\Get_Related_Siblings();
 		new Macros\Get_Related_Items_Count();
+		new Macros\Get_Related_Item_Meta();
 
 	}
 
@@ -118,15 +127,17 @@ class Manager extends \Jet_Engine_Base_WP_Intance {
 	 * [register_elementor_dynamic_tags description]
 	 * @return [type] [description]
 	 */
-	public function register_elementor_dynamic_tags( $tags_module ) {
+	public function register_elementor_dynamic_tags( $dynamic_tags, $tags_module ) {
 
 		require_once $this->component_path( 'dynamic-tags/related-items.php' );
 		require_once $this->component_path( 'dynamic-tags/related-siblings.php' );
 		require_once $this->component_path( 'dynamic-tags/related-items-count.php' );
-
-		$tags_module->register_tag( new Dynamic_Tags\Related_Items() );
-		$tags_module->register_tag( new Dynamic_Tags\Related_Siblings() );
-		$tags_module->register_tag( new Dynamic_Tags\Related_Items_Count() );
+		require_once $this->component_path( 'dynamic-tags/related-item-meta.php' );
+		
+		$tags_module->register_tag( $dynamic_tags, new Dynamic_Tags\Related_Items() );
+		$tags_module->register_tag( $dynamic_tags, new Dynamic_Tags\Related_Siblings() );
+		$tags_module->register_tag( $dynamic_tags, new Dynamic_Tags\Related_Items_Count() );
+		$tags_module->register_tag( $dynamic_tags, new Dynamic_Tags\Related_Item_Meta() );
 	}
 
 	/**
@@ -315,7 +326,7 @@ class Manager extends \Jet_Engine_Base_WP_Intance {
 		}
 
 		// Elementor Dynamic tags
-		add_action( 'jet-engine/elementor-views/dynamic-tags/register', array( $this, 'register_elementor_dynamic_tags' ) );
+		add_action( 'jet-engine/elementor-views/dynamic-tags/register', array( $this, 'register_elementor_dynamic_tags' ), 10, 2 );
 
 	}
 

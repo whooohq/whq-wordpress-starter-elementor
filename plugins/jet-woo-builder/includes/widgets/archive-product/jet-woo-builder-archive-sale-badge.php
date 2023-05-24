@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Exit if accessed directly
 
-class Jet_Woo_Builder_Archive_Sale_Badge extends Widget_Base {
+class Jet_Woo_Builder_Archive_Sale_Badge extends Jet_Woo_Builder_Base {
 
 	public function get_name() {
 		return 'jet-woo-builder-archive-sale-badge';
@@ -27,7 +27,7 @@ class Jet_Woo_Builder_Archive_Sale_Badge extends Widget_Base {
 		return 'jet-woo-builder-icon-sale-badge';
 	}
 
-	public function get_help_url() {
+	public function get_jet_help_url() {
 		return 'https://crocoblock.com/knowledge-base/articles/woocommerce-jetwoobuilder-settings-how-to-create-and-set-a-custom-categories-archive-template/?utm_source=need-help&utm_medium=jet-woo-categories&utm_campaign=jetwoobuilder';
 	}
 
@@ -77,6 +77,14 @@ class Jet_Woo_Builder_Archive_Sale_Badge extends Widget_Base {
 			]
 		);
 
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'archive_badge_typography',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['badge'],
+			]
+		);
+
 		$this->add_control(
 			'archive_badge_color',
 			array(
@@ -90,21 +98,13 @@ class Jet_Woo_Builder_Archive_Sale_Badge extends Widget_Base {
 
 		$this->add_control(
 			'archive_badge_background',
-			array(
-				'label'     => esc_html__( 'Background', 'jet-woo-builder' ),
+			[
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
+				'label'     => __( 'Background Color', 'jet-woo-builder' ),
+				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['badge'] => 'background-color: {{VALUE}}',
-				),
-			)
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			array(
-				'name'     => 'archive_badge_typography',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['badge'],
-			)
+				],
+			]
 		);
 
 		$this->add_group_control(
@@ -120,14 +120,14 @@ class Jet_Woo_Builder_Archive_Sale_Badge extends Widget_Base {
 
 		$this->add_responsive_control(
 			'archive_badge_border_radius',
-			array(
-				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['badge'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_group_control(
@@ -140,26 +140,26 @@ class Jet_Woo_Builder_Archive_Sale_Badge extends Widget_Base {
 
 		$this->add_responsive_control(
 			'archive_badge_content_margin',
-			array(
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['badge'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'archive_badge_content_padding',
-			array(
-				'label'      => __( 'Padding', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['badge'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(

@@ -4,7 +4,7 @@
  *
  * This template can be overridden by copying it to yourtheme/jet-woo-builder/woocommerce/cart/cart-empty.php.
  *
- * @version 3.5.0
+ * @version 7.0.1
  */
 
 defined( 'ABSPATH' ) || exit;

@@ -499,7 +499,13 @@ if ( ! class_exists( 'Jet_Woo_Builder_Post_Type' ) ) {
 		}
 
 		/**
+		 * Register post type.
+		 *
 		 * Register templates post type.
+		 *
+		 * @since  1.0.0
+		 * @since  2.1.3 Added `jet-woo-builder/post-type/args` hook for register post type arguments.
+		 * @access public
 		 *
 		 * @return void
 		 */
@@ -535,7 +541,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Post_Type' ) ) {
 			];
 
 			register_taxonomy( $this->type_tax, $this->slug(), $tax_args );
-			register_post_type( $this->slug(), $args );
+			register_post_type( $this->slug(), apply_filters( 'jet-woo-builder/post-type/args', $args ) );
 
 		}
 

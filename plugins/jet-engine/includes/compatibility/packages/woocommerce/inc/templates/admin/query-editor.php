@@ -38,6 +38,13 @@
 					name="query_type"
 					v-model="query.type"
 				></cx-vui-f-select>
+				<cx-vui-switcher
+					label="<?php _e( 'Handle Search Query', 'jet-engine' ); ?>"
+					description="<?php _e( 'Enable for compatibility with search query.', 'jet-engine' ); ?>"
+					:wrapper-css="[ 'equalwidth' ]"
+					name="query_search_query"
+					v-model="query.search_query"
+				></cx-vui-switcher>
 				<cx-vui-input
 					label="<?php _e( 'Include', 'jet-engine' ); ?>"
 					description="<?php _e( 'Only includes products with IDs in the array. Comma-separated products IDs list - 1, 10, 25.', 'jet-engine' ); ?>"

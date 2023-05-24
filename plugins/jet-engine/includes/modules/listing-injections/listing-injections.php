@@ -3,10 +3,13 @@
  * Listing injections module
  */
 
+use Jet_Engine\Bricks_Views\Helpers;
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
 
 if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 
@@ -15,11 +18,11 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 	 */
 	class Jet_Engine_Module_Listing_Injections extends Jet_Engine_Module_Base {
 
-		private $injected_counter      = array();
-		private $injected_indexes      = array();
+		private $injected_counter = array();
+		private $injected_indexes = array();
 		private $is_last_static_hooked = false;
 		private $static_items_to_print = array();
-		private $static_injections     = array();
+		private $static_injections = array();
 
 		/**
 		 * Module ID
@@ -73,13 +76,20 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 		public function module_init() {
 
 			add_action( 'jet-engine/listing/after-general-settings', array( $this, 'add_settings' ) );
+			add_action( 'jet-engine/listing/bricks/after-general-settings', array( $this, 'add_bricks_settings' ) );
 			add_action( 'jet-engine/listing/grid/before', array( $this, 'reset_injected_counter' ) );
-			add_action( 'jet-engine/elementor-views/frontend/after_enqueue_listing_css', array( $this, 'maybe_enqueue_injection_css' ), 10, 3 );
+			add_action( 'jet-engine/elementor-views/frontend/after_enqueue_listing_css', array(
+				$this,
+				'maybe_enqueue_injection_css'
+			), 10, 3 );
 
 			add_filter( 'jet-engine/listing/pre-get-item-content', array( $this, 'maybe_inject_item' ), 10, 5 );
 			add_filter( 'jet-engine/listing/item-classes', array( $this, 'maybe_add_colspan' ), 10, 5 );
 			add_filter( 'jet-engine/listing/grid/nav-widget-settings', array( $this, 'store_nav_settings' ), 10, 2 );
-			add_filter( 'jet-engine/blocks-views/listing-injections-config', array( $this, 'blocks_injections_config' ) );
+			add_filter( 'jet-engine/blocks-views/listing-injections-config', array(
+				$this,
+				'blocks_injections_config'
+			) );
 			add_filter( 'jet-engine/blocks-views/listing-grid/attributes', array( $this, 'block_atts' ) );
 
 		}
@@ -87,12 +97,13 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 		/**
 		 * Injeactions config for the block editor
 		 *
-		 * @param  array  $data [description]
+		 * @param array $data [description]
+		 *
 		 * @return [type]       [description]
 		 */
 		public function blocks_injections_config( $data = array() ) {
 			return array(
-				'enabled'  => true,
+				'enabled' => true,
 			);
 		}
 
@@ -100,6 +111,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 		 * Register additional block attributes
 		 *
 		 * @param  [type] $atts [description]
+		 *
 		 * @return [type]       [description]
 		 */
 		public function block_atts( $atts ) {
@@ -126,7 +138,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 		public function store_nav_settings( $nav_settngs = array(), $settings = array() ) {
 
 			$nav_settngs['inject_alternative_items'] = ! empty( $settings['inject_alternative_items'] ) ? $settings['inject_alternative_items'] : '';
-			$nav_settngs['injection_items'] = ! empty( $settings['injection_items'] ) ? $settings['injection_items'] : array();
+			$nav_settngs['injection_items']          = ! empty( $settings['injection_items'] ) ? $settings['injection_items'] : array();
 
 			return $nav_settngs;
 
@@ -171,7 +183,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 
 			ob_start();
 			$listing_item = jet_engine()->frontend->get_listing_item( $post );
-			$inline_css = ob_get_clean();
+			$inline_css   = ob_get_clean();
 
 			return $inline_css . $listing_item;
 
@@ -184,6 +196,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 		 * @param  [type] $post    [description]
 		 * @param  [type] $i       [description]
 		 * @param  [type] $widget  [description]
+		 *
 		 * @return [type]          [description]
 		 */
 		public function maybe_add_colspan( $classes = array(), $post = null, $i = null, $widget = null, $is_static = false ) {
@@ -235,6 +248,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 		 * @param  [type]  $i          [description]
 		 * @param  [type]  $number     [description]
 		 * @param  [type]  $from_first [description]
+		 *
 		 * @return boolean             [description]
 		 */
 		public function is_matched_num( $i = 1, $number = 2, $from_first = false, $once = false, $total = 1, $listing_id = false ) {
@@ -255,7 +269,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 						return ( $total === $i || 0 === ( $total - $i ) % absint( $number ) );
 					}
 				} else {
-					if ( 0 <= $number  ) {
+					if ( 0 <= $number ) {
 						return ( 0 === $i % $number );
 					} else {
 						return ( 0 === ( $total - ( $i - 1 ) ) % absint( $number ) );
@@ -299,8 +313,8 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 				return false;
 			}
 
-			$i = absint( $i );
-			$items = $this->sort_items( $items );
+			$i          = absint( $i );
+			$items      = $this->sort_items( $items );
 			$listing_id = ! empty( $settings['lisitng_id'] ) ? absint( $settings['lisitng_id'] ) : false;
 
 			if ( $listing_id !== jet_engine()->listings->data->get_listing()->get_main_id() ) {
@@ -554,7 +568,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 
 							// increase inserted static items counter
 							if ( $listing_id ) {
-								$this->static_injections[ $listing_id ] = isset( $this->static_injections[ $listing_id ] ) ? $this->static_injections[ $listing_id ]++ : 1;
+								$this->static_injections[ $listing_id ] = isset( $this->static_injections[ $listing_id ] ) ? $this->static_injections[ $listing_id ] ++ : 1;
 							}
 
 							$this->print_static_result( $result, $post, $item, $i, $listing_id );
@@ -586,7 +600,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 
 					add_action(
 						'jet-engine/listing/after-grid-item',
-						function( $post, $widget, $i ) use ( $listing_id ) {
+						function ( $post, $widget, $i ) use ( $listing_id ) {
 							if ( ! $listing_id || $listing_id === jet_engine()->listings->data->get_listing()->get_main_id() ) {
 								$this->print_static_result_cb( $post, $widget, $i );
 							}
@@ -646,14 +660,15 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 		/**
 		 * Sort items. Move static items to the top of the list of items.
 		 *
-		 * @param  array $items
+		 * @param array $items
+		 *
 		 * @return array
 		 */
 		public function sort_items( $items ) {
 
 			$static_items = array();
 
-			for ( $i = 0; $i < count( $items ); $i++ ) {
+			for ( $i = 0; $i < count( $items ); $i ++ ) {
 				if ( empty( $items[ $i ]['static_item'] ) ) {
 					$static_items[] = '';
 				} else {
@@ -677,30 +692,22 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 				$this->injected_counter[ $item_id ] = 0;
 			}
 
-			$this->injected_counter[ $item_id ]++;
+			$this->injected_counter[ $item_id ] ++;
 			$this->injected_indexes[ $i ] = $item;
 
 		}
 
-		/**
-		 * Register listing injection settings
-		 *
-		 * @param [type] $widget [description]
-		 */
-		public function add_settings( $widget ) {
+		public function get_injection_settings( $items_repeater, $widget ) {
 
-			$widget->add_control(
-				'inject_alternative_items',
-				array(
-					'label'        => __( 'Inject alternative listing items', 'jet-engine' ),
-					'type'         => \Elementor\Controls_Manager::SWITCHER,
-					'description'  => '',
-					'return_value' => 'yes',
-					'default'      => '',
-				)
+			$settings = array();
+
+			$settings['inject_alternative_items'] = array(
+				'label'        => __( 'Inject alternative listing items', 'jet-engine' ),
+				'type'         => 'switcher',
+				'description'  => '',
+				'return_value' => 'yes',
+				'default'      => '',
 			);
-
-			$items_repeater = new \Elementor\Repeater();
 
 			$items_repeater->add_control(
 				'item',
@@ -718,7 +725,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 				'item_condition_type',
 				array(
 					'label'   => __( 'Inject on', 'jet-engine' ),
-					'type'    => \Elementor\Controls_Manager::SELECT,
+					'type'    => 'select',
 					'default' => 'on_item',
 					'options' => array(
 						'on_item'   => __( 'On each N item', 'jet-engine' ),
@@ -735,9 +742,9 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 				'item_num',
 				array(
 					'label'       => __( 'Item number', 'jet-engine' ),
-					'type'        => \Elementor\Controls_Manager::NUMBER,
+					'type'        => 'number',
 					'default'     => 2,
-					'min'         => -1000,
+					'min'         => - 1000,
 					'max'         => 1000,
 					'step'        => 1,
 					'description' => __( 'Use negative numbers to start count from the last item', 'jet-engine' ),
@@ -751,7 +758,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 				'start_from_first',
 				array(
 					'label'        => __( 'Start from first', 'jet-engine' ),
-					'type'         => \Elementor\Controls_Manager::SWITCHER,
+					'type'         => 'switcher',
 					'return_value' => 'yes',
 					'description'  => __( 'If checked - alternative item will be injected on first item and then on each N item after first. If not - on each N item from start. If "Item number" is negative converts into "Start from last"', 'jet-engine' ),
 					'default'      => '',
@@ -764,9 +771,9 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 			$items_repeater->add_control(
 				'meta_key',
 				array(
-					'label'   => __( 'Key (name/ID)', 'jet-engine' ),
-					'type'    => \Elementor\Controls_Manager::TEXT,
-					'default' => '',
+					'label'     => __( 'Key (name/ID)', 'jet-engine' ),
+					'type'      => 'text',
+					'default'   => '',
 					'condition' => array(
 						'item_condition_type' => 'item_meta'
 					),
@@ -776,10 +783,10 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 			$items_repeater->add_control(
 				'meta_key_compare',
 				array(
-					'label'   => __( 'Operator', 'jet-engine' ),
-					'type'    => \Elementor\Controls_Manager::SELECT,
-					'default' => '=',
-					'options' => array(
+					'label'     => __( 'Operator', 'jet-engine' ),
+					'type'      => 'select',
+					'default'   => '=',
+					'options'   => array(
 						'='           => __( 'Equal', 'jet-engine' ),
 						'!='          => __( 'Not equal', 'jet-engine' ),
 						'>'           => __( 'Greater than', 'jet-engine' ),
@@ -793,7 +800,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 						'BETWEEN'     => __( 'Between', 'jet-engine' ),
 						'NOT BETWEEN' => __( 'Not between', 'jet-engine' ),
 					),
-					'condition'   => array(
+					'condition' => array(
 						'item_condition_type' => 'item_meta'
 					),
 				)
@@ -803,7 +810,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 				'meta_key_val',
 				array(
 					'label'       => __( 'Value', 'jet-engine' ),
-					'type'        => \Elementor\Controls_Manager::TEXT,
+					'type'        => 'text',
 					'default'     => '',
 					'label_block' => true,
 					'description' => __( 'For <b>In</b>, <b>Not in</b>, <b>Between</b> and <b>Not between</b> compare separate multiple values with comma', 'jet-engine' ),
@@ -817,7 +824,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 				'tax',
 				array(
 					'label'     => __( 'Taxonomy', 'jet-engine' ),
-					'type'      => \Elementor\Controls_Manager::SELECT,
+					'type'      => 'select',
 					'options'   => jet_engine()->listings->get_taxonomies_for_options(),
 					'default'   => '',
 					'condition' => array(
@@ -832,7 +839,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 					'label'       => __( 'Terms', 'jet-engine' ),
 					'description' => __( 'Comma-separated string of term ids or slugs', 'jet-engine' ),
 					'label_block' => true,
-					'type'        => \Elementor\Controls_Manager::TEXT,
+					'type'        => 'text',
 					'default'     => '',
 					'condition'   => array(
 						'item_condition_type' => 'has_terms'
@@ -844,7 +851,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 				'post_type',
 				array(
 					'label'     => __( 'Post type', 'jet-engine' ),
-					'type'      => \Elementor\Controls_Manager::SELECT,
+					'type'      => 'select',
 					'options'   => jet_engine()->listings->get_post_types_for_options(),
 					'default'   => 'post',
 					'condition' => array(
@@ -857,7 +864,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 				'inject_once',
 				array(
 					'label'        => __( 'Inject this item only once', 'jet-engine' ),
-					'type'         => \Elementor\Controls_Manager::SWITCHER,
+					'type'         => 'switcher',
 					'description'  => '',
 					'return_value' => 'yes',
 					'default'      => '',
@@ -868,7 +875,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 				'item_colspan',
 				array(
 					'label'       => __( 'Column span', 'jet-engine' ),
-					'type'        => \Elementor\Controls_Manager::SELECT,
+					'type'        => 'select',
 					'default'     => 1,
 					'description' => __( 'Note: Can\'t be bigger than Columns Number value', 'jet-engine' ),
 					'options'     => array(
@@ -886,7 +893,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 				'static_item',
 				array(
 					'label'        => __( 'Static item', 'jet-engine' ),
-					'type'         => \Elementor\Controls_Manager::SWITCHER,
+					'type'         => 'switcher',
 					'return_value' => 'yes',
 					'description'  => __( 'If checked - alternative item will be injected without current post context. Use this to inject static items into listing.', 'jet-engine' ),
 					'default'      => '',
@@ -898,7 +905,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 				array(
 					'label'       => __( 'Context', 'jet-engine' ),
 					'description' => __( 'Select object to to use as default inside static item', 'jet-engine' ),
-					'type'        => \Elementor\Controls_Manager::SELECT,
+					'type'        => 'select',
 					'default'     => 'default_object',
 					'options'     => jet_engine()->listings->allowed_context_list(),
 					'condition'   => array(
@@ -909,17 +916,47 @@ if ( ! class_exists( 'Jet_Engine_Module_Listing_Injections' ) ) {
 
 			do_action( 'jet-engine/listing-injections/item-controls', $items_repeater, $widget );
 
-			$widget->add_control(
-				'injection_items',
-				array(
-					'type'      => \Elementor\Controls_Manager::REPEATER,
-					'fields'    => $items_repeater->get_controls(),
-					'default'   => array(),
-					'condition' => array(
-						'inject_alternative_items' => 'yes',
-					)
+			$settings['injection_items'] = array(
+				'type'      => 'repeater',
+				'fields'    => $items_repeater->get_controls(),
+				'default'   => array(),
+				'condition' => array(
+					'inject_alternative_items' => 'yes',
 				)
 			);
+
+			return $settings;
+
+		}
+
+		/**
+		 * Register listing injection settings
+		 *
+		 * @param [type] $widget [description]
+		 */
+		public function add_bricks_settings( $element ) {
+
+			$injection_settings = $this->get_injection_settings( new Helpers\Repeater(), $element );
+
+			foreach ( $injection_settings as $setting => $data ) {
+				$element->register_jet_control(
+					$setting,
+					Helpers\Options_Converter::convert( $data )
+				);
+			}
+
+		}
+
+		/**
+		 * Register listing injection settings
+		 *
+		 * @param [type] $widget [description]
+		 */
+		public function add_settings( $widget ) {
+
+			foreach ( $this->get_injection_settings( new \Elementor\Repeater(), $widget ) as $setting => $data ) {
+				$widget->add_control( $setting, $data );
+			}
 
 		}
 

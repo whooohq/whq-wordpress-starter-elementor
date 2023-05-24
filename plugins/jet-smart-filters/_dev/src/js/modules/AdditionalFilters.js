@@ -17,30 +17,25 @@ export default class AdditionalFilters {
 				return;
 
 			this.changeByParent(parentFilter);
-		});
+		}, true);
 		eventBus.subscribe('fiters/apply', parentApplyFilter => {
 			if (!this.isCurrentAdditionalProvider(parentApplyFilter) || parentApplyFilter.isReload)
 				return;
 
 			this.applyFiltersByParent(parentApplyFilter);
-		});
+		}, true);
 		eventBus.subscribe('fiters/remove', parentRemoveFilter => {
 			if (!this.isCurrentAdditionalProvider(parentRemoveFilter) || parentRemoveFilter.isReload)
 				return;
 
-			this.removeByParent(parentRemoveFilter)
-		});
+			this.removeByParent(parentRemoveFilter);
+		}, true);
 		eventBus.subscribe('ajaxFilters/updated', (provider, queryId) => {
 			if (!this.filterGroup.isCurrentProvider({ provider, queryId }))
 				return;
 
 			this.filterGroup.additionalRequest = false;
-		});
-
-		// After initialization
-		setTimeout(() => {
-			this.updateProvider();
-		});
+		}, true);
 	}
 
 	changeByParent(parentFilter) {
@@ -81,6 +76,8 @@ export default class AdditionalFilters {
 			if (filter.isAdditional)
 				this.filters.push(filter);
 		});
+
+		this.updateProvider();
 	}
 
 	updateProvider() {
@@ -94,7 +91,7 @@ export default class AdditionalFilters {
 	parentProviderCurrentFilters(provider, queryId) {
 		return getProviderFilters(provider, queryId).filter(parentFilter => {
 			return this.isCurrentAdditionalProvider(parentFilter);
-		})
+		});
 	}
 
 	resetFilters() {
@@ -106,7 +103,7 @@ export default class AdditionalFilters {
 	findInCollection(parentFilter) {
 		return this.filters.find(collectionFilter => {
 			return getPropertiesKey(parentFilter) === getPropertiesKey(collectionFilter);
-		})
+		});
 
 		function getPropertiesKey(filter) {
 			return filter.name + '|' + filter.filterId + '|' + filter.queryKey;

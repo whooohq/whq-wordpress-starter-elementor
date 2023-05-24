@@ -100,6 +100,8 @@ class Edit_Item_Page extends \Jet_Engine_Options_Page_Factory {
 			$this->setup_page_fields();
 
 			add_action( 'admin_enqueue_scripts', array( $this, 'init_builder' ), 0 );
+			add_action( 'admin_enqueue_scripts', array( $this, 'maybe_enqueue_inline_js' ), 20 );
+
 			add_action( 'admin_init', array( $this, 'save' ), 40 );
 			add_action( 'admin_notices', array( $this, 'saved_notice' ) );
 		}

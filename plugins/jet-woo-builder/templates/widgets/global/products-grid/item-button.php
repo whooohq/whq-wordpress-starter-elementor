@@ -10,9 +10,9 @@ if ( 'yes' !== $this->get_attr( 'show_button' ) ) {
 }
 
 $classes         = [ 'jet-woo-product-button' ];
-$enable_quantity = 'yes' === $this->get_attr( 'show_quantity' );
+$enable_quantity = filter_var( $this->get_attr( 'show_quantity' ), FILTER_VALIDATE_BOOLEAN );
 
-if ( 'yes' === $this->get_attr( 'button_use_ajax_style' ) ) {
+if ( filter_var( $this->get_attr( 'button_use_ajax_style' ), FILTER_VALIDATE_BOOLEAN ) ) {
 	$classes[] = 'is--default';
 }
 ?>

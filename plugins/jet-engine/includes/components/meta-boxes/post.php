@@ -97,6 +97,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Meta' ) ) {
 			) );
 
 			add_action( 'admin_enqueue_scripts', array( $this, 'maybe_enqueue_custom_css' ), 0 );
+			add_action( 'admin_enqueue_scripts', array( $this, 'maybe_enqueue_inline_js' ), 20 );
 			add_filter( 'cx_post_meta/custom_box', array( $this, 'maybe_hook_render_link' ), 10, 3 );
 
 		}
@@ -325,18 +326,27 @@ if ( ! class_exists( 'Jet_Engine_CPT_Meta' ) ) {
 					$this->custom_css[ $selector ] = $field['width'];
 				}
 
+				$description = '';
+
 				if ( ! empty( $field['description'] ) ) {
 					$description = apply_filters( 'jet-engine/compatibility/translate-string', $field['description'] );
+				}
 
-					if ( ! $this->hide_field_names ) {
-						$description  = rtrim( $description, '.' );
-						$description .= '. <br><span>' . __( 'Name: ', 'jet-engine' ) . $field['name'] . '</span>';
+				if ( ! $this->hide_field_names ) {
+
+					if ( ! empty( $description ) ) {
+						$description = rtrim( $description, '.' ) . ' <br>';
 					}
 
-					$result[ $field['name'] ]['description'] = $description;
+					$description .= sprintf(
+						'<span>%1$s<span class="je-field-name">%2$s</span></span>',
+						__( 'Name: ', 'jet-engine' ),
+						$field['name']
+					);
+				}
 
-				} elseif ( ! $this->hide_field_names ) {
-					$result[ $field['name'] ]['description'] = '<span>' . __( 'Name: ', 'jet-engine' ) . $field['name'] . '</span>';
+				if ( ! empty( $description ) ) {
+					$result[ $field['name'] ]['description'] = $description;
 				}
 
 				if ( ! empty( $field['is_required'] ) ) {
@@ -714,6 +724,52 @@ if ( ! class_exists( 'Jet_Engine_CPT_Meta' ) ) {
 		}
 
 		/**
+		 * Maybe add inline js
+		 */
+		public function maybe_enqueue_inline_js( $hook ) {
+
+			if ( ! $this->is_allowed_on_current_admin_hook( $hook ) ) {
+				return;
+			}
+
+			static $printed = false;
+
+			if ( $printed ) {
+				return;
+			}
+
+			$inline_js = "
+				(function( $ ) {
+					if ( undefined !== navigator.clipboard && undefined !== navigator.clipboard.writeText ) {
+	
+						$( document ).on( 'click', '.je-field-name', function( event ) {
+							var field = $( event.target ),
+								fieldName = field.text();
+	
+							navigator.clipboard.writeText( fieldName ).then( function() {
+								// clipboard successfully set
+								
+								field.addClass( 'je-copied' );
+								
+								setTimeout( function() {
+									field.removeClass( 'je-copied' );
+								}, 1500 );
+							
+							}, function() {
+								// clipboard write failed
+							} );
+						} );
+				
+					}
+				})( jQuery );
+			";
+
+			$printed = true;
+
+			wp_add_inline_script( 'cx-interface-builder', $inline_js );
+		}
+
+		/**
 		 * Get CSS wrapper selector.
 		 *
 		 * @return string
@@ -835,7 +891,11 @@ if ( ! class_exists( 'Jet_Engine_CPT_Meta' ) ) {
 				$label = apply_filters( 'jet-engine/compatibility/translate-string', $field_title );
 
 				if ( ! $this->hide_field_names ) {
-					$label .= ' <span>(' . __( 'name: ', 'jet-engine' ) . $field['name'] . ')</span>';
+					$label .= sprintf(
+						' <span>(%1$s<span class="je-field-name">%2$s</span>)</span>',
+						__( 'name: ', 'jet-engine' ),
+						$field['name']
+					);
 				}
 
 				$result[ $field['name'] ] = array(
@@ -924,6 +984,13 @@ if ( ! class_exists( 'Jet_Engine_CPT_Meta' ) ) {
 						$result[ $field['name'] ]['type']         = 'text';
 						$result[ $field['name'] ]['input_type']   = $field['type'];
 						$result[ $field['name'] ]['autocomplete'] = 'off';
+
+						$field['is_timestamp'] = ! empty( $field['is_timestamp'] ) ? $field['is_timestamp'] : false;
+						$field['is_timestamp'] = filter_var( $field['is_timestamp'], FILTER_VALIDATE_BOOLEAN );
+
+						if ( $field['is_timestamp'] ) {
+							$result[ $field['name'] ]['is_timestamp'] = true;
+						}
 
 						if ( ! $date_assets_added ) {
 							add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_date_assets' ) );

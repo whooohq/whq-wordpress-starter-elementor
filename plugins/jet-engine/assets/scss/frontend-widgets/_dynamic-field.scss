@@ -67,18 +67,20 @@
 			}
 			&.is-lightbox:before {
 				transition: all 150ms linear;
-				content: "\f055";
-				font-family: FontAwesome;
-				font-size: 20px;
-				width: 60px;
-				height: 60px;
-				line-height: 60px;
+				content: "+";
+				font-family: 'Arial';
+				font-weight: 900;
+				border: 4px solid currentColor;
+				width: 40px;
+				height: 40px;
+				border-radius: 20px;
+				line-height: 32px;
 				font-size: 30px;
 				text-align: center;
 				opacity: 0;
 				left: 50%;
 				top: 50%;
-				margin: -30px 0 0 -30px;
+				margin: -20px 0 0 -20px;
 				position: absolute;
 				z-index: 99;
 				color: #fff;
@@ -175,6 +177,10 @@
 		svg {
 			max-height: 100%;
 			width: auto;
+
+			path {
+				fill: currentColor;
+			}
 		}
 	}
 	&:not(.slick-initialized) {
@@ -232,5 +238,49 @@
 			margin-top: 1px;
 			align-self: center;
 		}
+	}
+}
+
+// Context Bricks
+.brxe-jet-engine-listing-dynamic-field {
+	.jet-listing-dynamic-field__icon {
+		display: inline-flex;
+		margin-right: 0;
+	}
+
+	.jet-listing-dynamic-field__icon :is(svg, path) {
+		fill: currentColor;
+	}
+
+	.jet-engine-gallery-slider {
+		--column-gap: 0;
+
+		.slick-list {
+			margin-right: calc(var(--column-gap)/-2);
+			margin-left: calc(var(--column-gap)/-2);
+		}
+
+		.slick-slide {
+			padding-right: calc(var(--column-gap)/2);
+			padding-left: calc(var(--column-gap)/2);
+		}
+
+		.jet-engine-arrow svg {
+			max-height: none;
+			width: 1em;
+			height: 1em;
+		}
+	}
+
+	.jet-engine-gallery-grid {
+		--gap: 20px;
+		gap: var(--gap);
+		margin: 0;
+	}
+
+	.jet-engine-gallery-grid__item {
+		padding: 0;
+		max-width: calc( ( 100% - ( var(--columns) - 1 ) * var(--gap) ) / var(--columns) );
+		flex: 0 0 calc( ( 100% - ( var(--columns) - 1 ) * var(--gap) ) / var(--columns) );
 	}
 }

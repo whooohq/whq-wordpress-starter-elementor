@@ -132,3 +132,21 @@
 		}
 	}
 }
+
+
+// Context Bricks
+.brxe-jet-listing-calendar {
+	.jet-calendar-week__day {
+		padding: 0;
+	}
+
+	.jet-calendar-week__day-date {
+		display: block;
+		text-align: center;
+	}
+	
+	.jet-calendar-nav__link svg {
+		width: 1em;
+		height: 1em;
+	}
+}

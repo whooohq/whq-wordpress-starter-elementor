@@ -13,7 +13,7 @@
 				<cx-vui-input
 					:name="'tax_name'"
 					:label="'<?php _e( 'Taxonomy Name', 'jet-engine' ); ?>'"
-					:description="'<?php _e( 'Set unique name for your post type. Eg. `Projects`', 'jet-engine' ); ?>'"
+					:description="'<?php _e( 'Set unique name for your taxonomy. Eg. `Projects`', 'jet-engine' ); ?>'"
 					:wrapper-css="[ 'equalwidth' ]"
 					:size="'fullwidth'"
 					:error="errors.name"
@@ -137,7 +137,7 @@
 				<cx-vui-input
 					:name="'query_var'"
 					:label="'<?php _e( 'Register Query Var', 'jet-engine' ); ?>'"
-					:description="'<?php _e( 'Sets the query_var key for this post type', 'jet-engine' ); ?>'"
+					:description="'<?php _e( 'Sets the query_var key for this taxonomy', 'jet-engine' ); ?>'"
 					:wrapper-css="[ 'equalwidth' ]"
 					:size="'fullwidth'"
 					v-model="advancedSettings.query_var"
@@ -177,6 +177,20 @@
 						}
 					]"
 					v-model="advancedSettings.with_front"
+				></cx-vui-switcher>
+				<cx-vui-switcher
+					:name="'rewrite_hierarchical'"
+					:label="'<?php _e( 'Rewrite Hierarchical', 'jet-engine' ); ?>'"
+					:description="'<?php _e( 'Either hierarchical rewrite tag or not', 'jet-engine' ); ?>'"
+					:wrapper-css="[ 'equalwidth' ]"
+					:conditions="[
+						{
+							'input':    advancedSettings.rewrite,
+							'compare': 'equal',
+							'value':    true,
+						}
+					]"
+					v-model="advancedSettings.rewrite_hierarchical"
 				></cx-vui-switcher>
 				<cx-vui-input
 					:name="'capability_type'"

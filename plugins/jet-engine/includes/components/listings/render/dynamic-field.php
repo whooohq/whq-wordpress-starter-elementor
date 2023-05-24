@@ -24,6 +24,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Field' ) ) {
 
 		public function default_settings() {
 			return array(
+				'prevent_wrap'                     => false,
 				'dynamic_field_source'             => 'object',
 				'dynamic_field_post_object'        => 'post_title',
 				'dynamic_field_relation_type'      => 'grandparents',
@@ -33,6 +34,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Field' ) ) {
 				'field_tag'                        => 'div',
 				'hide_if_empty'                    => false,
 				'dynamic_field_filter'             => false,
+				'filter_callbacks'                 => array(),
 				'date_format'                      => 'F j, Y',
 				'num_dec_point'                    => '.',
 				'num_thousands_sep'                => ',',
@@ -82,13 +84,17 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Field' ) ) {
 				$this
 			);
 
-			if( ! $result ){
+			if ( ! $result ) {
 
 				switch ( $source ) {
 					case 'object':
 
 						$field = $this->get( 'dynamic_field_post_object' );
 						$auto  = $this->get( 'dynamic_field_wp_excerpt', '' );
+
+						if ( ! empty( $settings['dynamic_field_post_meta_custom'] ) ) {
+							$field = $settings['dynamic_field_post_meta_custom'];
+						}
 
 						if ( 'post_excerpt' === $field && ! empty( $auto ) ) {
 
@@ -101,7 +107,18 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Field' ) ) {
 								add_filter( 'excerpt_length', array( $this, 'excerpt_length' ), 9999 );
 							}
 
-							$result = get_the_excerpt();
+							$post_object = jet_engine()->listings->data->get_object_by_context( $object_context );
+
+							if ( ! $post_object ) {
+								$post_object = jet_engine()->listings->data->get_current_object();
+							}
+
+							$result = get_the_excerpt( $post_object );
+
+							// If a post has excerpt, the filters `excerpt_more` and `excerpt_length` are not applied.
+							if ( has_excerpt( $post_object ) ) {
+								$result = wp_trim_words( $result, $this->excerpt_length, $this->more_string );
+							}
 
 							remove_filter( 'excerpt_more', array( $this, 'excerpt_more' ) );
 
@@ -195,7 +212,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Field' ) ) {
 
 						if ( $field ) {
 							$field  = trim( $field );
-							$result = jet_engine()->listings->data->get_meta_by_context( $field, $object_context );;
+							$result = jet_engine()->listings->data->get_meta_by_context( $field, $object_context );
 						}
 
 						break;
@@ -314,7 +331,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Field' ) ) {
 					return;
 				}
 
-				$result = ! is_array( $result ) ? $result : '';
+				$result = ! is_array( $result ) && ! is_object( $result ) ? $result : '';
 				$result = sprintf( $settings['dynamic_field_format'], $result );
 				$result = jet_engine()->listings->macros->do_macros( $result );
 				$result = do_shortcode( $result );
@@ -344,9 +361,22 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Field' ) ) {
 		 * @return [type]           [description]
 		 */
 		public function apply_callback( $result, $settings ) {
-
+			
+			// Check if multiple callbacks applied
+			$callbacks = isset( $settings['filter_callbacks'] ) ? $settings['filter_callbacks'] : array();
 			$callback = isset( $settings['filter_callback'] ) ? $settings['filter_callback'] : '';
-			return jet_engine()->listings->apply_callback( $result, $callback, $settings, $this );
+			
+			if ( ! empty( $callbacks ) ) {
+				foreach ( $callbacks as $cb_data ) {
+					$cb     = isset( $cb_data['filter_callback'] ) ? $cb_data['filter_callback'] : '';
+					$result = jet_engine()->listings->apply_callback( $result, $cb, array_merge( $settings, $cb_data ), $this );
+				}
+			} elseif ( $callback ) {
+				$result = jet_engine()->listings->apply_callback( $result, $callback, $settings, $this );
+			}
+
+			
+			return $result;
 
 		}
 
@@ -364,6 +394,26 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Field' ) ) {
 				&& ( $timestamp >= ~PHP_INT_MAX );
 		}
 
+		public function get_wrapper_classes() {
+			
+			$base_class    = $this->get_name();
+			$settings      = $this->get_settings();
+			$field_display = ! empty( $settings['field_display'] ) ? esc_attr( $settings['field_display'] ) : 'inline';
+
+			$classes = array(
+				'jet-listing',
+				$base_class,
+				'display-' . $field_display
+			);
+
+			if ( ! empty( $settings['className'] ) ) {
+				$classes[] = esc_attr( $settings['className'] );
+			}
+
+			return $classes;
+
+		}
+
 		public function render() {
 
 			$this->show_field = true;
@@ -376,23 +426,20 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Field' ) ) {
 			$field_icon    = ! empty( $settings['field_icon'] ) ? esc_attr( $settings['field_icon'] ) : false;
 			$new_icon      = ! empty( $settings['selected_field_icon'] ) ? $settings['selected_field_icon'] : false;
 
-			$classes = array(
-				'jet-listing',
-				$base_class,
-				'display-' . $field_display
-			);
-
-			if ( ! empty( $settings['className'] ) ) {
-				$classes[] = esc_attr( $settings['className'] );
-			}
-
 			ob_start();
 			$this->render_field_content( $settings );
 			$field_content = ob_get_clean();
 
 			ob_start();
 
-			printf( '<div class="%s">', implode( ' ', $classes ) );
+			$prevent_wrap = ! empty( $settings['prevent_wrap'] ) ? $settings['prevent_wrap'] : false;
+			$prevent_wrap = filter_var( $prevent_wrap, FILTER_VALIDATE_BOOLEAN );
+
+			$classes = $this->get_wrapper_classes();
+
+			if ( ! $prevent_wrap ) {
+				printf( '<div class="%s">', implode( ' ', $classes ) );
+			}
 
 				if ( 'inline' === $field_display ) {
 					printf( '<div class="%s__inline-wrap">', $base_class );
@@ -422,7 +469,9 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Field' ) ) {
 					echo '</div>';
 				}
 
-			echo '</div>';
+			if ( ! $prevent_wrap ) {
+				echo '</div>';
+			}
 
 			$content = ob_get_clean();
 

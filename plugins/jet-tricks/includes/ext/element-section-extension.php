@@ -81,7 +81,11 @@ if ( ! class_exists( 'Jet_Tricks_Elementor_Section_Extension' ) ) {
 
 			add_action( 'elementor/element/section/section_advanced/after_section_end', array( $this, 'after_section_section_advanced' ), 10, 2 );
 
+			add_action( 'elementor/element/container/section_layout/after_section_end', array( $this, 'after_section_section_advanced' ), 10, 2 );
+
 			add_action( 'elementor/frontend/section/before_render', array( $this, 'section_before_render' ) );
+
+			add_action( 'elementor/frontend/container/before_render', array( $this, 'section_before_render' ) );
 
 			add_action( 'elementor/frontend/before_enqueue_scripts', array( $this, 'enqueue_scripts' ), 9 );
 
@@ -146,7 +150,7 @@ if ( ! class_exists( 'Jet_Tricks_Elementor_Section_Extension' ) ) {
 			$type            = isset( $data['elType'] ) ? $data['elType'] : 'section';
 			$elementSettings = $element->get_settings_for_display();
 
-			if ( 'section' !== $type ) {
+			if ( 'section' !== $type && 'container' !== $type ) {
 				return false;
 			}
 

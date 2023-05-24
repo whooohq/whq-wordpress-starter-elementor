@@ -423,6 +423,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Sorting' ) ) {
 				return $this->is_editor() ? __( 'Please select a provider', 'jet-smart-filters' ) : false;
 			}
 
+			$base_class              = 'jet-smart-filters-' . $this->get_name();
 			$sorting_filter          = jet_smart_filters()->filter_types->get_filter_types( 'sorting' );
 			$sorting_options         = $sorting_filter->sorting_options( $settings['sorting_list'] );
 			$container_data_atts     = $sorting_filter->container_data_atts( $settings );
@@ -432,11 +433,19 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Sorting' ) ) {
 
 			ob_start();
 
+			printf(
+				'<div class="%1$s jet-filter" data-is-block="jet-smart-filters/%2$s">',
+				$base_class,
+				$this->get_name()
+			);
+
 			include jet_smart_filters()->get_template( 'filters/sorting.php' );
 
 			if ( $settings['apply_button'] ) {
 				include jet_smart_filters()->get_template( 'common/apply-filters.php' );
 			}
+
+			echo '</div>';
 
 			$filter_layout = ob_get_clean();
 

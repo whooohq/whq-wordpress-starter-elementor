@@ -100,7 +100,7 @@ if ( ! class_exists( 'Jet_Engine_Woo_Package' ) ) {
 				'tax_query_wc_visibility_term',
 				array(
 					'label'         => __( 'WooCommerce Visibility Term', 'jet-engine' ),
-					'type'          => \Elementor\Controls_Manager::SELECT,
+					'type'          => 'select',
 					'options'       => $options,
 					'default'       => '',
 					'display_block' => true,

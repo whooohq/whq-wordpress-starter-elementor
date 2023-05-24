@@ -17,6 +17,24 @@ if ( ! class_exists( 'Jet_Smart_Filters_Сlassic_Admin' ) ) {
 		 * Constructor for the class
 		 */
 		public function __construct() {
+			// Init components
+			require jet_smart_filters()->plugin_path( 'admin/includes/data.php' );
+			add_action( 'init', function() {
+				$this->data = new Jet_Smart_Filters_Admin_Data();
+			}, 999 );
+
+			//Init Setting Pages
+			add_action( 'admin_menu', array( $this, 'register_settings_page' ), 99 );
+
+			require jet_smart_filters()->plugin_path( 'admin/setting-pages/setting-pages.php' );
+			new Jet_Smart_Filters_Admin_Setting_Pages();
+
+			// Indexer
+			$this->is_indexer_enabled = filter_var( jet_smart_filters()->settings->get( 'use_indexed_filters' ), FILTER_VALIDATE_BOOLEAN );
+
+			if ( $this->is_indexer_enabled ) {
+				add_action( 'restrict_manage_posts', array( $this, 'add_index_filters_button' ) );
+			}
 
 			add_filter( 'jet-smart-filters/post-type/args', array( $this, 'set_post_type_args' ) );
 			add_action( 'admin_init', array( $this, 'init_meta' ), 99999 );
@@ -31,19 +49,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Сlassic_Admin' ) ) {
 
 			add_action( 'add_meta_boxes_' . jet_smart_filters()->post_type->slug(), array( $this, 'disable_metaboxes' ), 9999 );
 			add_filter( 'post_row_actions', array( $this, 'remove_view_action' ), 10, 2 );
-
-			//Init Setting Pages
-			add_action( 'admin_menu', array( $this, 'register_settings_page' ), 99 );
-
-			require jet_smart_filters()->plugin_path( 'admin/settings/setting-pages.php' );
-			new Jet_Smart_Filters_Admin_Setting_Pages();
-
-			// Indexer
-			$this->is_indexer_enabled = filter_var( jet_smart_filters()->settings->get( 'use_indexed_filters' ), FILTER_VALIDATE_BOOLEAN );
-
-			if ( $this->is_indexer_enabled ) {
-				add_action( 'restrict_manage_posts', array( $this, 'add_index_filters_button' ) );
-			}
 
 			// Admin mode switcher button
 			add_action( 'restrict_manage_posts', array( $this, 'add_admin_mode_switcher_button' ) );
@@ -90,10 +95,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Сlassic_Admin' ) ) {
 		 */
 		public function init_meta() {
 
-			// Get data instance
-			require_once jet_smart_filters()->plugin_path( 'admin/includes/data.php' );
-			$data = Jet_Smart_Filters_Admin_Data::get_instance();
-
 			new Cherry_X_Post_Meta( array(
 				'id'            => 'filter-labels',
 				'title'         => __( 'Filter Labels', 'jet-smart-filters' ),
@@ -104,7 +105,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Сlassic_Admin' ) ) {
 				'builder_cb'    => array( $this, 'get_builder' ),
 				'fields'        => apply_filters(
 					'jet-smart-filters/post-type/meta-fields-labels',
-					$data->settings_data['labels']
+					$this->data->settings_data['labels']
 				)
 			) );
 
@@ -118,7 +119,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Сlassic_Admin' ) ) {
 				'builder_cb'    => array( $this, 'get_builder' ),
 				'fields'        => apply_filters(
 					'jet-smart-filters/post-type/meta-fields-settings',
-					$data->settings_data['settings']
+					$this->data->settings_data['settings']
 				),
 			) );
 
@@ -132,13 +133,11 @@ if ( ! class_exists( 'Jet_Smart_Filters_Сlassic_Admin' ) ) {
 				'builder_cb'    => array( $this, 'get_builder' ),
 				'fields'        => apply_filters(
 					'jet-smart-filters/post-type/meta-fields-query',
-					$data->settings_data['query']
+					$this->data->settings_data['query']
 				)
 			) );
 
-			ob_start();
-			include jet_smart_filters()->plugin_path( 'admin/admin-classic/templates/date-formats.php' );
-			$filter_date_formats = ob_get_clean();
+			$filter_date_formats = jet_smart_filters()->utils->get_file_html( 'admin/templates/info-blocks/date-formats.php' );
 
 			new Cherry_X_Post_Meta( array(
 				'id'            => 'filter-date-formats',
@@ -157,9 +156,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Сlassic_Admin' ) ) {
 				),
 			) );
 
-			ob_start();
-			include jet_smart_filters()->plugin_path( 'admin/admin-classic/templates/notes.php' );
-			$filter_notes = ob_get_clean();
+			$filter_notes = jet_smart_filters()->utils->get_file_html( 'admin/admin-classic/templates/notes.php' );
 
 			new Cherry_X_Post_Meta( array(
 				'id'            => 'filter-notes',

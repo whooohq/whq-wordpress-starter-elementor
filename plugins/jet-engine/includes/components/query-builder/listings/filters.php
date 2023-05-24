@@ -20,11 +20,20 @@ class Filters {
 	private function _is_filters_request( $query = null ) {
 
 		if ( function_exists( 'jet_smart_filters' ) && jet_smart_filters()->query->is_ajax_filter() ) {
-			return true;
+			return $this->is_current_provider_query(
+				$query,
+				jet_smart_filters()->query->get_current_provider( 'query_id' ),
+				jet_smart_filters()->query->get_current_provider( 'provider' )
+			);
 		}
 
 		if ( ! empty( $_REQUEST['action'] ) && 'jet_smart_filters' === $_REQUEST['action'] && ! empty( $_REQUEST['provider'] ) ) {
-			return true;
+			$jsf_data = explode( '/', $_REQUEST['provider'] );
+			$provider = $jsf_data[0];
+			$query_id = isset( $jsf_data[1] ) ? $jsf_data[1] : null;
+
+			return $this->is_current_provider_query( $query, $query_id, $provider );
+
 		}
 
 		// Fixed the Load More listing after redirect to prefiltered page ( mixed apply type ).
@@ -39,30 +48,39 @@ class Filters {
 		if ( ! empty( $request['jet-smart-filters'] ) ) {
 			$request['jsf'] = str_replace( '/', ':', $request['jet-smart-filters'] );
 		}
-
-		$allowed_providers = apply_filters(
-			'jet-engine/query-builder/filters/allowed-providers',
-			array( 'jet-engine', 'jet-engine-maps', 'jet-engine-calendar' )
-		);
-
-		if ( ! empty( $request['jsf'] ) ) {
 		
+		if ( ! empty( $request['jsf'] ) ) {
+
+			// Ensure separator one more time
+			$request['jsf'] = str_replace( '/', ':', $request['jsf'] );
+
 			$jsf_data = explode( ':', $request['jsf'] );
 			$provider = $jsf_data[0];
 			$query_id = isset( $jsf_data[1] ) ? $jsf_data[1] : null;
-
-			if ( $query_id && 'default' !== $query_id && $query && $query->query_id ) {
-				return ( in_array( $provider, $allowed_providers ) && $query->query_id == $query_id );
-			} elseif ( $query && $query->query_id && $query->query_id !== $query_id ) {
-				return false;
-			}
-
-			return in_array( $provider, $allowed_providers );
+			
+			return $this->is_current_provider_query( $query, $query_id, $provider );
 			
 		}
 
 		return false;
 
+	}
+	
+	public function is_current_provider_query( $query, $query_id, $provider ) {
+		
+		$allowed_providers = apply_filters(
+			'jet-engine/query-builder/filters/allowed-providers',
+			array( 'jet-engine', 'jet-engine-maps', 'jet-engine-calendar' )
+		);
+
+		if ( $query_id && 'default' !== $query_id && $query && $query->query_id ) {
+			return ( in_array( $provider, $allowed_providers ) && $query->query_id == $query_id );
+		} elseif ( $query && $query->query_id && $query->query_id !== $query_id ) {
+			return false;
+		}
+
+		return in_array( $provider, $allowed_providers );
+		
 	}
 
 	/**
@@ -97,9 +115,13 @@ class Filters {
 
 				$query->setup_query();
 
+				do_action( 'jet-engine/query-builder/filters/before-set-props', $query );
+
 				foreach ( $filtered_query as $prop => $value ) {
 					$query->set_filtered_prop( $prop, $value );
 				}
+
+				do_action( 'jet-engine/query-builder/filters/before-after-props', $query );
 
 			}
 
@@ -125,8 +147,6 @@ class Filters {
 				if ( ! isset( $data['fragments'] ) ) {
 					$data['fragments'] = array();
 				}
-
-				$query->dynamic_query_changed = false;
 
 				$data['fragments'][ '.jet-engine-query-count.count-type-total.query-' . $query->id ] = $query->get_items_total_count();
 				$data['fragments'][ '.jet-engine-query-count.count-type-visible.query-' . $query->id ] = $query->get_items_page_count();
@@ -194,14 +214,14 @@ class Filters {
 		// Setup props for the pager
 		jet_smart_filters()->query->set_props(
 			$provider,
-			array(
+			apply_filters( 'jet-engine/query-builder/set-props', array(
 				'found_posts'   => $query->get_items_total_count(),
 				'max_num_pages' => $query->get_items_pages_count(),
 				'page'          => $query->get_current_items_page(),
 				'query_type'    => $query->query_type,
 				'query_id'      => $query->id,
 				'query_meta'    => $query->get_query_meta(),
-			),
+			), $provider, $query_id ),
 			$query_id
 		);
 

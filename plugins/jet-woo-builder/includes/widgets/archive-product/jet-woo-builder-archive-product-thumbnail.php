@@ -12,7 +12,7 @@ use Elementor\Group_Control_Border;
 if ( ! defined( 'ABSPATH' ) )
 	exit; // Exit if accessed directly
 
-class Jet_Woo_Builder_Archive_Product_Thumbnail extends Widget_Base {
+class Jet_Woo_Builder_Archive_Product_Thumbnail extends Jet_Woo_Builder_Base {
 
 	public function get_name() {
 		return 'jet-woo-builder-archive-product-thumbnail';
@@ -26,7 +26,7 @@ class Jet_Woo_Builder_Archive_Product_Thumbnail extends Widget_Base {
 		return 'jet-woo-builder-icon-images';
 	}
 
-	public function get_help_url() {
+	public function get_jet_help_url() {
 		return 'https://crocoblock.com/knowledge-base/articles/woocommerce-jetwoobuilder-settings-how-to-create-and-set-a-custom-categories-archive-template/?utm_source=need-help&utm_medium=jet-woo-categories&utm_campaign=jetwoobuilder';
 	}
 
@@ -121,9 +121,9 @@ class Jet_Woo_Builder_Archive_Product_Thumbnail extends Widget_Base {
 		$this->add_control(
 			'archive_thumbnail_border_radius',
 			[
-				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					$this->css_selector() => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; overflow:hidden;',
 				],

@@ -100,22 +100,9 @@ if ( ! class_exists( 'Jet_Engine_Dynamic_Tags_Manager' ) ) {
 				return $content;
 			}
 
-			$object = jet_engine()->listings->data->get_current_object();
-			$class  = get_class( $object );
-
-			switch ( $class ) {
-				case 'WP_Post':
-				case 'WP_User':
-					$post_id = $object->ID;
-					break;
-
-				case 'WP_Term':
-					$post_id = $object->term_id;
-					break;
-
-				default:
-					$post_id = apply_filters( 'jet-engine/listing/custom-post-id', get_the_ID(), $object );
-			}
+			$object  = jet_engine()->listings->data->get_current_object();
+			$class   = get_class( $object );
+			$post_id = jet_engine()->listings->data->get_current_object_id();
 
 			$post_ids_for_data = array( $listing_id );
 			$css = '';

@@ -19,12 +19,11 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Frontend' ) ) {
 	 */
 	class Jet_Engine_Elementor_Frontend {
 
-		private $processed_listing_id = null;
-		private $css_added = array();
-
-		private $reset_excerpt_flag = false;
-
-		private $inner_templates = array();
+		protected $processed_listing_id = null;
+		protected $css_added = array();
+		protected $reset_excerpt_flag = false;
+		protected $inner_templates = array();
+		protected $not_found_templates = array();
 
 		/**
 		 * Constructor for the class
@@ -46,6 +45,11 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Frontend' ) ) {
 			add_action( 'jet-engine/ajax-handlers/before-call-handler', array( $this, 'register_assets_on_ajax' ) );
 
 			add_filter( 'jet-engine/listing/frontend/js-settings', array( $this, 'modify_localize_data' ) );
+			add_filter( 'jet-engine/listing/content/elementor', array( $this, 'get_listing_content_cb' ), 10, 2 );
+
+			// Print a template styles if the "Not found message" contains elementor shortcodes.
+			add_action( 'jet-engine/listing/grid/not-found/before', array( $this, 'find_not_found_templates' ) );
+			add_action( 'jet-engine/listing/grid/not-found/after',  array( $this, 'print_not_found_templates_css' ) );
 		}
 
 		/**
@@ -120,6 +124,10 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Frontend' ) ) {
 			}
 
 			$this->css_added[] = $post_id;
+		}
+
+		public function get_listing_content_cb( $result, $listing_id ) {
+			return $this->get_listing_content( $listing_id );
 		}
 
 		/**
@@ -280,65 +288,11 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Frontend' ) ) {
 				return $content;
 			}
 
-			$url = apply_filters(
-				'jet-engine/elementor-views/frontend/custom-listing-url',
-				false,
-				$settings
-			);
-
-			if ( ! $url ) {
-				$source = ! empty( $settings['listing_link_source'] ) ? $settings['listing_link_source'] : '_permalink';
-
-				if ( '_permalink' === $source ) {
-					$url = jet_engine()->listings->data->get_current_object_permalink();
-				} elseif ( 'open_map_listing_popup' === $source ) {
-					$url = jet_engine()->modules->get_module( 'maps-listings' )->instance->get_action_url();
-				} elseif ( 'open_map_listing_popup_hover' === $source ) {
-					$url = jet_engine()->modules->get_module( 'maps-listings' )->instance->get_action_url( null, 'hover' );
-				} elseif ( 'options_page' === $source ) {
-					$option = ! empty( $settings['listing_link_option'] ) ? $settings['listing_link_option'] : false;
-					$url    = jet_engine()->listings->data->get_option( $option );
-				} elseif ( $source ) {
-					$url = jet_engine()->listings->data->get_meta( $source );
-				}
+			if ( ! empty( $settings['__dynamic__'] ) ) {
+				$settings = $document->parse_dynamic_settings( $settings );
 			}
 
-			$prefix = isset( $settings['listing_link_prefix'] ) ? $settings['listing_link_prefix'] : '';
-
-			if ( $prefix ) {
-				$url = $prefix . $url;
-			}
-
-			$overlay_attrs = array(
-				'class'    => 'jet-engine-listing-overlay-wrap',
-				'data-url' => $url,
-			);
-
-			$link_attrs = array(
-				'href'  => $url,
-				'class' => 'jet-engine-listing-overlay-link',
-			);
-
-			$open_in_new = isset( $settings['listing_link_open_in_new'] ) ? $settings['listing_link_open_in_new'] : '';
-			$rel_attr    = isset( $settings['listing_link_rel_attr'] ) ? $settings['listing_link_rel_attr'] : '';
-
-			if ( $open_in_new ) {
-				$overlay_attrs['data-target'] = '_blank';
-				$link_attrs['target']         = '_blank';
-			}
-
-			if ( $rel_attr ) {
-				$link_attrs['rel'] = $rel_attr;
-			}
-
-			$link = sprintf( '<a %s></a>', Jet_Engine_Tools::get_attr_string( $link_attrs ) );
-
-			return sprintf(
-				'<div %3$s>%1$s%2$s</div>',
-				$content,
-				$link,
-				Jet_Engine_Tools::get_attr_string( $overlay_attrs )
-			);
+			return jet_engine()->frontend->add_listing_link_to_content( $content, $settings );
 		}
 
 
@@ -424,6 +378,37 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Frontend' ) ) {
 			if ( ! in_array( $id, $this->css_added ) ) {
 				$this->css_added[] = $id;
 			}
+		}
+
+		public function find_not_found_templates() {
+			add_filter( 'pre_do_shortcode_tag', array( $this, 'store_not_found_templates' ), 10, 3 );
+		}
+
+		public function print_not_found_templates_css() {
+
+			if ( ! empty( $this->not_found_templates ) ) {
+
+				foreach ( $this->not_found_templates as $template_id ) {
+					$this->maybe_add_inline_css( $template_id );
+				}
+
+				$this->not_found_templates = array();
+			}
+
+			remove_filter( 'pre_do_shortcode_tag', array( $this, 'store_not_found_templates' ) );
+		}
+
+		public function store_not_found_templates( $result, $tag, $attr ) {
+
+			if ( 'elementor-template' !== $tag ) {
+				return $result;
+			}
+
+			if ( ! empty( $attr['id'] ) && ! in_array( $attr['id'], $this->not_found_templates ) ) {
+				$this->not_found_templates[] = $attr['id'];
+			}
+
+			return $result;
 		}
 	}
 

@@ -343,7 +343,7 @@
     displayLabel: function(element, labelText) {
       label = document.createElement("div");
       label.className = 'jx-label';
-      label.setAttribute('tabindex', 0); //put the controller in the natural tab order of the document
+      //label.setAttribute('tabindex', 0); //put the controller in the natural tab order of the document
 
       setText(label, labelText);
       element.appendChild(label);
@@ -504,11 +504,12 @@
         this.controllerPrev.innerHTML = this.options.prevIcon;
         this.controllerNext.innerHTML = this.options.nextIcon;
 
-        this.controller.setAttribute('tabindex', 0); //put the controller in the natural tab order of the document
+        //this.controller.setAttribute('tabindex', 0); //put the controller in the natural tab order of the document
         this.controller.setAttribute('role', 'slider');
         this.controller.setAttribute('aria-valuenow', 50);
         this.controller.setAttribute('aria-valuemin', 0);
         this.controller.setAttribute('aria-valuemax', 100);
+        this.controller.setAttribute('aria-label', 50);
 
         this.handle.appendChild(this.leftArrow);
         this.handle.appendChild(this.control);
@@ -600,6 +601,7 @@
           var leftStart = parseFloat(this.style.left) - 1;
           self.updateSlider(leftStart, false);
           self.controller.setAttribute('aria-valuenow', ariaValue);
+          self.controller.setAttribute('aria-label', ariaValue);
           }
 
           //move jx-controller right
@@ -608,6 +610,7 @@
           var rightStart = parseFloat(this.style.left) + 1;
           self.updateSlider(rightStart, false);
           self.controller.setAttribute('aria-valuenow', ariaValue);
+          self.controller.setAttribute('aria-label', ariaValue);
           }
       });
 
@@ -617,6 +620,7 @@
             if ((key == 13) || (key ==32)) {
               self.updateSlider("90%", true);
                 self.controller.setAttribute('aria-valuenow', 90);
+                self.controller.setAttribute('aria-label', 90);
             }
       });
 
@@ -626,6 +630,7 @@
             if ((key == 13) || (key ==32)) {
             self.updateSlider("10%", true);
             self.controller.setAttribute('aria-valuenow', 10);
+            self.controller.setAttribute('aria-label', 10);
             }
       });
 

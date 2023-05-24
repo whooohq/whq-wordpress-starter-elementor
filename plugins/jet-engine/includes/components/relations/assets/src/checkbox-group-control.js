@@ -30,6 +30,7 @@ class CheckboxGroupControl extends Component {
 			label,
 			help,
 			options,
+			layout,
 			onChange,
 		} = this.props;
 
@@ -37,7 +38,8 @@ class CheckboxGroupControl extends Component {
 			label={ label }
 			help={ help }
 		>
-			{ options.map( ( option, index ) => {
+			<div className={ 'je-checkbox-group-' + layout }>
+				{ options.map( ( option, index ) => {
 				return <CheckboxControl
 					label={ option.label }
 					key={ 'check_' + option.value + index }
@@ -61,6 +63,7 @@ class CheckboxGroupControl extends Component {
 					} }
 				/>
 			} ) }
+			</div>
 		</BaseControl>;
 	}
 

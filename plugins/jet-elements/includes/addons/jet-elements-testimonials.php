@@ -529,7 +529,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'       => esc_html__( 'Item Margin', 'jet-elements' ),
 				'type'        => Controls_Manager::DIMENSIONS,
-				'size_units'  => array( 'px' ),
+				'size_units'  => array( 'px', 'custom' ),
 				'render_type' => 'template',
 				'selectors'   => array(
 					'{{WRAPPER}} ' . $css_scheme['item_inner'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -555,7 +555,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['item_inner'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -775,7 +775,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Width', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px', '%',
+					'px', '%', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -804,7 +804,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Height', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px', '%',
+					'px', '%', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -832,7 +832,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['item'] . ' ' . $css_scheme['image'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -857,7 +857,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['image'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -946,7 +946,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Icon Font Size', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px', 'em', 'rem',
+					'px', 'em', 'rem', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -968,7 +968,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Icon Box Size', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px', 'em', '%',
+					'px', 'em', '%', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -988,7 +988,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['icon'] . ' ' . $css_scheme['icon_inner'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1013,7 +1013,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['icon'] . ' ' . $css_scheme['icon_inner'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1063,7 +1063,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Width', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px', '%',
+					'px', '%', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -1171,7 +1171,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['title'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1184,7 +1184,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['title'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1290,7 +1290,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Width', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px', '%',
+					'px', '%', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -1346,7 +1346,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Corner Position', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( '%' ),
+				'size_units' => array( '%', 'custom' ),
 				'range'      => array(
 					'%' => array(
 						'min' => 0,
@@ -1372,7 +1372,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Corner Width', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px' ),
+				'size_units' => array( 'px', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => 0,
@@ -1398,7 +1398,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Corner Height', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px' ),
+				'size_units' => array( 'px', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => 0,
@@ -1424,7 +1424,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Corner Skew', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px' ),
+				'size_units' => array( 'px', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => 0,
@@ -1467,7 +1467,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'default' => array(
 					'top'    => 25,
 					'right'  => 15,
@@ -1486,7 +1486,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['comment'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1511,7 +1511,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'default' => array(
 					'top'    => 5,
 					'right'  => 5,
@@ -1622,7 +1622,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Width', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px', '%',
+					'px', '%', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -1695,7 +1695,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['name'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1708,7 +1708,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['name'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1804,7 +1804,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Width', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px', '%',
+					'px', '%', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -1861,7 +1861,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['position'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1874,7 +1874,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['position'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1970,7 +1970,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Width', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px', '%',
+					'px', '%', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -2027,7 +2027,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['date'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2040,7 +2040,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['date'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2137,7 +2137,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'       => esc_html__( 'Margin', 'jet-elements' ),
 				'type'        => Controls_Manager::DIMENSIONS,
-				'size_units'  => array( 'px' ),
+				'size_units'  => array( 'px', 'custom' ),
 				'render_type' => 'template',
 				'selectors'   => array(
 					'{{WRAPPER}} ' . $css_scheme['rating'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -2247,7 +2247,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Top Indent', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => -400,
@@ -2277,7 +2277,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Bottom Indent', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => -400,
@@ -2321,7 +2321,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Left Indent', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => -400,
@@ -2351,7 +2351,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Right Indent', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => -400,
@@ -2405,7 +2405,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Top Indent', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => -400,
@@ -2435,7 +2435,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Bottom Indent', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => -400,
@@ -2479,7 +2479,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Left Indent', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => -400,
@@ -2509,7 +2509,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Right Indent', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => -400,
@@ -2602,7 +2602,7 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Dots Box Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['dots'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2764,6 +2764,8 @@ class Jet_Elements_Testimonials extends Jet_Elements_Base {
 		if ( 'fade' === $settings['effect'] && 1 >= absint( $settings['slides_to_show'] ) ) {
 			$instance_settings['fade'] = true;
 		}
+
+		$instance_settings = apply_filters( 'jet-elements/jet-testimonials/carousel-options', $instance_settings, $settings, $widget_id );
 
 		$instance_settings = json_encode( $instance_settings );
 

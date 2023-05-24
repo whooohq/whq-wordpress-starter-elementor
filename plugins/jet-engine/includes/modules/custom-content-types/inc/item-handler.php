@@ -316,8 +316,7 @@ class Item_Handler {
 				$value = ! empty( $field['default_val'] ) ? $field['default_val'] : '';
 			}
 
-			$value = $this->factory->maybe_to_timestamp( $value, $field_data );
-			$type  = isset( $field_data['type'] ) ? $field_data['type'] : false;
+			$type = isset( $field_data['type'] ) ? $field_data['type'] : false;
 
 			if ( in_array( $type, array( 'checkbox', 'radio' ) ) ) {
 
@@ -329,52 +328,7 @@ class Item_Handler {
 				}
 			}
 
-			switch ( $type ) {
-				case 'checkbox':
-				case 'checkbox-raw':
-
-					if ( ! empty( $field_data['is_array'] ) ) {
-
-						$raw    = ! empty( $value ) ? $value : array();
-						$result = array();
-
-						if ( ! is_array( $raw ) ) {
-							$raw = array( $raw => 'true' );
-						}
-
-						if ( in_array( 'true', $raw ) || in_array( 'false', $raw ) ) {
-
-							foreach ( $raw as $raw_key => $raw_value ) {
-								$bool_value = filter_var( $raw_value, FILTER_VALIDATE_BOOLEAN );
-								if ( $bool_value ) {
-									$result[] = $raw_key;
-								}
-							}
-
-							$value = $result;
-
-						}
-
-					} else {
-						if ( ! is_array( $value ) ) {
-							$value = array( $value => 'true' );
-						}
-					}
-
-					break;
-
-				case 'media':
-				case 'gallery':
-
-					if ( empty( $value ) ) {
-						$value = null;
-					} elseif ( ! empty( $field_data['value_format'] ) && 'both' === $field_data['value_format'] ) {
-						$value = jet_engine_sanitize_media_json( $value );
-					}
-
-					break;
-			}
-
+			$value = $this->sanitize_field_value( $value, $field_data );
 			$value = apply_filters( 'jet-engine/custom-content-types/update-item/sanitize-field-value', $value, $field_name, $field_data );
 
 			$item[ $field_name ] = $value;
@@ -407,12 +361,19 @@ class Item_Handler {
 				$single_post_id = isset( $prev_item['cct_single_post_id'] ) ? $prev_item['cct_single_post_id'] : false;
 			}
 
+			$update_single_post = ! ! $single_post_id;
+
 			if ( ! $single_post_id ) {
 				$single_post_id = $this->process_single_post( $item );
 			}
 
 			if ( $single_post_id ) {
 				$item['cct_single_post_id'] = $single_post_id;
+			}
+
+			// Update single post.
+			if ( $single_post_id && $update_single_post ) {
+				$this->process_single_post( $item );
 			}
 
 		}
@@ -493,6 +454,87 @@ class Item_Handler {
 
 		return $item_id;
 
+	}
+
+	/**
+	 * Sanitize field value.
+	 *
+	 * @param mixed $value
+	 * @param array $field
+	 *
+	 * @return array|mixed
+	 */
+	public function sanitize_field_value( $value, $field ) {
+
+		$type = isset( $field['type'] ) ? $field['type'] : false;
+
+		switch ( $type ) {
+
+			case 'repeater':
+
+				if ( is_array( $value ) && ! empty( $field['repeater-fields'] ) ) {
+
+					$repeater_names  = wp_list_pluck( $field['repeater-fields'], 'name' );
+					$repeater_fields = array_combine( $repeater_names, $field['repeater-fields'] );
+
+					foreach ( $value as $item_id => $item ) {
+						foreach ( $item as $sub_item_id => $sub_item_value ) {
+							$value[ $item_id ][ $sub_item_id ] = $this->sanitize_field_value( $sub_item_value, $repeater_fields[ $sub_item_id ] );
+						}
+					}
+				}
+
+				break;
+
+			case 'checkbox':
+			case 'checkbox-raw':
+
+				if ( ! empty( $field['is_array'] ) ) {
+
+					$raw    = ! empty( $value ) ? $value : array();
+					$result = array();
+
+					if ( ! is_array( $raw ) ) {
+						$raw = array( $raw => 'true' );
+					}
+
+					if ( in_array( 'true', $raw ) || in_array( 'false', $raw ) ) {
+
+						foreach ( $raw as $raw_key => $raw_value ) {
+							$bool_value = filter_var( $raw_value, FILTER_VALIDATE_BOOLEAN );
+							if ( $bool_value ) {
+								$result[] = $raw_key;
+							}
+						}
+
+						$value = $result;
+
+					}
+
+				} else {
+					if ( ! is_array( $value ) ) {
+						$value = array( $value => 'true' );
+					}
+				}
+
+				break;
+
+			case 'media':
+			case 'gallery':
+
+				if ( empty( $value ) ) {
+					$value = null;
+				} elseif ( ! empty( $field['value_format'] ) && 'both' === $field['value_format'] ) {
+					$value = jet_engine_sanitize_media_json( $value );
+				}
+
+				break;
+
+			default:
+				$value = $this->factory->maybe_to_timestamp( $value, $field );
+		}
+
+		return $value;
 	}
 
 	/**

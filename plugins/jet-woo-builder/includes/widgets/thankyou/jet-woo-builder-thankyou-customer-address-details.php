@@ -116,9 +116,9 @@ class Jet_Woo_Builder_ThankYou_Customer_Address_Details extends Jet_Woo_Builder_
 		$this->add_responsive_control(
 			'custommer_details_content_border_radius',
 			[
-				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['content'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -127,26 +127,26 @@ class Jet_Woo_Builder_ThankYou_Customer_Address_Details extends Jet_Woo_Builder_
 
 		$this->add_responsive_control(
 			'custommer_details_content_margin',
-			array(
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['content'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'custommer_details_content_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['content'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(

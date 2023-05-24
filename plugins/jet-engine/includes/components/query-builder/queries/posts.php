@@ -42,6 +42,10 @@ class Posts_Query extends Base_Query {
 
 		$args = $this->final_query;
 
+		if ( empty( $args['post_type'] ) ) {
+			$args['post_type'] = 'any';
+		}
+
 		if ( ! empty( $args['meta_query'] ) ) {
 			$args['meta_query'] = $this->prepare_meta_query_args( $args );
 		}
@@ -50,6 +54,8 @@ class Posts_Query extends Base_Query {
 
 			$raw = $args['tax_query'];
 			$args['tax_query'] = array();
+
+			$custom_tax_query = array();
 
 			if ( ! empty( $args['tax_query_relation'] ) ) {
 				$args['tax_query']['relation'] = $args['tax_query_relation'];
@@ -76,7 +82,23 @@ class Posts_Query extends Base_Query {
 					continue;
 				}
 
+				if ( ! empty( $query_row['custom'] ) ) {
+					unset( $query_row['custom'] );
+					$custom_tax_query[] = $query_row;
+					continue;
+				}
+
 				$args['tax_query'][] = $query_row;
+			}
+
+			if ( ! empty( $custom_tax_query ) ) {
+
+				if ( ! empty( $args['tax_query_relation'] ) && 'or' === $args['tax_query_relation'] ) {
+					$args['tax_query'] = array_merge( array( $args['tax_query'] ), $custom_tax_query );
+				} else {
+					$args['tax_query'] = array_merge( $args['tax_query'], $custom_tax_query );
+				}
+
 			}
 
 		}
@@ -94,10 +116,18 @@ class Posts_Query extends Base_Query {
 
 				$order = isset( $query_row['order'] ) ? $query_row['order'] : '';
 
+				if ( 'meta_clause' !== $query_row['orderby'] && isset( $args['orderby'][ $query_row['orderby'] ] ) ) {
+					continue;
+				}
+
 				switch ( $query_row['orderby'] ) {
 					case 'meta_clause':
 
 						$clause_name = ! empty( $query_row['order_meta_clause'] ) ? $query_row['order_meta_clause'] : false;
+
+						if ( $clause_name && isset( $args['orderby'][ $clause_name ] ) ) {
+							break;
+						}
 
 						if ( $clause_name ) {
 							$args['orderby'][ $clause_name ] = $order;
@@ -169,6 +199,7 @@ class Posts_Query extends Base_Query {
 		}
 
 		$this->current_wp_query = new \WP_Query( $this->get_query_args() );
+		$this->current_wp_query = apply_filters( 'jet-engine/query-builder/posts-query/wp-query', $this->current_wp_query, $this );
 
 		return $this->current_wp_query;
 
@@ -272,6 +303,36 @@ class Posts_Query extends Base_Query {
 				$this->replace_tax_query_row( $value );
 				break;
 
+			case 'post__in':
+
+				if ( ! empty( $this->final_query['post__in'] ) ) {
+					$this->final_query['post__in'] = array_intersect( $this->final_query['post__in'], $value );
+
+					if ( empty( $this->final_query['post__in'] ) ) {
+						$this->final_query['post__in'] = array( PHP_INT_MAX );
+					}
+
+				} else {
+					$this->final_query['post__in'] = $value;
+				}
+
+				break;
+
+			case 'post__not_in':
+
+				if ( ! empty( $this->final_query['post__not_in'] ) ) {
+					$this->final_query['post__not_in'] = array_intersect( $this->final_query['post__not_in'], $value );
+
+					if ( empty( $this->final_query['post__not_in'] ) ) {
+						$this->final_query['post__not_in'] = array( PHP_INT_MAX );
+					}
+
+				} else {
+					$this->final_query['post__not_in'] = $value;
+				}
+
+				break;
+
 			default:
 				$this->merge_default_props( $prop, $value );
 				break;
@@ -281,17 +342,29 @@ class Posts_Query extends Base_Query {
 
 	public function set_filtered_order( $key, $value ) {
 
-		if ( empty( $this->final_query['orderby'] ) || ! isset( $this->final_query['orderby']['custom'] ) ) {
-			$this->final_query['orderby'] = array( 'custom' => array() );
+		if ( empty( $this->final_query['orderby'] ) ) {
+			$this->final_query['orderby'] = array();
+		}
+
+		if ( ! isset( $this->final_query['orderby']['custom'] ) ) {
+			$this->final_query['orderby'] = array( 'custom' => array() ) + $this->final_query['orderby'];
 		}
 
 		if ( 'orderby' === $key && is_array( $value ) ) {
+			$prepared = array();
+			$index    = 0;
+
 			foreach ( $value as $orderby => $order ) {
-				$this->final_query['orderby'][] = array(
+				$prepared[ 'custom_' . $index ] = array(
 					'orderby' => $orderby,
 					'order'   => $order,
 				);
+
+				$index++;
 			}
+
+			$this->final_query['orderby'] = $prepared + $this->final_query['orderby'];
+
 		} else {
 			$this->final_query['orderby']['custom'][ $key ] = $value;
 		}

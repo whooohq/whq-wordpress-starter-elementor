@@ -25,9 +25,21 @@ $this->add_render_attribute( $link_instance, 'class', array(
 ) );
 
 if ( 'lightbox' === $link_type ) {
+
+	$lightbox_title = isset( $settings['lightbox_show_title'] ) ? $settings['lightbox_show_title'] : 'false';
+	$lightbox_desc  = isset( $settings['lightbox_show_desc'] ) ? $settings['lightbox_show_desc'] : 'false';
+
 	$this->add_render_attribute( $link_instance, 'href', $this->_loop_item( array( 'item_image', 'url' ), '%s' ) );
 	$this->add_render_attribute( $link_instance, 'data-elementor-open-lightbox', 'yes' );
 	$this->add_render_attribute( $link_instance, 'data-elementor-lightbox-slideshow', $this->get_id()  );
+
+	if ( 'true' === $lightbox_title ) {
+		$this->add_render_attribute( $link_instance, 'data-elementor-lightbox-title', $this->_loop_item( array( 'item_title', '%s' ) ) );
+	}
+
+	if ( 'true' === $lightbox_desc ) {
+		$this->add_render_attribute( $link_instance, 'data-elementor-lightbox-description', wp_strip_all_tags( $this->_loop_item( array( 'item_desc', '%s' ) ) ) );
+	}
 } else if ( 'no_link' === $link_type ) {
 	$tag = 'div';
 } else {

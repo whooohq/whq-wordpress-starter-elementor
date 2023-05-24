@@ -61,87 +61,6 @@ if ( ! class_exists( 'Jet_Engine_CPT_Data' ) ) {
 		}
 
 		/**
-		 * Returns blacklisted post types slugs
-		 *
-		 * @return array
-		 */
-		public function meta_blacklist() {
-			return array(
-				'_wpnonce',
-				'_wp_http_referer',
-				'user_ID',
-				'action',
-				'originalaction',
-				'post_author',
-				'post_type',
-				'original_post_status',
-				'referredby',
-				'_wp_original_http_referer',
-				'post_ID',
-				'meta-box-order-nonce',
-				'closedpostboxesnonce',
-				'post_title',
-				'samplepermalinknonce',
-				'content',
-				'wp-preview',
-				'hidden_post_status',
-				'post_status',
-				'hidden_post_password',
-				'hidden_post_visibility',
-				'visibility',
-				'post_password',
-				'mm',
-				'jj',
-				'aa',
-				'hh',
-				'mn',
-				'ss',
-				'hidden_mm',
-				'cur_mm',
-				'hidden_jj',
-				'cur_jj',
-				'hidden_aa',
-				'cur_aa',
-				'hidden_hh',
-				'cur_hh',
-				'hidden_mn',
-				'cur_mn',
-				'original_publish',
-				'save',
-				'post_format',
-				'tax_input',
-				'parent_id',
-				'menu_order',
-				'_thumbnail_id',
-				'meta',
-				'excerpt',
-				'trackback_url',
-				'_ajax_nonce',
-				'metakeyselect',
-				'metakeyinput',
-				'metavalue',
-				'advanced_view',
-				'comment_status',
-				'ping_status',
-				'post_name',
-				'post_author_override',
-				'post_mime_type',
-				'ID',
-				'post_content',
-				'post_excerpt',
-				'post_parent',
-				'to_ping',
-				'screen',
-				'taxonomy',
-				'action',
-				'tag-name',
-				'slug',
-				'description',
-				'general',
-			);
-		}
-
-		/**
 		 * Prepare post data from request to write into database
 		 *
 		 * @return array
@@ -237,6 +156,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Data' ) ) {
 				'show_in_rest',
 				'query_var',
 				'rewrite',
+				'map_meta_cap',
 				'has_archive',
 				'hierarchical',
 				'exclude_from_search',
@@ -448,6 +368,10 @@ if ( ! class_exists( 'Jet_Engine_CPT_Data' ) ) {
 			$with_front         = isset( $args['with_front'] ) ? $args['with_front'] : true;
 			$with_front         = filter_var( $with_front, FILTER_VALIDATE_BOOLEAN );
 			$args['with_front'] = $with_front;
+
+			if ( ! isset( $args['map_meta_cap'] ) ) {
+				$args['map_meta_cap'] = true;
+			}
 
 			$result['labels']            = $labels;
 			$result['advanced_settings'] = $args;

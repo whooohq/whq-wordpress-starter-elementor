@@ -65,6 +65,9 @@ class Countdown extends Base_Widget {
 				'condition' => [
 					'countdown_type' => 'due_date',
 				],
+				'dynamic' => [
+					'active' => true,
+				],
 			]
 		);
 
@@ -316,6 +319,7 @@ class Countdown extends Base_Widget {
 			[
 				'label' => esc_html__( 'Container Width', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'default' => [
 					'unit' => '%',
 					'size' => 100,
@@ -336,7 +340,6 @@ class Countdown extends Base_Widget {
 						'max' => 100,
 					],
 				],
-				'size_units' => [ '%', 'px' ],
 				'selectors' => [
 					'{{WRAPPER}} .elementor-countdown-wrapper' => 'max-width: {{SIZE}}{{UNIT}};',
 				],
@@ -371,7 +374,7 @@ class Countdown extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Radius', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .elementor-countdown-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -383,6 +386,7 @@ class Countdown extends Base_Widget {
 			[
 				'label' => esc_html__( 'Space Between', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'default' => [
 					'size' => 10,
 				],
@@ -406,7 +410,7 @@ class Countdown extends Base_Widget {
 			[
 				'label' => esc_html__( 'Padding', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%', 'em' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .elementor-countdown-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -561,7 +565,7 @@ class Countdown extends Base_Widget {
 			[
 				'label' => esc_html__( 'Padding', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%', 'em' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .elementor-countdown-expire--message' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -645,7 +649,7 @@ class Countdown extends Base_Widget {
 				if ( empty( $settings['expire_redirect_url']['url'] ) ) {
 					continue;
 				}
-				$action_to_run['redirect_url'] = $settings['expire_redirect_url']['url'];
+				$action_to_run['redirect_url'] = esc_url( $settings['expire_redirect_url']['url'] );
 			}
 			$actions[] = $action_to_run;
 		}
@@ -661,9 +665,9 @@ class Countdown extends Base_Widget {
 		if ( 'evergreen' === $instance['countdown_type'] ) {
 			$this->add_render_attribute( 'div', 'data-evergreen-interval', $this->get_evergreen_interval( $instance ) );
 		} else {
-			// Handle timezone ( we need to set GMT time )
-			$gmt = get_gmt_from_date( $due_date . ':00' );
-			$due_date = strtotime( $gmt );
+			$wp_timezone = new \DateTimeZone( wp_timezone_string() );
+			$due_date = new \DateTime( $due_date, $wp_timezone );
+			$due_date = $due_date->getTimestamp();
 		}
 
 		$actions = false;

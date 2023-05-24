@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-class Jet_Engine_Object_Property_Tag extends Elementor\Core\DynamicTags\Tag {
+class Jet_Engine_Object_Property_Tag extends Elementor\Core\DynamicTags\Data_Tag {
 
 	public function get_name() {
 		return 'jet-object-property';
@@ -56,13 +56,53 @@ class Jet_Engine_Object_Property_Tag extends Elementor\Core\DynamicTags\Tag {
 		
 	}
 
-	public function render() {
+	protected function register_advanced_section() {
+		$this->start_controls_section(
+			'advanced',
+			array(
+				'label' => esc_html__( 'Advanced', 'jet-engine' ),
+			)
+		);
 
+		$this->add_control(
+			'notice',
+			array(
+				'type' => Elementor\Controls_Manager::RAW_HTML,
+				'raw'  => '<div style="font-weight: bold; font-style: italic;">' . esc_html__( 'The following settings only work for string values.', 'jet-engine' ) . '</div>',
+			)
+		);
+
+		$this->add_control(
+			'before',
+			array(
+				'label' => esc_html__( 'Before', 'jet-engine' ),
+			)
+		);
+
+		$this->add_control(
+			'after',
+			array(
+				'label' => esc_html__( 'After', 'jet-engine' ),
+			)
+		);
+
+		$this->add_control(
+			'fallback',
+			array(
+				'label' => esc_html__( 'Fallback', 'jet-engine' ),
+			)
+		);
+
+		$this->end_controls_section();
+	}
+
+	public function get_value( array $options = array() ) {
+	
 		$object_prop    = $this->get_settings( 'object_prop' );
 		$object_context = $this->get_settings( 'object_context' );
 
 		if ( empty( $object_prop ) ) {
-			return;
+			return '';
 		}
 
 		$value = jet_engine()->listings->data->get_prop(
@@ -72,9 +112,26 @@ class Jet_Engine_Object_Property_Tag extends Elementor\Core\DynamicTags\Tag {
 
 		if ( is_array( $value ) ) {
 			return $value;
-		}
+		} else {
+			$settings = $this->get_settings();
+			$value    = wp_kses_post( $value );
 
-		echo wp_kses_post( $value );
+			if ( ! Jet_Engine_Tools::is_empty( $value ) ) {
+
+				if ( ! Jet_Engine_Tools::is_empty( $settings, 'before' ) ) {
+					$value = wp_kses_post( $settings['before'] ) . $value;
+				}
+
+				if ( ! Jet_Engine_Tools::is_empty( $settings, 'after' ) ) {
+					$value .= wp_kses_post( $settings['after'] );
+				}
+
+			} elseif ( ! Jet_Engine_Tools::is_empty( $settings, 'fallback' ) ) {
+				$value = $settings['fallback'];
+			}
+
+			return wp_kses_post( $value );
+		}
 
 	}
 

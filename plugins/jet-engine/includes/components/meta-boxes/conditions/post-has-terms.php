@@ -193,6 +193,8 @@ class Post_Has_Terms extends Base {
 				$( document ).trigger( 'jet-engine/meta-box/data-change', [] );
 			} ).on( 'click', '.tagchecklist .ntdelbutton', () => {
 				$( document ).trigger( 'jet-engine/meta-box/data-change', [] );
+			} ).on( 'change', '.product_attributes .attribute_values', () => {
+				$( document ).trigger( 'jet-engine/meta-box/data-change', [] );
 			} );
 
 		}

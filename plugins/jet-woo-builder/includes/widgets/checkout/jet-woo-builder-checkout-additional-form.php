@@ -178,11 +178,9 @@ class Jet_Woo_Builder_Checkout_Additional_Form extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'checkout_additional_input_min_height',
 			[
-				'label'      => __( 'Textarea Height', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [
-					'px',
-				],
+				'label'      => __( 'Textarea Height', 'jet-woo-builder' ),
+				'size_units' => [ 'px' ],
 				'range'      => [
 					'px' => [
 						'min' => 10,

@@ -4,7 +4,6 @@
 	position: relative;
 	cursor: pointer;
 	user-select: none;
-	background-color: white;
 
 	display: flex;
 	flex-flow: row nowrap;
@@ -12,6 +11,10 @@
 	align-items: center;
 
 	transform: translateZ(0);
+
+	.rtl & {
+		flex-flow: row-reverse nowrap;
+	}
 
 	.bg-cover {
 		display: block;

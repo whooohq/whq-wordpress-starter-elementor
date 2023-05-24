@@ -34,7 +34,7 @@ class Manager {
 
 		add_action( 'add_meta_boxes', array( $this, 'maybe_register_gateway_meta' ) );
 
-		add_action( 'jet-engine/elementor-views/dynamic-tags/register', array( $this, 'register_elementor_tags' ) );
+		add_action( 'jet-engine/elementor-views/dynamic-tags/register', array( $this, 'register_elementor_tags' ), 10, 2 );
 		add_filter( 'jet-engine/forms/handler/has-gateways', array( $this, 'check_form_gateways' ), 10, 2 );
 
 	}
@@ -43,11 +43,12 @@ class Manager {
 	 * Register new payment-related dynamic tags
 	 *
 	 * @param  [type] $dynamic_tags [description]
+	 * @param  [type] $dynamic_tags [description]
 	 * @return [type]               [description]
 	 */
-	public function register_elementor_tags( $dynamic_tags ) {
+	public function register_elementor_tags( $dynamic_tags, $tags_module ) {
 		require_once jet_engine()->modules->modules_path( 'forms/gateways/elementor-tag.php' );
-		$dynamic_tags->register_tag( '\Jet_Engine\Gateways\Message_Tag' );
+		$tags_module->register_tag( $dynamic_tags, new \Jet_Engine\Gateways\Message_Tag() );
 	}
 
 	/**

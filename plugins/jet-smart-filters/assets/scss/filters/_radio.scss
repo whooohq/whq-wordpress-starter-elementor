@@ -2,6 +2,12 @@
 	&-wrapper {
 		margin: -3px;
 
+		fieldset {
+			margin: 0;
+			border: 0;
+			padding: 0;
+		}
+
 		// Dropdown
 		.jet-filter-items-dropdown & {
 			padding: 5px 12px;
@@ -70,6 +76,30 @@
 			opacity: 0;
 			font-size: 10px;
 			color: #fff;
+		}
+	}
+}
+
+// Context Bricks
+.brxe-jet-smart-filters-radio {
+	.jet-radio-list-wrapper {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-start;
+		margin: 0;
+	}
+
+	.jet-radio-list__row {
+		margin: 0;
+		padding-top: 0;
+	}
+
+	.jet-radio-list__item {
+		display: block;
+		margin-bottom: 0;
+
+		.jet-radio-list__decorator {
+			margin-top: 0;
 		}
 	}
 }

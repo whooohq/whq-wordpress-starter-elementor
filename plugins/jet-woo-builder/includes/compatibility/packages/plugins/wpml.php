@@ -25,6 +25,8 @@ if ( ! class_exists( 'Jet_Woo_Builder_WPML_Package' ) ) {
 				}
 			} );
 
+			add_filter( 'jet-woo-builder/purchase-popup-id', [ $this, 'modify_popup_id' ] );
+
 		}
 
 		/**
@@ -478,6 +480,16 @@ if ( ! class_exists( 'Jet_Woo_Builder_WPML_Package' ) ) {
 		 */
 		function modify_template_id( $template_id ) {
 			return apply_filters( 'wpml_object_id', $template_id, jet_woo_builder_post_type()->slug(), true );
+		}
+
+		/**
+		 * Returns translated popup ID to make WooBuilder related popups WPML-compatible
+		 * 
+		 * @param  int $popup_id
+		 * @return int Translated popup ID or initial ID if no translation found
+		 */
+		public function modify_popup_id( $popup_id ) {
+			return apply_filters( 'wpml_object_id', $popup_id, 'jet-popup', true );
 		}
 
 		/**

@@ -194,6 +194,14 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Base' ) ) {
 					'type'    => 'boolean',
 					'default' => false,
 				),
+				'counter_prefix' => array(
+					'type'    => 'string',
+					'default' => '(',
+				),
+				'counter_suffix' => array(
+					'type'    => 'string',
+					'default' => ')',
+				),
 				'show_items_rule' => array(
 					'type'    => 'string',
 					'default' => 'show',
@@ -212,6 +220,18 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Base' ) ) {
 					'default' => 'full',
 				),
 				// Pagination Controls
+				'enable_items' => array(
+					'type'    => 'boolean',
+					'default' => true,
+				),
+				'pages_center_offset' => array(
+					'type'    => 'number',
+					'default' => 0,
+				),
+				'pages_end_offset' => array(
+					'type'    => 'number',
+					'default' => 0,
+				),
 				'enable_prev_next' => array(
 					'type'    => 'boolean',
 					'default' => true,
@@ -224,13 +244,13 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Base' ) ) {
 					'type'    => 'string',
 					'default' => __( 'Next Text', 'jet-smart-filters' ),
 				),
-				'pages_center_offset' => array(
-					'type'    => 'number',
-					'default' => 0,
+				'enable_load_more' => array(
+					'type'    => 'boolean',
+					'default' => false,
 				),
-				'pages_end_offset' => array(
-					'type'    => 'number',
-					'default' => 0,
+				'load_more_text' => array(
+					'type'    => 'string',
+					'default' => __( 'Load More', 'jet-smart-filters' ),
 				),
 				'autoscroll' => array(
 					'type'    => 'boolean',
@@ -372,6 +392,11 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Base' ) ) {
 				$indexer_class   = 'jet-filter-indexed';
 				$show_counter    = $settings['show_counter'] === true ? 'yes' : false;
 				$show_items_rule = $settings['show_items_rule'];
+
+				if ( $show_counter ) {
+					$counter_prefix = ! empty( $settings['counter_prefix'] ) ? $settings['counter_prefix'] : false;
+					$counter_suffix = ! empty( $settings['counter_suffix'] ) ? $settings['counter_suffix'] : false;
+				}
 			}
 
 			jet_smart_filters()->admin_bar_register_item( $filter_id );
@@ -379,9 +404,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Base' ) ) {
 			ob_start();
 
 			printf(
-				'<div class="%1$s jet-filter %2$s" data-indexer-rule="%3$s" data-show-counter="%4$s" data-change-counter="%5$s">',
+				'<div class="%1$s jet-filter %2$s" data-is-block="jet-smart-filters/%3$s" data-indexer-rule="%4$s" data-show-counter="%5$s" data-change-counter="%6$s">',
 				apply_filters( 'jet-smart-filters/render_filter_template/base_class', $base_class, $filter_id ),
 				$indexer_class,
+				$this->get_name(),
 				$show_items_rule,
 				$show_counter,
 				$change_items_rule
@@ -401,6 +427,14 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Base' ) ) {
 					'show_counter'      => $show_counter,
 				),
 			);
+
+			if ( ! empty( $counter_prefix ) ) {
+				$filter_template_args['display_options']['counter_prefix'] = $counter_prefix;
+			}
+
+			if ( ! empty( $counter_suffix ) ) {
+				$filter_template_args['display_options']['counter_suffix'] = $counter_suffix;
+			}
 
 			// hide main label is hierarchical select
 			if ( $this->get_name() === 'select' && filter_var( get_post_meta( $filter_id, '_is_hierarchical', true ), FILTER_VALIDATE_BOOLEAN ) ) {

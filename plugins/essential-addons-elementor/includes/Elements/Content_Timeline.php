@@ -403,6 +403,49 @@ class Content_Timeline extends Widget_Base
             ]
         );
 
+		$this->add_control(
+			'thumbnail_link',
+			[
+				'label'     => __( 'Thumbnail', 'essential-addons-elementor' ),
+				'type'      => Controls_Manager::HEADING,
+				'condition' => [
+					'eael_show_image' => 'yes',
+					'eael_image_linkable' => 'yes',
+				],
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_control(
+			'thumbnail_link_nofollow',
+			[
+				'label'        => __( 'No Follow', 'essential-addons-elementor' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'label_on'     => __( 'Yes', 'essential-addons-elementor' ),
+				'label_off'    => __( 'No', 'essential-addons-elementor' ),
+				'return_value' => 'true',
+				'condition'    => [
+					'eael_show_image' => 'yes',
+					'eael_image_linkable' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'thumbnail_link_target_blank',
+			[
+				'label'        => __( 'Target Blank', 'essential-addons-elementor' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'label_on'     => __( 'Yes', 'essential-addons-elementor' ),
+				'label_off'    => __( 'No', 'essential-addons-elementor' ),
+				'return_value' => 'true',
+				'condition'    => [
+					'eael_show_image' => 'yes',
+					'eael_image_linkable' => 'yes',
+				],
+			]
+		);
+
         $this->end_controls_section();
 
         /**
@@ -1588,7 +1631,7 @@ class Content_Timeline extends Widget_Base
 						if (file_exists($template)) {
 							$query = new \WP_Query($args);
 							if ($query->have_posts()) {
-								if( 'horizontal' === $template_layout && !wp_is_mobile() ) {
+								if( 'horizontal' === $template_layout ) {
 									include($template);
 								} else {
 									while ($query->have_posts()) {
@@ -1635,15 +1678,18 @@ class Content_Timeline extends Widget_Base
 		$circle_icon  = $settings['eael_show_image_or_icon'] !== 'icon' ? '' : ( isset( $settings['__fa4_migrated']['eael_content_timeline_circle_icon_new'] ) || empty( $settings['eael_content_timeline_circle_icon'] ) ? \Essential_Addons_Elementor\Classes\Helper::get_render_icon( $settings['eael_content_timeline_circle_icon_new'] ) : '<i class="'.esc_attr( $settings['eael_content_timeline_circle_icon'] ).'"></i>' );
 
 		$content = [
-			'title'          => get_the_title( $post_ID ),
-			'permalink'      => get_the_permalink( $post_ID ),
-			'date'           => get_the_date(),
-			'excerpt'        => empty( $settings['eael_excerpt_length'] ) ? '<p>' . strip_shortcodes( $excerpt ? $excerpt : $the_content ) . '</p>' : '<p>' . wp_trim_words( strip_shortcodes( $excerpt ? $excerpt : $the_content ), $settings['eael_excerpt_length'], $settings['excerpt_expanison_indicator'] ) . '</p>',
-			'image'          => '',
-			'read_more_btn'  => '',
-			'nofollow'       => $settings['title_link_nofollow'] ? 'rel="nofollow"' : '',
-			'target_blank'   => $settings['title_link_target_blank'] ? 'target="_blank"' : '',
-			'post_thumbnail' => $settings['eael_show_image'] == 'yes' ? get_the_post_thumbnail( $post_ID, $settings['image_size'] ) : '',
+			'title'               => get_the_title( $post_ID ),
+			'permalink'           => get_the_permalink( $post_ID ),
+			'date'                => get_the_date(),
+			'excerpt'             => empty( $settings['eael_excerpt_length'] ) ? '<p>' . strip_shortcodes( $excerpt ? $excerpt : $the_content ) . '</p>' : '<p>' . wp_trim_words( strip_shortcodes( $excerpt ? $excerpt : $the_content ), $settings['eael_excerpt_length'], $settings['excerpt_expanison_indicator'] ) . '</p>',
+			'image'               => '',
+			'read_more_btn'       => '',
+			'nofollow'            => $settings['title_link_nofollow'] ? 'rel="nofollow"' : '',
+			'target_blank'        => $settings['title_link_target_blank'] ? 'target="_blank"' : '',
+			'post_thumbnail'      => $settings['eael_show_image'] == 'yes' ? get_the_post_thumbnail( $post_ID, $settings['image_size'] ) : '',
+			'image_linkable'       => $settings['eael_image_linkable'],
+			'image_link_nofollow' => empty( $settings['thumbnail_link_nofollow'] ) ? '' : 'rel="nofollow"',
+			'image_link_target'   => empty( $settings['thumbnail_link_target_blank'] ) ? '' : 'target="_blank"',
 		];
 
 		if( "img" === $settings["eael_show_image_or_icon"] ) {
@@ -1758,16 +1804,24 @@ class Content_Timeline extends Widget_Base
 						<div class="eael-horizontal-timeline-item__card-inner">
 							<?php if ( $show_date_inside && !$horizontal_layout_middle ) : ?>
 								<div class="eael-horizontal-timeline-item__meta">
-									<?php echo esc_html( $content['date'] ); ?>
+									<?php echo Helper::eael_wp_kses( $content['date'] ); ?>
 								</div>
 							<?php endif; ?>
 
 							<?php 
 							if ( 'yes' == $settings['eael_show_title'] ) {
 								echo '<' . Helper::eael_pro_validate_html_tag( $settings['title_tag'] ) . ' class="eael-horizontal-timeline-item__card-title"><a href="' . esc_url( $content['permalink'] ) . '"' . $content['nofollow'] . '' . $content['target_blank'] . '>' . esc_html( $content['title'] ) . '</a></' . Helper::eael_pro_validate_html_tag( $settings['title_tag'] ) . '>';
-							} 
+							}
+
+							if ( ! empty( $content['image_linkable'] ) && $content['image_linkable'] === 'yes' ) {
+								echo '<a href="' . esc_url( $content['permalink'] ) . '"' . $content['image_link_nofollow'] . '' . $content['image_link_target'] . '>';
+							}
 
 							printf( '%s', $content['post_thumbnail'] );
+
+							if ( ! empty( $content['image_linkable'] ) && $content['image_linkable'] === 'yes' ) {
+								echo '</a>';
+							}
 							?>
 							<div class="eael-horizontal-timeline-item__card-desc">
 								<?php 
@@ -1801,7 +1855,7 @@ class Content_Timeline extends Widget_Base
 				<div class="eael-horizontal-timeline-item <?php echo 1 === $counter ? esc_attr('is-active') : '' ?>">
 					<?php if ( !$show_date_inside || $horizontal_layout_middle ) : ?>
 						<div class="eael-horizontal-timeline-item__meta">
-							<?php echo esc_html( $content['date'] ); ?>
+							<?php echo Helper::eael_wp_kses( $content['date'] ); ?>
 						</div>
 					<?php endif; ?>
 				</div>

@@ -300,7 +300,7 @@ class Jet_Elements_Animated_Text extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} '  . $css_scheme['before_text'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -382,7 +382,7 @@ class Jet_Elements_Animated_Text extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} '  . $css_scheme['animated_text'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -445,7 +445,7 @@ class Jet_Elements_Animated_Text extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} '  . $css_scheme['after_text'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),

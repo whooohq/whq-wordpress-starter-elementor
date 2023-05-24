@@ -1,1 +1,0 @@
-<h2 class="cx-vui-title"><slot></slot></h2>

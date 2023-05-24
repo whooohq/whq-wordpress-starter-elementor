@@ -28,7 +28,18 @@ class Jet_Engine_Listings_Document {
 	public function __construct( $settings = array(), $id = null ) {
 
 		if ( ! empty( $settings ) ) {
-			$this->settings = $settings;
+			
+			$defaults = array(
+				'listing_source'    => 'posts',
+				'listing_post_type' => 'post',
+				'listing_tax'       => 'category',
+				'repeater_source'   => '',
+				'repeater_field'    => '',
+				'repeater_option'   => '',
+			);
+
+			$this->settings = array_merge( $defaults, $settings );
+			
 		} else {
 
 			$listing_settings = get_post_meta( $id, '_elementor_page_settings', true );

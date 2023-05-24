@@ -133,7 +133,7 @@ class Jet_Elements_Inline_Svg extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Width', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px',
+					'px', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -161,7 +161,7 @@ class Jet_Elements_Inline_Svg extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Height', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px',
+					'px', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -319,8 +319,10 @@ class Jet_Elements_Inline_Svg extends Jet_Elements_Base {
 
 			if ( method_exists( $this, 'add_link_attributes' ) ) {
 				$this->add_link_attributes( 'svg_wrap', $settings['svg_link'] );
+				$this->add_render_attribute( 'svg_wrap', 'aria-label', 'SVG link' );
 			} else {
 				$this->add_render_attribute( 'svg_wrap', 'href', $settings['svg_link']['url'] );
+				$this->add_render_attribute( 'svg_wrap', 'aria-label', 'SVG link' );
 
 				if ( 'on' === $settings['svg_link']['is_external'] ) {
 					$this->add_render_attribute( 'svg_wrap', 'target', '_blank' );

@@ -75,6 +75,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Alphabet_Filter' ) ) {
 				'apply_type'           => $apply_type,
 				'filter_id'            => $filter_id,
 				'behavior'             => $behavior,
+				'accessibility_label'  => $this->get_accessibility_label( $filter_id )
 			);
 
 			if ( $can_deselect ) {

@@ -217,8 +217,9 @@ class Lightbox extends Widget_Base
 				],
 				'size_units'            => ['px', 'em'],
 				'selectors'             => [
-					'.eael-lightbox-popup-window-{{ID}} .eael-lightbox-container' => 'height: {{SIZE}}{{UNIT}}',
+					'.eael-lightbox-popup-window-{{ID}} .eael-lightbox-container' => 'height: {{SIZE}}{{UNIT}}; overflow: auto;',
 					'.eael-lightbox-popup-window.eael-lightbox-popup-window-{{ID}}.lightbox_type_image .eael-lightbox-container img' => 'max-height: 100%;',
+					'.eael-lightbox-modal-window-{{ID}} .modal-popup-window-inner' => 'height: {{SIZE}}{{UNIT}}',
 				],
 				'condition'             => [
 					'auto_height!' => 'yes',
@@ -2002,7 +2003,7 @@ class Lightbox extends Widget_Base
                             printf('<i class="open-pop-up-button-icon-left %1$s" aria-hidden="true"></i>', $settings['eael_lightbox_open_btn_icon']);
                         }
 
-						echo esc_attr($settings['eael_lightbox_open_btn']);
+						echo Helper::eael_wp_kses($settings['eael_lightbox_open_btn']);
 
                         if ( ($button_icon_migrated || $button_icon_is_new) && $settings['eael_lightbox_open_btn_icon_align'] == 'right') {
                             echo '<span class="open-pop-up-button-icon-right eael-lightbox-button-svg-icon">';

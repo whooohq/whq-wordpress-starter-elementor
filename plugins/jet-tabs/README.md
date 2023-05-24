@@ -6,7 +6,10 @@ The plugin makes it simple to create a template with Elementor and add it to the
 
 # ChangeLog
 
-## [2.1.20](https://github.com/ZemezLab/jet-tabs/releases/tag/2.1.20) - 19.11.2022
+## [2.1.21](https://github.com/ZemezLab/jet-tabs/releases/tag/2.1.21) - 23.02.2023
+* Fixed: minor issues
+
+## [2.1.20](https://github.com/ZemezLab/jet-tabs/releases/tag/2.1.20) - 21.11.2022
 * Updated: JetDashboard Module to v2.0.9
 * Fixed: widgets Accessibility
 * Fixed: minor issues

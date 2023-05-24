@@ -45,7 +45,7 @@ window.JetEngineMapsProvider = function() {
 		let settingsMap = {
 			zoom: 'zoom',
 			center: 'center',
-			scrollwheel: 'scrollWheelZoom',
+			scrollWheelZoom: 'scrollwheel',
 			zoomControl: 'zoomControl',
 			maxZoom: 'maxZoom',
 		};
@@ -167,6 +167,10 @@ window.JetEngineMapsProvider = function() {
 			}
 
 		} );
+	}
+
+	this.setCenterByPosition = function( data ) {
+		data.map.setView( data.position, data.zoom );
 	}
 
 	this.setAutoCenter = function( data ) {

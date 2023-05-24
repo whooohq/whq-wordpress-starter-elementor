@@ -284,6 +284,22 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Woo_List' ) ) {
 		}
 
 		/**
+		 * Get provider list selector
+		 */
+		public function get_list_selector() {
+
+			return '.jet-woo-products-list';
+		}
+
+		/**
+		 * Get provider list item selector
+		 */
+		public function get_item_selector() {
+
+			return '.jet-woo-builder-product';
+		}
+
+		/**
 		 * If added unique ID this paramter will determine - search selector inside this ID, or is the same element
 		 */
 		public function in_depth() {

@@ -48,27 +48,21 @@ if ( ! class_exists( 'Jet_Blocks_Assets' ) ) {
 
 			$file_name = 'jet-blocks' . $direction_suffix . '.css';
 
-			$has_custom_file = \Elementor\Plugin::$instance->breakpoints->has_custom_breakpoints();
+			$frontend_file = new FrontendFile( 'custom-' . $file_name, jet_blocks()->plugin_path( 'assets/css/templates/' . $file_name ) );
 
-			if ( $has_custom_file ) {
-				$frontend_file = new FrontendFile( 'custom-' . $file_name, jet_blocks()->plugin_path( 'assets/css/templates/' . $file_name ) );
+			$time = $frontend_file->get_meta( 'time' );
 
-				$time = $frontend_file->get_meta( 'time' );
-
-				if ( ! $time ) {
-					$frontend_file->update();
-				}
-
-				$style_url = $frontend_file->get_url();
-			} else {
-				$style_url = jet_blocks()->plugin_url( 'assets/css/' . $file_name );
+			if ( ! $time ) {
+				$frontend_file->update();
 			}
+
+			$style_url = $frontend_file->get_url();
 
 			wp_enqueue_style(
 				'jet-blocks',
 				$style_url,
 				false,
-				$has_custom_file ? null : jet_blocks()->get_version()
+				jet_blocks()->get_version()
 			);
 
 		}
@@ -81,6 +75,8 @@ if ( ! class_exists( 'Jet_Blocks_Assets' ) ) {
 		public function enqueue_scripts() {
 
 			$min_suffix = jet_blocks_tools()->is_script_debug() ? '' : '.min';
+
+			do_action( 'jet-blocks/frontend/before_enqueue_scripts' );
 
 			wp_enqueue_script(
 				'jet-blocks',

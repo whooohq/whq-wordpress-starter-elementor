@@ -1528,6 +1528,8 @@ class Jet_Tabs_Widget extends Jet_Tabs_Base {
 						) );
 
 					}
+
+					do_action( 'jet-engine-query-gateway/reset-item' );
 				?>
 			</div>
 			<div class="jet-tabs__content-wrapper">

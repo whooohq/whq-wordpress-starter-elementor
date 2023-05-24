@@ -54,3 +54,24 @@
 		color: #ffed85;
 	}
 }
+
+// Context Bricks
+.brxe-jet-smart-filters-rating {
+	.jet-rating__control {
+		line-height: 0;
+	}
+
+	.jet-rating-star__label {
+		color: var(--rating-color, #dddddd);
+	}
+
+	input.is-checked ~ label,
+	input.is-checked ~ label ~ label {
+		color: var(--rating-selected-color, #ffd700);
+	}
+
+	input:not(.is-checked) ~ label:hover,
+	input:not(.is-checked) ~ label:hover ~ label {
+		color: var(--rating-hover-color, #ffed85);
+	}
+}

@@ -176,6 +176,7 @@ class Manager extends Relations_Manager {
 					}
 
 					$meta_field_1 = array(
+						'object_type'      => 'field',
 						'name'             => $meta_key,
 						'type'             => 'posts',
 						'element'          => 'control',
@@ -205,6 +206,7 @@ class Manager extends Relations_Manager {
 					}
 
 					$meta_field_2 = array(
+						'object_type'      => 'field',
 						'name'             => $meta_key,
 						'type'             => 'posts',
 						'element'          => 'control',

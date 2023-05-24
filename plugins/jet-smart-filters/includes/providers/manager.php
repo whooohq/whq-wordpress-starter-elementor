@@ -21,8 +21,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Providers_Manager' ) ) {
 		 * Constructor for the class
 		 */
 		public function __construct() {
-
-			$this->register_providers();
+			add_action( 'init', [ $this, 'register_providers' ], -998 );
 		}
 
 		/**

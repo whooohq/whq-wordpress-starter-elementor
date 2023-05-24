@@ -73,7 +73,7 @@ class Jet_Elements_Circle_Progress extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Current Percent', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( '%' ),
+				'size_units' => array( '%', 'custom' ),
 				'default'    => array(
 					'unit' => '%',
 					'size' => 50,
@@ -238,7 +238,7 @@ class Jet_Elements_Circle_Progress extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Circle Size', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px' ),
+				'size_units' => array( 'px', 'custom' ),
 				'default'    => array(
 					'unit' => 'px',
 					'size' => 185,
@@ -265,7 +265,7 @@ class Jet_Elements_Circle_Progress extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Value Stoke Width', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px' ),
+				'size_units' => array( 'px', 'custom' ),
 				'default'    => array(
 					'unit' => 'px',
 					'size' => 7,
@@ -286,7 +286,7 @@ class Jet_Elements_Circle_Progress extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Background Stoke Width', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px' ),
+				'size_units' => array( 'px', 'custom' ),
 				'default'    => array(
 					'unit' => 'px',
 					'size' => 7,
@@ -578,7 +578,7 @@ class Jet_Elements_Circle_Progress extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} .circle-counter .circle-val' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -592,7 +592,7 @@ class Jet_Elements_Circle_Progress extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Prefix Font Size', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px', 'em', 'rem',
+					'px', 'em', 'rem', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -613,7 +613,7 @@ class Jet_Elements_Circle_Progress extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Prefix Gap (px)', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px',
+					'px', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -663,7 +663,7 @@ class Jet_Elements_Circle_Progress extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Suffix Font Size', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px', 'em', 'rem',
+					'px', 'em', 'rem', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -684,7 +684,7 @@ class Jet_Elements_Circle_Progress extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Suffix Gap (px)', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px',
+					'px', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -769,7 +769,7 @@ class Jet_Elements_Circle_Progress extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} .circle-counter .circle-counter__title' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -818,7 +818,7 @@ class Jet_Elements_Circle_Progress extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} .circle-counter .circle-counter__subtitle' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),

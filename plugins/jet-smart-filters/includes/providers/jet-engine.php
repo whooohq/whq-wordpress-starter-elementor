@@ -130,27 +130,15 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Engine' ) ) {
 			}
 
 			add_filter( 'jet-engine/listing/grid/posts-query-args', array( $this, 'add_query_args' ), 10, 2 );
-			add_filter( 'jet-engine/listing/grid/custom-settings', array( $this, 'add_settings' ), 10, 2 );
 
 			if ( jet_engine()->has_elementor() ) {
-				if ( ! class_exists( 'Elementor\Jet_Listing_Grid_Widget' ) ) {
-					if ( version_compare( jet_engine()->get_version(), '2.0', '<' ) ) {
-						require_once jet_engine()->plugin_path( 'includes/listings/static-widgets/grid.php' );
-					} else {
-						require_once jet_engine()->plugin_path( 'includes/components/elementor-views/static-widgets/grid.php' );
-					}
-				}
-
 				Elementor\Plugin::instance()->frontend->start_excerpt_flag( null );
-
-				$widget = new Elementor\Jet_Listing_Grid_Widget( array() );
-				$widget->render_posts();
-			} else {
-				$attributes = isset( $_REQUEST['settings'] ) ? $this->sanitize_settings( $_REQUEST['settings'] ) : array();
-				$render     = jet_engine()->listings->get_render_instance( 'listing-grid', $attributes );
-
-				$render->render();
 			}
+
+			$attrs  = isset( $_REQUEST['settings'] ) ? $this->sanitize_settings( $_REQUEST['settings'] ) : array();
+			$render = jet_engine()->listings->get_render_instance( 'listing-grid', $attrs );
+
+			$render->render();
 		}
 
 		/**
@@ -158,7 +146,26 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Engine' ) ) {
 		 */
 		public function get_wrapper_selector() {
 
-			return '.jet-listing-grid.jet-listing';
+			return apply_filters( 
+				'jet-smart-filters/providers/jet-engine/selector',
+				'.jet-listing-grid.jet-listing'
+			);
+		}
+
+		/**
+		 * Get provider list selector
+		 */
+		public function get_list_selector() {
+
+			return '.jet-listing-grid__items';
+		}
+
+		/**
+		 * Get provider list item selector
+		 */
+		public function get_item_selector() {
+
+			return '.jet-listing-grid__item';
 		}
 
 		/**
@@ -175,22 +182,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Engine' ) ) {
 		public function in_depth() {
 
 			return true;
-		}
-
-		/**
-		 * Add custom settings for AJAX request
-		 */
-		public function add_settings( $settings, $widget ) {
-
-			if ( 'jet-listing-grid' !== $widget->get_name() ) {
-				return $settings;
-			}
-
-			if ( jet_smart_filters()->query->is_ajax_filter() ) {
-				remove_filter( 'jet-engine/listing/grid/custom-settings', array( $this, 'add_settings' ), 10, 2 );
-			}
-
-			return jet_smart_filters()->query->get_query_settings();
 		}
 
 		/**
@@ -213,13 +204,11 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Engine' ) ) {
 		public function query_maybe_has_offset( $args ) {
 
 			if ( isset( $args['offset'] ) ){
-
 				add_filter( 'found_posts', array( $this, 'adjust_offset_pagination' ), 1, 2 );
 
-				if( isset( $args['paged'] ) ){
+				if ( isset( $args['paged'] ) ) {
 					$args['offset'] = $args['offset'] + ( ( $args['paged'] - 1 ) * $args['posts_per_page'] );
 				}
-
 			}
 
 			return $args;
@@ -234,7 +223,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Engine' ) ) {
 			$offset      = (int) $query->get( 'offset' );
 
 			if ( $query->get( 'jet_smart_filters' ) && ! empty( $offset ) ){
-
 				$paged = $query->get( 'paged' );
 				$posts_per_page = $query->get( 'posts_per_page' );
 
@@ -243,7 +231,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Engine' ) ) {
 				}
 
 				return $found_posts - $offset;
-
 			}
 
 			return $found_posts;

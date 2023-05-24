@@ -240,7 +240,10 @@ if ( ! class_exists( 'Jet_Woo_Builder_Popup_Package' ) ) {
 			}
 
 			$popup_id   = isset( $settings['jet_woo_builder_cart_popup_template'] ) ? $settings['jet_woo_builder_cart_popup_template'] : '';
-			$attributes .= sprintf( ' data-purchase-popup-id=%s ', $popup_id );
+			$attributes .= sprintf(
+				' data-purchase-popup-id=%s ',
+				apply_filters( 'jet-woo-builder/purchase-popup-id', $popup_id )
+			);
 
 			return $attributes;
 
@@ -314,21 +317,23 @@ if ( ! class_exists( 'Jet_Woo_Builder_Popup_Package' ) ) {
 		}
 
 		/**
-		 * Added missed scripts to quick view popup
+		 * Quick view WooCommerce scripts.
 		 *
-		 * @param $deps
+		 * Added missed scripts to quick view popup.
 		 *
-		 * @return mixed
+		 * @since
+		 * @since 2.1.1 Added `jet-woo-builder/compatibility/jet-popup/script-dependencies` for third-party plugins
+		 *        injections. Removed JetGallery scripts handling.
+		 *
+		 * @param array $deps List of dependencies.
+		 *
+		 * @return array
 		 */
 		public function quick_view_woocommerce_scripts( $deps ) {
 
-			if ( function_exists( 'jet_woo_product_gallery' ) ) {
-				array_push( $deps, 'photoswipe', 'photoswipe-ui-default' );
-			}
-
 			array_push( $deps, 'wc-single-product', 'wc-add-to-cart-variation' );
 
-			return $deps;
+			return apply_filters( 'jet-woo-builder/compatibility/jet-popup/script-dependencies', $deps );
 
 		}
 
@@ -360,7 +365,8 @@ if ( ! class_exists( 'Jet_Woo_Builder_Popup_Package' ) ) {
 				'jet-quickview-button__link--icon-' . $display_settings['quickview_button_icon_position'],
 			); ?>
 
-			<div class="jet-quickview-button__container"><a href="#" class="<?php echo implode( ' ', $button_classes ); ?>">
+			<div class="jet-quickview-button__container">
+				<a href="#" class="<?php echo implode( ' ', $button_classes ); ?>">
 					<div class="jet-quickview-button__plane jet-quickview-button__plane-normal"></div>
 					<div class="jet-quickview-button__state jet-quickview-button__state-normal">
 						<?php
@@ -370,7 +376,8 @@ if ( ! class_exists( 'Jet_Woo_Builder_Popup_Package' ) ) {
 						printf( '<span class="jet-quickview-button__label">%s</span>', esc_html__( $display_settings['quickview_button_label_normal'], 'jet-woo-builder' ) );
 						?>
 					</div>
-				</a></div>
+				</a>
+			</div>
 			<?php
 
 		}
@@ -483,32 +490,18 @@ if ( ! class_exists( 'Jet_Woo_Builder_Popup_Package' ) ) {
 			 */
 			$obj->start_controls_section(
 				'section_button_quickview_general_style',
-				array(
-					'label'      => esc_html__( 'Quick View', 'jet-woo-builder' ),
+				[
 					'tab'        => Elementor\Controls_Manager::TAB_STYLE,
-					'show_label' => false,
-				)
-			);
-
-			$obj->add_group_control(
-				Elementor\Group_Control_Typography::get_type(),
-				array(
-					'name'     => 'quickview_button_typography',
-					'scheme'   => Elementor\Core\Schemes\Typography::TYPOGRAPHY_1,
-					'selector' => '{{WRAPPER}} ' . $css_scheme['button'] . ',{{WRAPPER}} ' . $css_scheme['label_normal'],
-				)
+					'label'      => __( 'Quick View', 'jet-woo-builder' ),
+				]
 			);
 
 			$obj->add_control(
 				'quickview_custom_size',
-				array(
-					'label'        => esc_html__( 'Custom Size', 'jet-woo-builder' ),
+				[
 					'type'         => Elementor\Controls_Manager::SWITCHER,
-					'label_on'     => esc_html__( 'Yes', 'jet-woo-builder' ),
-					'label_off'    => esc_html__( 'No', 'jet-woo-builder' ),
-					'return_value' => 'yes',
-					'default'      => 'false',
-				)
+					'label'        => __( 'Custom Size', 'jet-woo-builder' ),
+				]
 			);
 
 			$obj->add_responsive_control(
@@ -567,6 +560,14 @@ if ( ! class_exists( 'Jet_Woo_Builder_Popup_Package' ) ) {
 						'quickview_custom_size' => 'yes',
 					),
 				)
+			);
+
+			$obj->add_group_control(
+				Elementor\Group_Control_Typography::get_type(),
+				[
+					'name'     => 'quickview_button_typography',
+					'selector' => '{{WRAPPER}} ' . $css_scheme['button'] . ',{{WRAPPER}} ' . $css_scheme['label_normal'],
+				]
 			);
 
 			$obj->start_controls_tabs( 'quickview_button_style_tabs' );

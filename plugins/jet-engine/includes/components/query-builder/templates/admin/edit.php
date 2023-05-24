@@ -18,13 +18,20 @@
 		<div class="cx-vui-panel">
 			<cx-vui-input
 				:label="'<?php _e( 'Name', 'jet-engine' ); ?>'"
-				:description="'<?php _e( 'Name of Custom Content Type will be shown in the admin menu`', 'jet-engine' ); ?>'"
+				:description="'<?php _e( 'Name of Query will be shown in the admin menu', 'jet-engine' ); ?>'"
 				:wrapper-css="[ 'equalwidth' ]"
 				:size="'fullwidth'"
 				:error="errors.name"
 				v-model="generalSettings.name"
 				@on-focus="handleFocus( 'name' )"
 			></cx-vui-input>
+			<cx-vui-textarea
+				:label="'<?php _e( 'Description', 'jet-engine' ); ?>'"
+				:description="'<?php _e( 'Description of Query', 'jet-engine' ); ?>'"
+				:wrapper-css="[ 'equalwidth' ]"
+				:size="'fullwidth'"
+				v-model="generalSettings.description"
+			></cx-vui-textarea>
 			<cx-vui-select
 				:label="'<?php _e( 'Query Type', 'jet-engine' ); ?>'"
 				:description="'<?php _e( 'Select type of queried data', 'jet-engine' ); ?>'"
@@ -41,6 +48,11 @@
 				:size="'fullwidth'"
 				v-model="generalSettings.query_id"
 			></cx-vui-input>
+			<cx-vui-component-wrapper
+				v-if="generalSettings.query_id"
+				label="<?php _e( 'Warning!', 'jet-engine' ); ?>"
+				description="<?php _e( 'Please make sure you set up the same ID for any filters used with this query.', 'jet-engine' ); ?>"
+			></cx-vui-component-wrapper>
 		</div>
 		<component
 			v-if="generalSettings.query_type && typesComponents[ generalSettings.query_type ]"

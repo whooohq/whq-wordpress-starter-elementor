@@ -22,11 +22,11 @@ if ( ! class_exists( 'Jet_Smart_Filters_Render' ) ) {
 		 */
 		public function __construct() {
 
-			add_action( 'init', array( $this, 'apply_filters_from_request' ), 20 );
+			add_action( 'parse_request', array( $this, 'apply_filters_from_request' ) );
 			add_action( 'parse_request', array( $this, 'apply_filters_from_permalink' ) );
 
 			// backward compatibility
-			add_action( 'init', array( $this, 'apply_filters_from_request_backward_compatibility' ) );
+			add_action( 'parse_request', array( $this, 'apply_filters_from_request_backward_compatibility' ) );
 
 			add_action( 'wp_ajax_jet_smart_filters', array( $this, 'ajax_apply_filters' ) );
 			add_action( 'wp_ajax_nopriv_jet_smart_filters', array( $this, 'ajax_apply_filters' ) );
@@ -106,7 +106,11 @@ if ( ! class_exists( 'Jet_Smart_Filters_Render' ) ) {
 				return;
 			}
 
-			jet_smart_filters()->query->set_provider_from_request( $_REQUEST['jsf'] );
+			$provider_name = ! empty( $_REQUEST['provider'] )
+				? $_REQUEST['provider']
+				: $_REQUEST['jsf'];
+
+			jet_smart_filters()->query->set_provider_from_request( $provider_name );
 
 			$provider_id = $this->request_provider( 'provider' );
 			$provider    = jet_smart_filters()->providers->get_providers( $provider_id );

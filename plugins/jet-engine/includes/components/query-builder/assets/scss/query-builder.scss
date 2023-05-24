@@ -82,6 +82,11 @@
 			opacity: .5;
 		}
 	}
+	&__items {
+		pre {
+			white-space: pre-wrap;
+		}
+	}
 }
 
 .cx-vui-component.cx-vui-component--query-fullwidth {
@@ -231,8 +236,13 @@
 			&--mini-label {
 				flex-direction: column;
 				border-top: none !important;
+				.cx-vui-component__meta {
+					max-width: 100%;
+					flex: 0 0 100%;
+				}
 				.cx-vui-component__label {
 					font-weight: bold;
+					color: #7B7E81;
 				}
 				.cx-vui-component__control {
 					flex: 1 1 auto !important;

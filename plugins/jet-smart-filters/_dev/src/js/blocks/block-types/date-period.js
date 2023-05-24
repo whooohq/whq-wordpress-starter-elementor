@@ -2,6 +2,7 @@ import { datePeriodIcon } from 'blocks/editor/icons';
 import attributes from 'blocks/editor/attributes';
 import General from 'blocks/editor/panels/general';
 import TemplateRender from 'blocks/editor/controls/templateRender';
+import DatePeriod from 'filters/DatePeriod';
 
 const { __ } = wp.i18n;
 
@@ -44,7 +45,10 @@ registerBlockType('jet-smart-filters/date-period', {
 		}
 
 		initDatePeriod() {
-			new window.JetSmartFilters.filters.DatePeriod(this._holder.find('.' + window.JetSmartFilters.filtersList.DatePeriod));
+			const $filterContainer = this._holder.find('.' + window.JetSmartFilters.filtersList.DatePeriod);
+
+			if ($filterContainer.length)
+				new DatePeriod($filterContainer);
 		}
 
 		render() {

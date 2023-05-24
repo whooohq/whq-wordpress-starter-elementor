@@ -16,12 +16,33 @@ if ( $settings['post_type'] === 'product' ) {
 }
 
 $cat_name = $cat_id = null;
+$cat_name_2 = $cat_id_2 = null;
+$cat_name_3 = $cat_id_3 = null;
+
 $show_cat = ($settings['eael_post_list_post_cat'] != '');
-if ( !is_wp_error($category) && !empty($category[0]) ) {
-    $cat_id = isset($category[0]->term_id) ? $category[0]->term_id : null;
-    $cat_name = isset($category[0]->name) ? $category[0]->name : null;
+$max_cat_length = ! empty ( $settings['eael_post_list_post_cat_max_length'] ) ? intval( $settings['eael_post_list_post_cat_max_length'] ) : 1;
+$cat_separator = ! empty ( $settings['eael_post_list_post_cat_separator'] ) ? esc_html( $settings['eael_post_list_post_cat_separator'] ) : '';
+
+if ( !is_wp_error($category) ) {
+    if( ! empty( $category[0] ) ){
+        $cat_id = isset($category[0]->term_id) ? $category[0]->term_id : null;
+        $cat_name = isset($category[0]->name) ? $category[0]->name : null;
+    }
+    
+    if( ! empty( $category[1] ) ){
+        $cat_id_2 = isset($category[1]->term_id) ? $category[1]->term_id : null;
+        $cat_name_2 = isset($category[1]->name) ? $category[1]->name : null;
+    }
+    
+    if( ! empty( $category[2] ) ){
+        $cat_id_3 = isset($category[2]->term_id) ? $category[2]->term_id : null;
+        $cat_name_3 = isset($category[2]->name) ? $category[2]->name : null;
+    }
 }
 $cat_is_ready = ($show_cat && $cat_name && $cat_id);
+$separator_1 = ! empty( $cat_id_2 ) ? $cat_separator : '';
+$separator_2 = ! empty( $cat_id_3 ) ? $cat_separator : '';
+
 echo '<div class="eael-post-list-post ' . (has_post_thumbnail() ? '' : 'eael-empty-thumbnail') . '">';
     echo ($settings['eael_post_list_layout_type'] == 'advanced' ? '<div class="eael-post-list-post-inner">' : '');
         if ($settings['eael_post_list_post_feature_image'] === 'yes') {
@@ -36,17 +57,33 @@ echo '<div class="eael-post-list-post ' . (has_post_thumbnail() ? '' : 'eael-emp
 
         echo '<div class="eael-post-list-content">';
 			if ($settings['eael_post_list_layout_type'] == 'default' && $cat_is_ready) {
-				echo '<div class="meta-categories">
-                    <a href="' . esc_url(get_category_link($cat_id)) . '">' . esc_html($cat_name) . '</a>
-                </div>';
+				echo '<div class="meta-categories">';
+                    echo '<a href="' . esc_url(get_category_link($cat_id)) . '">' . esc_html($cat_name . $separator_1) . '</a>';       
+                                            
+                    if( $cat_id_2 && ( 2 === $max_cat_length || 3 === $max_cat_length ) ){
+                        echo '<a href="' . esc_url(get_category_link($cat_id_2)) . '">' . esc_html($cat_name_2 . $separator_2) . '</a>';
+                    }
+            
+                    if( $cat_id_3 && 3 === $max_cat_length ){
+                        echo '<a href="' . esc_url(get_category_link($cat_id_3)) . '">' . esc_html($cat_name_3) . '</a>';
+                    }
+                echo '</div>';
 			}
 
             if ($settings['eael_post_list_layout_type'] == 'advanced' && ($iterator == 8) && $cat_is_ready) {
                 echo '<div class="boxed-meta">
-                    <div class="meta-categories">
-                        <a href="' . esc_url(get_category_link($cat_id)) . '">' . esc_html($cat_name) . '</a>
-                    </div>
-                </div>';
+                        <div class="meta-categories">';
+                            echo '<a href="' . esc_url(get_category_link($cat_id)) . '">' . esc_html($cat_name . $separator_1) . '</a>';       
+                                            
+                            if( $cat_id_2 && ( 2 === $max_cat_length || 3 === $max_cat_length ) ){
+                                echo '<a href="' . esc_url(get_category_link($cat_id_2)) . '">' . esc_html($cat_name_2 . $separator_2) . '</a>';
+                            }
+                    
+                            if( $cat_id_3 && 3 === $max_cat_length ){
+                                echo '<a href="' . esc_url(get_category_link($cat_id_3)) . '">' . esc_html($cat_name_3) . '</a>';
+                            }
+                echo    '</div>
+                     </div>';
             }
 			$validate_tag = Helper::eael_pro_validate_html_tag($settings['eael_post_list_title_tag']);
             if ($settings['eael_post_list_post_title'] == 'yes' && !empty($settings['eael_post_list_title_tag'])) {
@@ -91,10 +128,18 @@ echo '<div class="eael-post-list-post ' . (has_post_thumbnail() ? '' : 'eael-emp
                     if ($iterator != 8) {
                         if ($cat_is_ready) {
                             echo '<div class="meta-categories">
-                                <div class="meta-cats-wrap">
-                                    <a href="' . esc_url(get_category_link($cat_id)) . '">' . esc_html($cat_name) . '</a>
-                                </div>
-                            </div>';
+                                    <div class="meta-cats-wrap">';
+                                        echo '<a href="' . esc_url(get_category_link($cat_id)) . '">' . esc_html($cat_name . $separator_1) . '</a>';       
+                                            
+                                        if( $cat_id_2 && ( 2 === $max_cat_length || 3 === $max_cat_length ) ){
+                                            echo '<a href="' . esc_url(get_category_link($cat_id_2)) . '">' . esc_html($cat_name_2 . $separator_2) . '</a>';
+                                        }
+                                
+                                        if( $cat_id_3 && 3 === $max_cat_length ){
+                                            echo '<a href="' . esc_url(get_category_link($cat_id_3)) . '">' . esc_html($cat_name_3) . '</a>';
+                                        }
+                            echo    '</div>
+                                 </div>';
                         }
                     }
                 echo '</div>';

@@ -188,7 +188,7 @@ class Settings {
 							></cx-vui-select>
 							<cx-vui-input
 								label="<?php _e( 'Max size', 'jet-engine' ); ?>"
-								description="<?php _e( 'Maximum items allowed to store', 'jet-engine' ); ?>"
+								description="<?php _e( 'Maximum items allowed to store. Set 0 for unlimited size', 'jet-engine' ); ?>"
 								:wrapper-css="[ 'equalwidth' ]"
 								size="fullwidth"
 								:value="dataStores[ index ].size"

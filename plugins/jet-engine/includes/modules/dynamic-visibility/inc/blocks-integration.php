@@ -8,7 +8,7 @@ class Blocks_Integration extends Condition_Checker {
 		add_filter( 'register_block_type_args', array( $this, 'register_visibility_attr' ), 10, 2 );
 
 		if ( ! $this->editor_request() ) {
-			add_filter( 'pre_render_block', array( $this, 'render_block' ), 10, 2 );
+			add_filter( 'pre_render_block', array( $this, 'render_block' ), 20, 2 );
 		}
 		
 	}

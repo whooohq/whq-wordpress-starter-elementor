@@ -143,6 +143,7 @@ if ( ! class_exists( 'Jet_Engine_Rest_Post_Meta' ) ) {
 					
 					$result = array( 
 						'type'             => 'object',
+						'schema'           => array( 'additionalProperties' => true ),
 						'prepare_callback' => array( $this, 'prepare_object_value' ) 
 					);
 

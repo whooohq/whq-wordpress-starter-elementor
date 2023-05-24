@@ -316,7 +316,7 @@ if ( ! class_exists( 'Jet_Engine_Meta_Box_Package' ) ) {
 				$id,
 				array(
 					'label'     => __( 'Meta Box Field', 'jet-engine' ),
-					'type'      => Elementor\Controls_Manager::SELECT,
+					'type'      => 'select',
 					'default'   => '',
 					'groups'    => $this->get_fields_goups( $group ),
 					'condition' => $condition,

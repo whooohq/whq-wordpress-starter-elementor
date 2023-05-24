@@ -145,6 +145,8 @@ if ( ! class_exists( 'Jet_Engine_Options_Pages' ) ) {
 
 			foreach ( $this->get_items() as $item ) {
 
+				jet_engine()->add_instance( 'options-page', $item );
+
 				if ( empty( $item['parent'] ) ) {
 					$this->register_new_options_page( $item );
 				} else {

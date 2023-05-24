@@ -71,6 +71,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Gallery_Slider' ) ) {
 			add_filter( 'jet-engine/listings/allowed-callbacks-args', array( $this, 'add_cb_args' ) );
 			add_action( 'jet-engine/listing/dynamic-field/misc-style-controls', array( $this, 'style_controls' ) );
 			add_action( 'jet-engine/blocks-views/dynamic-field/misc-style-controls', array( $this, 'block_style_controls' ), 10, 2 );
+			add_action( 'jet-engine/bricks-views/dynamic-field/misc-style-controls', array( $this, 'bricks_style_controls' ), 10, 2 );
 			add_filter( 'jet-engine/blocks-views/editor-data', array( $this, 'modify_cb_args' ) );
 
 		}
@@ -534,6 +535,124 @@ if ( ! class_exists( 'Jet_Engine_Module_Gallery_Slider' ) ) {
 			$controls_manager->end_tabs();
 		}
 
+		/**
+		 * Add gallery style controls for Bricks
+		 */
+		public function bricks_style_controls($widget) {
+			$widget->register_jet_control(
+				'img_slides_gap',
+				[
+					'tab'     => 'style',
+					'label'   => esc_html__( 'Images gap', 'jet-engine' ),
+					'type'    => 'number',
+					'units'   => true,
+					'css'     => [
+						[
+							'property' => '--column-gap',
+							'selector' => '.jet-engine-gallery-slider',
+						],
+					],
+					'required' => [ 'filter_callback', '=', 'jet_engine_img_gallery_slider' ],
+				]
+			);
+
+			$widget->register_jet_control(
+				'arrows_box_size',
+				[
+					'tab'      => 'style',
+					'label'    => esc_html__( 'Slider arrows box size', 'jet-engine' ),
+					'type'     => 'number',
+					'units'    => true,
+					'css'      => [
+						[
+							'property' => 'width',
+							'selector' => '.slick-arrow',
+						],
+						[
+							'property' => 'height',
+							'selector' => '.slick-arrow',
+						],
+						[
+							'property' => 'line-height',
+							'selector' => '.slick-arrow',
+						],
+						[
+							'property' => 'margin-top',
+							'selector' => '.slick-arrow',
+							'value'    => 'calc( %s / -2 )',
+						],
+					],
+					'required' => [ 'filter_callback', '=', 'jet_engine_img_gallery_slider' ],
+				]
+			);
+
+			$widget->register_jet_control(
+				'arrows_size',
+				[
+					'tab'      => 'style',
+					'label'    => esc_html__( 'Slider arrows size', 'jet-engine' ),
+					'type'     => 'number',
+					'units'    => true,
+					'css'      => [
+						[
+							'property' => 'font-size',
+							'selector' => '.slick-arrow',
+						],
+					],
+					'required' => [ 'filter_callback', '=', 'jet_engine_img_gallery_slider' ],
+				]
+			);
+
+			$widget->register_jet_control(
+				'arrows_border',
+				[
+					'tab'      => 'style',
+					'label'    => esc_html__( 'Arrows border', 'jet-engine' ),
+					'type'     => 'border',
+					'css'      => [
+						[
+							'property' => 'border',
+							'selector' => '.slick-arrow',
+						],
+					],
+					'required' => [ 'filter_callback', '=', 'jet_engine_img_gallery_slider' ],
+				]
+			);
+
+			$widget->register_jet_control(
+				'arrow_color',
+				[
+					'tab'      => 'style',
+					'label'    => esc_html__( 'Color', 'jet-engine' ),
+					'type'     => 'color',
+					'css'      => [
+						[
+							'property' => 'color',
+							'selector' => '.slick-arrow',
+						],
+					],
+					'required' => [ 'filter_callback', '=', 'jet_engine_img_gallery_slider' ],
+				]
+			);
+
+			$widget->register_jet_control(
+				'arrow_bg_color',
+				[
+					'tab'      => 'style',
+					'label'    => esc_html__( 'Background color', 'jet-engine' ),
+					'type'     => 'color',
+					'css'      => [
+						[
+							'property' => 'background-color',
+							'selector' => '.slick-arrow',
+						],
+					],
+					'required' => [ 'filter_callback', '=', 'jet_engine_img_gallery_slider' ],
+				]
+			);
+		}
+
+
 		public function add_cb_args( $args = array() ) {
 
 			$args['img_slider_cols'] = array(
@@ -598,6 +717,15 @@ if ( ! class_exists( 'Jet_Engine_Module_Gallery_Slider' ) ) {
 				'slides_to_show_m' => ! empty( $settings['img_slider_cols_mobile'] ) ? absint( $settings['img_slider_cols_mobile'] ) : 1,
 			);
 
+			// Responsive image gallery slider for Bricks
+			if ( ! empty( $settings['img_slider_cols:tablet_portrait'] ) ) {
+				$gallery_args['slides_to_show_t'] = absint( $settings['img_slider_cols:tablet_portrait'] );
+			}
+
+			if ( ! empty( $settings['img_slider_cols:mobile_portrait'] ) ) {
+				$gallery_args['slides_to_show_m'] = absint( $settings['img_slider_cols:mobile_portrait'] );
+			}
+
 			return array_merge( $args, array( $gallery_args ) );
 
 		}
@@ -624,7 +752,6 @@ if ( ! class_exists( 'Jet_Engine_Module_Gallery_Slider' ) ) {
 		public function support_blocks() {
 			return true;
 		}
-
 	}
 
 }

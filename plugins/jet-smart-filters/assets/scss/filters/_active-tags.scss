@@ -7,6 +7,7 @@
 	.jet-active-tags {
 		&__title {
 			flex: 0 0 auto;
+			margin-right: 5px;
 		}
 
 		&__list {
@@ -20,10 +21,14 @@
 	}
 
 	.jet-active-tag {
+		cursor: pointer;
 		position: relative;
 		display: flex;
 		padding-right: 10px;
-		cursor: pointer;
+
+		&__label {
+			padding-right: 3px;
+		}
 
 		&__remove {
 			position: absolute;

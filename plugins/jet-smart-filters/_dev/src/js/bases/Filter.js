@@ -1,8 +1,8 @@
 import eventBus from 'includes/event-bus';
 import {
-	getNesting
+	getNesting,
+	getElementPath
 } from 'includes/utility';
-
 
 export default class Filter {
 	dataValue = false;
@@ -14,6 +14,7 @@ export default class Filter {
 	constructor($filter, $container = false) {
 		this.$container = $container;
 		this.$filter = $filter;
+		this.path = getElementPath(this.$filter.get(0));
 		this.provider = this.$filter.data('content-provider');
 		this.additionalProviders = this.$filter.data('additional-providers');
 		this.filterId = this.$filter.data('filterId');
@@ -43,9 +44,6 @@ export default class Filter {
 
 		if (typeof this.queryId !== 'string')
 			this.queryId = this.queryId.toString();
-
-		if (this.activeLabel)
-			this.activeLabel += ':&nbsp;';
 	}
 
 	initEvent() {
@@ -65,7 +63,7 @@ export default class Filter {
 		this.$applyButton.on('click', () => {
 			this.processData();
 			this.emitFiterChange();
-		})
+		});
 	}
 
 	reset() {
@@ -133,7 +131,7 @@ export default class Filter {
 		if (queryVarSuffix)
 			key += '|' + queryVarSuffix;
 
-		return key
+		return key;
 	}
 
 	get copy() {
@@ -151,7 +149,14 @@ export default class Filter {
 	}
 
 	get filterGroup() {
-		return getNesting(JetSmartFilters, 'filterGroups', this.provider + '/' + this.queryId);
+		return getNesting(window.JetSmartFilters, 'filterGroups', this.provider + '/' + this.queryId);
+	}
+
+	get isAjaxLoading() {
+		if (!this.filterGroup)
+			return false;
+
+		return this.filterGroup.isAjaxLoading;
 	}
 
 	// abstract methods

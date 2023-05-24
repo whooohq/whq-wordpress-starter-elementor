@@ -50,7 +50,14 @@ class Jet_Engine_Calendar_Query {
 		$date_values = $render->get_date_period_for_query( $settings );
 
 		if ( $render->query_instance ) {
-			$args = $render->query_instance->add_date_range_args( $args, $date_values, $settings );
+
+			$query_id        = intval( $render->query_instance->id );
+			$custom_query_id = intval( $settings['custom_query_id'] );
+
+			if ( $query_id === $custom_query_id ) {
+				$args = $render->query_instance->add_date_range_args( $args, $date_values, $settings );
+			}
+
 		} else {
 			/**
 			 * For compatibility with old queries

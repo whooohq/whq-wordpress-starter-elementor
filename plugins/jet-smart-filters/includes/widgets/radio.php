@@ -86,10 +86,8 @@ class Jet_Smart_Filters_Radio_Widget extends Jet_Smart_Filters_Base_Widget {
 					'unit' => 'px',
 				),
 				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['child-items'] . ':not(:last-child)'  => 'margin-bottom: calc({{SIZE}}{{UNIT}}/2);',
-					'{{WRAPPER}} ' . $css_scheme['child-items'] . ':not(:first-child)' => 'padding-top: calc({{SIZE}}{{UNIT}}/2);',
-					'{{WRAPPER}} ' . $css_scheme['row'] . ':not(:last-child)'  => 'margin-bottom: calc({{SIZE}}{{UNIT}}/2);',
-					'{{WRAPPER}} ' . $css_scheme['row'] . ':not(:first-child)' => 'padding-top: calc({{SIZE}}{{UNIT}}/2);',
+					'{{WRAPPER}} ' . $css_scheme['child-items'] . ':not(:last-child)' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} ' . $css_scheme['row'] . ':not(:last-child)'         => 'margin-bottom: {{SIZE}}{{UNIT}};'
 				),
 			)
 		);

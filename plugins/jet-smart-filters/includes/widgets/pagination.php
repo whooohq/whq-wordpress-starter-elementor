@@ -50,6 +50,7 @@ class Jet_Smart_Filters_Pagination_Widget extends Widget_Base {
 				'pagination-link'         => '.jet-filters-pagination__link',
 				'pagination-link-current' => '.jet-filters-pagination__current .jet-filters-pagination__link',
 				'pagination-dots'         => '.jet-filters-pagination__dots',
+				'pagination-load-more'    => '.jet-filters-pagination__load-more .jet-filters-pagination__link',
 			)
 		);
 
@@ -115,9 +116,9 @@ class Jet_Smart_Filters_Pagination_Widget extends Widget_Base {
 		);
 
 		$this->add_control(
-			'enable_prev_next',
+			'enable_items',
 			array(
-				'label'        => esc_html__( 'Enable Prev/Next buttons', 'jet-smart-filters' ),
+				'label'        => esc_html__( 'Enable Items', 'jet-smart-filters' ),
 				'type'         => Controls_Manager::SWITCHER,
 				'description'  => '',
 				'label_on'     => esc_html__( 'Yes', 'jet-smart-filters' ),
@@ -128,46 +129,97 @@ class Jet_Smart_Filters_Pagination_Widget extends Widget_Base {
 		);
 
 		$this->add_control(
-			'prev_text',
-			array(
-				'label'   => esc_html__( 'Prev Text', 'jet-smart-filters' ),
-				'type'    => Controls_Manager::TEXT,
-				'default' => __( 'Prev', 'jet-smart-filters' ),
-			)
-		);
-
-		$this->add_control(
-			'next_text',
-			array(
-				'label'   => esc_html__( 'Next Text', 'jet-smart-filters' ),
-				'type'    => Controls_Manager::TEXT,
-				'default' => __( 'Next', 'jet-smart-filters' ),
-			)
-		);
-
-		$this->add_control(
 			'pages_center_offset',
 			array(
-				'label'   => esc_html__( 'Items center offset', 'jet-smart-filters' ),
-				'description'   => esc_html__( 'Set number of items to either side of current page, not including current page.Set 0 to show all items.', 'jet-smart-filters' ),
-				'type'    => Controls_Manager::NUMBER,
-				'default' => 0,
-				'min'     => 0,
-				'max'     => 50,
-				'step'    => 1,
+				'label'       => esc_html__( 'Items center offset', 'jet-smart-filters' ),
+				'description' => esc_html__( 'Set number of items to either side of current page, not including current page.Set 0 to show all items.', 'jet-smart-filters' ),
+				'type'        => Controls_Manager::NUMBER,
+				'default'     => 0,
+				'min'         => 0,
+				'max'         => 50,
+				'step'        => 1,
+				'condition'   => array(
+					'enable_items' => 'yes',
+				),
 			)
 		);
 
 		$this->add_control(
 			'pages_end_offset',
 			array(
-				'label'   => esc_html__( 'Items edge offset', 'jet-smart-filters' ),
-				'description'   => esc_html__( 'Set number of items on either the start and the end list edges.', 'jet-smart-filters' ),
-				'type'    => Controls_Manager::NUMBER,
-				'default' => 0,
-				'min'     => 0,
-				'max'     => 50,
-				'step'    => 1,
+				'label'       => esc_html__( 'Items edge offset', 'jet-smart-filters' ),
+				'description' => esc_html__( 'Set number of items on either the start and the end list edges.', 'jet-smart-filters' ),
+				'type'        => Controls_Manager::NUMBER,
+				'default'     => 0,
+				'min'         => 0,
+				'max'         => 50,
+				'step'        => 1,
+				'condition'   => array(
+					'enable_items' => 'yes',
+				),
+			)
+		);
+
+		$this->add_control(
+			'enable_prev_next',
+			array(
+				'label'        => esc_html__( 'Enable Prev/Next', 'jet-smart-filters' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'description'  => '',
+				'label_on'     => esc_html__( 'Yes', 'jet-smart-filters' ),
+				'label_off'    => esc_html__( 'No', 'jet-smart-filters' ),
+				'return_value' => 'yes',
+				'default'      => 'yes',
+				'separator'    => 'before'
+			)
+		);
+
+		$this->add_control(
+			'prev_text',
+			array(
+				'label'     => esc_html__( 'Prev Text', 'jet-smart-filters' ),
+				'type'      => Controls_Manager::TEXT,
+				'default'   => __( 'Prev', 'jet-smart-filters' ),
+				'condition' => array(
+					'enable_prev_next' => 'yes',
+				),
+			)
+		);
+
+		$this->add_control(
+			'next_text',
+			array(
+				'label'     => esc_html__( 'Next Text', 'jet-smart-filters' ),
+				'type'      => Controls_Manager::TEXT,
+				'default'   => __( 'Next', 'jet-smart-filters' ),
+				'condition' => array(
+					'enable_prev_next' => 'yes',
+				),
+			)
+		);
+
+		$this->add_control(
+			'enable_load_more',
+			array(
+				'label'        => esc_html__( 'Enable Load More', 'jet-smart-filters' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'description'  => '',
+				'label_on'     => esc_html__( 'Yes', 'jet-smart-filters' ),
+				'label_off'    => esc_html__( 'No', 'jet-smart-filters' ),
+				'return_value' => 'yes',
+				'separator'    => 'before'
+			)
+		);
+
+		$this->add_control(
+			'load_more_text',
+			array(
+				'label'     => esc_html__( 'Load More Text', 'jet-smart-filters' ),
+				'type'      => Controls_Manager::TEXT,
+				'default'   => __( 'Load More', 'jet-smart-filters' ),
+				'condition' => array(
+					'enable_load_more' => 'yes',
+				),
 			)
 		);
 
@@ -181,6 +233,7 @@ class Jet_Smart_Filters_Pagination_Widget extends Widget_Base {
 				'label_off'    => esc_html__( 'No', 'jet-smart-filters' ),
 				'return_value' => 'yes',
 				'default'      => 'yes',
+				'separator'    => 'before',
 				'condition'    => array(
 					'apply_type' => array( 'ajax', 'mixed' ),
 				),
@@ -573,7 +626,8 @@ class Jet_Smart_Filters_Pagination_Widget extends Widget_Base {
 			array(
 				'label'     => esc_html__( 'Alignment', 'jet-smart-filters' ),
 				'type'      => Controls_Manager::CHOOSE,
-				'default'   => 'flex-start',
+				'toggle'    => false,
+				'default'   => 'center',
 				'options'   => array(
 					'left' => array(
 						'title' => esc_html__( 'Left', 'jet-smart-filters' ),
@@ -589,8 +643,180 @@ class Jet_Smart_Filters_Pagination_Widget extends Widget_Base {
 					),
 				),
 				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['pagination'] => 'text-align: {{VALUE}}',
+					'{{WRAPPER}} ' . $css_scheme['pagination'] => 'justify-content: {{VALUE}}',
 				),
+			)
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'pagination_load_more_style',
+			array(
+				'label'      => esc_html__( 'Load More', 'jet-smart-filters' ),
+				'tab'        => Controls_Manager::TAB_STYLE,
+				'show_label' => false,
+			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'pagination_load_more_typography',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['pagination-load-more'],
+			)
+		);
+
+		$this->start_controls_tabs( 'tabs_pagination_load_more_style' );
+
+		$this->start_controls_tab(
+			'pagination_load_more_normal',
+			array(
+				'label' => esc_html__( 'Normal', 'jet-smart-filters' ),
+			)
+		);
+
+		$this->add_control(
+			'pagination_load_more_bg_color',
+			array(
+				'label'     => esc_html__( 'Background Color', 'jet-smart-filters' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} ' . $css_scheme['pagination-load-more'] => 'background-color: {{VALUE}}',
+				),
+			)
+		);
+
+		$this->add_control(
+			'pagination_load_more_color',
+			array(
+				'label'     => esc_html__( 'Text Color', 'jet-smart-filters' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} ' . $css_scheme['pagination-load-more'] => 'color: {{VALUE}}',
+				),
+			)
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'pagination_load_more_hover',
+			array(
+				'label' => esc_html__( 'Hover', 'jet-smart-filters' ),
+			)
+		);
+
+		$this->add_control(
+			'pagination_load_more_bg_color_hover',
+			array(
+				'label'     => esc_html__( 'Background Color', 'jet-smart-filters' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} ' . $css_scheme['pagination-load-more'] . ':hover' => 'background-color: {{VALUE}}',
+				),
+			)
+		);
+
+		$this->add_control(
+			'pagination_load_more_color_hover',
+			array(
+				'label'     => esc_html__( 'Text Color', 'jet-smart-filters' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} ' . $css_scheme['pagination-load-more'] . ':hover' => 'color: {{VALUE}}',
+				),
+			)
+		);
+
+		$this->add_control(
+			'pagination_load_more_hover_border_color',
+			array(
+				'label'     => esc_html__( 'Border Color', 'jet-smart-filters' ),
+				'type'      => Controls_Manager::COLOR,
+				'condition' => array(
+					'pagination_load_more_border_border!' => '',
+				),
+				'selectors' => array(
+					'{{WRAPPER}} ' . $css_scheme['pagination-load-more'] . ':hover' => 'border-color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->add_responsive_control(
+			'pagination_load_more_padding',
+			array(
+				'label'      => esc_html__( 'Padding', 'jet-smart-filters' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%', 'em' ),
+				'selectors'  => array(
+					'{{WRAPPER}} ' . $css_scheme['pagination-load-more'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_responsive_control(
+			'pagination_load_more_margin',
+			array(
+				'label'      => esc_html__( 'Margin', 'jet-smart-filters' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%' ),
+				'selectors'  => array(
+					'{{WRAPPER}} .jet-filters-pagination__load-more' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			array(
+				'name'        => 'pagination_load_more_border',
+				'label'       => esc_html__( 'Border', 'jet-smart-filters' ),
+				'placeholder' => '1px',
+				'selector'    => '{{WRAPPER}} ' . $css_scheme['pagination-load-more'] . ', {{WRAPPER}} ' . $css_scheme['pagination-dots'],
+			)
+		);
+
+		$this->add_responsive_control(
+			'pagination_load_more_border_radius',
+			array(
+				'label'      => esc_html__( 'Border Radius', 'jet-smart-filters' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%' ),
+				'selectors'  => array(
+					'{{WRAPPER}} ' . $css_scheme['pagination-load-more'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'pagination_load_more_position',
+			array(
+				'label'   => esc_html__( 'Position', 'jet-smart-filters' ),
+				'type'    => Controls_Manager::CHOOSE,
+				'toggle'  => false,
+				'default' => 'right',
+				'options' => array(
+					'left' => array(
+						'title' => esc_html__( 'Left', 'jet-smart-filters' ),
+						'icon'  => 'eicon-order-start',
+					),
+					'right'   => array(
+						'title' => esc_html__( 'Right', 'jet-smart-filters' ),
+						'icon'  => 'eicon-order-end',
+					),
+				),
+				'selectors_dictionary' => array(
+					'left'  => 'order: -1;',
+					'right' => 'order: initial;',
+				),
+				'selectors' => array(
+					'{{WRAPPER}} .jet-filters-pagination__load-more' => '{{VALUE}}',
+				)
 			)
 		);
 
@@ -609,27 +835,38 @@ class Jet_Smart_Filters_Pagination_Widget extends Widget_Base {
 
 		jet_smart_filters()->set_filters_used();
 
-		$base_class       = $this->get_name();
-		$settings         = $this->get_settings();
-		$content_provider = $settings['content_provider'];
-		$apply_type       = $settings['apply_type'];
-		$query_id         = ! empty( $settings['query_id'] ) ? $settings['query_id'] : 'default';
-		$controls_enabled = isset( $settings['enable_prev_next'] ) ? $settings['enable_prev_next'] : '';
+		$base_class        = $this->get_name();
+		$settings          = $this->get_settings();
+		$content_provider  = $settings['content_provider'];
+		$apply_type        = $settings['apply_type'];
+		$query_id          = ! empty( $settings['query_id'] ) ? $settings['query_id'] : 'default';
+		$items_enabled     = isset( $settings['enable_items'] ) ? $settings['enable_items'] : '';
+		$nav_enabled       = isset( $settings['enable_prev_next'] ) ? $settings['enable_prev_next'] : '';
+		$load_more_enabled = isset( $settings['enable_load_more'] ) ? $settings['enable_load_more'] : '';
+		$controls          = array();
 
-		if ( 'yes' === $controls_enabled ) {
-
-			$controls = array(
-				'nav'  => true,
-				'prev' => $settings['prev_text'],
-				'next' => $settings['next_text'],
-			);
-
+		if ( 'yes' === $items_enabled ) {
+			$controls['items_enabled']  = true;
+			$controls['pages_mid_size'] = ! empty( $settings['pages_center_offset'] ) ? absint( $settings['pages_center_offset'] ) : 0;
+			$controls['pages_end_size'] = ! empty( $settings['pages_end_offset'] ) ? absint( $settings['pages_end_offset'] ) : 0;
 		} else {
-			$controls['nav'] = false;
+			$controls['items_enabled'] = false;
 		}
 
-		$controls['pages_mid_size'] = ! empty( $settings['pages_center_offset'] ) ? absint( $settings['pages_center_offset'] ) : 0;
-		$controls['pages_end_size'] = ! empty( $settings['pages_end_offset'] ) ? absint( $settings['pages_end_offset'] ) : 0;
+		if ( 'yes' === $nav_enabled ) {
+			$controls['nav_enabled'] = true;
+			$controls['prev']        = $settings['prev_text'];
+			$controls['next']        = $settings['next_text'];
+		} else {
+			$controls['nav_enabled'] = false;
+		}
+
+		if ( 'yes' === $load_more_enabled ) {
+			$controls['load_more_enabled'] = true;
+			$controls['load_more_text']    = $settings['load_more_text'];
+		} else {
+			$controls['load_more_enabled'] = false;
+		}
 		
 		if ( $settings['autoscroll'] === 'yes' ) {
 			$controls['provider_top_offset'] = ! empty( $settings['provider_top_offset'] ) ? absint( $settings['provider_top_offset'] ) : 0;

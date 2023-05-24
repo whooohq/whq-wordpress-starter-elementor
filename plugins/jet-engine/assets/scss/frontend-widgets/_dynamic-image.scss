@@ -14,3 +14,31 @@
 		}
 	}
 }
+
+// Context Bricks
+.brxe-jet-engine-listing-dynamic-image {
+	display: inline-block;
+
+	.jet-listing-dynamic-image {
+		display: inline;
+		align-items: initial;
+
+		> * {
+			flex: initial
+		}
+
+		.jet-listing-dynamic-image__img {
+			width: 100%;
+		}
+	}
+
+	.jet-listing-dynamic-image__link {
+		display: inline-block;
+		width: 100%;
+	}
+
+	.jet-listing-dynamic-image__img {
+		display: initial;
+		height: 100%;
+	}
+}

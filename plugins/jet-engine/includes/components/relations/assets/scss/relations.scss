@@ -150,6 +150,17 @@
 		margin-right: 0;
 		width: 100%;
 	}
+
+	.je-checkbox-group-horizontal,
+	.je-radio-group-horizontal .components-flex {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+		column-gap: 5px;
+	}
+
+	.je-radio-group-horizontal .components-flex {
+		row-gap: 10px;
+	}
 }
 
 .jet-engine-rels-popup {

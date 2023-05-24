@@ -51,7 +51,7 @@ export default props => {
 					max={`50`}
 					value={attributes.less_items_count}
 					onChange={newValue => {
-						setAttributes({ less_items_count: newValue });
+						setAttributes({ less_items_count: parseInt(newValue) });
 					}}
 				/>
 			)}
@@ -118,5 +118,5 @@ export default props => {
 				/>
 			)}
 		</PanelBody>
-	)
-}
+	);
+};

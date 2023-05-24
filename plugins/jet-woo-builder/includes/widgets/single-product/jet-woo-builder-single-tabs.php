@@ -104,7 +104,7 @@ class Jet_Woo_Builder_Single_Tabs extends Jet_Woo_Builder_Base {
 			[
 				'label'      => __( 'Tabs Control Width', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', '%' ],
+				'size_units' => $this->set_custom_size_unit( [ 'px', '%' ] ),
 				'range'      => [
 					'%'  => [
 						'min' => 10,
@@ -177,26 +177,26 @@ class Jet_Woo_Builder_Single_Tabs extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'single_tabs_control_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['control_wrapper'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'single_tabs_control_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['control_wrapper'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->end_controls_section();
@@ -214,7 +214,7 @@ class Jet_Woo_Builder_Single_Tabs extends Jet_Woo_Builder_Base {
 			[
 				'label'      => __( 'Width', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', '%' ],
+				'size_units' => $this->set_custom_size_unit( [ 'px', '%' ] ),
 				'range'      => [
 					'%'  => [
 						'min' => 10,
@@ -445,14 +445,14 @@ class Jet_Woo_Builder_Single_Tabs extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'single_tabs_item_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['tabs_list_item'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_group_control(
@@ -465,26 +465,26 @@ class Jet_Woo_Builder_Single_Tabs extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'single_tabs_item_margin',
-			array(
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['tabs_list_item'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'single_tabs_item_padding',
-			array(
-				'label'      => __( 'Padding', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['tabs_item'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
@@ -510,22 +510,22 @@ class Jet_Woo_Builder_Single_Tabs extends Jet_Woo_Builder_Base {
 			]
 		);
 
-		$this->add_control(
-			'panel_text_color',
-			[
-				'label'     => __( 'Text Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => [
-					'{{WRAPPER}} .woocommerce-Tabs-panel' => 'color: {{VALUE}}',
-				],
-			]
-		);
-
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'panel_typography',
 				'selector' => '{{WRAPPER}} .woocommerce-tabs .woocommerce-Tabs-panel',
+			]
+		);
+
+		$this->add_control(
+			'panel_text_color',
+			[
+				'type'      => Controls_Manager::COLOR,
+				'label'     => __( 'Color', 'jet-woo-builder' ),
+				'selectors' => [
+					'{{WRAPPER}} .woocommerce-Tabs-panel' => 'color: {{VALUE}}',
+				],
 			]
 		);
 
@@ -579,26 +579,26 @@ class Jet_Woo_Builder_Single_Tabs extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'single_tabs_content_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['content_wrapper'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'single_tabs_content_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['content_wrapper'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->end_controls_section();

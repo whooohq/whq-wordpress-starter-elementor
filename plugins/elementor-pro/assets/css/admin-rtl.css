@@ -1,4 +1,4 @@
-/*! elementor-pro - v3.8.2 - 21-11-2022 */
+/*! elementor-pro - v3.13.2 - 22-05-2023 */
 .wrap.elementor-admin-page-license form.elementor-license-box {
   max-width: 600px;
   background: white;
@@ -9,20 +9,12 @@
   border-bottom: 1px solid #eee;
   padding: 20px;
   margin: -20px -20px 20px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: space-between;
+  align-items: center;
 }
 .wrap.elementor-admin-page-license form.elementor-license-box h3 span {
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  flex-grow: 1;
   padding-right: 5px;
 }
 .wrap.elementor-admin-page-license form.elementor-license-box h3 small {
@@ -45,30 +37,18 @@
   margin: 10px 0;
 }
 .wrap.elementor-admin-page-license form.elementor-license-box .e-row-stretch {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  align-items: center;
+  justify-content: space-between;
 }
 .wrap.elementor-admin-page-license form.elementor-license-box .e-row-divider-bottom {
   padding-bottom: 15px;
   border-bottom: 1px solid #eeeeee;
 }
 .wrap.elementor-admin-page-license .elementor-box-action {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
-  -webkit-box-align: end;
-      -ms-flex-align: end;
-          align-items: flex-end;
+  justify-content: flex-end;
+  align-items: flex-end;
   margin-top: 30px;
 }
 .wrap.elementor-admin-page-license .elementor-box-action .elementor-manually-link {
@@ -112,17 +92,13 @@
 
 .elementor-widget-template-empty-templates-icon {
   font-size: 96px;
-  color: #d5dadf;
 }
 
 .elementor-widget-template-empty-templates-footer {
-  color: #a4afb7;
+  color: var(--e-a-color-txt-muted);
   font-size: 13px;
   font-style: italic;
   margin-bottom: 15px;
-}
-.elementor-widget-template-empty-templates-footer a {
-  color: #a4afb7;
 }
 
 .elementor-button-spinner.error:before {
@@ -171,7 +147,7 @@ span.font-variations-count {
 
 .elementor-metabox-content .repeater-block {
   background: #ffffff;
-  color: #6d7882;
+  color: #3f444b;
   padding: 20px;
   margin-bottom: 2px;
 }
@@ -197,17 +173,12 @@ span.font-variations-count {
 .elementor-metabox-content .row-font-label {
   padding: 0;
   margin: 0;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   text-transform: capitalize;
 }
 .elementor-metabox-content .row-font-label li {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  box-sizing: border-box;
+  flex-grow: 1;
   width: 100%;
   margin: 0;
 }
@@ -226,18 +197,13 @@ span.font-variations-count {
   margin: 0;
 }
 .elementor-metabox-content .repeater-content .repeater-content-top {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   margin-bottom: 20px;
   line-height: 28px;
 }
 .elementor-metabox-content .repeater-content .repeater-content-top > div {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  box-sizing: border-box;
+  flex-grow: 1;
 }
 .elementor-metabox-content .repeater-content .repeater-content-top p {
   margin: 0;
@@ -255,33 +221,25 @@ span.font-variations-count {
   text-align: left;
 }
 .elementor-metabox-content .repeater-content .repeater-content-bottom {
-  background-color: #f7f7f7;
+  background-color: #F9FAFA;
   padding: 20px 40px;
   margin: 0 -20px;
 }
 .elementor-metabox-content .repeater-content .repeater-content-bottom .elementor-field {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
   background-color: #ffffff;
   padding: 10px 20px;
   margin-bottom: 10px;
-  -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05);
-          box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05);
 }
 .elementor-metabox-content .repeater-content .repeater-content-bottom .elementor-field:last-child {
   margin-bottom: 0;
 }
 .elementor-metabox-content .repeater-content .repeater-content-bottom .elementor-field p,
 .elementor-metabox-content .repeater-content .repeater-content-bottom .elementor-field input {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  box-sizing: border-box;
+  flex-grow: 1;
   width: 100%;
   margin: 0;
 }
@@ -296,17 +254,16 @@ span.font-variations-count {
   font-size: 12px;
   width: 100%;
   background: none;
-  -webkit-box-shadow: none;
-          box-shadow: none;
-  color: #495157;
+  box-shadow: none;
+  color: #0C0D0E;
   border: 1px solid;
   outline: none;
 }
 .elementor-metabox-content .repeater-content .repeater-content-bottom .elementor-field .elementor-field-input:not(:focus) {
-  border-color: #d5dadf;
+  border-color: #D5D8DC;
 }
 .elementor-metabox-content .repeater-content .repeater-content-bottom .elementor-field .elementor-field-input:focus {
-  border-color: #a4afb7;
+  border-color: #9DA5AE;
 }
 .elementor-metabox-content .repeater-content .repeater-content-bottom .elementor-field .elementor-upload-btn,
 .elementor-metabox-content .repeater-content .repeater-content-bottom .elementor-field .elementor-upload-clear-btn {
@@ -314,15 +271,15 @@ span.font-variations-count {
   font-size: 11px;
 }
 .elementor-metabox-content .repeater-content .repeater-content-bottom .elementor-field .elementor-upload-clear-btn {
-  background-color: #eceeef;
-  color: #a4afb7;
+  background-color: #F1F2F3;
+  color: #9DA5AE;
 }
 .elementor-metabox-content .repeater-content .repeater-content-bottom .elementor-field .elementor-upload-clear-btn:hover {
-  background-color: #b01b1b;
+  background-color: #F59E0B;
   color: white;
 }
 .elementor-metabox-content .elementor-button {
-  background-color: #a4afb7;
+  background-color: #9DA5AE;
   color: #fff;
   line-height: 1;
   text-transform: uppercase;
@@ -330,30 +287,22 @@ span.font-variations-count {
   padding: 10px 20px;
   outline: none;
   border: none;
-  -webkit-transition-property: background, color, opacity, -webkit-box-shadow;
-  transition-property: background, color, opacity, -webkit-box-shadow;
-  -o-transition-property: background, color, box-shadow, opacity;
   transition-property: background, color, box-shadow, opacity;
-  transition-property: background, color, box-shadow, opacity, -webkit-box-shadow;
-  -webkit-transition-duration: 0.3s;
-       -o-transition-duration: 0.3s;
-          transition-duration: 0.3s;
+  transition-duration: 0.3s;
 }
 .elementor-metabox-content .elementor-button:hover, .elementor-metabox-content .elementor-button:focus, .elementor-metabox-content .elementor-button:visited {
   color: #fff;
 }
 .elementor-metabox-content .elementor-button:focus, .elementor-metabox-content .elementor-button:visited {
-  background-color: #a4afb7;
+  background-color: #9DA5AE;
 }
 .elementor-metabox-content .elementor-button:hover {
-  background-color: #6d7882;
-  -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.2);
-          box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.2);
+  background-color: #3f444b;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.2);
   border: none;
 }
 .elementor-metabox-content .elementor-button:active {
-  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 3px 3px rgba(0, 0, 0, 0.1);
-          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 3px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 3px 3px rgba(0, 0, 0, 0.1);
 }
 .elementor-metabox-content .elementor-button:not([disabled]) {
   cursor: pointer;
@@ -394,26 +343,23 @@ span.font-variations-count {
 .elementor-metabox-content input.button.add-repeater-row {
   margin-top: 18px;
   border: none;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 .elementor-metabox-content .elementor-repeater-tool-btn {
-  color: #a4afb7;
+  color: #9DA5AE;
   cursor: pointer;
   padding: 0 20px;
   font-size: 12px;
-  -webkit-transition: all 0.3s;
-  -o-transition: all 0.3s;
   transition: all 0.3s;
 }
 .elementor-metabox-content .elementor-repeater-tool-btn i {
   padding-left: 5px;
 }
 .elementor-metabox-content .elementor-repeater-tool-btn:hover {
-  color: #6d7882;
+  color: #3f444b;
 }
 .elementor-metabox-content .elementor-repeater-tool-btn.remove-repeater-row:hover {
-  color: #b01b1b;
+  color: #F59E0B;
 }
 .elementor-metabox-content .row-font-preview,
 .elementor-metabox-content .inline-preview {
@@ -437,7 +383,7 @@ span.font-variations-count {
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox {
   display: none;
-  border: 1px solid #eceeef;
+  border: 1px solid #F1F2F3;
   border-radius: 1px;
   background-color: #fff;
 }
@@ -457,7 +403,7 @@ span.font-variations-count {
   }
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox h4 {
-  color: #556068;
+  color: #1f2124;
   font-size: 22px;
   font-weight: 500;
   letter-spacing: 0.7px;
@@ -465,7 +411,7 @@ span.font-variations-count {
   margin: 0 0 4px 0;
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox h5 {
-  color: #a4afb7;
+  color: #9DA5AE;
   font-size: 16px;
   font-weight: 500;
   letter-spacing: 0.5px;
@@ -474,7 +420,7 @@ span.font-variations-count {
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox .elementor--dropzone--upload__icon i {
   font-size: 64px;
-  color: #39b54a;
+  color: #0A875A;
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox .box__uploading,
 .post-type-elementor_icons div#elementor-custom-icons-metabox .box__success,
@@ -487,50 +433,36 @@ span.font-variations-count {
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox .box__input {
   padding: 180px 0;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: column;
+  align-items: center;
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox .elementor-field-dropzone {
-  outline: 2px dashed #d5dadf;
+  outline: 2px dashed #D5D8DC;
   outline-offset: -3px;
   background-color: #fff;
   display: none;
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox.elementor--has-icons {
-  background-color: #f7f7f7;
-  border: 1px solid #eceeef;
+  background-color: #F9FAFA;
+  border: 1px solid #F1F2F3;
   border-radius: 1px;
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox.elementor--has-icons .elementor-metabox-content {
-  background-color: #f7f7f7;
+  background-color: #F9FAFA;
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox.elementor--has-icons .elementor-metabox-content .elementor-custom-icons-metabox {
   padding: 4px 10px 0 10px;
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox.elementor--has-icons .elementor-icon-set-header {
   height: 50px;
-  color: #6d7882;
+  color: #3f444b;
   background-color: #fff;
-  -webkit-box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.06);
-          box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.06);
   padding: 0 35px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
+  align-items: center;
+  justify-content: flex-start;
 }
 @media (max-width: 1025px) {
   .post-type-elementor_icons div#elementor-custom-icons-metabox.elementor--has-icons .elementor-icon-set-header {
@@ -552,12 +484,12 @@ span.font-variations-count {
   }
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox.elementor--has-icons .elementor-icon-set-header div:nth-of-type(2) {
-  border: 1px solid #a4afb7;
+  border: 1px solid #9DA5AE;
   border-top: 0;
   border-bottom: 0;
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox.elementor--has-icons .elementor-icon-set-header-meta {
-  color: #556068;
+  color: #1f2124;
   font-size: 14px;
   line-height: 1;
 }
@@ -576,23 +508,21 @@ span.font-variations-count {
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox.elementor--has-icons .elementor-icon-set-header-meta-remove {
   margin-right: auto;
-  color: #556068;
+  color: #1f2124;
   opacity: 0.6;
   cursor: pointer;
-  -webkit-transition: all 0.3s;
-  -o-transition: all 0.3s;
   transition: all 0.3s;
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox.elementor--has-icons .elementor-icon-set-header-meta-remove i {
-  color: #6d7882;
+  color: #3f444b;
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox.elementor--has-icons .elementor-icon-set-header-meta-remove:hover {
   opacity: 1;
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox.elementor--has-icons .elementor-icon-set-footer {
-  color: #c2cbd2;
-  font-family: Roboto, Arial, Helvetica, Verdana, sans-serif;
-  border-top: 1px solid #eceeef;
+  color: #BABFC5;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+  border-top: 1px solid #F1F2F3;
   font-size: 11px;
   font-weight: 500;
   line-height: 1;
@@ -615,40 +545,29 @@ span.font-variations-count {
   height: 0;
   padding-bottom: 100%;
   background-color: #fff;
-  -webkit-box-shadow: 0 1px 12px rgba(0, 0, 0, 0.05);
-          box-shadow: 0 1px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.05);
   border-radius: 3px;
   overflow: hidden;
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox ul li div.icon {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   position: absolute;
   top: 50%;
   left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   padding: 1px;
 }
 .post-type-elementor_icons div#elementor-custom-icons-metabox ul li div.icon-name {
-  color: #c2cbd2;
+  color: #BABFC5;
   font-size: 11px;
   padding: 18px 20px 0;
   white-space: nowrap;
   max-width: 100%;
   overflow: hidden;
-  -o-text-overflow: ellipsis;
-     text-overflow: ellipsis;
+  text-overflow: ellipsis;
 }
 @media (max-width: 479px) {
   .post-type-elementor_icons div#elementor-custom-icons-metabox ul li div.icon-name {

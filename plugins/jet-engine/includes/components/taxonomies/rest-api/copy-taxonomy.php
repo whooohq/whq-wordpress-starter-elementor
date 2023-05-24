@@ -100,6 +100,7 @@ class Jet_Engine_CPT_Rest_Copy_Taxonomy extends Jet_Engine_Base_API_Endpoint {
 			'capability_type'            => $this->safe_get( $tax_data, 'advanced_settings', 'capability_type' ),
 			'hierarchical'               => $this->safe_get( $tax_data, 'advanced_settings', 'hierarchical' ),
 			'rewrite_slug'               => $this->safe_get( $tax_data, 'advanced_settings', 'rewrite_slug' ),
+			'rewrite_hierarchical'       => $this->safe_get( $tax_data, 'advanced_settings', 'rewrite_hierarchical' ),
 			'description'                => $this->safe_get( $tax_data, 'advanced_settings', 'description' ),
 			'meta_fields'                => ! empty( $tax_data['meta_fields'] ) ? $tax_data['meta_fields'] : array(),
 		) );

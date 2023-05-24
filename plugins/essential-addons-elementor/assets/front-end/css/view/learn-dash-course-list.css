@@ -411,7 +411,7 @@
 
 .card-footer {
   padding: 10px 15px;
-  border-top: 1px solid #e5e5f5ef;
+  border-top: 1px solid rgba(229, 229, 245, 0.937254902);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -601,101 +601,78 @@ a.eael-course-card-button:hover i {
   .elementor-element.elementor-grid-1 {
     position: relative;
   }
-
   .elementor-element.elementor-grid-1 .eael-learn-dash-course {
     width: 100%;
     float: left;
   }
-
   .elementor-element.elementor-grid-2 {
     position: relative;
   }
-
   .elementor-element.elementor-grid-2 .eael-learn-dash-course {
     width: 50%;
     float: left;
   }
-
   .elementor-element.elementor-grid-2 .eael-learn-dash-course:nth-of-type(2n) {
     margin-right: 0 !important;
   }
-
   .elementor-element.elementor-grid-2 .eael-learn-dash-course:nth-of-type(2n + 1) {
     clear: left;
   }
-
   .elementor-element.elementor-grid-3 {
     position: relative;
   }
-
   .elementor-element.elementor-grid-3 .eael-learn-dash-course {
     width: 33.3333%;
     float: left;
   }
-
   .elementor-element.elementor-grid-3 .eael-learn-dash-course:nth-of-type(3n) {
     margin-right: 0 !important;
   }
-
   .elementor-element.elementor-grid-3 .eael-learn-dash-course:nth-of-type(3n + 1) {
     clear: left;
   }
-
   .elementor-element.elementor-grid-4 {
     position: relative;
   }
-
   .elementor-element.elementor-grid-4 .eael-learn-dash-course {
     width: 25%;
     float: left;
   }
-
   .elementor-element.elementor-grid-4 .eael-learn-dash-course:nth-of-type(4n) {
     margin-right: 0 !important;
   }
-
   .elementor-element.elementor-grid-4 .eael-learn-dash-course:nth-of-type(4n + 1) {
     clear: left;
   }
-
   .elementor-element.elementor-grid-5 {
     position: relative;
   }
-
   .elementor-element.elementor-grid-5 .pp-logo-grid {
     margin-right: -5px;
   }
-
   .elementor-element.elementor-grid-5 .eael-learn-dash-course {
     width: 20%;
     float: left;
   }
-
   .elementor-element.elementor-grid-5 .eael-learn-dash-course:nth-of-type(5n) {
     margin-right: 0 !important;
   }
-
   .elementor-element.elementor-grid-5 .eael-learn-dash-course:nth-of-type(5n + 1) {
     clear: left;
   }
-
   .elementor-element.elementor-grid-6 {
     position: relative;
   }
-
   .elementor-element.elementor-grid-6 .pp-logo-grid {
     margin-right: -6px;
   }
-
   .elementor-element.elementor-grid-6 .eael-learn-dash-course {
     width: 16.6667%;
     float: left;
   }
-
   .elementor-element.elementor-grid-6 .eael-learn-dash-course:nth-of-type(6n) {
     margin-right: 0 !important;
   }
-
   .elementor-element.elementor-grid-6 .eael-learn-dash-course:nth-of-type(6n + 1) {
     clear: left;
   }
@@ -706,97 +683,75 @@ a.eael-course-card-button:hover i {
   .elementor-element.elementor-grid-tablet-1 {
     position: relative;
   }
-
   .elementor-element.elementor-grid-tablet-1 .eael-learn-dash-course {
     width: 100%;
     float: left;
   }
-
   .elementor-element.elementor-grid-tablet-2 {
     position: relative;
   }
-
   .elementor-element.elementor-grid-tablet-2 .eael-learn-dash-course {
     width: 50%;
     float: left;
   }
-
   .elementor-element.elementor-grid-tablet-2 .eael-learn-dash-course:nth-of-type(2n) {
     margin-right: 0 !important;
   }
-
   .elementor-element.elementor-grid-tablet-2 .eael-learn-dash-course:nth-of-type(2n + 1) {
     clear: left;
   }
-
   .elementor-element.elementor-grid-tablet-3 {
     position: relative;
   }
-
   .elementor-element.elementor-grid-tablet-3 .eael-learn-dash-course {
     width: 33.3333%;
     float: left;
   }
-
   .elementor-element.elementor-grid-tablet-3 .eael-learn-dash-course:nth-of-type(3n) {
     margin-right: 0 !important;
   }
-
   .elementor-element.elementor-grid-tablet-3 .eael-learn-dash-course:nth-of-type(3n + 1) {
     clear: left;
   }
-
   .elementor-element.elementor-grid-tablet-4 {
     position: relative;
   }
-
   .elementor-element.elementor-grid-tablet-4 .eael-learn-dash-course {
     width: 25%;
     float: left;
   }
-
   .elementor-element.elementor-grid-tablet-4 .eael-learn-dash-course:nth-of-type(4n) {
     margin-right: 0 !important;
   }
-
   .elementor-element.elementor-grid-tablet-4 .eael-learn-dash-course:nth-of-type(4n + 1) {
     clear: left;
   }
-
   .elementor-element.elementor-grid-tablet-5 {
     position: relative;
   }
-
   .elementor-element.elementor-grid-tablet-5 .eael-learn-dash-course {
     width: 20%;
     float: left;
   }
-
   .elementor-element.elementor-grid-tablet-5 .eael-learn-dash-course:nth-of-type(5n) {
     margin-right: 0 !important;
   }
-
   .elementor-element.elementor-grid-tablet-5 .eael-learn-dash-course:nth-of-type(5n + 1) {
     clear: left;
   }
-
   .elementor-element.elementor-grid-tablet-6 {
     position: relative;
   }
-
   .elementor-element.elementor-grid-tablet-6 .pp-logo-grid {
     margin-right: -6px;
   }
-
   .elementor-element.elementor-grid-tablet-6 .eael-learn-dash-course {
     width: 16.6667%;
     float: left;
   }
-
   .elementor-element.elementor-grid-tablet-6 .eael-learn-dash-course:nth-of-type(6n) {
     margin-right: 0 !important;
   }
-
   .elementor-element.elementor-grid-tablet-6 .eael-learn-dash-course:nth-of-type(6n + 1) {
     clear: left;
   }
@@ -806,97 +761,75 @@ a.eael-course-card-button:hover i {
   .elementor-element.elementor-grid-mobile-1 {
     position: relative;
   }
-
   .elementor-element.elementor-grid-mobile-1 .eael-learn-dash-course {
     width: 100%;
     float: left;
   }
-
   .elementor-element.elementor-grid-mobile-2 {
     position: relative;
   }
-
   .elementor-element.elementor-grid-mobile-2 .eael-learn-dash-course {
     width: 50%;
     float: left;
   }
-
   .elementor-element.elementor-grid-mobile-2 .eael-learn-dash-course:nth-of-type(2n) {
     margin-right: 0 !important;
   }
-
   .elementor-element.elementor-grid-mobile-2 .eael-learn-dash-course:nth-of-type(2n + 1) {
     clear: left;
   }
-
   .elementor-element.elementor-grid-mobile-3 {
     position: relative;
   }
-
   .elementor-element.elementor-grid-mobile-3 .eael-learn-dash-course {
     width: 33.3333%;
     float: left;
   }
-
   .elementor-element.elementor-grid-mobile-3 .eael-learn-dash-course:nth-of-type(3n) {
     margin-right: 0 !important;
   }
-
   .elementor-element.elementor-grid-mobile-3 .eael-learn-dash-course:nth-of-type(3n + 1) {
     clear: left;
   }
-
   .elementor-element.elementor-grid-mobile-4 {
     position: relative;
   }
-
   .elementor-element.elementor-grid-mobile-4 .eael-learn-dash-course {
     width: 25%;
     float: left;
   }
-
   .elementor-element.elementor-grid-mobile-4 .eael-learn-dash-course:nth-of-type(4n) {
     margin-right: 0 !important;
   }
-
   .elementor-element.elementor-grid-mobile-4 .eael-learn-dash-course:nth-of-type(4n + 1) {
     clear: left;
   }
-
   .elementor-element.elementor-grid-mobile-5 {
     position: relative;
   }
-
   .elementor-element.elementor-grid-mobile-5 .eael-learn-dash-course {
     width: 20%;
     float: left;
   }
-
   .elementor-element.elementor-grid-mobile-5 .eael-learn-dash-course:nth-of-type(5n) {
     margin-right: 0 !important;
   }
-
   .elementor-element.elementor-grid-mobile-5 .eael-learn-dash-course:nth-of-type(5n + 1) {
     clear: left;
   }
-
   .elementor-element.elementor-grid-mobile-6 {
     position: relative;
   }
-
   .elementor-element.elementor-grid-mobile-6 .pp-logo-grid {
     margin-right: -6px;
   }
-
   .elementor-element.elementor-grid-mobile-6 .eael-learn-dash-course {
     width: 16.6667%;
     float: left;
   }
-
   .elementor-element.elementor-grid-mobile-6 .eael-learn-dash-course:nth-of-type(6n) {
     margin-right: 0 !important;
   }
-
   .elementor-element.elementor-grid-mobile-6 .eael-learn-dash-course:nth-of-type(6n + 1) {
     clear: left;
   }

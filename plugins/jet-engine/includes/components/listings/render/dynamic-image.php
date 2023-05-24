@@ -219,10 +219,26 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Image' ) ) {
 
 		public function print_image_html_by_src( $src = null, $alt = null ) {
 
+			$settings   = $this->get_settings();
+			$image_data = Jet_Engine_Tools::get_attachment_image_data_array( $src, 'id' );
+
+			// If the image is not external print the image html through wp_get_attachment_image().
+			if ( ! empty( $image_data ) && ! empty( $image_data['id'] ) ) {
+				echo wp_get_attachment_image(
+					$image_data['id'],
+					$this->get_image_size( $settings ),
+					false,
+					array( 'alt' => $this->get_image_alt( $image_data['id'], $settings ) )
+				);
+
+				return;
+			}
+
 			$attr = array(
-				'src'   => $src,
-				'class' => $this->get_image_css_class(),
-				'alt'   => $alt
+				'src'      => $src,
+				'class'    => $this->get_image_css_class(),
+				'alt'      => $alt,
+				'decoding' => 'async',
 			);
 
 			$this->full_image_src = $src;
@@ -231,6 +247,10 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Image' ) ) {
 
 			if ( ! empty( $custom_alt ) ) {
 				$attr['alt'] = $custom_alt;
+			}
+
+			if ( isset( $settings['lazy_load_image'] ) && filter_var( $settings['lazy_load_image'], FILTER_VALIDATE_BOOLEAN ) ) {
+				$attr['loading'] = 'lazy';
 			}
 
 			printf( '<img %s>', Jet_Engine_Tools::get_attr_string( $attr ) );

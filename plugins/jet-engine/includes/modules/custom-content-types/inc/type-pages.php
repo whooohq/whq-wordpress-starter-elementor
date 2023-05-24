@@ -50,6 +50,15 @@ class Type_Pages {
 
 			add_action( 'admin_enqueue_scripts', array( $this, 'edit_page_assets' ) );
 
+		} else if ( $this->is_type_page() ) {
+
+			// Add screen options.
+			add_action( 'current_screen', array( $this, 'add_screen_options' ) );
+
+			add_filter(
+				'set_screen_option_' . $this->get_per_page_option_name(),
+				array( $this, 'set_items_per_page_option' ), 10, 3
+			);
 		}
 
 	}
@@ -304,6 +313,24 @@ class Type_Pages {
 		</div>
 		<?php
 
+	}
+
+	public function add_screen_options() {
+		add_screen_option(
+			'per_page',
+			array(
+				'default' => 30,
+				'option'  => $this->get_per_page_option_name(),
+			)
+		);
+	}
+
+	public function get_per_page_option_name() {
+		return str_replace( '-', '_', $this->get_page_slug() ) . '_per_page';
+	}
+
+	public function set_items_per_page_option( $status, $option, $value ) {
+		return $value;
 	}
 
 }

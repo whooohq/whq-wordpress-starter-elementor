@@ -46,7 +46,7 @@ class Related_Items_Count extends \Elementor\Core\DynamicTags\Tag {
 		$this->add_control(
 			'rel_object',
 			array(
-				'label'   => __( 'From Object', 'jet-engine' ),
+				'label'   => __( 'From Object (what to show)', 'jet-engine' ),
 				'type'    => 'select',
 				'options' => array(
 					'parent_object' => __( 'Parent Object', 'jet-engine' ),
@@ -59,7 +59,7 @@ class Related_Items_Count extends \Elementor\Core\DynamicTags\Tag {
 		$this->add_control(
 			'rel_object_from',
 			array(
-				'label'   => __( 'Initial Object ID From', 'jet-engine' ),
+				'label'   => __( 'Initial Object ID From (get initial ID here)', 'jet-engine' ),
 				'type'    => 'select',
 				'options' => jet_engine()->relations->sources->get_sources(),
 				'default' => 'current_object',

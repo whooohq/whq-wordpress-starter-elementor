@@ -4,6 +4,14 @@ Enjoy the easy-to-use widgets made for enriching headers & footers with content.
 
 # ChangeLog
 
+## [1.3.5](https://github.com/ZemezLab/jet-blocks/releases/tag/1.3.5) - 02.12.2022
+* Added: Google reCAPTCHA v3 integration
+* Update: JetDashboard Module to v2.0.9
+* Fixed: Sticky Section compatibility with Elementor Flexbox Container
+* Fixed: Hamburger Panel widget compatibility with Elementor Flexbox Container
+* Added: `Start Showing Mobile Menu From` option in the Navigation Menu widget
+* Fixed: Navigation Menu widget RTL compatibility
+
 ## [1.3.4](https://github.com/ZemezLab/jet-blocks/releases/tag/1.3.4) - 26.09.2022
 * Added: [Crocoblock/suggestions#5837](https://github.com/Crocoblock/suggestions/issues/5837)
 * Added: `Enabled for` option in the Navigation Menu Widget for selection breakpoint when Mobile Trigger is activated.

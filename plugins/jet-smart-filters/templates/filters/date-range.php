@@ -13,6 +13,8 @@ $date_format      = isset( $args['date_format'] ) ? $args['date_format'] : '';
 $from_placeholder = isset( $args['from_placeholder'] ) ? $args['from_placeholder'] : '';
 $to_placeholder   = isset( $args['to_placeholder'] ) ? $args['to_placeholder'] : '';
 
+$accessibility_label = $args['accessibility_label'];
+
 $classes = array(
 	'jet-date-range'
 );
@@ -32,7 +34,8 @@ $hide_button = isset( $args['hide_button'] ) ? $args['hide_button'] : false;
 
 ?>
 <div class="<?php echo implode( ' ', $classes ) ?>" <?php $this->filter_data_atts( $args ); ?>>
-	<div class="jet-date-range__inputs">
+	<fieldset class="jet-date-range__inputs">
+		<legend style="display:none;"><?php echo $accessibility_label; ?></legend>
 		<input
 			class="jet-date-range__from jet-date-range__control"
 			type="text"
@@ -40,6 +43,7 @@ $hide_button = isset( $args['hide_button'] ) ? $args['hide_button'] : false;
 			placeholder="<?php echo $from_placeholder ?>"
 			name="<?php echo $query_var; ?>_from"
 			value="<?php echo $from; ?>"
+			aria-label="<?php _e( 'Date range from', 'jet-smart-filters' ); ?>"
 			<?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>
 		>
 		<input
@@ -49,14 +53,16 @@ $hide_button = isset( $args['hide_button'] ) ? $args['hide_button'] : false;
 			placeholder="<?php echo $to_placeholder ?>"
 			name="<?php echo $query_var; ?>_to"
 			value="<?php echo $to; ?>"
+			aria-label="<?php _e( 'Date range to', 'jet-smart-filters' ); ?>"
 			<?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>
 		>
-	</div>
+	</fieldset>
 	<input
 		class="jet-date-range__input"
 		type="hidden"
 		name="<?php echo $query_var; ?>"
 		value="<?php echo $current; ?>"
+		aria-label="<?php _e( 'Date range value', 'jet-smart-filters' ); ?>"
 		data-date-format="<?php echo $date_format; ?>"
 	>
 	<?php if ( ! $hide_button ) : ?>

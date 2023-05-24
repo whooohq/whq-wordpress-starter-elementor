@@ -119,7 +119,7 @@ if ( ! class_exists( 'Jet_Elements_Ext_Section' ) ) {
 				array(
 					'label'      => esc_html__( 'Parallax Speed(%)', 'jet-elements' ),
 					'type'       => Elementor\Controls_Manager::SLIDER,
-					'size_units' => array( '%' ),
+					'size_units' => array( '%', 'custom' ),
 					'range'      => array(
 						'%' => array(
 							'min'  => 1,

@@ -181,6 +181,29 @@ class LD_Course_List extends Widget_Base
             );
 
             $this->add_control(
+                'show_tags_dynamic',
+                [
+                    'label'       => __('Show by dynamic course tags', 'essential-addons-elementor'),
+                    'description' => __('Enable this if you are using this list in single course page template. Course tags will be fetched dynamically.', 'essential-addons-elementor'),
+                    'type'        => Controls_Manager::CHOOSE,
+                    'options' => [
+                        'true' => [
+                            'title' => __('Enable', 'essential-addons-elementor'),
+                            'icon' => 'eicon-check',
+                        ],
+                        'false' => [
+                            'title' => __('Disable', 'essential-addons-elementor'),
+                            'icon' => 'eicon-ban',
+                        ]
+                    ],
+                    'default'   => 'false',
+                    'condition' => [
+                        'template_skin!'    => 'layout__3'
+                    ]
+                ]
+            );
+
+            $this->add_control(
                 'course_category_name_exclude',
                 [
                     'label'           => __('Exclude by course category', 'essential-addons-elementor'),
@@ -2185,11 +2208,21 @@ class LD_Course_List extends Widget_Base
             ];
         }
 
-        if (!empty($settings['course_tag'])) {
+        if ( ! empty( $settings['course_tag'] ) ) {
+            $course_tags = is_array( $settings['course_tag'] ) ? $settings['course_tag'] : array( $settings['course_tag'] );
+        }
+
+        if ( ! empty( $settings['show_tags_dynamic'] ) ) {
+            if( is_singular() && 'true' === $settings['show_tags_dynamic'] ){
+                $course_tags = get_the_ID() ? wp_get_post_terms( get_the_ID(), 'ld_course_tag', [ 'fields' => 'slugs' ] ) : [];
+            }
+        }
+
+        if( ! empty( $course_tags ) ){
             $query_args['tax_query'][] = [
                 'taxonomy' => 'ld_course_tag',
                 'field'    => 'slug',
-                'terms'    => is_array($settings['course_tag']) ? $settings['course_tag'] : array($settings['course_tag']),
+                'terms'    => $course_tags,
             ];
         }
         #end of course category & tag filter.
@@ -2428,7 +2461,7 @@ class LD_Course_List extends Widget_Base
             $html = $this->get_course_filter_tabs($settings);
         }
 
-        $no_course_found_label_text = ! empty( $settings['eael_course_filter_not_found_label_text'] ) ? Helper::eael_wp_kses( $settings['eael_course_filter_not_found_label_text'] ) : esc_html( 'No Courses Found!', 'essential-addons-elementor' );
+        $no_course_found_label_text = ! empty( $settings['eael_course_filter_not_found_label_text'] ) ? Helper::eael_wp_kses( $settings['eael_course_filter_not_found_label_text'] ) : esc_html__( 'No Courses Found!', 'essential-addons-elementor' );
         $no_course_found_label_class = ! empty( $courses ) ? 'eael-d-none' : 'eael-d-block';
 
         ob_start();
@@ -2440,6 +2473,11 @@ class LD_Course_List extends Widget_Base
             foreach ($courses as $course) {
                 $legacy_meta = get_post_meta($course->ID, '_sfwd-courses', true);
                 $users = get_post_meta($course->ID, 'course_access_list', true);
+
+                if( function_exists( 'learndash_get_course_users_access_from_meta' ) ){
+                    $users = learndash_get_course_users_access_from_meta($course->ID);
+                }
+                
 	            if ( ! is_array( $users ) ) {
 		            $users = explode( ',', $users );
 	            }

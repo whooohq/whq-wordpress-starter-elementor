@@ -21,6 +21,7 @@ if ( ! class_exists( 'Jet_Engine_Dashboard' ) ) {
 
 		public $builder       = null;
 		public $skins_manager = null;
+		private $nonce_action = 'jet-engine-dashboard';
 
 		/**
 		 * Constructor for the class
@@ -87,8 +88,16 @@ if ( ! class_exists( 'Jet_Engine_Dashboard' ) ) {
 			$ui->enqueue_assets();
 
 			wp_register_script(
-				'jet-engine-dashboard-skins',
-				jet_engine()->plugin_url( 'assets/js/admin/dashboard/skins.js' ),
+				'jet-engine-shortcode-generator',
+				jet_engine()->plugin_url( 'assets/js/admin/dashboard/shortcode-generator.js' ),
+				array( 'cx-vue-ui' ),
+				jet_engine()->get_version(),
+				true
+			);
+
+			wp_register_script(
+				'jet-engine-macros-generator',
+				jet_engine()->plugin_url( 'assets/js/admin/dashboard/macros-generator.js' ),
 				array( 'cx-vue-ui' ),
 				jet_engine()->get_version(),
 				true
@@ -113,7 +122,7 @@ if ( ! class_exists( 'Jet_Engine_Dashboard' ) ) {
 			wp_enqueue_script(
 				'jet-engine-dashboard',
 				jet_engine()->plugin_url( 'assets/js/admin/dashboard/main.js' ),
-				array( 'cx-vue-ui', 'jet-engine-dashboard-skins' ),
+				array( 'cx-vue-ui', 'jet-engine-dashboard-skins', 'jet-engine-shortcode-generator', 'jet-engine-macros-generator' ),
 				jet_engine()->get_version(),
 				true
 			);
@@ -143,6 +152,9 @@ if ( ! class_exists( 'Jet_Engine_Dashboard' ) ) {
 							'saved'            => __( 'Saved!', 'jet-engine' ),
 							'saved_and_reload' => __( 'Saved! One of activated/deactivated modules requires page reloading. Page will be reloaded automatically in few seconds.', 'jet-engine' ),
 						),
+						'shortode_generator' => jet_engine()->shortcodes->get_generator_config(),
+						'macros_generator'   => jet_engine()->listings->macros->get_macros_for_js(),
+						'_nonce'             => wp_create_nonce( $this->nonce_action ),
 					)
 				)
 			);
@@ -156,6 +168,27 @@ if ( ! class_exists( 'Jet_Engine_Dashboard' ) ) {
 
 			do_action( 'jet-engine/dashboard/assets-after' );
 
+			add_action( 'admin_footer', array( $this, 'print_dashboard_templates' ) );
+
+		}
+
+		public function get_nonce_action() {
+			return $this->nonce_action;
+		}
+
+		public function print_dashboard_templates() {
+
+			ob_start();
+			include jet_engine()->get_template( 'admin/pages/dashboard/shortcode-generator.php' );
+			$content = ob_get_clean();
+
+			printf( '<script type="text/x-template" id="jet-engine-shortcode-generator">%s</script>', $content );
+
+			ob_start();
+			include jet_engine()->get_template( 'admin/pages/dashboard/macros-generator.php' );
+			$content = ob_get_clean();
+
+			printf( '<script type="text/x-template" id="jet-engine-macros-generator">%s</script>', $content );
 		}
 
 		/**

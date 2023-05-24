@@ -40,7 +40,7 @@ export default class SearchControl extends Filter {
 		this.$searchInput.on('keyup', evt => {
 			const value = evt.target.value;
 
-			if (value === this.dataValue)
+			if (!this.filterGroup.isProviderExist || value === this.dataValue)
 				return;
 
 			if (this.applyType === 'ajax-ontyping') {
@@ -76,6 +76,11 @@ export default class SearchControl extends Filter {
 	}
 
 	setData(newData) {
+		this.reset();
+
+		if (!newData)
+			return;
+
 		this.$searchInput.val(newData);
 
 		if (this.applyType === 'ajax-ontyping') {

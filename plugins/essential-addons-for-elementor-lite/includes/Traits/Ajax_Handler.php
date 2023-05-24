@@ -35,10 +35,7 @@ trait Ajax_Handler {
 		add_action( 'wp_ajax_nopriv_load_more', array( $this, 'ajax_load_more' ) );
 
 		add_action( 'wp_ajax_woo_product_pagination_product', array( $this, 'eael_woo_pagination_product_ajax' ) );
-		add_action( 'wp_ajax_nopriv_woo_product_pagination_product', array(
-			$this,
-			'eael_woo_pagination_product_ajax'
-		) );
+		add_action( 'wp_ajax_nopriv_woo_product_pagination_product', array( $this, 'eael_woo_pagination_product_ajax' ) );
 
 		add_action( 'wp_ajax_woo_product_pagination', array( $this, 'eael_woo_pagination_ajax' ) );
 		add_action( 'wp_ajax_nopriv_woo_product_pagination', array( $this, 'eael_woo_pagination_ajax' ) );
@@ -69,6 +66,9 @@ trait Ajax_Handler {
 
 		add_action( 'wp_ajax_eael_get_token', [ $this, 'eael_get_token' ] );
 		add_action( 'wp_ajax_nopriv_eael_get_token', [ $this, 'eael_get_token' ] );
+
+		add_action( 'eael_before_woo_pagination_product_ajax_start', [ $this, 'eael_yith_wcwl_ajax_disable' ] );
+		add_action( 'eael_before_ajax_load_more', [ $this, 'eael_yith_wcwl_ajax_disable' ] );
 	}
 
 	/**
@@ -83,6 +83,8 @@ trait Ajax_Handler {
 	 */
 	public function ajax_load_more() {
 		$ajax = wp_doing_ajax();
+
+		do_action( 'eael_before_ajax_load_more', $_REQUEST );
 
 		wp_parse_str( $_POST['args'], $args );
 
@@ -146,11 +148,18 @@ trait Ajax_Handler {
 			$args['tax_query'] = [
 				$this->sanitize_taxonomy_data( $_REQUEST['taxonomy'] ),
 			];
+
+			$args['tax_query'] = $this->eael_terms_query_multiple( $args['tax_query'] );
 		}
 
-		if ( $class == '\Essential_Addons_Elementor\Elements\Post_Grid' && $settings['orderby'] === 'rand' ) {
-			$args['post__not_in'] = array_map( 'intval', array_unique( $_REQUEST['post__not_in'] ) );
-			unset( $args['offset'] );
+		if ( $class == '\Essential_Addons_Elementor\Elements\Post_Grid' ) {
+			$settings['read_more_button_text']       = get_transient( 'eael_post_grid_read_more_button_text_' . $widget_id );
+			$settings['excerpt_expanison_indicator'] = get_transient( 'eael_post_grid_excerpt_expanison_indicator_' . $widget_id );
+
+			if ( $settings['orderby'] === 'rand' ) {
+				$args['post__not_in'] = array_map( 'intval', array_unique( $_REQUEST['post__not_in'] ) );
+				unset( $args['offset'] );
+			}
 		}
 
 		// ensure control name compatibility to old code if it is post block
@@ -285,6 +294,8 @@ trait Ajax_Handler {
 	public function eael_woo_pagination_product_ajax() {
 
 		check_ajax_referer( 'essential-addons-elementor', 'security' );
+
+		do_action( 'eael_before_woo_pagination_product_ajax_start', $_REQUEST );
 
 		if ( ! empty( $_POST['page_id'] ) ) {
 			$page_id = intval( $_POST['page_id'], 10 );
@@ -636,8 +647,10 @@ trait Ajax_Handler {
 			$args['tax_query'] = [
 				$this->sanitize_taxonomy_data( $_REQUEST['taxonomy'] ),
 			];
-		}
 
+			$args['tax_query'] = $this->eael_terms_query_multiple( $args['tax_query'] );
+		}
+		
 		$template_info = $this->eael_sanitize_template_param( $_REQUEST['template_info'] );
 
 		if ( $template_info ) {
@@ -678,6 +691,47 @@ trait Ajax_Handler {
 			}
 		}
 		wp_die();
+	}
+
+	public function eael_terms_query_multiple( $args_tax_query = [] ){
+		if ( strpos($args_tax_query[0]['taxonomy'], '|') !== false ) {
+			$args_tax_query_item = $args_tax_query[0];
+			
+			//Query for category and tag
+			$args_multiple['tax_query'] = [];
+
+			if( isset( $args_tax_query_item['terms'] ) ){
+				$args_multiple['tax_query'][] = [
+					'taxonomy' => 'product_cat',
+					'field' => 'term_id',
+					'terms' => $args_tax_query_item['terms'],
+				];
+			}
+			
+			if( isset( $args_tax_query_item['terms_tag'] ) ){
+				$args_multiple['tax_query'][] = [
+					'taxonomy' => 'product_tag',
+					'field' => 'term_id',
+					'terms' => $args_tax_query_item['terms_tag'],
+				];
+			}
+			
+
+			if ( count( $args_multiple['tax_query'] ) ) {
+				$args_multiple['tax_query']['relation'] = 'OR';
+			}
+
+			$args_tax_query = $args_multiple['tax_query'];
+		}
+		
+		if( isset( $args_tax_query[0]['terms_tag'] ) ){
+			if( 'product_tag' === $args_tax_query[0]['taxonomy'] ){
+				$args_tax_query[0]['terms'] = $args_tax_query[0]['terms_tag'];
+			}
+			unset($args_tax_query[0]['terms_tag']);
+		}
+
+		return $args_tax_query;
 	}
 
 	/**
@@ -898,6 +952,11 @@ trait Ajax_Handler {
 			update_option( 'eael_fb_app_secret', sanitize_text_field( $settings['lr_fb_app_secret'] ) );
 		}
 
+		// Business Reviews : Saving Google Place Api Key
+		if ( isset( $settings['br_google_place_api_key'] ) ) {
+			update_option( 'eael_br_google_place_api_key', sanitize_text_field( $settings['br_google_place_api_key'] ) );
+		}
+
 		// Saving Google Map Api Key
 		if ( isset( $settings['google-map-api'] ) ) {
 			update_option( 'eael_save_google_map_api', sanitize_text_field( $settings['google-map-api'] ) );
@@ -1001,5 +1060,11 @@ trait Ajax_Handler {
 			wp_send_json_success( [ 'nonce' => $nonce ] );
 		}
 		wp_send_json_error( __( 'you are not allowed to do this action', 'essential-addons-for-elementor-lite' ) );
+	}
+
+	public function eael_yith_wcwl_ajax_disable( $request ) {
+		add_filter( 'option_yith_wcwl_ajax_enable', function ( $data ) {
+			return 'no';
+		} );
 	}
 }

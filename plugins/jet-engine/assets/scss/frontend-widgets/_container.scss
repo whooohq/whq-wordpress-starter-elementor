@@ -21,8 +21,17 @@
 	&--content-direction {
 		&-vertical {
 			flex-direction: column;
-			> .block-editor-inner-blocks > .block-editor-block-list__layout {
-				flex-direction: column;
+			> * {
+				width: 100%;
+			}
+			> .block-editor-inner-blocks {
+				width: 100%;
+				> .block-editor-block-list__layout {
+					flex-direction: column;
+					> .block-editor-block-list__block {
+						width: 100%;
+					}
+				}
 			}
 		}
 	}

@@ -146,20 +146,45 @@ class SQL_Query extends Base_Query {
 
 				foreach ( $value as $row ) {
 
-					$prepared_row = array(
-						'column'  => ! empty( $row['key'] ) ? $row['key'] : false,
-						'compare' => ! empty( $row['compare'] ) ? $row['compare'] : '=',
-						'value'   => ! empty( $row['value'] ) ? $row['value'] : '',
-						'type'    => ! empty( $row['type'] ) ? $row['type'] : false,
-					);
-
-					$this->update_where_row( $prepared_row );
+					$this->update_where_row( $this->prepare_where_row( $row ) );
 
 				}
 
 				break;
 		}
 
+	}
+
+	/**
+	 * Prepare where arguments row.
+	 *
+	 * @param  array $row
+	 * @return array
+	 */
+	public function prepare_where_row( $row ) {
+
+		if ( ! empty( $row['relation'] ) ) {
+
+			$prepared_row = array(
+				'relation' => $row['relation'],
+			);
+
+			unset( $row['relation'] );
+
+			foreach ( $row as $inner_row ) {
+				$prepared_row[] = $this->prepare_where_row( $inner_row );
+			}
+
+		} else {
+			$prepared_row = array(
+				'column'  => ! empty( $row['key'] ) ? $row['key'] : false,
+				'compare' => ! empty( $row['compare'] ) ? $row['compare'] : '=',
+				'value'   => ! empty( $row['value'] ) ? $row['value'] : '',
+				'type'    => ! empty( $row['type'] ) ? $row['type'] : false,
+			);
+		}
+
+		return $prepared_row;
 	}
 
 	public function set_filtered_order( $key, $value ) {
@@ -183,7 +208,11 @@ class SQL_Query extends Base_Query {
 		}
 
 		foreach ( $this->final_query['where'] as $index => $existing_row ) {
-			if ( $existing_row['column'] === $row['column'] && $existing_row['compare'] === $row['compare'] ) {
+			if ( isset( $existing_row['column'] )
+				 && isset( $row['column'] )
+				 && $existing_row['column'] === $row['column']
+				 && $existing_row['compare'] === $row['compare']
+			) {
 				$this->final_query['where'][ $index ] = $row;
 				return;
 			}
@@ -422,7 +451,11 @@ class SQL_Query extends Base_Query {
 					$base_col    = $table['on_base'];
 					$current_col = $table['on_current'];
 
-					$current_query .= "$type $join_table AS $as_table ON $raw_table.$base_col = $as_table.$current_col ";
+					if ( false === strpos( $base_col, '.' ) ) {
+						$base_col = $raw_table . '.' . $base_col;
+					}
+
+					$current_query .= "$type $join_table AS $as_table ON $base_col = $as_table.$current_col ";
 
 				}
 			}
@@ -615,19 +648,33 @@ class SQL_Query extends Base_Query {
 
 			foreach ( $args as $key => $arg ) {
 
-				if ( is_array( $arg ) && isset( $arg['column'] ) ) {
-					$column  = ! empty( $arg['column'] ) ? $arg['column'] : false;
-					$compare = ! empty( $arg['compare'] ) ? $arg['compare'] : '=';
-					$value   = ! empty( $arg['value'] ) ? $arg['value'] : '';
-					$type    = ! empty( $arg['type'] ) ? $arg['type'] : false;
-				} else {
-					$column  = $key;
-					$compare = '=';
-					$value   = $arg;
-					$type    = false;
-				}
+				if ( is_array( $arg ) && isset( $arg['relation'] ) ) {
+					$relation = $arg['relation'];
 
-				$clause = $this->prepare_where_clause( $column, $compare, $value, $type );
+					unset( $arg['relation'] );
+
+					$clause = $this->add_where_args( $arg, $relation, false );
+
+					if ( $clause ) {
+						$clause = '( ' . $clause . ' )';
+					}
+
+				} else {
+
+					if ( is_array( $arg ) && isset( $arg['column'] ) ) {
+						$column  = ! empty( $arg['column'] ) ? $arg['column'] : false;
+						$compare = ! empty( $arg['compare'] ) ? $arg['compare'] : '=';
+						$value   = ! empty( $arg['value'] ) ? $arg['value'] : '';
+						$type    = ! empty( $arg['type'] ) ? $arg['type'] : false;
+					} else {
+						$column  = $key;
+						$compare = '=';
+						$value   = $arg;
+						$type    = false;
+					}
+
+					$clause = $this->prepare_where_clause( $column, $compare, $value, $type );
+				}
 
 				if ( $clause ) {
 					$query .= $glue;
@@ -802,8 +849,10 @@ class SQL_Query extends Base_Query {
 				$value = $this->adjust_value_by_type( $value, $type );
 			}
 
-			if ( in_array( $compare, $array_operators ) ) {
+			if ( in_array( $compare, array( 'IN', 'BETWEEN' ) ) ) {
 				$compare = '=';
+			} elseif ( in_array( $compare, array( 'NOT IN', 'NOT BETWEEN' ) ) ) {
+				$compare = '!=';
 			}
 
 		}
@@ -855,6 +904,15 @@ class SQL_Query extends Base_Query {
 
 	public function reset_query() {
 		$this->current_query = null;
+	}
+
+	public function before_preview_body() {
+		print_r( $this->wpdb()->last_query . "\n\n" );
+
+		if ( $this->wpdb()->last_error ) {
+			print_r( esc_html__( 'ERROR:' ) . "\n" );
+			print_r( $this->wpdb()->last_error . "\n\n" );
+		}
 	}
 
 }

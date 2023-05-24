@@ -74,8 +74,16 @@ if ( ! class_exists( 'Jet_Elements_Templates_Manager' ) ) {
 				add_action( 'wp_ajax_elementor_get_template_data', array( $this, 'force_jet_template_source' ), 0 );
 			}
 
-			if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.5.0', '>=' ) ) {
+			if ( defined( 'ELEMENTOR_VERSION' )
+				 && version_compare( ELEMENTOR_VERSION, '3.5.0', '>=' )
+				 && version_compare( ELEMENTOR_VERSION, '3.10.0', '<' )
+			) {
 				add_filter( 'option_' . Elementor\Api::LIBRARY_OPTION_KEY, array( $this, 'prepend_templates' ) );
+			}
+
+			if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.10.0', '>=' ) ) {
+				$transient_key = Elementor\TemplateLibrary\Source_Remote::TEMPLATES_DATA_TRANSIENT_KEY_PREFIX . ELEMENTOR_VERSION;
+				add_filter( 'transient_' . $transient_key, array( $this, 'prepend_remote_templates' ) );
 			}
 		}
 
@@ -174,6 +182,17 @@ if ( ! class_exists( 'Jet_Elements_Templates_Manager' ) ) {
 			}
 
 			return $library_data;
+		}
+
+		public function prepend_remote_templates( $remote_templates ) {
+
+			$templates = $this->get_templates();
+
+			if ( ! empty( $templates ) ) {
+				$remote_templates = array_merge( $remote_templates, $templates );
+			}
+
+			return $remote_templates;
 		}
 
 		public function get_templates() {

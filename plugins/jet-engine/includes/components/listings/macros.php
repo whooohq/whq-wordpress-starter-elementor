@@ -17,6 +17,8 @@ if ( ! class_exists( 'Jet_Engine_Listings_Macros' ) ) {
 
 		private $macros_context      = null;
 		private $fallback            = null;
+		private $before              = null;
+		private $after               = null;
 		private $macros_list         = null;
 		private $escaped_macros_list = null;
 
@@ -99,6 +101,36 @@ if ( ! class_exists( 'Jet_Engine_Listings_Macros' ) ) {
 
 		}
 
+		public function get_macros_for_js() {
+			$res = array();
+
+			foreach ( jet_engine()->listings->macros->get_all( false, true ) as $macros_id => $data ) {
+
+				$macros_data = array(
+					'id' => $macros_id,
+				);
+
+				if ( ! is_array( $data ) || empty( $data['label'] ) ) {
+					$macros_data['name'] = $macros_id;
+				} elseif ( ! empty( $data['label'] ) ) {
+					$macros_data['name'] = $data['label'];
+				}
+
+				if ( is_array( $data ) && ! empty( $data['args'] ) ) {
+					$macros_data['controls'] = $data['args'];
+				}
+
+				$res[] = $macros_data;
+
+			}
+
+			usort( $res, function ( $a, $b ) {
+				return strcmp( $a['name'], $b['name'] );
+			} );
+
+			return $res;
+		}
+
 		public function register_core_macros() {
 
 			foreach ( glob( jet_engine()->plugin_path( 'includes/components/listings/macros/' ) . '*.php' ) as $file ) {
@@ -129,6 +161,22 @@ if ( ! class_exists( 'Jet_Engine_Listings_Macros' ) ) {
 
 		public function get_fallback( $fallback = null ) {
 			return $this->fallback;
+		}
+
+		public function set_before( $before = null ) {
+			$this->before = $before;
+		}
+
+		public function get_before() {
+			return $this->before;
+		}
+
+		public function set_after( $after = null ) {
+			$this->after = $after;
+		}
+
+		public function get_after() {
+			return $this->after;
 		}
 
 		/**
@@ -245,6 +293,9 @@ if ( ! class_exists( 'Jet_Engine_Listings_Macros' ) ) {
 				case 'WP_User':
 					return get_user_meta( $object->ID, $meta_key, true );
 
+				default:
+					return apply_filters( 'jet-engine/macros/current-meta', false, $object, $meta_key );
+
 			}
 
 		}
@@ -295,10 +346,14 @@ if ( ! class_exists( 'Jet_Engine_Listings_Macros' ) ) {
 		 */
 		public function do_macros( $string = '', $field_value = null ) {
 
+			if ( empty( $string ) ) {
+				return $string;
+			}
+
 			$macros = $this->get_all();
 
 			return preg_replace_callback(
-				'/%([a-z_-]+)(\|[a-zA-Z0-9_\-\,\.\+\:\/\s\(\)|]+)?%(\{.+\})?/',
+				'/%([a-z_-]+)(\|[a-zA-Z0-9_\-\,\.\+\:\/\s\(\)|\[\]\'\"=]+)?%(\{.+\})?/',
 				function( $matches ) use ( $macros, $field_value ) {
 
 					$found = $matches[1];
@@ -334,23 +389,45 @@ if ( ! class_exists( 'Jet_Engine_Listings_Macros' ) ) {
 							$this->set_fallback( $config['fallback'] );
 						}
 
+						if ( ! empty( $config['before'] ) ) {
+							$this->set_before( $config['before'] );
+						}
+
+						if ( ! empty( $config['after'] ) ) {
+							$this->set_after( $config['after'] );
+						}
+
 					}
 					
-					$result = call_user_func( $cb, $field_value, $args );
+					$result   = call_user_func( $cb, $field_value, $args );
 					$fallback = $this->get_fallback();
+					$before   = $this->get_before();
+					$after    = $this->get_after();
 
-					if ( $fallback && empty( $result ) ) {
+					if ( ! empty( $result ) ) {
+
+						if ( is_array( $result ) ) {
+							$result = implode( ',', $result );
+						}
+
+						if ( $before ) {
+							$result = $before . $result;
+						}
+
+						if ( $after ) {
+							$result .= $after;
+						}
+
+					} elseif ( $fallback ) {
 						$result = $fallback;
 					}
 
 					$this->set_fallback( null );
 					$this->set_macros_context( null );
+					$this->set_before( null );
+					$this->set_after( null );
 
-					if ( is_array( $result ) ) {
-						return implode( ',', $result );
-					} else {
-						return $result;
-					}
+					return $result;
 
 				}, $string
 			);

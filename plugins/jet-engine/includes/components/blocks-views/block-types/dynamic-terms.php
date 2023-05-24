@@ -87,6 +87,14 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Dynamic_Terms' ) ) {
 					'type' => 'string',
 					'default' => '',
 				),
+				'orderby' => array(
+					'type' => 'string',
+					'default' => 'name',
+				),
+				'order' => array(
+					'type' => 'string',
+					'default' => 'ASC',
+				),
 				'hide_if_empty' => array(
 					'type' => 'boolean',
 					'default' => false,

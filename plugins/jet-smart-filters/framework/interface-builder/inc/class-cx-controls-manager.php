@@ -39,7 +39,6 @@ if ( ! class_exists( 'CX_Controls_Manager' ) ) {
 
 			require $this->base_path . 'inc/class-cx-controls-base.php';
 			$this->load_controls();
-
 		}
 
 		/**
@@ -70,6 +69,7 @@ if ( ! class_exists( 'CX_Controls_Manager' ) ) {
 			$instance = new $classname( $args );
 
 			$instance->set_base_url( $this->base_url );
+			$instance->set_base_path( $this->base_path );
 
 			return $instance;
 		}

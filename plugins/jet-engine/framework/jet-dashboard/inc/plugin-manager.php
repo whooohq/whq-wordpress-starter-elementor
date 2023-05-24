@@ -53,9 +53,9 @@ class Plugin_Manager {
 
 	/**
 	 * [$registered_plugins description]
-	 * @var boolean
+	 * @var array
 	 */
-	public $registered_plugins_data = false;
+	public $registered_plugins_data = array();
 
 	/**
 	 * Init class parameters.
@@ -423,9 +423,7 @@ class Plugin_Manager {
 				}
 
 				$plugin_data['licenseControl'] = array_key_exists( $plugin_slug, $registered_plugins ) ? true : false;
-
 				$plugin_data['usefulLinks'] = array_key_exists( $plugin_slug, $registered_plugins ) ? $registered_plugins[ $plugin_slug ]['plugin_links'] : array();
-
 				$plugins_list[ $plugin_data['slug'] ] = $plugin_data;
 			}
 		}

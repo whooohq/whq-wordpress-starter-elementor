@@ -11,6 +11,7 @@ use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Css_Filter;
 use Elementor\Group_Control_Flex_Container;
 use Elementor\Group_Control_Flex_Item;
+use Elementor\Group_Control_Grid_Container;
 use Elementor\Plugin;
 use Elementor\Shapes;
 use Elementor\Utils;
@@ -74,6 +75,16 @@ class Container extends Element_Base {
 	 */
 	public function get_icon() {
 		return 'eicon-container';
+	}
+
+	public function get_keywords() {
+		$keywords = [ 'Container', 'Flex', 'Flexbox', 'Flexbox Container', 'Layout' ];
+
+		if ( Plugin::$instance->experiments->is_feature_active( 'container_grid' ) ) {
+			array_push( $keywords, 'Grid', 'Grid Container', 'CSS Grid' );
+		}
+
+		return $keywords;
 	}
 
 	/**
@@ -293,6 +304,62 @@ class Container extends Element_Base {
 		return Plugin::$instance->widgets_manager->get_widget_types( $element_data['widgetType'] );
 	}
 
+	protected function get_flex_control_options( $is_container_grid_active ) {
+		$flex_control_options = [
+			'name' => 'flex',
+			'selector' => '{{WRAPPER}}',
+			'fields_options' => [
+				'gap' => [
+					'label' => esc_html_x( 'Gap between elements', 'Flex Container Control', 'elementor' ),
+					'device_args' => [
+						Breakpoints_Manager::BREAKPOINT_KEY_DESKTOP => [
+							// Use the default gap from the kit as a placeholder.
+							'placeholder' => $this->active_kit->get_settings_for_display( 'space_between_widgets' ),
+						],
+					],
+				],
+			],
+		];
+
+		if ( $is_container_grid_active ) {
+			$flex_control_options['condition'] = [
+				'container_type' => 'flex',
+			];
+		}
+
+		return $flex_control_options;
+	}
+
+	protected function get_container_type_control_options( $is_container_grid_active ) {
+		if ( $is_container_grid_active ) {
+			return [
+				'label' => esc_html__( 'Container Layout', 'elementor' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'flex',
+				'options' => [
+					'flex' => esc_html__( 'Flexbox', 'elementor' ),
+					'grid' => esc_html__( 'Grid', 'elementor' ),
+				],
+				'selectors' => [
+					'{{WRAPPER}}' => '--display: {{VALUE}}',
+				],
+				'prefix_class' => 'e-',
+			];
+		}
+
+		// TODO: This can be removed when the 'Container Grid Experiment' is merged.
+		return [
+			'label' => esc_html__( 'Container Layout', 'elementor' ),
+			'type' => Controls_Manager::HIDDEN,
+			'render_type' => 'none',
+			'prefix_class' => 'e-',
+			'default' => 'flex',
+			'selectors' => [
+				'{{WRAPPER}}' => '--display: {{VALUE}}',
+			],
+		];
+	}
+
 	/**
 	 * Register the Container's layout controls.
 	 *
@@ -334,7 +401,7 @@ class Container extends Element_Base {
 		$width_control_settings = [
 			'label' => esc_html__( 'Width', 'elementor' ),
 			'type' => Controls_Manager::SLIDER,
-			'size_units' => [ 'px', '%', 'vw' ],
+			'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 			'range' => [
 				'px' => [
 					'min' => 500,
@@ -422,7 +489,7 @@ class Container extends Element_Base {
 			[
 				'label' => esc_html__( 'Min Height', 'elementor' ),
 				'type' => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'vh' ],
+				'size_units' => [ 'px', 'em', 'rem', 'vh', 'custom' ],
 				'range' => [
 					'px' => [
 						'min' => 0,
@@ -443,24 +510,30 @@ class Container extends Element_Base {
 			]
 		);
 
+		$is_container_grid_active = Plugin::$instance->experiments->is_feature_active( 'container_grid' );
+
+		$this->add_control(
+			'container_type',
+			$this->get_container_type_control_options( $is_container_grid_active )
+		);
+
 		$this->add_group_control(
 			Group_Control_Flex_Container::get_type(),
-			[
-				'name' => 'flex',
-				'selector' => '{{WRAPPER}}',
-				'fields_options' => [
-					'gap' => [
-						'label' => esc_html_x( 'Gap between elements', 'Flex Container Control', 'elementor' ),
-						'device_args' => [
-							Breakpoints_Manager::BREAKPOINT_KEY_DESKTOP => [
-								// Use the default gap from the kit as a placeholder.
-								'placeholder' => $this->active_kit->get_settings_for_display( 'space_between_widgets' ),
-							],
-						],
-					],
-				],
-			]
+			$this->get_flex_control_options( $is_container_grid_active )
 		);
+
+		if ( $is_container_grid_active ) {
+			$this->add_group_control(
+				Group_Control_Grid_Container::get_type(),
+				[
+					'name' => 'grid',
+					'selector' => '{{WRAPPER}}',
+					'condition' => [
+						'container_type' => [ 'grid' ],
+					],
+				]
+			);
+		}
 
 		$this->end_controls_section();
 	}
@@ -597,6 +670,12 @@ class Container extends Element_Base {
 					'background' => [
 						'frontend_available' => true,
 					],
+					'image' => [
+						'background_lazyload' => [
+							'active' => true,
+							'keys' => [ 'background_image', 'url' ],
+						],
+					],
 				],
 			]
 		);
@@ -629,14 +708,11 @@ class Container extends Element_Base {
 				'default' => [
 					'size' => 0.3,
 				],
-				'range' => [
-					'px' => [
-						'max' => 3,
-						'step' => 0.1,
-					],
-				],
 				'render_type' => 'ui',
 				'separator' => 'before',
+				'selectors' => [
+					'{{WRAPPER}}' => '--background-transition: {{SIZE}}s;',
+				],
 			]
 		);
 
@@ -673,7 +749,7 @@ class Container extends Element_Base {
 			]
 		);
 
-		$background_overlay_selector = '{{WRAPPER}}::before, {{WRAPPER}} > .elementor-background-video-container::before, {{WRAPPER}} > .e-con-inner > .elementor-background-video-container::before, {{WRAPPER}} > .elementor-background-slideshow::before, {{WRAPPER}} > .e-con-inner > .elementor-background-slideshow::before';
+		$background_overlay_selector = '{{WRAPPER}}::before, {{WRAPPER}} > .elementor-background-video-container::before, {{WRAPPER}} > .e-con-inner > .elementor-background-video-container::before, {{WRAPPER}} > .elementor-background-slideshow::before, {{WRAPPER}} > .e-con-inner > .elementor-background-slideshow::before, {{WRAPPER}} > .elementor-motion-effects-container > .elementor-motion-effects-layer::before';
 
 		$this->add_group_control(
 			Group_Control_Background::get_type(),
@@ -687,11 +763,17 @@ class Container extends Element_Base {
 							$background_overlay_selector => '--background-overlay: \'\';',
 						],
 					],
+					'image' => [
+						'background_lazyload' => [
+							'active' => true,
+							'keys' => [ 'background_overlay_image', 'url' ],
+						],
+					],
 				],
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'background_overlay_opacity',
 			[
 				'label' => esc_html__( 'Opacity', 'elementor' ),
@@ -805,7 +887,7 @@ class Container extends Element_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'background_overlay_hover_opacity',
 			[
 				'label' => esc_html__( 'Opacity', 'elementor' ),
@@ -850,7 +932,7 @@ class Container extends Element_Base {
 				'render_type' => 'ui',
 				'separator' => 'before',
 				'selectors' => [
-					'{{WRAPPER}}' => '--overlay-transition: {{SIZE}}s;',
+					'{{WRAPPER}}, {{WRAPPER}}::before' => '--overlay-transition: {{SIZE}}s;',
 				],
 			]
 		);
@@ -892,6 +974,24 @@ class Container extends Element_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name' => 'border',
+				'selector' => '{{WRAPPER}}',
+				'fields_options' => [
+					'width' => [
+						'selectors' => [
+							'{{SELECTOR}}' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; --border-width-top: {{TOP}}{{UNIT}}; --border-width-right: {{RIGHT}}{{UNIT}}; --border-width-bottom: {{BOTTOM}}{{UNIT}}; --border-width-left: {{LEFT}}{{UNIT}};',
+						],
+					],
+					'color' => [
+						'selectors' => [
+							'{{SELECTOR}}' => 'border-color: {{VALUE}}; --border-color: {{VALUE}};',
+						],
+					],
+					'border' => [
+						'selectors' => [
+							'{{SELECTOR}}' => 'border-style: {{VALUE}}; --border-style: {{VALUE}};',
+						],
+					],
+				],
 			]
 		);
 
@@ -900,9 +1000,9 @@ class Container extends Element_Base {
 			[
 				'label' => esc_html__( 'Border Radius', 'elementor' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%', 'em' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
 				'selectors' => [
-					'{{WRAPPER}}' => '--border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}}' => '--border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; --border-top-left-radius: {{TOP}}{{UNIT}}; --border-top-right-radius: {{RIGHT}}{{UNIT}}; --border-bottom-right-radius: {{BOTTOM}}{{UNIT}}; --border-bottom-left-radius: {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -931,6 +1031,18 @@ class Container extends Element_Base {
 			[
 				'name' => 'border_hover',
 				'selector' => '{{WRAPPER}}:hover',
+				'fields_options' => [
+					'width' => [
+						'selectors' => [
+							'{{SELECTOR}}' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; --border-width-top: {{TOP}}{{UNIT}}; --border-width-right: {{RIGHT}}{{UNIT}}; --border-width-bottom: {{BOTTOM}}{{UNIT}}; --border-width-left: {{LEFT}}{{UNIT}};',
+						],
+					],
+					'color' => [
+						'selectors' => [
+							'{{SELECTOR}}' => 'border-color: {{VALUE}}; --border-color: {{VALUE}};',
+						],
+					],
+				],
 			]
 		);
 
@@ -939,9 +1051,9 @@ class Container extends Element_Base {
 			[
 				'label' => esc_html__( 'Border Radius', 'elementor' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%', 'em' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
 				'selectors' => [
-					'{{WRAPPER}}:hover' => '--border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}}:hover' => '--border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; --border-top-left-radius: {{TOP}}{{UNIT}}; --border-top-right-radius: {{RIGHT}}{{UNIT}}; --border-bottom-right-radius: {{BOTTOM}}{{UNIT}}; --border-bottom-left-radius: {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -985,8 +1097,7 @@ class Container extends Element_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}}' => '--transition: background {{background_hover_transition.SIZE}}s, border {{SIZE}}s, border-radius {{SIZE}}s, box-shadow {{SIZE}}s',
-					'{{WRAPPER}}::before' => '--overlay-transition: background {{background_overlay_hover_transition.SIZE}}s, border-radius {{SIZE}}s, opacity {{background_overlay_hover_transition.SIZE}}s',
+					'{{WRAPPER}}, {{WRAPPER}}::before' => '--border-transition: {{SIZE}}s;',
 				],
 			]
 		);
@@ -1191,7 +1302,7 @@ class Container extends Element_Base {
 			[
 				'label' => esc_html__( 'Margin', 'elementor' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%', 'rem' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}}' => '--margin-top: {{TOP}}{{UNIT}}; --margin-right: {{RIGHT}}{{UNIT}}; --margin-bottom: {{BOTTOM}}{{UNIT}}; --margin-left:{{LEFT}}{{UNIT}};',
 				],
@@ -1203,7 +1314,7 @@ class Container extends Element_Base {
 			[
 				'label' => esc_html__( 'Padding', 'elementor' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%', 'rem' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}}' => '--padding-top: {{TOP}}{{UNIT}}; --padding-right: {{RIGHT}}{{UNIT}}; --padding-bottom: {{BOTTOM}}{{UNIT}}; --padding-left: {{LEFT}}{{UNIT}};',
 				],
@@ -1318,7 +1429,7 @@ class Container extends Element_Base {
 				'default' => [
 					'size' => '0',
 				],
-				'size_units' => [ 'px', '%', 'vw', 'vh' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors' => [
 					'body:not(.rtl) {{WRAPPER}}' => 'left: {{SIZE}}{{UNIT}}',
 					'body.rtl {{WRAPPER}}' => 'right: {{SIZE}}{{UNIT}}',
@@ -1357,7 +1468,7 @@ class Container extends Element_Base {
 				'default' => [
 					'size' => '0',
 				],
-				'size_units' => [ 'px', '%', 'vw', 'vh' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors' => [
 					'body:not(.rtl) {{WRAPPER}}' => 'right: {{SIZE}}{{UNIT}}',
 					'body.rtl {{WRAPPER}}' => 'left: {{SIZE}}{{UNIT}}',
@@ -1417,7 +1528,7 @@ class Container extends Element_Base {
 						'max' => 200,
 					],
 				],
-				'size_units' => [ 'px', '%', 'vh', 'vw' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vh', 'vw', 'custom' ],
 				'default' => [
 					'size' => '0',
 				],
@@ -1455,7 +1566,7 @@ class Container extends Element_Base {
 						'max' => 200,
 					],
 				],
-				'size_units' => [ 'px', '%', 'vh', 'vw' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vh', 'vw', 'custom' ],
 				'default' => [
 					'size' => '0',
 				],
@@ -1487,6 +1598,9 @@ class Container extends Element_Base {
 				'label' => esc_html__( 'CSS ID', 'elementor' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
+				'ai' => [
+					'active' => false,
+				],
 				'dynamic' => [
 					'active' => true,
 				],
@@ -1502,6 +1616,9 @@ class Container extends Element_Base {
 				'label' => esc_html__( 'CSS Classes', 'elementor' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
+				'ai' => [
+					'active' => false,
+				],
 				'dynamic' => [
 					'active' => true,
 				],
@@ -1599,7 +1716,12 @@ class Container extends Element_Base {
 		$this->add_control(
 			'responsive_description',
 			[
-				'raw' => esc_html__( 'Responsive visibility will take effect only on preview or live page, and not while editing in Elementor.', 'elementor' ),
+				'raw' => sprintf(
+					/* translators: 1: Link open tag, 2: Link close tag. */
+					esc_html__( 'Responsive visibility will take effect only on %1$s preview mode %2$s or live page, and not while editing in Elementor.', 'elementor' ),
+					'<a href="javascript: $e.run( \'panel/close\' )">',
+					'</a>'
+				),
 				'type' => Controls_Manager::RAW_HTML,
 				'content_classes' => 'elementor-descriptor',
 			]
@@ -1620,11 +1742,28 @@ class Container extends Element_Base {
 
 		$this->register_motion_effects_controls();
 
+		$this->hook_sticky_notice_into_transform_section();
+
+		$this->register_transform_section( 'con' );
+
 		$this->register_responsive_controls();
 
 		Plugin::$instance->controls_manager->add_custom_attributes_controls( $this );
 
 		Plugin::$instance->controls_manager->add_custom_css_controls( $this );
+	}
+
+	protected function hook_sticky_notice_into_transform_section() {
+		add_action( 'elementor/element/container/_section_transform/after_section_start', function( $container ) {
+			$container->add_control(
+				'transform_sticky_notice',
+				[
+					'type' => Controls_Manager::RAW_HTML,
+					'raw' => esc_html__( 'Note: Avoid applying transform properties on sticky containers. Doing so might cause unexpected results.', 'elementor' ),
+					'content_classes' => 'elementor-panel-alert elementor-panel-alert-warning',
+				]
+			);
+		} );
 	}
 
 	/**

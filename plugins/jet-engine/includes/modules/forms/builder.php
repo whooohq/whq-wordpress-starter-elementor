@@ -1091,11 +1091,11 @@ if ( ! class_exists( 'Jet_Engine_Booking_Forms_Builder' ) ) {
 					return $options;
 				}
 
-				$posts = get_posts( array(
+				$posts = get_posts( apply_filters( 'jet-engine/compatibility/get-posts/args', array(
 					'post_status'    => 'publish',
 					'posts_per_page' => -1,
 					'post_type'      => $post_type,
-				) );
+				) ) );
 
 				if ( empty( $posts ) ) {
 					return $options;

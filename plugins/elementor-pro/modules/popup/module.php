@@ -10,6 +10,7 @@ use Elementor\Core\DynamicTags\Manager as DynamicTagsManager;
 use Elementor\TemplateLibrary\Source_Local;
 use ElementorPro\Base\Module_Base;
 use ElementorPro\Core\Behaviors\Feature_Lock;
+use ElementorPro\Core\Utils;
 use ElementorPro\License\API;
 use ElementorPro\Modules\Popup\AdminMenuItems\Popups_Menu_Item;
 use ElementorPro\Modules\Popup\AdminMenuItems\Popups_Promotion_Menu_Item;
@@ -24,6 +25,8 @@ class Module extends Module_Base {
 	const DOCUMENT_TYPE = 'popup';
 
 	const PROMOTION_MENU_SLUG = 'e-popups';
+
+	private $has_popups = null;
 
 	public function __construct() {
 		parent::__construct();
@@ -113,11 +116,14 @@ class Module extends Module_Base {
 		return [];
 	}
 
+	/**
+	 * @throws \Exception
+	 */
 	public function save_display_settings( $data ) {
-		/** @var Document $popup_document */
-		$popup_document = Plugin::elementor()->documents->get( $data['editor_post_id'] );
+		$document = Utils::_unstable_get_document_for_edit( $data['editor_post_id'] );
 
-		$popup_document->save_display_settings_data( $data['settings'] );
+		/** @var Document $document */
+		$document->save_display_settings_data( $data['settings'] );
 	}
 
 	/**
@@ -193,9 +199,13 @@ class Module extends Module_Base {
 	}
 
 	private function has_popups() {
-		$existing_popups = get_posts( [
+		if ( null !== $this->has_popups ) {
+			return $this->has_popups;
+		}
+
+		$existing_popups = new \WP_Query( [
 			'post_type' => Source_Local::CPT,
-			'posts_per_page' => 1, // Avoid fetching too much data
+			'posts_per_page' => 1,
 			'post_status' => 'any',
 			'meta_query' => [
 				[
@@ -206,6 +216,8 @@ class Module extends Module_Base {
 			'meta_key' => DocumentBase::TYPE_META_KEY,
 		] );
 
-		return ! empty( $existing_popups );
+		$this->has_popups = $existing_popups->post_count > 0;
+
+		return $this->has_popups;
 	}
 }

@@ -315,6 +315,7 @@ Order details:
 					0               => __( 'Select post property...', 'jet-engine' ),
 					'ID'            => __( 'Post ID (will update post)', 'jet-engine' ),
 					'post_title'    => __( 'Post Title', 'jet-engine' ),
+					'post_name'     => __( 'Post Slug', 'jet-engine' ),
 					'post_content'  => __( 'Post Content', 'jet-engine' ),
 					'post_date'     => __( 'Post Date', 'jet-engine' ),
 					'post_date_gmt' => __( 'Post Date GMT', 'jet-engine' ),

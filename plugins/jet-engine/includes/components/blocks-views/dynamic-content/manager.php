@@ -72,6 +72,8 @@ class Manager {
 				$this->data
 			);
 
+			$dynamic_block->set_parser( $parser );
+
 			return $parser->apply_dynamic_data( $block_content, $block_data['attrs'] );
 		}
 	}

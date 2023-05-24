@@ -169,6 +169,7 @@ class Jet_Smart_Filters_Active_Filters_Widget extends Widget_Base {
 			array(
 				'label'       => esc_html__( 'Filters Position', 'jet-smart-filters' ),
 				'type'        => Controls_Manager::CHOOSE,
+				'toggle'      => false,
 				'label_block' => false,
 				'default'     => 'row',
 				'options'     => array(
@@ -460,12 +461,31 @@ class Jet_Smart_Filters_Active_Filters_Widget extends Widget_Base {
 			)
 		);
 
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'filters_item_typography',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['filter'],
+			)
+		);
+
 		$this->start_controls_tabs( 'filters_item_style_tabs' );
 
 		$this->start_controls_tab(
 			'filters_item_normal_styles',
 			array(
 				'label' => esc_html__( 'Normal', 'jet-smart-filters' ),
+			)
+		);
+
+		$this->add_control(
+			'filters_item_normal_color',
+			array(
+				'label'     => esc_html__( 'Color', 'jet-smart-filters' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} ' . $css_scheme['filter'] => 'color: {{VALUE}}',
+				),
 			)
 		);
 
@@ -486,6 +506,17 @@ class Jet_Smart_Filters_Active_Filters_Widget extends Widget_Base {
 			'filters_item_hover_styles',
 			array(
 				'label' => esc_html__( 'Hover', 'jet-smart-filters' ),
+			)
+		);
+
+		$this->add_control(
+			'filters_item_value_hover_color',
+			array(
+				'label'     => esc_html__( 'Color', 'jet-smart-filters' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} ' . $css_scheme['filter'] . ':hover' => 'color: {{VALUE}}',
+				),
 			)
 		);
 
@@ -619,66 +650,17 @@ class Jet_Smart_Filters_Active_Filters_Widget extends Widget_Base {
 
 		$this->end_controls_tabs();
 
-		$this->add_control(
-			'filters_item_value_heading',
+		$this->add_responsive_control(
+			'filters_item_label_padding',
 			array(
-				'label'     => esc_html__( 'Value', 'jet-smart-filters' ),
-				'type'      => Controls_Manager::HEADING,
-				'separator' => 'before',
-			)
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			array(
-				'name'     => 'filters_item_value_typography',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['filter-value'],
-			)
-		);
-
-		$this->start_controls_tabs( 'filters_item_value_style_tabs' );
-
-		$this->start_controls_tab(
-			'filters_item_value_normal_styles',
-			array(
-				'label' => esc_html__( 'Normal', 'jet-smart-filters' ),
-			)
-		);
-
-		$this->add_control(
-			'filters_item_value_normal_color',
-			array(
-				'label'     => esc_html__( 'Color', 'jet-smart-filters' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['filter-value'] => 'color: {{VALUE}}',
+				'label'      => esc_html__( 'Padding', 'jet-smart-filters' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%' ),
+				'selectors'  => array(
+					'{{WRAPPER}} ' . $css_scheme['filter-label'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
-
-		$this->end_controls_tab();
-
-		$this->start_controls_tab(
-			'filters_item_value_hover_styles',
-			array(
-				'label' => esc_html__( 'Hover', 'jet-smart-filters' ),
-			)
-		);
-
-		$this->add_control(
-			'filters_item_value_hover_color',
-			array(
-				'label'     => esc_html__( 'Color', 'jet-smart-filters' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['filter'] . ':hover ' . $css_scheme['filter-value'] => 'color: {{VALUE}}',
-				),
-			)
-		);
-
-		$this->end_controls_tab();
-
-		$this->end_controls_tabs();
 
 		$this->add_control(
 			'filters_item_remove_heading',

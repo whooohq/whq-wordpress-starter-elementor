@@ -260,7 +260,9 @@ if ( ! class_exists( 'Jet_Smart_Filters_Hierarchy' ) ) {
 					$result = jet_smart_filters()->data->get_terms_for_options(
 						$curr_level['tax'],
 						false,
-						array()
+						array(
+							'parent' => 0,
+						)
 					);
 				}
 			}

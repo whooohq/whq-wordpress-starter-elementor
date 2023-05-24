@@ -4,9 +4,12 @@ const {
 	ToggleControl,
 	PanelBody,
 	SelectControl,
-	ServerSideRender,
 	Disabled
 } = wp.components;
+
+const {
+	serverSideRender: ServerSideRender
+} = wp;
 
 const {
 	Fragment

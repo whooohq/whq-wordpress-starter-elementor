@@ -1,6 +1,8 @@
 .jet-checkboxes-list {
 	&-wrapper {
 		margin: -3px;
+		border: 0;
+		padding: 0;
 
 		// Dropdown
 		.jet-filter-items-dropdown & {
@@ -78,4 +80,30 @@
 	&__children {
 		padding-left: 10px;
 	}
+}
+
+// Context Bricks
+.brxe-jet-smart-filters-check-range,
+.brxe-jet-smart-filters-checkboxes {
+	.jet-checkboxes-list-wrapper {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-start;
+		margin: 0;
+	}
+
+	.jet-checkboxes-list__row {
+		margin: 0;
+		padding-top: 0;
+	}
+
+	.jet-checkboxes-list__item {
+		display: block;
+		margin-bottom: 0;
+
+		.jet-checkboxes-list__decorator {
+			margin-top: 0;
+		}
+	}
+
 }

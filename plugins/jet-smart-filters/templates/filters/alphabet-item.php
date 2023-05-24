@@ -14,6 +14,7 @@ $label = strtoupper( $value );
 			name="<?php echo $query_var; ?>"
 			value="<?php echo $value; ?>"
 			data-label="<?php echo $label; ?>"
+			aria-label="<?php echo $label; ?>"
 			<?php echo $checked; ?>
 		>
 		<span class="jet-alphabet-list__button"><?php echo $label; ?></span>

@@ -227,7 +227,7 @@
 
 				$( window ).trigger('resize');
 
-				$jetPopup.addClass( 'woocommerce product quick-view-product' );
+				$jetPopup.addClass( 'woocommerce product single-product quick-view-product' );
 				$jetPopup.find( '.jet-popup__container-content' ).addClass( 'product' );
 
 				$( '.jet-popup .variations_form' ).each( function() {
@@ -538,9 +538,9 @@
 			let settings = JetWooBuilder.getElementorElementSettings( $scope );
 
 			if ( 'yes' === settings.cart_update_automatically ) {
-				$('.woocommerce').on('change', 'input.qty', JetWooBuilder.debounce( 500, function() {
+				$('.woocommerce').on('change', 'input.qty', function() {
 					$( '[name="update_cart"]' ).trigger( 'click' );
-				} ) );
+				} );
 			}
 
 		},
@@ -621,30 +621,6 @@
 
 				window.location = url;
 			}
-
-		},
-
-		debounce: function( threshold, callback ) {
-
-			let timeout;
-
-			return function debounced( $event ) {
-
-				function delayed() {
-
-					callback.call( this, $event );
-
-					timeout = null;
-
-				}
-
-				if ( timeout ) {
-					clearTimeout( timeout );
-				}
-
-				timeout = setTimeout( delayed, threshold );
-
-			};
 
 		},
 

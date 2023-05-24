@@ -3552,7 +3552,7 @@ msgid "Dynamic Image"
 msgstr "Dynamic Image"
 
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:82
-msgid "Note: this filed will override Source value"
+msgid "Note: this field will override Source value"
 msgstr "Внимание: это поле отменит исходное значение"
 
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:89
@@ -3590,7 +3590,7 @@ msgstr "Источник ссылки"
 #: includes/modules/maps-listings/inc/widgets/maps-listings-widget.php:335
 #: includes/modules/maps-listings/inc/widgets/maps-listings-widget.php:376
 #: includes/modules/maps-listings/inc/widgets/maps-listings-widget.php:545
-msgid "Note: this filed will override Meta Field value"
+msgid "Note: this field will override Meta Field value"
 msgstr "Внимание: данные из этого поля изменят значение для исходного метаполя"
 
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:202

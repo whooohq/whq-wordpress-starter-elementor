@@ -359,7 +359,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Horizontal Space', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px',
+					'px', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -385,7 +385,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Vertical Space', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px',
+					'px', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -606,7 +606,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['card_btn'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -628,7 +628,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => array( 'px', 'em', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['card_btn'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -642,7 +642,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => array( 'px', 'em', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['card_btn_wrap'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -698,7 +698,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['item'] . ' ' . $css_scheme['card']       => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					'{{WRAPPER}} ' . $css_scheme['item'] . ' ' . $css_scheme['card_inner'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};overflow:hidden;'
@@ -712,7 +712,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['item'] . ' ' . $css_scheme['card_inner'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -868,7 +868,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Size', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px',
+					'px', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -903,6 +903,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 				'size_units' => array(
 					'px',
 					'%',
+					'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -939,7 +940,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Spacing', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px',
+					'px', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -976,7 +977,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['item'] . ' ' . $css_scheme['card_img'] . ' img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; overflow:hidden;',
 				),
@@ -1015,7 +1016,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['item'] . ' ' . $css_scheme['item_meta'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; overflow:hidden;',
 				),
@@ -1028,7 +1029,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['item'] . ' ' . $css_scheme['item_meta'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1041,7 +1042,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['item'] . ' ' . $css_scheme['item_meta'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1230,7 +1231,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['item'] . ' ' . $css_scheme['card_content'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; overflow:hidden;',
 				),
@@ -1243,7 +1244,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['item'] . ' ' . $css_scheme['card_content'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1424,7 +1425,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['item'] . ' ' . $css_scheme['card_title'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1518,7 +1519,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['item'] . ' ' . $css_scheme['card_desc'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1632,7 +1633,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Icon Size', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', 'em', 'rem' ),
+				'size_units' => array( 'px', 'em', 'rem', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => 5,
@@ -1659,7 +1660,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Point Size', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', 'em', 'rem' ),
+				'size_units' => array( 'px', 'em', 'rem', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => 10,
@@ -1698,7 +1699,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['item_point_content'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1873,7 +1874,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Thickness', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px',
+					'px', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -1909,7 +1910,7 @@ class Jet_Elements_Timeline extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['line'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),

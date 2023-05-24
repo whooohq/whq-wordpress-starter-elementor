@@ -62,6 +62,7 @@ class Jet_Engine_CPT_Rest_Add_Taxonomy extends Jet_Engine_Base_API_Endpoint {
 			'capability_type'            => $this->safe_get( $params, 'advanced_settings', 'capability_type' ),
 			'hierarchical'               => $this->safe_get( $params, 'advanced_settings', 'hierarchical' ),
 			'rewrite_slug'               => $this->safe_get( $params, 'advanced_settings', 'rewrite_slug' ),
+			'rewrite_hierarchical'       => $this->safe_get( $params, 'advanced_settings', 'rewrite_hierarchical' ),
 			'description'                => $this->safe_get( $params, 'advanced_settings', 'description' ),
 			'meta_fields'                => ! empty( $params['meta_fields'] ) ? $params['meta_fields'] : array(),
 		) );

@@ -128,7 +128,11 @@ if ( ! class_exists( 'Jet_Engine_Module_Calendar' ) ) {
 
 			// Blocks Integration
 			add_action( 'jet-engine/blocks-views/register-block-types', array( $this, 'register_block_types' ) );
-			add_filter( 'jet-engine/blocks-views/editor/config',        array( $this, 'add_editor_config' ) );-
+			add_filter( 'jet-engine/blocks-views/editor/config',        array( $this, 'add_editor_config' ) );
+
+			// Bricks Integration
+			require jet_engine()->plugin_path( 'includes/modules/calendar/bricks-views/manager.php' );
+			new Jet_Engine\Modules\Calendar\Bricks_Views\Manager();
 
 			add_action( 'jet-engine/register-macros', array( $this, 'register_macros' ) );
 
@@ -266,6 +270,24 @@ if ( ! class_exists( 'Jet_Engine_Module_Calendar' ) ) {
 			$config['atts']['listingCalendar'] = jet_engine()->blocks_views->block_types->get_block_atts( 'listing-calendar' );
 
 			return $config;
+		}
+
+		/**
+		 * Returns path to module template file.
+		 *
+		 * @param $name
+		 *
+		 * @return string|bool
+		 */
+		public function get_template( $name ) {
+
+			$template = jet_engine()->get_template( 'calendar/' . $name ); // for back-compatibility
+
+			if ( $template ) {
+				return $template;
+			}
+
+			return jet_engine()->modules->modules_path( 'calendar/templates/' . $name );
 		}
 
 	}

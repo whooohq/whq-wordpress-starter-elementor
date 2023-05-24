@@ -2,6 +2,7 @@
 namespace ElementorPro\Modules\Carousel\Widgets;
 
 use Elementor\Controls_Manager;
+use Elementor\Control_Media;
 use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use Elementor\Embed;
 use Elementor\Group_Control_Text_Shadow;
@@ -110,6 +111,7 @@ class Media_Carousel extends Base {
 			[
 				'label' => esc_html__( 'Video Width', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'default' => [
 					'unit' => '%',
 				],
@@ -274,12 +276,12 @@ class Media_Carousel extends Base {
 	protected function print_slide( array $slide, array $settings, $element_key ) {
 		if ( ! empty( $settings['thumbs_slider'] ) ) {
 			$settings['video_play_icon'] = false;
-
-			$this->add_render_attribute( $element_key . '-image', 'class', 'elementor-fit-aspect-ratio' );
 		}
 
 		$this->add_render_attribute( $element_key . '-image', [
 			'class' => 'elementor-carousel-image',
+			'role' => 'img',
+			'aria-label' => Control_Media::get_image_alt( $slide['image'] ),
 		] );
 
 		$img_src = $this->get_slide_image_url( $slide, $settings );
@@ -288,7 +290,7 @@ class Media_Carousel extends Base {
 			$img_attribute['class'] = 'swiper-lazy';
 			$img_attribute['data-background'] = $img_src;
 		} else {
-			$img_attribute['style'] = 'background-image: url(' . $img_src . ')';
+			$img_attribute['style'] = "background-image: url('" . $img_src . "')";
 		}
 
 		$this->add_render_attribute( $element_key . '-image', $img_attribute );
@@ -443,6 +445,7 @@ class Media_Carousel extends Base {
 			[
 				'label' => esc_html__( 'Size', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
 					'px' => [
 						'min' => 20,
@@ -642,6 +645,7 @@ class Media_Carousel extends Base {
 			[
 				'type' => Controls_Manager::SLIDER,
 				'label' => esc_html__( 'Height', 'elementor-pro' ),
+				'size_units' => [ 'px', 'em', 'rem', 'vh', 'custom' ],
 				'range' => [
 					'px' => [
 						'min' => 20,
@@ -679,16 +683,24 @@ class Media_Carousel extends Base {
 			[
 				'label' => esc_html__( 'Ratio', 'elementor-pro' ),
 				'type' => Controls_Manager::SELECT,
-				'default' => '219',
 				'options' => [
 					'169' => '16:9',
 					'219' => '21:9',
 					'43' => '4:3',
 					'11' => '1:1',
 				],
-				'prefix_class' => 'elementor-aspect-ratio-',
+				'selectors_dictionary' => [
+					'169' => '16 / 9',
+					'219' => '21 / 9',
+					'43' => '4 / 3',
+					'11' => '1 / 1',
+				],
+				'default' => '219',
 				'condition' => [
 					'skin' => 'slideshow',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .elementor-thumbnails-swiper .elementor-carousel-image' => 'aspect-ratio: {{VALUE}}',
 				],
 			]
 		);

@@ -487,7 +487,7 @@ class Listing {
 			'dynamic_field_relation_meta',
 			array(
 				'label'       => __( 'Meta Field', 'jet-engine' ),
-				'type'        => \Elementor\Controls_Manager::SELECT,
+				'type'        => 'select',
 				'description' => __( 'By default you can use plain meta field name. For some cases (for example if you created relation by same post types, taxonomies etc.) you need to define direction of meta you trying to get. "for child object" means you getting meta from child object of current relation, "for parent" - from parent object of current relation' ),
 				'default'     => '',
 				'groups'      => $meta_fields,

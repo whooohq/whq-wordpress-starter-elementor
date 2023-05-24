@@ -17,6 +17,7 @@ class Settings {
 		add_action( 'wp_ajax_jet_engine_glossary_save', array( $this, 'save_item' ) );
 		add_action( 'wp_ajax_jet_engine_glossary_delete', array( $this, 'delete_item' ) );
 		add_action( 'wp_ajax_jet_engine_glossary_save_orders', array( $this, 'save_orders' ) );
+		add_action( 'wp_ajax_jet_engine_glossary_get_fields_from_file', array( $this, 'get_fields_from_file' ) );
 
 	}
 
@@ -131,6 +132,31 @@ class Settings {
 			) );
 		}
 
+	}
+
+	public function get_fields_from_file() {
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Access denied', 'jet-engine' ) ) );
+		}
+
+		$nonce = ! empty( $_REQUEST['nonce'] ) ? $_REQUEST['nonce'] : false;
+
+		if ( ! $nonce || ! wp_verify_nonce( $nonce, $this->nonce_key ) ) {
+			wp_send_json_error( array( 'message' => __( 'Nonce validation failed', 'jet-engine' ) ) );
+		}
+
+		$item   = ! empty( $_REQUEST['item'] ) ? $_REQUEST['item'] : array();
+		$fields = jet_engine()->glossaries->data->get_fields_from_file( $item );
+
+		if ( empty( $fields ) ) {
+			wp_send_json_error( array( 'message' => __( 'File is empty', 'jet-engine' ) ) );
+		}
+
+		wp_send_json_success( array(
+			'fields'  => $fields,
+			'message' => __( 'Item source converted', 'jet-engine' ),
+		) );
 	}
 
 	/**
@@ -323,6 +349,25 @@ class Settings {
 					v-if="'file' === settings.source"
 					v-model="settings.label_col"
 				></cx-vui-input>
+				<cx-vui-component-wrapper
+					label="<?php _e( 'Convert to Manual Source', 'jet-engine' ); ?>"
+					description="<?php _e( 'Convert to manual source to be able to edit the glossary fields.<br> <b>Please note:</b> save settings after converting.', 'jet-engine' ); ?>"
+					:wrapper-css="[ 'equalwidth' ]"
+					v-if="'file' === settings.source && settings.source_file && settings.source_file.id"
+				>
+					<cx-vui-button
+						size="mini"
+						button-style="accent-border"
+						:loading="isConverting"
+						:disabled="isConverting"
+						@click="convertSource"
+					>
+						<span
+							slot="label"
+							v-html="'<?php _e( 'Convert', 'jet-engine' ); ?>'"
+						></span>
+					</cx-vui-button>
+				</cx-vui-component-wrapper>
 				<cx-vui-component-wrapper
 					:wrapper-css="[ 'fullwidth-control' ]"
 					v-if="'file' !== settings.source"

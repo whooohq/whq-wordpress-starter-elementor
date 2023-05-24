@@ -72,9 +72,9 @@ class Jet_Woo_Builder_Single_Images extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'main_image_width',
 			[
-				'label'       => __( 'Width', 'jet-woo-builder' ),
 				'type'        => Controls_Manager::SLIDER,
-				'size_units'  => [ 'px', '%' ],
+				'label'       => __( 'Width', 'jet-woo-builder' ),
+				'size_units'  => $this->set_custom_size_unit( [ 'px', '%' ] ),
 				'range'       => [
 					'px' => [
 						'min' => 0,
@@ -151,9 +151,9 @@ class Jet_Woo_Builder_Single_Images extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'main_image_border_radius',
 			[
-				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['main_image']        => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					'{{WRAPPER}} ' . $css_scheme['single_main_image'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -172,9 +172,9 @@ class Jet_Woo_Builder_Single_Images extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'main_image_margin',
 			[
-				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['main_image']        => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					'{{WRAPPER}} ' . $css_scheme['single_main_image'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -207,7 +207,7 @@ class Jet_Woo_Builder_Single_Images extends Jet_Woo_Builder_Base {
 			[
 				'label'      => __( 'Vertical Thumbnails Width', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', '%' ],
+				'size_units' => $this->set_custom_size_unit( [ 'px', '%' ] ),
 				'range'      => [
 					'px' => [
 						'min' => 0,
@@ -315,9 +315,9 @@ class Jet_Woo_Builder_Single_Images extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'image_thumbnails_padding',
 			[
-				'label'      => __( 'Padding', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ '%', 'px' ],
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['thumbnails']                                          => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					'{{WRAPPER}} .jet-single-images-nav-horizontal' . $css_scheme['thumbnails_wrapper'] => 'margin-left: -{{LEFT}}{{UNIT}}; margin-right: -{{RIGHT}}{{UNIT}};',
@@ -346,9 +346,9 @@ class Jet_Woo_Builder_Single_Images extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'image_thumbnails_border_radius',
 			[
-				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['thumbnails_img'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -366,9 +366,9 @@ class Jet_Woo_Builder_Single_Images extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'image_thumbnails_images_padding',
 			[
-				'label'      => __( 'Padding', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ '%', 'px' ],
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['thumbnails_img'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],

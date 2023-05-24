@@ -83,6 +83,8 @@ if ( ! class_exists( 'Jet_Engine_Meta_Boxes' ) ) {
 			add_action( 'jet-engine/taxonomies/deleted-taxonomy',      array( $this, 'remove_deleted_tax_from_meta_boxes' ) );
 			add_action( 'jet-engine/taxonomies/updated-taxonomy-slug', array( $this, 'update_tax_in_meta_boxes' ), 10, 2 );
 
+			jet_engine_datetime()->convert_meta_fields_dates();
+
 		}
 
 		/**
@@ -335,7 +337,6 @@ if ( ! class_exists( 'Jet_Engine_Meta_Boxes' ) ) {
 						break;
 
 					default:
-
 						do_action( 'jet-engine/meta-boxes/register-custom-source/' . $object_type, $meta_box, $this );
 
 						break;
@@ -785,7 +786,11 @@ if ( ! class_exists( 'Jet_Engine_Meta_Boxes' ) ) {
 						continue;
 					}
 
-					$name  = $field_data['name'];
+					$name = apply_filters( 
+						'jet-engine/meta-boxes/fields-for-select/name',
+						$field_data['name'], $field_data, $object
+					);
+
 					$title = ! empty( $field_data['title'] ) ? $field_data['title'] : $name;
 
 					switch ( $context ) {

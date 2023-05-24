@@ -96,7 +96,7 @@ class Preset {
 			</select>
 		</div>
 		<div class="jet-form-canvas__preset-row" v-if="'<?php echo $this->preset_source; ?>' === preset.from && ! availableFields">
-			<span><?php _e( 'From Object', 'jet-engine' ); ?>:</span>
+			<span><?php _e( 'From Object (what to show)', 'jet-engine' ); ?>:</span>
 			<select v-model="preset.rel_object">
 				<option value=""><?php _e( 'Select relation object...', 'jet-engine' ); ?></option>
 				<option value="parent_object"><?php _e( 'Parent object', 'jet-engine' ); ?></option>
@@ -104,7 +104,7 @@ class Preset {
 			</select>
 		</div>
 		<div class="jet-form-canvas__preset-row" v-if="'<?php echo $this->preset_source; ?>' === preset.from && ! availableFields">
-			<span><?php _e( 'Initial Object ID From:', 'jet-engine' ); ?></span>
+			<span><?php _e( 'Initial Object ID From (get initial ID here):', 'jet-engine' ); ?></span>
 			<select type="text" v-model="preset.rel_object_from"><?php
 				foreach ( jet_engine()->relations->sources->get_sources() as $source_id => $source_label ) {
 					printf( '<option value="%1$s">%2$s</option>', $source_id, $source_label );

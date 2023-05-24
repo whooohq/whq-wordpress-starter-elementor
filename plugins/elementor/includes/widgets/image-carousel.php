@@ -319,6 +319,12 @@ class Widget_Image_Carousel extends Widget_Base {
 			[
 				'label' => esc_html__( 'Lightbox', 'elementor' ),
 				'type' => Controls_Manager::SELECT,
+				'description' => sprintf(
+					/* translators: 1: Link open tag, 2: Link close tag. */
+					esc_html__( 'Manage your site’s lightbox settings in the %1$sLightbox panel%2$s.', 'elementor' ),
+					'<a href="javascript: $e.run( \'panel/global/open\' ).then( () => $e.route( \'panel/global/settings-lightbox\' ) )">',
+					'</a>'
+				),
 				'default' => 'default',
 				'options' => [
 					'default' => esc_html__( 'Default', 'elementor' ),
@@ -701,7 +707,7 @@ class Widget_Image_Carousel extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'image_spacing_custom',
 			[
 				'label' => esc_html__( 'Image Spacing', 'elementor' ),
@@ -714,7 +720,6 @@ class Widget_Image_Carousel extends Widget_Base {
 				'default' => [
 					'size' => 20,
 				],
-				'show_label' => false,
 				'condition' => [
 					'image_spacing' => 'custom',
 					'slides_to_show!' => '1',
@@ -733,12 +738,12 @@ class Widget_Image_Carousel extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'image_border_radius',
 			[
 				'label' => esc_html__( 'Border Radius', 'elementor' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%', 'em' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .elementor-image-carousel-wrapper .elementor-image-carousel .swiper-slide-image' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -758,7 +763,7 @@ class Widget_Image_Carousel extends Widget_Base {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'caption_align',
 			[
 				'label' => esc_html__( 'Alignment', 'elementor' ),
@@ -903,12 +908,14 @@ class Widget_Image_Carousel extends Widget_Base {
 			return;
 		}
 
+		$swiper_class = Plugin::$instance->experiments->is_feature_active( 'e_swiper_latest' ) ? 'swiper' : 'swiper-container';
+
 		$this->add_render_attribute( [
 			'carousel' => [
 				'class' => 'elementor-image-carousel swiper-wrapper',
 			],
 			'carousel-wrapper' => [
-				'class' => 'elementor-image-carousel-wrapper swiper-container',
+				'class' => 'elementor-image-carousel-wrapper ' . $swiper_class,
 				'dir' => $settings['direction'],
 			],
 		] );
@@ -933,13 +940,13 @@ class Widget_Image_Carousel extends Widget_Base {
 					<div class="swiper-pagination"></div>
 				<?php endif; ?>
 				<?php if ( $show_arrows ) : ?>
-					<div class="elementor-swiper-button elementor-swiper-button-prev">
+					<div class="elementor-swiper-button elementor-swiper-button-prev" role="button" tabindex="0">
 						<?php $this->render_swiper_button( 'previous' ); ?>
-						<span class="elementor-screen-only"><?php echo esc_html__( 'Previous', 'elementor' ); ?></span>
+						<span class="elementor-screen-only"><?php echo esc_html__( 'Previous image', 'elementor' ); ?></span>
 					</div>
-					<div class="elementor-swiper-button elementor-swiper-button-next">
+					<div class="elementor-swiper-button elementor-swiper-button-next" role="button" tabindex="0">
 						<?php $this->render_swiper_button( 'next' ); ?>
-						<span class="elementor-screen-only"><?php echo esc_html__( 'Next', 'elementor' ); ?></span>
+						<span class="elementor-screen-only"><?php echo esc_html__( 'Next image', 'elementor' ); ?></span>
 					</div>
 				<?php endif; ?>
 			<?php endif; ?>

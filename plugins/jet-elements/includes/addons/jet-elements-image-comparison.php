@@ -182,7 +182,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Divider Starting Position', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( '%' ),
+				'size_units' => array( '%', 'custom' ),
 				'range'      => array(
 					'%' => array(
 						'min' => 0,
@@ -394,7 +394,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['instance'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -419,7 +419,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} .slick-list' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -560,7 +560,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['before_label'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -573,7 +573,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['before_label'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -688,7 +688,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['after_label'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -701,7 +701,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['after_label'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -760,7 +760,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Control Width', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px' ),
+				'size_units' => array( 'px', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => 20,
@@ -781,7 +781,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Height', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px' ),
+				'size_units' => array( 'px', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => 20,
@@ -800,7 +800,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['handle'] . ' .jx-controller' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -814,7 +814,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['handle'] . ' .jx-controller' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -937,7 +937,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Divider Width', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px' ),
+				'size_units' => array( 'px', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => 1,
@@ -979,7 +979,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Arrow Size', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px', 'em'
+					'px', 'em', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -1000,7 +1000,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['handle'] . ' .jx-controller i' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1110,7 +1110,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Top Indent', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => -400,
@@ -1140,7 +1140,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Bottom Indent', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => -400,
@@ -1184,7 +1184,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Left Indent', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => -400,
@@ -1214,7 +1214,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Right Indent', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => -400,
@@ -1268,7 +1268,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Top Indent', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => -400,
@@ -1298,7 +1298,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Bottom Indent', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => -400,
@@ -1342,7 +1342,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Left Indent', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => -400,
@@ -1372,7 +1372,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Right Indent', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => -400,
@@ -1563,7 +1563,7 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Dots Box Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['dots'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1618,6 +1618,8 @@ class Jet_Elements_Image_Comparison extends Jet_Elements_Base {
 		if ( 'fade' === $settings['effect'] ) {
 			$instance_settings['fade'] = true;
 		}
+
+		$instance_settings = apply_filters( 'jet-elements/jet-image-comparison/carousel-options', $instance_settings, $settings, $widget_id );
 
 		$instance_settings = json_encode( $instance_settings );
 

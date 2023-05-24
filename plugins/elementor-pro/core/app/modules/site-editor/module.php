@@ -2,16 +2,17 @@
 namespace ElementorPro\Core\App\Modules\SiteEditor;
 
 use Elementor\Core\Admin\Menu\Admin_Menu_Manager;
-use Elementor\Core\Experiments\Manager;
-use Elementor\TemplateLibrary\Source_Local;
+use Elementor\Core\Experiments\Manager as ExperimentsManager;
 use Elementor\Core\Frontend\Render_Mode_Manager;
-use ElementorPro\Core\App\Modules\SiteEditor\Data\Controller;
 use Elementor\Core\Base\Module as BaseModule;
 use Elementor\Core\Common\Modules\Ajax\Module as Ajax;
+use Elementor\TemplateLibrary\Source_Local;
+use ElementorPro\Core\App\Modules\SiteEditor\Data\Controller;
+use ElementorPro\Core\Behaviors\Feature_Lock;
 use ElementorPro\Modules\ThemeBuilder\AdminMenuItems\Theme_Builder_Menu_Item;
 use ElementorPro\Modules\ThemeBuilder\Module as Theme_Builder_Table_View;
-use ElementorPro\Plugin;
 use ElementorPro\Modules\ThemeBuilder\Module as ThemeBuilderModule;
+use ElementorPro\Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -24,6 +25,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Module extends BaseModule {
 	/**
+	 * @var Feature_Lock
+	 */
+	private $lock;
+
+	/**
 	 * Get name.
 	 *
 	 * @access public
@@ -34,7 +40,15 @@ class Module extends BaseModule {
 		return 'site-editor';
 	}
 
+	/**
+	 * @throws \Exception
+	 */
 	public function get_template_types() {
+		// Same as admin menu capabilities.
+		if ( ! current_user_can( 'publish_posts' ) ) {
+			throw new \Exception( 'Access denied' );
+		}
+
 		$document_types = Plugin::elementor()->documents->get_document_types( [
 			'support_site_editor' => true,
 		] );
@@ -78,25 +92,47 @@ class Module extends BaseModule {
 	}
 
 	protected function get_init_settings() {
-		return [
+		$settings = [
 			'urls' => [
 				'legacy_view' => add_query_arg( 'tabs_group', ThemeBuilderModule::ADMIN_LIBRARY_TAB_GROUP, admin_url( Source_Local::ADMIN_MENU_SLUG ) ),
 			],
+			'utms' => [
+				'utm_source' => 'theme-builder',
+				'utm_medium' => 'wp-dash',
+			],
 		];
+
+		if ( $this->lock->is_locked() ) {
+			$settings['lock'] = $this->lock->get_config();
+		}
+
+		return $settings;
 	}
 
-	private function add_default_new_site_editor_experiments( Manager $manager ) {
+	private function add_default_new_site_editor_experiments( ExperimentsManager $manager ) {
 		$manager->add_feature( [
 			'name' => 'theme_builder_v2',
 			'title' => __( 'Default to New Theme Builder', 'elementor-pro' ),
 			'description' => __( 'Entering the Theme Builder through WP Dashboard > Templates > Theme Builder opens the New theme builder by default. But don’t worry, you can always view the WP styled version of the screen with a simple click of a button.', 'elementor-pro' ),
-			'release_status' => Manager::RELEASE_STATUS_STABLE,
-			'default' => Manager::STATE_ACTIVE,
+			'release_status' => ExperimentsManager::RELEASE_STATUS_STABLE,
+			'default' => ExperimentsManager::STATE_ACTIVE,
 		] );
 	}
 
+	/**
+	 * Get site editor url.
+	 *
+	 * @return string
+	 */
+	private function get_site_editor_url() : string {
+		return Plugin::elementor()->app->get_base_url() . '#/site-editor';
+	}
+
 	private function register_site_editor_menu() {
-		if ( ! Plugin::elementor()->experiments->is_feature_active( 'theme_builder_v2' ) ) {
+		$experiments_manager = Plugin::elementor()->experiments;
+
+		// Unique case when the experiments manager is not initialized yet.
+		if ( ! $experiments_manager || ! $experiments_manager->is_feature_active( 'theme_builder_v2' ) ) {
 			return;
 		}
 
@@ -111,19 +147,22 @@ class Module extends BaseModule {
 			'',
 			__( 'Theme Builder', 'elementor-pro' ),
 			'publish_posts',
-			Plugin::elementor()->app->get_base_url() . '#/site-editor'
+			$this->get_site_editor_url()
 		);
 	}
 
 	private function register_admin_menu( Admin_Menu_Manager $admin_menu_manager ) {
-		if ( ! Plugin::elementor()->experiments->is_feature_active( 'theme_builder_v2' ) ) {
+		$experiments_manager = Plugin::elementor()->experiments;
+
+		// Unique case when the experiments manager is not initialized yet.
+		if ( ! $experiments_manager || ! $experiments_manager->is_feature_active( 'theme_builder_v2' ) ) {
 			return;
 		}
 
 		$admin_menu_manager->unregister( add_query_arg( 'tabs_group', ThemeBuilderModule::ADMIN_LIBRARY_TAB_GROUP, Source_Local::ADMIN_MENU_SLUG ) );
 
 		$admin_menu_manager->register(
-			Plugin::elementor()->app->get_base_url() . '#/site-editor',
+			$this->get_site_editor_url(),
 			new Theme_Builder_Menu_Item()
 		);
 	}
@@ -137,7 +176,7 @@ class Module extends BaseModule {
 		$categories['create']['items']['theme-template'] = [
 			'title' => __( 'Add New Theme Template', 'elementor-pro' ),
 			'icon' => 'plus-circle-o',
-			'url' => Plugin::elementor()->app->get_base_url() . '#/site-editor/add-new',
+			'url' => $this->get_site_editor_url() . '/add-new',
 			'keywords' => [ 'template', 'theme', 'new', 'create' ],
 		];
 
@@ -150,12 +189,14 @@ class Module extends BaseModule {
 	 * @access public
 	 */
 	public function __construct() {
+		$this->lock = new Feature_Lock( [ 'type' => 'theme-builder' ] );
+
 		Plugin::elementor()->data_manager->register_controller( Controller::class );
 
 		add_action( 'elementor/ajax/register_actions', [ $this, 'register_ajax_actions' ], 11 /* Override core actions */ );
 		add_action( 'elementor/frontend/render_mode/register', [ $this, 'register_render_mode' ] );
 
-		add_action( 'elementor/experiments/default-features-registered', function ( Manager $manager ) {
+		add_action( 'elementor/experiments/default-features-registered', function ( ExperimentsManager $manager ) {
 			$this->add_default_new_site_editor_experiments( $manager );
 		} );
 

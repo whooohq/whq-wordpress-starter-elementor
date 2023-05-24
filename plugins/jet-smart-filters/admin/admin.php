@@ -14,15 +14,26 @@ if ( ! class_exists( 'Jet_Smart_Filters_Admin' ) ) {
 	 */
 	class Jet_Smart_Filters_Admin {
 		/**
+		 * Components
+		 */
+		public $data;
+
+		/**
 		 * Constructor for the class
 		 */
 		public function __construct() {
-
-			add_action( 'admin_menu', array( $this, 'register_plugin_page' ) );
+			// Init components
+			require jet_smart_filters()->plugin_path( 'admin/includes/data.php' );
+			add_action( 'init', function() {
+				$this->data = new Jet_Smart_Filters_Admin_Data();
+			}, 999 );
 
 			//Init Setting Pages
-			require jet_smart_filters()->plugin_path( 'admin/settings/setting-pages.php' );
+			require jet_smart_filters()->plugin_path( 'admin/setting-pages/setting-pages.php' );
 			new Jet_Smart_Filters_Admin_Setting_Pages();
+
+			// Register plugin menu page
+			add_action( 'admin_menu', array( $this, 'register_plugin_page' ) );
 
 			if ( ! $this->is_filters_page() ) {
 				return;
@@ -44,8 +55,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Admin' ) ) {
 
 		/**
 		 * Check if is filters page
-		 *
-		 * @return boolean
 		 */
 		public function is_filters_page() {
 
@@ -54,11 +63,8 @@ if ( ! class_exists( 'Jet_Smart_Filters_Admin' ) ) {
 
 		/**
 		 * Register plugin menu page
-		 *
-		 * @return void
 		 */
 		public function register_plugin_page() {
-
 			/**
 			 * Register Smart Filters page
 			 */
@@ -121,8 +127,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Admin' ) ) {
 
 		/**
 		 * Render plugin page callback
-		 *
-		 * @return void
 		 */
 		public function render_plugin_page() {
 
@@ -156,10 +160,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Admin' ) ) {
 		 */
 		public function localize_data() {
 
-			// Get data instance
-			require_once jet_smart_filters()->plugin_path( 'admin/includes/data.php' );
-			$data = Jet_Smart_Filters_Admin_Data::get_instance();
-
 			wp_localize_script( 'jet-smart-filters-admin-app', 'JetSmartFiltersAdminData',
 				apply_filters( 'jet-smart-filters/admin/localized-data',
 					array(
@@ -169,12 +169,12 @@ if ( ! class_exists( 'Jet_Smart_Filters_Admin' ) ) {
 							'endpoints' => jet_smart_filters()->rest_api->get_endpoints_urls(),
 						),
 						'nonce'           => wp_create_nonce( 'wp_rest' ),
-						'plugin_settings' => $data->plugin_settings(),
-						'filter_settings' => $data->settings(),
-						'filter_types'    => $data->types(),
-						'filter_sources'  => $data->sources(),
-						'sort_by_list'    => $data->sort_by_list(),
-						'help_block'      => $data->help_block_data()
+						'plugin_settings' => $this->data->plugin_settings(),
+						'filter_settings' => $this->data->settings(),
+						'filter_types'    => $this->data->types(),
+						'filter_sources'  => $this->data->sources(),
+						'sort_by_list'    => $this->data->sort_by_list(),
+						'help_block'      => $this->data->help_block_data()
 					)
 				)
 			);

@@ -1796,7 +1796,10 @@ endif;
 				    $table_range     = explode( ':', $arg['table_range'] );
 
 				    if ( empty( $table_range[1] ) ) {
-					    if ( count( $connection['namedRanges'] ) === 1 ) {
+					    if ( empty( $connection['namedRanges'] ) ) {
+						    $endRow    = $results['startRow'] + 1;
+						    $endColumn = $results['startColumn'] + 1;
+					    } elseif ( count( $connection['namedRanges'] ) === 1 ) {
 						    $endRow    = $connection['namedRanges'][0]['range']['endRowIndex'];
 						    $endColumn = $connection['namedRanges'][0]['range']['endColumnIndex'];
 					    } else {
@@ -1826,8 +1829,8 @@ endif;
 					    }
 				    }
 
-				    $results['rowCount']    = $endRow - $results['startRow'];
-				    $results['columnCount'] = $endColumn - $results['startColumn'];
+				    $results['rowCount']    = absint( $endRow ) - $results['startRow'];
+				    $results['columnCount'] = absint( $endColumn ) - $results['startColumn'];
 
 				    if ( isset( $connection['sheets'][0]['merges'] ) && is_array( $connection['sheets'][0]['merges'] ) ) {
 					    $results['mergeData'] = $connection['sheets'][0]['merges'];
@@ -2621,7 +2624,7 @@ endif;
             'default' => '#7866ff',
             'selectors' => [
                 '{{WRAPPER}} .ea-woo-checkout .steps-buttons button,
-                {{WRAPPER}} .ea-woo-checkout .steps-buttons button#ea_place_order' => 'background-color: {{VALUE}};',
+                {{WRAPPER}} .ea-woo-checkout .steps-buttons button#ea_place_order' => 'background-color: {{VALUE}};background: {{VALUE}};',
             ],
         ]);
 
@@ -2651,7 +2654,7 @@ endif;
             'default' => '#7866ff',
             'selectors' => [
                 '{{WRAPPER}} .ea-woo-checkout .steps-buttons button:hover,
-                {{WRAPPER}} .ea-woo-checkout .steps-buttons button#ea_place_order:hover' => 'background-color: {{VALUE}};',
+                {{WRAPPER}} .ea-woo-checkout .steps-buttons button#ea_place_order:hover' => 'background-color: {{VALUE}};background: {{VALUE}};',
             ],
         ]);
 
@@ -3108,7 +3111,7 @@ if ($btn_text) {
 	public function lr_handle_social_login() {
 		// verify security for social login
 		if ( ! empty( $_POST['eael-google-submit'] ) || ! empty( $_POST['eael-facebook-submit'] ) ) {
-			check_ajax_referer( 'eael-login-action', 'nonce' );
+			check_ajax_referer( 'essential-addons-elementor', 'nonce' );
 			if ( is_user_logged_in() ) {
 				wp_send_json_error( __( 'You are already logged in.', 'essential-addons-elementor' ) );
 			}

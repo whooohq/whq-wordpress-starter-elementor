@@ -23,6 +23,19 @@ class Google extends Base {
 		return __( 'Google Maps', 'jet-engine' );
 	}
 
+	public function map_api_deps() {
+		
+		$api_disabled = Module::instance()->settings->get( 'disable_api_file' );
+		$deps         = array();
+
+		if ( ! $api_disabled ) {
+			$deps[] = 'jet-engine-google-maps-api';
+		}
+
+		return $deps;
+
+	}
+
 	public function register_public_assets() {
 		
 		$api_disabled = Module::instance()->settings->get( 'disable_api_file' );
@@ -32,10 +45,13 @@ class Google extends Base {
 			wp_register_script(
 				'jet-engine-google-maps-api',
 				add_query_arg(
-					array( 'key' => Module::instance()->settings->get( 'api_key' ), ),
+					array(
+						'key'      => Module::instance()->settings->get( 'api_key' ),
+						'callback' => 'Function.prototype', // fixed js error: Loading the Google Maps JavaScript API without a callback is not supported
+					),
 					'https://maps.googleapis.com/maps/api/js'
 				),
-				false,
+				array(),
 				false,
 				true
 			);
@@ -45,7 +61,7 @@ class Google extends Base {
 		wp_register_script(
 			'jet-markerclustererplus',
 			jet_engine()->plugin_url( 'includes/modules/maps-listings/assets/lib/markerclustererplus/markerclustererplus.min.js' ),
-			array(),
+			$this->map_api_deps(),
 			jet_engine()->get_version(),
 			true
 		);
@@ -65,7 +81,7 @@ class Google extends Base {
 		wp_enqueue_script(
 			'jet-google-map-provider',
 			jet_engine()->plugin_url( 'includes/modules/maps-listings/assets/js/public/google-maps.js' ),
-			array(),
+			$this->map_api_deps(),
 			jet_engine()->get_version(),
 			true 
 		);
@@ -119,6 +135,9 @@ class Google extends Base {
 					'description' => __( 'Find a free map styles at <a href="https://snazzymaps.com/explore" target="_blank" rel="nofollow">Snazzy Maps</a>. Use plain code or link to the file with config.', 'jet-engine' ),
 					'has_html'    => true,
 					'label_block' => true,
+					'dynamic'     => array(
+						'active' => true,
+					),
 				),
 				'zoom_control' => array(
 					'separator'   => 'before',

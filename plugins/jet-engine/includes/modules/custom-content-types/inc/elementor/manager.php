@@ -13,7 +13,7 @@ class Manager {
 			$register_controls_action = 'elementor/controls/register';
 		}
 
-		add_action( 'jet-engine/elementor-views/dynamic-tags/register', array( $this, 'register_dynamic_tags' ) );
+		add_action( 'jet-engine/elementor-views/dynamic-tags/register', array( $this, 'register_dynamic_tags' ), 10, 2 );
 		add_action( $register_controls_action, array( $this, 'add_controls' ), 10 );
 		add_action( 'elementor/editor/before_enqueue_scripts', array( $this, 'editor_scripts' ), 0 );
 		add_action( 'jet-engine/listing/custom-query-settings', array( $this, 'register_query_settings' ) );
@@ -59,15 +59,15 @@ class Manager {
 
 	}
 
-	public function register_dynamic_tags( $tags_module ) {
+	public function register_dynamic_tags( $dynamic_tags, $tags_module ) {
 
 		require_once Module::instance()->module_path( 'elementor/dynamic-tags/field-tag.php' );
 		require_once Module::instance()->module_path( 'elementor/dynamic-tags/image-tag.php' );
 		require_once Module::instance()->module_path( 'elementor/dynamic-tags/gallery-tag.php' );
 
-		$tags_module->register_tag( new Dynamic_Tags\Field_Tag() );
-		$tags_module->register_tag( new Dynamic_Tags\Image_Tag() );
-		$tags_module->register_tag( new Dynamic_Tags\Gallery_Tag() );
+		$tags_module->register_tag( $dynamic_tags, new Dynamic_Tags\Field_Tag() );
+		$tags_module->register_tag( $dynamic_tags, new Dynamic_Tags\Image_Tag() );
+		$tags_module->register_tag( $dynamic_tags, new Dynamic_Tags\Gallery_Tag() );
 
 	}
 

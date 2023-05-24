@@ -227,7 +227,7 @@ class Jet_Elements_Pie_Chart extends Jet_Elements_Base {
 				'label'       => esc_html__( 'Cutout Percentage', 'jet-elements' ),
 				'description' => esc_html__( 'The percentage of the chart that is cut out of the middle.', 'jet-elements' ),
 				'type'        => Controls_Manager::SLIDER,
-				'size_units'  => array( '%' ),
+				'size_units'  => array( '%', 'custom' ),
 				'range' => array(
 					'%' => array(
 						'min' => 0,
@@ -254,7 +254,7 @@ class Jet_Elements_Pie_Chart extends Jet_Elements_Base {
 			array(
 				'label'       => esc_html__( 'Duration', 'jet-elements' ),
 				'type'        => Controls_Manager::SLIDER,
-				'size_units'  => array( 'ms' ),
+				'size_units'  => array( 'ms', 'custom' ),
 				'range' => array(
 					'ms' => array(
 						'min' => 100,
@@ -493,7 +493,7 @@ class Jet_Elements_Pie_Chart extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['title'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -506,7 +506,7 @@ class Jet_Elements_Pie_Chart extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['title'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),

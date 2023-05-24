@@ -28,19 +28,22 @@ const {
 	Path,
 	Circle,
 	Rect,
-	SVG,
-	ServerSideRender
+	SVG
 } = wp.components;
 
-if ( -1 !== window.JetEngineListingData.activeModules.indexOf( 'booking-forms' ) ) {
-	const GIcon = <SVG xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none"><Rect fill="white" x="1" y="5" width="44" height="53" rx="3" stroke="#162B40" strokeWidth="2"></Rect><Path d="M7 49C7 47.3431 8.34315 46 10 46H21C22.6569 46 24 47.3431 24 49C24 50.6569 22.6569 52 21 52H10C8.34315 52 7 50.6569 7 49Z" fill="#4AF3BA" stroke="#162B40" strokeWidth="2"></Path><Rect fill="white" x="7" y="33" width="32" height="6" rx="1" stroke="#162B40" strokeWidth="2"></Rect><Rect fill="white" x="7" y="23" width="32" height="6" rx="1" stroke="#162B40" strokeWidth="2"></Rect><Rect fill="white" x="6.5" y="14.5" width="18" height="1" rx="0.5" stroke="#162B40"></Rect><Rect fill="white" x="6.5" y="10.5" width="33" height="1" rx="0.5" stroke="#162B40"></Rect></SVG>;
+const {
+	serverSideRender: ServerSideRender
+} = wp;
 
+if ( -1 !== window.JetEngineListingData.activeModules.indexOf( 'booking-forms' ) ) {
+	const GIcon = <SVG width="20" height="24" viewBox="0 0 46 55" fill="none" xmlns="http://www.w3.org/2000/svg"><Path fillRule="evenodd" clipRule="evenodd" d="M10 41C7.79086 41 6 42.7909 6 45C6 47.2091 7.79086 49 10 49H21C23.2091 49 25 47.2091 25 45C25 42.7909 23.2091 41 21 41H10ZM21 43H10C8.89543 43 8 43.8954 8 45C8 46.1046 8.89543 47 10 47H21C22.1046 47 23 46.1046 23 45C23 43.8954 22.1046 43 21 43Z" fill="currentColor"/><Path fillRule="evenodd" clipRule="evenodd" d="M6 30C6 28.8954 6.89543 28 8 28H38C39.1046 28 40 28.8954 40 30V34C40 35.1046 39.1046 36 38 36H8C6.89543 36 6 35.1046 6 34V30ZM8 30H38V34H8V30Z" fill="currentColor"/><Path fillRule="evenodd" clipRule="evenodd" d="M8 18C6.89543 18 6 18.8954 6 20V24C6 25.1046 6.89543 26 8 26H38C39.1046 26 40 25.1046 40 24V20C40 18.8954 39.1046 18 38 18H8ZM38 20H8V24H38V20Z" fill="currentColor"/><Path d="M6 11C6 10.4477 6.44772 10 7 10H24C24.5523 10 25 10.4477 25 11C25 11.5523 24.5523 12 24 12H7C6.44771 12 6 11.5523 6 11Z" fill="currentColor"/><Path fillRule="evenodd" clipRule="evenodd" d="M4 0C1.79086 0 0 1.79086 0 4V51C0 53.2091 1.79086 55 4 55H42C44.2091 55 46 53.2091 46 51V4C46 1.79086 44.2091 0 42 0H4ZM42 2H4C2.89543 2 2 2.89543 2 4V51C2 52.1046 2.89543 53 4 53H42C43.1046 53 44 52.1046 44 51V4C44 2.89543 43.1046 2 42 2Z" fill="currentColor"/></SVG>;
+	
 	const blockAttributes = window.JetEngineListingData.atts.bookingForm;
 
 	registerBlockType( 'jet-engine/booking-form', {
 		title: __( 'Form' ),
 		icon: GIcon,
-		category: 'layout',
+		category: 'jet-engine',
 		attributes: blockAttributes,
 		className: 'jet-form',
 		edit: class extends wp.element.Component {
@@ -141,7 +144,7 @@ if ( -1 !== window.JetEngineListingData.activeModules.indexOf( 'booking-forms' )
 							</PanelBody>
 						</InspectorControls>
 					),
-					<Disabled>
+					<Disabled key={ 'block_render' }>
 						<ServerSideRender
 							block="jet-engine/booking-form"
 							attributes={ attributes }

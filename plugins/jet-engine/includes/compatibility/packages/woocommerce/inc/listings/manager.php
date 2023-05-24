@@ -134,7 +134,7 @@ class Manager {
 		);
 
 		add_filter(
-			'jet-engine/elementor-view/dynamic-link/generel-options',
+			'jet-engine/listings/dynamic-link/woocommerce-options',
 			[ $this, 'register_dynamic_link_option' ]
 		);
 
@@ -143,6 +143,21 @@ class Manager {
 			[ $this, 'maybe_render_links' ],
 			10, 4
 		);
+
+	}
+
+	/**
+	 * Initialize additional listings files.
+	 */
+	public function init() {
+
+		require_once Package::instance()->package_path( 'listings/blocks-views/integration.php' );
+		require_once Package::instance()->package_path( 'listings/elementor-views/integration.php' );
+		require_once Package::instance()->package_path( 'listings/query.php' );
+
+		new Blocks_Views\Integration();
+		new Elementor_Views\Integration();
+		new Query();
 
 	}
 
@@ -198,6 +213,10 @@ class Manager {
 	 *
 	 * Returns dynamic link with WooCommerce add to cart functionality.
 	 *
+	 * @since  3.0.2
+	 * @since  3.0.8 Added product quantity input.
+	 * @access public
+	 *
 	 * @param string $result     Dynamic link markup.
 	 * @param array  $settings   List of widget settings.
 	 * @param string $base_class Widget name.
@@ -209,22 +228,28 @@ class Manager {
 
 		global $product;
 
-		if ( ! $product ) {
+		if ( is_null( $product ) ) {
+			$product = jet_engine()->listings->data->get_current_object();
+		}
+
+		if ( ! $product || ! is_a( $product, 'WC_Product' ) ) {
 			return $result;
 		}
 
 		$url   = esc_url( $product->add_to_cart_url() );
 		$label = $render->get_link_label( $settings, $base_class, $url );
-		$icon  = $render->get_link_icon( $settings, $base_class );
-
-		$args = [
-			'quantity'   => 1,
+		$icon  = $product->is_type( 'simple' ) ? $render->get_link_icon( $settings, $base_class ) : '';
+		$args  = [
+			'quantity'   => $settings['dynamic_link_add_to_cart_quantity'] ?? $product->get_min_purchase_quantity(),
 			'class'      => implode(
 				' ',
 				array_filter(
 					[
 						'button',
+						wc_wp_theme_get_element_class_name( 'button' ),
+						'jet-listing-dynamic-link__link',
 						'product_type_' . $product->get_type(),
+						'jet-woo-add-to-cart',
 						$product->is_purchasable() && $product->is_in_stock() ? 'add_to_cart_button' : '',
 						$product->supports( 'ajax_add_to_cart' ) && $product->is_purchasable() && $product->is_in_stock() ? 'ajax_add_to_cart' : '',
 					]
@@ -234,28 +259,31 @@ class Manager {
 				'data-product_id'  => $product->get_id(),
 				'data-product_sku' => $product->get_sku(),
 				'aria-label'       => $product->add_to_cart_description(),
-				'rel'              => 'nofollow',
 			],
 		];
 
-		$args = apply_filters( 'jet-engine/listing/data/dynamic-link/add-to-cart-args', $args, $product );
+		$args             = apply_filters( 'jet-engine/listing/data/dynamic-link/add-to-cart-args', $args, $product );
+		$enable_qty_input = isset( $settings['dynamic_link_enable_quantity_input'] ) ? filter_var( $settings['dynamic_link_enable_quantity_input'], FILTER_VALIDATE_BOOLEAN ) : false;
 
-		$rendered_attributes = [];
-
-		foreach ( $args['attributes'] as $attribute_key => $attribute_values ) {
-			if ( is_array( $attribute_values ) ) {
-				$attribute_values = implode( ' ', $attribute_values );
-			}
-
-			$rendered_attributes[] = sprintf( '%1$s="%2$s"', $attribute_key, esc_attr( $attribute_values ) );
+		if ( $enable_qty_input && $product->is_type( 'simple' ) && $product->is_purchasable() && $product->is_in_stock() && ! $product->is_sold_individually() ) {
+			$format = '<form action="%1$s" class="cart" method="post" enctype="multipart/form-data">';
+			$format .= woocommerce_quantity_input( [
+				'min_value'   => apply_filters( 'woocommerce_quantity_input_min', $product->get_min_purchase_quantity(), $product ),
+				'max_value'   => apply_filters( 'woocommerce_quantity_input_max', $product->get_max_purchase_quantity(), $product ),
+				'input_value' => '%2$s',
+			], $product, false );
+			$format .= '<button type="submit" data-quantity="%2$s" class="%3$s alt" %4$s >%5$s %6$s</button>';
+			$format .= '</form>';
+		} else {
+			$format = '<a href="%s" data-quantity="%s" class="%s" %s rel="nofollow">%s %s</a>';
 		}
 
 		$result = sprintf(
-			'<a href="%s" data-quantity="%s" class="jet-add-to-cart jet-listing-dynamic-link__link %s"  style="display: inline-flex;" %s>%s %s</a>',
+			$format,
 			$url,
-			esc_attr( isset( $args['quantity'] ) ? $args['quantity'] : 1 ),
-			esc_attr( isset( $args['class'] ) ? $args['class'] : 'button' ),
-			implode( ' ', $rendered_attributes ),
+			esc_attr( $args['quantity'] ?? $product->get_min_purchase_quantity() ),
+			esc_attr( $args['class'] ?? 'button' ),
+			isset( $args['attributes'] ) ? wc_implode_html_attributes( $args['attributes'] ) : '',
 			$icon,
 			$label
 		);
@@ -335,14 +363,6 @@ class Manager {
 
 		}
 
-	}
-
-	/**
-	 * Initialize additional listings files.
-	 */
-	public function init() {
-		require_once Package::instance()->package_path( 'listings/query.php' );
-		new Query();
 	}
 
 	/**
@@ -456,9 +476,15 @@ class Manager {
 	}
 
 	/**
-	 * Add source fields into the dynamic link widget
+	 * Add link source fields.
 	 *
-	 * @param $groups
+	 * Returns extended dynamic links source fields list.
+	 *
+	 * @since  3.0.2
+	 * @since  3.0.8 Added `jet-engine/listings/dynamic-link/woocommerce-options` to extent WooCommerce group.
+	 * @access public
+	 *
+	 * @param array $groups Source fields groups list.
 	 *
 	 * @return mixed
 	 */
@@ -466,9 +492,9 @@ class Manager {
 
 		$groups[] = [
 			'label'   => __( 'WooCommerce', 'jet-engine' ),
-			'options' => [
+			'options' => apply_filters( 'jet-engine/listings/dynamic-link/woocommerce-options', [
 				'get_permalink' => __( 'Permalink', 'jet-engine' ),
-			],
+			] ),
 		];
 
 		return $groups;

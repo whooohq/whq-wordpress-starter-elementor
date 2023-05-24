@@ -1,4 +1,4 @@
-/*! elementor - v3.8.1 - 13-11-2022 */
+/*! elementor - v3.13.3 - 22-05-2023 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -31,7 +31,7 @@ module.exports = elementorModules.ViewModule.extend({
   },
   getDefaultElements: function getDefaultElements() {
     var elements = {},
-        selectors = this.getSettings('selectors');
+      selectors = this.getSettings('selectors');
     elements.$modeSelect = jQuery(selectors.modeSelect);
     elements.$maintenanceModeTable = elements.$modeSelect.parents(selectors.maintenanceModeTable);
     elements.$excludeModeSelect = elements.$maintenanceModeTable.find(selectors.excludeModeSelect);
@@ -44,7 +44,7 @@ module.exports = elementorModules.ViewModule.extend({
   },
   handleModeSelectChange: function handleModeSelectChange() {
     var settings = this.getSettings(),
-        elements = this.elements;
+      elements = this.elements;
     elements.$maintenanceModeTable.toggleClass(settings.classes.isEnabled, !!elements.$modeSelect.val());
     elements.$maintenanceModeDescriptions.hide();
     elements.$maintenanceModeDescriptions.filter('[data-value="' + elements.$modeSelect.val() + '"]').show();
@@ -56,13 +56,11 @@ module.exports = elementorModules.ViewModule.extend({
   handleTemplateSelectChange: function handleTemplateSelectChange() {
     var elements = this.elements;
     var templateID = elements.$templateSelect.val();
-
     if (!templateID) {
       elements.$editTemplateButton.hide();
       elements.$maintenanceModeError.show();
       return;
     }
-
     var editUrl = elementorAdmin.config.home_url + '?p=' + templateID + '&elementor';
     elements.$editTemplateButton.prop('href', editUrl).show();
     elements.$maintenanceModeError.hide();
@@ -96,38 +94,25 @@ module.exports = elementorModules.ViewModule.extend({
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
-
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
 var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
 var _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/get */ "../node_modules/@babel/runtime/helpers/get.js"));
-
 var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
-
 var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
-
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
-
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
 var MenuHandler = /*#__PURE__*/function (_elementorModules$Vie) {
   (0, _inherits2.default)(MenuHandler, _elementorModules$Vie);
-
   var _super = _createSuper(MenuHandler);
-
   function MenuHandler() {
     (0, _classCallCheck2.default)(this, MenuHandler);
     return _super.apply(this, arguments);
   }
-
   (0, _createClass2.default)(MenuHandler, [{
     key: "getDefaultSettings",
     value: function getDefaultSettings() {
@@ -145,22 +130,22 @@ var MenuHandler = /*#__PURE__*/function (_elementorModules$Vie) {
         $currentSubmenuItems: jQuery(settings.selectors.currentSubmenuItems),
         $adminPageMenuLink: jQuery("a[href=\"".concat(settings.path, "\"]"))
       };
-    } // This method highlights the currently visited submenu item for the slug provided as an argument to this handler.
+    }
+
+    // This method highlights the currently visited submenu item for the slug provided as an argument to this handler.
     // This method also accepts a jQuery instance of a custom submenu item to highlight. If provided, the provided
     // item will be the one highlighted.
-
   }, {
     key: "highlightSubMenuItem",
     value: function highlightSubMenuItem() {
       var $element = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
       var $submenuItem = $element || this.elements.$adminPageMenuLink;
-
       if (this.elements.$currentSubmenuItems.length) {
         this.elements.$currentSubmenuItems.removeClass('current');
       }
+      $submenuItem.addClass('current');
 
-      $submenuItem.addClass('current'); // Need to add the 'current' class to the link element's parent `<li>` element as well.
-
+      // Need to add the 'current' class to the link element's parent `<li>` element as well.
       $submenuItem.parent().addClass('current');
     }
   }, {
@@ -169,7 +154,6 @@ var MenuHandler = /*#__PURE__*/function (_elementorModules$Vie) {
       var $elementToRemove = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
       var activeClasses = 'wp-has-current-submenu wp-menu-open current';
       $elementToHighlight.parent().addClass(activeClasses).removeClass('wp-not-current-submenu');
-
       if ($elementToRemove) {
         $elementToRemove.removeClass(activeClasses);
       }
@@ -179,7 +163,6 @@ var MenuHandler = /*#__PURE__*/function (_elementorModules$Vie) {
     value: function onInit() {
       (0, _get2.default)((0, _getPrototypeOf2.default)(MenuHandler.prototype), "onInit", this).call(this);
       var settings = this.getSettings();
-
       if (window.location.href.includes(settings.path)) {
         this.highlightSubMenuItem();
       }
@@ -187,7 +170,6 @@ var MenuHandler = /*#__PURE__*/function (_elementorModules$Vie) {
   }]);
   return MenuHandler;
 }(elementorModules.ViewModule);
-
 exports["default"] = MenuHandler;
 
 /***/ }),
@@ -202,37 +184,28 @@ exports["default"] = MenuHandler;
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
-
 var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
-
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
 var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
 var TemplateControls = /*#__PURE__*/function () {
   function TemplateControls() {
     (0, _classCallCheck2.default)(this, TemplateControls);
   }
-
   (0, _createClass2.default)(TemplateControls, [{
     key: "setDynamicControlsVisibility",
     value: function setDynamicControlsVisibility(lookupControlIdPrefix, controls) {
       if (undefined === controls) {
         return;
       }
-
       var controlsArray = Object.entries(controls);
-
       for (var _i = 0, _controlsArray = controlsArray; _i < _controlsArray.length; _i++) {
         var _controlsArray$_i = (0, _slicedToArray2.default)(_controlsArray[_i], 2),
-            controlId = _controlsArray$_i[0],
-            controlSettings = _controlsArray$_i[1];
-
+          controlId = _controlsArray$_i[0],
+          controlSettings = _controlsArray$_i[1];
         this.setVisibilityForControl(lookupControlIdPrefix, controlSettings, controlId);
       }
     }
@@ -240,8 +213,7 @@ var TemplateControls = /*#__PURE__*/function () {
     key: "setVisibilityForControl",
     value: function setVisibilityForControl(lookupControlIdPrefix, controlSettings, controlId) {
       var _controlSettings$cond,
-          _this = this;
-
+        _this = this;
       var conditions = Object.entries((_controlSettings$cond = controlSettings.conditions) !== null && _controlSettings$cond !== void 0 ? _controlSettings$cond : {});
       conditions.forEach(function (condition) {
         _this.changeVisibilityBasedOnCondition(lookupControlIdPrefix, condition, controlId);
@@ -251,9 +223,8 @@ var TemplateControls = /*#__PURE__*/function () {
     key: "changeVisibilityBasedOnCondition",
     value: function changeVisibilityBasedOnCondition(lookupControlIdPrefix, condition, controlId) {
       var _condition = (0, _slicedToArray2.default)(condition, 2),
-          conditionKey = _condition[0],
-          conditionValue = _condition[1];
-
+        conditionKey = _condition[0],
+        conditionValue = _condition[1];
       var targetControlWrapper = document.getElementById(lookupControlIdPrefix + controlId + '__wrapper');
       var lookupControl = document.getElementById(lookupControlIdPrefix + conditionKey);
       targetControlWrapper.classList.toggle('elementor-hidden', !lookupControl || conditionValue !== lookupControl.value);
@@ -261,7 +232,6 @@ var TemplateControls = /*#__PURE__*/function () {
   }]);
   return TemplateControls;
 }();
-
 exports["default"] = TemplateControls;
 
 /***/ }),
@@ -277,30 +247,23 @@ exports["default"] = TemplateControls;
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
-
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
 var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
 var FilesUploadHandler = /*#__PURE__*/function () {
   function FilesUploadHandler() {
     (0, _classCallCheck2.default)(this, FilesUploadHandler);
   }
-
   (0, _createClass2.default)(FilesUploadHandler, null, [{
     key: "isUploadEnabled",
     value: function isUploadEnabled(mediaType) {
       var unfilteredFilesTypes = ['svg', 'application/json'];
-
       if (!unfilteredFilesTypes.includes(mediaType)) {
         return true;
       }
-
       return elementorCommon.config.filesUpload.unfilteredFiles;
     }
   }, {
@@ -316,7 +279,6 @@ var FilesUploadHandler = /*#__PURE__*/function () {
         elementorCommon.config.filesUpload.unfilteredFiles = true;
         callback();
       };
-
       return elementor.helpers.getSimpleDialog('e-enable-unfiltered-files-dialog', __('Enable Unfiltered File Uploads', 'elementor'), __('Before you enable unfiltered files upload, note that such files include a security risk. Elementor does run a process to remove possible malicious code, but there is still risk involved when using such files.', 'elementor'), __('Enable', 'elementor'), onConfirm);
     }
   }, {
@@ -351,7 +313,6 @@ var FilesUploadHandler = /*#__PURE__*/function () {
   }]);
   return FilesUploadHandler;
 }();
-
 exports["default"] = FilesUploadHandler;
 
 /***/ }),
@@ -366,21 +327,16 @@ exports["default"] = FilesUploadHandler;
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = exports.Events = void 0;
-
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
 var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
 var Events = /*#__PURE__*/function () {
   function Events() {
     (0, _classCallCheck2.default)(this, Events);
   }
-
   (0, _createClass2.default)(Events, null, [{
     key: "dispatch",
     value:
@@ -401,16 +357,17 @@ var Events = /*#__PURE__*/function () {
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
       var bcEvent = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
       // Make sure to use the native context if it's a jQuery instance.
-      context = context instanceof jQuery ? context[0] : context; // Dispatch the BC event only if exists.
+      context = context instanceof jQuery ? context[0] : context;
 
+      // Dispatch the BC event only if exists.
       if (bcEvent) {
         context.dispatchEvent(new CustomEvent(bcEvent, {
           detail: data
         }));
-      } // jQuery's `.on()` listens also to native custom events, so there is no need
+      }
+
+      // jQuery's `.on()` listens also to native custom events, so there is no need
       // to dispatch also a jQuery event.
-
-
       context.dispatchEvent(new CustomEvent(event, {
         detail: data
       }));
@@ -418,7 +375,6 @@ var Events = /*#__PURE__*/function () {
   }]);
   return Events;
 }();
-
 exports.Events = Events;
 var _default = Events;
 exports["default"] = _default;
@@ -438,54 +394,53 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
-
 var matchUserAgent = function matchUserAgent(UserAgentStr) {
-  return userAgent.indexOf(UserAgentStr) >= 0;
-},
-    userAgent = navigator.userAgent,
-    // Solution influenced by https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
-// Opera 8.0+
-isOpera = !!window.opr && !!opr.addons || !!window.opera || matchUserAgent(' OPR/'),
-    // Firefox 1.0+
-isFirefox = matchUserAgent('Firefox'),
-    // Safari 3.0+ "[object HTMLElementConstructor]"
-isSafari = /^((?!chrome|android).)*safari/i.test(userAgent) || /constructor/i.test(window.HTMLElement) || function (p) {
-  return '[object SafariRemoteNotification]' === p.toString();
-}(!window.safari || typeof safari !== 'undefined' && safari.pushNotification),
-    // Internet Explorer 6-11
-isIE = /Trident|MSIE/.test(userAgent) && (
-/* @cc_on!@*/
- false || !!document.documentMode),
-    // Edge 20+
-isEdge = !isIE && !!window.StyleMedia || matchUserAgent('Edg'),
-    // Google Chrome (Not accurate)
-isChrome = !!window.chrome && matchUserAgent('Chrome') && !(isEdge || isOpera),
-    // Blink engine
-isBlink = matchUserAgent('Chrome') && !!window.CSS,
-    // Apple Webkit engine
-isAppleWebkit = matchUserAgent('AppleWebKit') && !isBlink,
-    environment = {
-  appleWebkit: isAppleWebkit,
-  blink: isBlink,
-  chrome: isChrome,
-  edge: isEdge,
-  firefox: isFirefox,
-  ie: isIE,
-  mac: matchUserAgent('Macintosh'),
-  opera: isOpera,
-  safari: isSafari,
-  webkit: matchUserAgent('AppleWebKit')
-};
+    return userAgent.indexOf(UserAgentStr) >= 0;
+  },
+  userAgent = navigator.userAgent,
+  // Solution influenced by https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
 
+  // Opera 8.0+
+  isOpera = !!window.opr && !!opr.addons || !!window.opera || matchUserAgent(' OPR/'),
+  // Firefox 1.0+
+  isFirefox = matchUserAgent('Firefox'),
+  // Safari 3.0+ "[object HTMLElementConstructor]"
+  isSafari = /^((?!chrome|android).)*safari/i.test(userAgent) || /constructor/i.test(window.HTMLElement) || function (p) {
+    return '[object SafariRemoteNotification]' === p.toString();
+  }(!window.safari || typeof safari !== 'undefined' && safari.pushNotification),
+  // Internet Explorer 6-11
+  isIE = /Trident|MSIE/.test(userAgent) && ( /* @cc_on!@*/ false || !!document.documentMode),
+  // Edge 20+
+  isEdge = !isIE && !!window.StyleMedia || matchUserAgent('Edg'),
+  // Google Chrome (Not accurate)
+  isChrome = !!window.chrome && matchUserAgent('Chrome') && !(isEdge || isOpera),
+  // Blink engine
+  isBlink = matchUserAgent('Chrome') && !!window.CSS,
+  // Apple Webkit engine
+  isAppleWebkit = matchUserAgent('AppleWebKit') && !isBlink,
+  isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0,
+  environment = {
+    isTouchDevice: isTouchDevice,
+    appleWebkit: isAppleWebkit,
+    blink: isBlink,
+    chrome: isChrome,
+    edge: isEdge,
+    firefox: isFirefox,
+    ie: isIE,
+    mac: matchUserAgent('Macintosh'),
+    opera: isOpera,
+    safari: isSafari,
+    webkit: matchUserAgent('AppleWebKit')
+  };
 var _default = environment;
 exports["default"] = _default;
 
 /***/ }),
 
-/***/ "../core/experiments/assets/js/admin/behaviors/experiments-dependency.js":
-/*!*******************************************************************************!*\
-  !*** ../core/experiments/assets/js/admin/behaviors/experiments-dependency.js ***!
-  \*******************************************************************************/
+/***/ "../core/experiments/assets/js/admin/behaviors/experiments-messages.js":
+/*!*****************************************************************************!*\
+  !*** ../core/experiments/assets/js/admin/behaviors/experiments-messages.js ***!
+  \*****************************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -493,50 +448,39 @@ exports["default"] = _default;
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
-
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "../node_modules/@babel/runtime/helpers/toConsumableArray.js"));
-
 var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
-
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
 var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
-
 var STATE_ACTIVE = 'active';
 var STATE_INACTIVE = 'inactive';
 var STATE_DEFAULT = 'default';
-
-var ExperimentsDependency = /*#__PURE__*/function () {
-  function ExperimentsDependency(_ref) {
+var ExperimentsMessages = /*#__PURE__*/function () {
+  function ExperimentsMessages(_ref) {
     var selects = _ref.selects,
-        submit = _ref.submit;
-    (0, _classCallCheck2.default)(this, ExperimentsDependency);
+      submit = _ref.submit;
+    (0, _classCallCheck2.default)(this, ExperimentsMessages);
     (0, _defineProperty2.default)(this, "elements", {});
     this.elements = {
       /**
        * @type {HTMLSelectElement[]}
        */
       selects: selects,
-
       /**
        * @type {HTMLInputElement}
        */
       submit: submit
     };
   }
-
-  (0, _createClass2.default)(ExperimentsDependency, [{
+  (0, _createClass2.default)(ExperimentsMessages, [{
     key: "bindEvents",
     value: function bindEvents() {
       var _this = this;
-
       this.elements.selects.forEach(function (select) {
         select.addEventListener('change', function (e) {
           return _this.onExperimentStateChange(e);
@@ -547,20 +491,20 @@ var ExperimentsDependency = /*#__PURE__*/function () {
     key: "onExperimentStateChange",
     value: function onExperimentStateChange(e) {
       var experimentId = e.currentTarget.dataset.experimentId,
-          experimentNewState = this.getExperimentActualState(experimentId);
-
+        experimentNewState = this.getExperimentActualState(experimentId);
       switch (experimentNewState) {
         case STATE_ACTIVE:
           if (this.shouldShowDependenciesDialog(experimentId)) {
             this.showDependenciesDialog(experimentId);
           }
-
           break;
-
         case STATE_INACTIVE:
-          this.deactivateDependantExperiments(experimentId);
+          if (this.shouldShowDeactivationDialog(experimentId)) {
+            this.showDeactivationDialog(experimentId);
+          } else {
+            this.deactivateDependantExperiments(experimentId);
+          }
           break;
-
         default:
           break;
       }
@@ -574,7 +518,6 @@ var ExperimentsDependency = /*#__PURE__*/function () {
     key: "getExperimentDependencies",
     value: function getExperimentDependencies(experimentId) {
       var _this2 = this;
-
       return this.getExperimentData(experimentId).dependencies.map(function (dependencyId) {
         return _this2.getExperimentData(dependencyId);
       });
@@ -594,13 +537,16 @@ var ExperimentsDependency = /*#__PURE__*/function () {
   }, {
     key: "getExperimentActualState",
     value: function getExperimentActualState(experimentId) {
-      var state = this.getExperimentSelect(experimentId).value;
-
+      var _this$getExperimentSe;
+      var state = (_this$getExperimentSe = this.getExperimentSelect(experimentId)) === null || _this$getExperimentSe === void 0 ? void 0 : _this$getExperimentSe.value;
+      if (!state) {
+        return this.getExperimentData(experimentId).state;
+      }
       if (state !== STATE_DEFAULT) {
         return state;
-      } // Normalize the "default" state to the actual state value.
+      }
 
-
+      // Normalize the "default" state to the actual state value.
       return this.isExperimentActiveByDefault(experimentId) ? STATE_ACTIVE : STATE_INACTIVE;
     }
   }, {
@@ -617,7 +563,6 @@ var ExperimentsDependency = /*#__PURE__*/function () {
     key: "areAllDependenciesActive",
     value: function areAllDependenciesActive(dependencies) {
       var _this3 = this;
-
       return dependencies.every(function (dependency) {
         return _this3.isExperimentActive(dependency.name);
       });
@@ -626,15 +571,13 @@ var ExperimentsDependency = /*#__PURE__*/function () {
     key: "deactivateDependantExperiments",
     value: function deactivateDependantExperiments(experimentId) {
       var _this4 = this;
-
       Object.entries(elementorAdminConfig.experiments).forEach(function (_ref2) {
         var _ref3 = (0, _slicedToArray2.default)(_ref2, 2),
-            id = _ref3[0],
-            experimentData = _ref3[1];
-
-        var isDependant = experimentData.dependencies.includes(experimentId);
-
-        if (isDependant) {
+          id = _ref3[0],
+          experimentData = _ref3[1];
+        var isDependant = experimentData.dependencies.includes(experimentId),
+          isActive = _this4.getExperimentActualState(id) === STATE_ACTIVE;
+        if (isDependant && isActive) {
           _this4.setExperimentState(id, STATE_INACTIVE);
         }
       });
@@ -646,73 +589,116 @@ var ExperimentsDependency = /*#__PURE__*/function () {
       return !this.areAllDependenciesActive(dependencies);
     }
   }, {
-    key: "showDependenciesDialog",
-    value: function showDependenciesDialog(experimentId) {
-      var _this5 = this;
-
-      var experiment = this.getExperimentData(experimentId),
-          dependencies = this.getExperimentDependencies(experimentId);
-      var dependenciesList = this.joinDepenednciesNames(dependencies.map(function (d) {
-        return d.title;
-      }), ', ', ' & '); // Translators: %1$s: Experiment title, %2$s: Experiment dependencies list
-
-      var message = __('In order to use %1$s, first you need to activate %2$s.', 'elementor').replace('%1$s', "<strong>".concat(experiment.title, "</strong>")).replace('%2$s', "<strong>".concat(dependenciesList, "</strong>"));
-
-      elementorCommon.dialogsManager.createWidget('confirm', {
-        id: 'e-experiments-dependency-dialog',
-        headerMessage: __('First, activate another experiment.', 'elementor'),
-        message: message,
+    key: "shouldShowDeactivationDialog",
+    value: function shouldShowDeactivationDialog(experimentId) {
+      var getExperimentData = this.getExperimentData(experimentId),
+        isInitialStateActive = getExperimentData.state === STATE_ACTIVE || getExperimentData.state === STATE_DEFAULT && getExperimentData.default === STATE_ACTIVE,
+        hasMessage = !!this.getMessage(experimentId, 'on_deactivate');
+      return hasMessage && isInitialStateActive;
+    }
+  }, {
+    key: "showDialog",
+    value: function showDialog(dialog) {
+      return elementorCommon.dialogsManager.createWidget('confirm', {
+        id: 'e-experiments-messages-dialog',
+        headerMessage: dialog.headerMessage,
+        message: dialog.message,
         position: {
           my: 'center center',
           at: 'center center'
         },
         strings: {
-          confirm: __('Activate', 'elementor'),
-          cancel: __('Cancel', 'elementor')
+          confirm: dialog.strings.confirm,
+          cancel: dialog.strings.cancel
         },
         hide: {
           onOutsideClick: false,
           onBackgroundClick: false,
           onEscKeyPress: false
         },
+        onConfirm: dialog.onConfirm,
+        onCancel: dialog.onCancel
+      }).show();
+    }
+  }, {
+    key: "joinDependenciesNames",
+    value: function joinDependenciesNames(array) {
+      var glue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+      var finalGlue = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+      if ('' === finalGlue) {
+        return array.join(glue);
+      }
+      if (!array.length) {
+        return '';
+      }
+      if (1 === array.length) {
+        return array[0];
+      }
+      var clone = (0, _toConsumableArray2.default)(array),
+        lastItem = clone.pop();
+      return clone.join(glue) + finalGlue + lastItem;
+    }
+  }, {
+    key: "showDependenciesDialog",
+    value: function showDependenciesDialog(experimentId) {
+      var _this5 = this;
+      var experiment = this.getExperimentData(experimentId),
+        experimentName = experiment.title,
+        dialogMessage = this.joinDependenciesNames(this.getExperimentDependencies(experimentId).map(function (d) {
+          return d.title;
+        }));
+
+      // Translators: %1$s: Experiment title, %2$s: Comma-separated dependencies list
+      var message = __('In order to use %1$s, first you need to activate %2$s.', 'elementor').replace('%1$s', "<strong>".concat(experimentName, "</strong>")).replace('%2$s', dialogMessage);
+      this.showDialog({
+        message: message,
+        headerMessage: __('First, activate another experiment.', 'elementor'),
+        strings: {
+          confirm: __('Activate', 'elementor'),
+          cancel: __('Cancel', 'elementor')
+        },
         onConfirm: function onConfirm() {
-          dependencies.forEach(function (dependency) {
+          _this5.getExperimentDependencies(experimentId).forEach(function (dependency) {
             _this5.setExperimentState(dependency.name, STATE_ACTIVE);
           });
-
           _this5.elements.submit.click();
         },
         onCancel: function onCancel() {
           _this5.setExperimentState(experimentId, STATE_INACTIVE);
         }
-      }).show();
+      });
     }
   }, {
-    key: "joinDepenednciesNames",
-    value: function joinDepenednciesNames(array, glue) {
-      var finalGlue = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
-
-      if ('' === finalGlue) {
-        return array.join(glue);
-      }
-
-      if (!array.length) {
-        return '';
-      }
-
-      if (1 === array.length) {
-        return array[0];
-      }
-
-      var clone = (0, _toConsumableArray2.default)(array),
-          lastItem = clone.pop();
-      return clone.join(glue) + finalGlue + lastItem;
+    key: "showDeactivationDialog",
+    value: function showDeactivationDialog(experimentId) {
+      var _this6 = this;
+      this.showDialog({
+        message: this.getMessage(experimentId, 'on_deactivate'),
+        headerMessage: __('Are you sure?', 'elementor'),
+        strings: {
+          confirm: __('Deactivate', 'elementor'),
+          cancel: __('Dismiss', 'elementor')
+        },
+        onConfirm: function onConfirm() {
+          _this6.setExperimentState(experimentId, STATE_INACTIVE);
+          _this6.deactivateDependantExperiments(experimentId);
+          _this6.elements.submit.click();
+        },
+        onCancel: function onCancel() {
+          _this6.setExperimentState(experimentId, STATE_ACTIVE);
+        }
+      });
+    }
+  }, {
+    key: "getMessage",
+    value: function getMessage(experimentId, messageId) {
+      var _this$getExperimentDa;
+      return (_this$getExperimentDa = this.getExperimentData(experimentId)) === null || _this$getExperimentDa === void 0 ? void 0 : _this$getExperimentDa.messages[messageId];
     }
   }]);
-  return ExperimentsDependency;
+  return ExperimentsMessages;
 }();
-
-exports["default"] = ExperimentsDependency;
+exports["default"] = ExperimentsMessages;
 
 /***/ }),
 
@@ -726,40 +712,26 @@ exports["default"] = ExperimentsDependency;
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
-
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
 var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
 var _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/get */ "../node_modules/@babel/runtime/helpers/get.js"));
-
 var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
-
 var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
-
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
-
-var _experimentsDependency = _interopRequireDefault(__webpack_require__(/*! ./behaviors/experiments-dependency */ "../core/experiments/assets/js/admin/behaviors/experiments-dependency.js"));
-
+var _experimentsMessages = _interopRequireDefault(__webpack_require__(/*! ./behaviors/experiments-messages */ "../core/experiments/assets/js/admin/behaviors/experiments-messages.js"));
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
-
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
 var ExperimentsModule = /*#__PURE__*/function (_elementorModules$Vie) {
   (0, _inherits2.default)(ExperimentsModule, _elementorModules$Vie);
-
   var _super = _createSuper(ExperimentsModule);
-
   function ExperimentsModule() {
     (0, _classCallCheck2.default)(this, ExperimentsModule);
     return _super.apply(this, arguments);
   }
-
   (0, _createClass2.default)(ExperimentsModule, [{
     key: "getDefaultSettings",
     value: function getDefaultSettings() {
@@ -776,8 +748,7 @@ var ExperimentsModule = /*#__PURE__*/function (_elementorModules$Vie) {
     key: "getDefaultElements",
     value: function getDefaultElements() {
       var _this$getSettings = this.getSettings(),
-          selectors = _this$getSettings.selectors;
-
+        selectors = _this$getSettings.selectors;
       return {
         $experimentIndicators: jQuery(selectors.experimentIndicators),
         $experimentForm: jQuery(selectors.experimentForm),
@@ -789,7 +760,6 @@ var ExperimentsModule = /*#__PURE__*/function (_elementorModules$Vie) {
     key: "bindEvents",
     value: function bindEvents() {
       var _this = this;
-
       this.elements.$experimentsButtons.on('click', function (event) {
         return _this.onExperimentsButtonsClick(event);
       });
@@ -816,7 +786,6 @@ var ExperimentsModule = /*#__PURE__*/function (_elementorModules$Vie) {
     key: "addIndicatorsTooltips",
     value: function addIndicatorsTooltips() {
       var _this2 = this;
-
       this.elements.$experimentIndicators.each(function (index, experimentIndicator) {
         return _this2.addTipsy(jQuery(experimentIndicator));
       });
@@ -825,18 +794,14 @@ var ExperimentsModule = /*#__PURE__*/function (_elementorModules$Vie) {
     key: "onInit",
     value: function onInit() {
       var _this3 = this;
-
       (0, _get2.default)((0, _getPrototypeOf2.default)(ExperimentsModule.prototype), "onInit", this).call(this);
-      this.experimentsDependency = new _experimentsDependency.default({
+      this.experimentsDependency = new _experimentsMessages.default({
         selects: this.elements.$experimentSelects.toArray(),
         submit: this.elements.$experimentForm.find('#submit').get(0)
       });
       this.experimentsDependency.bindEvents();
-
       if (this.elements.$experimentIndicators.length) {
-        import(
-        /* webpackIgnore: true */
-        "".concat(elementorCommon.config.urls.assets, "lib/tipsy/tipsy.min.js?ver=1.0.0")).then(function () {
+        import( /* webpackIgnore: true */"".concat(elementorCommon.config.urls.assets, "lib/tipsy/tipsy.min.js?ver=1.0.0")).then(function () {
           return _this3.addIndicatorsTooltips();
         });
       }
@@ -844,7 +809,6 @@ var ExperimentsModule = /*#__PURE__*/function (_elementorModules$Vie) {
   }]);
   return ExperimentsModule;
 }(elementorModules.ViewModule);
-
 exports["default"] = ExperimentsModule;
 
 /***/ }),
@@ -859,49 +823,35 @@ exports["default"] = ExperimentsModule;
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
-
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
 var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
 var _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/get */ "../node_modules/@babel/runtime/helpers/get.js"));
-
 var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
-
 var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
-
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
-
 var _menuHandler = _interopRequireDefault(__webpack_require__(/*! elementor-admin/menu-handler */ "../assets/dev/js/admin/menu-handler.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
-
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
 var LandingPagesHandler = /*#__PURE__*/function (_AdminMenuHandler) {
   (0, _inherits2.default)(LandingPagesHandler, _AdminMenuHandler);
-
   var _super = _createSuper(LandingPagesHandler);
-
   function LandingPagesHandler() {
     (0, _classCallCheck2.default)(this, LandingPagesHandler);
     return _super.apply(this, arguments);
   }
-
   (0, _createClass2.default)(LandingPagesHandler, [{
     key: "getDefaultSettings",
     value: function getDefaultSettings() {
       var pageName = 'e-landing-page',
-          adminMenuSelectors = {
-        // The escaping is done because jQuery requires it for selectors.
-        landingPagesTablePage: 'a[href="edit.php?post_type=' + pageName + '"]',
-        landingPagesAddNewPage: 'a[href="edit.php?post_type=elementor_library&page=' + pageName + '"]'
-      };
+        adminMenuSelectors = {
+          // The escaping is done because jQuery requires it for selectors.
+          landingPagesTablePage: 'a[href="edit.php?post_type=' + pageName + '"]',
+          landingPagesAddNewPage: 'a[href="edit.php?post_type=elementor_library&page=' + pageName + '"]'
+        };
       return {
         selectors: {
           addButton: '.page-title-action:first',
@@ -915,7 +865,7 @@ var LandingPagesHandler = /*#__PURE__*/function (_AdminMenuHandler) {
     key: "getDefaultElements",
     value: function getDefaultElements() {
       var selectors = this.getSettings('selectors'),
-          elements = (0, _get2.default)((0, _getPrototypeOf2.default)(LandingPagesHandler.prototype), "getDefaultElements", this).call(this);
+        elements = (0, _get2.default)((0, _getPrototypeOf2.default)(LandingPagesHandler.prototype), "getDefaultElements", this).call(this);
       elements.$landingPagesMenuItem = jQuery(selectors.landingPagesMenuItem);
       elements.$templatesMenuItem = jQuery(selectors.templatesMenuItem);
       elements.$pagesMenuItemAndLink = jQuery(selectors.pagesMenuItemAndLink);
@@ -926,23 +876,24 @@ var LandingPagesHandler = /*#__PURE__*/function (_AdminMenuHandler) {
     value: function onInit() {
       (0, _get2.default)((0, _getPrototypeOf2.default)(LandingPagesHandler.prototype), "onInit", this).call(this);
       var settings = this.getSettings(),
-          isLandingPagesTablePage = !!window.location.href.includes(settings.paths.landingPagesTablePage),
-          isLandingPagesTrashPage = !!window.location.href.includes(settings.paths.landingPagesTrashPage),
-          isLandingPagesCreateYourFirstPage = !!window.location.href.includes(settings.paths.landingPagesAddNewPage); // If the current page is a Landing Pages Page (the Posts Table page, "Create Your First.." page, or a native
-      // WordPress dashboard page edit screen when using WordPress' Classic Editor).
+        isLandingPagesTablePage = !!window.location.href.includes(settings.paths.landingPagesTablePage),
+        isLandingPagesTrashPage = !!window.location.href.includes(settings.paths.landingPagesTrashPage),
+        isLandingPagesCreateYourFirstPage = !!window.location.href.includes(settings.paths.landingPagesAddNewPage);
 
+      // If the current page is a Landing Pages Page (the Posts Table page, "Create Your First.." page, or a native
+      // WordPress dashboard page edit screen when using WordPress' Classic Editor).
       if (isLandingPagesTablePage || isLandingPagesTrashPage || isLandingPagesCreateYourFirstPage || settings.isLandingPageAdminEdit) {
         // Make sure the active admin top level menu item is 'Templates', and not 'Pages'.
         this.highlightTopLevelMenuItem(this.elements.$templatesMenuItem, this.elements.$pagesMenuItemAndLink);
-        this.highlightSubMenuItem(this.elements.$landingPagesMenuItem); // Overwrite the 'Add New' button at the top of the page to open in Elementor with the library module open.
+        this.highlightSubMenuItem(this.elements.$landingPagesMenuItem);
 
+        // Overwrite the 'Add New' button at the top of the page to open in Elementor with the library module open.
         jQuery(settings.selectors.addButton).attr('href', elementorAdminConfig.urls.addNewLandingPageUrl);
       }
     }
   }]);
   return LandingPagesHandler;
 }(_menuHandler.default);
-
 exports["default"] = LandingPagesHandler;
 
 /***/ }),
@@ -957,36 +908,23 @@ exports["default"] = LandingPagesHandler;
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
-
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
 var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
 var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
-
 var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
-
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
-
 var _landingPages = _interopRequireDefault(__webpack_require__(/*! ./landing-pages */ "../modules/landing-pages/assets/js/admin/landing-pages.js"));
-
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
-
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
 var _default = /*#__PURE__*/function (_elementorModules$Mod) {
   (0, _inherits2.default)(_default, _elementorModules$Mod);
-
   var _super = _createSuper(_default);
-
   function _default() {
     var _this;
-
     (0, _classCallCheck2.default)(this, _default);
     _this = _super.call(this);
     elementorCommon.elements.$window.on('elementor/admin/init', function () {
@@ -994,31 +932,29 @@ var _default = /*#__PURE__*/function (_elementorModules$Mod) {
     });
     return _this;
   }
-
   (0, _createClass2.default)(_default, [{
     key: "runHandler",
     value: function runHandler() {
       var _elementorAdmin$confi, _elementorAdmin$confi2;
-
       var pageName = 'e-landing-page',
-          paths = {
-        landingPagesTablePage: 'edit.php?post_type=' + pageName,
-        landingPagesAddNewPage: 'edit.php?post_type=elementor_library&page=' + pageName,
-        landingPagesTrashPage: 'edit.php?post_status=trash&post_type=' + pageName
-      },
-          args = {
-        path: (_elementorAdmin$confi = elementorAdmin.config.landingPages) !== null && _elementorAdmin$confi !== void 0 && _elementorAdmin$confi.landingPagesHasPages ? paths.landingPagesTablePage : paths.landingPagesAddNewPage,
-        isLandingPageAdminEdit: (_elementorAdmin$confi2 = elementorAdmin.config.landingPages) === null || _elementorAdmin$confi2 === void 0 ? void 0 : _elementorAdmin$confi2.isLandingPageAdminEdit,
-        paths: paths
-      }; // This class modifies elements in the WordPress admin that are rendered "wrong" by the WordPress core
-      // and could not be modified in the backend.
+        paths = {
+          landingPagesTablePage: 'edit.php?post_type=' + pageName,
+          landingPagesAddNewPage: 'edit.php?post_type=elementor_library&page=' + pageName,
+          landingPagesTrashPage: 'edit.php?post_status=trash&post_type=' + pageName
+        },
+        args = {
+          path: (_elementorAdmin$confi = elementorAdmin.config.landingPages) !== null && _elementorAdmin$confi !== void 0 && _elementorAdmin$confi.landingPagesHasPages ? paths.landingPagesTablePage : paths.landingPagesAddNewPage,
+          isLandingPageAdminEdit: (_elementorAdmin$confi2 = elementorAdmin.config.landingPages) === null || _elementorAdmin$confi2 === void 0 ? void 0 : _elementorAdmin$confi2.isLandingPageAdminEdit,
+          paths: paths
+        };
 
+      // This class modifies elements in the WordPress admin that are rendered "wrong" by the WordPress core
+      // and could not be modified in the backend.
       new _landingPages.default(args);
     }
   }]);
   return _default;
 }(elementorModules.Module);
-
 exports["default"] = _default;
 
 /***/ }),
@@ -1042,14 +978,9 @@ module.exports = wp.i18n;
 
 function _arrayLikeToArray(arr, len) {
   if (len == null || len > arr.length) len = arr.length;
-
-  for (var i = 0, arr2 = new Array(len); i < len; i++) {
-    arr2[i] = arr[i];
-  }
-
+  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
   return arr2;
 }
-
 module.exports = _arrayLikeToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1063,7 +994,6 @@ module.exports = _arrayLikeToArray, module.exports.__esModule = true, module.exp
 function _arrayWithHoles(arr) {
   if (Array.isArray(arr)) return arr;
 }
-
 module.exports = _arrayWithHoles, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1075,11 +1005,9 @@ module.exports = _arrayWithHoles, module.exports.__esModule = true, module.expor
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var arrayLikeToArray = __webpack_require__(/*! ./arrayLikeToArray.js */ "../node_modules/@babel/runtime/helpers/arrayLikeToArray.js");
-
 function _arrayWithoutHoles(arr) {
   if (Array.isArray(arr)) return arrayLikeToArray(arr);
 }
-
 module.exports = _arrayWithoutHoles, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1094,10 +1022,8 @@ function _assertThisInitialized(self) {
   if (self === void 0) {
     throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
   }
-
   return self;
 }
-
 module.exports = _assertThisInitialized, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1113,7 +1039,6 @@ function _classCallCheck(instance, Constructor) {
     throw new TypeError("Cannot call a class as a function");
   }
 }
-
 module.exports = _classCallCheck, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1122,18 +1047,18 @@ module.exports = _classCallCheck, module.exports.__esModule = true, module.expor
 /*!*************************************************************!*\
   !*** ../node_modules/@babel/runtime/helpers/createClass.js ***!
   \*************************************************************/
-/***/ ((module) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
+var toPropertyKey = __webpack_require__(/*! ./toPropertyKey.js */ "../node_modules/@babel/runtime/helpers/toPropertyKey.js");
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
     var descriptor = props[i];
     descriptor.enumerable = descriptor.enumerable || false;
     descriptor.configurable = true;
     if ("value" in descriptor) descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
+    Object.defineProperty(target, toPropertyKey(descriptor.key), descriptor);
   }
 }
-
 function _createClass(Constructor, protoProps, staticProps) {
   if (protoProps) _defineProperties(Constructor.prototype, protoProps);
   if (staticProps) _defineProperties(Constructor, staticProps);
@@ -1142,7 +1067,6 @@ function _createClass(Constructor, protoProps, staticProps) {
   });
   return Constructor;
 }
-
 module.exports = _createClass, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1151,9 +1075,11 @@ module.exports = _createClass, module.exports.__esModule = true, module.exports[
 /*!****************************************************************!*\
   !*** ../node_modules/@babel/runtime/helpers/defineProperty.js ***!
   \****************************************************************/
-/***/ ((module) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
+var toPropertyKey = __webpack_require__(/*! ./toPropertyKey.js */ "../node_modules/@babel/runtime/helpers/toPropertyKey.js");
 function _defineProperty(obj, key, value) {
+  key = toPropertyKey(key);
   if (key in obj) {
     Object.defineProperty(obj, key, {
       value: value,
@@ -1164,10 +1090,8 @@ function _defineProperty(obj, key, value) {
   } else {
     obj[key] = value;
   }
-
   return obj;
 }
-
 module.exports = _defineProperty, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1179,7 +1103,6 @@ module.exports = _defineProperty, module.exports.__esModule = true, module.expor
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var superPropBase = __webpack_require__(/*! ./superPropBase.js */ "../node_modules/@babel/runtime/helpers/superPropBase.js");
-
 function _get() {
   if (typeof Reflect !== "undefined" && Reflect.get) {
     module.exports = _get = Reflect.get.bind(), module.exports.__esModule = true, module.exports["default"] = module.exports;
@@ -1188,18 +1111,14 @@ function _get() {
       var base = superPropBase(target, property);
       if (!base) return;
       var desc = Object.getOwnPropertyDescriptor(base, property);
-
       if (desc.get) {
         return desc.get.call(arguments.length < 3 ? target : receiver);
       }
-
       return desc.value;
     }, module.exports.__esModule = true, module.exports["default"] = module.exports;
   }
-
   return _get.apply(this, arguments);
 }
-
 module.exports = _get, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1216,7 +1135,6 @@ function _getPrototypeOf(o) {
   }, module.exports.__esModule = true, module.exports["default"] = module.exports;
   return _getPrototypeOf(o);
 }
-
 module.exports = _getPrototypeOf, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1228,12 +1146,10 @@ module.exports = _getPrototypeOf, module.exports.__esModule = true, module.expor
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var setPrototypeOf = __webpack_require__(/*! ./setPrototypeOf.js */ "../node_modules/@babel/runtime/helpers/setPrototypeOf.js");
-
 function _inherits(subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
     throw new TypeError("Super expression must either be null or a function");
   }
-
   subClass.prototype = Object.create(superClass && superClass.prototype, {
     constructor: {
       value: subClass,
@@ -1246,7 +1162,6 @@ function _inherits(subClass, superClass) {
   });
   if (superClass) setPrototypeOf(subClass, superClass);
 }
-
 module.exports = _inherits, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1262,7 +1177,6 @@ function _interopRequireDefault(obj) {
     "default": obj
   };
 }
-
 module.exports = _interopRequireDefault, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1276,7 +1190,6 @@ module.exports = _interopRequireDefault, module.exports.__esModule = true, modul
 function _iterableToArray(iter) {
   if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
 }
-
 module.exports = _iterableToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1288,35 +1201,32 @@ module.exports = _iterableToArray, module.exports.__esModule = true, module.expo
 /***/ ((module) => {
 
 function _iterableToArrayLimit(arr, i) {
-  var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
-
-  if (_i == null) return;
-  var _arr = [];
-  var _n = true;
-  var _d = false;
-
-  var _s, _e;
-
-  try {
-    for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
-      _arr.push(_s.value);
-
-      if (i && _arr.length === i) break;
-    }
-  } catch (err) {
-    _d = true;
-    _e = err;
-  } finally {
+  var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"];
+  if (null != _i) {
+    var _s,
+      _e,
+      _x,
+      _r,
+      _arr = [],
+      _n = !0,
+      _d = !1;
     try {
-      if (!_n && _i["return"] != null) _i["return"]();
+      if (_x = (_i = _i.call(arr)).next, 0 === i) {
+        if (Object(_i) !== _i) return;
+        _n = !1;
+      } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0);
+    } catch (err) {
+      _d = !0, _e = err;
     } finally {
-      if (_d) throw _e;
+      try {
+        if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return;
+      } finally {
+        if (_d) throw _e;
+      }
     }
+    return _arr;
   }
-
-  return _arr;
 }
-
 module.exports = _iterableToArrayLimit, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1330,7 +1240,6 @@ module.exports = _iterableToArrayLimit, module.exports.__esModule = true, module
 function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-
 module.exports = _nonIterableRest, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1344,7 +1253,6 @@ module.exports = _nonIterableRest, module.exports.__esModule = true, module.expo
 function _nonIterableSpread() {
   throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-
 module.exports = _nonIterableSpread, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1356,19 +1264,15 @@ module.exports = _nonIterableSpread, module.exports.__esModule = true, module.ex
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var _typeof = (__webpack_require__(/*! ./typeof.js */ "../node_modules/@babel/runtime/helpers/typeof.js")["default"]);
-
 var assertThisInitialized = __webpack_require__(/*! ./assertThisInitialized.js */ "../node_modules/@babel/runtime/helpers/assertThisInitialized.js");
-
 function _possibleConstructorReturn(self, call) {
   if (call && (_typeof(call) === "object" || typeof call === "function")) {
     return call;
   } else if (call !== void 0) {
     throw new TypeError("Derived constructors may only return object or undefined");
   }
-
   return assertThisInitialized(self);
 }
-
 module.exports = _possibleConstructorReturn, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1386,7 +1290,6 @@ function _setPrototypeOf(o, p) {
   }, module.exports.__esModule = true, module.exports["default"] = module.exports;
   return _setPrototypeOf(o, p);
 }
-
 module.exports = _setPrototypeOf, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1398,17 +1301,12 @@ module.exports = _setPrototypeOf, module.exports.__esModule = true, module.expor
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var arrayWithHoles = __webpack_require__(/*! ./arrayWithHoles.js */ "../node_modules/@babel/runtime/helpers/arrayWithHoles.js");
-
 var iterableToArrayLimit = __webpack_require__(/*! ./iterableToArrayLimit.js */ "../node_modules/@babel/runtime/helpers/iterableToArrayLimit.js");
-
 var unsupportedIterableToArray = __webpack_require__(/*! ./unsupportedIterableToArray.js */ "../node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js");
-
 var nonIterableRest = __webpack_require__(/*! ./nonIterableRest.js */ "../node_modules/@babel/runtime/helpers/nonIterableRest.js");
-
 function _slicedToArray(arr, i) {
   return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || unsupportedIterableToArray(arr, i) || nonIterableRest();
 }
-
 module.exports = _slicedToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1420,16 +1318,13 @@ module.exports = _slicedToArray, module.exports.__esModule = true, module.export
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var getPrototypeOf = __webpack_require__(/*! ./getPrototypeOf.js */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js");
-
 function _superPropBase(object, property) {
   while (!Object.prototype.hasOwnProperty.call(object, property)) {
     object = getPrototypeOf(object);
     if (object === null) break;
   }
-
   return object;
 }
-
 module.exports = _superPropBase, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1441,18 +1336,50 @@ module.exports = _superPropBase, module.exports.__esModule = true, module.export
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var arrayWithoutHoles = __webpack_require__(/*! ./arrayWithoutHoles.js */ "../node_modules/@babel/runtime/helpers/arrayWithoutHoles.js");
-
 var iterableToArray = __webpack_require__(/*! ./iterableToArray.js */ "../node_modules/@babel/runtime/helpers/iterableToArray.js");
-
 var unsupportedIterableToArray = __webpack_require__(/*! ./unsupportedIterableToArray.js */ "../node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js");
-
 var nonIterableSpread = __webpack_require__(/*! ./nonIterableSpread.js */ "../node_modules/@babel/runtime/helpers/nonIterableSpread.js");
-
 function _toConsumableArray(arr) {
   return arrayWithoutHoles(arr) || iterableToArray(arr) || unsupportedIterableToArray(arr) || nonIterableSpread();
 }
-
 module.exports = _toConsumableArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ "../node_modules/@babel/runtime/helpers/toPrimitive.js":
+/*!*************************************************************!*\
+  !*** ../node_modules/@babel/runtime/helpers/toPrimitive.js ***!
+  \*************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var _typeof = (__webpack_require__(/*! ./typeof.js */ "../node_modules/@babel/runtime/helpers/typeof.js")["default"]);
+function _toPrimitive(input, hint) {
+  if (_typeof(input) !== "object" || input === null) return input;
+  var prim = input[Symbol.toPrimitive];
+  if (prim !== undefined) {
+    var res = prim.call(input, hint || "default");
+    if (_typeof(res) !== "object") return res;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return (hint === "string" ? String : Number)(input);
+}
+module.exports = _toPrimitive, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ "../node_modules/@babel/runtime/helpers/toPropertyKey.js":
+/*!***************************************************************!*\
+  !*** ../node_modules/@babel/runtime/helpers/toPropertyKey.js ***!
+  \***************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var _typeof = (__webpack_require__(/*! ./typeof.js */ "../node_modules/@babel/runtime/helpers/typeof.js")["default"]);
+var toPrimitive = __webpack_require__(/*! ./toPrimitive.js */ "../node_modules/@babel/runtime/helpers/toPrimitive.js");
+function _toPropertyKey(arg) {
+  var key = toPrimitive(arg, "string");
+  return _typeof(key) === "symbol" ? key : String(key);
+}
+module.exports = _toPropertyKey, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
 
@@ -1471,7 +1398,6 @@ function _typeof(obj) {
     return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
   }, module.exports.__esModule = true, module.exports["default"] = module.exports), _typeof(obj);
 }
-
 module.exports = _typeof, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1483,7 +1409,6 @@ module.exports = _typeof, module.exports.__esModule = true, module.exports["defa
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var arrayLikeToArray = __webpack_require__(/*! ./arrayLikeToArray.js */ "../node_modules/@babel/runtime/helpers/arrayLikeToArray.js");
-
 function _unsupportedIterableToArray(o, minLen) {
   if (!o) return;
   if (typeof o === "string") return arrayLikeToArray(o, minLen);
@@ -1492,7 +1417,6 @@ function _unsupportedIterableToArray(o, minLen) {
   if (n === "Map" || n === "Set") return Array.from(o);
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray(o, minLen);
 }
-
 module.exports = _unsupportedIterableToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ })
@@ -1535,21 +1459,13 @@ var __webpack_exports__ = {};
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
-
 var _module = _interopRequireDefault(__webpack_require__(/*! elementor/modules/landing-pages/assets/js/admin/module */ "../modules/landing-pages/assets/js/admin/module.js"));
-
 var _module2 = _interopRequireDefault(__webpack_require__(/*! elementor/core/experiments/assets/js/admin/module */ "../core/experiments/assets/js/admin/module.js"));
-
 var _environment = _interopRequireDefault(__webpack_require__(/*! ../../../../core/common/assets/js/utils/environment */ "../core/common/assets/js/utils/environment.js"));
-
 var _events = _interopRequireDefault(__webpack_require__(/*! elementor-utils/events */ "../assets/dev/js/utils/events.js"));
-
 var _filesUploadHandler = _interopRequireDefault(__webpack_require__(/*! ../editor/utils/files-upload-handler */ "../assets/dev/js/editor/utils/files-upload-handler.js"));
-
 var _templateControls = _interopRequireDefault(__webpack_require__(/*! ./new-template/template-controls.js */ "../assets/dev/js/admin/new-template/template-controls.js"));
-
 (function ($) {
   var ElementorAdmin = elementorModules.ViewModule.extend({
     maintenanceMode: null,
@@ -1587,7 +1503,6 @@ var _templateControls = _interopRequireDefault(__webpack_require__(/*! ./new-tem
       var self = this;
       self.elements.$switchModeButton.on('click', function (event) {
         event.preventDefault();
-
         if (self.isElementorMode()) {
           elementorCommon.dialogsManager.createWidget('confirm', {
             message: __('Please note that you are switching to WordPress default editor. Your current layout, design and content might break.', 'elementor'),
@@ -1605,15 +1520,12 @@ var _templateControls = _interopRequireDefault(__webpack_require__(/*! ./new-tem
         } else {
           self.elements.$switchModeInput.val(true);
           var $wpTitle = $('#title');
-
           if (!$wpTitle.val()) {
             $wpTitle.val('Elementor #' + $('#post_ID').val());
           }
-
           if (wp.autosave) {
             wp.autosave.server.triggerSave();
           }
-
           self.animateLoader();
           $(document).on('heartbeat-tick.autosave', function () {
             elementorCommon.elements.$window.off('beforeunload.edit-post');
@@ -1671,10 +1583,8 @@ var _templateControls = _interopRequireDefault(__webpack_require__(/*! ./new-tem
           $thisButton.removeClass('loading').addClass('success');
         }).fail(function (_ref) {
           var _responseJSON$data;
-
           var responseJSON = _ref.responseJSON;
           $thisButton.removeClass('loading').addClass('error');
-
           if ((_responseJSON$data = responseJSON.data) !== null && _responseJSON$data !== void 0 && _responseJSON$data.message) {
             $thisButton.after("<div class=\"e-recreate-kit-error-message\">".concat(responseJSON.data.message, "</div>"));
           }
@@ -1683,9 +1593,9 @@ var _templateControls = _interopRequireDefault(__webpack_require__(/*! ./new-tem
       $('#elementor-replace-url-button').on('click', function (event) {
         event.preventDefault();
         var $this = $(this),
-            $tr = $this.parents('tr'),
-            $from = $tr.find('[name="from"]'),
-            $to = $tr.find('[name="to"]');
+          $tr = $this.parents('tr'),
+          $from = $tr.find('[name="from"]'),
+          $to = $tr.find('[name="to"]');
         $this.removeClass('success').addClass('loading');
         $.post(ajaxurl, {
           action: 'elementor_replace_url',
@@ -1694,11 +1604,9 @@ var _templateControls = _interopRequireDefault(__webpack_require__(/*! ./new-tem
           _nonce: $this.data('nonce')
         }).done(function (response) {
           $this.removeClass('loading');
-
           if (response.success) {
             $this.addClass('success');
           }
-
           elementorCommon.dialogsManager.createWidget('alert', {
             message: response.data
           }).show();
@@ -1719,12 +1627,10 @@ var _templateControls = _interopRequireDefault(__webpack_require__(/*! ./new-tem
           defaultOption: 'confirm',
           onConfirm: function onConfirm() {
             $updateButton.removeClass('error').addClass('loading');
-
             var _$updateButton$data = $updateButton.data(),
-                _nonce = _$updateButton$data._nonce,
-                action = _$updateButton$data.action,
-                redirectUrl = _$updateButton$data.redirectUrl;
-
+              _nonce = _$updateButton$data._nonce,
+              action = _$updateButton$data.action,
+              redirectUrl = _$updateButton$data.redirectUrl;
             $.post(ajaxurl, {
               action: action,
               _nonce: _nonce
@@ -1733,12 +1639,10 @@ var _templateControls = _interopRequireDefault(__webpack_require__(/*! ./new-tem
               var messageElement = document.createElement('p');
               messageElement.appendChild(document.createTextNode(response.data.message));
               $('#elementor_upgrade_fa_button').parent().append(messageElement);
-
               if (redirectUrl) {
                 location.href = decodeURIComponent(redirectUrl);
                 return;
               }
-
               history.go(-1);
             }).fail(function () {
               $updateButton.removeClass('loading').addClass('error');
@@ -1763,9 +1667,9 @@ var _templateControls = _interopRequireDefault(__webpack_require__(/*! ./new-tem
       });
       $('select.elementor-rollback-select').on('change', function () {
         var $this = $(this),
-            $rollbackButton = $this.next('.elementor-rollback-button'),
-            placeholderText = $rollbackButton.data('placeholder-text'),
-            placeholderUrl = $rollbackButton.data('placeholder-url');
+          $rollbackButton = $this.next('.elementor-rollback-button'),
+          placeholderText = $rollbackButton.data('placeholder-text'),
+          placeholderUrl = $rollbackButton.data('placeholder-url');
         $rollbackButton.html(placeholderText.replace('{VERSION}', $this.val()));
         $rollbackButton.attr('href', placeholderUrl.replace('VERSION', $this.val()));
       }).trigger('change');
@@ -1810,6 +1714,9 @@ var _templateControls = _interopRequireDefault(__webpack_require__(/*! ./new-tem
         $descriptions.hide();
         $descriptions.filter('[data-value="' + $(this).val() + '"]').show();
       }).trigger('change');
+      $('.elementor_google_font select').on('change', function () {
+        $('.elementor_font_display').toggle('1' === $(this).val());
+      }).trigger('change');
     },
     onInit: function onInit() {
       elementorModules.ViewModule.prototype.onInit.apply(this, arguments);
@@ -1819,11 +1726,9 @@ var _templateControls = _interopRequireDefault(__webpack_require__(/*! ./new-tem
       this.openLinksInNewTab();
       this.addUserAgentClasses();
       this.roleManager.init();
-
       if (elementorCommon.config.experimentalFeatures['landing-pages']) {
         new _module.default();
       }
-
       this.templateControls = new _templateControls.default();
       new _module2.default();
     },
@@ -1831,17 +1736,14 @@ var _templateControls = _interopRequireDefault(__webpack_require__(/*! ./new-tem
       var body = document.querySelector('body');
       Object.entries(_environment.default).forEach(function (_ref2) {
         var _ref3 = (0, _slicedToArray2.default)(_ref2, 2),
-            key = _ref3[0],
-            value = _ref3[1];
-
+          key = _ref3[0],
+          value = _ref3[1];
         if (!value) {
           return;
         }
-
         body.classList.add('e--ua-' + key);
       });
     },
-
     /**
      * Open Links in New Tab
      *
@@ -1863,13 +1765,12 @@ var _templateControls = _interopRequireDefault(__webpack_require__(/*! ./new-tem
       if (!elementorCommon.elements.$body.hasClass('post-type-elementor_library')) {
         return;
       }
-
       var self = this,
-          $importForm = self.elements.$importForm,
-          $importButton = self.elements.$importButton,
-          $importArea = self.elements.$importArea,
-          $importNowButton = self.elements.$importNowButton,
-          $importFormFileInput = self.elements.$importFormFileInput;
+        $importForm = self.elements.$importForm,
+        $importButton = self.elements.$importButton,
+        $importArea = self.elements.$importArea,
+        $importNowButton = self.elements.$importNowButton,
+        $importFormFileInput = self.elements.$importFormFileInput;
       self.elements.$formAnchor = $('.wp-header-end');
       $('#wpbody-content').find('.page-title-action').last().after($importButton);
       self.elements.$formAnchor.after($importArea);
@@ -1879,21 +1780,17 @@ var _templateControls = _interopRequireDefault(__webpack_require__(/*! ./new-tem
       $importForm.on('submit', function (event) {
         $importNowButton[0].disabled = true;
         $importNowButton[0].value = __('Importing...', 'elementor');
-
         if ($importFormFileInput[0].files.length && !elementorCommon.config.filesUpload.unfilteredFiles) {
           event.preventDefault();
-
           var enableUnfilteredFilesModal = _filesUploadHandler.default.getUnfilteredFilesNotEnabledImportTemplateDialog(function () {
             $importForm.trigger('submit');
           });
-
           enableUnfilteredFilesModal.show();
         }
       });
     },
     initMaintenanceMode: function initMaintenanceMode() {
       var MaintenanceMode = __webpack_require__(/*! elementor-admin/maintenance-mode */ "../assets/dev/js/admin/maintenance-mode.js");
-
       this.maintenanceMode = new MaintenanceMode();
     },
     isElementorMode: function isElementorMode() {
@@ -1904,18 +1801,15 @@ var _templateControls = _interopRequireDefault(__webpack_require__(/*! ./new-tem
     },
     goToSettingsTabFromHash: function goToSettingsTabFromHash() {
       var hash = location.hash.slice(1);
-
       if (hash) {
         this.goToSettingsTab(hash);
       }
     },
     goToSettingsTab: function goToSettingsTab(tabName) {
       var $pages = this.elements.$settingsFormPages;
-
       if (!$pages.length) {
         return;
       }
-
       var $activePage = $pages.filter('#' + tabName);
       this.elements.$activeSettingsPage.removeClass('elementor-active');
       this.elements.$activeSettingsTab.removeClass('nav-tab-active');
@@ -1943,35 +1837,31 @@ var _templateControls = _interopRequireDefault(__webpack_require__(/*! ./new-tem
       },
       toggle: function toggle($trigger) {
         var self = this,
-            $row = $trigger.closest(self.selectors.row),
-            $toggleHandleIcon = $row.find(self.selectors.toggleHandle).find('.dashicons'),
-            $controls = $row.find(self.selectors.controlsContainer);
+          $row = $trigger.closest(self.selectors.row),
+          $toggleHandleIcon = $row.find(self.selectors.toggleHandle).find('.dashicons'),
+          $controls = $row.find(self.selectors.controlsContainer);
         $controls.toggleClass('hidden');
-
         if ($controls.hasClass('hidden')) {
           $toggleHandleIcon.removeClass(self.selectors.arrowUp).addClass(self.selectors.arrowDown);
         } else {
           $toggleHandleIcon.removeClass(self.selectors.arrowDown).addClass(self.selectors.arrowUp);
         }
-
         self.updateLabel($row);
       },
       updateLabel: function updateLabel($row) {
         var self = this,
-            $indicator = $row.find(self.selectors.excludedIndicator),
-            excluded = $row.find(self.selectors.excludedField).is(':checked');
-
+          $indicator = $row.find(self.selectors.excludedIndicator),
+          excluded = $row.find(self.selectors.excludedField).is(':checked');
         if (excluded) {
           $indicator.html($indicator.data('excluded-label'));
         } else {
           $indicator.html('');
         }
-
         self.setAdvancedState($row, excluded);
       },
       setAdvancedState: function setAdvancedState($row, state) {
         var self = this,
-            $controls = $row.find('input[type="checkbox"]').not(self.selectors.excludedField);
+          $controls = $row.find('input[type="checkbox"]').not(self.selectors.excludedField);
         $controls.each(function (index, input) {
           $(input).prop('disabled', state);
         });
@@ -1988,11 +1878,9 @@ var _templateControls = _interopRequireDefault(__webpack_require__(/*! ./new-tem
       },
       init: function init() {
         var self = this;
-
         if (!$('body[class*="' + self.selectors.body + '"]').length) {
           return;
         }
-
         self.bind();
         $(self.selectors.row).each(function (index, row) {
           self.updateLabel($(row));
@@ -2002,7 +1890,6 @@ var _templateControls = _interopRequireDefault(__webpack_require__(/*! ./new-tem
   });
   $(function () {
     window.elementorAdmin = new ElementorAdmin();
-
     _events.default.dispatch(elementorCommon.elements.$window, 'elementor/admin/init');
   });
 })(jQuery);

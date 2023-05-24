@@ -187,9 +187,9 @@ class Jet_Blocks_Nav_Menu extends Jet_Blocks_Base {
 					),
 				),
 				'selectors_dictionary' => array(
-					'flex-start'    => 'justify-content: flex-start; text-align: left;',
+					'flex-start'    => ! is_rtl() ? 'justify-content: flex-start; text-align: left;' : 'justify-content: flex-end; text-align: right;',
 					'center'        => 'justify-content: center; text-align: center;',
-					'flex-end'      => 'justify-content: flex-end; text-align: right;',
+					'flex-end'      => ! is_rtl() ? 'justify-content: flex-end; text-align: right;' : 'justify-content: flex-start; text-align: left;',
 					'space-between' => 'justify-content: space-between; text-align: left;',
 				),
 				'selectors' => array(
@@ -233,8 +233,8 @@ class Jet_Blocks_Nav_Menu extends Jet_Blocks_Base {
 		$this->add_control(
 			'mobile_trigger_devices',
 			array(
-				'label'       => __( 'Enabled for', 'jet-blocks' ),
-				'type'        => Controls_Manager::SELECT2,
+				'label'       => __( 'Start Showing Mobile Menu From', 'jet-blocks' ),
+				'type'        => Controls_Manager::SELECT,
 				'multiple'    => true,
 				'label_block' => 'true',
 				'default' => array(
@@ -1605,16 +1605,23 @@ class Jet_Blocks_Nav_Menu extends Jet_Blocks_Base {
 			return;
 		}
 
-		$trigger_visible = filter_var( $settings['mobile_trigger_visible'], FILTER_VALIDATE_BOOLEAN );
-		$trigger_align   = $settings['mobile_trigger_alignment'];
+		$trigger_visible       = filter_var( $settings['mobile_trigger_visible'], FILTER_VALIDATE_BOOLEAN );
+		$trigger_align         = $settings['mobile_trigger_alignment'];
+		$mobile_layout_device  = $settings['mobile_trigger_devices'];
+
+		if ( is_array( $mobile_layout_device ) ) {
+			$mobile_layout_device = $mobile_layout_device[0];
+		}
 
 		require_once jet_blocks()->plugin_path( 'includes/class-jet-blocks-nav-walker.php' );
 
 		$this->add_render_attribute( 'nav-wrapper', 'class', 'jet-nav-wrap' );
 
+		$this->add_render_attribute( 'nav-wrapper', 'class', 'm-layout-' . $mobile_layout_device );
+		
 		if ( $trigger_visible ) {
 			$this->add_render_attribute( 'nav-wrapper', 'class', 'jet-mobile-menu' );
-			$this->add_render_attribute( 'nav-wrapper', 'data-mobile-trigger-devices', esc_attr( json_encode( $settings['mobile_trigger_devices'] ) ) );
+			$this->add_render_attribute( 'nav-wrapper', 'data-mobile-trigger-device', esc_attr( $mobile_layout_device ) );
 
 			if ( isset( $settings['mobile_menu_layout'] ) ) {
 				$this->add_render_attribute( 'nav-wrapper', 'class', sprintf( 'jet-mobile-menu--%s', esc_attr( $settings['mobile_menu_layout'] ) ) );
@@ -1623,6 +1630,8 @@ class Jet_Blocks_Nav_Menu extends Jet_Blocks_Base {
 		}
 
 		$this->add_render_attribute( 'nav-menu', 'class', 'jet-nav' );
+
+		$this->add_render_attribute( 'nav-menu', 'class', 'm-layout-' . $mobile_layout_device );
 
 		if ( isset( $settings['layout'] ) ) {
 			$this->add_render_attribute( 'nav-menu', 'class', 'jet-nav--' . esc_attr( $settings['layout'] ) );

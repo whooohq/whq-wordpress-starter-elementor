@@ -5,29 +5,45 @@
 
 class Jet_Smart_Filters_Service_Filter {
 
-	public $serialized_data_keys = array(
-		'_source_manual_input',
-		'_source_color_image_input',
-		'_source_manual_input_range',
-		'_ih_source_map',
-		'_data_exclude_include'
-	);
+	public $serialized_data_keys;
+	private $_adata;
+
+	/**
+	 * Constructor for the class
+	 */
+	public function __construct() {
+		add_action( 'init', function() {
+			// Init serialized keys
+			$this->serialized_data_keys = apply_filters( 'jet-smart-filters/service/filter/serialized-keys', array(
+				'_source_manual_input',
+				'_source_color_image_input',
+				'_source_manual_input_range',
+				'_ih_source_map',
+				'_data_exclude_include'
+			));
+
+			// Init admin data
+			if ( isset( jet_smart_filters()->admin->data ) ) {
+				$this->_adata = jet_smart_filters()->admin->data;
+			} else {
+				require_once jet_smart_filters()->plugin_path( 'admin/includes/data.php' );
+				$this->_adata = new Jet_Smart_Filters_Admin_Data();
+			}
+		}, 999 );
+	}
 
 	public function get( $id ) {
-		// Get data instance
-		require_once jet_smart_filters()->plugin_path( 'admin/includes/data.php' );
-		$data = Jet_Smart_Filters_Admin_Data::get_instance();
-
 		global $wpdb;
 
-		$output_data = false;
+		$output_data               = false;
+		$registered_settings_names = $this->_adata->registered_settings_names();
 
 		$sql = "
 		SELECT $wpdb->posts.ID, $wpdb->posts.post_title as title, $wpdb->posts.post_date as date, $wpdb->postmeta.meta_key, $wpdb->postmeta.meta_value
 			FROM $wpdb->posts, $wpdb->postmeta
 			WHERE $wpdb->posts.ID = '$id'
 			AND $wpdb->posts.ID = $wpdb->postmeta.post_ID
-			AND $wpdb->postmeta.meta_key IN ('" . implode( "','", $data->registered_settings_names() ) . "')
+			AND $wpdb->postmeta.meta_key IN ('" . implode( "','", $registered_settings_names ) . "')
 			AND $wpdb->posts.post_type='jet-smart-filters'";
 		$sql_result = $wpdb->get_results( $sql, ARRAY_A );
 
@@ -66,8 +82,6 @@ class Jet_Smart_Filters_Service_Filter {
 	}
 
 	public function add_new( $data ) {
-		// Get data instance
-		require_once jet_smart_filters()->plugin_path( 'admin/includes/data.php' );
 
 		$new_data = $this->process_data( $data );
 
@@ -83,7 +97,7 @@ class Jet_Smart_Filters_Service_Filter {
 				'_filter_type' => '',
 				'_data_source' => ''
 			),
-			Jet_Smart_Filters_Admin_Data::get_instance()->default_settings_values(),
+			$this->_adata->default_settings_values(),
 			$new_data['meta_input']
 		);
 

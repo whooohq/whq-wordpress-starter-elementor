@@ -371,6 +371,33 @@ class Jet_Elements_Instagram_Gallery extends Jet_Elements_Base {
 			)
 		);
 
+		$this->add_control(
+			'lightbox_settings_heading',
+			array(
+				'label'     => esc_html__( 'Lightbox', 'jet-elements' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
+				'condition' => array(
+					'post_link_type' => 'lightbox',
+				),
+			)
+		);
+
+		$this->add_control(
+			'lightbox_show_desc',
+			array(
+				'label'        => esc_html__( 'Show Description in a Lightbox Popup', 'jet-elements' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Yes', 'jet-elements' ),
+				'label_off'    => esc_html__( 'No', 'jet-elements' ),
+				'return_value' => 'true',
+				'default'      => 'false',
+				'condition'    => array(
+					'post_link_type' => 'lightbox',
+				),
+			)
+		);
+
 		$this->end_controls_section();
 
 		$this->start_controls_section(
@@ -510,7 +537,7 @@ class Jet_Elements_Instagram_Gallery extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['inner'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -535,7 +562,7 @@ class Jet_Elements_Instagram_Gallery extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['inner'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -584,7 +611,7 @@ class Jet_Elements_Instagram_Gallery extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['content'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -707,7 +734,7 @@ class Jet_Elements_Instagram_Gallery extends Jet_Elements_Base {
 				'label' => esc_html__( 'Caption Width', 'jet-elements' ),
 				'type'  => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px', 'em', '%',
+					'px', 'em', '%', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -757,7 +784,7 @@ class Jet_Elements_Instagram_Gallery extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['caption'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -770,7 +797,7 @@ class Jet_Elements_Instagram_Gallery extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['caption'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -861,7 +888,7 @@ class Jet_Elements_Instagram_Gallery extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Icon Size', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px', 'em', 'rem',
+					'px', 'em', 'rem', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -912,7 +939,7 @@ class Jet_Elements_Instagram_Gallery extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['meta'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -925,7 +952,7 @@ class Jet_Elements_Instagram_Gallery extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['meta'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -938,7 +965,7 @@ class Jet_Elements_Instagram_Gallery extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Item Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['meta_item'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -963,7 +990,7 @@ class Jet_Elements_Instagram_Gallery extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['meta'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1096,10 +1123,15 @@ class Jet_Elements_Instagram_Gallery extends Jet_Elements_Base {
 
 					if ( 'lightbox' === $this->config['post_link_type'] ) {
 
+						$lightbox_desc = $lightbox_desc  = isset( $settings['lightbox_show_desc'] ) ? $settings['lightbox_show_desc'] : 'false';
 						$img_data = $this->get_image_data( $post_data, 'high' );
 
 						$link = $img_data['src'];
 						$attr = ' data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="' . $this->get_id() . '"';
+
+						if ( 'true' === $lightbox_desc ) {
+							$attr .= ' data-elementor-lightbox-description="' . wp_strip_all_tags( $post_data['caption'] ) . '"';
+						}
 					}
 
 					$item_html = sprintf( $link_format, esc_url( $link ), $item_html, $attr );

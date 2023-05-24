@@ -35,6 +35,8 @@ class Jet_Engine_Rest_Add_Options_Page extends Jet_Engine_Base_API_Endpoint {
 			'icon'             => $this->safe_get( $params, 'general_settings', 'icon' ),
 			'capability'       => $this->safe_get( $params, 'general_settings', 'capability' ),
 			'position'         => $this->safe_get( $params, 'general_settings', 'position' ),
+			'storage_type'     => $this->safe_get( $params, 'general_settings', 'storage_type' ),
+			'option_prefix'    => $this->safe_get( $params, 'general_settings', 'option_prefix' ),
 			'hide_field_names' => $this->safe_get( $params, 'general_settings', 'hide_field_names' ),
 			'fields'           => ! empty( $params['fields'] ) ? $params['fields'] : array(),
 		) );

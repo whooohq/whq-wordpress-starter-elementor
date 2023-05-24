@@ -7,7 +7,11 @@
 	$lost_form_text_output      = wpautop( wp_kses( $lost_form_text, $allowed_tags ) );
 	$minimum_password_length    = isset ( $settings['minimum_password_length'] ) ? $settings['minimum_password_length'] : '';
 	$form_button_text           = isset ( $settings['form_button_text'] ) ? wp_kses_post( $settings['form_button_text'] ) : '';
-	$btn_justify                = 'justify' === $settings['submit_alignment'] ? 'jet-reset__button-full' : '';
+	$btn_justify                = '';
+
+	if ( isset( $settings['submit_alignment'] ) ) {
+		$btn_justify = 'justify' === $settings['submit_alignment'] ? 'jet-reset__button-full' : '';
+	}
 ?>
 
 <div class="jet-reset">

@@ -89,7 +89,7 @@ class Activate extends Common_App {
 			] );
 		}
 
-		if ( License\API::STATUS_VALID !== $data['license'] ) {
+		if ( empty( $data['success'] ) ) {
 			$error_msg = License\API::get_error_message( $data['error'] ); // get_error_message() escapes html
 
 			wp_die( $error_msg, esc_html__( 'Elementor Pro', 'elementor-pro' ), [ // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -100,8 +100,6 @@ class Activate extends Common_App {
 		License\Admin::set_license_key( $license_key );
 
 		License\API::set_license_data( $data );
-
-		$this->request( 'set_site_owner' );
 
 		$this->add_notice( esc_html__( 'License has been activated successfully.', 'elementor-pro' ) );
 

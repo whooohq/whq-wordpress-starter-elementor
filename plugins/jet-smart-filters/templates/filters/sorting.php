@@ -4,8 +4,9 @@ if ( empty( $settings ) || empty( $sorting_options ) || empty( $container_data_a
 	return;
 }
 
-$class            = 'jet-sorting';
-$class_containter = $class . ' ' . ( ! empty( $settings['label_block'] ) ? $class . '--flex-column' : $class . '--flex-row' );
+$class               = 'jet-sorting';
+$class_containter    = $class . ' ' . ( ! empty( $settings['label_block'] ) ? $class . '--flex-column' : $class . '--flex-row' );
+$accessibility_label = ! empty( $settings['label'] ) ? $settings['label'] : __( 'Sort filter', 'jet-smart-filters' );
 
 ?>
 <div class="jet-smart-filters-sorting jet-filter">
@@ -17,6 +18,7 @@ $class_containter = $class . ' ' . ( ! empty( $settings['label_block'] ) ? $clas
 			class="<?php echo $class ?>-select"
 			name="select-name"
 			<?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>
+			aria-label="<?php echo $accessibility_label; ?>"
 		>
 			<?php if ( $placeholder ) : ?>
 				<option value=""><?php echo $placeholder ?></option>

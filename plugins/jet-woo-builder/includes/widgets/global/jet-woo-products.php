@@ -82,9 +82,8 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 				$this->add_control(
 					'enable_custom_query',
 					[
-						'label'   => __( 'For Query Controls Condition', 'jet-woo-builder' ),
-						'type'    => Controls_Manager::HIDDEN,
-						'default' => '',
+						'label' => __( 'For Query Controls Condition', 'jet-woo-builder' ),
+						'type'  => Controls_Manager::HIDDEN,
 					]
 				);
 			}
@@ -237,22 +236,22 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'box_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['inner-box'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'box_padding',
 			[
-				'label'      => __( 'Padding', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%', 'em' ],
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['inner-box'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -341,22 +340,22 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'thumb_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['thumb'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'thumb_margin',
 			[
-				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%', 'em' ],
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['thumb'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -365,14 +364,14 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'thumb_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
-				'selectors'  => array(
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['thumb'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
@@ -412,17 +411,6 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 				'name'     => 'title_typography',
 				'selector' => '{{WRAPPER}} ' . $css_scheme['title'] . ', {{WRAPPER}} ' . $css_scheme['title'] . ' a',
 			]
-		);
-
-		$this->add_control(
-			'title_bg',
-			array(
-				'label'     => esc_html__( 'Background Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['title'] => 'background-color: {{VALUE}}',
-				),
-			)
 		);
 
 		$this->start_controls_tabs( 'tabs_title_color' );
@@ -471,13 +459,24 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 
 		$this->end_controls_tabs();
 
+		$this->add_control(
+			'title_bg',
+			[
+				'type'      => Controls_Manager::COLOR,
+				'label'     => __( 'Background Color', 'jet-woo-builder' ),
+				'separator' => 'before',
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['title'] => 'background-color: {{VALUE}}',
+				],
+			]
+		);
+
 		$this->add_responsive_control(
 			'title_margin',
 			[
-				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%', 'em' ],
-				'separator'  => 'before',
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['title'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -486,14 +485,14 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'title_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
-				'selectors'  => array(
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['title'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
@@ -573,26 +572,26 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'excerpt_margin',
-			array(
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
-				'selectors'  => array(
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['excerpt'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'excerpt_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
+			[
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
-				'selectors'  => array(
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['excerpt'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
@@ -658,7 +657,7 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 			[
 				'label'      => __( 'Width', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ '%', 'px' ],
+				'size_units' => $this->set_custom_size_unit( [ 'px', '%' ] ),
 				'range'      => [
 					'%'  => [
 						'min' => 10,
@@ -736,14 +735,14 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'button_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['button'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_group_control(
@@ -807,14 +806,14 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'button_hover_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['button'] . ':hover' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_group_control(
@@ -832,9 +831,9 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'button_margin',
 			[
-				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%', 'em' ],
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'separator'  => 'before',
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['button-wrap'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -845,9 +844,9 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'button_padding',
 			[
-				'label'      => __( 'Padding', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%', 'em' ],
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['button'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -915,9 +914,9 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'qty_input_width',
 			[
-				'label'      => __( 'Width', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ '%', 'px' ],
+				'label'      => __( 'Width', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', '%' ] ),
 				'range'      => [
 					'%'  => [
 						'min' => 10,
@@ -1037,14 +1036,14 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 
 		$this->add_control(
 			'qty_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['qty'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_group_control(
@@ -1058,9 +1057,9 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'qty_margin',
 			[
-				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['qty_input'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1070,9 +1069,9 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'qty_padding',
 			[
-				'label'      => __( 'Padding', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['qty'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1146,24 +1145,23 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 			]
 		);
 
-		$this->add_control(
-			'price_color',
-			[
-				'label'     => __( 'Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'separator' => 'before',
-				'selectors' => [
-					'{{WRAPPER}} ' . $css_scheme['price'] . ' .price'         => 'color: {{VALUE}}',
-					'{{WRAPPER}} ' . $css_scheme['price'] . ' .price .amount' => 'color: {{VALUE}}',
-				],
-			]
-		);
-
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'price_typography',
 				'selector' => '{{WRAPPER}} ' . $css_scheme['price'] . ' .price',
+			]
+		);
+
+		$this->add_control(
+			'price_color',
+			[
+				'type'      => Controls_Manager::COLOR,
+				'label'     => __( 'Color', 'jet-woo-builder' ),
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['price'] . ' .price'         => 'color: {{VALUE}}',
+					'{{WRAPPER}} ' . $css_scheme['price'] . ' .price .amount' => 'color: {{VALUE}}',
+				],
 			]
 		);
 
@@ -1302,9 +1300,9 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'price_margin',
 			[
-				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%', 'em' ],
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'separator'  => 'before',
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['price'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -1579,15 +1577,15 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'rating_margin',
-			array(
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['rating'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
+				],
 				'separator'  => 'before',
-			)
+			]
 		);
 
 		$this->add_responsive_control(
@@ -1644,17 +1642,6 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 			]
 		);
 
-		$this->add_control(
-			'cats_bg',
-			array(
-				'label'     => esc_html__( 'Background Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['categories'] => 'background-color: {{VALUE}}',
-				),
-			)
-		);
-
 		$this->start_controls_tabs( 'tabs_cats_color' );
 
 		$this->start_controls_tab(
@@ -1700,13 +1687,24 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 
 		$this->end_controls_tabs();
 
+		$this->add_control(
+			'cats_bg',
+			[
+				'type'      => Controls_Manager::COLOR,
+				'label'     => __( 'Background Color', 'jet-woo-builder' ),
+				'separator'  => 'before',
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['categories'] => 'background-color: {{VALUE}}',
+				],
+			]
+		);
+
 		$this->add_responsive_control(
 			'cats_margin',
 			[
-				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%', 'em' ],
-				'separator'  => 'before',
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['categories'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1715,14 +1713,14 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'cats_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
-				'selectors'  => array(
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['categories'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
@@ -1779,17 +1777,6 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 			]
 		);
 
-		$this->add_control(
-			'tags_bg',
-			array(
-				'label'     => esc_html__( 'Background Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['tags'] => 'background-color: {{VALUE}}',
-				),
-			)
-		);
-
 		$this->start_controls_tabs( 'tabs_tags_color' );
 
 		$this->start_controls_tab(
@@ -1835,13 +1822,24 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 
 		$this->end_controls_tabs();
 
+		$this->add_control(
+			'tags_bg',
+			[
+				'type'      => Controls_Manager::COLOR,
+				'label'     => __( 'Background Color', 'jet-woo-builder' ),
+				'separator'  => 'before',
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['tags'] => 'background-color: {{VALUE}}',
+				],
+			]
+		);
+
 		$this->add_responsive_control(
 			'tags_margin',
 			[
-				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%', 'em' ],
-				'separator'  => 'before',
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['tags'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1850,14 +1848,14 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'tags_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
-				'selectors'  => array(
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['tags'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
@@ -2028,9 +2026,9 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'stock_status_margin',
 			[
-				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%', 'em' ],
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'separator'  => 'before',
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['stock-status'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -2040,14 +2038,14 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'stock_status_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
-				'selectors'  => array(
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['stock-status'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
@@ -2127,26 +2125,26 @@ class Jet_Woo_Products extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'sku_margin',
-			array(
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
-				'selectors'  => array(
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['sku'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'sku_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
-				'selectors'  => array(
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['sku'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(

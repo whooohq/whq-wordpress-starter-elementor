@@ -14,6 +14,8 @@ trait Meta_Query_Trait {
 		$raw        = $args['meta_query'];
 		$meta_query = array();
 
+		$custom_meta_query = array();
+
 		if ( ! empty( $args['meta_query_relation'] ) ) {
 			$meta_query['relation'] = $args['meta_query_relation'];
 		}
@@ -25,10 +27,28 @@ trait Meta_Query_Trait {
 				$query_row['value'] = \Jet_Engine_Tools::is_valid_timestamp( $query_row['value'] ) ? $query_row['value'] : strtotime( $query_row['value'] );
 			}
 
+			if ( ! empty( $query_row['custom'] ) ) {
+				unset( $query_row['custom'] );
+				$custom_meta_query[] = $query_row;
+				continue;
+			}
+
 			if ( ! empty( $query_row['clause_name'] ) ) {
 				$meta_query[ $query_row['clause_name'] ] = $query_row;
 			} else {
 				$meta_query[] = $query_row;
+			}
+
+		}
+
+		$is_or_relation = ! empty( $meta_query['relation'] ) && 'or' === $meta_query['relation'];
+
+		if ( ! empty( $custom_meta_query ) ) {
+
+			if ( $is_or_relation ) {
+				$meta_query = array_merge( array( $meta_query ), $custom_meta_query );
+			} else {
+				$meta_query = array_merge( $meta_query, $custom_meta_query );
 			}
 
 		}
@@ -55,6 +75,11 @@ trait Meta_Query_Trait {
 			foreach ( $this->final_query['meta_query'] as $index => $existing_row ) {
 				foreach ( $rows as $row_index => $row ) {
 					if ( isset( $row['key'] ) && $existing_row['key'] === $row['key'] ) {
+
+						if ( ! empty( $existing_row['clause_name'] ) ) {
+							$row['clause_name'] = $existing_row['clause_name'];
+						}
+
 						$this->final_query['meta_query'][ $index ] = $row;
 						$replaced_rows[] = $row_index;
 						break;
@@ -68,6 +93,7 @@ trait Meta_Query_Trait {
 
 		foreach ( $rows as $row_index => $row ) {
 			if ( ! in_array( $row_index, $replaced_rows ) ) {
+				$row['custom'] = true;
 				$this->final_query['meta_query'][] = $row;
 			}
 		}
@@ -75,10 +101,8 @@ trait Meta_Query_Trait {
 	}
 
 	public function get_dates_range_meta_query( $args = array(), $dates_range = array(), $settings = array() ) {
-		
-		if ( $settings['group_by_key'] ) {
-			$meta_key = esc_attr( $settings['group_by_key'] );
-		}
+
+		$meta_key = $settings['group_by_key'] ? esc_attr( $settings['group_by_key'] ) : false;
 
 		if ( isset( $args['meta_query'] ) ) {
 			$meta_query = $args['meta_query'];
@@ -100,7 +124,7 @@ trait Meta_Query_Trait {
 
 		}
 
-		if ( ! empty( $settings['allow_multiday'] ) && ! empty( $settings['end_date_key'] ) ) {
+		if ( $meta_key && ! empty( $settings['allow_multiday'] ) && ! empty( $settings['end_date_key'] ) ) {
 
 			$calendar_meta_query = array_merge( $calendar_meta_query, array(
 				array(

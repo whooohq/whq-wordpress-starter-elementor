@@ -83,7 +83,7 @@ class License_Manager {
 				array(
 					'status'  => 'error',
 					'code'    => 'server_error',
-					'message' => 'Server Error, try again later',
+					'message' => $responce['message'],
 					'data'    => [],
 				)
 			);

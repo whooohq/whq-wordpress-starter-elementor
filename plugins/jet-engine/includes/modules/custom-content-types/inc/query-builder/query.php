@@ -24,6 +24,10 @@ class CCT_Query extends \Jet_Engine\Query_Builder\Queries\Base_Query {
 
 		$content_type = Module::instance()->manager->get_content_types( $type );
 
+		if ( ! $content_type ) {
+			return $result;
+		}
+
 		$order  = ! empty( $this->final_query['order'] ) ? $this->final_query['order'] : array();
 		$args   = ! empty( $this->final_query['args'] ) ? $this->final_query['args'] : array();
 		$offset = ! empty( $this->final_query['offset'] ) ? absint( $this->final_query['offset'] ) : 0;
@@ -102,7 +106,21 @@ class CCT_Query extends \Jet_Engine\Query_Builder\Queries\Base_Query {
 		}
 
 		$content_type = Module::instance()->manager->get_content_types( $type );
-		$args         = ! empty( $this->final_query['args'] ) ? $this->final_query['args'] : array();
+
+		if ( ! $content_type ) {
+			return $result;
+		}
+
+		$args   = ! empty( $this->final_query['args'] ) ? $this->final_query['args'] : array();
+		$status = ! empty( $this->final_query['status'] ) ? $this->final_query['status'] : '';
+
+		if ( $status ) {
+			$args[] = array(
+				'field'    => 'cct_status',
+				'operator' => '=',
+				'value'    => $status,
+			);
+		}
 
 		$content_type->db->set_query_object( $this );
 
@@ -212,35 +230,7 @@ class CCT_Query extends \Jet_Engine\Query_Builder\Queries\Base_Query {
 			case 'meta_query':
 
 				foreach ( $value as $row ) {
-
-					if ( ! empty( $row['relation'] ) ) {
-
-						$prepared_row = array(
-							'relation' => $row['relation'],
-						);
-
-						unset( $row['relation'] );
-
-						foreach ( $row as $inner_row ) {
-							$prepared_row[] = array(
-								'field'    => ! empty( $inner_row['key'] ) ? $inner_row['key'] : false,
-								'operator' => ! empty( $inner_row['compare'] ) ? $inner_row['compare'] : '=',
-								'value'    => ! empty( $inner_row['value'] ) ? $inner_row['value'] : '',
-								'type'     => ! empty( $inner_row['type'] ) ? $inner_row['type'] : false,
-							);
-						}
-
-					} else {
-						$prepared_row = array(
-							'field'    => ! empty( $row['key'] ) ? $row['key'] : false,
-							'operator' => ! empty( $row['compare'] ) ? $row['compare'] : '=',
-							'value'    => ! empty( $row['value'] ) ? $row['value'] : '',
-							'type'     => ! empty( $row['type'] ) ? $row['type'] : false,
-						);
-					}
-
-					$this->update_args_row( $prepared_row );
-
+					$this->update_args_row( $this->prepare_args_row( $row ) );
 				}
 
 				break;
@@ -252,6 +242,38 @@ class CCT_Query extends \Jet_Engine\Query_Builder\Queries\Base_Query {
 
 		}
 
+	}
+
+	/**
+	 * Prepare arguments row.
+	 *
+	 * @param  array $row
+	 * @return array
+	 */
+	public function prepare_args_row( $row ) {
+
+		if ( ! empty( $row['relation'] ) ) {
+
+			$prepared_row = array(
+				'relation' => $row['relation'],
+			);
+
+			unset( $row['relation'] );
+
+			foreach ( $row as $inner_row ) {
+				$prepared_row[] = $this->prepare_args_row( $inner_row );
+			}
+
+		} else {
+			$prepared_row = array(
+				'field'    => ! empty( $row['key'] ) ? $row['key'] : false,
+				'operator' => ! empty( $row['compare'] ) ? $row['compare'] : '=',
+				'value'    => ! empty( $row['value'] ) ? $row['value'] : '',
+				'type'     => ! empty( $row['type'] ) ? $row['type'] : false,
+			);
+		}
+
+		return $prepared_row;
 	}
 
 	/**
@@ -275,7 +297,7 @@ class CCT_Query extends \Jet_Engine\Query_Builder\Queries\Base_Query {
 	}
 
 	/**
-	 * Update argumnts row in the arguments list of the final query
+	 * Update arguments row in the arguments list of the final query
 	 *
 	 * @param  [type] $row [description]
 	 * @return [type]      [description]

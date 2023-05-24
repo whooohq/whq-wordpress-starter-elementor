@@ -73,6 +73,23 @@ if ( ! class_exists( 'Jet_Engine_Render_Base' ) ) {
 			return $required;
 		}
 
+		public function get_default_cb_settings() {
+
+			$settings   = array();
+			$disallowed = array( 'checklist_divider_color' );
+
+			foreach ( jet_engine()->listings->get_callbacks_args() as $key => $args ) {
+
+				if ( in_array( $key, $disallowed ) ) {
+					continue;
+				}
+
+				$settings[ $key ] = isset( $args['default'] ) ? $args['default'] : null;
+			}
+
+			return $settings;
+		}
+
 		public function get( $setting = null, $default = false ) {
 			if ( isset( $this->settings[ $setting ] ) ) {
 				return $this->settings[ $setting ];
@@ -189,6 +206,16 @@ if ( ! class_exists( 'Jet_Engine_Render_Base' ) ) {
 		 * @return [type] [description]
 		 */
 		public function render_content() {
+
+			/**
+			 * General hook fires before any JetEngine element render in any builder
+			 */
+			do_action( 'jet-engine/listing-element/before-render', $this );
+
+			/**
+			 * Specific hook for each JetEngine element fires before this element render
+			 */
+			do_action( 'jet-engine/listing-element/before-render/' . $this->get_name(), $this );
 
 			$this->render();
 

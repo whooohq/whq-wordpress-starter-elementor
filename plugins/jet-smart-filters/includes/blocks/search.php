@@ -527,7 +527,11 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Search' ) ) {
 
 			ob_start();
 
-			printf( '<div class="%1$s jet-filter">', $base_class );
+			printf(
+				'<div class="%1$s jet-filter" data-is-block="jet-smart-filters/%2$s">',
+				$base_class,
+				$this->get_name()
+			);
 
 			include jet_smart_filters()->get_template( 'common/filter-label.php' );
 

@@ -88,23 +88,22 @@
 		}
 
 		render() {
-			let template = '<div class="jet-engine-map-field__preview" style="display: none; justify-content: space-between; padding: 0 0 5px; align-items: center;">' +
-								'<address class="jet-engine-map-field__position"></address>' +
-								'<div class="jet-engine-map-field__reset" role="button" style="cursor: pointer; color: #c92c2c; font-weight: 500; flex-shrink: 0;">× ' + JetMapFieldsSettings.i18n.resetBtn + '</div>' +
-							'</div>' +
-							'<div class="jet-engine-map-field__frame" style="height: ' + this.fieldSettings.height + 'px"></div>';
+			const fieldTemplate = wp.template( 'jet-engine-map-field' );
+			const templateData = {
+				height:      this.fieldSettings.height,
+				fieldPrefix: this.fieldSettings.field_prefix,
+				isRepeater:  this.isRepeaterField
+			};
 
-			if ( this.isRepeaterField ) {
-				template += '<div class="jet-engine-map-field__description">' +
-								'<p style="margin-bottom: 0;"><strong>' + JetMapFieldsSettings.i18n.descTitle + ':</strong> <i>' + this.fieldSettings.field_prefix + '_lat, ' + this.fieldSettings.field_prefix +'_lng</i></p>' +
-							'</div>';
-			}
+			this.$container.append( fieldTemplate( templateData ) );
 
-			this.$container.append( template );
-
-			this.$preview  = this.$container.find( '.jet-engine-map-field__preview' );
-			this.$position = this.$container.find( '.jet-engine-map-field__position' );
-			this.$mapFrame = this.$container.find( '.jet-engine-map-field__frame' );
+			this.$preview      = this.$container.find( '.jet-engine-map-field__preview' );
+			this.$position     = this.$container.find( '.jet-engine-map-field__position' );
+			this.$search       = this.$container.find( '.jet-engine-map-field__search' );
+			this.$searchInput  = this.$container.find( '.jet-engine-map-field__search input' );
+			this.$searchLoader = this.$container.find( '.jet-engine-map-field__search-loader' );
+			this.$searchList   = this.$container.find( '.jet-engine-map-field__search-list' );
+			this.$mapFrame     = this.$container.find( '.jet-engine-map-field__frame' );
 
 			let defaultPos,
 				valueFormat = false;
@@ -171,13 +170,14 @@
 				let position = this.mapProvider.getMarkerPosition( marker, true );
 
 				this.setValue( position );
+
+				this.$searchInput.val( null );
 			} );
 		}
 
 		setValue( position ) {
-
-			let self = this,
-				location = '';
+			const self = this;
+			let location = '';
 
 			this.setPreview( JetMapFieldsSettings.i18n.loading );
 
@@ -187,7 +187,7 @@
 					location = position.lat + ',' + position.lng;
 
 					this.updateHashFieldPromise( location ).then( function() {
-						self.$input.val( location );
+						self.$input.val( location ).trigger( 'change' );
 						self.setPreview( position );
 					} );
 
@@ -198,7 +198,7 @@
 					location = JSON.stringify( position );
 
 					this.updateHashFieldPromise( location ).then( function() {
-						self.$input.val( location );
+						self.$input.val( location ).trigger( 'change' );
 						self.setPreview( position );
 					} );
 
@@ -216,17 +216,17 @@
 							if ( response.data ) {
 
 								self.updateHashFieldPromise( response.data ).then( function() {
-									self.$input.val( response.data );
+									self.$input.val( response.data ).trigger( 'change' );
 									self.setPreview( response.data );
 								} );
 
 							} else {
-								self.$input.val( null );
+								self.$input.val( null ).trigger( 'change' );
 								self.setPreview( JetMapFieldsSettings.i18n.notFound );
 							}
 
 						} else {
-							self.$input.val( null );
+							self.$input.val( null ).trigger( 'change' );
 							self.setPreview( response.html );
 						}
 
@@ -253,26 +253,47 @@
 			}
 
 			this.$position.html( positionText );
-			this.$preview.css( 'display', position ? 'flex' : 'none' );
+
+			if ( position ) {
+				this.$preview.addClass( 'show' );
+			} else {
+				this.$preview.removeClass( 'show' );
+			}
 		}
 
 		events() {
 			this.$container.on( 'click', '.jet-engine-map-field__reset', this.resetLocation.bind( this ) );
+
+			this.$searchInput.on( 'input',    this.inputSearchHandler.bind( this ) );
+			this.$searchInput.on( 'focus',    this.focusSearchHandler.bind( this ) );
+			this.$searchInput.on( 'keypress', this.keypressSearchHandler.bind( this ) );
+
+			this.$searchList.on( 'click', '.jet-engine-map-field__search-item', this.searchItemClickHandler.bind( this ) );
+
+			// Hide list on click outside.
+			this.$search.on( 'click',   this.clickSearchHandler );
+			this.$search.on( 'touchend', this.clickSearchHandler );
+
+			$( document ).on( 'click',    this.hideSearchList.bind( this ) );
+			$( document ).on( 'touchend', this.hideSearchList.bind( this ) );
+
 		}
 
 		resetLocation() {
 			this.mapProvider.removeMarker( this.marker );
 			this.setPreview( null );
-			this.$input.val( null );
+			this.$input.val( null ).trigger( 'change' );
 
 			if ( this.$inputLat && this.$inputLng  ) {
 				this.$inputLat.val( null );
 				this.$inputLng.val( null );
 			}
+
+			this.$searchInput.val( null );
 		}
 
 		updateHashFieldPromise( location ) {
-			let self = this;
+			const self = this;
 
 			if ( ! this.$inputHash ) {
 				return new Promise( function( resolve ) {
@@ -308,6 +329,172 @@
 			}
 
 			return { lat: Number( lat ), lng: Number( lng ) };
+		}
+
+		geocodeSearch() {
+			const self = this;
+			const value = this.$searchInput.val();
+
+			wp.apiFetch( {
+				method: 'get',
+				path: JetMapFieldsSettings.apiLocation + '?address=' + value,
+			} ).then( function( response ) {
+
+				if ( response.success ) {
+					self.addMarkerByPosition( response.data );
+				} else {
+					window.alert( response.html );
+				}
+
+			} ).catch( function( e ) {
+				console.log( e );
+			} );
+		}
+
+		addMarkerByPosition( position ) {
+
+			// Maybe convert string coordinates to numeric coordinates.
+			Object.keys( position ).forEach( function( key, index ) {
+				position[key] = Number( position[key] );
+			} );
+
+			if ( this.marker ) {
+				this.mapProvider.removeMarker( this.marker );
+			}
+
+			this.marker = this.mapProvider.addMarker( Object.assign( this.markerDefaults, {
+				position: position,
+				map: this.map,
+			} ) );
+
+			this.setValue( position );
+
+			this.mapProvider.setCenterByPosition( {
+				position: position,
+				map: this.map,
+				zoom: 12,
+			} );
+
+		}
+
+		inputSearchHandler( event ) {
+			const self = this;
+			const value = $( event.target ).val().trim();
+
+			if ( this.currentSearchQuery && this.currentSearchQuery === value ) {
+				return false;
+			}
+
+			if ( this.searchController ) {
+				this.searchController.abort();
+			}
+
+			if ( 2 > value.length ) {
+				this.hideSearchLoader();
+				this.hideSearchList();
+				return false;
+			}
+
+			this.searchController = new AbortController();
+
+			this.showSearchLoader();
+
+			this.currentSearchQuery = value;
+
+			wp.apiFetch( {
+				method: 'get',
+				path: JetMapFieldsSettings.apiAutocomplete + '?query=' + value,
+				signal: this.searchController.signal,
+			} ).then( function( response ) {
+
+				let itemsHtml = '';
+
+				if ( response.success ) {
+
+					for ( let item in response.data ) {
+						let attrs = '';
+
+						if ( response.data[item].lat && response.data[item].lng ) {
+							attrs += ' data-lat="' + response.data[item].lat + '"';
+							attrs += ' data-lng="' + response.data[item].lng + '"';
+						}
+
+						itemsHtml += '<li class="jet-engine-map-field__search-item"' + attrs + '>' + response.data[item].address + '</li>';
+					}
+
+				} else {
+					itemsHtml = '<li class="jet-engine-map-field__search-no-results">' + response.html + '</li>';
+				}
+
+				self.hideSearchLoader();
+				self.showSearchList();
+
+				self.$searchList.html( itemsHtml );
+
+			} ).catch( function( e ) {
+				console.log( e );
+			} );
+		}
+
+		keypressSearchHandler( event ) {
+
+			if ( 13 !== event.keyCode ) {
+				return;
+			}
+
+			this.hideSearchList();
+
+			this.geocodeSearch();
+		}
+
+		searchItemClickHandler( event ) {
+
+			const $searchItem = $( event.target );
+
+			this.$searchInput.val( $searchItem.text() );
+
+			this.hideSearchList();
+
+			if ( $searchItem.data( 'lat' ) && $searchItem.data( 'lng' ) ) {
+
+				this.addMarkerByPosition( {
+					lat: $searchItem.data( 'lat' ),
+					lng: $searchItem.data( 'lng' ),
+				} );
+
+			} else {
+				this.geocodeSearch();
+			}
+		}
+
+		focusSearchHandler( event ) {
+			const value = $( event.target ).val();
+
+			if ( 2 > value.length ) {
+				return;
+			}
+
+			this.showSearchList();
+		}
+
+		clickSearchHandler( event ) {
+			event.stopPropagation();
+		}
+
+		showSearchList() {
+			this.$searchList.addClass( 'show' );
+		}
+
+		hideSearchList() {
+			this.$searchList.removeClass( 'show' );
+		}
+
+		showSearchLoader() {
+			this.$searchLoader.addClass( 'show' );
+		}
+
+		hideSearchLoader() {
+			this.$searchLoader.removeClass( 'show' );
 		}
 
 	}

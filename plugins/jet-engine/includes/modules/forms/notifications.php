@@ -1563,12 +1563,15 @@ if ( ! class_exists( 'Jet_Engine_Booking_Forms_Notifications' ) ) {
 				return;
 			}
 
-			$option_name = $notification['options_page'];
+			$options_page = $notification['options_page'];
 
-			$current_value = get_option( $option_name, array() );
-			$new_value     = array_merge( $current_value, $options_data );
+			$page = isset( jet_engine()->options_pages->registered_pages[ $options_page ] ) ? jet_engine()->options_pages->registered_pages[ $options_page ] : false;
 
-			update_option( $option_name, $new_value );
+			if ( ! $page ) {
+				return;
+			}
+
+			$page->update_options( $options_data, false, false );
 
 			$this->log[] = true;
 		}

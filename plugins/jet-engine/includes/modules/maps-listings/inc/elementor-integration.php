@@ -3,6 +3,8 @@ namespace Jet_Engine\Modules\Maps_Listings;
 
 class Elementor_Integration {
 
+	use Preview_Trait;
+
 	/**
 	 * Constructor for the class
 	 */
@@ -16,22 +18,7 @@ class Elementor_Integration {
 
 		add_action( 'jet-engine/listings/preview-scripts', array( $this, 'preview_scripts' ) );
 
-		add_action( 'jet-engine/elementor-views/dynamic-tags/register', array( $this, 'register_dynamic_tags' ) );
-	}
-
-	/**
-	 * Preview scripts
-	 *
-	 * @return void
-	 */
-	public function preview_scripts() {
-		
-		$provider = Module::instance()->providers->get_active_map_provider();
-
-		$provider->register_public_assets();
-		$provider->public_assets( null, array( 'marker_clustering' => true ), null );
-
-		wp_enqueue_script( 'jet-maps-listings' );
+		add_action( 'jet-engine/elementor-views/dynamic-tags/register', array( $this, 'register_dynamic_tags' ), 10, 2 );
 	}
 
 	/**
@@ -52,13 +39,14 @@ class Elementor_Integration {
 	/**
 	 * Register dynamic tags
 	 *
+	 * @param $dynamic_tags
 	 * @param $tags_module
 	 */
-	public function register_dynamic_tags( $tags_module ) {
+	public function register_dynamic_tags( $dynamic_tags, $tags_module ) {
 
 		require_once jet_engine()->modules->modules_path( 'maps-listings/inc/dynamic-tags/open-map-popup.php' );
 
-		$tags_module->register_tag( new Dynamic_Tags\Open_Map_Popup() );
+		$tags_module->register_tag( $dynamic_tags, new Dynamic_Tags\Open_Map_Popup() );
 
 	}
 

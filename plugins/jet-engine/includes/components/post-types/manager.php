@@ -396,8 +396,10 @@ if ( ! class_exists( 'Jet_Engine_CPT' ) ) {
 					unset( $post_type['meta_fields'] );
 				}
 
+				unset( $post_type['hide_field_names'] );
+
 				if ( ! empty( $post_type['menu_position'] ) ) {
-					$post_type['menu_position'] = absint( $post_type['menu_position'] );
+					$post_type['menu_position'] = intval( $post_type['menu_position'] );
 				}
 
 				if ( ! empty( $post_type['show_edit_link'] ) ) {
@@ -414,6 +416,12 @@ if ( ! class_exists( 'Jet_Engine_CPT' ) ) {
 					unset( $post_type['show_edit_link'] );
 
 				}
+
+				if ( ! isset( $args['map_meta_cap'] ) ) {
+					$post_type['map_meta_cap'] = true;
+				}
+
+				jet_engine()->add_instance( 'post-type', $post_type );
 
 				register_post_type( $post_type['slug'], $post_type );
 
@@ -696,133 +704,133 @@ if ( ! class_exists( 'Jet_Engine_CPT' ) ) {
 					'label'       => __( 'Add New', 'jet-engine' ),
 					'description' => __( 'The add new text. The default is `Add New` for both hierarchical and non-hierarchical post types', 'jet-engine' ),
 					'is_singular' => true,
-					'default'     => __( 'Add New %s%', 'Default value for add_new label', 'jet-engine' ),
+					'default'     => _x( 'Add New %s%', 'Default value for add_new label', 'jet-engine' ),
 				),
 				array(
 					'name'        => 'add_new_item',
 					'label'       => __( 'Add New Item', 'jet-engine' ),
 					'description' => __( 'Default is Add New Post/Add New Page', 'jet-engine' ),
 					'is_singular' => true,
-					'default'     => __( 'Add New %s%', 'Default value for add_new_item label', 'jet-engine' ),
+					'default'     => _x( 'Add New %s%', 'Default value for add_new_item label', 'jet-engine' ),
 				),
 				array(
 					'name'        => 'new_item',
 					'label'       => __( 'New Item', 'jet-engine' ),
 					'description' => __( 'Default is New Post/New Page', 'jet-engine' ),
 					'is_singular' => true,
-					'default'     => __( 'New %s%', 'Default value for new_item label', 'jet-engine' ),
+					'default'     => _x( 'New %s%', 'Default value for new_item label', 'jet-engine' ),
 				),
 				array(
 					'name'        => 'edit_item',
 					'label'       => __( 'Edit Item', 'jet-engine' ),
 					'description' => __( 'Default is Edit Post/Edit Page', 'jet-engine' ),
 					'is_singular' => true,
-					'default'     => __( 'Edit %s%', 'Default value for edit_item label', 'jet-engine' ),
+					'default'     => _x( 'Edit %s%', 'Default value for edit_item label', 'jet-engine' ),
 				),
 				array(
 					'name'        => 'view_item',
 					'label'       => __( 'View Item', 'jet-engine' ),
 					'description' => __( 'Default is View Post/View Page', 'jet-engine' ),
 					'is_singular' => true,
-					'default'     => __( 'View %s%', 'Default value for view_item label', 'jet-engine' ),
+					'default'     => _x( 'View %s%', 'Default value for view_item label', 'jet-engine' ),
 				),
 				array(
 					'name'        => 'all_items',
 					'label'       => __( 'All Items', 'jet-engine' ),
 					'description' => __( 'String for the submenu', 'jet-engine' ),
 					'is_singular' => false,
-					'default'     => __( 'All %s%', 'Default value for all_items label', 'jet-engine' ),
+					'default'     => _x( 'All %s%', 'Default value for all_items label', 'jet-engine' ),
 				),
 				array(
 					'name'        => 'search_items',
 					'label'       => __( 'Search for items', 'jet-engine' ),
 					'description' => __( 'Default is Search Posts/Search Pages', 'jet-engine' ),
 					'is_singular' => false,
-					'default'     => __( 'Search for %s%', 'Default value for search_items label', 'jet-engine' ),
+					'default'     => _x( 'Search for %s%', 'Default value for search_items label', 'jet-engine' ),
 				),
 				array(
 					'name'        => 'parent_item_colon',
 					'label'       => __( 'Parent Item', 'jet-engine' ),
 					'description' => __( 'This string isn`t used on non-hierarchical types. In hierarchical ones the default is `Parent Page:`', 'jet-engine' ),
 					'is_singular' => true,
-					'default'     => __( 'Parent %s%', 'Default value for parent_item_colon label', 'jet-engine' ),
+					'default'     => _x( 'Parent %s%', 'Default value for parent_item_colon label', 'jet-engine' ),
 				),
 				array(
 					'name'        => 'not_found',
 					'label'       => __( 'Not found', 'jet-engine' ),
 					'description' => __( 'Default is No posts found/No pages found', 'jet-engine' ),
 					'is_singular' => false,
-					'default'     => __( 'Parent %s%', 'Default value for parent_item_colon label', 'jet-engine' ),
+					'default'     => _x( 'Parent %s%', 'Default value for parent_item_colon label', 'jet-engine' ),
 				),
 				array(
 					'name'        => 'not_found_in_trash',
 					'label'       => __( 'Not found in trash', 'jet-engine' ),
 					'description' => __( 'Default is No posts found in Trash/No pages found in Trash', 'jet-engine' ),
 					'is_singular' => false,
-					'default'     => __( 'No %s% found in trash', 'Default value for not_found_in_trash label', 'jet-engine' ),
+					'default'     => _x( 'No %s% found in trash', 'Default value for not_found_in_trash label', 'jet-engine' ),
 				),
 				array(
 					'name'        => 'menu_name',
 					'label'       => __( 'Admin Menu', 'jet-engine' ),
 					'description' => __( 'Default is the same as `name`', 'jet-engine' ),
 					'is_singular' => false,
-					'default'     => __( '%s%', 'Default value for menu_name label', 'jet-engine' ),
+					'default'     => _x( '%s%', 'Default value for menu_name label', 'jet-engine' ),
 				),
 				array(
 					'name'        => 'name_admin_bar',
 					'label'       => __( 'Add New on Toolbar', 'jet-engine' ),
 					'description' => __( 'String for use in New in Admin menu bar', 'jet-engine' ),
 					'is_singular' => true,
-					'default'     => __( '%s%', 'Default value for name_admin_bar label', 'jet-engine' ),
+					'default'     => _x( '%s%', 'Default value for name_admin_bar label', 'jet-engine' ),
 				),
 				array(
 					'name'        => 'featured_image',
 					'label'       => __( 'Featured Image', 'jet-engine' ),
 					'description' => __( 'Default is Featured Image', 'jet-engine' ),
 					'is_singular' => true,
-					'default'     => __( 'Featured Image', 'Default value for featured_image label', 'jet-engine' ),
+					'default'     => _x( 'Featured Image', 'Default value for featured_image label', 'jet-engine' ),
 				),
 				array(
 					'name'        => 'set_featured_image',
 					'label'       => __( 'Set Featured Image', 'jet-engine' ),
 					'description' => __( 'Default is Set featured image', 'jet-engine' ),
 					'is_singular' => true,
-					'default'     => __( 'Set featured image', 'Default value for set_featured_image label', 'jet-engine' ),
+					'default'     => _x( 'Set featured image', 'Default value for set_featured_image label', 'jet-engine' ),
 				),
 				array(
 					'name'        => 'remove_featured_image',
 					'label'       => __( 'Remove Featured Image', 'jet-engine' ),
 					'description' => __( 'Default is Remove featured image', 'jet-engine' ),
 					'is_singular' => true,
-					'default'     => __( 'Remove featured image', 'Default value for remove_featured_image label', 'jet-engine' ),
+					'default'     => _x( 'Remove featured image', 'Default value for remove_featured_image label', 'jet-engine' ),
 				),
 				array(
 					'name'        => 'use_featured_image',
 					'label'       => __( 'Use Featured Image', 'jet-engine' ),
 					'description' => __( 'Default is Use as featured image', 'jet-engine' ),
 					'is_singular' => true,
-					'default'     => __( 'Use featured image', 'Default value for use_featured_image label', 'jet-engine' ),
+					'default'     => _x( 'Use featured image', 'Default value for use_featured_image label', 'jet-engine' ),
 				),
 				array(
 					'name'        => 'archives',
 					'label'       => __( 'The post type archive label used in nav menus', 'jet-engine' ),
 					'description' => __( 'String for use with archives in nav menus', 'jet-engine' ),
 					'is_singular' => false,
-					'default'     => __( '%s%', 'Default value for archives label', 'jet-engine' ),
+					'default'     => _x( '%s%', 'Default value for archives label', 'jet-engine' ),
 				),
 				array(
 					'name'        => 'insert_into_item',
 					'label'       => __( 'Insert into post', 'jet-engine' ),
 					'description' => __( 'String for the media frame button', 'jet-engine' ),
 					'is_singular' => true,
-					'default'     => __( 'Insert into %s%', 'Default value for insert_into_item label', 'jet-engine' ),
+					'default'     => _x( 'Insert into %s%', 'Default value for insert_into_item label', 'jet-engine' ),
 				),
 				array(
 					'name'        => 'uploaded_to_this_item',
 					'label'       => __( 'Uploaded to this post', 'jet-engine' ),
 					'description' => __( 'String for the media frame filter', 'jet-engine' ),
 					'is_singular' => true,
-					'default'     => __( 'Uploaded to this %s%', 'Default value for uploaded_to_this_item label', 'jet-engine' ),
+					'default'     => _x( 'Uploaded to this %s%', 'Default value for uploaded_to_this_item label', 'jet-engine' ),
 				),
 			);
 		}
@@ -938,6 +946,7 @@ if ( ! class_exists( 'Jet_Engine_CPT' ) ) {
 				'query_var'          => true,
 				'rewrite'            => true,
 				'capability_type'    => 'post',
+				'map_meta_cap'       => true,
 				'has_archive'        => true,
 				'menu_icon'          => 'dashicons-format-standard',
 				'supports'           => array( 'title', 'editor' ),

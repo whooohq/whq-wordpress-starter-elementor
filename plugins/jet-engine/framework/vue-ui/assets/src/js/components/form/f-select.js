@@ -1,6 +1,6 @@
 import { oneOf, arraysEqual } from '../../utils/assist';
+import { clickOutsideDirective as clickOutside } from '../../utils/v-click-outside';
 import { checkConditions } from '../../mixins/check-conditions';
-import { directive as clickOutside } from 'v-click-outside-x';
 
 const FilterableSelect = {
 
@@ -207,6 +207,8 @@ const FilterableSelect = {
 						this.selectedOptions = options;
 						this.loaded          = true;
 						this.loading         = false;
+
+						this.$emit( 'on-change-remote-options', options );
 					}
 				} );
 			}
@@ -293,6 +295,8 @@ const FilterableSelect = {
 							this.options = options;
 							this.loaded  = true;
 							this.loading = false;
+
+							this.$emit( 'on-change-remote-options', options );
 						}
 					} );
 				}
@@ -337,6 +341,8 @@ const FilterableSelect = {
 		resetRemoteOptions() {
 			this.options = [];
 			this.loaded  = false;
+
+			this.$emit( 'on-reset-remote-options', [] );
 		},
 		removeValue( value ) {
 			this.currentValues.splice( this.currentValues.indexOf( value ), 1 );

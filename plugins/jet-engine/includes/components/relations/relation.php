@@ -1244,6 +1244,8 @@ class Relation {
 			return $exists[0];
 		}
 
+		do_action( 'jet-engine/relation/update/before', $parent_object, $child_object, $this );
+
 		$update = false;
 		$where  = array(
 			'rel_id' => $this->get_id()
@@ -1316,6 +1318,8 @@ class Relation {
 			) );
 
 		}
+
+		do_action( 'jet-engine/relation/update/after', $parent_object, $child_object, $item_id, $this );
 
 		$this->reset_update_context();
 		wp_cache_flush();

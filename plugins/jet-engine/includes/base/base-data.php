@@ -425,7 +425,7 @@ if ( ! class_exists( 'Jet_Engine_Base_Data' ) ) {
 		}
 
 		/**
-		 * Returns blacklisted post types slugs
+		 * Returns blacklisted meta fields slugs
 		 *
 		 * @return array
 		 */
@@ -501,6 +501,8 @@ if ( ! class_exists( 'Jet_Engine_Base_Data' ) ) {
 				'tag-name',
 				'slug',
 				'description',
+				'general',
+				'advanced',
 			);
 		}
 

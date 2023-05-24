@@ -345,9 +345,9 @@ class Jet_Woo_Builder_Single_Rating extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'stars_margin',
 			[
-				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'separator'  => 'before',
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['stars'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -432,9 +432,9 @@ class Jet_Woo_Builder_Single_Rating extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'reviews_link_margin',
 			[
-				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'separator'  => 'before',
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['reviews_link'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',

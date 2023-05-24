@@ -4,9 +4,10 @@ if ( empty( $args ) ) {
 	return;
 }
 
-$options     = $args['options'];
-$filter_type = ! empty( $args['behavior'] ) ? $args['behavior'] : 'checkbox';
-$query_var   = 'alphabet-filter' . $args['filter_id'];
+$options             = $args['options'];
+$filter_type         = ! empty( $args['behavior'] ) ? $args['behavior'] : 'checkbox';
+$query_var           = 'alphabet-filter' . $args['filter_id'];
+$accessibility_label = $args['accessibility_label'];
 
 if ( ! $options ) {
 	return;
@@ -16,8 +17,9 @@ $current = $this->get_current_filter_value( $args );
 
 ?>
 <div class="jet-alphabet-list" <?php $this->filter_data_atts( $args ); ?>><?php
-	echo '<div class="jet-alphabet-list__wrapper">';
 
+	echo '<fieldset class="jet-alphabet-list__wrapper">';
+	echo '<legend style="display:none;">' . $accessibility_label . '</legend>';
 	foreach ( $options as $value ) {
 		$checked = '';
 
@@ -35,6 +37,6 @@ $current = $this->get_current_filter_value( $args );
 			include jet_smart_filters()->get_template( 'filters/alphabet-item.php' );
 		}
 	}
+	echo '</fieldset>';
 
-	echo '</div>';
 ?></div>

@@ -380,6 +380,21 @@ if ( ! class_exists( 'Jet_Engine_Dynamic_Functions' ) ) {
 				),
 			);
 
+			$controls['data_context_relation_object'] = array(
+				'label'     => __( 'From Object (what to show)', 'jet-engine' ),
+				'type'      => 'select',
+				'options' => array(
+					'parent_object' => __( 'Parent Object', 'jet-engine' ),
+					'child_object'  => __( 'Child Object', 'jet-engine' ),
+				),
+				'default' => 'child_object',
+				'condition' => array(
+					'data_source'    => 'post_meta',
+					'data_context'   => 'related_posts',
+					'function_name!' => 'query_var',
+				),
+			);
+
 			$controls['data_context_tax'] = array(
 				'label'           => __( 'Taxonomy', 'jet-engine' ),
 				'type'            => 'select',
@@ -533,6 +548,8 @@ if ( ! class_exists( 'Jet_Engine_Dynamic_Functions' ) ) {
 				return $settings;
 			}
 
+			$required_sql_settings = array( 'decimal_count' );
+
 			foreach ( $custom_settings as $setting_key => $setting_data ) {
 				if ( $tag ) {
 					$settings[ $setting_key ] = $tag->get_settings( $setting_key );
@@ -541,7 +558,7 @@ if ( ! class_exists( 'Jet_Engine_Dynamic_Functions' ) ) {
 				}
 
 				// Added to prevent SQL error if required sql setting is empty.
-				if ( Jet_Engine_Tools::is_empty( $settings[ $setting_key ] ) && isset( $setting_data['default'] ) ) {
+				if ( in_array( $setting_key, $required_sql_settings ) && Jet_Engine_Tools::is_empty( $settings[ $setting_key ] ) && isset( $setting_data['default'] ) ) {
 					$settings[ $setting_key ] = $setting_data['default'];
 				}
 			}
@@ -761,6 +778,7 @@ if ( ! class_exists( 'Jet_Engine_Dynamic_Functions' ) ) {
 
 						$relation = ! empty( $data_source['context_relation'] ) ? $data_source['context_relation'] : false;
 						$post     = get_post();
+						$posts    = false;
 
 						if ( $relation && $post ) {
 
@@ -777,16 +795,38 @@ if ( ! class_exists( 'Jet_Engine_Dynamic_Functions' ) ) {
 									'from'        => $from,
 								) );
 
-								if ( ! empty( $posts ) ) {
-									$posts = implode( ', ', $posts );
-								} else {
-									// If related posts not found - return null to avoid incorrect calculations
+							} else {
+								
+								$from = ! empty( $data_source['data_context_relation_object'] ) ? $data_source['data_context_relation_object'] : 'child_object';
+								$object_id = jet_engine()->listings->data->get_current_object_id();
+
+								$relation_instance = jet_engine()->relations->get_active_relations( $relation );
+
+								if ( ! $relation_instance ) {
 									return null;
 								}
 
-								$final_query = str_replace( ";", " AND $table.post_id IN ( $posts );", $final_query );
+								switch ( $from ) {
+									case 'parent_object':
+										$posts = $relation_instance->get_parents( $object_id, 'ids' );
+										break;
+
+									default:
+										$posts = $relation_instance->get_children( $object_id, 'ids' );
+										break;
+
+								}
 
 							}
+
+							if ( ! empty( $posts ) ) {
+								$posts = implode( ', ', $posts );
+							} else {
+								// If related posts not found - return null to avoid incorrect calculations
+								return null;
+							}
+
+							$final_query = str_replace( ";", " AND $table.post_id IN ( $posts );", $final_query );
 
 						}
 

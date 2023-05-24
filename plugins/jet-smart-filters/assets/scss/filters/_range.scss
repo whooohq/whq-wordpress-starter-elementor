@@ -37,7 +37,9 @@
 .jet-range {
 	&__slider {
 		position: relative;
-		margin-bottom: 20px;
+		margin: 0 0 20px;
+		border: 0;
+		padding: 0;
 
 		&__track {
 			position: relative;
@@ -146,6 +148,9 @@
 			display: flex;
 			margin-left: auto;
 			margin-right: auto;
+			margin: 0;
+			border: 0;
+			padding: 0;
 		}
 
 		&__group {
@@ -164,6 +169,7 @@
 				min-height: auto;
 				color: inherit;
 				font-family: inherit;
+				font-weight: inherit;
 				font-size: inherit;
 				line-height: normal;
 				letter-spacing: inherit;
@@ -215,5 +221,25 @@
 		input[type="range"] {
 			pointer-events: none;
 		}
+	}
+}
+
+// Context Bricks
+.brxe-jet-smart-filters-range {
+	.jet-range__inputs {
+		display: flex;
+	}
+
+	.jet-range__inputs__container {
+		margin-right: 0;
+		margin-left: 0;
+	}
+
+	.jet-range__inputs__group:first-child {
+		margin-right: 0;
+	}
+
+	.jet-range__inputs__group:last-child {
+		margin-left: 0;
 	}
 }

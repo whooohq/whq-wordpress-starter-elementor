@@ -2,6 +2,8 @@
 
 namespace Essential_Addons_Elementor\Pro\Traits;
 
+use Essential_Addons_Elementor\Pro\Classes\Helper as ClassesHelper;
+
 // use \Essential_Addons_Elementor\Classes\Helper;
 
 trait Helper
@@ -27,13 +29,27 @@ trait Helper
     // Subscribe to Mailchimp list
     public function mailchimp_subscribe_with_ajax()
     {
+		if ( empty( $_POST['nonce'] ) ) {
+			return;
+		}
+		if ( ! wp_verify_nonce( $_POST['nonce'], 'essential-addons-elementor' ) ) {
+			return;
+		}
+
         if (!isset($_POST['fields'])) {
             return;
         }
 
-        $api_key = $_POST['apiKey'];
-        $list_id = $_POST['listId'];
+        $api_key = sanitize_text_field( $_POST['apiKey'] );
+        $list_id = sanitize_text_field( $_POST['listId'] );
 
+        $pattern = '/^[0-9a-z]{32}(-us)(0?[1-9]|1[0-3])?$/';
+        if ( ! preg_match($pattern, $api_key) ) {
+            return;
+        }
+
+        $list_id_double_optin = ClassesHelper::mailchimp_lists('mailchimp', true);
+        $is_double_optin = ! empty( $list_id_double_optin[$list_id] ) ? $list_id_double_optin[$list_id] : false;
         parse_str($_POST['fields'], $settings);
 
         $merge_fields = array(
@@ -45,16 +61,19 @@ trait Helper
         if(!empty($settings_tags_string)){
             $settings_tags_string = explode(',', $settings_tags_string);
         }
+
         $body_params = array(
             'email_address' => $settings['eael_mailchimp_email'],
-            'status' => 'subscribed',
+            'status' => $is_double_optin ? 'pending' : 'subscribed',
             'merge_fields' => $merge_fields,
         );
 
         if(!empty($settings_tags_string)){
             $body_params['tags'] = $settings_tags_string;
         }
-        $response = wp_remote_post(
+
+
+        $response = wp_safe_remote_post(
             'https://' . substr($api_key, strpos(
                 $api_key,
                 '-'
@@ -73,9 +92,9 @@ trait Helper
             $response = json_decode(wp_remote_retrieve_body($response));
 
             if (!empty($response)) {
-                if ($response->status == 'subscribed') {
+                if ($response->status == 'subscribed' || $response->status == 'pending') {
                     wp_send_json([
-                        'status' => 'subscribed',
+                        'status' => $response->status,
                     ]);
                 } else {
                     wp_send_json([
@@ -95,12 +114,18 @@ trait Helper
         if( !( !empty( $settings['eael_register_mailchimp_integration_enable'] ) && 'yes' === $settings['eael_register_mailchimp_integration_enable'] ) ){
             return;
         }
-        $api_key = get_option('eael_lr_mailchimp_api_key');
+        $api_key = sanitize_text_field( get_option('eael_lr_mailchimp_api_key') );
         $list_id = !empty($settings['eael_mailchimp_lists']) ? sanitize_text_field( $settings['eael_mailchimp_lists'] ) : '';
 
         if ( empty($api_key) || empty($list_id)) {
             return;
         }
+
+        $pattern = '/^[0-9a-z]{32}(-us)(0?[1-9]|1[0-3])?$/';
+        if ( ! preg_match($pattern, $api_key) ) {
+            return;
+        }
+
         $merge_fields = array(
             'FNAME' => !empty($user_data['first_name']) ? sanitize_text_field( $user_data['first_name'] ) : '',
             'LNAME' => !empty($user_data['last_name']) ? sanitize_text_field( $user_data['last_name'] ) : '',
@@ -108,7 +133,7 @@ trait Helper
 
         $email = sanitize_email( $user_data['user_email'] );
 
-        $response = wp_remote_post(
+        $response = wp_safe_remote_post(
             'https://' . substr($api_key, strpos(
                 $api_key,
                 '-'
@@ -560,8 +585,9 @@ trait Helper
 	public function manage_popular_keyword( $key, $status = false, $update = true ) {
 
 		$popular_keywords = (array)get_option( 'eael_adv_search_popular_keyword', true );
+		$keyword_min_length = !empty( $_POST[ 'settings' ][ 'show_popular_keyword_rank_length' ] ) ? intval( $_POST[ 'settings' ][ 'show_popular_keyword_rank_length' ] ) : 4;
 
-		if ( strlen( $key ) >= 4 ) {
+		if ( strlen( $key ) >= intval( $keyword_min_length ) ) {
 
 			$key = str_replace( ' ', '_', strtolower( $key ) );
 			if ( !empty( $popular_keywords ) ) {

@@ -183,6 +183,13 @@
 					v-model="advancedSettings.capability_type"
 				></cx-vui-input>
 				<cx-vui-switcher
+					:name="'map_meta_cap'"
+					:label="'<?php _e( 'Map Meta Cap', 'jet-engine' ); ?>'"
+					:description="'<?php _e( 'Whether to use the internal default meta capability handling', 'jet-engine' ); ?>'"
+					:wrapper-css="[ 'equalwidth' ]"
+					v-model="advancedSettings.map_meta_cap"
+				></cx-vui-switcher>
+				<cx-vui-switcher
 					:name="'has_archive'"
 					:label="'<?php _e( 'Has Archive', 'jet-engine' ); ?>'"
 					:description="'<?php _e( 'Enables post type archives', 'jet-engine' ); ?>'"
@@ -197,13 +204,22 @@
 					v-model="advancedSettings.hierarchical"
 				></cx-vui-switcher>
 				<cx-vui-input
-					:name="'menu_position'"
-					:label="'<?php _e( 'Menu Position', 'jet-engine' ); ?>'"
-					:description="'<?php _e( 'The position in the menu order the post type should appear', 'jet-engine' ); ?>'"
+					label="<?php _e( 'Menu Position', 'jet-engine' ); ?>"
+					description="<?php _e( 'The position in the menu order the post type should appear', 'jet-engine' ); ?>"
 					:wrapper-css="[ 'equalwidth' ]"
-					:size="'fullwidth'"
+					v-if="advancedSettings.menu_position && ! positionIDs.includes( advancedSettings.menu_position )"
+					size="fullwidth"
 					v-model="advancedSettings.menu_position"
 				></cx-vui-input>
+				<cx-vui-select
+					label="<?php _e( 'Menu position', 'jet-engine' ); ?>"
+					description="<?php _e( 'Select existing menu item to add page after', 'jet-engine' ); ?>"
+					v-if="! advancedSettings.menu_position || positionIDs.includes( advancedSettings.menu_position )"
+					:wrapper-css="[ 'equalwidth' ]"
+					size="fullwidth"
+					:options-list="availablePositions"
+					v-model="advancedSettings.menu_position"
+				></cx-vui-select>
 				<cx-vui-iconpicker
 					:name="'menu_icon'"
 					:label="'<?php _e( 'Menu Icon', 'jet-engine' ); ?>'"

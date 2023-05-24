@@ -122,7 +122,7 @@ class Provider extends \Jet_Smart_Filters_Provider_Base {
 
 		add_filter( 'jet-engine/listing/grid/posts-query-args', array( $this, 'add_query_args' ), 10, 2 );
 
-		add_filter( 'jet-smart-filters/render/ajax/data', array( $this, 'add_new_markers_to_response' ) );
+		add_filter( 'jet-smart-filters/render/ajax/data', array( $this, 'add_new_markers_to_response' ), 9 );
 
 	}
 

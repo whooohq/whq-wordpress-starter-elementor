@@ -7,7 +7,9 @@
 >
 	<div class="cx-vui-subtitle" slot="title"><?php
 		_e( 'Please confirm taxonomy deletion', 'jet-engine' );
-	?></div>
+	?>
+		<template v-if="taxName">- <span class="jet-engine-accent-text">{{ taxName }}</span></template>
+	</div>
 	<p slot="content">
 		<?php _e( 'Are you sure you want to delete this taxonomy?', 'jet-engine' ); ?><br>
 		<?php _e( 'If yes - please select what to do with created terms of this taxonomy:', 'jet-engine' ); ?>

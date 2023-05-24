@@ -209,6 +209,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Select_Filter' ) ) {
 				'filter_id'            => $filter_id,
 				'is_hierarchical'      => $is_hierarchical,
 				'query_id'             => ! empty( $args['query_id'] ) ? $args['query_id'] : false,
+				'accessibility_label'  => $this->get_accessibility_label( $filter_id )
 			);
 
 			if ( $current_value ) {

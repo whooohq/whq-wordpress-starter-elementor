@@ -65,6 +65,16 @@ if ( ! class_exists( 'Jet_Smart_Filters_Data' ) ) {
 		}
 
 		/**
+		 * Get sitepath.
+		 */
+		public function get_sitepath() {
+
+			$parsed_home_url = wp_parse_url( home_url() );
+
+			return array_key_exists( 'path', $parsed_home_url ) ? $parsed_home_url['path'] : '';
+		}
+
+		/**
 		 * Return information about compare data by label
 		 */
 		public function parse_comapre_label( $label ) {
@@ -130,6 +140,16 @@ if ( ! class_exists( 'Jet_Smart_Filters_Data' ) ) {
 						'inDepth'  => $provider->in_depth(),
 						'idPrefix' => $provider->id_prefix(),
 					);
+
+					$list = $provider->get_list_selector();
+					if ( $list ) {
+						$result[ $provider_id ]['list'] = $list;
+					}
+
+					$item = $provider->get_item_selector();
+					if ( $item ) {
+						$result[ $provider_id ]['item'] = $item;
+					}
 				}
 			}
 

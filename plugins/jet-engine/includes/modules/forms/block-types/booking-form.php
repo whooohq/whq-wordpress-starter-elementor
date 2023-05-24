@@ -2605,7 +2605,15 @@ class Booking_Form extends \Jet_Engine_Blocks_Views_Type_Base {
 		// Ensure enqueue form script after getting content.
 		wp_enqueue_script( 'jet-engine-frontend-forms' );
 
-		return sprintf( '<div class="jet-form-block">%s</div>', $content );
+		$this->_root['class'][] = 'jet-form-block';
+
+		if ( ! empty( $attributes['className'] ) ) {
+			$this->_root['class'][] = $attributes['className'];
+		}
+
+		$this->_root['data-is-block'] = $this->get_block_name();
+
+		return sprintf( '<div %1$s>%2$s</div>', $this->get_root_attr_string(), $content );
 	}
 
 }

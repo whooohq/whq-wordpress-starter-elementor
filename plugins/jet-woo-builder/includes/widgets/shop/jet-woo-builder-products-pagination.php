@@ -73,9 +73,9 @@ class Jet_Woo_Builder_Products_Pagination extends Jet_Woo_Builder_Base {
 		$this->add_control(
 			'prev_text',
 			[
-				'label'      => __( 'Previous Label', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::TEXT,
-				'default'    => __( 'Previous', 'jet-woo-builder' ),
+				'label'     => __( 'Previous Label', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::TEXT,
+				'default'   => __( 'Previous', 'jet-woo-builder' ),
 				'condition' => [
 					'prev_next' => 'yes',
 				],
@@ -94,7 +94,7 @@ class Jet_Woo_Builder_Products_Pagination extends Jet_Woo_Builder_Base {
 					'value'   => 'fas fa-angle-left',
 					'library' => 'fa-solid',
 				],
-				'condition'  => [
+				'condition'   => [
 					'prev_next' => 'yes',
 				],
 			]
@@ -103,9 +103,9 @@ class Jet_Woo_Builder_Products_Pagination extends Jet_Woo_Builder_Base {
 		$this->add_control(
 			'next_text',
 			[
-				'label'      => __( 'Next Label', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::TEXT,
-				'default'    => __( 'Next', 'jet-woo-builder' ),
+				'label'     => __( 'Next Label', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::TEXT,
+				'default'   => __( 'Next', 'jet-woo-builder' ),
 				'condition' => [
 					'prev_next' => 'yes',
 				],
@@ -124,7 +124,7 @@ class Jet_Woo_Builder_Products_Pagination extends Jet_Woo_Builder_Base {
 					'value'   => 'fas fa-angle-right',
 					'library' => 'fa-solid',
 				],
-				'condition'  => [
+				'condition'   => [
 					'prev_next' => 'yes',
 				],
 			]
@@ -218,9 +218,9 @@ class Jet_Woo_Builder_Products_Pagination extends Jet_Woo_Builder_Base {
 		$this->add_control(
 			'items_hover_border_color',
 			[
-				'label'      => __( 'Border Color', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::COLOR,
-				'selectors'  => [
+				'label'     => __( 'Border Color', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
 					'{{WRAPPER}} .jet-woo-builder-shop-pagination a.page-numbers:hover' => 'border-color: {{VALUE}};',
 				],
 				'condition' => [
@@ -263,9 +263,9 @@ class Jet_Woo_Builder_Products_Pagination extends Jet_Woo_Builder_Base {
 		$this->add_control(
 			'items_active_border_color',
 			[
-				'label'      => __( 'Border Color', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::COLOR,
-				'selectors'  => [
+				'label'     => __( 'Border Color', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
 					'{{WRAPPER}} .jet-woo-builder-shop-pagination span.page-numbers.current' => 'border-color: {{VALUE}};',
 				],
 				'condition' => [
@@ -336,33 +336,26 @@ class Jet_Woo_Builder_Products_Pagination extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'items_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} .jet-woo-builder-shop-pagination .page-numbers' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'items_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
-				'default'    => array(
-					'top'      => 10,
-					'right'    => 10,
-					'bottom'   => 10,
-					'left'     => 10,
-					'isLinked' => true,
-				),
-				'selectors'  => array(
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} .jet-woo-builder-shop-pagination .page-numbers' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_control(
@@ -388,6 +381,29 @@ class Jet_Woo_Builder_Products_Pagination extends Jet_Woo_Builder_Base {
 			]
 		);
 
+		$this->add_responsive_control(
+			'prev_next_min_width',
+			[
+				'label'      => __( 'Width', 'jet-woo-builder' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'default'    => [
+					'unit' => 'px',
+					'size' => 20,
+				],
+				'range'      => [
+					'px' => [
+						'min' => 0,
+						'max' => 150,
+					],
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .jet-woo-builder-shop-pagination .page-numbers.prev' => 'min-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .jet-woo-builder-shop-pagination .page-numbers.next' => 'min-width: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
 		$this->start_controls_tabs( 'tabs_prev_next_style' );
 
 		$this->start_controls_tab(
@@ -399,14 +415,14 @@ class Jet_Woo_Builder_Products_Pagination extends Jet_Woo_Builder_Base {
 
 		$this->add_control(
 			'prev_next_color',
-			array(
-				'label'     => esc_html__( 'Text Color', 'jet-woo-builder' ),
+			[
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
+				'label'     => __( 'Color', 'jet-woo-builder' ),
+				'selectors' => [
 					'{{WRAPPER}} .jet-woo-builder-shop-pagination a.page-numbers.prev' => 'color: {{VALUE}}',
 					'{{WRAPPER}} .jet-woo-builder-shop-pagination a.page-numbers.next' => 'color: {{VALUE}}',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_control(
@@ -432,14 +448,14 @@ class Jet_Woo_Builder_Products_Pagination extends Jet_Woo_Builder_Base {
 
 		$this->add_control(
 			'prev_next_color_hover',
-			array(
-				'label'     => esc_html__( 'Text Color', 'jet-woo-builder' ),
+			[
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
+				'label'     => __( 'Color', 'jet-woo-builder' ),
+				'selectors' => [
 					'{{WRAPPER}} .jet-woo-builder-shop-pagination a.page-numbers.next:hover' => 'color: {{VALUE}}',
 					'{{WRAPPER}} .jet-woo-builder-shop-pagination a.page-numbers.prev:hover' => 'color: {{VALUE}}',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_control(
@@ -457,9 +473,9 @@ class Jet_Woo_Builder_Products_Pagination extends Jet_Woo_Builder_Base {
 		$this->add_control(
 			'prev_next_hover_border_color',
 			[
-				'label'      => __( 'Border Color', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::COLOR,
-				'selectors'  => [
+				'label'     => __( 'Border Color', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
 					'{{WRAPPER}} .jet-woo-builder-shop-pagination a.page-numbers.prev:hover' => 'border-color: {{VALUE}};',
 					'{{WRAPPER}} .jet-woo-builder-shop-pagination a.page-numbers.next:hover' => 'border-color: {{VALUE}};',
 				],
@@ -473,71 +489,39 @@ class Jet_Woo_Builder_Products_Pagination extends Jet_Woo_Builder_Base {
 
 		$this->end_controls_tabs();
 
-		$this->add_responsive_control(
-			'prev_next_min_width',
-			[
-				'label'      => __( 'Width', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px' ],
-				'default'    => [
-					'unit' => 'px',
-					'size' => 20,
-				],
-				'range'      => [
-					'px' => [
-						'min' => 0,
-						'max' => 150,
-					],
-				],
-				'separator'  => 'before',
-				'selectors'  => [
-					'{{WRAPPER}} .jet-woo-builder-shop-pagination .page-numbers.prev' => 'min-width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .jet-woo-builder-shop-pagination .page-numbers.next' => 'min-width: {{SIZE}}{{UNIT}};',
-				],
-			]
-		);
-
 		$this->add_group_control(
 			Group_Control_Border::get_type(),
-			array(
+			[
 				'name'        => 'prev_next_border',
-				'label'       => esc_html__( 'Border', 'jet-woo-builder' ),
-				'placeholder' => '1px',
+				'separator'  => 'before',
 				'selector'    => '{{WRAPPER}} .jet-woo-builder-shop-pagination .page-numbers.prev,' . '{{WRAPPER}} .jet-woo-builder-shop-pagination .page-numbers.next',
-			)
+			]
 		);
 
 		$this->add_responsive_control(
 			'prev_next_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} .jet-woo-builder-shop-pagination .page-numbers.prev' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					'{{WRAPPER}} .jet-woo-builder-shop-pagination .page-numbers.next' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'prev_next_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
-				'default'    => array(
-					'top'      => 10,
-					'right'    => 10,
-					'bottom'   => 10,
-					'left'     => 10,
-					'isLinked' => true,
-				),
-				'selectors'  => array(
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} .jet-woo-builder-shop-pagination .page-numbers.prev' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					'{{WRAPPER}} .jet-woo-builder-shop-pagination .page-numbers.next' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->end_controls_section();
@@ -674,9 +658,9 @@ class Jet_Woo_Builder_Products_Pagination extends Jet_Woo_Builder_Base {
 		$this->add_control(
 			'icons_hover_border_color',
 			[
-				'label'      => __( 'Border Color', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::COLOR,
-				'selectors'  => [
+				'label'     => __( 'Border Color', 'jet-woo-builder' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
 					'{{WRAPPER}} .jet-woo-builder-shop-pagination a.page-numbers:hover .jet-woo-builder-shop-pagination__arrow' => 'border-color: {{VALUE}};',
 				],
 				'condition' => [
@@ -701,14 +685,14 @@ class Jet_Woo_Builder_Products_Pagination extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'icons_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} .jet-woo-builder-shop-pagination .jet-woo-builder-shop-pagination__arrow' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->end_controls_section();

@@ -21,6 +21,7 @@ $max-height: 700px;
 @import "components/use-in-js";
 @import "components/variables";
 @import "components/mixins";
+@import "components/tooltip";
 
 @import "controls/button";
 @import "controls/checkbox";
@@ -52,8 +53,9 @@ label.cherry-label{
 
 .cx-ui-kit{
 	font-size: 13px;
-	h1{
+	h1, .h1-style {
 		font-weight: 700;
+		font-size: 1.838em;
 		line-height: 1.2em;
 		margin: 0;
 		.dashicons{
@@ -61,9 +63,12 @@ label.cherry-label{
 			line-height: inherit;
 			width: 20px;
 			margin: 0 $margin * 2 0 $margin * -0.5;
+			.rtl & {
+				margin: 0 $margin * -0.5 0 $margin * 2;
+			}
 		}
 	}
-	h2{
+	h2, .h2-style {
 		font-weight: 600;
 		font-size: 1.538em;
 		line-height: 1.538em;
@@ -71,31 +76,36 @@ label.cherry-label{
 			font-size: 2em;
 			line-height: inherit;
 			width: 20px;
-			margin-right: $margin * 2;
+			margin: 0 $margin * 2 0 0;
+			.rtl & {
+				margin: 0 0 0 $margin * 2;
+			}
 		}
 	}
-	h3{
+	h3, .h3-style {
 		font-weight: 600;
 		font-size: 1.231em;
 		line-height: 1.231em;
 		.dashicons{
 			font-size: 1.7em;
 			line-height: inherit;
-			margin-right: $margin * 0.5;
+			margin: 0 $margin * 0.5 0 0;
+			.rtl & {
+				margin: 0 0 0 $margin * 0.5;
+			}
 		}
 	}
-	h4{
-		font-weight: 500;
-		font-size: 1.077em;
-		line-height: 1.077em;
-
-	}
-	h5{
+	h4, .h4-style {
 		font-weight: 500;
 		font-size: 1.077em;
 		line-height: 1.077em;
 	}
-	h6{
+	h5, .h5-style {
+		font-weight: 500;
+		font-size: 1.077em;
+		line-height: 1.077em;
+	}
+	h6, .h6-style {
 		font-weight: 400;
 		font-size: 1em;
 		line-height: 1em;
@@ -108,7 +118,7 @@ label.cherry-label{
 		}
 		&:focus{
 			outline: 1px solid rgba(41, 143, 252, .6);
-			box-shadow: 0px 0px 2px rgba(41,143,252,0.6);
+			box-shadow: 0 0 2px rgba(41,143,252,0.6);
 		}
 	}
 	&__description{
@@ -131,7 +141,6 @@ label.cherry-label{
 .cx-section{
 	padding: $padding;
 	background-color: $color-1;
-	margin-left: -10px;
 	&__title, &__description{
 		margin: $margin 0 0 0;
 	}
@@ -144,6 +153,9 @@ label.cherry-label{
 		border: $border;
 		padding: $padding * 1.5;
 		margin: $margin * 1.5 $margin * 1.5 0 0;
+		.rtl & {
+			margin: $margin * 1.5 0 0 $margin * 1.5;
+		}
 		&__holder{
 			background-color: $color-2;
 			border-radius: $br-radius;
@@ -173,6 +185,9 @@ label.cherry-label{
 	@media ( min-width: 961px ) {
 		padding: $padding * 3;
 		margin: $margin * 2 $margin * 2 0 0;
+		.rtl & {
+			margin: $margin * 2 0 0 $margin * 2;
+		}
 		&__info{
 			padding: $padding * 3;
 			margin-bottom: $padding * 3;
@@ -240,13 +255,15 @@ label.cherry-label{
 				font-size: 14px;
 				float: left;
 				margin: 0;
+				.rtl & {
+					float: right;
+				}
 			}
 			>span[class*="icon"]{
 				position: absolute;
 				top: 50%;
 				right: 5px;
 				margin-top: -10px;
-
 				font-size: 25px;
 				color: $color-4;
 				padding: 5px 5px;
@@ -254,6 +271,10 @@ label.cherry-label{
 				height: 9px;
 				text-align: left;
 				overflow: hidden;
+				.rtl & {
+					left: 5px;
+					right: auto;
+				}
 				.widget &{
 					color: $color-1;
 				}
@@ -262,6 +283,10 @@ label.cherry-label{
 						position: relative;
 						top: -8px;
 						left: -9px;
+						.rtl & {
+							left: auto;
+							right: -9px;
+						}
 					}
 					transform:scaleX(1);
 					transition: all 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -271,6 +296,10 @@ label.cherry-label{
 						position: relative;
 						top: -7px;
 						left: -9px;
+						.rtl & {
+							left: auto;
+							right: -9px;
+						}
 					}
 					transform:scaleX(0);
 					transition: all 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
@@ -334,6 +363,9 @@ label.cherry-label{
 					font-size: 14px;
 					float: left;
 					margin: 0;
+					.rtl & {
+						float: right;
+					}
 				}
 				& + button{
 					border-top: $border;
@@ -370,7 +402,7 @@ label.cherry-label{
 			}
 			&--horizontal{
 				>.cx-tab__body{
-					border-radius: none;
+					border-radius: 0;
 					>.cx-tab__tabs{
 						flex-wrap: nowrap;
 						flex-direction: row;
@@ -388,20 +420,30 @@ label.cherry-label{
 			&--vertical{
 				>.cx-tab__body{
 					display: flex;
-					border-radius: none;
+					border-radius: 0;
 					>.cx-tab__tabs{
 						flex-direction: row;
 						-webkit-box-flex: 0;
 						flex: 0 1 20%;
 						border-radius:$br-radius 0 0 $br-radius;
-						border-right: none;
+						border-width: 1px 0 1px 1px;
+						.rtl & {
+							border-width: 1px 1px 1px 0;
+							border-radius: 0 $br-radius $br-radius 0;
+						}
 						.cx-component__button{
 							text-align: right;
+							.rtl & {
+								text-align: left;
+							}
 							.cx-tab__title {
 								width: 100%;
 							}
 							&.active{
-								box-shadow: inset -3px 0px 0px $link-color;
+								box-shadow: inset -3px 0 0 $link-color;
+								.rtl & {
+									box-shadow: inset 3px 0 0 $link-color;
+								}
 							}
 						}
 					}
@@ -409,6 +451,9 @@ label.cherry-label{
 						-webkit-box-flex: 0;
 						flex: 0 1 80%;
 						border-radius: 0 $br-radius $br-radius 0;
+						.rtl & {
+							border-radius: $br-radius 0 0 $br-radius;
+						}
 					}
 				}
 			}
@@ -450,6 +495,18 @@ label.cherry-label{
 		@media ( min-width: 961px ) {
 			margin-left: $margin * 3;
 		}
+		.rtl & {
+			margin-left: 0;
+			margin-right: $margin;
+			@media ( min-width: 783px ) {
+				margin-left: 0;
+				margin-right: $margin * 1.5;
+			}
+			@media ( min-width: 961px ) {
+				margin-left: 0;
+				margin-right: $margin * 3;
+			}
+		}
 	}
 }
 
@@ -476,6 +533,10 @@ label.cherry-label{
 			-webkit-box-flex: 0;
 			flex: 0 1 30%;
 			padding-right: $padding * 1.5;
+			.rtl & {
+				padding-left: $padding * 1.5;
+				padding-right: 0;
+			}
 		}
 		&__content{
 			-webkit-box-flex: 0;
@@ -498,11 +559,23 @@ label.cherry-label{
 			-webkit-box-flex: 0;
 			flex: 0 1 100%;
 			padding-right: 0;
+			.rtl & {
+				padding-left: 0;
+			}
 		}
 	}
 
 	&-hidden {
 		display: none;
+	}
+
+	&__required,
+	&__error {
+		color: $red_color;
+	}
+
+	&__error {
+		margin-top: 5px;
 	}
 }
 

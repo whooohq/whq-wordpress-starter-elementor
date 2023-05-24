@@ -568,6 +568,15 @@ label.cherry-label{
 	&-hidden {
 		display: none;
 	}
+
+	&__required,
+	&__error {
+		color: $red_color;
+	}
+
+	&__error {
+		margin-top: 5px;
+	}
 }
 
 .cx-section.cx-scroll > .cx-section__holder > .cx-section__inner,

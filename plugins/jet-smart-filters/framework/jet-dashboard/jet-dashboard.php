@@ -2,7 +2,7 @@
 /**
  * Jet Dashboard Module
  *
- * Version: 2.0.8
+ * Version: 2.0.10
  */
 
 namespace Jet_Dashboard;
@@ -46,7 +46,7 @@ class Dashboard {
 	 *
 	 * @var string
 	 */
-	protected $version = '2.0.8';
+	protected $version = '2.0.10';
 
 	/**
 	 * [$dashboard_slug description]
@@ -248,7 +248,7 @@ class Dashboard {
 			function() {
 				include $this->get_view( 'common/dashboard' );
 			},
-			"data:image/svg+xml,%3Csvg width='11' height='18' viewBox='0 0 11 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.8 4.50004C10.0152 4.50004 11 3.49259 11 2.25002C11 1.00744 10.0152 0 8.8 0C8.79799 0 8.79612 0.00029408 8.79411 0.00029408C3.9368 0.00352919 0 4.03154 0 9.00007C0 13.9707 3.93997 18 8.8 18C10.0152 18 11 16.9926 11 15.75C11 14.5074 10.0152 13.5 8.8 13.5L8.79799 13.5001C6.3689 13.4989 4.39993 11.4846 4.39993 9.00007C4.39993 6.51478 6.36991 4.50004 8.8 4.50004Z' fill='white'/%3E%3C/svg%3E%0A",
+			'data:image/svg+xml;base64,' . base64_encode('<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 10.0001C26.2095 10.0001 28 8.20905 28 6.00004C28 3.791 26.2095 2 24 2C23.9963 2 23.9929 2.00052 23.9893 2.00052C15.1578 2.00627 8 9.16718 8 18.0001C8 26.8368 15.1636 34 24 34C26.2095 34 28 32.2091 28 30C28 27.7909 26.2095 26 24 26L23.9963 26.0002C19.5798 25.998 15.9999 22.4171 15.9999 18.0001C15.9999 13.5818 19.5817 10.0001 24 10.0001Z" fill="#A0A5AA"/></svg>' ),
 			59
 		);
 
@@ -500,7 +500,7 @@ class Dashboard {
 					'pageModuleConfig'     => $this->data_manager->get_dashboard_page_config( $this->get_page(), $this->get_subpage() ),
 					'helpCenterConfig'     => $this->data_manager->get_dashboard_config( 'helpCenter' ),
 					'avaliableBanners'     => $this->data_manager->get_dashboard_config( 'banners' ),
-					'noticeList'           => $this->notice_manager->get_registered_notices(),
+					'noticeList'           => $this->notice_manager->get_registered_notices( $this->get_page() ),
 					'serviceActionOptions' => $this->data_manager->get_service_action_list(),
 				),
 				$this->get_page(),

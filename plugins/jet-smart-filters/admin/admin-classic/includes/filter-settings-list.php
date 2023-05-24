@@ -148,7 +148,7 @@ return array(
 			'title'      => __( 'Post Type', 'jet-smart-filters' ),
 			'type'       => 'select',
 			'element'    => 'control',
-			'options'    => jet_smart_filters()->data->get_post_types_for_options(),
+			'options'    => $this->post_types_options,
 			'conditions' => array(
 				'_filter_type' => array( 'checkboxes', 'select', 'radio', 'color-image' ),
 				'_data_source' => 'posts',
@@ -468,6 +468,35 @@ return array(
 				'_filter_type' => 'date-period',
 			),
 		),
+		'_min_max_date_period_enabled' => array(
+			'title'      => __( 'Min/Max Dates Enabled', 'jet-smart-filters' ),
+			'type'       => 'switcher',
+			'element'    => 'control',
+			'value'      => false,
+			'conditions' => array(
+				'_filter_type' => 'date-period',
+			),
+		),
+		'_min_date_period' => array(
+			'title'       => __( 'Minimum possible date to select', 'jet-smart-filters' ),
+			'type'        => 'text',
+			'element'     => 'control',
+			'description' => __( 'To set the limit by the current date, fill in', 'jet-smart-filters' ). ' - "today"',
+			'conditions'  => array(
+				'_filter_type'                 => 'date-period',
+				'_min_max_date_period_enabled' => true
+			),
+		),
+		'_max_date_period' => array(
+			'type'        => 'text',
+			'title'       => __( 'Maximum possible date to select', 'jet-smart-filters' ),
+			'description' => __( 'To set the limit by the current date, fill in', 'jet-smart-filters' ). ' - "today"',
+			'element'     => 'control',
+			'conditions'  => array(
+				'_filter_type'                 => 'date-period',
+				'_min_max_date_period_enabled' => true
+			),
+		),
 		'_date_period_start_end_enabled' => array(
 			'title'   => __( 'Start/End Date Period Enabled', 'jet-smart-filters' ),
 			'type'    => 'switcher',
@@ -529,11 +558,12 @@ return array(
 			),
 		), */
 		'_range_inputs_enabled' => array(
-			'title'   => __( 'Inputs enabled', 'jet-smart-filters' ),
-			'type'    => 'switcher',
-			'element' => 'control',
-			'value'   => false,
-			'conditions' => array(
+			'title'       => __( 'Inputs enabled', 'jet-smart-filters' ),
+			'type'        => 'switcher',
+			'description' => $this->range_inputs_info,
+			'element'     => 'control',
+			'value'       => false,
+			'conditions'  => array(
 				'_filter_type' => 'range',
 			),
 		),

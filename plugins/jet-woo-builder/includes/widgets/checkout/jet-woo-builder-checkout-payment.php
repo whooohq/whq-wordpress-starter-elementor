@@ -88,9 +88,9 @@ class Jet_Woo_Builder_Checkout_Payment extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'checkout_payment_border_radius',
 			[
-				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} #payment' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -119,7 +119,6 @@ class Jet_Woo_Builder_Checkout_Payment extends Jet_Woo_Builder_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'checkout_payment_heading_typography',
-				'label'    => __( 'Typography', 'jet-woo-builder' ),
 				'selector' => '{{WRAPPER}} ' . $css_scheme['label'],
 			]
 		);
@@ -127,9 +126,8 @@ class Jet_Woo_Builder_Checkout_Payment extends Jet_Woo_Builder_Base {
 		$this->add_control(
 			'checkout_payment_heading_color',
 			[
-				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'separator' => 'after',
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['label'] => 'color: {{VALUE}}',
 				],
@@ -159,9 +157,9 @@ class Jet_Woo_Builder_Checkout_Payment extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'checkout_payment_heading_border_radius',
 			[
-				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['item'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -171,9 +169,9 @@ class Jet_Woo_Builder_Checkout_Payment extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'checkout_payment_heading_margin',
 			[
-				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['item']  => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					'{{WRAPPER}} ' . $css_scheme['label'] => 'margin: 0;',
@@ -184,9 +182,9 @@ class Jet_Woo_Builder_Checkout_Payment extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'checkout_payment_heading_padding',
 			[
-				'label'      => __( 'Padding', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['item'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -227,9 +225,9 @@ class Jet_Woo_Builder_Checkout_Payment extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'checkout_payment_items_wrapper_border_radius',
 			[
-				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['items-wrapper'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -239,9 +237,9 @@ class Jet_Woo_Builder_Checkout_Payment extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'checkout_payment_items_wrapper_margin',
 			[
-				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['items-wrapper'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -251,9 +249,9 @@ class Jet_Woo_Builder_Checkout_Payment extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'checkout_payment_items_wrapper_padding',
 			[
-				'label'      => __( 'Padding', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['items-wrapper'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -292,14 +290,14 @@ class Jet_Woo_Builder_Checkout_Payment extends Jet_Woo_Builder_Base {
 
 		$this->add_control(
 			'checkout_payment_content_background',
-			array(
-				'label'     => esc_html__( 'Background', 'jet-woo-builder' ),
+			[
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
+				'label'     => __( 'Background Color', 'jet-woo-builder' ),
+				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['description']             => 'background-color: {{VALUE}}',
 					'{{WRAPPER}} ' . $css_scheme['description'] . ':before' => 'border-bottom-color: {{VALUE}}',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_group_control(
@@ -315,26 +313,26 @@ class Jet_Woo_Builder_Checkout_Payment extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'checkout_payment_content_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['description'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'checkout_payment_content_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
+			[
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
-				'selectors'  => array(
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['description'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->end_controls_section();
@@ -347,14 +345,12 @@ class Jet_Woo_Builder_Checkout_Payment extends Jet_Woo_Builder_Base {
 			)
 		);
 
-		jet_woo_builder_common_controls()->register_button_style_controls( $this, 'checkout_payment', $css_scheme['button'] );
-
 		$this->add_responsive_control(
 			'button_width',
 			[
-				'label'      => __( 'Width', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ '%', 'px', ],
+				'label'      => __( 'Width', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', '%' ] ),
 				'range'      => [
 					'%'  => [
 						'min' => 10,
@@ -370,6 +366,8 @@ class Jet_Woo_Builder_Checkout_Payment extends Jet_Woo_Builder_Base {
 				],
 			]
 		);
+
+		jet_woo_builder_common_controls()->register_button_style_controls( $this, 'checkout_payment', $css_scheme['button'] );
 
 		$this->add_control(
 			'checkout_payment_button_wrapper_heading',
@@ -392,9 +390,9 @@ class Jet_Woo_Builder_Checkout_Payment extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'checkout_payment_button_wrapper_border_radius',
 			[
-				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['button-wrapper'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -404,9 +402,9 @@ class Jet_Woo_Builder_Checkout_Payment extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'checkout_payment_button_wrapper_margin',
 			[
-				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['button-wrapper'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -416,9 +414,9 @@ class Jet_Woo_Builder_Checkout_Payment extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'checkout_payment_button_wrapper_padding',
 			[
-				'label'      => __( 'Padding', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['button-wrapper'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],

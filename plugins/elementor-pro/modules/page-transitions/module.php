@@ -258,7 +258,7 @@ class Module extends Module_Base {
 		$controls_stack->add_control(
 			$this->get_control_id( 'animation_duration' ),
 			[
-				'label' => esc_html__( 'Animation Speed (ms)', 'elementor-pro' ),
+				'label' => esc_html__( 'Animation Duration', 'elementor-pro' ) . ' (ms)',
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'ms' ],
 				'default' => [
@@ -414,7 +414,7 @@ class Module extends Module_Base {
 		$controls_stack->add_control(
 			$this->get_control_id( 'preloader_animation_duration' ),
 			[
-				'label' => esc_html__( 'Animation Speed (ms)', 'elementor-pro' ),
+				'label' => esc_html__( 'Animation Duration', 'elementor-pro' ) . ' (ms)',
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'ms' ],
 				'default' => [
@@ -466,7 +466,7 @@ class Module extends Module_Base {
 		$controls_stack->add_control(
 			$this->get_control_id( 'preloader_delay' ),
 			[
-				'label' => esc_html__( 'Preloader Delay (ms)', 'elementor-pro' ),
+				'label' => esc_html__( 'Preloader Delay', 'elementor-pro' ) . ' (ms)',
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'ms' ],
 				'default' => [
@@ -522,7 +522,6 @@ class Module extends Module_Base {
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px' ],
 				'default' => [
-					'unit' => 'px',
 					'size' => 20,
 				],
 				'range' => [
@@ -560,17 +559,10 @@ class Module extends Module_Base {
 			[
 				'label' => esc_html__( 'Rotate', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
-				'size_units' => [ 'deg' ],
+				'size_units' => [ 'deg', 'grad', 'rad', 'turn' ],
 				'default' => [
 					'unit' => 'deg',
 					'size' => 0,
-				],
-				'range' => [
-					'deg' => [
-						'min' => 0,
-						'max' => 360,
-						'step' => 10,
-					],
 				],
 				'condition' => [
 					$this->get_control_id( 'preloader_type' ) => 'icon',
@@ -587,6 +579,7 @@ class Module extends Module_Base {
 			[
 				'label' => esc_html__( 'Width', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'default' => [
 					'unit' => '%',
 				],
@@ -596,7 +589,6 @@ class Module extends Module_Base {
 				'mobile_default' => [
 					'unit' => '%',
 				],
-				'size_units' => [ '%', 'px', 'vw' ],
 				'range' => [
 					'%' => [
 						'min' => 1,
@@ -625,6 +617,7 @@ class Module extends Module_Base {
 			[
 				'label' => esc_html__( 'Max Width', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'default' => [
 					'unit' => '%',
 				],
@@ -634,7 +627,6 @@ class Module extends Module_Base {
 				'mobile_default' => [
 					'unit' => '%',
 				],
-				'size_units' => [ '%', 'px', 'vw' ],
 				'range' => [
 					'%' => [
 						'min' => 1,
@@ -663,7 +655,6 @@ class Module extends Module_Base {
 			[
 				'label' => esc_html__( 'Opacity', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
-				'size_units' => [ 'px' ],
 				'range' => [
 					'px' => [
 						'min' => 0,
@@ -925,7 +916,7 @@ class Module extends Module_Base {
 			'new_site' => [
 				'default_active' => true,
 			],
-			'release_status' => Experiments_Manager::RELEASE_STATUS_BETA,
+			'release_status' => Experiments_Manager::RELEASE_STATUS_STABLE,
 			'description' => $description . ' ' . $learn_more,
 		] );
 

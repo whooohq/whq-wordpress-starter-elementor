@@ -274,9 +274,9 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 			$this->add_responsive_control(
 				'switcher_border_radius',
 				[
-					'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => [ 'px', '%' ],
+					'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+					'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme['switcher'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
@@ -286,9 +286,9 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 			$this->add_responsive_control(
 				'switcher_margin',
 				[
-					'label'      => __( 'Margin', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => [ 'px', '%' ],
+					'label'      => __( 'Margin', 'jet-woo-builder' ),
+					'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme['switcher'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
@@ -298,9 +298,9 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 			$this->add_responsive_control(
 				'switcher_padding',
 				[
-					'label'      => __( 'Padding', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => [ 'px', '%' ],
+					'label'      => __( 'Padding', 'jet-woo-builder' ),
+					'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme['switcher'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
@@ -344,9 +344,9 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 			$this->add_responsive_control(
 				'switcher_buttons_custom_width',
 				[
-					'label'      => __( 'Width', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::SLIDER,
-					'size_units' => [ 'px', 'em', '%' ],
+					'label'      => __( 'Width', 'jet-woo-builder' ),
+					'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'range'      => [
 						'px' => [
 							'min' => 40,
@@ -373,9 +373,9 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 			$this->add_responsive_control(
 				'switcher_buttons_custom_height',
 				[
-					'label'      => __( 'Height', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::SLIDER,
-					'size_units' => [ 'px', 'em', '%' ],
+					'label'      => __( 'Height', 'jet-woo-builder' ),
+					'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'range'      => [
 						'px' => [
 							'min' => 10,
@@ -402,9 +402,9 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 			$this->add_responsive_control(
 				'switcher_buttons_distance',
 				[
-					'label'      => __( 'Gap', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::SLIDER,
-					'size_units' => [ 'px', 'em', '%' ],
+					'label'      => __( 'Gap', 'jet-woo-builder' ),
+					'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'range'      => [
 						'px' => [
 							'min' => 0,
@@ -569,9 +569,9 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 			$this->add_responsive_control(
 				'switcher_buttons_normal_border_radius',
 				[
-					'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => [ 'px', '%' ],
+					'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+					'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme['buttons'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
@@ -589,9 +589,9 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 			$this->add_responsive_control(
 				'switcher_buttons_padding',
 				[
-					'label'      => __( 'Padding', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => [ 'px', '%' ],
+					'label'      => __( 'Padding', 'jet-woo-builder' ),
+					'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme['buttons'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
@@ -623,9 +623,9 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 			$this->add_responsive_control(
 				'switcher_buttons_icon_font_size',
 				[
-					'label'      => __( 'Size', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::SLIDER,
-					'size_units' => [ 'px', 'em', 'rem' ],
+					'label'      => __( 'Size', 'jet-woo-builder' ),
+					'size_units' => $this->set_custom_size_unit( [ 'px', 'em', 'rem' ] ),
 					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme['switcher_icon'] => 'font-size: {{SIZE}}{{UNIT}}',
 					],
@@ -635,9 +635,9 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 			$this->add_responsive_control(
 				'switcher_buttons_icon_box_width',
 				[
-					'label'      => __( 'Box Width', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::SLIDER,
-					'size_units' => [ 'px', 'em', '%' ],
+					'label'      => __( 'Box Width', 'jet-woo-builder' ),
+					'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme['switcher_icon'] => 'width: {{SIZE}}{{UNIT}};',
 					],
@@ -647,9 +647,9 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 			$this->add_responsive_control(
 				'switcher_buttons_icon_box_height',
 				[
-					'label'      => __( 'Box Height', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::SLIDER,
-					'size_units' => [ 'px', 'em', '%' ],
+					'label'      => __( 'Box Height', 'jet-woo-builder' ),
+					'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme['switcher_icon'] => 'height: {{SIZE}}{{UNIT}};',
 					],
@@ -659,9 +659,9 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 			$this->add_responsive_control(
 				'switcher_buttons_icon_spacing',
 				[
-					'label'      => __( 'Indent', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::SLIDER,
-					'size_units' => [ 'px', 'em' ],
+					'label'      => __( 'Indent', 'jet-woo-builder' ),
+					'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme['buttons'] => 'gap: {{SIZE}}{{UNIT}};',
 					],
@@ -809,9 +809,9 @@ class Jet_Woo_Builder_Products_Loop extends Jet_Woo_Builder_Base {
 			$this->add_responsive_control(
 				'switcher_buttons_normal_icon_border_radius',
 				[
-					'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => [ 'px', '%' ],
+					'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+					'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme['switcher_icon'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],

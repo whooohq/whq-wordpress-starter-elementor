@@ -443,7 +443,7 @@ class List_Table extends \WP_List_Table {
 		/**
 		 * First, lets decide how many records per page to show
 		 */
-		$per_page = $this->per_page;
+		$per_page = $this->get_items_per_page( $this->factory->admin_pages->get_per_page_option_name(), $this->per_page );
 
 		add_thickbox();
 

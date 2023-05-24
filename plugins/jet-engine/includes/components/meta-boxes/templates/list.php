@@ -44,5 +44,6 @@
 		v-if="showDeleteDialog"
 		v-model="showDeleteDialog"
 		:item-id="deletedItem.id"
+		:item-name="deletedItem.args.name"
 	></jet-cpt-delete-dialog>
 </div>

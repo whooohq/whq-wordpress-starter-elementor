@@ -386,12 +386,34 @@ class Jet_Unfold_Widget extends Jet_Tricks_Base {
 						'title' => esc_html__( 'End', 'jet-tricks' ),
 						'icon'  => ! is_rtl() ? 'eicon-h-align-right' : 'eicon-h-align-left',
 					),
+					'stretch' => array(
+						'title' => esc_html__( 'Justified', 'jet-tricks' ),
+						'icon'  => ! is_rtl() ? 'eicon-h-align-stretch' : 'eicon-h-align-stretch',
+					),
 				),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['button'] => 'align-self: {{VALUE}};',
 				),
 			)
 		);
+
+		$this->add_control(
+			'button_fold_icon_position',
+			array(
+				'label'   => esc_html__( 'Icon Position', 'jet-tricks' ),
+				'type'    => Controls_Manager::SELECT,
+				'options' => array(
+					'row'   => esc_html__( 'Start', 'jet-tricks' ),
+					'row-reverse'  => esc_html__( 'End', 'jet-tricks' ),
+				),
+				'default'     => 'row',
+				'render_type' => 'template',
+				'selectors'  => array(
+					'{{WRAPPER}} .jet-unfold ' . $css_scheme['button'] => 'flex-direction: {{VALUE}};',
+				),
+			),				
+		);
+
 
 		$this->start_controls_tabs( 'tabs_button' );
 
@@ -452,7 +474,6 @@ class Jet_Unfold_Widget extends Jet_Tricks_Base {
 				'render_type'      => 'template',
 			)
 		);
-
 		$this->add_control(
 			'button_unfold_text',
 			array(

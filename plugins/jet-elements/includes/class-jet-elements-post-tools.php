@@ -577,6 +577,8 @@ if ( ! class_exists( 'Jet_Elementst_Post_Tools' ) ) {
 				} else {
 					$text = wp_html_excerpt( $text, $length, $after );
 				}
+			} else {
+				$text = wp_kses_post( $text );
 			}
 
 			return $text;

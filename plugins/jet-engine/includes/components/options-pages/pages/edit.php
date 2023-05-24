@@ -119,6 +119,7 @@ if ( ! class_exists( 'Jet_Engine_Options_Page_Edit' ) ) {
 					'parents'           => $this->get_available_menu_parents(),
 					'capabilities'      => $this->get_available_caps(),
 					'positions'         => $this->get_positions(),
+					'default_position'  => Jet_Engine_Tools::get_default_menu_position(),
 				) )
 			);
 
@@ -172,64 +173,10 @@ if ( ! class_exists( 'Jet_Engine_Options_Page_Edit' ) ) {
 		 * @return [type] [description]
 		 */
 		public function get_positions() {
-			return apply_filters( 'jet-engine/options-pages/available-positions', array(
-				array(
-					'value' => 3,
-					'label' => __( 'Dashboard', 'jet-engine' ),
-				),
-				array(
-					'value' => 4,
-					'label' => __( 'First Separator', 'jet-engine' ),
-				),
-				array(
-					'value' => 6,
-					'label' => __( 'Posts', 'jet-engine' ),
-				),
-				array(
-					'value' => 11,
-					'label' => __( 'Media', 'jet-engine' ),
-				),
-				array(
-					'value' => 16,
-					'label' => __( 'Links', 'jet-engine' ),
-				),
-				array(
-					'value' => 21,
-					'label' => __( 'Pages', 'jet-engine' ),
-				),
-				array(
-					'value' => 26,
-					'label' => __( 'Comments', 'jet-engine' ),
-				),
-				array(
-					'value' => 59,
-					'label' => __( 'Second Separator', 'jet-engine' ),
-				),
-				array(
-					'value' => 61,
-					'label' => __( 'Appearance', 'jet-engine' ),
-				),
-				array(
-					'value' => 66,
-					'label' => __( 'Plugins', 'jet-engine' ),
-				),
-				array(
-					'value' => 71,
-					'label' => __( 'Users', 'jet-engine' ),
-				),
-				array(
-					'value' => 76,
-					'label' => __( 'Tools', 'jet-engine' ),
-				),
-				array(
-					'value' => 81,
-					'label' => __( 'Settings', 'jet-engine' ),
-				),
-				array(
-					'value' => 100,
-					'label' => __( 'Third Separator', 'jet-engine' ),
-				),
-			) );
+			return apply_filters(
+				'jet-engine/options-pages/available-positions',
+				Jet_Engine_Tools::get_available_menu_positions()
+			);
 		}
 
 		/**

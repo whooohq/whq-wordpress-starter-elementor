@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Exit if accessed directly
 
-class Jet_Woo_Builder_Archive_Category_Description extends Widget_Base {
+class Jet_Woo_Builder_Archive_Category_Description extends Jet_Woo_Builder_Base {
 
 	public function get_name() {
 		return 'jet-woo-builder-archive-category-description';
@@ -27,7 +27,7 @@ class Jet_Woo_Builder_Archive_Category_Description extends Widget_Base {
 		return 'jet-woo-builder-icon-category-description';
 	}
 
-	public function get_help_url() {
+	public function get_jet_help_url() {
 		return 'https://crocoblock.com/knowledge-base/articles/woocommerce-jetwoobuilder-settings-how-to-create-and-set-a-custom-categories-archive-template/?utm_source=need-help&utm_medium=jet-woo-categories&utm_campaign=jetwoobuilder';
 	}
 
@@ -91,8 +91,8 @@ class Jet_Woo_Builder_Archive_Category_Description extends Widget_Base {
 		$this->add_control(
 			'archive_category_description_color',
 			[
-				'label'     => __( 'Text Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'selectors' => [
 					$this->css_selector() => 'color: {{VALUE}}',
 				],
@@ -122,9 +122,9 @@ class Jet_Woo_Builder_Archive_Category_Description extends Widget_Base {
 		$this->add_control(
 			'archive_category_description_border_radius',
 			[
-				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					$this->css_selector() => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; overflow:hidden;',
 				],
@@ -142,9 +142,9 @@ class Jet_Woo_Builder_Archive_Category_Description extends Widget_Base {
 		$this->add_responsive_control(
 			'archive_category_description_margin',
 			[
-				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					$this->css_selector() => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -154,9 +154,9 @@ class Jet_Woo_Builder_Archive_Category_Description extends Widget_Base {
 		$this->add_responsive_control(
 			'archive_category_description_padding',
 			[
-				'label'      => __( 'Padding', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					$this->css_selector() => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],

@@ -26,7 +26,15 @@ class OpenStreetMap extends Base {
 	}
 
 	/**
-	 * Find location name in the reverse geocoding reponse data and return it
+	 * Build Autocomplete API URL for given place predictions
+	 * @return mixed
+	 */
+	public function build_autocomplete_api_url( $query = '' ) {
+		return $this->build_api_url( $query );
+	}
+
+	/**
+	 * Find location name in the reverse geocoding response data and return it
 	 *
 	 * @param  array  $data [description]
 	 * @return [type]       [description]
@@ -36,7 +44,7 @@ class OpenStreetMap extends Base {
 	}
 
 	/**
-	 * Find coordinates in the reponse data and return it
+	 * Find coordinates in the response data and return it
 	 *
 	 * @param  array  $data [description]
 	 * @return [type]       [description]
@@ -53,6 +61,31 @@ class OpenStreetMap extends Base {
 
 		return $coord;
 
+	}
+
+	/**
+	 * Find place predictions in the response data and return it
+	 *
+	 * @param  array $data
+	 * @return array|false
+	 */
+	public function extract_autocomplete_data_from_response_data( $data = array() ) {
+
+		if ( empty( $data ) ) {
+			return false;
+		}
+
+		$result = array();
+
+		foreach ( $data as $prediction ) {
+			$result[] = array(
+				'address' => $prediction['display_name'],
+				'lat'     => $prediction['lat'],
+				'lng'     => $prediction['lon'],
+			);
+		}
+
+		return $result;
 	}
 
 	/**

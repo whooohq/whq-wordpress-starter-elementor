@@ -36,6 +36,9 @@ if ( ! class_exists( 'Jet_Engine_Seo_Package' ) ) {
 
 			// RankMath Snippets
 			add_action( 'rank_math/vars/register_extra_replacements', array( $this, 'register_rank_math_cct_field_snippet' ) );
+
+			// Set the primary term the first
+			add_filter( 'jet-engine/listings/dynamic-terms/items', array( $this, 'set_primary_term_first' ), 10, 3 );
 		}
 
 		/**
@@ -518,6 +521,68 @@ if ( ! class_exists( 'Jet_Engine_Seo_Package' ) ) {
 			}
 
 			return wp_kses_post( $value );
+		}
+
+		public function set_primary_term_first( $terms, $post_id, $settings ) {
+
+			if ( empty( $terms ) || is_wp_error( $terms ) ) {
+				return $terms;
+			}
+
+			$primary_term_id = null;
+			$tax = ! empty( $settings['from_tax'] ) ? $settings['from_tax'] : false;
+
+			if ( ! $tax ) {
+				return $terms;
+			}
+
+			if ( $this->is_rank_math_activated() ) {
+
+				$post_type = get_post_type( $post_id );
+
+				if ( ! $post_type ) {
+					return $terms;
+				}
+
+				$titles_options  = get_option( 'rank-math-options-titles' );
+				$primary_tax_key = 'pt_' . $post_type . '_primary_taxonomy';
+				$primary_tax     = ! empty( $titles_options[ $primary_tax_key ] ) ? $titles_options[ $primary_tax_key ] : false;
+
+				if ( ! $primary_tax || 'off' === $primary_tax || $primary_tax !== $tax ) {
+					return $terms;
+				}
+
+				$primary_term_id = get_post_meta( $post_id, 'rank_math_primary_' . $primary_tax, true );
+
+			} else if ( $this->is_yoast_activated() ) {
+
+				$primary_term_helper = new \Yoast\WP\SEO\Helpers\Primary_Term_Helper();
+				$primary_taxonomies  = $primary_term_helper->get_primary_term_taxonomies( $post_id );
+
+				if ( empty( $primary_taxonomies ) || ! in_array( $tax, array_keys( $primary_taxonomies ) ) ) {
+					return $terms;
+				}
+
+				$primary_term_id = get_post_meta( $post_id, '_yoast_wpseo_primary_' . $tax, true );
+			}
+
+			if ( empty( $primary_term_id ) ) {
+				return $terms;
+			}
+
+			$terms_ids  = wp_list_pluck( $terms, 'term_id' );
+			$find_index = array_search( $primary_term_id, $terms_ids );
+
+			if ( false === $find_index ) {
+				return $terms;
+			}
+
+			$primary_term = $terms[ $find_index ];
+
+			unset( $terms[ $find_index ] );
+			array_unshift( $terms, $primary_term );
+
+			return $terms;
 		}
 
 	}

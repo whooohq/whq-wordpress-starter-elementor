@@ -53,9 +53,9 @@ class Plugin_Manager {
 
 	/**
 	 * [$registered_plugins description]
-	 * @var boolean
+	 * @var array
 	 */
-	public $registered_plugins_data = false;
+	public $registered_plugins_data = array();
 
 	/**
 	 * Init class parameters.

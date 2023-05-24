@@ -11,10 +11,10 @@ import eproCompat from 'includes/epro-compat';
 import preloader from 'includes/preloader';
 import {
 	getNesting,
-	isNotEmpty
 } from 'includes/utility';
 
-const filtersInitializer = {
+// Data
+const JSF = {
 	filtersList: {
 		CheckBoxes: 'jet-smart-filters-checkboxes',
 		CheckRange: 'jet-smart-filters-check-range',
@@ -35,35 +35,28 @@ const filtersInitializer = {
 		ActiveFilters: 'jet-smart-filters-active',
 		ActiveTags: 'jet-smart-filters-active-tags'
 	},
+	filterClass,
 	filters,
+	filterNames: [],
 	filterGroups: {},
-	initializeFilters: init,
-	initializeFiltersInContainer,
+	initFilter,
+	reinitFilters,
 	findFilters,
 	filtersUI,
 	setIndexedData,
 	events: eventBus
 };
 
-const filtersList = filtersInitializer.filtersList,
-	additionalFiltersExceptions = ['ActiveFilters', 'ActiveTags', 'ButtonRemove'];
+const additionalFiltersExceptions = ['ActiveFilters', 'ActiveTags', 'ButtonRemove'];
 
-let filterGroups = filtersInitializer.filterGroups;
+//JetSmartFilters
+window.JetSmartFilters = JSF;
 
-function init() {
-	const prevQueries = {};
-
-	// before clearing
-	for (const filterGroupKey in filterGroups) {
-		const query = filterGroups[filterGroupKey].currentQuery;
-
-		if (isNotEmpty(query))
-			prevQueries[filterGroupKey] = query;
-	}
-
-	//clear previous filters
-	eventBus.channels = {};
-	filterGroups = filtersInitializer.filterGroups = {};
+// Init filters
+$(document).ready(function () {
+	// before initialization
+	const beforeInitEvent = new Event('jet-smart-filters/before-init');
+	document.dispatchEvent(beforeInitEvent);
 
 	// if elementor
 	if (window.elementorFrontend) {
@@ -71,117 +64,111 @@ function init() {
 		eproCompat.addSubscribers();
 	}
 
-	const beforeInitEvent = new Event('jet-smart-filters/before-init');
-	document.dispatchEvent(beforeInitEvent);
-
-	// before initialization
 	preloader.init();
 
 	// initialization
-	// search and group filters
-	const $filters = findFilters();
-
+	// search and init filters
+	const $filters = JSF.findFilters();
 	$filters.each(index => {
 		const $filter = $filters.eq(index);
 
-		let filterName = null,
-			filter = null;
+		JSF.initFilter($filter);
+	});
 
-		for (const key in filtersList) {
-			if ($filter.hasClass(filtersList[key]))
-				filterName = key;
-		}
+	// after initialization
+	const initedEvent = new Event('jet-smart-filters/inited');
+	document.dispatchEvent(initedEvent);
+});
 
-		if (!filterName)
-			return;
+// Methods
+function initFilter($filter) {
+	if ($filter.is('[jsf-filter]'))
+		return;
 
-		// Main Provider
-		filter = new filters[filterName]($filter);
+	// mark the filter with an attribute that it has been initialized
+	$filter.attr('jsf-filter', '');
+
+	let filterName = null;
+
+	for (const key in JSF.filtersList) {
+		if ($filter.hasClass(JSF.filtersList[key]))
+			filterName = key;
+	}
+
+	if (!filterName)
+		return;
+
+	const filter = new JSF.filters[filterName]($filter);
+
+	if (filter.isHierarchy) {
+		filter.filters.forEach(hierarchyFilter => {
+			pushFilterToGroup(hierarchyFilter);
+		});
+	} else {
+		pushFilterToGroup(filter);
+	}
+
+	// Additional Filters
+	const additionalFilters = $filter.data('additional-providers') || $filter.find('[data-additional-providers]').data('additional-providers');
+
+	if (!additionalFilters || additionalFiltersExceptions.includes(filterName))
+		return;
+
+	additionalFilters.forEach(additionalFilter => {
+		const additionalFilterData = additionalFilter.split('/', 2),
+			additionalProvider = additionalFilterData[0],
+			additionalQueryId = additionalFilterData[1] || filter.queryId;
 
 		if (filter.isHierarchy) {
 			filter.filters.forEach(hierarchyFilter => {
-				pushFilterToGroup(hierarchyFilter);
+				pushFilterToGroup(createAdditionalFilter(additionalProvider, additionalQueryId, hierarchyFilter));
 			});
 		} else {
-			pushFilterToGroup(filter);
+			pushFilterToGroup(createAdditionalFilter(additionalProvider, additionalQueryId, filter));
 		}
-
-		// Additional Filters
-		const additionalFilters = $filter.data('additional-providers') || $filter.find('[data-additional-providers]').data('additional-providers');
-
-		if (!additionalFilters || additionalFiltersExceptions.includes(filterName))
-			return;
-
-		additionalFilters.forEach(additionalFilter => {
-			const additionalFilterData = additionalFilter.split('/', 2),
-				additionalProvider = additionalFilterData[0],
-				additionalQueryId = additionalFilterData[1] || filter.queryId;
-
-			if (filter.isHierarchy) {
-				filter.filters.forEach(hierarchyFilter => {
-					pushFilterToGroup(createAdditionalFilter(additionalProvider, additionalQueryId, hierarchyFilter));
-				});
-			} else {
-				pushFilterToGroup(createAdditionalFilter(additionalProvider, additionalQueryId, filter));
-			}
-		});
 	});
+};
 
-	// group filter initialization
-	for (const filterGroupKey in filterGroups) {
-		if (filterGroups.hasOwnProperty(filterGroupKey)) {
-			const splittedKeys = filterGroupKey.split('/');
+function reinitFilters(filterNames = null) {
+	if (filterNames && !Array.isArray(filterNames))
+		filterNames = [filterNames];
 
-			filterGroups[filterGroupKey] = new FilterGroup(splittedKeys[0], splittedKeys[1], filterGroups[filterGroupKey], prevQueries[filterGroupKey]);
-		}
-	}
-
-	const initedEvent = new Event('jet-smart-filters/inited');
-	document.dispatchEvent(initedEvent);
-}
-
-function findFilters(container = $('html')) {
-	return $('.' + Object.values(filtersList).join(', .'), container);
-}
-
-function createAdditionalFilter(additionalProvider, additionalQueryId, filter) {
-	return {
-		isAdditional: true,
-		name: filter.name,
-		provider: additionalProvider,
-		queryId: additionalQueryId,
-		filterId: filter.filterId,
-		queryKey: filter.queryKey,
-		data: filter.data,
-		reset: function () {
-			this.data = false;
-		}
-	};
+	for (const groupKey in JSF.filterGroups)
+		JSF.filterGroups[groupKey].reinitFilters(filterNames);
 }
 
 function pushFilterToGroup(filter) {
-	if (!filter || !filter.provider)
+	if (!filter.provider || !filter.queryId)
 		return;
 
-	const provider = filter.provider,
-		queryId = filter.queryId;
+	const provider = filter.provider;
+	const queryId = filter.queryId;
+	const filtersGroup = getFiltersGroup(provider, queryId);
 
-	if (!filterGroups[provider + '/' + queryId]) {
-		filterGroups[provider + '/' + queryId] = [];
-	}
-
-	filterGroups[provider + '/' + queryId].push(filter);
+	filtersGroup.addFilter(filter);
 }
 
-function initializeFiltersInContainer(container) {
-	const filters = findFilters(container);
+function getFiltersGroup(provider, queryId) {
+	const groupKey = provider + '/' + queryId;
 
-	if (filters.length)
-		init();
+	if (!JSF.filterGroups[groupKey])
+		JSF.filterGroups[groupKey] = new FilterGroup(provider, queryId);
+
+	return JSF.filterGroups[groupKey];
+}
+
+function findFilters(container = $('html')) {
+	return $('.' + Object.values(JSF.filtersList).join(', .'), container);
+}
+
+function filterClass(filterName) {
+	for (const key in JSF.filtersList)
+		if ('jet-smart-filters-' + filterName === JSF.filtersList[key])
+			return key;
 }
 
 function setIndexedData(provider, query = {}) {
-	if (!filterGroups[provider] || !filterGroups[provider].indexingFilters)
+	if (!JSF.filterGroups[provider] || !JSF.filterGroups[provider].indexingFilters)
 		return;
 
 	const ajaxURL = getNesting(JetSmartFilterSettings, 'ajaxurl'),
@@ -189,7 +176,7 @@ function setIndexedData(provider, query = {}) {
 			action: 'jet_smart_filters_get_indexed_data',
 			provider,
 			query_args: query,
-			indexing_filters: filterGroups[provider].indexingFilters
+			indexing_filters: JSF.filterGroups[provider].indexingFilters
 		};
 
 	$.ajax({
@@ -210,10 +197,10 @@ function setIndexedData(provider, query = {}) {
 		// update indexed data
 		window.JetSmartFilterSettings.jetFiltersIndexedData[provider] = response.data;
 
-		if (!filterGroups[provider])
+		if (!JSF.filterGroups[provider])
 			return;
 
-		filterGroups[provider].filters.forEach(filter => {
+		JSF.filterGroups[provider].filters.forEach(filter => {
 			if (!filter.indexer)
 				return;
 
@@ -222,4 +209,27 @@ function setIndexedData(provider, query = {}) {
 	});
 }
 
-export default filtersInitializer;
+function createAdditionalFilter(additionalProvider, additionalQueryId, filter) {
+	return {
+		isAdditional: true,
+		name: filter.name,
+		path: filter.path,
+		provider: additionalProvider,
+		queryId: additionalQueryId,
+		filterId: filter.filterId,
+		queryKey: filter.queryKey,
+		data: filter.data,
+		reset: function () {
+			this.data = false;
+		}
+	};
+}
+
+// filling array with names
+for (const key in JSF.filtersList) {
+	const filter = JSF.filtersList[key];
+
+	JSF.filterNames.push(filter.replace('jet-smart-filters-', ''));
+}
+
+export default JSF;

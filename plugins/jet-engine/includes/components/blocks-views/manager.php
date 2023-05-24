@@ -84,6 +84,10 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views' ) ) {
 		 */
 		public function is_blocks_listing( $listing_id ) {
 
+			/**
+			 * Do not use get_listing_type() method here 
+			 * because this method itself used inside get_listing_type() to define what listing type was used
+			 */
 			$meta = get_post_meta( $listing_id, '_listing_type', true );
 
 			if ( ! $meta ) {

@@ -4,10 +4,10 @@ namespace ElementorPro\Modules\ThemeBuilder\Classes;
 use Elementor\Core\Common\Modules\Ajax\Module as Ajax;
 use Elementor\Core\Utils\Exceptions;
 use Elementor\TemplateLibrary\Source_Local;
+use ElementorPro\Core\Utils;
 use ElementorPro\Modules\ThemeBuilder\Documents\Theme_Document;
 use ElementorPro\Modules\ThemeBuilder\Module;
 use ElementorPro\Modules\ThemeBuilder\Conditions\Condition_Base;
-
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -89,8 +89,12 @@ class Conditions_Manager {
 		$ajax_manager->register_ajax_action( 'pro_theme_builder_conditions_check_conflicts', [ $this, 'ajax_check_conditions_conflicts' ] );
 	}
 
+	/**
+	 * @throws \Exception
+	 */
 	public function ajax_check_conditions_conflicts( $request ) {
-		$post_id = intval( $request['editor_post_id'] );
+		$document = Utils::_unstable_get_document_for_edit( $request['editor_post_id'] );
+
 		$condition = $request['condition'];
 
 		unset( $condition['_id'] );
@@ -101,7 +105,7 @@ class Conditions_Manager {
 			return sprintf(
 				'<a href="%s" target="_blank">%s</a>', $conflict['edit_url'], $conflict['template_title']
 			);
-		}, $this->get_conditions_conflicts( $post_id, $condition ) );
+		}, $this->get_conditions_conflicts( $document->get_main_id(), $condition ) );
 
 		if ( empty( $conflicted ) ) {
 			return '';
@@ -160,11 +164,17 @@ class Conditions_Manager {
 		return $this->get_conditions_conflicts_by_location( $condition, $document->get_location(), $post_id );
 	}
 
+	/**
+	 * @throws \Exception
+	 */
 	public function ajax_save_theme_template_conditions( $request ) {
+		$document = Utils::_unstable_get_document_for_edit( $request['editor_post_id'] );
+
 		if ( ! isset( $request['conditions'] ) ) {
 			$request['conditions'] = [];
 		}
-		$is_saved = $this->save_conditions( $request['editor_post_id'], $request['conditions'] );
+
+		$is_saved = $this->save_conditions( $document->get_main_id(), $request['conditions'] );
 
 		if ( ! $is_saved ) {
 			throw new \Exception( 'Error while saving conditions.', Exceptions::INTERNAL_SERVER_ERROR );
@@ -320,9 +330,10 @@ class Conditions_Manager {
 			 *
 			 * Filters the template ID for theme location templates.
 			 *
-			 * @param int $theme_template_id Template ID.
+			 * @param int    $theme_template_id Template ID.
+			 * @param string $location          Theme location.
 			 */
-			$theme_template_id = apply_filters( 'elementor/theme/get_location_templates/template_id', $theme_template_id );
+			$theme_template_id = apply_filters( 'elementor/theme/get_location_templates/template_id', $theme_template_id, $location );
 
 			foreach ( $conditions as $condition ) {
 				$parsed_condition = $this->parse_condition( $condition );
@@ -394,8 +405,8 @@ class Conditions_Manager {
 
 		// In case the user want to preview any page with a theme_template_id,
 		// like http://domain.com/any-post/?preview=1&theme_template_id=6453
-		if ( ! empty( $_GET['theme_template_id'] ) ) {
-			$force_template_id = $_GET['theme_template_id'];
+		$force_template_id = Utils::_unstable_get_super_global_value( $_GET, 'theme_template_id' );
+		if ( $force_template_id ) {
 			$document = $theme_builder_module->get_document( $force_template_id );
 			// e.g. header / header
 			if ( $document && $location === $document->get_location() ) {

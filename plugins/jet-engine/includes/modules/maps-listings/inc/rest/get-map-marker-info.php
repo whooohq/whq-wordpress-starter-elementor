@@ -60,7 +60,7 @@ class Get_Map_Marker_Info extends \Jet_Engine_Base_API_Endpoint {
 
 		jet_engine()->frontend->set_listing( $listing_id );
 
-		do_action( 'jet-engine/maps-listings/get-map-marker' );
+		do_action( 'jet-engine/maps-listings/get-map-marker', $listing_id );
 
 		ob_start();
 

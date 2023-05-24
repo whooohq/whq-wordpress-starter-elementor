@@ -1,5 +1,44 @@
 # ChangeLog
 
+## [2.1.4](https://github.com/ZemezLab/jet-woo-builder/archive/2.1.4.zip)
+* Added: Integration with Woocommerce High-Performance Order Storage;
+* Added: Linked products query type for Elementor Single Product template;
+* Added: Elementor 3.10 compatibility with custom size unit;
+* Fixed: Disabled carousel arrow appearance [#6496](https://github.com/Crocoblock/suggestions/issues/6496);
+
+## [2.1.3](https://github.com/ZemezLab/jet-woo-builder/archive/2.1.3.zip)
+* Added: `jet-woo-builder/post-type/args` hook for JetWooBuilder post types `$args` manipulation;
+* Updated: Speed of automatic AJAX cart update;
+* Updated: Carousel dynamic bullets transition;
+* Updated: Better Astra theme compatibility;
+* Tweak: Better WPML compatibility;
+* Fixed: Carousel dynamic bullets appearance;
+* Fixed: Wrong grid display when use archive items template on products archive page;
+* Fixed: Products widgets display inside JetEngine listing item.
+
+## [2.1.2.1](https://github.com/ZemezLab/jet-woo-builder/archive/2.1.2.zip)
+* Fixed: Products widgets permalink issue;
+* Fixed: Minor styles issue;
+
+## [2.1.2](https://github.com/ZemezLab/jet-woo-builder/archive/2.1.2.zip)
+* Added: Product Variation query for Products Grid/List widgets;
+* Added: Controls for vertical position for badges in Products Grid/List widgets;
+* Updated: Shortcode functionality refactor and restructuring;
+* Updated: Editor control UX;
+* Updated: JetDashboard to 2.0.10;
+* Fixed: Checkout Order Review widget spacing issues;
+* Fixed: Blocksy theme compatibility;
+
+## [2.1.1](https://github.com/ZemezLab/jet-woo-builder/archive/2.1.1.zip)
+* Added: Better compatibility with JetProductGallery;
+* Added: `jet-woo-builder/woocommerce/billing-fields` and `jet-woo-builder/woocommerce/shipping-fields` for checkout fields editor compatibility with third-party plugins;
+* Added: box-shadow control for form fields in some widgets;
+* Updated: WC rewritten templates;
+* Updated: Billing Form widget selectors;
+* Fixed: JetSmartFilter pagination functionality with widgets that use JetEngine custom query;
+* Fixed: Some UI editor issues;
+* Fixed: Empty sale flash on the grouped product when macros used;
+
 ## [2.1.0](https://github.com/ZemezLab/jet-woo-builder/archive/2.1.0.zip)
 * Added: Product not found message templates in Products Grid/List widgets;
 * Added: Dynamic tags functionality for not found message and Query ID controls in Products Grid/List widgets;

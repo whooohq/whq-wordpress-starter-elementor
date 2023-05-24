@@ -36,6 +36,7 @@
 							<option value=""><?php _e( 'Select post property...', 'jet-engine' ); ?></option>
 							<option value="ID"><?php _e( 'Post ID', 'jet-engine' ); ?></option>
 							<option value="post_title"><?php _e( 'Post Title', 'jet-engine' ); ?></option>
+							<option value="post_name"><?php _e( 'Post Slug', 'jet-engine' ); ?></option>
 							<option value="post_content"><?php _e( 'Post Content', 'jet-engine' ); ?></option>
 							<option value="post_date"><?php _e( 'Post Date', 'jet-engine' ); ?></option>
 							<option value="post_date_gmt"><?php _e( 'Post Date GMT', 'jet-engine' ); ?></option>
@@ -84,6 +85,7 @@
 					<option value=""><?php _e( 'Select post property...', 'jet-engine' ); ?></option>
 					<option value="ID"><?php _e( 'Post ID', 'jet-engine' ); ?></option>
 					<option value="post_title"><?php _e( 'Post Title', 'jet-engine' ); ?></option>
+					<option value="post_name"><?php _e( 'Post Slug', 'jet-engine' ); ?></option>
 					<option value="post_content"><?php _e( 'Post Content', 'jet-engine' ); ?></option>
 					<option value="post_date"><?php _e( 'Post Date', 'jet-engine' ); ?></option>
 					<option value="post_date_gmt"><?php _e( 'Post Date GMT', 'jet-engine' ); ?></option>

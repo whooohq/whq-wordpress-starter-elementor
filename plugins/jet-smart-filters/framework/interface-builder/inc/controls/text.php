@@ -33,6 +33,7 @@ if ( ! class_exists( 'CX_Control_Text' ) ) {
 			'class'        => '',
 			'maxlength'    => false,
 			'required'     => false,
+			'extra_attr'   => array(),
 		);
 
 		/**
@@ -77,12 +78,14 @@ if ( ! class_exists( 'CX_Control_Text' ) ) {
 			$autocomplete = ! empty( $this->settings['autocomplete'] ) ? $this->settings['autocomplete'] : 'on';
 			$autocomplete = sprintf( 'autocomplete="%s"', $autocomplete );
 
-			$html .= '<div class="cx-ui-container ' . esc_attr( $class ) . '">';
-				if ( '' !== $this->settings['label'] ) {
-					$html .= '<label class="cx-label" for="' . esc_attr( $this->settings['id'] ) . '">' . esc_html( $this->settings['label'] ) . '</label> ';
-				}
+			$extra_attr = ! empty( $this->settings['extra_attr'] ) ? ' ' . $this->get_attr_string( $this->settings['extra_attr'] ) : '';
 
-				$html .= '<input type="' . $type . '" id="' . esc_attr( $this->settings['id'] ) . '" class="widefat cx-ui-text" name="' . esc_attr( $this->settings['name'] ) . '" value="' . esc_html( $this->settings['value'] ) . '" placeholder="' . esc_attr( $this->settings['placeholder'] ) . '" ' . $this->get_required() . ' ' . $this->get_maxlength() . ' ' . $autocomplete . '>';
+			$html .= '<div class="cx-ui-container ' . esc_attr( $class ) . '">';
+			if ( '' !== $this->settings['label'] ) {
+				$html .= '<label class="cx-label" for="' . esc_attr( $this->settings['id'] ) . '">' . wp_kses_post( $this->settings['label'] ) . '</label> ';
+			}
+
+			$html .= '<input type="' . $type . '" id="' . esc_attr( $this->settings['id'] ) . '" class="widefat cx-ui-text" name="' . esc_attr( $this->settings['name'] ) . '" value="' . esc_html( $this->settings['value'] ) . '" placeholder="' . esc_attr( $this->settings['placeholder'] ) . '" ' . $this->get_required() . ' ' . $this->get_maxlength() . ' ' . $autocomplete . $extra_attr . '>';
 			$html .= '</div>';
 			return $html;
 		}

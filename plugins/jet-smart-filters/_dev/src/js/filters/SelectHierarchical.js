@@ -13,9 +13,10 @@ export default class SelectHierarchical {
 			return;
 
 		$filters.each(index => {
-			const $filter = $filters.eq(index),
-				filter = new SelectControl($container, $filter);
+			const $filter = $filters.eq(index);
+			const filter = new SelectControl($container, $filter);
 
+			filter.name = 'select';
 			filter.$container = $container;
 			filter.isHierarchy = true;
 			filter.depth = index;
@@ -82,6 +83,9 @@ export default class SelectHierarchical {
 	hierarchicalFilterProcessData(filter) {
 		filter.dataValue = filter.$selected.val();
 
+		if (filter.additionalFilterSettings)
+			filter.additionalFilterSettings.dataUpdated();
+
 		// get hierarchical chain if same taxonomies
 		if (filter.depth) {
 			const hierarchicalСhain = this.getHierarchicalСhain(filter);
@@ -112,21 +116,30 @@ export default class SelectHierarchical {
 			});
 		}
 
-		this.ajaxRequest({ values, depth });
+		this.ajaxRequest({
+			values,
+			depth,
+			args: filter.layoutOptions || false
+		});
 	}
 
 	updateHierarchyLevels(filters) {
 		const values = [];
+		let args = null;
 
 		filters.forEach(filter => {
-			if (filter.dataValue)
+			if (filter.dataValue) {
+				if (args === null)
+					args = filter.layoutOptions || false;
+
 				values.push({
 					value: filter.data,
 					tax: filter.queryVar,
 				});
+			}
 		});
 
-		this.ajaxRequest({ values }, () => {
+		this.ajaxRequest({ values, args }, () => {
 			filters.forEach(filter => {
 				filter.setData(filter.data);
 			});
@@ -156,7 +169,8 @@ export default class SelectHierarchical {
 		const {
 			values,
 			depth = false,
-			indexer = this.indexer
+			indexer = this.indexer,
+			args = false
 		} = data;
 
 		const requestData = {
@@ -169,6 +183,8 @@ export default class SelectHierarchical {
 			requestData.depth = depth;
 		if (indexer)
 			requestData.indexer = indexer;
+		if (args)
+			requestData.args = args;
 
 		$.ajax({
 			url: JetSmartFilterSettings.ajaxurl,

@@ -314,7 +314,8 @@
 						infowindow,
 						pinData = {
 							position: pin.position,
-							map: map
+							map: map,
+							title: pin.desc
 						};
 
 					if ( '' !== pin.image ) {
@@ -653,7 +654,8 @@
 				settings        = $.extend( {}, defaultSettings, settings ),
 				scrollOffset    = $( window ).scrollTop(),
 				firstMouseEvent = true,
-				editMode        = Boolean( elementor.isEditMode() );
+				editMode        = Boolean( elementor.isEditMode() ),
+				backButton      = $( '.jet-animated-box__button--back', $scope );
 
 			if ( ! $target.length ) {
 				return;
@@ -750,6 +752,16 @@
 							$( this ).toggleClass( 'flipped' );
 						}
 					} );
+
+					backButton.on( 'focus', function() {
+						if ( ! $target.hasClass( 'flipped-stop' ) ) {
+							$target.toggleClass( 'flipped' );
+						}
+					} );
+
+					backButton.on( 'focusout', function() {
+						$target.removeClass( 'flipped' )
+					} );
 				}
 			}
 
@@ -799,6 +811,16 @@
 							$target.toggleClass( 'flipped' );
 						}
 					} );
+
+					backButton.on( 'focus', function() {
+						if ( ! $target.hasClass( 'flipped-stop' ) ) {
+							$target.toggleClass( 'flipped' );
+						}
+					} );
+
+					backButton.on( 'focusout', function() {
+						$target.removeClass( 'flipped' )
+					} );
 				}
 			}
 
@@ -818,6 +840,16 @@
 						}
 					} );
 				}
+
+				backButton.on( 'focus', function() {
+					if ( ! $target.hasClass( 'flipped-stop' ) ) {
+						$target.toggleClass( 'flipped' );
+					}
+				} );
+
+				backButton.on( 'focusout', function() {
+					$target.removeClass( 'flipped' )
+				} );
 			}
 
 			function scratchSwitchType() {
@@ -906,6 +938,14 @@
 				}).accordion( 0, settings['paperFoldDirection'] );
 
 				$target.addClass( 'fold-init' );
+
+				backButton.on( 'focus', function() {
+					folded.foldUp();
+				} );
+
+				backButton.on( 'focusout', function() {
+					folded.accordion( 0, settings['paperFoldDirection'] );
+				} );
 			}
 
 			function peelSwitchType( peelCornerPosition ) {
@@ -945,6 +985,12 @@
 				}
 
 				peel.setFadeThreshold(.8);
+
+				backButton.on( 'focus', function() {
+					peel.removeEvents();
+
+					$( '.peel-top, .peel-back, .peel-bottom-shadow', $target ).remove();
+				} );
 
 				peel.handleDrag( function( evt, x, y ) {
 					var targetOffset = $target.offset(),
@@ -1005,6 +1051,10 @@
 					},
 				} );
 
+				backButton.on( 'focus', function() {
+					$frontSide.draggable( "disable" );
+					$frontSide.hide();
+				} );
 			}
 		},
 
@@ -1613,10 +1663,36 @@
 				eTarget           = $target.closest( '.elementor-widget' ),
 				breakpoints       = JetElementsTools.getElementorElementSettings( eTarget ),
 				activeBreakpoints = elementor.config.responsive.activeBreakpoints,
+				dotsEnable        = options.dots,
+				accessibility     = true,
 				prevDeviceToShowValue,
 				prevDeviceToScrollValue,
-				slidesCount,
-				dotsEnable = options.dots;
+				slidesCount;
+
+			if ( $target.hasClass( 'jet-image-comparison__instance' ) ) {
+				accessibility = false;
+
+				setTimeout( function() {
+					$target.on( 'beforeChange', function() {
+						var _this = $( this );
+
+						_this.find( '.slick-slide' ).each( function() {
+							$( this ).find( '.jx-controller' ).attr( 'tabindex', '' );
+							$( this ).find( '.jx-label').attr( 'tabindex', '' );
+						} );
+					} );
+
+					$target.on( 'afterChange', function() {
+						var _this = $(this);
+
+						_this.find( '.slick-slide.slick-active' ).each( function() {
+							$( this ).find( '.jx-controller' ).attr( 'tabindex', '0' );
+							$( this ).find( '.jx-label').attr( 'tabindex', 0 );
+						} );
+					} );
+
+				}, 100 );
+			}
 
 			if ( $target.hasClass( 'jet-posts' ) && $target.parent().hasClass( 'jet-carousel' ) ) {
 				function renameKeys( obj, newKeys ) {
@@ -1669,17 +1745,82 @@
 			prevDeviceToShowValue   = options.slidesToShow;
 			prevDeviceToScrollValue = options.slidesToScroll;
 
-			$target.on( 'init reInit', function() {
-				if ( options.infinite ) {
-					var $items        = $( this ),
-						$clonedSlides = $( '> .slick-list > .slick-track > .slick-cloned.jet-carousel__item', $items );
+			setTimeout( function() {
+				$( '.slick-slide', $target ).each( function () {
+					if ( $(this).attr('aria-describedby') != undefined ) {
+						$( this ).attr('id', $( this ).attr( 'aria-describedby' ) );
+					}
+				} );
 
-					if ( !$clonedSlides.length ) {
-						return;
+				$( '.jet-slick-dots', $target ).removeAttr( 'role' );
+
+				$( '.jet-slick-dots li', $target ).each( function() {
+					$( this ).removeAttr( 'role' );
+					$( this ).attr( 'tabindex', '0' );
+				} );
+			}, 100 );
+
+			$target.on( 'init reInit', function() {
+				$( '.jet-slick-dots', $target ).removeAttr( 'role' );
+
+				$( '.jet-slick-dots li', $( this ) ).each( function() {
+					$( this ).removeAttr( 'role' );
+					$( this ).attr( 'tabindex', '0' );
+				} );
+
+				$( '.jet-slick-dots li', $( this ) ).keydown( function( e ) {
+					var $this   = $( this ),
+						$which  = e.which || e.keyCode;
+
+					if ( $which == 13 || $which == 32 ) {
+						$this.click();
 					}
 
-					JetElements.initElementsHandlers( $clonedSlides );
+					if ( $which == 37 ) {
+						if ( 0 != $this.prev().length ) {
+							$this.prev().focus();
+							$this.prev().click();
+						}
+					}
 
+					if ( $which == 39 ) {
+						if ( 0 != $this.next().length ) {
+							$this.next().focus();
+							$this.next().click();
+						}
+					}
+				} );
+
+				$( '.jet-arrow', eTarget ).attr( 'tabindex', 0 );
+
+				$( '.jet-arrow', eTarget ).keydown( function( e ) {
+					var $this  = $( this ),
+						$which = e.which || e.keyCode;
+
+					if ( $which == 13 || $which == 32 ) {
+						$this.click();
+					}
+
+					if ( $which == 37 ) {
+						if ( 0 != $this.prev().length && $this.prev().hasClass( 'slick-arrow' ) ) {
+							$this.prev().focus();
+						}
+					}
+
+					if ( $which == 39 && $this.next().hasClass( 'slick-arrow' ) ) {
+						if ( 0 != $this.next().length ) {
+							$this.next().focus();
+						}
+					}
+				} );
+
+				if ( $target.hasClass( 'jet-image-comparison__instance' ) ) {
+					setTimeout( function() {
+						$target.find( '.slick-slide.slick-active' ).each( function() {
+							$( this ).find( '.jx-controller' ).attr( 'tabindex', '0' );
+							$( this ).find( '.jx-label').attr( 'tabindex', '0' );
+						} );
+					}, 100 );
 				}
 
 				//fix lazyload image loading
@@ -1708,6 +1849,17 @@
 
 					observer.observe( _this[0] );
 				} );
+
+				if ( options.infinite ) {
+					var $items        = $( this ),
+						$clonedSlides = $( '> .slick-list > .slick-track > .slick-cloned.jet-carousel__item', $items );
+
+					if ( !$clonedSlides.length ) {
+						return;
+					}
+
+					JetElements.initElementsHandlers( $clonedSlides );
+				}
 			} );
 
 			if ( $target.hasClass( 'slick-initialized' ) ) {
@@ -1760,12 +1912,21 @@
 				customPaging: function(slider, i) {
 					return $( '<span />' ).text( i + 1 );
 				},
-				dotsClass: 'jet-slick-dots'
+				dotsClass: 'jet-slick-dots',
+				accessibility: accessibility
 			};
 
 			slickOptions = $.extend( {}, defaultOptions, options );
 
 			$target.slick( slickOptions );
+
+			if ( $target.hasClass( 'jet-image-comparison__instance' ) ) {
+				let juxtaposeSlidersLength = window.juxtapose.sliders.length;
+
+				for ( let i = 0; i < juxtaposeSlidersLength; i++ ) {
+					window.juxtapose.sliders[i].setWrapperDimensions();
+				}
+			}
 		},
 
 		widgetTimeLine : function ( $scope ){
@@ -1911,12 +2072,20 @@
 				$mejsPlaer = $scope.find( '.jet-video-mejs-player' ),
 				mejsPlaerControls = $mejsPlaer.data( 'controls' ) || ['playpause', 'current', 'progress', 'duration', 'volume', 'fullscreen'],
 				$overlay = $scope.find( '.jet-video__overlay' ),
+				playButton = $scope.find( '.jet-video__play-button' ),
 				hasOverlay = $overlay.length > 0,
 				settings = $video.data( 'settings' ) || {},
 				lightbox = settings.lightbox || false,
 				autoplay = settings.autoplay || false;
 
 			if ( $overlay[0] ) {
+				playButton.keypress( function( e ) {
+					if ( e.which == 13 ) {
+						$overlay.click();
+						return false;
+					}
+				} );
+
 				$overlay.on( 'click.jetVideo', function( event ) {
 
 					if ( $videoPlaer[0] ) {
@@ -2875,14 +3044,23 @@
 
 				$scope.find( '.pricing-table__fold-mask' ).css('max-height', 'none');
 
+				$fold_button.keypress( function( e ) {
+					if ( e.which == 13 ) {
+						$fold_button.click();
+						return false;
+					}
+				} );
+
 				$fold_button.on( 'click.jetPricingTable', function() {
-					var $this         = $( this ),
-						$buttonText   = $( '.pricing-table__fold-button-text', $this ),
-						$buttonIcon   = $( '.pricing-table__fold-button-icon', $this ),
-						unfoldText    = $this.data( 'unfold-text' ),
-						foldText      = $this.data( 'fold-text' ),
-						unfoldIcon    = $this.data( 'unfold-icon' ),
-						foldIcon      = $this.data( 'fold-icon' );
+					var $this                      = $( this ),
+						$buttonText                = $( '.pricing-table__fold-button-text', $this ),
+						$buttonIcon                = $( '.pricing-table__fold-button-icon', $this ),
+						unfoldText                 = $this.data( 'unfold-text' ),
+						unfoldTextAccessibility    = $this.data( 'unfold-text-accessibility' ),
+						foldText                   = $this.data( 'fold-text' ),
+						foldTextAccessibility      = $this.data( 'fold-text-accessibility' ),
+						unfoldIcon                 = $this.data( 'unfold-icon' ),
+						foldIcon                   = $this.data( 'fold-icon' );
 
 					if ( ! $fold_target.hasClass( 'pricing-table-unfold-state' ) ) {
 						$fold_target.addClass( 'pricing-table-unfold-state' );
@@ -2891,6 +3069,12 @@
 
 						$buttonIcon.html( foldIcon );
 						$buttonText.html( foldText );
+
+						if ( '' !== foldText ) {
+							$this.attr( 'aria-label', foldText );
+						} else {
+							$this.attr( 'aria-label', foldTextAccessibility );
+						}
 
 						anime( {
 							targets:  $fold_mask[0],
@@ -2903,6 +3087,12 @@
 
 						$buttonIcon.html( unfoldIcon );
 						$buttonText.html( unfoldText );
+
+						if ( '' !== foldText ) {
+							$this.attr( 'aria-label', unfoldText );
+						} else {
+							$this.attr( 'aria-label', unfoldTextAccessibility );
+						}
 
 						anime( {
 							targets:  $fold_mask[0],
@@ -4607,6 +4797,9 @@
 		};
 
 		self.filterHandler = function( event ) {
+
+			event.preventDefault();
+
 			var $this = $( this ),
 				counter = 1,
 				slug  = $this.data( 'slug' ),
@@ -4916,7 +5109,12 @@
 			ctx          = canvas.getContext('2d'),
 			brush        = new Image(),
 			isDrawing = false,
-			lastPoint;
+			lastPoint,
+			backButton   = $( '.jet-animated-box__button--back', container );
+
+			backButton.on( 'focus', function() {
+				handlePercentage( 100 );
+			} );
 
 			function getPageTop(el) {
 				var rect  = el.getBoundingClientRect(),

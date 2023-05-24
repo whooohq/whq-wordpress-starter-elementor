@@ -212,9 +212,13 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Archive' ) ) {
 			}
 
 			if ( ! class_exists( 'Elementor\Jet_Woo_Builder_Base' ) ) {
-				require_once jet_woo_builder()->plugin_path(
-					'includes/base/class-jet-woo-builder-base.php'
-				);
+				$base_file_path = 'includes/components/elementor-views/widget-base.php';
+
+				if ( ! file_exists( jet_woo_builder()->plugin_path( $base_file_path ) ) ) {
+					$base_file_path = 'includes/base/class-jet-woo-builder-base.php';
+				}
+
+				require_once jet_woo_builder()->plugin_path( $base_file_path );
 			}
 
 			if ( ! class_exists( 'Elementor\Jet_Woo_Builder_Products_Loop' ) ) {
@@ -293,6 +297,22 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Archive' ) ) {
 		public function get_wrapper_selector() {
 
 			return '.jet-woo-products-wrapper';
+		}
+
+		/**
+		 * Get provider wrapper selector
+		 */
+		public function get_list_selector() {
+
+			return '.products';
+		}
+
+		/**
+		 * Get provider list item selector
+		 */
+		public function get_item_selector() {
+
+			return '.product';
 		}
 
 		/**

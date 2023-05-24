@@ -29,21 +29,18 @@
 	&__button {
 		display: flex;
 		flex-flow: row nowrap;
-		justify-content: flex-start;
+		justify-content: center;
 		align-items: center;
 		background-color: #6ec1e4;
 		cursor: pointer;
-	}
-
-	&__button-icon:not(:empty) + &__button-text:not(:empty) {
-		margin-left: 5px;
-
-		.rtl & {
-			margin-left: 0;
-			margin-right: 5px;
+		&.elementor-button{
+			display: flex;
+			flex-flow: row nowrap;
+		}
+		&:not(:empty){
+			gap: 5px;
 		}
 	}
-
 	&-state {
 		.jet-unfold__separator {
 			opacity: 0;

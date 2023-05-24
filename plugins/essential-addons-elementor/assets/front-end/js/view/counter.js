@@ -93,7 +93,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("var CounterHandler = function CounterHandler($scope, $) {\n  var counter_elem = $scope.find(\".eael-counter\").eq(0),\n      $target = counter_elem.data(\"target\");\n  $(counter_elem).waypoint(function () {\n    $($target).each(function () {\n      var v = $(this).data(\"to\"),\n          speed = $(this).data(\"speed\"),\n          od = new Odometer({\n        el: this,\n        value: 0,\n        duration: speed\n      });\n      od.render();\n      setInterval(function () {\n        od.update(v);\n      });\n    });\n  }, {\n    offset: \"80%\",\n    triggerOnce: true\n  });\n};\n\njQuery(window).on(\"elementor/frontend/init\", function () {\n  elementorFrontend.hooks.addAction(\"frontend/element_ready/eael-counter.default\", CounterHandler);\n});\n\n//# sourceURL=webpack:///./src/js/view/counter.js?");
+eval("var CounterHandler = function CounterHandler($scope, $) {\n  var counter_elem = $scope.find(\".eael-counter\").eq(0),\n    $target = counter_elem.data(\"target\");\n  $(counter_elem).waypoint(function () {\n    $($target).each(function () {\n      var v = $(this).data(\"to\"),\n        speed = $(this).data(\"speed\"),\n        od = new Odometer({\n          el: this,\n          value: 0,\n          duration: speed\n        });\n      od.render();\n      setInterval(function () {\n        od.update(v);\n      });\n    });\n  }, {\n    offset: \"80%\",\n    triggerOnce: true\n  });\n};\njQuery(window).on(\"elementor/frontend/init\", function () {\n  elementorFrontend.hooks.addAction(\"frontend/element_ready/eael-counter.default\", CounterHandler);\n});\n\n//# sourceURL=webpack:///./src/js/view/counter.js?");
 
 /***/ })
 

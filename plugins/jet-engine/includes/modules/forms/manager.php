@@ -13,6 +13,7 @@ if ( ! class_exists( 'Jet_Engine_Booking_Forms' ) ) {
 	/**
 	 * Define Jet_Engine_Booking_Forms class
 	 */
+	#[AllowDynamicProperties]
 	class Jet_Engine_Booking_Forms {
 
 		public $post_type = 'jet-engine-booking';
@@ -172,6 +173,7 @@ if ( ! class_exists( 'Jet_Engine_Booking_Forms' ) ) {
 			return array(
 				'ID',
 				'post_title',
+				'post_name',
 				'post_content',
 				'post_excerpt',
 				'post_date',

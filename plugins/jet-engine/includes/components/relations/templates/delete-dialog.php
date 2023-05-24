@@ -7,7 +7,9 @@
 >
 	<div class="cx-vui-subtitle" slot="title"><?php
 		_e( 'Please confirm relation deletion', 'jet-engine' );
-	?></div>
+	?>
+		<template v-if="itemName">- <span class="jet-engine-accent-text">{{ itemName }}</span></template>
+	</div>
 	<div slot="content">
 		<?php _e( 'Are you sure you want to delete this posts relation?', 'jet-engine' ); ?><br>
 	</div>

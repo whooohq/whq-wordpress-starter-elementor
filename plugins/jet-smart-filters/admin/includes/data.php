@@ -14,12 +14,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Admin_Data' ) ) {
 	 * Define Jet_Smart_Filters_Admin_Data class
 	 */
 	class Jet_Smart_Filters_Admin_Data {
-
-		/**
-		 * A reference to an instance of this class.
-		 */
-		private static $instance = null;
-
 		/**
 		 * Constructor for the class
 		 */
@@ -35,6 +29,17 @@ if ( ! class_exists( 'Jet_Smart_Filters_Admin_Data' ) ) {
 			$this->post_types_options = apply_filters(
 				'jet-smart-filters/admin/post-types-options',
 				jet_smart_filters()->data->get_post_types_for_options()
+			);
+
+			// Info blocks
+			$this->date_formats_info        = jet_smart_filters()->utils->get_file_html( 'admin/templates/info-blocks/date-formats.php' );
+			$this->min_max_date_period_info = jet_smart_filters()->utils->get_file_html( 'admin/templates/info-blocks/min-max-date-period-info.php' );
+			$this->range_inputs_info        = sprintf(
+				'<strong>%1$s, %2$s, %3$s </strong> %4$s',
+				__( 'Number of decimals', 'jet-smart-filters' ),
+				__( 'Decimal separator', 'jet-smart-filters' ),
+				__( 'Thousands separator', 'jet-smart-filters' ),
+				__( 'will not be applied to inputs', 'jet-smart-filters' )
 			);
 
 			// Settings data
@@ -198,19 +203,6 @@ if ( ! class_exists( 'Jet_Smart_Filters_Admin_Data' ) ) {
 		public function sanitize_range_step( $input ) {
 
 			return trim( str_replace( ',', '.', $input ) );
-		}
-
-		/**
-		 * Returns the instance.
-		 */
-		public static function get_instance() {
-
-			// If the single instance hasn't been set, set it now.
-			if ( null == self::$instance ) {
-				self::$instance = new self;
-			}
-
-			return self::$instance;
 		}
 	}
 }

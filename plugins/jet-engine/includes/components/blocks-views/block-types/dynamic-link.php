@@ -95,6 +95,10 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Dynamic_Link' ) ) {
 					'type'    => 'string',
 					'default' => '',
 				),
+				'aria_label_attr' => array(
+					'type'    => 'string',
+					'default' => '',
+				),
 				'hide_if_empty' => array(
 					'type'    => 'boolean',
 					'default' => false,
@@ -437,6 +441,9 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Dynamic_Link' ) ) {
 			);
 
 			$this->controls_manager->end_section();
+
+			do_action( 'jet-engine/blocks-views/dynamic-link/style-controls', $this->controls_manager, $this );
+
 		}
 
 	}

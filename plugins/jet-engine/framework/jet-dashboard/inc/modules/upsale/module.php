@@ -71,19 +71,6 @@ class Module extends Page_Module_Base {
 	 */
 	public function create() {
 		add_action( 'admin_menu', array( $this, 'register_page' ), 9999 );
-		add_action( 'admin_head', array( $this, 'modify_item_styles') );
-	}
-
-	/**
-	 * [modify_item_styles description]
-	 * @return [type] [description]
-	 */
-	public function modify_item_styles() {
-		echo '<style type="text/css">
-			#adminmenu #toplevel_page_jet-dashboard a[href*="admin.php?page=jet-dashboard-license-page&subpage=license-manager"] { color: #4aa5f5; }
-			#adminmenu #toplevel_page_jet-dashboard a[href="admin.php?page=jet-dashboard-upsale-page"] { color: #F5C546; }
-			#adminmenu #toplevel_page_jet-dashboard a[href*="https://account.crocoblock.com/upgrade"] { color: #F5C546; }
-		</style>';
 	}
 
 	/**

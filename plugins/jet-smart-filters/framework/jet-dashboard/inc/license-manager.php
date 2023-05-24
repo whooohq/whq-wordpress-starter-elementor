@@ -332,7 +332,7 @@ class License_Manager {
 
 		return array(
 			'key'     => $filtered_license['licenseDetails']['license'],
-			'product' => $filtered_license['licenseDetails']['product_category'],
+			'product' => isset( $filtered_license['licenseDetails']['product_category'] ) ? $filtered_license['licenseDetails']['product_category'] : '',
 			'type'    => $filtered_license['licenseDetails']['type'],
 			'expire'  => $filtered_license['licenseDetails']['expire'],
 		);

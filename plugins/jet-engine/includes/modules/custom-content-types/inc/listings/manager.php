@@ -159,6 +159,22 @@ class Manager {
 
 		add_filter( 'jet-engine/listing/repeater-listing-sources', array( $this, 'register_repeater_listing_source' ) );
 
+		add_action(
+			'jet-engine/listings/document/get-preview/' . $this->source,
+			array( $this, 'setup_preview' )
+		);
+
+		add_action(
+			'jet-engine/listings/document/get-preview/' . $this->repeater_source,
+			array( $this, 'setup_preview' )
+		);
+
+		add_filter(
+			'jet-engine/listings/frontend/custom-listing-url',
+			array( $this, 'custom_listing_url' ),
+			10, 2
+		);
+
 	}
 
 	public function get_object_date( $date, $object ) {
@@ -316,7 +332,12 @@ class Manager {
 	 */
 	public function get_custom_value_by_setting( $setting, $settings ) {
 
-		$current_object = jet_engine()->listings->data->get_current_object();
+		$object_context = ! empty( $settings['object_context'] ) ? $settings['object_context'] : false;
+		$current_object = jet_engine()->listings->data->get_object_by_context( $object_context );
+
+		if ( ! $current_object ) {
+			$current_object = jet_engine()->listings->data->get_current_object();
+		}
 
 		if ( ! isset( $current_object->cct_slug ) ) {
 			return false;
@@ -350,7 +371,7 @@ class Manager {
 			$result = $current_object->$field;
 		}
 
-		return $result;
+		return wp_unslash( $result );
 
 	}
 
@@ -532,7 +553,7 @@ class Manager {
 	 *
 	 * @return [type] [description]
 	 */
-	public function register_listing_popup_options() {
+	public function register_listing_popup_options( $data ) {
 		?>
 		<div class="jet-listings-popup__form-row jet-template-listing jet-template-<?php echo $this->source; ?>">
 			<label for="listing_content_type"><?php esc_html_e( 'From content type:', 'jet-engine' ); ?></label>
@@ -540,7 +561,12 @@ class Manager {
 				<option value=""><?php _e( 'Select content type...', 'jet-engine' ); ?></option>
 				<?php
 				foreach ( Module::instance()->manager->get_content_types() as $type => $instance ) {
-					printf( '<option value="%1$s">%2$s</option>', $type, $instance->get_arg( 'name' ) );
+					printf( 
+						'<option value="%1$s" %3$s>%2$s</option>',
+						$type,
+						$instance->get_arg( 'name' ),
+						( ! empty( $data['cct_type'] ) ? selected( $data['cct_type'], $type, false ) : '' )
+					);
 				}
 			?></select>
 		</div>
@@ -562,7 +588,12 @@ class Manager {
 					echo '<optgroup label="' . $group_label . '">';
 
 					foreach ( $fields as $key => $label ) {
-						printf( '<option value="%1$s">%2$s</option>', $type . '__' . $key, $label );
+						printf( 
+							'<option value="%1$s" %3$s>%2$s</option>',
+							$type . '__' . $key, 
+							$label,
+							( ! empty( $data['cct_repeater_field'] ) ? selected( $data['cct_repeater_field'], $type . '__' . $key, false ) : '' )
+						);
 					}
 
 					echo '</optgroup>';
@@ -753,7 +784,14 @@ class Manager {
 	 * @return false|array
 	 */
 	public function get_dynamic_repeater_value( $value, $settings ) {
-		return $this->get_custom_value_by_setting( 'dynamic_field_source', $settings );
+
+		$result = $this->get_custom_value_by_setting( 'dynamic_field_source', $settings );
+
+		if ( ! $result ) {
+			return $value;
+		}
+
+		return $result;
 	}
 
 	/**
@@ -809,7 +847,7 @@ class Manager {
 			$result = $current_object->$field;
 		}
 
-		return $result;
+		return wp_unslash( $result );
 	}
 
 	public function get_dynamic_field_repeater_value( $result, $settings ) {
@@ -854,6 +892,21 @@ class Manager {
 		$sources[] = $this->repeater_source;
 
 		return $sources;
+	}
+
+	public function custom_listing_url( $result, $settings ) {
+
+		$url = $this->get_custom_value_by_setting( 'listing_link_source', $settings );
+
+		if ( is_numeric( $url ) ) {
+			$url = get_permalink( $url );
+		}
+
+		if ( ! $url ) {
+			return $result;
+		} else {
+			return $url;
+		}
 	}
 
 }

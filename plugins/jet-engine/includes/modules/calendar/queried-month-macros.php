@@ -38,7 +38,7 @@ class Jet_Engine_Queried_Month_Macros extends Jet_Engine_Base_Macros {
 		$result = $range[ $return ];
 
 		if ( $result && 'timestamp' !== $format ) {
-			$result = date_i18n( 'Y-m-d H:i:s' );
+			$result = date_i18n( 'Y-m-d H:i:s', $result );
 		}
 
 		return $result;

@@ -100,13 +100,13 @@ class Jet_Woo_Builder_Single_Sale_Badge extends Jet_Woo_Builder_Base {
 
 		$this->add_control(
 			'single_badge_background',
-			array(
-				'label'     => esc_html__( 'Background', 'jet-woo-builder' ),
+			[
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
+				'label'     => __( 'Background Color', 'jet-woo-builder' ),
+				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['badge'] => 'background-color: {{VALUE}}',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_group_control(
@@ -120,14 +120,14 @@ class Jet_Woo_Builder_Single_Sale_Badge extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'single_badge_border_radius',
-			array(
-				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['badge'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_group_control(
@@ -140,14 +140,14 @@ class Jet_Woo_Builder_Single_Sale_Badge extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'single_badge_content_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['badge'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(

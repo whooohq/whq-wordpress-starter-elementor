@@ -44,9 +44,30 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Terms' ) ) {
 				$object = jet_engine()->listings->data->get_current_object();
 			}
 
+			if ( ! $object || ! is_object( $object ) ) {
+				return;
+			}
+
 			switch ( get_class( $object ) ) {
 				case 'WP_Post':
-					$terms = wp_get_post_terms( jet_engine()->listings->data->get_current_object_id( $object ), $tax );
+
+					$args      = array();
+					$args_keys = array( 'orderby', 'order' );
+
+					foreach ( $args_keys as $key ) {
+
+						if ( empty( $settings[ $key ] ) ) {
+							continue;
+						}
+
+						$args[ $key ] = $settings[ $key ];
+					}
+
+					$post_id = jet_engine()->listings->data->get_current_object_id( $object );
+
+					$terms = wp_get_post_terms( $post_id, $tax, $args );
+					$terms = apply_filters( 'jet-engine/listings/dynamic-terms/items', $terms, $post_id, $settings, $this );
+
 					break;
 
 				case 'WP_Term':

@@ -73,7 +73,8 @@ export default {
 
 	async reindexFilters() {
 		return this.ajax({
-			action: 'jet_smart_filters_admin_indexer'
+			action: 'jet_smart_filters_admin_indexer',
+			nonce: window.JetSmartFiltersAdminData.nonce
 		});
 	},
 

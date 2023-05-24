@@ -2,6 +2,46 @@
 
 # ChangeLog
 
+## 3.1.1
+* UPD: redesigned initialization of filters on the frontend
+* ADD: pagination load more
+* ADD: fieldset legends & aria-labels
+* ADD: don't send ajax request if page hasn't provider
+* ADD: filter 'jet-smart-filters/service/filter/serialized-keys'
+* ADD: reinitFilters global method
+* FIX: sitepath for url aliases
+* FIX: URL aliases settings RTL
+* FIX: fatal when Bricks query loop ("Is filterable" checked) in listing grid item
+
+## 3.1.0
+* ADD: Allow to replace selected parts of the filtered URLs with any alias words you want;
+* ADD: Bricks Query Loop provider;
+* ADD: PHP 8.2 compatibility;
+* UPD: Improve security checks for edit filters settings requests;
+* UPD: Visual filter dropdown select for taxonomies and posts data source;
+* FIX: Exclude/include data source posts list;
+* FIX: Admin filters list pagination;
+* FIX: Keep third party URL params on filters clear;
+* FIX: JetEngine Calendar and filters compatibility;
+* FIX: Fatal error for when accessing admin area for non-admins users.
+
+## 3.0.4
+* ADD: Bricks builder compatibility;
+* UPD: Filters builder icons;
+* UPD: jet dashboard to 2.0.4;
+* FIX: Ensure correct provider set from request;
+* FIX: compatibility with JetWooBuilder 2.1.2;
+* FIX: Visibility of classic admin editor fields in some cases.
+
+## 3.0.3
+* ADD: Filter Date Period dates limit
+* ADD: indexer counter prefix/suffix & position style
+* FIX: refactoring Active filter & Active tag filters
+* FIX: elementor pro v3.9.0 popup
+* FIX: ignore disabled filters on set data
+* FIX: additional providers
+* UPD: renamed url prefix from 'jet-smart-filters' to 'jsf'
+
 ## 3.0.2
 * ADD: admin ability to open a filter from the list in a new tab
 * ADD: pagination filter autoscroll option

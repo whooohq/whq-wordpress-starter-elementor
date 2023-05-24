@@ -1,0 +1,17 @@
+.jet-ui_controls-list-item {
+	&[name="_max_date_period"],
+	&[name="_date_period_separator"] {
+		border-top: none;
+		padding: 0;
+	}
+	&[name="_min_max_date_period_info"],
+	&[name="_date_period_end_format"] {
+		border-top: none;
+	}
+	&[name="_date_period_start_format"] {
+		padding-bottom: 6px;
+	}
+	&[name="_date_period_date_formats_info"] .jet-ui_controls-list-item-meta {
+		margin-bottom: 10px;
+	}
+}

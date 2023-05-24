@@ -47,7 +47,7 @@ window.JetEngineMapsProvider = function() {
 		let settingsMap = {
 			zoom: 'zoom',
 			center: 'center',
-			scrollwheel: 'scrollWheelZoom',
+			cooperativeGestures: 'scrollwheel',
 			zoomControl: 'zoomControl',
 			style: 'styles',
 			maxZoom: 'maxZoom',
@@ -186,6 +186,13 @@ window.JetEngineMapsProvider = function() {
 		markerCluster.removeMarkers();
 	}
 
+	this.setCenterByPosition = function( data ) {
+		data.map.jumpTo( {
+			center: data.position,
+			zoom:   data.zoom,
+		} );
+	}
+
 	this.setAutoCenter = function( data ) {
 		this.fitMapBounds( data );
 	}
@@ -193,8 +200,8 @@ window.JetEngineMapsProvider = function() {
 	this.addPopup = function( data ) {
 
 		const popup = new mapboxgl.Popup( {
-			maxWidth: data.width,
-			minWidth: data.width,
+			maxWidth: data.width + 'px',
+			minWidth: data.width + 'px',
 			offset: data.offset,
 			focusAfterOpen: true,
 			className: 'jet-map-box',

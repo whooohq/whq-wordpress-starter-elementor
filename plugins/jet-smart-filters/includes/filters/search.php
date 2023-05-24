@@ -91,7 +91,8 @@ if ( ! class_exists( 'Jet_Smart_Filters_Search_Filter' ) ) {
 				'button_text'          => $button_text,
 				'button_icon'          => $button_icon,
 				'button_icon_position' => $button_icon_position,
-				'min_letters_count'    => $min_letters_count
+				'min_letters_count'    => $min_letters_count,
+				'accessibility_label'  => $this->get_accessibility_label( $filter_id )
 			);
 		}
 	}

@@ -23,6 +23,13 @@ if ( ! class_exists( 'CX_Controls_Base' ) ) {
 		public $base_url = null;
 
 		/**
+		 * Base path
+		 *
+		 * @var string
+		 */
+		public $base_path = null;
+
+		/**
 		 * Settings list
 		 *
 		 * @since 1.0.0
@@ -124,6 +131,15 @@ if ( ! class_exists( 'CX_Controls_Base' ) ) {
 		}
 
 		/**
+		 * Set up base path for next usage
+		 *
+		 * @param string $url array
+		 */
+		public function set_base_path( $path = '' ) {
+			$this->base_path = $path;
+		}
+
+		/**
 		 * Get control value
 		 *
 		 * @since 1.0.0
@@ -190,6 +206,16 @@ if ( ! class_exists( 'CX_Controls_Base' ) ) {
 
 			return implode( ' ', $result );
 
+		}
+
+		/**
+		 * Checks a value for being empty.
+		 *
+		 * @param  mixed $source
+		 * @return bool
+		 */
+		public function is_empty( $source ) {
+			return empty( $source ) && '0' !== $source;
 		}
 	}
 }

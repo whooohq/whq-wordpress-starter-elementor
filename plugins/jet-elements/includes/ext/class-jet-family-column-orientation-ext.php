@@ -203,7 +203,7 @@ if ( ! class_exists( 'Jet_Family_Column_Orientation_Ext' ) ) {
 				[
 					'label'      => esc_html__( 'Maximum Height', 'jet-elements' ),
 					'type'       => Elementor\Controls_Manager::SLIDER,
-					'size_units' => [ 'px', '%', 'vh' ],
+					'size_units' => [ 'px', '%', 'vh', 'custom' ],
 					'default' => [
 						'unit' => 'px',
 						'size' => '800',
@@ -293,7 +293,7 @@ if ( ! class_exists( 'Jet_Family_Column_Orientation_Ext' ) ) {
 				[
 					'label'      => esc_html__( 'Flex Basis Width', 'jet-elements' ),
 					'type'       => Elementor\Controls_Manager::SLIDER,
-					'size_units' => [ '%', 'px' ],
+					'size_units' => [ '%', 'px', 'custom' ],
 					'range'      => [
 						'%' => [
 							'min' => 1,

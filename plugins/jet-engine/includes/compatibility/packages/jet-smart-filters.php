@@ -55,6 +55,29 @@ if ( ! class_exists( 'Jet_Engine_Smart_Filters_Package' ) ) {
 				array( $this, 'add_redirect_filter_data' )
 			);
 
+			add_filter(
+				'jet-engine/listing/posts-loop/start-from',
+				array( $this, 'update_start_from_on_pagination_request' ),
+				10, 3
+			);
+
+		}
+
+		public function is_filters_request() {
+
+			if ( ! empty( $_REQUEST['action'] ) && 'jet_smart_filters' === $_REQUEST['action'] && ! empty( $_REQUEST['provider'] ) ) {
+				return true;
+			}
+
+			if ( ! empty( $_REQUEST['jet-smart-filters'] ) ) {
+				return true;
+			}
+
+			if ( ! empty( $_REQUEST['jsf'] ) ) {
+				return true;
+			}
+
+			return false;
 		}
 
 		public function maybe_enable_users_count( $args, $widget ) {
@@ -77,6 +100,8 @@ if ( ! class_exists( 'Jet_Engine_Smart_Filters_Package' ) ) {
 				if ( isset( $_REQUEST['jet_paged'] ) ) {
 					$page = absint( $_REQUEST['jet_paged'] );
 				} elseif ( wp_doing_ajax() && isset( $_REQUEST['paged'] ) ) {
+					$page = absint( $_REQUEST['paged'] );
+				} elseif ( defined( 'JET_SMART_FILTERS_DOING_REQUEST' ) && isset( $_REQUEST['paged'] ) ) {
 					$page = absint( $_REQUEST['paged'] );
 				} else {
 					$page = $widget->query_vars['page'];
@@ -221,6 +246,54 @@ if ( ! class_exists( 'Jet_Engine_Smart_Filters_Package' ) ) {
 			}
 
 			return $options;
+		}
+
+		public function update_start_from_on_pagination_request( $start_from, $settings, $render ) {
+
+			if ( ! $this->is_filters_request() ) {
+				return $start_from;
+			}
+
+			if ( empty( $_REQUEST['paged'] ) && empty( $_REQUEST['jet_paged'] ) ) {
+				return $start_from;
+			}
+
+			$request_provider = jet_smart_filters()->query->get_current_provider( 'raw' );
+
+			if ( ! $request_provider ) {
+				return $start_from;
+			}
+
+			$current_provider = 'jet-engine' . ( ! empty( $settings['_element_id'] ) ? '/' . $settings['_element_id'] : '/default' );
+
+			if ( $request_provider !== $current_provider ) {
+				return $start_from;
+			}
+
+			if ( ! empty( $_REQUEST['paged'] ) ) {
+				$page = absint( $_REQUEST['paged'] );
+			} elseif ( ! empty( $_REQUEST['jet_paged'] ) ) {
+				$page = absint( $_REQUEST['jet_paged'] );
+			} else {
+				$page = 1;
+			}
+
+			if ( 1 < $page ) {
+
+				$per_page = $settings['posts_num'];
+
+				if ( $render->listing_query_id ) {
+					$query = Jet_Engine\Query_Builder\Manager::instance()->get_query_by_id( $render->listing_query_id );
+
+					if ( $query ) {
+						$per_page = $query->get_items_per_page();
+					}
+				}
+
+				$start_from = ( $page - 1 ) * absint( $per_page ) + 1;
+			}
+
+			return $start_from;
 		}
 
 	}

@@ -42,9 +42,10 @@
 							v-for="( clause, index ) in query.join_tables"
 							:collapsed="isCollapsed( clause )"
 							:index="index"
+							:title="getJoinTitle( clause, index )"
 							@clone-item="cloneField( $event, clause._id, query.join_tables )"
 							@delete-item="deleteField( $event, clause._id, query.join_tables )"
-							:key="clause._id"
+							:key="query.table + '_' + clause._id"
 						>
 							<cx-vui-select
 								label="<?php _e( 'Join Type', 'jet-engine' ); ?>"
@@ -91,10 +92,10 @@
 								@input="setFieldProp( clause._id, 'on_current', $event, query.join_tables )"
 							></cx-vui-select>
 							<cx-vui-select
-								label="<?php _e( 'Is equal to base table column', 'jet-engine' ); ?>"
-								description="<?php _e( 'Select columns from the initial table to find match between two tables on value of this columns', 'jet-engine' ); ?>"
+								label="<?php _e( 'Is equal to other table column', 'jet-engine' ); ?>"
+								description="<?php _e( 'Select columns from the initial or previously added table to find match between two tables on value of this columns', 'jet-engine' ); ?>"
 								:wrapper-css="[ 'equalwidth' ]"
-								:options-list="getColumns( query.table )"
+								:groups-list="getJoinColumns( index )"
 								size="fullwidth"
 								:value="query.join_tables[ index ].on_base"
 								@input="setFieldProp( clause._id, 'on_base', $event, query.join_tables )"

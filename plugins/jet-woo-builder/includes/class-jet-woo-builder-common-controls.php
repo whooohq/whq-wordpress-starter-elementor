@@ -114,6 +114,38 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 				]
 			);
 
+			$obj->add_responsive_control(
+				'slides_to_scroll',
+				[
+					'label'              => __( 'Slides to Scroll', 'jet-woo-builder' ),
+					'type'               => Controls_Manager::SELECT,
+					'default'            => '1',
+					'options'            => jet_woo_builder_tools()->get_select_range( 12 ),
+					'frontend_available' => true,
+					'condition'          => [
+						'carousel_enabled!' => '',
+						'columns!'          => '1',
+					],
+				]
+			);
+
+			$obj->add_responsive_control(
+				'space_between_slides',
+				[
+					'type'               => Controls_Manager::NUMBER,
+					'label'              => __( 'Space Between', 'jet-woo-builder' ),
+					'default'            => 10,
+					'frontend_available' => true,
+					'render_type'        => 'template',
+					'selectors'          => [
+						'{{WRAPPER}} .jet-woo-carousel .swiper-slide' => '--space-between: {{VALUE}}px',
+					],
+					'condition'          => [
+						'carousel_enabled!' => '',
+					],
+				]
+			);
+
 			$obj->add_control(
 				'slides_overflow_enabled',
 				[
@@ -143,40 +175,6 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 					'condition'          => [
 						'carousel_enabled!'       => '',
 						'slides_overflow_enabled' => 'yes',
-					],
-				]
-			);
-
-			$obj->add_responsive_control(
-				'slides_to_scroll',
-				[
-					'label'              => __( 'Slides to Scroll', 'jet-woo-builder' ),
-					'type'               => Controls_Manager::SELECT,
-					'default'            => '1',
-					'options'            => jet_woo_builder_tools()->get_select_range( 12 ),
-					'frontend_available' => true,
-					'condition'          => [
-						'carousel_enabled!' => '',
-						'columns!'          => '1',
-					],
-				]
-			);
-
-			$obj->add_responsive_control(
-				'space_between_slides',
-				[
-					'label'              => __( 'Space Between', 'jet-woo-builder' ),
-					'type'               => Controls_Manager::NUMBER,
-					'desktop_default'    => 10,
-					'tablet_default'     => 10,
-					'mobile_default'     => 10,
-					'frontend_available' => true,
-					'render_type'        => 'template',
-					'selectors'          => [
-						'{{WRAPPER}} .jet-woo-carousel .swiper-slide' => '--space-between: {{VALUE}}px',
-					],
-					'condition'          => [
-						'carousel_enabled!' => '',
 					],
 				]
 			);
@@ -477,23 +475,10 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				'prev_top_position',
 				[
-					'label'      => __( 'Top Indent', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::SLIDER,
-					'size_units' => [ 'px', '%', 'em' ],
-					'range'      => [
-						'px' => [
-							'min' => -400,
-							'max' => 400,
-						],
-						'%'  => [
-							'min' => -100,
-							'max' => 100,
-						],
-						'em' => [
-							'min' => -50,
-							'max' => 50,
-						],
-					],
+					'label'      => __( 'Top Indent', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+					'range'      => jet_woo_builder_tools()->get_available_units_ranges(),
 					'condition'  => [
 						'prev_vert_position' => 'top',
 					],
@@ -506,23 +491,10 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				'prev_bottom_position',
 				[
-					'label'      => __( 'Bottom Indent', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::SLIDER,
-					'size_units' => [ 'px', '%', 'em' ],
-					'range'      => [
-						'px' => [
-							'min' => -400,
-							'max' => 400,
-						],
-						'%'  => [
-							'min' => -100,
-							'max' => 100,
-						],
-						'em' => [
-							'min' => -50,
-							'max' => 50,
-						],
-					],
+					'label'      => __( 'Bottom Indent', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+					'range'      => jet_woo_builder_tools()->get_available_units_ranges(),
 					'condition'  => [
 						'prev_vert_position' => 'bottom',
 					],
@@ -548,23 +520,10 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				'prev_left_position',
 				[
-					'label'      => __( 'Left Indent', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::SLIDER,
-					'size_units' => [ 'px', '%', 'em' ],
-					'range'      => [
-						'px' => [
-							'min' => -400,
-							'max' => 400,
-						],
-						'%'  => [
-							'min' => -100,
-							'max' => 100,
-						],
-						'em' => [
-							'min' => -50,
-							'max' => 50,
-						],
-					],
+					'label'      => __( 'Left Indent', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+					'range'      => jet_woo_builder_tools()->get_available_units_ranges(),
 					'condition'  => [
 						'prev_hor_position' => 'left',
 					],
@@ -577,23 +536,10 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				'prev_right_position',
 				[
-					'label'      => __( 'Right Indent', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::SLIDER,
-					'size_units' => [ 'px', '%', 'em' ],
-					'range'      => [
-						'px' => [
-							'min' => -400,
-							'max' => 400,
-						],
-						'%'  => [
-							'min' => -100,
-							'max' => 100,
-						],
-						'em' => [
-							'min' => -50,
-							'max' => 50,
-						],
-					],
+					'label'      => __( 'Right Indent', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+					'range'      => jet_woo_builder_tools()->get_available_units_ranges(),
 					'condition'  => [
 						'prev_hor_position' => 'right',
 					],
@@ -626,9 +572,9 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				'prev_arrow_border_radius',
 				[
-					'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => [ 'px', '%' ],
+					'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'selectors'  => [
 						'{{WRAPPER}} .jet-woo-carousel .jet-arrow.prev-arrow' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
@@ -674,23 +620,10 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				'next_top_position',
 				[
-					'label'      => esc_html__( 'Top Indent', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::SLIDER,
-					'size_units' => [ 'px', '%', 'em' ],
-					'range'      => [
-						'px' => [
-							'min' => -400,
-							'max' => 400,
-						],
-						'%'  => [
-							'min' => -100,
-							'max' => 100,
-						],
-						'em' => [
-							'min' => -50,
-							'max' => 50,
-						],
-					],
+					'label'      => __( 'Top Indent', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+					'range'      => jet_woo_builder_tools()->get_available_units_ranges(),
 					'condition'  => [
 						'next_vert_position' => 'top',
 					],
@@ -703,23 +636,10 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				'next_bottom_position',
 				[
-					'label'      => __( 'Bottom Indent', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::SLIDER,
-					'size_units' => [ 'px', '%', 'em' ],
-					'range'      => [
-						'px' => [
-							'min' => -400,
-							'max' => 400,
-						],
-						'%'  => [
-							'min' => -100,
-							'max' => 100,
-						],
-						'em' => [
-							'min' => -50,
-							'max' => 50,
-						],
-					],
+					'label'      => __( 'Bottom Indent', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+					'range'      => jet_woo_builder_tools()->get_available_units_ranges(),
 					'condition'  => [
 						'next_vert_position' => 'bottom',
 					],
@@ -745,23 +665,10 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				'next_left_position',
 				[
-					'label'      => __( 'Left Indent', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::SLIDER,
-					'size_units' => [ 'px', '%', 'em' ],
-					'range'      => [
-						'px' => [
-							'min' => -400,
-							'max' => 400,
-						],
-						'%'  => [
-							'min' => -100,
-							'max' => 100,
-						],
-						'em' => [
-							'min' => -50,
-							'max' => 50,
-						],
-					],
+					'label'      => __( 'Left Indent', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+					'range'      => jet_woo_builder_tools()->get_available_units_ranges(),
 					'condition'  => [
 						'next_hor_position' => 'left',
 					],
@@ -774,23 +681,10 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				'next_right_position',
 				[
-					'label'      => __( 'Right Indent', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::SLIDER,
-					'size_units' => [ 'px', '%', 'em' ],
-					'range'      => [
-						'px' => [
-							'min' => -400,
-							'max' => 400,
-						],
-						'%'  => [
-							'min' => -100,
-							'max' => 100,
-						],
-						'em' => [
-							'min' => -50,
-							'max' => 50,
-						],
-					],
+					'label'      => __( 'Right Indent', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+					'range'      => jet_woo_builder_tools()->get_available_units_ranges(),
 					'condition'  => [
 						'next_hor_position' => 'right',
 					],
@@ -823,9 +717,9 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				'next_arrow_border_radius',
 				[
-					'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => [ 'px', '%' ],
+					'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'selectors'  => [
 						'{{WRAPPER}} .jet-woo-carousel .jet-arrow.next-arrow' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
@@ -955,9 +849,9 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				'horizontal_space',
 				[
-					'label'              => __( 'Bullet Space', 'jet-woo-builder' ),
 					'type'               => Controls_Manager::DIMENSIONS,
-					'size_units'         => [ 'px', '%' ],
+					'label'              => __( 'Bullet Space', 'jet-woo-builder' ),
+					'size_units'         => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'allowed_dimensions' => 'horizontal',
 					'placeholder'        => [
 						'top'    => 'auto',
@@ -979,9 +873,9 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				'vertical_space',
 				[
-					'label'              => __( 'Bullet Space', 'jet-woo-builder' ),
 					'type'               => Controls_Manager::DIMENSIONS,
-					'size_units'         => [ 'px', '%' ],
+					'label'              => __( 'Bullet Space', 'jet-woo-builder' ),
+					'size_units'         => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'allowed_dimensions' => 'vertical',
 					'placeholder'        => [
 						'top'    => '',
@@ -1016,23 +910,10 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				'dots_top_position',
 				[
-					'label'      => __( 'Top Indent', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::SLIDER,
-					'size_units' => [ 'px', '%', 'em' ],
-					'range'      => [
-						'px' => [
-							'min' => -400,
-							'max' => 400,
-						],
-						'%'  => [
-							'min' => -100,
-							'max' => 100,
-						],
-						'em' => [
-							'min' => -50,
-							'max' => 50,
-						],
-					],
+					'label'      => __( 'Top Indent', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+					'range'      => jet_woo_builder_tools()->get_available_units_ranges(),
 					'selectors'  => [
 						'{{WRAPPER}} .jet-woo-carousel .swiper-pagination' => 'top: {{SIZE}}{{UNIT}}; bottom: auto;',
 					],
@@ -1045,23 +926,10 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				'dots_bottom_position',
 				[
-					'label'      => __( 'Bottom Indent', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::SLIDER,
-					'size_units' => [ 'px', '%', 'em' ],
-					'range'      => [
-						'px' => [
-							'min' => -400,
-							'max' => 400,
-						],
-						'%'  => [
-							'min' => -100,
-							'max' => 100,
-						],
-						'em' => [
-							'min' => -50,
-							'max' => 50,
-						],
-					],
+					'label'      => __( 'Bottom Indent', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+					'range'      => jet_woo_builder_tools()->get_available_units_ranges(),
 					'selectors'  => [
 						'{{WRAPPER}} .jet-woo-carousel .swiper-pagination' => 'bottom: {{SIZE}}{{UNIT}}; top: auto;',
 					],
@@ -1087,23 +955,10 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				'dots_left_position',
 				[
-					'label'      => __( 'Left Indent', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::SLIDER,
-					'size_units' => [ 'px', '%', 'em' ],
-					'range'      => [
-						'px' => [
-							'min' => -400,
-							'max' => 400,
-						],
-						'%'  => [
-							'min' => -100,
-							'max' => 100,
-						],
-						'em' => [
-							'min' => -50,
-							'max' => 50,
-						],
-					],
+					'label'      => __( 'Left Indent', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+					'range'      => jet_woo_builder_tools()->get_available_units_ranges(),
 					'selectors'  => [
 						'{{WRAPPER}} .jet-woo-carousel .swiper-pagination' => 'left: {{SIZE}}{{UNIT}}; right: auto;',
 					],
@@ -1116,23 +971,10 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				'dots_right_position',
 				[
-					'label'      => __( 'Right Indent', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::SLIDER,
-					'size_units' => [ 'px', '%', 'em' ],
-					'range'      => [
-						'px' => [
-							'min' => -400,
-							'max' => 400,
-						],
-						'%'  => [
-							'min' => -100,
-							'max' => 100,
-						],
-						'em' => [
-							'min' => -50,
-							'max' => 50,
-						],
-					],
+					'label'      => __( 'Right Indent', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+					'range'      => jet_woo_builder_tools()->get_available_units_ranges(),
 					'selectors'  => [
 						'{{WRAPPER}} .jet-woo-carousel .swiper-pagination' => 'right: {{SIZE}}{{UNIT}}; left: auto;',
 					],
@@ -1145,9 +987,9 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				'dots_padding',
 				[
-					'label'      => __( 'Padding', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => [ 'px', 'em', '%' ],
+					'label'      => __( 'Padding', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'selectors'  => [
 						'{{WRAPPER}} .jet-woo-carousel .swiper-pagination' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
@@ -1270,9 +1112,9 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				$id . '_button_radius',
 				[
-					'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => [ 'px', 'em', '%' ],
+					'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
@@ -1281,14 +1123,14 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 
 			$obj->add_responsive_control(
 				$id . '_button_padding',
-				array(
-					'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
+				[
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => array( 'px', 'em', '%' ),
-					'selectors'  => array(
+					'label'      => __( 'Padding', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					),
-				)
+					],
+				]
 			);
 
 		}
@@ -1327,9 +1169,9 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				$id . '_heading_margin',
 				[
-					'label'      => __( 'Margin', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => [ 'px', 'em', '%' ],
+					'label'      => __( 'Margin', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
@@ -1372,6 +1214,14 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 				]
 			);
 
+			$obj->start_controls_tabs( $id . '_fields_styles' );
+
+			$obj->start_controls_tab(
+				$id . '_fields_normal_styles', [
+					'label' => __( 'Normal', 'jet-woo-builder' ),
+				]
+			);
+
 			$obj->add_control(
 				$id . '_input_color',
 				[
@@ -1398,20 +1248,73 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			);
 
 			$obj->add_group_control(
+				Group_Control_Box_Shadow::get_type(),
+				[
+					'name'     => $id . '_box_shadow',
+					'selector' => '{{WRAPPER}} ' . $css_scheme . ':not(.select2), {{WRAPPER}} .select2-container .select2-selection--single',
+				]
+			);
+
+			$obj->end_controls_tab();
+
+			$obj->start_controls_tab(
+				$id . '_fields_focus_styles', [
+					'label' => __( 'Focus', 'jet-woo-builder' ),
+				]
+			);
+
+			$obj->add_control(
+				$id . '_input_focus_color',
+				[
+					'type'      => Controls_Manager::COLOR,
+					'label'     => __( 'Color', 'jet-woo-builder' ),
+					'selectors' => [
+						'{{WRAPPER}} ' . $css_scheme . ':focus'                                                                                => 'color: {{VALUE}}',
+						'{{WRAPPER}} .select2-container .select2-selection--single[aria-expanded="true"] .select2-selection__rendered'         => 'color: {{VALUE}}',
+						'{{WRAPPER}} .select2-container--default .select2-selection--single[aria-expanded="true"] .select2-selection__arrow b' => 'border-color: transparent transparent {{VALUE}} transparent;',
+					],
+				]
+			);
+
+			$obj->add_control(
+				$id . '_input_focus_background',
+				[
+					'label'     => __( 'Background Color', 'jet-woo-builder' ),
+					'type'      => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} ' . $css_scheme . ':not(.select2):focus'                             => 'background-color: {{VALUE}}',
+						'{{WRAPPER}} .select2-container .select2-selection--single[aria-expanded="true"]' => 'background-color: {{VALUE}}',
+					],
+				]
+			);
+
+			$obj->add_group_control(
+				Group_Control_Box_Shadow::get_type(),
+				[
+					'name'     => $id . '_focus_box_shadow',
+					'selector' => '{{WRAPPER}} ' . $css_scheme . ':not(.select2):focus, {{WRAPPER}} .select2-container .select2-selection--single[aria-expanded="true"]',
+				]
+			);
+
+			$obj->end_controls_tab();
+
+			$obj->end_controls_tabs();
+
+			$obj->add_group_control(
 				Group_Control_Border::get_type(),
 				[
-					'name'     => $id . '_input_border',
-					'label'    => __( 'Border', 'jet-woo-builder' ),
-					'selector' => '{{WRAPPER}} ' . $css_scheme . ':not(.select2), {{WRAPPER}} .select2-container .select2-selection--single',
+					'name'      => $id . '_input_border',
+					'separator' => 'before',
+					'selector'  => '{{WRAPPER}} ' . $css_scheme . ':not(.select2), {{WRAPPER}} .select2-container .select2-selection--single',
 				]
 			);
 
 			$obj->add_responsive_control(
 				$id . '_input_border_radius',
 				[
-					'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => [ 'px', '%' ],
+					'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme . ':not(.select2)'             => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 						'{{WRAPPER}} .select2-container .select2-selection--single' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -1422,23 +1325,23 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			if ( $margin ) {
 				$obj->add_responsive_control(
 					$id . '_input_margin',
-					array(
-						'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
+					[
 						'type'       => Controls_Manager::DIMENSIONS,
-						'size_units' => array( 'px', 'em', '%' ),
-						'selectors'  => array(
+						'label'      => __( 'Margin', 'jet-woo-builder' ),
+						'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+						'selectors'  => [
 							'{{WRAPPER}} ' . $css_scheme => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-						),
-					)
+						],
+					]
 				);
 			}
 
 			$obj->add_responsive_control(
 				$id . '_input_padding',
 				[
-					'label'      => __( 'Padding', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => [ 'px', 'em', '%' ],
+					'label'      => __( 'Padding', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme . ':not(.select2)'                                                   => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 						'{{WRAPPER}} .select2-container--default .select2-selection--single .select2-selection__rendered' => 'line-height: calc( ({{TOP}}{{UNIT}}*2) + 16px ); padding-left: {{LEFT}}{{UNIT}}; padding-right: {{RIGHT}}{{UNIT}};',
@@ -1496,14 +1399,14 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 
 			$obj->add_responsive_control(
 				$id . '_label_margin',
-				array(
-					'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
+				[
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => array( 'px', 'em', '%' ),
-					'selectors'  => array(
+					'label'      => __( 'Margin', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					),
-				)
+					],
+				]
 			);
 
 			$obj->add_responsive_control(
@@ -1633,38 +1536,38 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 
 			$obj->add_responsive_control(
 				$id . '_form_border_radius',
-				array(
-					'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+				[
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => array( 'px', '%' ),
-					'selectors'  => array(
+					'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					),
-				)
+					],
+				]
 			);
 
 			$obj->add_responsive_control(
 				$id . '_form_margin',
-				array(
-					'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
+				[
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => array( 'px', 'em', '%' ),
-					'selectors'  => array(
+					'label'      => __( 'Margin', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					),
-				)
+					],
+				]
 			);
 
 			$obj->add_responsive_control(
 				$id . '_form_padding',
-				array(
-					'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
+				[
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => array( 'px', 'em', '%' ),
-					'selectors'  => array(
+					'label'      => __( 'Padding', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					),
-				)
+					],
+				]
 			);
 
 		}
@@ -1704,9 +1607,9 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				$id . '_padding',
 				[
-					'label'      => __( 'Padding', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => [ 'px', 'em', '%' ],
+					'label'      => __( 'Padding', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
@@ -1832,9 +1735,9 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$repeater->add_responsive_control(
 				'field_width',
 				[
-					'label'      => __( 'Width', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::SLIDER,
-					'size_units' => [ 'px', '%' ],
+					'label'      => __( 'Width', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', '%' ] ),
 					'range'      => [
 						'px' => [
 							'min' => 0,
@@ -1968,20 +1871,11 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 				]
 			);
 
-			$obj->add_responsive_control(
-				'badge_alignment',
+			$obj->add_group_control(
+				Group_Control_Typography::get_type(),
 				[
-					'label'     => __( 'Alignment', 'jet-woo-builder' ),
-					'type'      => Controls_Manager::CHOOSE,
-					'options'   => jet_woo_builder_tools()->get_available_h_align_types(),
-					'default'   => ! is_rtl() ? 'left' : 'right',
-					'selectors' => [
-						'{{WRAPPER}} ' . $css_scheme['badges'] => 'text-align: {{VALUE}};',
-					],
-					'condition' => [
-						'badges_display' => 'inline-flex',
-					],
-					'classes'   => 'elementor-control-align',
+					'name'     => 'badge_typography',
+					'selector' => '{{WRAPPER}}  ' . $css_scheme['badge'],
 				]
 			);
 
@@ -1990,7 +1884,6 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 				[
 					'label'     => __( 'Color', 'jet-woo-builder' ),
 					'type'      => Controls_Manager::COLOR,
-					'separator' => 'before',
 					'selectors' => [
 						'{{WRAPPER}} ' . $css_scheme['badge'] => 'color: {{VALUE}}',
 					],
@@ -2006,14 +1899,6 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			);
 
 			$obj->add_group_control(
-				Group_Control_Typography::get_type(),
-				[
-					'name'     => 'badge_typography',
-					'selector' => '{{WRAPPER}}  ' . $css_scheme['badge'],
-				]
-			);
-
-			$obj->add_group_control(
 				Group_Control_Border::get_type(),
 				[
 					'name'     => 'badge_on_sale_border',
@@ -2025,9 +1910,9 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				'badge_border_radius',
 				[
-					'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => [ 'px', '%' ],
+					'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme['badge'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
@@ -2045,9 +1930,9 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 			$obj->add_responsive_control(
 				'badge_margin',
 				[
-					'label'      => __( 'Margin', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => [ 'px', '%', 'em' ],
+					'label'      => __( 'Margin', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme['badge'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
@@ -2059,25 +1944,89 @@ if ( ! class_exists( 'Jet_Woo_Builder_Common_Controls' ) ) {
 				[
 					'label'      => __( 'Padding', 'jet-woo-builder' ),
 					'type'       => Controls_Manager::DIMENSIONS,
-					'size_units' => [ 'px', '%', 'em' ],
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 					'selectors'  => [
 						'{{WRAPPER}} ' . $css_scheme['badge'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 				]
 			);
 
+			$obj->add_control(
+				'badge_vert_position',
+				[
+					'type'    => Controls_Manager::SELECT,
+					'label'   => __( 'Vertical Position by', 'jet-engine' ),
+					'default' => 'top',
+					'options' => [
+						'top'    => __( 'Top', 'jet-woo-builder' ),
+						'bottom' => __( 'Bottom', 'jet-woo-builder' ),
+					],
+				]
+			);
+
+			$obj->add_responsive_control(
+				'badge_top_position',
+				[
+					'type'       => Controls_Manager::SLIDER,
+					'label'      => __( 'Top Indent', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+					'range'      => jet_woo_builder_tools()->get_available_units_ranges(),
+					'selectors'  => [
+						'{{WRAPPER}} ' . $css_scheme['badges'] => 'top: {{SIZE}}{{UNIT}}; bottom: auto;',
+					],
+					'condition'  => [
+						'badge_vert_position' => 'top',
+					],
+				]
+			);
+
+			$obj->add_responsive_control(
+				'badge_bottom_position',
+				[
+					'type'       => Controls_Manager::SLIDER,
+					'label'      => __( 'Bottom Indent', 'jet-woo-builder' ),
+					'size_units' => $obj->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+					'range'      => jet_woo_builder_tools()->get_available_units_ranges(),
+					'selectors'  => [
+						'{{WRAPPER}} ' . $css_scheme['badges'] => 'bottom: {{SIZE}}{{UNIT}}; top: auto;',
+					],
+					'condition'  => [
+						'badge_vert_position' => 'bottom',
+					],
+				]
+			);
+
+			$obj->add_responsive_control(
+				'badge_alignment',
+				[
+					'type'      => Controls_Manager::CHOOSE,
+					'label'     => __( 'Alignment', 'jet-woo-builder' ),
+					'options'   => jet_woo_builder_tools()->get_available_h_align_types(),
+					'selectors' => [
+						'{{WRAPPER}} ' . $css_scheme['badges'] => 'text-align: {{VALUE}};',
+					],
+					'condition' => [
+						'badges_display' => 'inline-flex',
+					],
+					'classes'   => 'elementor-control-align',
+				]
+			);
+
 			$obj->add_responsive_control(
 				'badge_content_alignment',
 				[
-					'label'     => __( 'Content Alignment', 'jet-woo-builder' ),
 					'type'      => Controls_Manager::CHOOSE,
-					'default'   => 'center',
+					'label'     => __( 'Alignment', 'jet-woo-builder' ),
 					'options'   => jet_woo_builder_tools()->get_available_flex_h_align_types(),
 					'selectors' => [
 						'{{WRAPPER}} ' . $css_scheme['badge'] => 'justify-content: {{VALUE}};',
 					],
+					'condition' => [
+						'badges_display' => 'flex',
+					],
 				]
 			);
+
 		}
 
 		/**

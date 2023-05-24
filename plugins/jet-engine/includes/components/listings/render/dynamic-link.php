@@ -155,6 +155,10 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Link' ) ) {
 				$custom_attrs .= ' data-delete-message="' . $message . '"';
 			}
 
+			if ( ! empty( $settings['aria_label_attr'] ) ) {
+				$custom_attrs .= ' aria-label="' . esc_attr( $settings['aria_label_attr'] ) . '"';
+			}
+
 			printf( $format, $url, $base_class, $icon, $label, $rel, $target, $custom_attrs );
 
 		}

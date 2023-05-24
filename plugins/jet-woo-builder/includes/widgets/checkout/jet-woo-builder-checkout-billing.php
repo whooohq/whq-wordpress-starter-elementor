@@ -45,9 +45,9 @@ class Jet_Woo_Builder_Checkout_Billing extends Jet_Woo_Builder_Base {
 			'jet-woo-builder/jet-checkout-billing/css-scheme',
 			[
 				'heading' => '.woocommerce-billing-fields > h3',
-				'label'   => '.woocommerce-billing-fields .form-row label',
-				'field'   => '.woocommerce-billing-fields .form-row',
-				'input'   => '.woocommerce-billing-fields .form-row .woocommerce-input-wrapper > *:not(.woocommerce-password-strength):not(.woocommerce-password-hint):not(.show-password-input)',
+				'label'   => '.elementor-jet-checkout-billing .form-row label',
+				'field'   => '.elementor-jet-checkout-billing .form-row',
+				'input'   => '.elementor-jet-checkout-billing .form-row .woocommerce-input-wrapper > *:not(.woocommerce-password-strength):not(.woocommerce-password-hint):not(.show-password-input)',
 			]
 		);
 

@@ -3,6 +3,8 @@
 		display: flex;
 		flex-wrap: wrap;
 		margin: -5px;
+		border: 0;
+		padding: 0;
 	}
 
 	&__row {
@@ -23,13 +25,30 @@
 	&__button {
 		display: block;
 		padding: 5px 8px;
-		border-color: #ccc;
-		border-width: 1px;
+		border: 1px solid #ccc;
 		border-radius: 5px;
 		text-align: center;
 	}
 
 	&__input:checked + &__button {
 		background-color: rgb(233, 233, 233);
+	}
+}
+
+// Context Bricks
+.jet-smart-filters-alphabet {
+	.jet-alphabet-list__wrapper {
+		gap: 8px;
+		margin: 0;
+	}
+
+	.jet-alphabet-list__row {
+		padding: 0;
+	}
+
+	.jet-alphabet-list__item {
+		margin-bottom: 0;
+		font-weight: inherit;
+		color: inherit;
 	}
 }

@@ -47,6 +47,14 @@ if ( ! class_exists( 'Jet_Engine_Modules' ) ) {
 		 */
 		public function save_modules() {
 
+			$nonce_action = jet_engine()->dashboard->get_nonce_action();
+
+			if ( empty( $_REQUEST['_nonce'] ) || ! wp_verify_nonce( $_REQUEST['_nonce'], $nonce_action ) ) {
+				wp_send_json_error( array(
+					'message' => __( 'Nonce validation failed', 'jet-engine' ),
+				) );
+			}
+
 			if ( ! current_user_can( 'manage_options' ) ) {
 				wp_send_json_error( array(
 					'message' => 'You don\'t have permissions to do this',

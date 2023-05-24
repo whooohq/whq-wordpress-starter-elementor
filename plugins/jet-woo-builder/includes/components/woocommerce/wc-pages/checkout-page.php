@@ -139,16 +139,22 @@ class Jet_Woo_Builder_Checkout_Page {
 	}
 
 	/**
-	 * Handle country and location.
+	 * Prepare address fields.
 	 *
-	 * @param array  $fieldset
-	 * @param false  $original_fieldset
-	 * @param string $fields_group
-	 * @param string $country
+	 * Handle address fields depending on country and location.
 	 *
-	 * @return array|false|mixed
+	 * @since  1.10.0
+	 * @since  2.1.1 Added new param for fields preparation.
+	 * @access public
+	 *
+	 * @param array  $fieldset          Custom fieldset list.
+	 * @param array  $original_fieldset Original fieldset list.
+	 * @param string $fields_group      Fields group type.
+	 * @param string $country           Specific country.
+	 *
+	 * @return array
 	 */
-	public function prepare_address_fields( $fieldset = [], $original_fieldset = false, $fields_group = 'billing', $country = '' ) {
+	public function prepare_address_fields( $fieldset = [], $original_fieldset = [], $fields_group = 'billing', $country = '' ) {
 		if ( is_array( $fieldset ) && ! empty( $fieldset ) ) {
 			$locale = WC()->countries->get_country_locale();
 
@@ -176,7 +182,7 @@ class Jet_Woo_Builder_Checkout_Page {
 				}
 			}
 
-			$fieldset = $this->prepare_checkout_fields( $fieldset, $original_fieldset );
+			$fieldset = $this->prepare_checkout_fields( $fieldset, $original_fieldset, $fields_group );
 
 			return $fieldset;
 		} else {
@@ -185,21 +191,28 @@ class Jet_Woo_Builder_Checkout_Page {
 	}
 
 	/**
+	 * Prepare checkout fields.
+	 *
 	 * Prepare form fields for output.
 	 *
-	 * @param $fields
-	 * @param $original_fields
+	 * @since  1.10.0
+	 * @since  2.1.1 Added new parameter. Added `jet-woo-builder/woocommerce/ . $fields_group . -fields` for third-party
+	 *        plugins compatibilities.
+	 * @access public
+	 *
+	 * @param array  $fields          Custom field list.
+	 * @param array  $original_fields Original fieldset list.
+	 * @param string $fields_group    Fields group type.
 	 *
 	 * @return array
 	 */
-	public function prepare_checkout_fields( $fields, $original_fields ) {
+	public function prepare_checkout_fields( $fields, $original_fields, $fields_group ) {
 		if ( is_array( $fields ) && ! empty( $fields ) ) {
 			foreach ( $fields as $name => $field ) {
 				if ( $original_fields && isset( $original_fields[ $name ] ) ) {
 					$new_field = $original_fields[ $name ];
-
-					$class    = isset( $field['class'] ) ? $field['class'] : [];
-					$required = isset( $field['required'] ) ? $field['required'] : false;
+					$class     = $field['class'] ?? [];
+					$required  = $field['required'] ?? false;
 
 					$class[] = $required ? 'jwb-field-required' : 'jwb-field-optional';
 
@@ -212,12 +225,12 @@ class Jet_Woo_Builder_Checkout_Page {
 					$new_field['label_class'] = [];
 					$new_field['validate']    = isset( $field['validate'] ) && is_array( $field['validate'] ) ? $field['validate'] : [];
 					$new_field['required']    = $required;
-					$new_field['priority']    = isset( $field['priority'] ) ? $field['priority'] : '';
+					$new_field['priority']    = $field['priority'] ?? '';
 				} else {
 					$new_field = $field;
 				}
 
-				$type = isset( $new_field['type'] ) ? $new_field['type'] : 'text';
+				$type = $new_field['type'] ?? 'text';
 
 				$new_field['class'][] = 'jwb-field-wrapper';
 				$new_field['class'][] = 'jwb-field-' . $type;
@@ -238,7 +251,7 @@ class Jet_Woo_Builder_Checkout_Page {
 				$fields[ $name ] = $new_field;
 			}
 
-			return $fields;
+			return apply_filters( 'jet-woo-builder/woocommerce/' . $fields_group . '-fields', $fields );
 		} else {
 			return $original_fields;
 		}

@@ -1,5 +1,138 @@
 # ChangeLog
 
+## 3.1.5
+* ADD: Query Builder: Before and After options for Advanced settings section of dynamic arguments;
+* ADD: Query Builder: Description field for Query. Crocoblock/suggestions#6194;
+* ADD: Glossaries: Allow to convert options from the file into manual source;
+* UPD: Delete CCT items of user (author of CCT items) when user account is deleted;
+* UPD: Allow to make listing Item clickable in Blocks editor;
+* UPD: Minor Map Listing improvements;
+* FIX: Listing Grid: Compatibility with new Elementor Mega Menu;
+* FIX: Listing Grid: Slides to Scroll on mobile;
+* FIX: `%current_terms%` macro fatal error when no object received;
+* FIX: Error after deleting CCT which was used in Query Builder;
+* FIX: Bricks builder listings: Post ID after listing;
+* FIX: Translate default value of CPT labels;
+* FIX: Prevent errors in some cases when query was deleted from Query Builder;
+* FIX: Better PHP 8.1+ compatibility.
+
+## 3.1.4
+* ADD: Relevanssi search and Query Builder compatibility;
+* ADD: Allow to set aria-labels for Dynamic Link widget and for clickable listing grid item;
+* ADD: Is post by queried user dynamic visibility condition;
+* ADD: Shortcode Result macro;
+* UPD: Show deleted instance name in dialog box for JetEngine instances;
+* FIX: Better WPML compatibility;
+* FIX: Media-related dynamic tags processing;
+* FIX: ACF repeater settings for Dynamic Repeater widget;
+* FIX: Grid/Slider Gallery Dynamic Field;
+* FIX: Listing grid in Bricks builder - Not Found message control;
+* FIX: Dynamic Meta widget inside listing grid with Custom Query.
+
+## 3.1.3.1
+* ADD: 'jet-engine/query-builder/set-props', 'jet-engine/listing/current-object-title', 'jet-engine/query-builder/filters/before-set-props', 'jet-engine/query-builder/filters/after-set-props' hooks;
+* FIX: Additional security checks on export, import and duplicate legacy forms.
+
+## 3.1.3
+* ADD: Dynamic Field: Allow to specify object property to get manually;
+* ADD: Allow enabling hierarchical structure of term link;
+* ADD: Current Date macro;
+* UPD: Profile Builder: User Page Title to add First Name, Last Name & Nickname;
+* FIX: Fatal error when listing is not exists;
+* FIX: Layout option for relations meta;
+* FIX: Unable to fetch image in Lisitng item in Buicks Builder;
+* FIX: ACF get_field() function not working properly in Listing Item;
+* FIX: Form displayed with a shortcode not working properly;
+* FIX: Shortcode generator: Missing Format Number callback parameter;
+* FIX: Custom Query with filter by related post;
+* FIX: Repeater query issue with dynamic fields below;
+* FIX: CCT Query IN and NOT IN operators do not get an array as a value;
+* FIX: PHP errors on save build-in taxonomy;
+* FIX: Terms Query: Order by meta clause does not work if the clause name contains capital letters;
+* FIX: Update elementor database critical error.
+
+## 3.1.2
+* ADD: Bricks builder: native Bricks conditional visibility inside JetEngine listing items;
+* ADD: Dynamic field: get user data callback;
+* UPD: CCT date field: automatically convert saved values when change 'Save as timestamp' field option;
+* FIX: CCT number field: can't change the step;
+* FIX: Bricks builder: global styles and JetEngine elements;
+* FIX: Dynamic Link: context option;
+* FIX: Deprecated: elementor\Core\DynamicTags\Manager::register_tag;
+* FIX: Bricks builder: custom CSS class and style;
+* FIX: Profile builder: profile page links options for Dynamic Image;
+* FIX: PHP 8.2 compatibility;
+* FIX: Scroll Slider with Additional Custom Breakpoints;
+* FIX: Dynamic Image: Image Size doesn't work for URL value format;
+* FIX: Gallery Grid Callback: a warning with URL and Array image value;
+* FIX: Profile builder: profile page link + Bricks;
+* FIX: Calendar filtering issue;
+* FIX: Autocomplete Google map request if not setup Separate Geocoding API key;
+* FIX: JS error: Loading the Google Maps JavaScript API without a callback is not supported;
+* FIX: Query Builder: repeater query with checkbox field;
+* FIX: Query Builder: results Counts skips CCT items status.
+
+## 3.1.1
+* ADD: Unified Date format callback;
+* ADD: Support for custom units;
+* ADD: Native Bricks loop builder and Query builder compatibility;
+* ADD: Elementor Dynamic Tag for relation meta data;
+* ADD: Query Results macros;
+* FIX: Calendar bug with multiday events;
+* FIX: Saving Quick Edit fields in some cases;
+* FIX: Update Repeater field in Post through REST API;
+* FIX: Bricks Listing grid Columns span option for injections;
+* FIX: Padding option for nested Listings;
+* FIX: Saving dates in options pages;
+* FIX: Saving metabox for WC products when has required fields;
+* FIX: Additional security checks in some edge cases.
+
+## 3.1.0
+* ADD: Bricks Builder сompatibility;
+* ADD: Custom control for connecting query to any widget containing a repeater;
+* ADD: Repeater Query Type;
+* ADD: New conditions for Dynamic Visibility;
+* ADD: Ability to choose the options storage type;
+* ADD: Quick search in Troubleshooting and Knowledge Base from the admin panel;
+* ADD: Macros Generator;
+* UPD: New JS init for non-Elemenotr views;
+* UPD: Shortocde Generator;
+* UPD: Hide Show in Rest API option for HTML filed;
+* FIX: Prevent errors if WooCommerce is not installed;
+* FIX: Avoid errors in the map listing in some cases;
+* FIX: Prevent errors in some cases if Elementor not installed.
+
+## 3.0.9.1
+* FIX: profile page url in the Dynamic Link;
+* FIX: providers issue in the Map Listing module.
+
+## 3.0.9
+* ADD: Output SQL request in preview for SQL query;
+* ADD: Allow to style Not found Message in Listing Grid;
+* ADD: Infinite scroll offset option for Listing Grid;
+* UPD: Allow to control zoom on scrool behavior for Leaflet and Map Box providers;
+* FIX: Better check conditional rules for Profile Builder pages;
+* FIX: Correctly save root object on JetEngine AJAX requests;
+* FIX: Query builder, Terms query. Hide empty terms option behavior;
+* FIX: Filter field output Callbacks for blocks editor;
+* FIX: PHP warning in some cases.
+
+## 3.0.8
+* ADD: Save as timestamp setting for date fields inside repeaters;
+* ADD: Quantity input for Add to cart source in Dynamic link widget;
+* ADD: Context for Dynamic repeater block;
+* ADD: An ability to copy filed name to clipboard;
+* ADD: Allow order terms in the Dynamic Terms;
+* FIX: Dynamic function thousands separator bug;
+* FIX: Z-Index in Listing Grid Slider;
+* FIX: Map listing popup in tabs with ajax loading;
+* FIX: Post URL dynamic tag with nested listings;
+* FIX: Reset order by meta clause with filters;
+* FIX: Map Listing and Glossary get label callback;
+* FIX: Options page saving in some cases;
+* FIX: Calendar with macros queried user;
+* FIX: Dynamic visibility on blocks editor if WooCommerce activated.
+
 ## 3.0.7
 * ADD: Dynamic Image for Elementor - allow to open image in Lightbox;
 * ADD: New Dynamic Visibility conditions (Greater or equal, Less or equal, Between, Not Between, Regexp, Not Regexp);

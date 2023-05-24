@@ -6,6 +6,7 @@ const {
 	PanelBody,
 	SelectControl,
 	ToggleControl,
+	TextControl,
 } = wp.components;
 
 export default props => {
@@ -31,6 +32,26 @@ export default props => {
 					checked={attributes.show_counter}
 					onChange={newValue => {
 						setAttributes({ show_counter: newValue });
+					}}
+				/>
+			)}
+			{attributes.counter_prefix !== undefined && attributes.apply_indexer === true && attributes.show_counter === true && (
+				<TextControl
+					type="text"
+					label={__('Counter Prefix')}
+					value={attributes.counter_prefix}
+					onChange={newValue => {
+						setAttributes({ counter_prefix: newValue });
+					}}
+				/>
+			)}
+			{attributes.counter_suffix !== undefined && attributes.apply_indexer === true && attributes.show_counter === true && (
+				<TextControl
+					type="text"
+					label={__('Counter Suffix')}
+					value={attributes.counter_suffix}
+					onChange={newValue => {
+						setAttributes({ counter_suffix: newValue });
 					}}
 				/>
 			)}

@@ -89,7 +89,7 @@
 			margin-top: -25px;
 			cursor: pointer;
 			text-align: center;
-			z-index: 999;
+			z-index: 90;
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -124,6 +124,7 @@
 			width: 100%;
 			margin: 10px 0;
 			padding: 0;
+
 			li {
 				width: 12px;
 				height: 12px;
@@ -133,6 +134,7 @@
 				cursor: pointer;
 				background: #eee;
 				margin: 3px;
+
 				&:hover,
 				&.slick-active {
 					background: #111;
@@ -194,7 +196,7 @@
 }
 
 // Scroll Slider
-@each $device in desktop, tablet_extra, tablet, mobile_extra, mobile {
+@each $device in desktop, laptop, tablet_extra, tablet, mobile_extra, mobile {
 	body[data-elementor-device-mode="#{$device}"] .jet-listing-grid__scroll-slider-#{$device} {
 		overflow-x: auto;
 		-webkit-overflow-scrolling: touch;
@@ -206,6 +208,7 @@
 	}
 }
 
+// Scroll Slider for Gutenberg
 @media ( min-width: 1025px ) {
 	.jet-listing-grid--blocks .jet-listing-grid__scroll-slider-desktop {
 		overflow-x: auto;
@@ -217,6 +220,7 @@
 		}
 	}
 }
+
 
 @media ( min-width: 768px ) and ( max-width: 1024px ) {
 	.jet-listing-grid--blocks .jet-listing-grid__scroll-slider-tablet {
@@ -242,8 +246,51 @@
 	}
 }
 
+
+// Start Scroll Slider for Bricks
+@media ( max-width: 767px ) {
+	.brxe-jet-engine-listing-grid .jet-listing-grid__scroll-slider-mobile {
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		-ms-overflow-style: -ms-autohiding-scrollbar;
+
+		> .jet-listing-grid__items {
+			flex-wrap: nowrap;
+		}
+	}
+}
+
+@media ( max-width: 991px ) {
+	.brxe-jet-engine-listing-grid .jet-listing-grid__scroll-slider-tablet {
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		-ms-overflow-style: -ms-autohiding-scrollbar;
+
+		> .jet-listing-grid__items {
+			flex-wrap: nowrap;
+		}
+	}
+}
+
+.brxe-jet-engine-listing-grid .jet-listing-grid__scroll-slider-desktop {
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+	-ms-overflow-style: -ms-autohiding-scrollbar;
+
+	> .jet-listing-grid__items {
+		flex-wrap: nowrap;
+	}
+}
+
+
+// End Scroll Slider for Bricks
+
+
 .jet-listing-grid__item {
 	&.jet-equal-columns {
+		> * {
+			height: 100%;
+		}
 		> .elementor {
 			height: 100%;
 			> .elementor-inner {
@@ -339,5 +386,85 @@
 	}
 	100% {
 		transform: rotate(359deg);
+	}
+}
+
+
+// Context Bricks
+.brxe-jet-engine-listing-grid {
+	.jet-listing-grid__items {
+		width: auto;
+		margin: 0;
+		--column-gap: 20px;
+		--row-gap: 20px;
+		gap: var(--row-gap) var(--column-gap);
+		--item-width: calc( ( 100% - ( var(--columns) - 1 ) * var(--column-gap) ) / var(--columns) );
+
+		&.slick-slider .slick-list {
+			margin-right: calc(var(--column-gap)/-2);
+			margin-left: calc(var(--column-gap)/-2);
+		}
+
+		> .jet-listing-grid__item {
+			max-width: var(--item-width);
+			flex: 0 0 var(--item-width);
+
+			@for $i from 2 through 6 {
+				@for $j from $i+1 through 10 {
+					&.colspan-#{$i}-#{$j} {
+						--colspan-width: calc( 100% - var(--item-width) * ( #{$j} - #{$i} ) - var(--column-gap) * ( #{$j} - #{$i} ) );
+						max-width: var(--colspan-width) !important;
+						flex: 0 0 var(--colspan-width) !important;
+					}
+				}
+			}
+		}
+	}
+
+	.jet-listing-grid__item {
+		padding: 0;
+
+		&.slick-slide {
+			padding: calc(var(--row-gap)/2) calc(var(--column-gap)/2);
+		}
+	}
+
+	.jet-slick-dots {
+		gap: 8px;
+
+		li {
+			margin: 0;
+		}
+	}
+
+	.jet-listing-grid__scroll-slider {
+		&::-webkit-scrollbar-button {
+			width: 0;
+			height: 0;
+		}
+
+		&::-webkit-scrollbar-track {
+			border: none;
+		}
+
+		&::-webkit-scrollbar-corner {
+			background-color: transparent;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			border: none;
+		}
+	}
+
+	.jet-listing-grid__slider-icon svg {
+		width: 1em;
+		height: 1em;
+	}
+}
+
+div.brxe-jet-engine-listing-grid {
+	width: 100%;
+	> div.jet-listing-grid {
+		width: 100%;
 	}
 }

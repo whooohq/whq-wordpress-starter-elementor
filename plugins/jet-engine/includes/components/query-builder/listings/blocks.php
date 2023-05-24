@@ -42,6 +42,11 @@ class Blocks {
 	}
 
 	public function save_editor_settings( $post_id ) {
+		
+		if ( empty( $_POST['jet_engine_listing_source'] ) || $this->source !== $_POST['jet_engine_listing_source'] ) {
+			return;
+		}
+		
 		if ( ! isset( $_POST[ $this->source_meta ] ) ) {
 			delete_post_meta( $post_id, $this->source_meta );
 		} else {

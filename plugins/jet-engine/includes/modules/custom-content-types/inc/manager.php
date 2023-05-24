@@ -126,6 +126,11 @@ class Manager extends \Jet_Engine_Base_WP_Intance {
 			$type_id  = $type['id'];
 			$instance = new Factory( $args, $fields, $type_id );
 
+			jet_engine()->add_instance( 'custom-content-type', array(
+				'id'   => $type_id,
+				'args' => $type['args'],
+			) );
+
 			$this->_registered_instances[ $args['slug'] ] = $instance;
 
 			if ( $instance->get_arg( 'has_single' ) && $instance->get_arg( 'related_post_type' ) ) {

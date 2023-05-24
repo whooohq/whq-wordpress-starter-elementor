@@ -526,7 +526,7 @@ class Jet_View_More_Widget extends Jet_Tricks_Base {
 		}
 
 		echo sprintf(
-			'<div %1$s><div class="jet-view-more__button">%2$s%3$s</div></div>',
+			'<div %1$s><div class="jet-view-more__button" role="button" tabindex="0">%2$s%3$s</div></div>',
 			$this->get_render_attribute_string( 'instance' ),
 			$button_icon_html,
 			$button_label_html

@@ -6,6 +6,7 @@
 
 		init: function() {
 			elementor.hooks.addAction( 'frontend/element_ready/section', JetTricks.elementorSection );
+			elementor.hooks.addAction( 'frontend/element_ready/container', JetTricks.elementorSection );
 			elementor.hooks.addAction( 'frontend/element_ready/column', JetTricks.elementorColumn );
 			elementor.hooks.addAction( 'frontend/element_ready/widget', JetTricks.elementorWidget );
 
@@ -674,6 +675,43 @@
 					$button.css( { 'display': 'none' } );
 				}
 
+			} );
+
+			$button.keydown( function( e ) {
+				var $which = e.which || e.keyCode;
+
+					if ( $which == 13 || $which == 32 ) {
+						for ( var section in sectionsData ) {
+							var $section = sectionsData[ section ]['selector'];
+
+							if ( ! settings.showall ) {
+								if ( ! sectionsData[ section ]['visible'] ) {
+									sectionsData[ section ]['visible'] = true;
+									$section.addClass( 'view-more-visible' );
+									$section.addClass( 'jet-tricks-' + settings['effect'] + '-effect' );
+
+									break;
+								}
+							} else {
+								sectionsData[ section ]['visible'] = true;
+								$section.addClass( 'view-more-visible' );
+								$section.addClass( 'jet-tricks-' + settings['effect'] + '-effect' );
+							}
+
+						}
+
+						for ( var section in sectionsData ) {
+							buttonVisible = true;
+
+							if ( sectionsData[ section ]['visible'] ) {
+								buttonVisible = false;
+							}
+						}
+
+						if ( ! buttonVisible ) {
+							$button.css( { 'display': 'none' } );
+						}
+					}
 			} );
 		};
 

@@ -81,7 +81,7 @@ export default class Indexer {
 						break;
 
 					case 'OPTION':
-						if ('' !== $item.attr('value')) {
+						if ($item.attr('loading-item') !== '' && '' !== $item.attr('value')) {
 							$item.text($item.data('label') + ' ' + $item.data('counter-prefix') + counts + $item.data('counter-suffix'));
 						}
 

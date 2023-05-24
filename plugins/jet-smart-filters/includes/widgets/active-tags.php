@@ -413,7 +413,7 @@ class Jet_Smart_Filters_Active_Tags_Widget extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			array(
 				'name'     => 'tag_value_typography',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['tag-value'],
+				'selector' => '{{WRAPPER}} ' . $css_scheme['tag'],
 			)
 		);
 
@@ -432,7 +432,7 @@ class Jet_Smart_Filters_Active_Tags_Widget extends Widget_Base {
 				'label'     => esc_html__( 'Text Color', 'jet-smart-filters' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['tag-value'] => 'color: {{VALUE}}',
+					'{{WRAPPER}} ' . $css_scheme['tag'] => 'color: {{VALUE}}',
 				),
 			)
 		);
@@ -463,7 +463,7 @@ class Jet_Smart_Filters_Active_Tags_Widget extends Widget_Base {
 				'label'     => esc_html__( 'Text Color', 'jet-smart-filters' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['tag'] . ':hover ' . $css_scheme['tag-value'] => 'color: {{VALUE}}',
+					'{{WRAPPER}} ' . $css_scheme['tag'] . ':hover' => 'color: {{VALUE}}',
 				),
 			)
 		);
@@ -538,6 +538,79 @@ class Jet_Smart_Filters_Active_Tags_Widget extends Widget_Base {
 		);
 
 		$this->add_control(
+			'tag_item_label_heading',
+			array(
+				'label'     => esc_html__( 'Item Label', 'jet-smart-filters' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
+			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'tag_item_label_typography',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['tag-label'],
+			)
+		);
+
+		$this->start_controls_tabs( 'tag_item_label_style_tabs' );
+
+		$this->start_controls_tab(
+			'tag_item_label_normal_styles',
+			array(
+				'label' => esc_html__( 'Normal', 'jet-smart-filters' ),
+			)
+		);
+
+		$this->add_control(
+			'tag_item_label_normal_color',
+			array(
+				'label'     => esc_html__( 'Text Color', 'jet-smart-filters' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} ' . $css_scheme['tag-label'] => 'color: {{VALUE}}',
+				),
+			)
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'tag_item_label_hover_styles',
+			array(
+				'label' => esc_html__( 'Hover', 'jet-smart-filters' ),
+			)
+		);
+
+		$this->add_control(
+			'tag_item_label_hover_color',
+			array(
+				'label'     => esc_html__( 'Text Color', 'jet-smart-filters' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} ' . $css_scheme['tag'] . ':hover ' . $css_scheme['tag-label'] => 'color: {{VALUE}}',
+				),
+			)
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->add_responsive_control(
+			'tag_item_label_padding',
+			array(
+				'label'      => esc_html__( 'Padding', 'jet-smart-filters' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%' ),
+				'selectors'  => array(
+					'{{WRAPPER}} ' . $css_scheme['tag-label'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_control(
 			'tags_clear_item_heading',
 			array(
 				'label'     => esc_html__( 'Clear Item', 'jet-smart-filters' ),
@@ -561,7 +634,7 @@ class Jet_Smart_Filters_Active_Tags_Widget extends Widget_Base {
 				'label'     => esc_html__( 'Text Color', 'jet-smart-filters' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['tag'] . '--clear ' . $css_scheme['tag-value'] => 'color: {{VALUE}}',
+					'{{WRAPPER}} ' . $css_scheme['tag'] . '--clear ' => 'color: {{VALUE}}',
 				),
 			)
 		);
@@ -592,7 +665,7 @@ class Jet_Smart_Filters_Active_Tags_Widget extends Widget_Base {
 				'label'     => esc_html__( 'Text Color', 'jet-smart-filters' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} ' . $css_scheme['tag'] . '--clear' . ':hover ' . $css_scheme['tag-value'] => 'color: {{VALUE}}',
+					'{{WRAPPER}} ' . $css_scheme['tag'] . '--clear' . ':hover' => 'color: {{VALUE}}',
 				),
 			)
 		);

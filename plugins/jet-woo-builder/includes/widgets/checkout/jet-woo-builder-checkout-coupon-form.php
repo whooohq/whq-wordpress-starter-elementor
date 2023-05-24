@@ -221,38 +221,38 @@ class Jet_Woo_Builder_Checkout_Coupon_Form extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'checkout_coupon_message_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['message'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'checkout_coupon_message_margin',
-			array(
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['message'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'checkout_coupon_message_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['message'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->end_controls_section();
@@ -277,26 +277,12 @@ class Jet_Woo_Builder_Checkout_Coupon_Form extends Jet_Woo_Builder_Base {
 			)
 		);
 
-		jet_woo_builder_common_controls()->register_input_style_controls( $this, 'checkout_coupon_form', $css_scheme['input'], false );
-
-		$this->add_responsive_control(
-			'checkout_coupon_form_input_margin',
-			[
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
-				'selectors'  => [
-					'{{WRAPPER}} ' . $css_scheme['form'] . ' .form-row.form-row-first' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
-		);
-
 		$this->add_responsive_control(
 			'checkout_coupon_form_input_width',
 			[
-				'label'      => __( 'Width', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ '%', 'px', ],
+				'label'      => __( 'Width', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', '%' ] ),
 				'range'      => [
 					'%'  => [
 						'min' => 10,
@@ -317,6 +303,20 @@ class Jet_Woo_Builder_Checkout_Coupon_Form extends Jet_Woo_Builder_Base {
 			]
 		);
 
+		jet_woo_builder_common_controls()->register_input_style_controls( $this, 'checkout_coupon_form', $css_scheme['input'], false );
+
+		$this->add_responsive_control(
+			'checkout_coupon_form_input_margin',
+			[
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
+					'{{WRAPPER}} ' . $css_scheme['form'] . ' .form-row.form-row-first' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
 		$this->end_controls_section();
 
 		$this->start_controls_section(
@@ -327,26 +327,12 @@ class Jet_Woo_Builder_Checkout_Coupon_Form extends Jet_Woo_Builder_Base {
 			)
 		);
 
-		jet_woo_builder_common_controls()->register_button_style_controls( $this, 'checkout_coupon_form', $css_scheme['button'] );
-
-		$this->add_responsive_control(
-			'checkout_coupon_form_button_margin',
-			[
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
-				'selectors'  => [
-					'{{WRAPPER}} ' . $css_scheme['form'] . ' .form-row.form-row-last' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
-		);
-
 		$this->add_responsive_control(
 			'checkout_coupon_form_button_width',
 			[
-				'label'      => __( 'Width', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ '%', 'px', ],
+				'label'      => __( 'Width', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', '%' ] ),
 				'range'      => [
 					'%'  => [
 						'min' => 10,
@@ -363,6 +349,20 @@ class Jet_Woo_Builder_Checkout_Coupon_Form extends Jet_Woo_Builder_Base {
 				],
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['form'] . ' .form-row-last' => 'width: {{SIZE}}{{UNIT}}',
+				],
+			]
+		);
+
+		jet_woo_builder_common_controls()->register_button_style_controls( $this, 'checkout_coupon_form', $css_scheme['button'] );
+
+		$this->add_responsive_control(
+			'checkout_coupon_form_button_margin',
+			[
+				'type'       => Controls_Manager::DIMENSIONS,
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
+					'{{WRAPPER}} ' . $css_scheme['form'] . ' .form-row.form-row-last' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -400,10 +400,8 @@ class Jet_Woo_Builder_Checkout_Coupon_Form extends Jet_Woo_Builder_Base {
 		$settings = $this->get_settings_for_display();
 
 		if ( isset( $settings['checkout_coupon_form_modify_toggle'] ) && 'yes' === $settings['checkout_coupon_form_modify_toggle'] ) {
-			$toggle      = isset( $settings['checkout_coupon_form_heading_notice_text'] ) && ! empty( $settings['checkout_coupon_form_heading_notice_text'] ) ?
-				$settings['checkout_coupon_form_heading_notice_text'] : 'Have a coupon?';
-			$toggle_link = isset( $settings['checkout_coupon_form_heading_link_text'] ) && ! empty( $settings['checkout_coupon_form_heading_link_text'] ) ?
-				$settings['checkout_coupon_form_heading_link_text'] : 'Click here to enter your code';
+			$toggle      = ! empty( $settings['checkout_coupon_form_heading_notice_text'] ) ? $settings['checkout_coupon_form_heading_notice_text'] : 'Have a coupon?';
+			$toggle_link = ! empty( $settings['checkout_coupon_form_heading_link_text'] ) ? $settings['checkout_coupon_form_heading_link_text'] : 'Click here to enter your code';
 
 			$message = sprintf(
 				'%s <a href="#" class="showcoupon"> %s </a>',

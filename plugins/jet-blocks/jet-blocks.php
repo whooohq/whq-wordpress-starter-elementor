@@ -3,7 +3,7 @@
  * Plugin Name: JetBlocks For Elementor
  * Plugin URI:  https://crocoblock.com/plugins/jetblocks/
  * Description: The basic utilitary widgets for implementing additional functionality to headers, footers and special sections built with Elementor
- * Version:     1.3.4
+ * Version:     1.3.5
  * Author:      Crocoblock
  * Author URI:  https://crocoblock.com/
  * Text Domain: jet-blocks
@@ -42,7 +42,7 @@ if ( ! class_exists( 'Jet_Blocks' ) ) {
 		 *
 		 * @var string
 		 */
-		private $version = '1.3.4';
+		private $version = '1.3.5';
 
 		/**
 		 * Holder for base plugin URL
@@ -70,6 +70,12 @@ if ( ! class_exists( 'Jet_Blocks' ) ) {
 		 * @var    object
 		 */
 		public $module_loader;
+
+		/**
+		 * [$integration_manager description]
+		 * @var null
+		 */
+		public $integration_manager = null;
 
 		/**
 		 * Sets up needed actions/filters for the plugin to initialize.
@@ -113,6 +119,7 @@ if ( ! class_exists( 'Jet_Blocks' ) ) {
 					$this->plugin_path( 'includes/modules/breadcrumbs/cherry-x-breadcrumbs.php' ),
 					$this->plugin_path( 'includes/modules/jet-dashboard/jet-dashboard.php' ),
 					$this->plugin_path( 'includes/modules/jet-elementor-extension/jet-elementor-extension.php' ),
+					$this->plugin_path( 'includes/modules/db-updater/cx-db-updater.php' ),
 				)
 			);
 		}
@@ -140,6 +147,8 @@ if ( ! class_exists( 'Jet_Blocks' ) ) {
 
 			$this->load_files();
 
+			$this->integration_manager = new jet_blocks\Integrations\Manager;
+
 			jet_blocks_assets()->init();
 			jet_blocks_integration()->init();
 			jet_blocks_handlers()->init();
@@ -152,6 +161,11 @@ if ( ! class_exists( 'Jet_Blocks' ) ) {
 			if ( is_admin() ) {
 				//Init Settings Manager
 				new \Jet_Blocks\Settings();
+
+				// Init DB upgrader
+				require $this->plugin_path( 'includes/class-jet-blocks-db-upgrader.php' );
+
+				new Jet_Blocks_DB_Upgrader();
 			}
 		}
 
@@ -270,6 +284,7 @@ if ( ! class_exists( 'Jet_Blocks' ) ) {
 			require $this->plugin_path( 'includes/class-jet-blocks-ext-elements.php' );
 			require $this->plugin_path( 'includes/class-jet-blocks-compatibility.php' );
 			require $this->plugin_path( 'includes/settings/manager.php' );
+			require $this->plugin_path( 'includes/components/integrations/manager.php' );
 
 			require $this->plugin_path( 'includes/rest-api/rest-api.php' );
 			require $this->plugin_path( 'includes/rest-api/endpoints/base.php' );

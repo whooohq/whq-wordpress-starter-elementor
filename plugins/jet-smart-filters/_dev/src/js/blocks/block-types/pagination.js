@@ -32,11 +32,14 @@ registerBlockType('jet-smart-filters/pagination', {
 		apply_type: attributes.apply_type,
 		query_id: attributes.query_id,
 		// Pagination Controls
+		enable_items: attributes.enable_items,
+		pages_center_offset: attributes.pages_center_offset,
+		pages_end_offset: attributes.pages_end_offset,
 		enable_prev_next: attributes.enable_prev_next,
 		prev_text: attributes.prev_text,
 		next_text: attributes.next_text,
-		pages_center_offset: attributes.pages_center_offset,
-		pages_end_offset: attributes.pages_end_offset,
+		enable_load_more: attributes.enable_load_more,
+		load_more_text: attributes.load_more_text,
 		autoscroll: attributes.autoscroll,
 		provider_top_offset: attributes.provider_top_offset
 	},
@@ -56,13 +59,42 @@ registerBlockType('jet-smart-filters/pagination', {
 						/>
 						<PanelBody title={__('Controls')} initialOpen={false}>
 							<ToggleControl
+								label={__('Enable Items')}
+								checked={props.attributes.enable_items}
+								onChange={newValue => {
+									props.setAttributes({ enable_items: newValue });
+								}}
+							/>
+							{props.attributes.enable_items && [
+								<TextControl
+									type="number"
+									label={__('Items center offset')}
+									min={`0`}
+									max={`50`}
+									value={props.attributes.pages_center_offset}
+									onChange={newValue => {
+										props.setAttributes({ pages_center_offset: parseInt(newValue) });
+									}}
+								/>,
+								<TextControl
+									type="number"
+									label={__('Items edge offset')}
+									min={`0`}
+									max={`50`}
+									value={props.attributes.pages_end_offset}
+									onChange={newValue => {
+										props.setAttributes({ pages_end_offset: parseInt(newValue) });
+									}}
+								/>
+							]}
+							<ToggleControl
 								label={__('Enable Prev/Next buttons')}
 								checked={props.attributes.enable_prev_next}
 								onChange={newValue => {
 									props.setAttributes({ enable_prev_next: newValue });
 								}}
 							/>
-							{props.attributes.enable_prev_next && (
+							{props.attributes.enable_prev_next && [
 								<TextControl
 									type="text"
 									label={__('Prev Text')}
@@ -70,9 +102,7 @@ registerBlockType('jet-smart-filters/pagination', {
 									onChange={newValue => {
 										props.setAttributes({ prev_text: newValue });
 									}}
-								/>
-							)}
-							{props.attributes.enable_prev_next && (
+								/>,
 								<TextControl
 									type="text"
 									label={__('Next Text')}
@@ -81,27 +111,24 @@ registerBlockType('jet-smart-filters/pagination', {
 										props.setAttributes({ next_text: newValue });
 									}}
 								/>
+							]}
+							<ToggleControl
+								label={__('Enable Load More')}
+								checked={props.attributes.enable_load_more}
+								onChange={newValue => {
+									props.setAttributes({ enable_load_more: newValue });
+								}}
+							/>
+							{props.attributes.enable_load_more && (
+								<TextControl
+									type="text"
+									label={__('Load More Text')}
+									value={props.attributes.load_more_text}
+									onChange={newValue => {
+										props.setAttributes({ load_more_text: newValue });
+									}}
+								/>
 							)}
-							<TextControl
-								type="number"
-								label={__('Items center offset')}
-								min={`0`}
-								max={`50`}
-								value={props.attributes.pages_center_offset}
-								onChange={newValue => {
-									props.setAttributes({ pages_center_offset: parseInt(newValue) });
-								}}
-							/>
-							<TextControl
-								type="number"
-								label={__('Items edge offset')}
-								min={`0`}
-								max={`50`}
-								value={props.attributes.pages_end_offset}
-								onChange={newValue => {
-									props.setAttributes({ pages_end_offset: parseInt(newValue) });
-								}}
-							/>
 							<ToggleControl
 								label={__('Enable autoscroll')}
 								checked={props.attributes.autoscroll}

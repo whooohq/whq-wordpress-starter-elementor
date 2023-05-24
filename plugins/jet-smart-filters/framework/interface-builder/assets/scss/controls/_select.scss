@@ -47,7 +47,7 @@ select.select2-hidden-accessible{
 					.select2-selection__rendered{
 						font-size: 12px;
 						line-height: 14px;
-						padding: 0;
+						padding: 2px;
 						display: block;
 
 						&:focus {
@@ -67,6 +67,10 @@ select.select2-hidden-accessible{
 								color: $remove_color;
 								margin-right: 5px;
 								font-size: 14px;
+								.rtl & {
+									margin-left: 5px;
+									margin-right: 0;
+								}
 							}
 						}
 
@@ -81,6 +85,7 @@ select.select2-hidden-accessible{
 								border: none;
 								box-shadow: none;
 								line-height: 19px;
+								min-height: auto;
 							}
 						}
 					}
@@ -89,45 +94,47 @@ select.select2-hidden-accessible{
 		}
 	}
 	.select2-container{
-		.select2-dropdown{
-			background-color: white;
-			border: 1px solid $border_color;
-			border-radius: $border_radius_extra_small;
-			box-shadow: 0px 5px 21px rgba(0,0,0,0.1);
-			margin-top: 1px;
-			z-index: 500001;
 
-			.select2-search__field{
-				border: 1px solid $border_color;
-				box-shadow: none;
-				border-radius: $border_radius_extra_small;
-				margin: 0;
-				height: 25px;
+	}
+}
 
-				&:focus{
-					outline: none;
+.cx-ui-select2-dropdown.select2-dropdown{
+	background-color: white;
+	border: 1px solid $border_color;
+	border-radius: $border_radius_extra_small;
+	box-shadow: 0px 5px 21px rgba(0,0,0,0.1);
+	margin-top: 1px;
+	z-index: 500001;
+
+	.select2-search__field{
+		border: 1px solid $border_color;
+		box-shadow: none;
+		border-radius: $border_radius_extra_small;
+		margin: 0;
+		height: 25px;
+
+		&:focus{
+			outline: none;
+		}
+	}
+
+	.select2-results {
+		.select2-results__options{
+			.select2-results__option{
+
+				&[aria-selected=true]{
+					//color: darken( $light_color, 50% );
+					//background-color: $dark_color;
+				}
+
+				&--highlighted{
+					color: #fff;
+					background-color: $primary_color;
 				}
 			}
 
-			.select2-results {
-				.select2-results__options{
-					.select2-results__option{
-
-						&[aria-selected=true]{
-							color: darken( $dark_color, 50% );
-							background-color: $dark_color;
-						}
-
-						&--highlighted{
-							color: #fff;
-							background-color: $primary_color;
-						}
-					}
-
-					.li[aria-disabled=true]{
-						display: none;
-					}
-				}
+			.li[aria-disabled=true]{
+				display: none;
 			}
 		}
 	}

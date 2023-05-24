@@ -24,10 +24,18 @@ echo '</div>';
 
 echo '<div class="eael-content-timeline-content">';
 if ( 'yes' == $settings['eael_show_title'] ) {
-	echo '<' . Helper::eael_pro_validate_html_tag( $settings['title_tag'] ) . ' class="eael-timeline-title"><a href="' . esc_url( $content['permalink'] ) . '"' . $content['nofollow'] . '' . $content['target_blank'] . '>' . esc_html( $content['title'] ) . '</a></' . Helper::eael_pro_validate_html_tag( $settings['title_tag'] ) . '>';
+	echo '<' . Helper::eael_pro_validate_html_tag( $settings['title_tag'] ) . ' class="eael-timeline-title"><a href="' . esc_url( $content['permalink'] ) . '"' . $content['nofollow'] . '' . $content['target_blank'] . '>' . Helper::eael_wp_kses( $content['title'] ) . '</a></' . Helper::eael_pro_validate_html_tag( $settings['title_tag'] ) . '>';
+}
+
+if ( ! empty( $content['image_linkable'] ) && $content['image_linkable'] === 'yes' ) {
+	echo '<a href="' . esc_url( $content['permalink'] ) . '"' . $content['image_link_nofollow'] . '' . $content['image_link_target'] . '>';
 }
 
 printf( '%s', $content['post_thumbnail'] );
+
+if ( ! empty( $content['image_linkable'] ) && $content['image_linkable'] === 'yes' ) {
+	echo '</a>';
+}
 
 if ( 'yes' == $settings['eael_show_excerpt'] ) {
 	echo Helper::eael_wp_kses( $content['excerpt'] );
@@ -36,6 +44,6 @@ if ( 'yes' == $settings['eael_show_excerpt'] ) {
 printf( '%s', $content['read_more_btn'] );
 
 echo '<span class="eael-date">';
-echo esc_html( $content['date'] );
+echo Helper::eael_wp_kses( $content['date'] );
 echo '</span>';
 echo '</div></div>';

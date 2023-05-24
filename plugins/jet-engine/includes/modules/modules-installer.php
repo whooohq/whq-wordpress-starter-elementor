@@ -65,6 +65,14 @@ if ( ! class_exists( 'Jet_Engine_Modules_Installer' ) ) {
 		 */
 		public function process_module_uninstall() {
 
+			$nonce_action = jet_engine()->dashboard->get_nonce_action();
+
+			if ( empty( $_REQUEST['_nonce'] ) || ! wp_verify_nonce( $_REQUEST['_nonce'], $nonce_action ) ) {
+				wp_send_json_error( array(
+					'message' => __( 'Nonce validation failed', 'jet-engine' ),
+				) );
+			}
+
 			if ( ! current_user_can( 'install_plugins' ) ) {
 				wp_send_json_error( array( 'message' => __( '<b>Error:</b> Access denied', 'jet-engine' ) ) );
 			}
@@ -95,6 +103,14 @@ if ( ! class_exists( 'Jet_Engine_Modules_Installer' ) ) {
 		 * @return [type] [description]
 		 */
 		public function process_module_installation() {
+
+			$nonce_action = jet_engine()->dashboard->get_nonce_action();
+
+			if ( empty( $_REQUEST['_nonce'] ) || ! wp_verify_nonce( $_REQUEST['_nonce'], $nonce_action ) ) {
+				wp_send_json_error( array(
+					'message' => __( 'Nonce validation failed', 'jet-engine' ),
+				) );
+			}
 
 			if ( ! current_user_can( 'install_plugins' ) ) {
 				wp_send_json_error( array( 'message' => __( '<b>Error:</b> Access denied', 'jet-engine' ) ) );

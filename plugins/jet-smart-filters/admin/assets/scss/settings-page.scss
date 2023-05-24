@@ -45,6 +45,10 @@
 		}
 	}
 
+	.rewritable-post-types {
+		margin-bottom: 15px;
+	}
+
 	.avaliable-controls {
 		display: flex;
 		flex-direction: column;
@@ -64,7 +68,7 @@
 		}
 
 		&__body {
-			border-top: 1px solid #ECECEC;
+			border-top: 1px solid #ececec;
 			padding: 20px;
 		}
 
@@ -73,6 +77,362 @@
 
 			&__meta {
 				align-self: center;
+			}
+		}
+	}
+
+	.url-aliases-section {
+		.use-url-aliases {
+			padding: 0 0 20px;
+		}
+
+		.url-aliases {
+			padding-left: 20px;
+		}
+
+		.cx-vui-repeater {
+			@media screen and (max-width: 1380px) {
+				&__tip {
+					display: none;
+				}
+			}
+		}
+	}
+
+	.url-aliases-example {
+		&-section {
+			position: relative;
+			padding: 25px 0 0 20px;
+
+			.use-url-aliases-example {
+				position: absolute;
+				top: -25px;
+				right: 0;
+				flex-direction: row-reverse;
+				padding: 0;
+
+				.cx-vui-component {
+					&__meta {
+						margin: 1px 0 0 10px;
+					}
+					&__label {
+						cursor: default;
+						font-size: 12px;
+						line-height: 17px;
+					}
+				}
+			}
+		}
+
+		&-string {
+			display: flex;
+			font-size: 13px;
+			line-height: 20px;
+			border-radius: 6px;
+			border: 1px solid #f4f4f5;
+
+			&-prefix {
+				user-select: none;
+				flex-shrink: 0;
+				padding: 8px 0 8px 12px;
+				height: 20px;
+				background-color: #f4f4f5;
+			}
+
+			&-editor {
+				display: flex;
+				width: 100%;
+				padding: 2px 6px 2px 0;
+				background-color: #f4f4f5;
+
+				&-input {
+					width: 100%;
+					margin: 0;
+					padding: 0;
+					font-size: inherit;
+					line-height: inherit;
+					border-radius: initial;
+					border: none;
+					background-color: inherit;
+
+					&:focus,
+					&:disabled {
+						color: inherit;
+						background-color: inherit;
+						box-shadow: none;
+					}
+				}
+
+				&-tools {
+					margin-top: 6px;
+					margin-left: 8px;
+					flex-shrink: 0;
+				}
+
+				&.editing {
+					background-color: #fff;
+				}
+			}
+
+			/* input {
+				&:focus {
+					background-color: #fff;
+					box-shadow: none;
+				}
+			} */
+		}
+
+		&-changes {
+			margin-top: 15px;
+			word-break: break-all;
+
+			&-transformation {
+				border-radius: 6px;
+				box-shadow: 0px 1px 8px rgba(35, 40, 45, 0.1);
+
+				&-resalt {
+					padding: 10px 15px;
+
+					&-label {
+						cursor: pointer;
+						user-select: none;
+						font-weight: 700;
+						margin-bottom: 3px;
+
+						&::before {
+							content: "";
+							display: inline-block;
+							margin-right: 2px;
+							transform: translateY(-1px);
+							border-style: solid;
+							border-width: 0 6px 7px 6px;
+							border-color: transparent transparent #dcdcdd transparent;
+						}
+
+						&:hover {
+							&::before {
+								border-color: transparent transparent #7b7e81 transparent;
+							}
+						}
+					}
+				}
+
+				&-chain {
+					overflow: hidden;
+					display: none;
+
+					&-iteration {
+						display: flex;
+						padding: 10px 15px;
+
+						&:nth-child(even) {
+							background-color: #f4f4f5;
+						}
+
+						.index {
+							margin-right: 5px;
+							font-weight: 700;
+						}
+
+						.replacement {
+							font-weight: 500;
+						}
+					}
+				}
+
+				&.opened {
+					.url-aliases-example-changes-transformation {
+						&-resalt {
+							box-shadow: 0px 1px 8px rgba(35, 40, 45, 0.1);
+							border-bottom-left-radius: 6px;
+							border-bottom-right-radius: 6px;
+
+							&-label::before {
+								transform: rotate(180deg) translateY(1px);
+							}
+						}
+						&-chain {
+							display: block;
+						}
+					}
+				}
+
+				&.reverse-transformation {
+					margin-top: 10px;
+				}
+			}
+
+			.highlight {
+				background-color: #ff0;
+			}
+		}
+
+		&-message,
+		&-error {
+			margin: 10px 0;
+			text-align: center;
+			font-weight: 500;
+
+			p {
+				margin-bottom: 0;
+				color: inherit;
+			}
+		}
+
+		&-error {
+			color: #f00;
+		}
+	}
+}
+
+// Repeater
+.cx-vui-repeater-item {
+	&.url-alias {
+		margin-bottom: 20px;
+		padding: 5px 10px;
+		box-shadow: 0px 1px 8px rgba(35, 40, 45, 0.1);
+
+		.cx-vui-repeater-item {
+			&__collapse,
+			&__copy {
+				display: none;
+			}
+			&__handle {
+				margin: 0;
+				width: 20px;
+				height: 20px;
+			}
+			&__clean {
+				margin: 0px;
+			}
+
+			&__heading {
+				padding: 0;
+
+				&-start,
+				&-end {
+					padding-top: 11px;
+					padding-bottom: 11px;
+					display: inline-block;
+				}
+			}
+
+			&__content {
+				display: flex;
+				margin: -42px 25px 0;
+
+				.cx-vui-component {
+					padding: 5px;
+					border: none;
+
+					&,
+					&__control {
+						width: 100%;
+					}
+				}
+			}
+		}
+	}
+
+	&--last {
+		.cx-vui-repeater-item__clean {
+			pointer-events: none;
+			opacity: 0.3;
+		}
+	}
+}
+
+// Components
+.editing-tools {
+	@mixin editing-btn() {
+		cursor: pointer;
+		user-select: none;
+		display: inline-block;
+		font-family: dashicons;
+		font-size: 20px;
+		line-height: 1;
+		font-weight: 400;
+		font-style: normal;
+		color: #007cba;
+	}
+	&-actions {
+		&-edit {
+			@include editing-btn();
+			&::before {
+				content: "\f464";
+			}
+		}
+		&-restore-default {
+			@include editing-btn();
+			&::before {
+				content: "\f321";
+			}
+		}
+	}
+	&-confirmation {
+		&-confirm {
+			@include editing-btn();
+			&::before {
+				content: "\f147";
+			}
+		}
+		&-cancel {
+			@include editing-btn();
+			&::before {
+				content: "\f158";
+			}
+		}
+	}
+}
+
+// RTL
+.rtl {
+	.jet-smart-filters-settings-page {
+		.url-aliases-example {
+			&-section {
+				.use-url-aliases-example {
+					right: auto;
+					left: 20px;
+
+					.cx-vui-component {
+						&__meta {
+							margin: 1px 10px 0 0;
+						}
+					}
+				}
+			}
+			&-string {
+				&-prefix {
+					padding: 8px 12px 8px 0;
+				}
+				&-editor {
+					padding: 2px 0 2px 6px;
+
+					&-tools {
+						margin-left: 0;
+						margin-right: 8px;
+					}
+				}
+			}
+			&-changes {
+				&-transformation {
+					&-resalt {
+						&-label {
+							&::before {
+								margin-right: 0;
+								margin-left: 2px;
+							}
+						}
+					}
+					&-chain {
+						&-iteration {
+							.index {
+								margin-right: 0;
+								margin-left: 5px;
+							}
+						}
+					}
+				}
 			}
 		}
 	}

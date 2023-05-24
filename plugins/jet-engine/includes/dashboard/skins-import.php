@@ -37,6 +37,12 @@ if ( ! class_exists( 'Jet_Engine_Skins_Import' ) ) {
 		 */
 		public function process_import() {
 
+			$nonce_action = jet_engine()->dashboard->get_nonce_action();
+
+			if ( empty( $_REQUEST['_nonce'] ) || ! wp_verify_nonce( $_REQUEST['_nonce'], $nonce_action ) ) {
+				wp_send_json_error( __( 'Nonce validation failed', 'jet-engine' ) );
+			}
+
 			if ( ! current_user_can( 'import' ) ) {
 				wp_send_json_error( __( 'You don\'t have permissions to do this', 'jet-engine' ) );
 			}

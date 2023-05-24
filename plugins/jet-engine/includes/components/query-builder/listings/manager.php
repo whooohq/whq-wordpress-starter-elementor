@@ -48,6 +48,8 @@ class Manager {
 			new Filters_Options_Source();
 		}
 
+		add_action( 'jet-engine/listings/document/get-preview/' . $this->source, array( $this, 'setup_preview' ) );
+
 	}
 
 	public function get_query_id( $listing_id, $settings ) {
@@ -64,7 +66,7 @@ class Manager {
 	}
 
 	/**
-	 * Replace listing source if cutom query is enabled
+	 * Replace listing source if custom query is enabled
 	 *
 	 * @param  [type] $source   [description]
 	 * @param  [type] $settings [description]
@@ -76,6 +78,16 @@ class Manager {
 
 		if ( $is_custom_query && ! empty( $settings['custom_query_id'] ) ) {
 			$source = $this->source;
+
+			// Replace listing document.
+			jet_engine()->listings->data->set_listing(
+				jet_engine()->listings->get_new_doc(
+					array(
+						'listing_source' => $source,
+						'_query_id'      => $settings['custom_query_id'],
+					),
+					absint( $settings['lisitng_id'] ) )
+			);
 		}
 
 		return $source;
@@ -114,7 +126,11 @@ class Manager {
 			return false;
 		}
 
-		return $this->get_preview_object_for_document( $document->get_main_id() );
+		$preview_object = $this->get_preview_object_for_document( $document->get_main_id() );
+
+		jet_engine()->listings->data->set_current_object( $preview_object );
+
+		return $preview_object;
 
 	}
 
@@ -133,12 +149,14 @@ class Manager {
 		}
 
 		$items = $query->get_items();
+		$items = ! empty( $items ) ? array_values( $items ) : array();
 
 		if ( ! empty( $items ) ) {
 
 			$items[0]->_query_id = $query_id;
 
 			jet_engine()->listings->data->set_current_object( $items[0] );
+
 			return $items[0];
 		} else {
 			return false;

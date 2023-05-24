@@ -91,6 +91,10 @@
 	border-radius: 0;
 	color: inherit;
 	background-color: rgba(92, 196, 239, 0.1);
+
+	&.-disabled- {
+		opacity: 0.4;
+	}
 }
 
 .datepicker--cell.datepicker--cell-day.-week-start-hover- {
@@ -113,4 +117,32 @@
 
 .datepicker--cell.datepicker--cell-day.-week-end-selected- {
 	border-radius: 0 5px 5px 0;
+}
+
+// RTL
+.rtl {
+	#datepickers-container {
+		.datepicker:not(.active) {
+			left: 100000px !important;
+		}
+	}
+}
+
+// Context Bricks
+.datepicker[class*='jet-date-period-brxe-'] {
+	max-width: none;
+}
+
+.brxe-jet-smart-filters-date-period {
+	.jet-date-period__wrapper {
+		gap: 4px;
+	}
+
+	.jet-date-period__next {
+		margin-left: 0;
+	}
+
+	.jet-date-period__prev {
+		margin-right: 0;
+	}
 }

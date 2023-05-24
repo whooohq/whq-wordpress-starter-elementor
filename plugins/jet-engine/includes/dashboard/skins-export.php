@@ -531,8 +531,8 @@ if ( ! class_exists( 'Jet_Engine_Skins_Export' ) ) {
 			$result = array();
 
 			foreach ( $query as $post ) {
-				$listing_type = get_post_meta( $post->ID, '_listing_type', true );
-				$listing_type = ! empty( $listing_type ) ? $listing_type : 'elementor';
+				
+				$listing_type = jet_engine()->listings->data->get_listing_type( $post->ID );
 
 				$result[] = array(
 					'title'    => $post->post_title,

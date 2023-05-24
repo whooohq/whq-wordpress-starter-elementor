@@ -77,23 +77,23 @@ class Jet_Woo_Builder_Products_Page_Title extends Jet_Woo_Builder_Base {
 			)
 		);
 
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'page_title_typography',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['page_title'],
+			]
+		);
+
 		$this->add_control(
 			'page_title_text_color',
 			[
-				'label'     => __( 'Text Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['page_title'] => 'color: {{VALUE}};',
 				],
 			]
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			array(
-				'name'     => 'page_title_typography',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['page_title'],
-			)
 		);
 
 		$this->add_group_control(

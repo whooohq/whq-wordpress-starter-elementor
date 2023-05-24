@@ -35,6 +35,11 @@ class Module {
 	public $providers;
 
 	/**
+	 * @var Geosearch\Manager
+	 */
+	public $geosearch;
+
+	/**
 	 * Constructor for the class
 	 */
 	public function __construct() {
@@ -52,12 +57,16 @@ class Module {
 
 		require jet_engine()->modules->modules_path( 'maps-listings/inc/providers-manager.php' );
 		require jet_engine()->modules->modules_path( 'maps-listings/inc/settings.php' );
+		require jet_engine()->modules->modules_path( 'maps-listings/inc/preview-trait.php' );
 		require jet_engine()->modules->modules_path( 'maps-listings/inc/elementor-integration.php' );
 		require jet_engine()->modules->modules_path( 'maps-listings/inc/blocks-integration.php' );
 		require jet_engine()->modules->modules_path( 'maps-listings/inc/lat-lng.php' );
 		require jet_engine()->modules->modules_path( 'maps-listings/inc/sources.php' );
 		require jet_engine()->modules->modules_path( 'maps-listings/inc/geosearch/manager.php' );
 		require jet_engine()->modules->modules_path( 'maps-listings/inc/map-field.php' );
+
+		// Bricks Integration
+		require jet_engine()->modules->modules_path( 'maps-listings/inc/bricks-views/manager.php' );
 
 		$this->providers = new Providers_Manager();
 		$this->settings  = new Settings();
@@ -67,6 +76,7 @@ class Module {
 
 		new Elementor_Integration();
 		new Blocks_Integration();
+		new Bricks_Views\Manager();
 		new Map_Field();
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
@@ -103,10 +113,14 @@ class Module {
 		require jet_engine()->modules->modules_path( 'maps-listings/inc/rest/get-map-marker-info.php' );
 		require jet_engine()->modules->modules_path( 'maps-listings/inc/rest/get-map-point-data.php' );
 		require jet_engine()->modules->modules_path( 'maps-listings/inc/rest/get-map-location-hash.php' );
+		require jet_engine()->modules->modules_path( 'maps-listings/inc/rest/get-map-location-data.php' );
+		require jet_engine()->modules->modules_path( 'maps-listings/inc/rest/get-map-autocomplete-data.php' );
 
 		$api_manager->register_endpoint( new Get_Map_Marker_Info() );
 		$api_manager->register_endpoint( new Get_Map_Point_Data() );
 		$api_manager->register_endpoint( new Get_Map_Location_Hash() );
+		$api_manager->register_endpoint( new Get_Map_Location_Data() );
+		$api_manager->register_endpoint( new Get_Map_Autocomplete_Data() );
 
 	}
 
@@ -126,7 +140,7 @@ class Module {
 		wp_register_script(
 			'jet-maps-listings',
 			jet_engine()->plugin_url( 'includes/modules/maps-listings/assets/js/frontend-maps.js' ),
-			array( 'jquery' ),
+			array( 'jquery', 'jet-plugins' ),
 			jet_engine()->get_version(),
 			true
 		);

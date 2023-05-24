@@ -7,7 +7,9 @@
 >
 	<div class="cx-vui-subtitle" slot="title"><?php
 		_e( 'Please confirm page deletion', 'jet-engine' );
-	?></div>
+	?>
+		<template v-if="itemName">- <span class="jet-engine-accent-text">{{ itemName }}</span></template>
+	</div>
 	<p slot="content">
 		<?php _e( 'Are you sure you want to delete this page?', 'jet-engine' ); ?><br>
 		<?php _e( 'If yes - please select what to do with saved options related to this page:', 'jet-engine' ); ?>

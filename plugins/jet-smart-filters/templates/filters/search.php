@@ -4,9 +4,10 @@ if ( empty( $args ) ) {
 	return;
 }
 
-$query_var   = $args['query_var'];
-$placeholder = $args['placeholder'];
-$current     = $this->get_current_filter_value( $args );
+$query_var           = $args['query_var'];
+$placeholder         = $args['placeholder'];
+$current             = $this->get_current_filter_value( $args );
+$accessibility_label = $args['accessibility_label'];
 $classes = array(
 	'jet-search-filter'
 );
@@ -24,6 +25,7 @@ if ( '' !== $args['button_icon'] ) {
 			name="<?php echo $query_var; ?>"
 			value="<?php echo $current; ?>"
 			placeholder="<?php echo $placeholder; ?>"
+			aria-label="<?php echo $accessibility_label; ?>"
 			<?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>
 		>
 		<?php if ( 'ajax-ontyping' === $args['apply_type'] ) : ?>

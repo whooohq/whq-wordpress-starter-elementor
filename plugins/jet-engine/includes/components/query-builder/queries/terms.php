@@ -34,6 +34,17 @@ class Terms_Query extends Base_Query {
 		}
 
 		if ( ! empty( $args['meta_query'] ) ) {
+
+			// Fixed issue: Order by meta clause does not work if the clause name contains capital letters.
+			$args['meta_query'] = array_map( function( $item ) {
+
+				if ( isset( $item['clause_name'] ) ) {
+					$item['clause_name'] = strtolower( $item['clause_name'] );
+				}
+
+				return $item;
+			}, $args['meta_query'] );
+
 			$args['meta_query'] = $this->prepare_meta_query_args( $args );
 		}
 
@@ -46,9 +57,11 @@ class Terms_Query extends Base_Query {
 			$clause_name = ! empty( $args['order_meta_clause'][0] ) ? $args['order_meta_clause'][0] : false;
 
 			if ( $clause_name ) {
-				$args['orderby'] = $clause_name;
+				$args['orderby'] = strtolower( $clause_name );
 			}
 		}
+		
+		$args['hide_empty'] = ! empty( $args['hide_empty'] ) ? filter_var( $args['hide_empty'], FILTER_VALIDATE_BOOLEAN ) : false;
 
 		$args_replacer = new Empty_Items_Replacer( $args, array( 'include', 'exclude', 'object_ids' ) );
 

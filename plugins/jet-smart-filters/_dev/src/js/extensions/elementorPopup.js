@@ -1,17 +1,20 @@
-// Remove checked attribute from filters in popup
-const processedPopups = [];
+// List of popups with removed checked attributes
+const removedCheckedAttributePopups = [];
 
-jQuery(document).on('elementor/popup/hide', (event, id, instance) => {
-	if (processedPopups.includes(id))
-		return;
+window.addEventListener('elementor/popup/hide', event => {
+	const id = event.detail.id;
+	const instance = event.detail.instance;
 
-	processedPopups.push(id);
+	// Remove checked attribute from filters in popup
+	if (!removedCheckedAttributePopups.includes(id)) {
+		removedCheckedAttributePopups.push(id);
 
-	const $checkedItems = instance.$element.find('.jet-filter input[type="checkbox"][checked]');
+		const $checkedItems = instance.$element.find('.jet-filter input[type="checkbox"][checked]');
 
-	if (!$checkedItems.length)
-		return;
+		if (!$checkedItems.length)
+			return;
 
-	$checkedItems.removeAttr('checked');
-	instance.elementHTML = instance.$element.prop('outerHTML');
+		$checkedItems.removeAttr('checked');
+		instance.elementHTML = instance.$element.prop('outerHTML');
+	}
 });

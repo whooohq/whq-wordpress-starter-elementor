@@ -2,7 +2,8 @@ import eventBus from 'includes/event-bus';
 import templateParser from 'includes/template-parser';
 import {
 	isEmpty,
-	getNesting
+	getNesting,
+	getElementPath
 } from 'includes/utility';
 
 export default class ActiveItems {
@@ -19,6 +20,7 @@ export default class ActiveItems {
 		} = props;
 
 		this.$activeItemsContainer = $activeItems;
+		this.path = getElementPath(this.$activeItemsContainer.get(0));
 		this.$elementorWidget = this.$activeItemsContainer.closest('.hide-widget');
 		this.separateMultiple = separateMultiple;
 		this.templateName = templateName;

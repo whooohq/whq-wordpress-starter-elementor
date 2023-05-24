@@ -1,10 +1,10 @@
 === Essential Addons for Elementor ===
-Contributors: wpdevteam, Codetic, re_enter_rupok, Asif2BD, priyomukul, manzurahammed, sumaiyasiddika, rudlinkon, robinwpdeveloper, jakariaistauk
+Contributors: wpdevteam, Codetic, re_enter_rupok, Asif2BD, priyomukul, sumaiyasiddika, rudlinkon, robinwpdeveloper, jakariaistauk
 Tags: elementor, elements, addons, elementor addons, elementor widget, elementor form, woocommerce elementor, page builder, builder, visual editor, wordpress page builder
 Requires at least: 5.0
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 7.0
-Stable tag: 5.4.4
+Stable tag: 5.7.3
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
@@ -12,9 +12,9 @@ The Essential plugin you install after Elementor! Packed with 40+ stunning free 
 
 == Description ==
 
-Enhance your [Elementor](https://wordpress.org/plugins/elementor/) page building experience with 80+ creative elements and extensions. Add powers to your page builder using our easy-to-use elements those were designed to make your next WordPress page and posts design easier and prettier than ever before.
+Enhance your [Elementor](https://wordpress.org/plugins/elementor/) page building experience with 90+ creative elements and extensions. Add powers to your page builder using our easy-to-use elements those were designed to make your next WordPress page and posts design easier and prettier than ever before.
 
-##Essential Addons For Elementor - Best Elements Library For Elementor With 1 Million Active Installations & 80+ Elements And Extensions##
+##Essential Addons For Elementor - Best Elements Library For Elementor With 1 Million Active Installations & 90+ Elements And Extensions##
 
 [Check the Demos](https://essential-addons.com/elementor/demos)
 
@@ -28,7 +28,7 @@ No extra resources or messy codes to slow down your website. Optimized for super
 Enable and disable individual elements to make your page loading faster and smoother. You can deactivate unnecessary widgets to keep the site lite.
 
 
-### 2500+ Ready Blocks and Templates through **Templately**
+### 3000+ Ready Blocks and Templates through **Templately**
 Use pre-made templates and sections which come with Essential Addons and design your website to stand out from the crowd.
 
 [Install Templately to get the premade blocks and templates](https://wordpress.org/plugins/templately/)
@@ -93,6 +93,9 @@ We have designed more than 50 of the most useful widgets to enhance your Element
 45. [Woo Product Gallery](https://essential-addons.com/elementor/woo-product-gallery/)- Show your products in a filterable gallery
 46. [Woo Cart](https://essential-addons.com/elementor/woo-cart/)- Use WooCommerce Cart page to boost online sales
 47. [Interactive Circle](https://essential-addons.com/elementor/interactive-circle/)- Display content with engaging circular layouts
+48. [NFT Gallery](https://essential-addons.com/elementor/nft-gallery/)- Add and showcase NFT collections effortlessly in Elementor
+49. [Business Reviews]( https://essential-addons.com/elementor/business-reviews/)- Display Google Customer Review to increase your online reputation
+50. [SVG Draw](https://essential-addons.com/elementor/svg-draw/)- Display SVG elements in a visually striking and interactive way on your website
 
 Extensions (Free): 
 
@@ -241,6 +244,152 @@ Your existing elements/content will work with premium version. So you won't lose
 
 
 == Changelog ==
+
+= 5.7.3 - 22/05/2023 =
+
+- Improved: EA Woo Checkout | Field Sorting Mechanism
+- Improved: EA Filterable Gallery | Search and Filtering process Mechanism
+- Improved: EA NFT Gallery | Internal code structure 
+- Improved: Added support for Swiper JS 8
+- Improved: EA Filterable Gallery | Accessibility Improvements
+- Improved: EA Filterable Gallery | Title Hyperlink Support
+- Improved: EA Event Calendar | Added Control for Automatic month switching 
+- Improved: EA Pricing Table | Added Dynamic Attribute support for Button
+- Improved: EA Simple Menu | Added Active Tab style support 
+- Improved: EA Event Calendar | Added Typography support for "Show more events" 
+- Improved: EA Business Review | Added Business Schema Support 
+- Improved: EA Content Timeline | Anchor link Support for Dynamic Post's Feature Image 
+- Improved: EA Filterable Gallery | Custom Width supports for Video content
+- Improved: EA Login/Register Form | Added Password visibility icon support for the Registration Form
+- Improved: EA Progress Bar | Added Support for String value as a Dynamic Tag in Progress Bar.
+- Fixed: EA Event Calendar | Hide event link on Google Calendar
+- Fixed: EA Sticky Video | Transparent button overly issue
+- Fixed: EA Advanced Tab | Added layout support for Saved Template Video/Slide content
+- Fixed: EA Event Calendar | Duplicate event details issue
+- Fixed: EA Interactive Circle | Individual items styling issue 
+- Fixed: EA Product Carousel | Image clickable option for Preset 2 & 4
+- Fixed: EA Woo Cart | Conflicts with "Blocksy" theme
+- Fixed: EA Woo Product Carousel | Image click support for Preset 2 
+- Fixed: EA Woo Product Gallery | Stock badge Style options in Quick view
+- Fixed: EA Reading Progress Bar | Reading Progress Bar visibility on the Single Product Template 
+- Fixed: EA Reading Progress Bar | Reading Progress Bar styling issue on the Single Post Template
+- Fixed: EA Woo Product Carousel | Spacing issue after hiding the Title, Price, Rating
+- Fixed: EA Woo Product Grid | Conflict with the YITH WooCommerce Wishlist Plugin
+- Fixed: EA Woo Checkout | Compatibility issue with "The7" theme
+- Fixed: EA Countdown | Conflicts with the ShopLentor Plugin
+- Fixed: Uncaught Error during Elementor Data Updater
+- Fixed: EA Advanced Data Table | Styling on Even Odd rows
+- Few minor bug fixes & improvements
+
+= 5.7.2 - 11/05/2023 =
+
+- Improved: EA Login/Register Form for Security Enhancement
+- Few minor bug fixes & improvements
+
+= 5.7.1 - 17/04/2023 =
+
+- Improved: EA Post Timeline | Improved Card Layout
+- Improved: EA Login/Register Form | Remember me field Styling
+- Fixed: Deprecated Warnings on PHP 8.1
+- Fixed: EA Interactive Circle | Classic Background Styling issue
+- Fixed: EA Scroll to Top | Missing in Theme Builder Archive Page
+- Fixed: EA Gravity Form | Fixed Submit Button Alignment issue
+- Fixed: EA Filterable Gallery | Page Speed Issue
+- Fixed: EA Woo Product Gallery | Load more button Duplication issue
+- Fixed: EA Event Calendar | Fixed Day and Time Styling issue
+- Few minor bug fixes & improvements
+
+= 5.7.0 - 05/04/2023 =
+
+- Added: EA SVG Draw Widget
+- Fixed: Fatal Error when BuddyPress is activated
+- Fixed: EA Filterable Gallery | Dynamic Tag missing on images
+- Few minor bug fixes & improvements
+
+= 5.6.4 - 30/03/2023 =
+
+- Added: Compatibility with Elementor 3.12.0
+- Fixed: Assets not generating in private pages
+- Few minor bug fixes & improvements
+
+= 5.6.3 - 27/03/2023 =
+
+- Fixed: EA Advanced Data Table | Inline Editor HTML not working
+- Fixed: EA Filterable Gallery | Mobile layout showing wrong item count
+- Fixed: EA Image Accordion | Default active tab not working
+- Few minor bug fixes & improvements
+
+= 5.6.2 - 22/03/2023 =
+
+- Improved: EA Login/Register Form | Added support for HTML tag in the title & subtitles
+- Improved: EA Filterable Gallery | Improved translation support
+- Fixed: EA Creative Buttons | Gradient color issue on hover
+- Fixed: EA Interactive Circle | Circle ordering system
+- Fixed: EA Simple Menu | Hamburger menu style option not showing for vertical layout
+- Fixed: EA Advanced Data Table | Added filter hook for "No Content Found" text
+- Fixed: EA Filterable Gallery | Added XStore theme compatibility
+- Few minor bug fixes & improvements
+
+= 5.6.1 - 12/03/2023 =
+
+- Fixed: Throwing Fatal error on PHP 8.1 for specific servers
+- Fixed: Throwing fatal error when trying to save Elementor Template with Conditions while WPML is activated
+- Improved: EA Product Grid | Added controller to show specific products
+- Improved: EA Product Grid | Filter Products based on status
+- Few minor bug fixes & improvements
+
+= 5.6.0 - 28/02/2023 =
+
+- Added: EA Business Reviews | New Widget
+- Few minor bug fixes & improvements
+
+= 5.5.4 - 07/02/2023 =
+
+- Fixed: Uncaught Error: Call to a member function iterate_data() on null
+- Fixed: EA Post Timeline | Uncaught DivisionByZeroError
+- Fixed: EA Advanced Tabs | Page getting stuck when trying to visit a tab with unique ID
+- Fixed: EA Product Carousel | Broken Layout in Shoptimizer theme
+- Few minor bug fixes & improvements
+
+
+= 5.5.3 - 25/01/2023 =
+
+- Fixed: Assets not loading inside CartFlows Steps when Astra Theme is activated
+- Fixed: EA Twitter Feed | HashTag '#' and '@' links not working
+- Fixed: EA Scroll to Top | Not hiding on the hero section after scrolling to top
+- Fixed: EA Post Grid | Meta styling not working
+- Fixed: EA Login/Register Form | Some text not supporting HTML anchor markup
+- Fixed: EA Product Gallery | Styles not working in BuddyBoss Theme
+- Fixed: EA Woo Cart | After updating the cart, the Price and checkout button goes missing
+- Fixed: EA Flip Box | After adding a link to the content text that creates a block element
+- Fixed: EA Feature List | Icon design broken when using two templates on a same page
+- Fixed: EA Woo Product Carousel| Displaying pending review or unpublished products
+- Improved: EA Event Calendar | Added the Armenian Language in the Language List
+- Fixed: EA Post Grid | Dynamic Tags not working in Layout Settings
+- Fixed: EA Login/Register Form | Adding redundant string after making registration
+- Fixed: EA Data Table | Content type 'Editor icon' missing
+- Few minor bug fixes & improvements
+
+= 5.5.2 - 22/12/2022 =
+
+- Fixed: EA Event Calendar | URL parameters not working inside manual calendar event link
+- Fixed: EA Info Box | Custom Attribute not working
+- Few minor bug fixes & improvements
+
+= 5.5.1 - 11/12/2022 =
+
+- Fixed: EA Filterable Gallery | Gallery Item name showing default value
+- Few minor bug fixes & improvements
+
+= 5.5.0 - 06/12/2022 =
+
+- Added: New Widget | EA NFT Gallery
+- Improved: EA Login/Register Form | Added arguments to action hook
+- Improved: EA Custom JS | Allow Custom JS to run in the Elementor Editor
+- Fixed: EA Interactive Circle | Animation not working in Mobile View
+- Fixed: EA Filterable Gallery | extra margin when 6 columns are used
+- Fixed: EA Filterable Gallery | Filter not working in different languages
+- Few minor bug fixes & improvements
 
 = 5.4.4 - 24/11/2022 =
 
@@ -1093,7 +1242,7 @@ Your existing elements/content will work with premium version. So you won't lose
 - Added: WPML translation support for URL in Team Member
 - Added: <span> as tag support in Tooltip
 - Added: Option to change heading tag in CTA
-- Fixed: Expansion indicator disappearence bug in Post Grid
+- Fixed: Expansion indicator disappearance bug in Post Grid
 - Fixed: Polish letters displaying bug for Filterable Gallery
 - Few minor bugfix and improvements
 
@@ -1303,7 +1452,7 @@ Your existing elements/content will work with premium version. So you won't lose
 = 3.0.2 - 29/05/2019 =
 - Fixed : Notice style breaking issue
 - Fixed : Pricing Table tooltip issue
-- Enhanced : ALT tag for all images thourghout the elements
+- Enhanced : ALT tag for all images throughout the elements
 - Few minor bugfix and improvements
 
 = 3.0.1 - 27/05/2019 =

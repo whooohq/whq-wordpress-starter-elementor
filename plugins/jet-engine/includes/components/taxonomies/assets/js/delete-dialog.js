@@ -12,6 +12,10 @@ Vue.component( 'jet-cpt-delete-dialog', {
 		taxSlug: {
 			type: String,
 		},
+		taxName: {
+			type: String,
+			default: '',
+		},
 	},
 	data: function() {
 		return {

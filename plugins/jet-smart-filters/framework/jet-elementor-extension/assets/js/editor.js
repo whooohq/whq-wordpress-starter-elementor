@@ -11,6 +11,29 @@
 				hasTitles: false,
 				loadEditUrl: false,
 
+				ui: function() {
+					
+					var ui = elementor.modules.controls.Select2.prototype.ui.apply( this, arguments );
+
+					_.extend( ui, {
+						jetEngineCreateButton: 'a.jet-engine-create-listing',
+					} );
+
+					return ui;
+				},
+
+				events: function() {
+
+					var events = elementor.modules.controls.Select2.prototype.events.apply( this, arguments );
+
+					_.extend( events, {
+						'click @ui.jetEngineCreateButton': 'onCreateButtonClick',
+					} );
+
+					return events;
+	
+				},
+
 				getQueryArgs: function() {
 					var args = this.model.get( 'query' );
 
@@ -192,6 +215,33 @@
 					} );
 				},
 
+				renderCreateButton: function() {
+
+					var createButton = this.model.get( 'create_button' );
+
+					if ( ! createButton ) {
+						return;
+					}
+					
+					var $createHandler = jQuery( '<br><span style="display: flex; justify-content: flex-end;"><a href="#" class="jet-engine-create-listing">Create new listing item</a><span>' );
+					this.$el.find( '.elementor-control-field' ).after( $createHandler );
+
+					$createHandler
+
+				},
+
+				onCreateButtonClick: function( event ) {
+					
+					event.preventDefault();
+					var createButton = this.model.get( 'create_button' );
+					var handler = createButton.handler || 'JetListings';
+
+					if ( window[ handler ] && window[ handler ].onEditorCreateClick ) {
+						window[ handler ].onEditorCreateClick( this );
+					}
+					
+				},
+
 				onInputChange: function() {
 					this.renderEditButton();
 				},
@@ -205,6 +255,7 @@
 					}
 
 					this.renderEditButton();
+					this.renderCreateButton();
 				}
 			});
 

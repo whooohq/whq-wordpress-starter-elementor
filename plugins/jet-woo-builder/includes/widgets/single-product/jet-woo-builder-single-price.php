@@ -75,8 +75,8 @@ class Jet_Woo_Builder_Single_Price extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'single_price_space_between',
 			[
-				'label'     => __( 'Space Between', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::SLIDER,
+				'label'     => __( 'Space Between', 'jet-woo-builder' ),
 				'range'     => [
 					'px' => [
 						'min' => 0,
@@ -95,8 +95,8 @@ class Jet_Woo_Builder_Single_Price extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'single_price_space_between_block',
 			[
-				'label'     => __( 'Space Between', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::SLIDER,
+				'label'     => __( 'Space Between', 'jet-woo-builder' ),
 				'range'     => [
 					'px' => [
 						'min' => 0,
@@ -112,24 +112,23 @@ class Jet_Woo_Builder_Single_Price extends Jet_Woo_Builder_Base {
 			]
 		);
 
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'single_price_typography',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['price'],
+			]
+		);
+
 		$this->add_control(
 			'single_price_color',
 			[
-				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'separator' => 'before',
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['price'] => 'color: {{VALUE}}',
 				],
 			]
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			array(
-				'name'     => 'single_price_typography',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['price'],
-			)
 		);
 
 		$this->start_controls_tabs( 'tabs_single_price_style' );

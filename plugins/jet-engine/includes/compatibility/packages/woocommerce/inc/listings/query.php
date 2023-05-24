@@ -26,7 +26,7 @@ class Query {
 		);
 
 		add_filter(
-			'jet-engine/elementor-views/frontend/custom-listing-url',
+			'jet-engine/listings/frontend/custom-listing-url',
 			[ $this, 'set_wc_product_custom_listing_url' ]
 		);
 
@@ -55,6 +55,15 @@ class Query {
 				wp_reset_postdata();
 			}
 		} );
+
+		// Added for correctly setup and reset global $post in nested listings.
+		add_action( 'jet-engine/query-builder/listings/on-query', function ( $query, $settings, $widget ) {
+
+			if ( 'wc-product-query' === $query->query_type ) {
+				$widget->posts_query = $query->get_current_wp_query();
+			}
+
+		}, 10, 3 );
 
 	}
 	

@@ -777,12 +777,13 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Active_Filters' ) ) {
 			ob_start();
 
 			printf(
-				'<div class="%1$s jet-active-filters jet-filter" data-label="%5$s" data-content-provider="%2$s" data-apply-type="%3$s" data-query-id="%4$s">',
+				'<div class="%1$s jet-active-filters jet-filter" data-is-block="jet-smart-filters/%2$s" data-label="%3$s" data-content-provider="%4$s" data-apply-type="%5$s" data-query-id="%6$s">',
 				$base_class,
+				$this->get_name(),
+				$settings['filters_label'],
 				$provider,
 				$settings['apply_type'],
-				$query_id,
-				$settings['filters_label']
+				$query_id
 			);
 
 			if ( $this->is_editor() ) {

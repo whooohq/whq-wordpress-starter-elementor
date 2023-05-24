@@ -2,7 +2,7 @@
 Contributors: wpdevteam, re_enter_rupok, Asif2BD, priyomukul, manzurahammed
 Tags: elementor, elements, widgets, page builder, builder, visual editor, wordpress page builder
 Tested up to: 6.1
-Stable tag: 5.4.2
+Stable tag: 5.4.10
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
@@ -88,6 +88,66 @@ List of Extensions :
 * Conditional Display
 
 == Changelog ==
+
+= 5.4.10 - 22/05/2023 =
+
+- Improved: EA Content Timeline | Added Anchor link Support for Dynamic Post's Feature Image
+- Improved: EA LearnDash Course List | Added Dynamic Tag support for Single Course Template
+- Fixed: EA Post Grid | Undefined array key issue
+- Fixed: EA Content Timeline | HTML tag issue in the Post Date field
+- Fixed: EA Woo Product Carousel | Support for Upgraded Swiper Library
+- Fixed: EA Lightbox & Modal | Added HTML tag support for Button text
+- Fixed: EA Woo Checkout | Compatibility issue with "The7" theme
+- Few minor bug fixes & improvements
+
+= 5.4.9 - 11/05/2023 =
+
+- Improved: EA Login/Register Form for Security Enhancement
+- Few minor bug fixes & improvements
+
+= 5.4.8 - 17/04/2023 =
+
+- Fixed: EA LearnDash Course List | Fixed "No course found!" Transition issue
+- Fixed: EA One Page Navigation | Active status not showing while Scrolling
+- Improved: EA Smart Post List | Added 4 Columns support for List Posts
+- Few minor bug fixes & improvements
+
+= 5.4.7 - 05/04/2023 =
+
+- Fixed: Throwing fatal error when using EA Advanced Data Table with Google Sheet on PHP 8.0 or higher
+- Few minor bug fixes & improvements
+
+= 5.4.6 - 22/03/2023 =
+
+- Fixed: EA Advanced Google Map | Callback parameter issue
+- Fixed: EA Woo Checkout | Validation issue for post code
+- Fixed: EA Woo Product Slider | Added CartZilla theme compatibility
+- Fixed: Critical Error when running Elementor Data Updater
+- Few minor bug fixes & improvements
+
+= 5.4.5 - 07/02/2023 =
+
+- Fixed: EA Post Block | not showing "Read More" after enabling "Show Load More" button
+- Fixed: EA Advanced Data Table | Throwing fatal error when using Google Spreadsheet without nameRange
+- Few minor bug fixes & improvements
+
+= 5.4.4 - 25/01/2023 =
+
+- Fixed: EA Post Carousel | Avatar icon alignment not working
+- Fixed: EA Advanced Search | Popular keyword not working with 3 letters
+- Fixed: EA Woo Checkout | Translation not working perfectly in Multistep or Split layout
+- Fixed: EA Post Carousel | Excluded the unusual CSS margin
+- Fixed: EA Content Timeline | HTML syntax not working in title
+- Fixed: EA Advanced Menu | Throwing Uncaught type error
+- Improved: EA MailChimp | Addded Double Opt-in API
+- Improved: EA Advanced Menu | Dropdown menu should remain opened or closed when clicking on the menu item area
+- Few minor bug fixes & improvements
+
+= 5.4.3 - 22/12/2022 =
+
+- Fixed: EA Login/Register Form | Social login not working
+- Improved: EA Image Hotspots | Delay time added to the tooltip
+- Few minor bug fixes & improvements
 
 = 5.4.2 - 22/11/2022 =
 

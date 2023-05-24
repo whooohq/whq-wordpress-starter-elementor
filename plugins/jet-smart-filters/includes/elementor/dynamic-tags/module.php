@@ -41,7 +41,13 @@ class Jet_Smart_Filters_Elementor_Dynamic_Tags_Module extends Elementor\Modules\
 			}
 
 			if ( class_exists( $tag_class ) ) {
-				$dynamic_tags->register_tag( $tag_class );
+
+				// `register_tag` method is deprecated since v3.5.0
+				if ( method_exists( $dynamic_tags, 'register' ) ) {
+					$dynamic_tags->register( new $tag_class );
+				} else {
+					$dynamic_tags->register_tag( $tag_class );
+				}
 			}
 		}
 	}

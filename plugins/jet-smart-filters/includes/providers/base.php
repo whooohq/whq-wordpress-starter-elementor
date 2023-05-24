@@ -34,6 +34,22 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Base' ) ) {
 		abstract public function get_wrapper_selector();
 
 		/**
+		 * Get provider list selector
+		 */
+		public function get_list_selector() {
+
+			return false;
+		}
+
+		/**
+		 * Get provider list item selector
+		 */
+		public function get_item_selector() {
+
+			return false;
+		}
+
+		/**
 		 * Action for wrapper selector - 'insert' into it or 'replace'
 		 */
 		public function get_wrapper_action() {

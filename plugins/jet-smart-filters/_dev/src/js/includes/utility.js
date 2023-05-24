@@ -25,8 +25,12 @@ export default {
 	dateAddDay,
 	dateAddMonth,
 	dateAddYear,
-	debounce
-}
+	debounce,
+	stringToBoolean,
+	applyAliases,
+	removeAliases,
+	getElementPath
+};
 
 export function isObject(x) {
 	return typeof x === 'object' && x !== null;
@@ -53,7 +57,7 @@ export function clone(o) {
 
 	for (key in o) {
 		v = o[key];
-		output[key] = (typeof v === "object") ? clone(v) : v;
+		output[key] = (typeof v === 'object') ? clone(v) : v;
 	}
 
 	return output;
@@ -165,7 +169,7 @@ export function isNestingExist(obj) {
 
 	for (let key of nesting) {
 		if (!obj[key]) {
-			output = false
+			output = false;
 			break;
 		}
 
@@ -206,7 +210,7 @@ export function getNesting(obj) {
 
 	for (let key of nesting) {
 		if (!obj[key]) {
-			isNestingExist = false
+			isNestingExist = false;
 			break;
 		}
 
@@ -278,36 +282,47 @@ export function isEqual(value, other) {
 };
 
 export function getProviderFilters(provider, queryId = 'default') {
-	return getNesting(JetSmartFilters, 'filterGroups', provider + '/' + queryId, 'filters') || [];
+	return getNesting(JetSmartFilters, 'filterGroups', provider + '/' + queryId, 'uniqueFilters') || [];
 }
 
 export function getUrlParams() {
-	const search = decodeURIComponent(window.location.search),
-		hashes = search.slice(search.indexOf('?') + 1).split('&'),
-		params = {};
+	const url = removeAliases(window.location.pathname + window.location.search);
+	const paramsIndex = url.indexOf('?');
 
-	hashes.map(hash => {
-		const [key, val] = hash.split('=');
-		params[key] = val;
-	})
+	if (paramsIndex === -1)
+		return {};
 
-	return params;
+	const urlParams = decodeURIComponent(url.slice(paramsIndex));
+
+	return (/^[?#]/.test(urlParams) ? urlParams.slice(1) : urlParams)
+		.split('&')
+		.reduce((params, param) => {
+			const [key, value] = param.split('=');
+
+			if (key)
+				params[key] = value
+					? value.replace(/\+/g, ' ')
+					: '';
+
+			return params;
+		}, {});
 }
 
-export function removeAllDefaultUrlParams(url) {
+export function getThirdPartyUrlParams() {
+	const params = getUrlParams();
 	const defaultParams = [
-		'jsf=',
-		'tax=',
-		'meta=',
-		'date=',
-		'sort=',
-		'alphabet=',
-		'_s=',
-		'pagenum=',
+		'jsf',
+		'tax',
+		'meta',
+		'date',
+		'sort',
+		'alphabet',
+		'_s',
+		'pagenum',
 		// backward compatibility
-		'jet-smart-filters=',
-		'jet_paged=',
-		'search=',
+		'jet-smart-filters',
+		'jet_paged',
+		'search',
 		'_tax_query_',
 		'_meta_query_',
 		'_date_query_',
@@ -315,20 +330,28 @@ export function removeAllDefaultUrlParams(url) {
 		'__s_',
 	];
 
-	defaultParams.forEach(param => {
-		const regex = new RegExp('[\?&]' + param + '[^&]+', 'g');
+	let output = '';
 
-		url = url.replace(regex, '');
-	});
+	for (const paramKey in params) {
+		const paramValue = params[paramKey];
 
-	return url.replace(/^&/, '?').replace(/[\?&]$/, '');
+		if (defaultParams.includes(paramKey))
+			continue;
+
+		output += paramKey + (paramValue ? '=' + paramValue : '') + '&';
+	}
+
+	if (output)
+		output = '?' + output.replace(/&+$/, '');
+
+	return output;
 }
 
 export function parseDate(dateString, dateFormat = 'mm/dd/yy') {
 	const output = {
 		date: $.datepicker.parseDate(dateFormat, dateString),
 		value: ''
-	}
+	};
 
 	output.value = convertDate(output.date) || '';
 
@@ -367,17 +390,101 @@ export function dateAddYear(date, years = 1) {
 }
 
 export function debounce(callback, wait, immediate = false) {
-	let timeout = null
+	let timeout = null;
 
 	return function () {
-		const callNow = immediate && !timeout
-		const next = () => callback.apply(this, arguments)
+		const callNow = immediate && !timeout;
+		const next = () => callback.apply(this, arguments);
 
-		clearTimeout(timeout)
-		timeout = setTimeout(next, wait)
+		clearTimeout(timeout);
+		timeout = setTimeout(next, wait);
 
 		if (callNow) {
-			next()
+			next();
 		}
+	};
+}
+
+export function stringToBoolean(string) {
+	if (typeof string === 'boolean')
+		return string;
+
+	switch (string.toLowerCase().trim()) {
+		case 'true':
+		case 'yes':
+		case '1':
+			return true;
+
+		case 'false':
+		case 'no':
+		case '0':
+		case null:
+			return false;
+
+		default:
+			return Boolean(string);
+	}
+}
+
+function urlAliasesTransform(url, aliases, reverse = false) {
+	let useAliases = true;
+
+	if (!aliases) {
+		useAliases = stringToBoolean(getNesting(JetSmartFilterSettings, 'plugin_settings', 'use_url_aliases'));
+		aliases = getNesting(JetSmartFilterSettings, 'plugin_settings', 'url_aliases');
+	}
+
+	if (!useAliases || !aliases)
+		return url;
+
+	const sitePath = getNesting(JetSmartFilterSettings, 'sitepath');
+	const isPathPresent = sitePath && url.indexOf(sitePath) === 0
+		? true
+		: false;
+
+	if (isPathPresent)
+		url = url.slice(sitePath.length);
+
+	aliases.forEach(alias => {
+		if (!alias.needle || !alias.replacement)
+			return;
+
+		url = reverse
+			? url.replace(alias.replacement, alias.needle)
+			: url.replace(alias.needle, alias.replacement);
+	});
+
+	if (isPathPresent)
+		url = sitePath + url;
+
+	return url;
+}
+
+export function applyAliases(url, aliases = null) {
+	return urlAliasesTransform(url, aliases, false);
+}
+
+export function removeAliases(url, aliases = null) {
+	return urlAliasesTransform(url, aliases, true);
+}
+
+export function getElementPath(node) {
+	let selector = '';
+
+	try {
+		while (node.parentElement) {
+			const siblings = Array.from(node.parentElement.children).filter(
+				e => e.tagName === node.tagName
+			);
+
+			selector = (siblings.indexOf(node)
+				? `${node.tagName}:nth-of-type(${siblings.indexOf(node) + 1})`
+				: `${node.tagName}`) + `${selector ? '>' : ''}${selector}`;
+			node = node.parentElement;
+		}
+
+		return `html > ${selector.toLowerCase()}`;
+	} catch (error) {
+		return false;
 	}
 }

@@ -47,7 +47,7 @@ class FieldsList extends Component {
 		const commonProps = {
 			key: 'field_' + field.type + field.name,
 			label: field.title,
-			help: field.description ? <div dangerouslySetInnerHTML={{ __html: field.description }}/> : '',
+			help: field.description ? <span dangerouslySetInnerHTML={{ __html: field.description }}/> : '',
 			value: this.state[ field.name ],
 			onChange: ( newVal ) => {
 				this.onChange( field.name, newVal );
@@ -67,6 +67,12 @@ class FieldsList extends Component {
 			type = field.input_type;
 		}
 
+		let groupLayout;
+
+		if ( -1 !== ['checkbox', 'radio'].indexOf( field.type ) ) {
+			groupLayout = field.layout || 'vertical';
+		}
+
 		switch ( type ) {
 
 			case 'select':
@@ -82,6 +88,7 @@ class FieldsList extends Component {
 				delete( commonProps.value );
 
 				return <RadioControl
+					className={ 'je-radio-group-' + groupLayout }
 					{ ...commonProps }
 					options={ field.options }
 				/>;
@@ -90,6 +97,7 @@ class FieldsList extends Component {
 				return <CheckboxGroupControl
 					{ ...commonProps }
 					options={ field.options }
+					layout={ groupLayout }
 				/>;
 
 			case 'media':

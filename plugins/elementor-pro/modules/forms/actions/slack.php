@@ -3,6 +3,7 @@
 namespace ElementorPro\Modules\Forms\Actions;
 
 use Elementor\Controls_Manager;
+use ElementorPro\Core\Utils;
 use ElementorPro\Modules\Forms\Classes\Action_Base;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -36,6 +37,9 @@ class Slack extends Action_Base {
 				'label' => esc_html__( 'Webhook URL', 'elementor-pro' ),
 				'type' => Controls_Manager::TEXT,
 				'placeholder' => 'https://hooks.slack.com/services/',
+				'ai' => [
+					'active' => false,
+				],
 				'label_block' => true,
 				'separator' => 'before',
 				'description' => esc_html__( 'Enter the webhook URL that will receive the form\'s submitted data.', 'elementor-pro' ) . ' ' . sprintf( '<a href="%s" target="_blank">%s</a>.', 'https://slack.com/apps/A0F7XDUAZ-incoming-webhooks/', esc_html__( 'Click here for Instructions', 'elementor-pro' ) ),
@@ -52,6 +56,9 @@ class Slack extends Action_Base {
 			[
 				'label' => esc_html__( 'Channel', 'elementor-pro' ),
 				'type' => Controls_Manager::TEXT,
+				'ai' => [
+					'active' => false,
+				],
 				'dynamic' => [
 					'active' => true,
 				],
@@ -63,6 +70,9 @@ class Slack extends Action_Base {
 			[
 				'label' => esc_html__( 'Username', 'elementor-pro' ),
 				'type' => Controls_Manager::TEXT,
+				'ai' => [
+					'active' => false,
+				],
 				'dynamic' => [
 					'active' => true,
 				],
@@ -74,6 +84,9 @@ class Slack extends Action_Base {
 			[
 				'label' => esc_html__( 'Pre Text', 'elementor-pro' ),
 				'type' => Controls_Manager::TEXT,
+				'ai' => [
+					'active' => false,
+				],
 				'dynamic' => [
 					'active' => true,
 				],
@@ -85,6 +98,9 @@ class Slack extends Action_Base {
 			[
 				'label' => esc_html__( 'Title', 'elementor-pro' ),
 				'type' => Controls_Manager::TEXT,
+				'ai' => [
+					'active' => false,
+				],
 				'dynamic' => [
 					'active' => true,
 				],
@@ -96,6 +112,9 @@ class Slack extends Action_Base {
 			[
 				'label' => esc_html__( 'Description', 'elementor-pro' ),
 				'type' => Controls_Manager::TEXT,
+				'ai' => [
+					'active' => false,
+				],
 				'dynamic' => [
 					'active' => true,
 				],
@@ -163,12 +182,15 @@ class Slack extends Action_Base {
 			$webhook_data['channel'] = $settings['slack_channel'];
 		}
 
+		// The nonce already validated
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$referrer = Utils::_unstable_get_super_global_value( $_POST, 'referrer' );
+
 		$attachment = [
 			'text' => esc_html__( 'A new Form Submission has been received', 'elementor-pro' ),
 			'title' => esc_html__( 'A new Submission', 'elementor-pro' ),
 			'color' => isset( $settings['slack_webhook_color'] ) ? $settings['slack_webhook_color'] : '#D30C5C',
-			// PHPCS - No nonce is required for title_link.
-			'title_link' => esc_url( isset( $_POST['referrer'] ) ? $_POST['referrer'] : site_url() ), // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			'title_link' => esc_url( $referrer ?? site_url() ),
 		];
 
 		if ( ! empty( $settings['slack_title'] ) ) {
@@ -222,7 +244,7 @@ class Slack extends Action_Base {
 		] );
 
 		if ( 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
-			throw new \Exception( esc_html__( 'Webhook Error', 'elementor-pro' ) );
+			throw new \Exception( 'Webhook error.' );
 		}
 	}
 }

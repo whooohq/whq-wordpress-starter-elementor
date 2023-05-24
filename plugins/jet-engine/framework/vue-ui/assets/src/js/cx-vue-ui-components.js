@@ -61,9 +61,13 @@ const cxVueUiClass = class{
 		this.extensions = {
 			CXNotice
 		};
+
+		this.instanceVersion = false;
 	}
 
 	registerGlobalComponents( instance ) {
+		this.instanceVersion = instance.version;
+
 		for ( let component in this.components ) {
 			const _component =  this.components[ component ];
 			instance.component( _component.name, _component );

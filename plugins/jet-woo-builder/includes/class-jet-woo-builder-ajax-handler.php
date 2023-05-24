@@ -86,7 +86,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Ajax_Handlers' ) ) {
 			}
 
 			if ( ! class_exists( 'Elementor\Jet_Woo_Builder_Base' ) ) {
-				require_once jet_woo_builder()->plugin_path( 'includes/base/class-jet-woo-builder-base.php' );
+				require_once jet_woo_builder()->plugin_path( 'includes/components/elementor-views/widget-base.php' );
 			}
 
 			if ( ! class_exists( 'Elementor\Jet_Woo_Builder_Products_Loop' ) ) {
@@ -94,7 +94,6 @@ if ( ! class_exists( 'Jet_Woo_Builder_Ajax_Handlers' ) ) {
 			}
 
 			ob_start();
-
 			query_posts( $args );
 
 			jet_woo_builder()->woocommerce->products_loop_template_rewrite = true;

@@ -24,7 +24,10 @@
 		flex: 0 1 90%;
 		min-width: 200px;
 		max-width: 300px;
-		margin-right: 10px;
+		margin: 0 10px 0 0;
+		.rtl & {
+			margin: 0 0 0 10px;
+		}
 			input[type=range] {
 				-webkit-appearance: none;
 				width: 100%;

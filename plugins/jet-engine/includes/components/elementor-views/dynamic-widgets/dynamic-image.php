@@ -79,7 +79,7 @@ class Jet_Listing_Dynamic_Image_Widget extends \Jet_Listing_Dynamic_Widget {
 				'type'        => Controls_Manager::TEXT,
 				'default'     => '',
 				'label_block' => true,
-				'description' => __( 'Note: this filed will override Source value', 'jet-engine' ),
+				'description' => __( 'Note: this field will override Source value', 'jet-engine' ),
 			)
 		);
 
@@ -227,7 +227,7 @@ class Jet_Listing_Dynamic_Image_Widget extends \Jet_Listing_Dynamic_Widget {
 				'type'        => Controls_Manager::TEXT,
 				'default'     => '',
 				'label_block' => true,
-				'description' => __( 'Note: this filed will override Meta Field value', 'jet-engine' ),
+				'description' => __( 'Note: this field will override Meta Field value', 'jet-engine' ),
 				'condition'   => array(
 					'linked_image' => 'yes',
 				),
@@ -269,22 +269,7 @@ class Jet_Listing_Dynamic_Image_Widget extends \Jet_Listing_Dynamic_Widget {
 				'label'   => __( 'Add "rel" attr', 'jet-engine' ),
 				'type'    => Controls_Manager::SELECT,
 				'default' => '',
-				'options' => array(
-					''           => __( 'No', 'jet-engine' ),
-					'alternate'  => __( 'Alternate', 'jet-engine' ),
-					'author'     => __( 'Author', 'jet-engine' ),
-					'bookmark'   => __( 'Bookmark', 'jet-engine' ),
-					'external'   => __( 'External', 'jet-engine' ),
-					'help'       => __( 'Help', 'jet-engine' ),
-					'license'    => __( 'License', 'jet-engine' ),
-					'next'       => __( 'Next', 'jet-engine' ),
-					'nofollow'   => __( 'Nofollow', 'jet-engine' ),
-					'noreferrer' => __( 'Noreferrer', 'jet-engine' ),
-					'noopener'   => __( 'Noopener', 'jet-engine' ),
-					'prev'       => __( 'Prev', 'jet-engine' ),
-					'search'     => __( 'Search', 'jet-engine' ),
-					'tag'        => __( 'Tag', 'jet-engine' ),
-				),
+				'options' => \Jet_Engine_Tools::get_rel_attr_options(),
 				'condition'   => array(
 					'linked_image' => 'yes',
 				),
@@ -381,7 +366,7 @@ class Jet_Listing_Dynamic_Image_Widget extends \Jet_Listing_Dynamic_Widget {
 				'mobile_default' => array(
 					'unit' => '%',
 				),
-				'size_units' => array( '%', 'px', 'vw' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( '%', 'px', 'vw' ) ),
 				'range' => array(
 					'%' => array(
 						'min' => 1,
@@ -417,7 +402,7 @@ class Jet_Listing_Dynamic_Image_Widget extends \Jet_Listing_Dynamic_Widget {
 				'mobile_default' => array(
 					'unit' => '%',
 				),
-				'size_units' => array( '%', 'px', 'vw' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( '%', 'px', 'vw' ) ),
 				'range' => array(
 					'%' => array(
 						'min' => 1,
@@ -453,7 +438,7 @@ class Jet_Listing_Dynamic_Image_Widget extends \Jet_Listing_Dynamic_Widget {
 				'mobile_default' => array(
 					'unit' => 'px',
 				),
-				'size_units' => array( 'px', 'vh' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', 'vh' ) ),
 				'range' => array(
 					'px' => array(
 						'min' => 1,
@@ -506,7 +491,7 @@ class Jet_Listing_Dynamic_Image_Widget extends \Jet_Listing_Dynamic_Widget {
 			array(
 				'label'      => __( 'Border Radius', 'jet-engine' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', '%' ) ),
 				'selectors'  => array(
 					$this->css_selector( ' img' ) => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),

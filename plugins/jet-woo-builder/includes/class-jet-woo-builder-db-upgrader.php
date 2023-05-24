@@ -55,7 +55,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_DB_Upgrader' ) ) {
 			new CX_Db_Updater(
 				array(
 					'slug'      => 'jet-woo-builder',
-					'version'   => '2.1.0',
+					'version'   => '2.1.1',
 					'callbacks' => array(
 						'1.2.0'  => array(
 							array( $this, 'update_db_1_2_0' ),
@@ -157,6 +157,9 @@ if ( ! class_exists( 'Jet_Woo_Builder_DB_Upgrader' ) ) {
 							[ $this, 'clear_elementor_cache' ],
 						],
 						'2.1.0' => [
+							[ $this, 'clear_elementor_cache' ],
+						],
+						'2.1.1' => [
 							[ $this, 'clear_elementor_cache' ],
 						],
 					),

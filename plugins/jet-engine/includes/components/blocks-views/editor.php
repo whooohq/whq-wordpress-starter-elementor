@@ -43,9 +43,18 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Editor' ) ) {
 				'jet_engine_listing_source',
 				'jet_engine_listing_post_type',
 				'jet_engine_listing_tax',
+
 				'jet_engine_listing_repeater_source',
 				'jet_engine_listing_repeater_field',
 				'jet_engine_listing_repeater_option',
+
+				'jet_engine_listing_link',
+				'jet_engine_listing_link_source',
+				'jet_engine_listing_link_option',
+				'jet_engine_listing_link_open_in_new',
+				'jet_engine_listing_link_rel_attr',
+				'jet_engine_listing_link_aria_label',
+				'jet_engine_listing_link_prefix',
 			);
 
 			$settings_to_store    = array();
@@ -55,11 +64,15 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Editor' ) ) {
 				if ( isset( $_POST[ $key ] ) ) {
 					$store_key = str_ireplace( 'jet_engine_listing_', '', $key );
 
-					if ( false !== strpos( $store_key, 'repeater_' ) ) {
-						$el_settings_to_store[ $store_key ] = esc_attr( $_POST[ $key ] ); // repeater settings store only to `_elementor_page_settings`
-					} else {
+					if ( in_array( $store_key, array( 'source', 'post_type', 'tax' ) ) ) {
 						$settings_to_store[ $store_key ] = esc_attr( $_POST[ $key ] );
 						$el_settings_to_store[ 'listing_' . $store_key ] = esc_attr( $_POST[ $key ] );
+					} elseif ( false !== strpos( $store_key, 'repeater_' ) ) {
+						// repeater settings store only to `_elementor_page_settings` without `listing_` prefix
+						$el_settings_to_store[ $store_key ] = esc_attr( $_POST[ $key ] );
+					} else {
+						// link settings
+						$el_settings_to_store[ 'listing_' . $store_key ] = sanitize_text_field( $_POST[ $key ] );
 					}
 				}
 			}
@@ -135,45 +148,141 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Editor' ) ) {
 					'value'   => $source,
 				),
 				'jet_engine_listing_post_type' => array(
-					'label'   => __( 'Listing Post Type', 'jet-engine' ),
-					'options' => jet_engine()->listings->get_post_types_for_options(),
-					'value'   => ! empty( $settings['post_type'] ) ? $settings['post_type'] : 'post',
-					'source'  => array( 'posts', 'repeater' ),
+					'label'     => __( 'Listing Post Type', 'jet-engine' ),
+					'options'   => jet_engine()->listings->get_post_types_for_options(),
+					'value'     => ! empty( $settings['post_type'] ) ? $settings['post_type'] : 'post',
+					'condition' => array(
+						'jet_engine_listing_source' => array( 'posts', 'repeater' ),
+					),
 				),
 				'jet_engine_listing_tax' => array(
-					'label'   => __( 'Listing Taxonomy', 'jet-engine' ),
-					'options' => jet_engine()->listings->get_taxonomies_for_options(),
-					'value'   => ! empty( $settings['tax'] ) ? $settings['tax'] : 'category',
-					'source'  => array( 'terms' ),
+					'label'     => __( 'Listing Taxonomy', 'jet-engine' ),
+					'options'   => jet_engine()->listings->get_taxonomies_for_options(),
+					'value'     => ! empty( $settings['tax'] ) ? $settings['tax'] : 'category',
+					'condition' => array(
+						'jet_engine_listing_source' => array( 'terms' ),
+					),
 				),
 				'jet_engine_listing_repeater_source' => array(
-					'label'   => __( 'Repeater source', 'jet-engine' ),
-					'options' => jet_engine()->listings->repeater_sources(),
-					'value'   => ! empty( $page_settings['repeater_source'] ) ? $page_settings['repeater_source'] : 'jet_engine',
-					'source'  => array( 'repeater' ),
+					'label'     => __( 'Repeater source', 'jet-engine' ),
+					'options'   => jet_engine()->listings->repeater_sources(),
+					'value'     => ! empty( $page_settings['repeater_source'] ) ? $page_settings['repeater_source'] : 'jet_engine',
+					'condition' => array(
+						'jet_engine_listing_source' => array( 'repeater' ),
+					),
 				),
 				'jet_engine_listing_repeater_field' => array(
 					'label'       => __( 'Repeater field', 'jet-engine' ),
 					'description' => __( 'If JetEngine, or ACF, or etc selected as source.', 'jet-engine' ),
 					'value'       => ! empty( $page_settings['repeater_field'] ) ? $page_settings['repeater_field'] : '',
-					'source'      => array( 'repeater' ),
+					'condition'   => array(
+						'jet_engine_listing_source' => array( 'repeater' ),
+						'jet_engine_listing_repeater_source!' => 'jet_engine_options',
+					),
 				),
 				'jet_engine_listing_repeater_option' => array(
 					'label'       => __( 'Repeater option', 'jet-engine' ),
 					'description' => __( 'If <b>JetEngine Options Page</b> selected as source.', 'jet-engine' ),
 					'groups'      => jet_engine()->options_pages->get_options_for_select( 'repeater' ),
 					'value'       => ! empty( $page_settings['repeater_option'] ) ? $page_settings['repeater_option'] : '',
-					'source'      => array( 'repeater' ),
+					'condition'   => array(
+						'jet_engine_listing_source' => array( 'repeater' ),
+						'jet_engine_listing_repeater_source' => 'jet_engine_options',
+					),
 				),
 			);
 
 			$controls = apply_filters( 'jet-engine/blocks/editor/controls/settings', $controls, $settings, $post );
+
+			$link_controls = array(
+				'jet_engine_listing_link' => array(
+					'label'   => __( 'Make listing item clickable', 'jet-engine' ),
+					'value'   => ! empty( $page_settings['listing_link'] ) ? $page_settings['listing_link'] : '',
+					'options' => array(
+						''    => __( 'No', 'jet-engine' ),
+						'yes' => __( 'Yes', 'jet-engine' ),
+					),
+				),
+				'jet_engine_listing_link_source' => array(
+					'label'     => __( 'Link source', 'jet-engine' ),
+					'value'     => ! empty( $page_settings['listing_link_source'] ) ? $page_settings['listing_link_source'] : '',
+					'groups'    => jet_engine()->listings->get_listing_link_sources(),
+					'condition' => array(
+						'jet_engine_listing_link' => 'yes',
+					),
+				),
+				'jet_engine_listing_link_open_in_new' => array(
+					'label'   => __( 'Open in new window', 'jet-engine' ),
+					'value'   => ! empty( $page_settings['listing_link_open_in_new'] ) ? $page_settings['listing_link_open_in_new'] : '',
+					'options' => array(
+						''    => __( 'No', 'jet-engine' ),
+						'yes' => __( 'Yes', 'jet-engine' ),
+					),
+					'condition' => array(
+						'jet_engine_listing_link' => 'yes',
+						'jet_engine_listing_link_source!' => array( 'open_map_listing_popup', 'open_map_listing_popup_hover' ),
+					),
+				),
+				'jet_engine_listing_link_rel_attr' => array(
+					'label'     => __( 'Add "rel" attr', 'jet-engine' ),
+					'value'     => ! empty( $page_settings['listing_link_rel_attr'] ) ? $page_settings['listing_link_rel_attr'] : '',
+					'options'   => \Jet_Engine_Tools::get_rel_attr_options(),
+					'condition' => array(
+						'jet_engine_listing_link' => 'yes',
+						'jet_engine_listing_link_source!' => array( 'open_map_listing_popup', 'open_map_listing_popup_hover' ),
+					),
+				),
+				'jet_engine_listing_link_aria_label' => array(
+					'label'       => __( 'Aria label attr', 'jet-engine' ),
+					'description' => __( 'Use <b>Shortcode Generator</b> or <b>Macros Generator</b> to pass a dynamic value', 'jet-engine' ),
+					'value'       => ! empty( $page_settings['listing_link_aria_label'] ) ? $page_settings['listing_link_aria_label'] : '',
+					'condition'   => array(
+						'jet_engine_listing_link' => 'yes',
+					),
+				),
+				'jet_engine_listing_link_prefix' => array(
+					'label'     => __( 'Link prefix', 'jet-engine' ),
+					'value'     => ! empty( $page_settings['listing_link_prefix'] ) ? $page_settings['listing_link_prefix'] : '',
+					'condition' => array(
+						'jet_engine_listing_link' => 'yes',
+					),
+				),
+			);
+
+			if ( jet_engine()->options_pages ) {
+				$options_pages_select = jet_engine()->options_pages->get_options_for_select( 'plain' );
+
+				if ( ! empty( $options_pages_select ) ) {
+
+					$options_link_controls = array(
+						'jet_engine_listing_link_option' => array(
+							'label'     => __( 'Option', 'jet-engine' ),
+							'groups'    => $options_pages_select,
+							'value'     => ! empty( $page_settings['listing_link_option'] ) ? $page_settings['listing_link_option'] : '',
+							'condition' => array(
+								'jet_engine_listing_link'        => 'yes',
+								'jet_engine_listing_link_source' => 'options_page',
+							),
+						),
+					);
+
+					$link_controls = \Jet_Engine_Tools::array_insert_after( $link_controls, 'jet_engine_listing_link_source', $options_link_controls );
+				}
+			}
+
+			$link_controls = apply_filters( 'jet-engine/blocks/editor/controls/link-settings', $link_controls, $page_settings, $post );
+			$all_controls  = array_merge( $controls, $link_controls );
+
+			$conditions = array();
 
 			echo '<style>
 				.jet-engine-base-control select,
 				.jet-engine-base-control input {
 					box-sizing: border-box;
 					margin: 0;
+				}
+				.jet-engine-base-control select {
+					width: 100%;
 				}
 				.jet-engine-base-control .components-base-control__field {
 					margin: 0 0 10px;
@@ -198,24 +307,53 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Editor' ) ) {
 			</style>';
 			echo '<div class="components-base-control jet-engine-base-control">';
 
-				foreach ( $controls as $control_name => $control_args ) {
+				foreach ( $all_controls as $control_name => $control_args ) {
 
 					$field_classes = array(
 						'components-base-control__field',
 					);
 
+					// for backward compatibility
 					if ( ! empty( $control_args['source'] ) ) {
+						$control_args['condition'] = array(
+							'jet_engine_listing_source' => $control_args['source'],
+						);
+					}
+
+					if ( ! empty( $control_args['condition'] ) ) {
+						$conditions[ $control_name ] = $control_args['condition'];
+
 						$field_classes[] = 'jet-engine-condition-setting';
 
-						if ( ! is_array( $control_args['source'] ) ) {
-							$control_args['source'] = explode( ',', $control_args['source'] );
+						$is_visible = true;
+
+						foreach ( $control_args['condition'] as $cond_field => $cond_value ) {
+
+							$is_negative = false !== strpos( $cond_field, '!' );
+
+							if ( $is_negative ) {
+								$cond_field = str_replace( '!', '', $cond_field );
+							}
+
+							$current_value = $all_controls[ $cond_field ]['value'];
+
+							if ( is_array( $cond_value ) ) {
+								$check = in_array( $current_value, $cond_value );
+							} else {
+								$check = $current_value == $cond_value;
+							}
+
+							if ( $is_negative ) {
+								$check = ! $check;
+							}
+
+							if ( ! $check ) {
+								$is_visible = false;
+								break;
+							}
 						}
 
-						foreach ( $control_args['source'] as $_source ) {
-							$field_classes[] = 'jet-engine-condition-source-' . $_source;
-						}
-
-						if ( in_array( $source , $control_args['source'] ) ) {
+						if ( $is_visible ) {
 							$field_classes[] = 'jet-engine-condition-setting-show';
 						}
 					}
@@ -270,7 +408,7 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Editor' ) ) {
 
 							echo '</select>';
 						} else {
-							echo '<input id="' . $control_name . '" name="' . $control_name . '" class="components-text-control__input" value="' . $control_args['value'] . '">';
+							echo '<input type="text" id="' . $control_name . '" name="' . $control_name . '" class="components-text-control__input" value="' . esc_attr( $control_args['value'] ) . '">';
 						}
 
 						if ( ! empty( $control_args['description'] ) ) {
@@ -288,15 +426,59 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Editor' ) ) {
 			echo '</div>';
 
 			echo "<script>
-					jQuery( '[name=\"jet_engine_listing_source\"]' ).on( 'change', function() {
-						var sourceSelect = jQuery( this ), source = sourceSelect.val();
-						sourceSelect.closest( '.jet-engine-base-control' ).find( '.jet-engine-condition-setting' ).each( function() {
-							if ( jQuery( this ).hasClass( 'jet-engine-condition-source-' + source ) ) {
-								jQuery( this ).addClass( 'jet-engine-condition-setting-show' );
-							} else {
-								jQuery( this ).removeClass( 'jet-engine-condition-setting-show' );
+					var JetEngineListingConditions = " . json_encode( $conditions ) . ";
+					
+					jQuery( '[name^=\"jet_engine_listing_\"]' ).on( 'change', function( e ) {
+						var fieldName = jQuery( e.currentTarget ).attr('name');
+						
+						for ( var field in JetEngineListingConditions ) {
+							
+							if ( field === fieldName ) {
+								continue;
 							}
-						} );
+							
+							var conditions = JetEngineListingConditions[ field ];
+							
+							if ( -1 === Object.keys( conditions ).indexOf( fieldName ) && -1 === Object.keys( conditions ).indexOf( fieldName + '!' ) ) {
+								continue;
+							}
+							
+							var isVisible = true,
+								fieldWrapper = jQuery( '[name=\"' + field + '\"]' ).closest( '.jet-engine-condition-setting' );
+
+							for ( var conditionField in conditions ) {
+									
+								var isNegative = -1 !== conditionField.indexOf( '!' ),
+									conditionFieldName = conditionField;
+								
+								if ( isNegative ) {
+									conditionFieldName = conditionField.replace( '!', '' );
+								}
+								
+								var currentValue   = jQuery( '[name=\"' + conditionFieldName + '\"]' ).val(),
+									conditionValue = conditions[ conditionField ];
+								
+								if ( Array.isArray( conditionValue ) ) {
+									isVisible = -1 !== conditionValue.indexOf( currentValue )
+								} else {
+									isVisible = conditionValue == currentValue;
+								}
+								
+								if ( isNegative ) {
+									isVisible = !isVisible;
+								}
+								
+								if ( !isVisible ) {
+									break;
+								}
+							}
+							
+							if ( isVisible )  {
+								fieldWrapper.addClass( 'jet-engine-condition-setting-show' );
+							} else {
+								fieldWrapper.removeClass( 'jet-engine-condition-setting-show' );
+							}
+						}
 					} );
 				</script>";
 		}
@@ -315,7 +497,7 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Editor' ) ) {
 			}
 
 			?>
-			<div class="jet-eingine-listing-css">
+			<div class="jet-engine-listing-css">
 				<p><?php
 					_e( 'When targeting your specific element, add <code>selector</code> before the tags and classes you want to exclusively target, i.e: <code>selector a { color: red;}</code>', 'jet-engine' );
 				?></p>
@@ -799,6 +981,7 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Editor' ) ) {
 					'dynamicLink'     => jet_engine()->blocks_views->block_types->get_block_atts( 'dynamic-link' ),
 					'dynamicImage'    => jet_engine()->blocks_views->block_types->get_block_atts( 'dynamic-image' ),
 					'dynamicRepeater' => jet_engine()->blocks_views->block_types->get_block_atts( 'dynamic-repeater' ),
+					'dynamicTerms'    => jet_engine()->blocks_views->block_types->get_block_atts( 'dynamic-terms' ),
 					'listingGrid'     => jet_engine()->blocks_views->block_types->get_block_atts( 'listing-grid' ),
 				),
 				'customPanles'          => $custom_panles,

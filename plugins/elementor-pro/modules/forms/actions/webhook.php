@@ -35,6 +35,9 @@ class Webhook extends Action_Base {
 				'label' => esc_html__( 'Webhook URL', 'elementor-pro' ),
 				'type' => Controls_Manager::TEXT,
 				'placeholder' => esc_html__( 'https://your-webhook-url.com', 'elementor-pro' ),
+				'ai' => [
+					'active' => false,
+				],
 				'label_block' => true,
 				'separator' => 'before',
 				'description' => esc_html__( 'Enter the integration URL (like Zapier) that will receive the form\'s submitted data.', 'elementor-pro' ),
@@ -114,7 +117,7 @@ class Webhook extends Action_Base {
 		do_action( 'elementor_pro/forms/webhooks/response', $response, $record );
 
 		if ( 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
-			throw new \Exception( esc_html__( 'Webhook Error', 'elementor-pro' ) );
+			throw new \Exception( 'Webhook error.' );
 		}
 	}
 }

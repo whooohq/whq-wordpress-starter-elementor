@@ -20,22 +20,14 @@ class Plugin_Settings extends Base {
 
 	public function callback( $request ) {
 
-		$data = $request->get_params();
+		$data = array_map(
+			function( $setting ) {
+				return is_array( $setting ) ? $setting : esc_attr( $setting );
+			},
+			$request->get_params()
+		);
 
-		$current = get_option( jet_smart_filters()->settings->key, array() );
-
-		if ( is_wp_error( $current ) ) {
-			return rest_ensure_response( [
-				'status'  => 'error',
-				'message' => __( 'Server Error', 'jet-smart-filters' ),
-			] );
-		}
-
-		foreach ( $data as $key => $value ) {
-			$current[ $key ] = is_array( $value ) ? $value : esc_attr( $value );
-		}
-
-		update_option( jet_smart_filters()->settings->key, $current );
+		update_option( jet_smart_filters()->settings->key, $data );
 
 		return rest_ensure_response( [
 			'status'  => 'success',

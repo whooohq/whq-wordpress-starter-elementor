@@ -13,8 +13,8 @@ $classes = implode( ' ', $class_array );
 $dir = is_rtl() ? 'rtl' : 'ltr';
 
 if ( filter_var( $settings['arrows'], FILTER_VALIDATE_BOOLEAN ) ) {
-	echo sprintf( '<div class="jet-image-comparison__prev-arrow-%s jet-arrow prev-arrow">%s</div>', $this->get_id(), $this->_render_icon( 'prev_arrow', '%s', '', false ) );
-	echo sprintf( '<div class="jet-image-comparison__next-arrow-%s jet-arrow next-arrow">%s</div>', $this->get_id(), $this->_render_icon( 'next_arrow', '%s', '', false ) );
+	echo sprintf( '<div class="jet-image-comparison__prev-arrow-%s jet-arrow prev-arrow" tabindex="0">%s</div>', $this->get_id(), $this->_render_icon( 'prev_arrow', '%s', '', false ) );
+	echo sprintf( '<div class="jet-image-comparison__next-arrow-%s jet-arrow next-arrow" tabindex="0">%s</div>', $this->get_id(), $this->_render_icon( 'next_arrow', '%s', '', false ) );
 }
 
 ?><div class="<?php echo $classes; ?>" <?php echo $data_settings; ?> dir="<?php echo $dir; ?>">

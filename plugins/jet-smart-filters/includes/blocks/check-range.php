@@ -150,8 +150,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Check_Range' ) ) {
 				'type'      => 'range',
 				'label'     => esc_html__( 'Space Between', 'jet-smart-filters' ),
 				'css_selector' => [
-					'{{WRAPPER}} ' . $this->css_scheme['item'] . ':not(:last-child)'  => 'margin-bottom: calc({{VALUE}}{{UNIT}}/2);',
-					'{{WRAPPER}} ' . $this->css_scheme['item'] . ':not(:first-child)' => 'padding-top: calc({{VALUE}}{{UNIT}}/2);',
+					'{{WRAPPER}} ' . $this->css_scheme['item'] . ':not(:last-child)' => 'margin-bottom: {{SIZE}}{{UNIT}};'
 				],
 				'attributes' => [
 					'default' => [

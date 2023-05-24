@@ -13,6 +13,15 @@ if ( ! class_exists( 'Jet_Woo_Builder_Engine_Package' ) ) {
 	// Define class
 	class Jet_Woo_Builder_Engine_Package {
 
+		/**
+		 * Current object.
+		 *
+		 * Current listing item holder.
+		 *
+		 * @var null
+		 */
+		private $current_object = null;
+
 		// Class constructor.
 		public function __construct() {
 
@@ -22,12 +31,47 @@ if ( ! class_exists( 'Jet_Woo_Builder_Engine_Package' ) ) {
 			add_action( 'elementor/element/jet-woo-products-list/section_general/after_section_end', [ $this, 'register_custom_query_controls' ] );
 
 			add_filter( 'jet-engine/query-builder/filter-provider', [ $this, 'maybe_set_query_builder_proper_provider' ], 10, 2 );
+			add_filter( 'jet-engine/query-builder/filters/allowed-providers', [ $this, 'register_providers_for_query_builder' ] );
 
 			add_action( 'jet-engine/listings/frontend/setup-data', [ $this, 'maybe_set_listings_frontend_data' ] );
 
 			add_filter( 'jet-woo-builder/integration/register-widgets', [ $this, 'is_register_widgets' ], 10, 2 );
 			add_filter( 'jet-woo-builder/documents/is-document-type', [ $this, 'is_proper_listing' ], 10, 2 );
 
+			add_action( 'jet-woo-builder/shortcodes/jet-woo-products/loop-start', [ $this, 'set_local_current_object' ] );
+			add_action( 'jet-woo-builder/shortcodes/jet-woo-products-list/loop-start', [ $this, 'set_local_current_object' ] );
+
+			add_action( 'jet-woo-builder/shortcodes/jet-woo-products/loop-end', [ $this, 'set_current_listing_object' ] );
+			add_action( 'jet-woo-builder/shortcodes/jet-woo-products-list/loop-end', [ $this, 'set_current_listing_object' ] );
+
+		}
+
+		/**
+		 * Set local current object.
+		 *
+		 * Set local current object before products widget in case usage inside listing.
+		 *
+		 * @since  2.1.3
+		 * @access public
+		 *
+		 * @return void
+		 */
+		public function set_local_current_object() {
+			$this->current_object = jet_engine()->listings->data->get_current_object();
+		}
+
+		/**
+		 * Set current listing object.
+		 *
+		 * Set current listing object after products widget in case usage inside listing.
+		 *
+		 * @since  2.1.3
+		 * @access public
+		 *
+		 * @return void
+		 */
+		public function set_current_listing_object() {
+			jet_engine()->listings->data->set_current_object( $this->current_object );
 		}
 
 		/**
@@ -220,6 +264,19 @@ if ( ! class_exists( 'Jet_Woo_Builder_Engine_Package' ) ) {
 
 			return $provider;
 
+		}
+
+		/**
+		 * Register providers for query builder custom query usage
+		 *
+		 * @param array $providers
+		 *
+		 * @return array
+		 */
+		public function register_providers_for_query_builder( $providers ) {
+			$providers[] = 'jet-woo-products-grid';
+			$providers[] = 'jet-woo-products-list';
+			return $providers;
 		}
 
 	}

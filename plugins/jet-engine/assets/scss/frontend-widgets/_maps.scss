@@ -30,6 +30,10 @@
 	}
 }
 
+.brxe-jet-engine-maps-listing {
+	width: 100%;
+}
+
 .jet-map-listing {
 	.leaflet-marker-icon {
 		background: none;
@@ -68,6 +72,9 @@
 			border-color: transparent;
 			border-top-color: #fff;
 		}
+	}
+	.jet-map-listing & img {
+		max-width: 100%;
 	}
 	.jet-map-close {
 		position: absolute;
@@ -142,5 +149,13 @@
 	}
 	100% {
 		transform: rotate(359deg);
+	}
+}
+
+
+// Context Bricks
+.brxe-jet-engine-maps-listing {
+	.jet-map-listing {
+		height: 500px;
 	}
 }

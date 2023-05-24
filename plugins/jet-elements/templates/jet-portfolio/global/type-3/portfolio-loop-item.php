@@ -2,14 +2,14 @@
 /**
  * Images list item template
  */
-$settings = $this->get_settings_for_display();
-$perPage = $settings['per_page'];
+$settings       = $this->get_settings_for_display();
+$perPage        = $settings['per_page'];
 $is_more_button = $settings['view_more_button'];
-$is_lightbox = 'lightbox' == $this->_loop_item( array( 'item_image_link' ) ) ? true : false;
-
-$item_instance = 'item-instance-' . $this->item_counter;
-
-$more_item = ( $this->item_counter >= $perPage && filter_var( $is_more_button, FILTER_VALIDATE_BOOLEAN ) ) ? true : false;
+$is_lightbox    = 'lightbox' == $this->_loop_item( array( 'item_image_link' ) ) ? true : false;
+$lightbox_title = isset( $settings['lightbox_show_title'] ) ? $settings['lightbox_show_title'] : 'false';
+$lightbox_desc  = isset( $settings['lightbox_show_desc'] ) ? $settings['lightbox_show_desc'] : 'false';
+$item_instance  = 'item-instance-' . $this->item_counter;
+$more_item      = ( $this->item_counter >= $perPage && filter_var( $is_more_button, FILTER_VALIDATE_BOOLEAN ) ) ? true : false;
 
 $this->add_render_attribute( $item_instance, 'class', array(
 	'jet-portfolio__item',
@@ -43,6 +43,14 @@ $this->add_render_attribute( $link_instance, 'href', $link_href );
 
 if ( $is_lightbox ) {
 	$this->add_render_attribute( $link_instance, 'data-elementor-open-lightbox', 'yes' );
+
+	if ( 'true' === $lightbox_title ) {
+		$this->add_render_attribute( $link_instance, 'data-elementor-lightbox-title', $this->_loop_item( array( 'item_title', '%s' ) ) );
+	}
+
+	if ( 'true' === $lightbox_desc ) {
+		$this->add_render_attribute( $link_instance, 'data-elementor-lightbox-description', wp_strip_all_tags( $this->_loop_item( array( 'item_desc', '%s' ) ) ) );
+	}
 }
 
 ?>

@@ -140,42 +140,32 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Engine_Calendar' ) ) {
 			add_filter( 'jet-engine/listing/grid/posts-query-args', array( $this, 'add_query_args' ), 10, 2 );
 			add_filter( 'jet-engine/listing/grid/custom-settings', array( $this, 'add_settings' ), 10, 2 );
 
-			if ( ! class_exists( 'Elementor\Jet_Listing_Grid_Widget' ) ) {
-				if ( version_compare( jet_engine()->get_version(), '2.0', '<' ) ) {
-					require_once jet_engine()->plugin_path( 'includes/listings/static-widgets/grid.php' );
-				} else {
-					require_once jet_engine()->plugin_path( 'includes/components/elementor-views/static-widgets/grid.php' );
-				}
-			}
+			$attrs  = $this->sanitize_settings( jet_smart_filters()->query->get_query_settings() );
+			$render = jet_engine()->listings->get_render_instance( 'listing-calendar', $attrs );
 
-			if ( ! class_exists( 'Elementor\Jet_Listing_Calendar_Widget' ) ) {
-				if ( version_compare( jet_engine()->get_version(), '2.0', '<' ) ) {
-					require_once jet_engine()->modules->modules_path( 'calendar/calendar.php' );
-				} else {
-					require_once jet_engine()->modules->modules_path( 'calendar/widget.php' );
-				}
+			$render->render();
 
-			}
-
-			Elementor\Plugin::instance()->frontend->start_excerpt_flag( null );
-
-			$widget = new Elementor\Jet_Listing_Calendar_Widget( array(
-				'id'         => null,
-				'elType'     => 'widget',
-				'settings'   => $this->sanitize_settings( jet_smart_filters()->query->get_query_settings() ),
-				'elements'   => array(),
-				'widgetType' => 'jet-listing-calendar',
-			), array() );
-
-			$widget->render_posts();
 		}
 
 		/**
 		 * Get provider wrapper selector
 		 */
 		public function get_wrapper_selector() {
+			return '.jet-listing-calendar';
+		}
 
-			return '.elementor-widget-jet-listing-calendar > .elementor-widget-container';
+		/**
+		 * Action for wrapper selector - 'insert' into it or 'replace'
+		 */
+		public function get_wrapper_action() {
+			return 'replace';
+		}
+
+		/**
+		 * If added unique ID this parameter will determine - search selector inside this ID, or is the same element
+		 */
+		public function in_depth() {
+			return true;
 		}
 
 		/**
@@ -232,7 +222,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_Jet_Engine_Calendar' ) ) {
 			}
 
 			if ( $this->is_month_request() ) {
-				jet_smart_filters()->query->get_query_from_request( isset( $_REQUEST['query'] ) ? $_REQUEST['query'] : array() );
+				jet_smart_filters()->query->get_query_from_request( isset( $_REQUEST['query'] ) ? $_REQUEST : array() );
 			}
 
 			return array_merge( $args, jet_smart_filters()->query->get_query_args() );

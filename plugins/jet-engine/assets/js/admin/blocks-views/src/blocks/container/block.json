@@ -2,7 +2,7 @@
 	"name": "jet-engine/container",
 	"title": "Flexible Container",
 	"icon": "list-view",
-	"category": "widgets",
+	"category": "jet-engine",
 	"keywords": [ "container", "section", "box" ],
 	"attributes": {
 		"content_direction": {

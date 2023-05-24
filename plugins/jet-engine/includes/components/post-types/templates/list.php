@@ -83,5 +83,6 @@
 		v-model="showDeleteDialog"
 		:post-type-id="parseInt( deletedItem.id, 10 )"
 		:post-type-slug="deletedItem.slug"
+		:post-type-name="deletedItem.labels.name"
 	></jet-cpt-delete-dialog>
 </div>

@@ -90,9 +90,9 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Meta' ) ) {
 		 */
 		public function render_meta( $settings ) {
 
-			$listing_source = jet_engine()->listings->data->get_listing_source();
+			$current_object = jet_engine()->listings->data->get_current_object();
 
-			if ( ! in_array( $listing_source, array( 'posts', null ) ) ) {
+			if ( ! $current_object || 'WP_Post' !== get_class( $current_object ) ) {
 				return $this->wrong_source_notice();
 			}
 

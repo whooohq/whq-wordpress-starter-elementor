@@ -114,6 +114,14 @@ export default {
 		type: 'boolean',
 		default: false,
 	},
+	counter_prefix: {
+		type: 'string',
+		default: '(',
+	},
+	counter_suffix: {
+		type: 'string',
+		default: ')',
+	},
 	show_items_rule: {
 		type: 'string',
 		default: 'show',
@@ -132,6 +140,18 @@ export default {
 		default: 'full',
 	},
 	// Pagination Controls
+	enable_items: {
+		type: 'boolean',
+		default: true,
+	},
+	pages_center_offset: {
+		type: 'number',
+		default: 0,
+	},
+	pages_end_offset: {
+		type: 'number',
+		default: 0,
+	},
 	enable_prev_next: {
 		type: 'boolean',
 		default: true,
@@ -144,13 +164,13 @@ export default {
 		type: 'string',
 		default: __('Next Text'),
 	},
-	pages_center_offset: {
-		type: 'number',
-		default: 0,
+	enable_load_more: {
+		type: 'boolean',
+		default: false,
 	},
-	pages_end_offset: {
-		type: 'number',
-		default: 0,
+	load_more_text: {
+		type: 'string',
+		default: __('Load More'),
 	},
 	autoscroll: {
 		type: 'boolean',

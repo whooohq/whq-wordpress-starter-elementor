@@ -151,7 +151,7 @@ class Jet_Elements_Advanced_Map extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Initial Zoom', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( '%' ),
+				'size_units' => array( '%', 'custom' ),
 				'default'    => array(
 					'unit' => 'zoom',
 					'size' => 11,
@@ -443,7 +443,7 @@ class Jet_Elements_Advanced_Map extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Width', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px' ),
+				'size_units' => array( 'px', 'custom' ),
 				'default'    => array(
 					'unit' => 'px',
 					'size' => 60,
@@ -467,7 +467,7 @@ class Jet_Elements_Advanced_Map extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Height', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px' ),
+				'size_units' => array( 'px', 'custom' ),
 				'default'    => array(
 					'unit' => 'px',
 					'size' => 60,
@@ -550,7 +550,7 @@ class Jet_Elements_Advanced_Map extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Pin Width', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px' ),
+				'size_units' => array( 'px', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => 1,
@@ -587,7 +587,7 @@ class Jet_Elements_Advanced_Map extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} .jet-map-pin__wrapper' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),

@@ -2,6 +2,9 @@ import eventBus from 'includes/event-bus';
 
 export default class TabIndex {
 	constructor(filter) {
+		if (!filter.$filter)
+			return;
+
 		this.filter = filter;
 
 		switch (this.filter.name) {

@@ -49,8 +49,10 @@ if ( ! class_exists( 'Jet_Blocks_Ext_Elements' ) ) {
 			if ( isset( $avaliable_extensions['sticky_section'] ) && 'true' === $avaliable_extensions['sticky_section'] ) {
 
 				add_action( 'elementor/element/section/section_advanced/after_section_end', array( $this, 'add_section_sticky_controls' ), 10, 2 );
+				add_action( 'elementor/element/container/section_layout/after_section_end', array( $this, 'add_section_sticky_controls' ), 10, 2 );
 				add_action( 'elementor/frontend/element/before_render',                     array( $this, 'section_before_render' ) );
 				add_action( 'elementor/frontend/section/before_render',                     array( $this, 'section_before_render' ) ); // for compatibility with Elementor 2.1.0
+				add_action( 'elementor/frontend/container/before_render',                   array( $this, 'section_before_render' ) );
 				add_action( 'elementor/frontend/before_enqueue_scripts',                    array( $this, 'enqueue_scripts' ), 9 );
 
 			}
@@ -301,7 +303,7 @@ if ( ! class_exists( 'Jet_Blocks_Ext_Elements' ) ) {
 		 * @param object $element Section instance.
 		 */
 		public function section_before_render( $element ) {
-			if ( 'section' !== $element->get_name() ) {
+			if ( 'section' !== $element->get_name() && 'container' !== $element->get_name() ) {
 				return;
 			}
 

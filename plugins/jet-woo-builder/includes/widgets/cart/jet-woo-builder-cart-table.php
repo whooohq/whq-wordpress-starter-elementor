@@ -160,9 +160,9 @@ class Jet_Woo_Builder_Cart_Table extends Jet_Woo_Builder_Base {
 		$repeater->add_responsive_control(
 			'cart_table_cell_width',
 			[
-				'label'      => __( 'Column Width', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', '%' ],
+				'label'      => __( 'Column Width', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', '%' ] ),
 				'range'      => [
 					'px' => [
 						'min'  => 0,
@@ -411,45 +411,12 @@ class Jet_Woo_Builder_Cart_Table extends Jet_Woo_Builder_Base {
 			]
 		);
 
-		$this->add_group_control(
-			Group_Control_Border::get_type(),
-			array(
-				'name'     => 'cart_product_image_border',
-				'label'    => esc_html__( 'Border', 'jet-woo-builder' ),
-				'selector' => '{{WRAPPER}} ' . $css_scheme['image'],
-			)
-		);
-
-		$this->add_responsive_control(
-			'cart_product_image_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['image'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
-		);
-
-		$this->add_responsive_control(
-			'cart_product_image_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['image'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
-		);
-
 		$this->add_responsive_control(
 			'cart_product_image_width',
 			[
-				'label'      => __( 'Width', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', '%' ],
+				'label'      => __( 'Width', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', '%' ] ),
 				'range'      => [
 					'px' => [
 						'min'  => 10,
@@ -463,6 +430,38 @@ class Jet_Woo_Builder_Cart_Table extends Jet_Woo_Builder_Base {
 				],
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['image'] => 'width: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			[
+				'name'     => 'cart_product_image_border',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['image'],
+			]
+		);
+
+		$this->add_responsive_control(
+			'cart_product_image_border_radius',
+			[
+				'type'       => Controls_Manager::DIMENSIONS,
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
+					'{{WRAPPER}} ' . $css_scheme['image'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'cart_product_image_padding',
+			[
+				'type'       => Controls_Manager::DIMENSIONS,
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
+					'{{WRAPPER}} ' . $css_scheme['image'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -670,29 +669,29 @@ class Jet_Woo_Builder_Cart_Table extends Jet_Woo_Builder_Base {
 			]
 		);
 
-		jet_woo_builder_common_controls()->register_input_style_controls( $this, 'cart_table_product_count', $css_scheme['product_count'], false );
-
 		$this->add_responsive_control(
 			'cart_table_product_count_input_width',
-			array(
-				'label'      => esc_html__( 'Width', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', 'em', '%' ),
-				'range'      => array(
-					'px' => array(
+				'label'      => __( 'Width', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', '%' ] ),
+				'range'      => [
+					'px' => [
 						'min' => 40,
 						'max' => 1000,
-					),
-					'%'  => array(
+					],
+					'%'  => [
 						'min' => 0,
 						'max' => 100,
-					),
-				),
-				'selectors'  => array(
+					],
+				],
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['product_count'] => 'width: {{SIZE}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
+
+		jet_woo_builder_common_controls()->register_input_style_controls( $this, 'cart_table_product_count', $css_scheme['product_count'], false );
 
 		$this->end_controls_section();
 
@@ -707,9 +706,9 @@ class Jet_Woo_Builder_Cart_Table extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'cart_table_remove_button_icon_size',
 			[
-				'label'      => __( 'Icon Size', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em' ],
+				'label'      => __( 'Icon Size', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em' ] ),
 				'range'      => [
 					'px' => [
 						'min' => 0,
@@ -826,9 +825,9 @@ class Jet_Woo_Builder_Cart_Table extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'cart_table_remove_button_radius',
 			[
-				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['remove_button'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -838,9 +837,9 @@ class Jet_Woo_Builder_Cart_Table extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'cart_table_remove_button_padding',
 			[
-				'label'      => __( 'Padding', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['remove_button'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -865,9 +864,9 @@ class Jet_Woo_Builder_Cart_Table extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'cart_table_update_button_margin',
 			[
-				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['update_button'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -909,26 +908,12 @@ class Jet_Woo_Builder_Cart_Table extends Jet_Woo_Builder_Base {
 			]
 		);
 
-		jet_woo_builder_common_controls()->register_button_style_controls( $this, 'cart_table_apply_coupon', $css_scheme['coupon_button'] );
-
-		$this->add_responsive_control(
-			'cart_table_apply_coupon_button_margin',
-			[
-				'label'      => __( 'Margin', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
-				'selectors'  => [
-					'{{WRAPPER}} ' . $css_scheme['coupon_button'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
-		);
-
 		$this->add_responsive_control(
 			'cart_table_apply_coupon_button_width',
 			[
 				'label'      => __( 'Width', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', '%' ],
+				'size_units' => $this->set_custom_size_unit( [ 'px', '%' ] ),
 				'range'      => [
 					'px' => [
 						'min'  => 0,
@@ -947,6 +932,20 @@ class Jet_Woo_Builder_Cart_Table extends Jet_Woo_Builder_Base {
 			]
 		);
 
+		jet_woo_builder_common_controls()->register_button_style_controls( $this, 'cart_table_apply_coupon', $css_scheme['coupon_button'] );
+
+		$this->add_responsive_control(
+			'cart_table_apply_coupon_button_margin',
+			[
+				'type'       => Controls_Manager::DIMENSIONS,
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
+					'{{WRAPPER}} ' . $css_scheme['coupon_button'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
 		$this->add_control(
 			'cart_table_apply_coupon_input_title',
 			[
@@ -956,14 +955,12 @@ class Jet_Woo_Builder_Cart_Table extends Jet_Woo_Builder_Base {
 			]
 		);
 
-		jet_woo_builder_common_controls()->register_input_style_controls( $this, 'cart_table_apply_coupon', $css_scheme['input'] );
-
 		$this->add_responsive_control(
 			'cart_table_apply_coupon_input_width',
 			[
-				'label'      => __( 'Width', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', '%' ],
+				'label'      => __( 'Width', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', '%' ] ),
 				'range'      => [
 					'px' => [
 						'min'  => 0,
@@ -981,6 +978,8 @@ class Jet_Woo_Builder_Cart_Table extends Jet_Woo_Builder_Base {
 				],
 			]
 		);
+
+		jet_woo_builder_common_controls()->register_input_style_controls( $this, 'cart_table_apply_coupon', $css_scheme['input'] );
 
 		$this->end_controls_section();
 

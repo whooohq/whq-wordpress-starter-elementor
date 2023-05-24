@@ -43,10 +43,13 @@ registerBlockType('jet-smart-filters/date-range', {
 		}
 
 		initDateRangeUI() {
-			dateRangeUI.init({
-				$container: this._holder.find( '.' + window.JetSmartFilters.filtersList.DateRange ),
-				id: this.props.attributes.blockID,
-			});
+			const $filterContainer = this._holder.find('.' + window.JetSmartFilters.filtersList.DateRange);
+
+			if ($filterContainer.length)
+				dateRangeUI.init({
+					$container: $filterContainer,
+					id: this.props.attributes.blockID,
+				});
 		}
 
 		render() {
@@ -72,7 +75,7 @@ registerBlockType('jet-smart-filters/date-range', {
 					<TemplateRender
 						block="jet-smart-filters/date-range"
 						attributes={props.attributes}
-						onSuccess={() => { this.layoutUpdated() }}
+						onSuccess={() => { this.layoutUpdated(); }}
 					/>
 				</div>
 			];

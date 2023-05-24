@@ -7,7 +7,9 @@
 >
 	<div class="cx-vui-subtitle" slot="title"><?php
 		_e( 'Please confirm post type deletion', 'jet-engine' );
-	?></div>
+	?>
+		<template v-if="postTypeName">- <span class="jet-engine-accent-text">{{ postTypeName }}</span></template>
+	</div>
 	<p slot="content">
 		<?php _e( 'Are you sure you want to delete this post type?', 'jet-engine' ); ?><br>
 		<?php _e( 'If yes - please select what to do with created posts of this post type:', 'jet-engine' ); ?>

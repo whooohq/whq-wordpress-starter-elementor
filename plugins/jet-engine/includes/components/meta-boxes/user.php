@@ -128,6 +128,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_User_Meta' ) ) {
 
 			add_action( 'admin_enqueue_scripts', array( $this, 'init_builder' ), 0 );
 			add_action( 'admin_enqueue_scripts', array( $this, 'maybe_enqueue_custom_css' ), 0 );
+			add_action( 'admin_enqueue_scripts', array( $this, 'maybe_enqueue_inline_js' ), 20 );
 
 		}
 
@@ -218,6 +219,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_User_Meta' ) ) {
 		 * @return array
 		 */
 		public function prepare_field_value( $field, $value ) {
+
 			switch ( $field['type'] ) {
 				case 'repeater':
 
@@ -258,9 +260,35 @@ if ( ! class_exists( 'Jet_Engine_CPT_User_Meta' ) ) {
 					}
 
 					break;
+
+				case 'text':
+
+					if ( ! empty( $value ) && $this->to_timestamp( $field ) && is_numeric( $value ) ) {
+
+						switch ( $field['input_type'] ) {
+							case 'date':
+								$value = $this->get_date( 'Y-m-d', $value );
+								break;
+
+							case 'datetime-local':
+								$value = $this->get_date( 'Y-m-d\TH:i', $value );
+								break;
+						}
+					}
+
+					break;
 			}
 
 			return $value;
+		}
+
+		/**
+		 * Returns date converted from timestamp
+		 * 
+		 * @return [type] [description]
+		 */
+		public function get_date( $format, $time ) {
+			return apply_filters( 'cx_user_meta/date', date( $format, $time ), $time, $format );
 		}
 
 		/**
@@ -308,18 +336,6 @@ if ( ! class_exists( 'Jet_Engine_CPT_User_Meta' ) ) {
 			}
 
 			$meta = get_user_meta( $user_id, $key, false );
-
-			if ( ! empty( $meta[0] ) && $this->to_timestamp( $field ) && is_numeric( $meta[0] ) ) {
-
-				switch ( $field['input_type'] ) {
-					case 'date':
-						return date( 'Y-m-d', $meta[0] );
-
-					case 'datetime-local':
-						return date( 'Y-m-d\TH:i', $meta[0] );
-				}
-
-			}
 
 			return ( empty( $meta ) ) ? $default : $meta[0];
 
@@ -448,11 +464,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_User_Meta' ) ) {
 					continue;
 				}
 
-				if ( $this->to_timestamp( $field ) ) {
-					$value = strtotime( $_POST[ $key ] );
-				} else {
-					$value = $this->sanitize_meta( $field, $_POST[ $key ] );
-				}
+				$value = $this->sanitize_meta( $field, $_POST[ $key ] );
 
 				do_action( 'jet-engine/user-meta/before-save/' . $key, $user_id, $value, $key, $this );
 
@@ -501,6 +513,10 @@ if ( ! class_exists( 'Jet_Engine_CPT_User_Meta' ) ) {
 				}
 
 				return $result;
+			}
+
+			if ( $this->to_timestamp( $field ) ) {
+				return apply_filters( 'cx_user_meta/strtotime', strtotime( $value ), $value );
 			}
 
 			if ( empty( $field['sanitize_callback'] ) ) {

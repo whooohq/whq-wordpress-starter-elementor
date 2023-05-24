@@ -59,6 +59,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax_Meta' ) ) {
 			) );
 
 			add_action( 'admin_enqueue_scripts', array( $this, 'maybe_enqueue_custom_css' ), 0 );
+			add_action( 'admin_enqueue_scripts', array( $this, 'maybe_enqueue_inline_js' ), 20 );
 			add_filter( 'cx_term_meta/meta_box/before', array( $this, 'maybe_render_edit_link' ), 20 );
 
 		}

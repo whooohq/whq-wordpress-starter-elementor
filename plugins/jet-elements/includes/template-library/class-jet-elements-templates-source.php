@@ -49,10 +49,6 @@ class Jet_Elements_Templates_Source extends Elementor\TemplateLibrary\Source_Bas
 			}
 		}
 
-		if ( ! empty( $args ) ) {
-			$templates = wp_list_filter( $templates, $args );
-		}
-
 		return $templates;
 	}
 

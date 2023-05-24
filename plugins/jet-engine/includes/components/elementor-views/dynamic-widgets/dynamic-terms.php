@@ -143,6 +143,39 @@ class Jet_Listing_Dynamic_Terms_Widget extends Widget_Base {
 		);
 
 		$this->add_control(
+			'orderby',
+			array(
+				'label'     => esc_html__( 'Order By', 'jet-engine' ),
+				'type'      => Controls_Manager::SELECT,
+				'default'   => 'name',
+				'separator' => 'before',
+				'options'   => array(
+					'name'        => esc_html__( 'Name', 'jet-engine' ),
+					'slug'        => esc_html__( 'Slug', 'jet-engine' ),
+					'term_group'  => esc_html__( 'Term group', 'jet-engine' ),
+					'term_id'     => esc_html__( 'Term ID', 'jet-engine' ),
+					'description' => esc_html__( 'Description', 'jet-engine' ),
+					'parent'      => esc_html__( 'Parent', 'jet-engine' ),
+					'term_order'  => esc_html__( 'Term Order', 'jet-engine' ),
+					'count'       => esc_html__( 'By the number of objects associated with the term', 'jet-engine' ),
+				),
+			)
+		);
+
+		$this->add_control(
+			'order',
+			array(
+				'label'   => esc_html__( 'Order', 'jet-engine' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'ASC',
+				'options' => array(
+					'ASC'  => esc_html__( 'ASC', 'jet-engine' ),
+					'DESC' => esc_html__( 'DESC', 'jet-engine' ),
+				),
+			)
+		);
+
+		$this->add_control(
 			'hide_if_empty',
 			array(
 				'label'        => esc_html__( 'Hide if value is empty', 'jet-engine' ),
@@ -361,7 +394,7 @@ class Jet_Listing_Dynamic_Terms_Widget extends Widget_Base {
 			array(
 				'label'      => __( 'Padding', 'jet-engine' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', '%', 'em' ) ),
 				'selectors'  => array(
 					$this->css_selector( '__link' ) => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -373,7 +406,7 @@ class Jet_Listing_Dynamic_Terms_Widget extends Widget_Base {
 			array(
 				'label'      => __( 'Margin', 'jet-engine' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', '%', 'em' ) ),
 				'selectors'  => array(
 					$this->css_selector( '__link' ) => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -395,7 +428,7 @@ class Jet_Listing_Dynamic_Terms_Widget extends Widget_Base {
 			array(
 				'label'      => __( 'Border Radius', 'jet-engine' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', '%' ) ),
 				'selectors'  => array(
 					$this->css_selector( '__link' ) => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),

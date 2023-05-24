@@ -154,6 +154,7 @@ if ( ! class_exists( 'Jet_Engine_Listings_Filters' ) ) {
 
 			if ( ! is_array( $img_ids ) ) {
 				$img_ids = explode( ',', $img_ids );
+				$img_ids = array_map( 'trim', $img_ids );
 			}
 
 			if ( empty( $img_ids ) ) {
@@ -180,6 +181,7 @@ if ( ! class_exists( 'Jet_Engine_Listings_Filters' ) ) {
 
 			if ( ! is_array( $img_ids ) ) {
 				$img_ids = explode( ',', $img_ids );
+				$img_ids = array_map( 'trim', $img_ids );
 			}
 
 			if ( empty( $img_ids ) ) {

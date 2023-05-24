@@ -1,0 +1,29 @@
+// Counter
+.jet-filters-counter {
+	align-self: center;
+	padding: 0 0 0 5px;
+
+	.rtl & {
+		padding: 0 5px 0 0;
+	}
+
+	&-position-space-between {
+		.jet-checkboxes-list .jet-checkboxes-list__item,
+		.jet-checkboxes-list .jet-checkboxes-list__item .jet-checkboxes-list__button,
+		.jet-radio-list .jet-radio-list__item,
+		.jet-radio-list .jet-radio-list__item .jet-radio-list__button,
+		.jet-color-image-list__item,
+		.jet-color-image-list__button {
+			width: 100%;
+		}
+
+		.jet-filters-counter {
+			margin-left: auto;
+
+			.rtl & {
+				margin-left: initial;
+				margin-right: auto;
+			}
+		}
+	}
+}

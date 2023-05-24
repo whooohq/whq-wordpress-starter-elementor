@@ -63,6 +63,11 @@ export default class CheckboxControl extends Filter {
 	}
 
 	setData(newData) {
+		this.reset();
+
+		if (!newData)
+			return;
+
 		this.getItemsByValue(newData).forEach($item => {
 			$item.prop('checked', true);
 		});

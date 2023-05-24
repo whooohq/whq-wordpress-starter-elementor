@@ -217,15 +217,17 @@ class Jet_Smart_Filters_Color_Image_Widget extends Jet_Smart_Filters_Base_Widget
 			array(
 				'label'       => esc_html__( 'Filters Position', 'jet-smart-filters' ),
 				'type'        => Controls_Manager::CHOOSE,
+				'toggle'      => false,
 				'label_block' => false,
+				'default'     => 'block',
 				'options'     => array(
-					'inline-block'    => array(
-						'title' => esc_html__( 'Line', 'jet-smart-filters' ),
-						'icon'  => 'eicon-ellipsis-h',
-					),
 					'block' => array(
 						'title' => esc_html__( 'Column', 'jet-smart-filters' ),
 						'icon'  => 'eicon-menu-bar',
+					),
+					'inline-block'    => array(
+						'title' => esc_html__( 'Line', 'jet-smart-filters' ),
+						'icon'  => 'eicon-ellipsis-h',
 					),
 				),
 				'selectors' => array(
@@ -333,8 +335,7 @@ class Jet_Smart_Filters_Color_Image_Widget extends Jet_Smart_Filters_Base_Widget
 					'unit' => 'px',
 				),
 				'selectors'  => array(
-					'{{WRAPPER}} ' . $css_scheme['item'] . ':not(:last-child)'         => 'margin-bottom: calc({{SIZE}}{{UNIT}}/2);',
-					'{{WRAPPER}} ' . $css_scheme['item'] . ':not(:first-child)'        => 'padding-top: calc({{SIZE}}{{UNIT}}/2);',
+					'{{WRAPPER}} ' . $css_scheme['item'] . ':not(:last-child)' => 'margin-bottom: {{SIZE}}{{UNIT}};'
 				),
 				'condition'  => array(
 					'filters_position!' => 'inline-block'

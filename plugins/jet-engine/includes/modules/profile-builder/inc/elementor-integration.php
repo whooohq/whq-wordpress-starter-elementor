@@ -10,6 +10,9 @@ class Elementor_Integration {
 	 */
 	public function __construct() {
 
+		add_action( 'jet-engine/listings/dynamic-link/source-controls', array( $this, 'register_link_controls' ), 10 );
+		add_action( 'jet-engine/listings/dynamic-image/link-source-controls', array( $this, 'register_img_link_controls' ), 10 );
+
 		if ( ! defined( 'ELEMENTOR_VERSION' ) ) {
 			return;
 		}
@@ -20,10 +23,7 @@ class Elementor_Integration {
 			add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_widgets' ), 11 );
 		}
 
-		add_action( 'jet-engine/listings/dynamic-link/source-controls', array( $this, 'register_link_controls' ), 10 );
-		add_action( 'jet-engine/listings/dynamic-image/link-source-controls', array( $this, 'register_img_link_controls' ), 10 );
-
-		add_action( 'jet-engine/elementor-views/dynamic-tags/register', array( $this, 'register_dynamic_tags' ) );
+		add_action( 'jet-engine/elementor-views/dynamic-tags/register', array( $this, 'register_dynamic_tags' ), 10, 2 );
 		add_action( 'jet-engine/profile-builder/template/assets', array( $this, 'enqueue_template_styles' ) );
 
 		add_filter( 'jet-engine/profile-builder/template/content', array( $this, 'render_template_content' ), 0, 2 );
@@ -68,14 +68,15 @@ class Elementor_Integration {
 	/**
 	 * Register Elementor-related dynamic tags
 	 *
+	 * @param  [type] $dynamic_tags [description]
 	 * @param  [type] $tags_module [description]
 	 * @return [type]              [description]
 	 */
-	public function register_dynamic_tags( $tags_module ) {
+	public function register_dynamic_tags( $dynamic_tags, $tags_module ) {
 
 		require_once jet_engine()->modules->modules_path( 'profile-builder/inc/dynamic-tags/profile-page-url.php' );
 
-		$tags_module->register_tag( new Dynamic_Tags\Profile_Page_URL() );
+		$tags_module->register_tag( $dynamic_tags, new Dynamic_Tags\Profile_Page_URL() );
 
 	}
 
@@ -163,7 +164,7 @@ class Elementor_Integration {
 			'dynamic_link_profile_page',
 			array(
 				'label'     => __( 'Profile Page', 'jet-engine' ),
-				'type'      => \Elementor\Controls_Manager::SELECT,
+				'type'      => 'select',
 				'default'   => '',
 				'groups'    => $pages,
 				'condition' => $condition,

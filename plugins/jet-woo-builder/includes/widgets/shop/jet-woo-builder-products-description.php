@@ -58,23 +58,23 @@ class Jet_Woo_Builder_Products_Description extends Jet_Woo_Builder_Base {
 			]
 		);
 
-		$this->add_control(
-			'products_description_text_color',
-			[
-				'label'     => __( 'Text Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => [
-					'{{WRAPPER}} ' . $css_scheme['term_description']    => 'color: {{VALUE}};',
-					'{{WRAPPER}} ' . $css_scheme['archive_description'] => 'color: {{VALUE}};',
-				],
-			]
-		);
-
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'products_description_typography',
 				'selector' => '{{WRAPPER}} ' . $css_scheme['term_description'] . ',' . '{{WRAPPER}} ' . $css_scheme['archive_description'],
+			]
+		);
+
+		$this->add_control(
+			'products_description_text_color',
+			[
+				'type'      => Controls_Manager::COLOR,
+				'label'     => __( 'Color', 'jet-woo-builder' ),
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['term_description']    => 'color: {{VALUE}};',
+					'{{WRAPPER}} ' . $css_scheme['archive_description'] => 'color: {{VALUE}};',
+				],
 			]
 		);
 

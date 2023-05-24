@@ -58,6 +58,10 @@ class Manager {
 			array( $this, 'add_store_data_attr' ), 10, 2
 		);
 
+		add_filter( 'jet-engine/custom-content-types/item-to-update',
+			array( $this, 'ensure_store_item_count_on_save' ), 10, 3
+		);
+
 	}
 
 	public function add_blocks_data( $data ) {
@@ -291,7 +295,7 @@ class Manager {
 			array(
 				'label'       => __( 'Get items from store', 'jet-engine' ),
 				'label_block' => true,
-				'type'        => \Elementor\Controls_Manager::SELECT,
+				'type'        => 'select',
 				'default'     => '',
 				'options'     => $stores,
 
@@ -325,6 +329,44 @@ class Manager {
 			return $post_id;
 		}
 
+	}
+
+	public function ensure_store_item_count_on_save( $item, $fields, $item_handler ) {
+
+		if ( empty( $item['_ID'] ) ) {
+			return $item;
+		}
+
+		$prev_item = $item_handler->get_factory()->db->get_item( absint( $item['_ID'] ) );
+
+		if ( empty( $prev_item ) ) {
+			return $item;
+		}
+
+		$type = $item_handler->get_factory()->get_arg( 'slug' );
+
+		if ( ! $type ) {
+			return $item;
+		}
+
+		$data_stores = $this->settings->get_stores_for_type( $type );
+
+		if ( ! empty( $data_stores ) ) {
+			foreach ( $data_stores as $store ) {
+
+				if ( ! $store->can_count_posts() ) {
+					continue;
+				}
+
+				$count_name = $this->settings->get_count_field_name( $store );
+
+				if ( ! empty( $prev_item[ $count_name ] ) ) {
+					$item[ $count_name ] = $prev_item[ $count_name ];
+				}
+			}
+		}
+
+		return $item;
 	}
 
 }

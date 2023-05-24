@@ -2,6 +2,7 @@
 namespace ElementorPro\Modules\Forms;
 
 use Elementor\Controls_Manager;
+use ElementorPro\Core\Utils;
 use ElementorPro\Modules\Forms\Data\Controller;
 use Elementor\Core\Experiments\Manager;
 use Elementor\Core\Common\Modules\Ajax\Module as Ajax;
@@ -80,15 +81,17 @@ class Module extends Module_Base {
 	 * @throws \Exception
 	 */
 	public function forms_panel_action_data( array $data ) {
+		$document = Utils::_unstable_get_document_for_edit( $data['editor_post_id'] );
+
 		if ( empty( $data['service'] ) ) {
-			throw new \Exception( 'service_required' );
+			throw new \Exception( 'Service required.' );
 		}
 
 		/** @var \ElementorPro\Modules\Forms\Classes\Integration_Base $integration */
 		$integration = $this->actions_registrar->get( $data['service'] );
 
 		if ( ! $integration ) {
-			throw new \Exception( 'action_not_found' );
+			throw new \Exception( 'Action not found.' );
 		}
 
 		return $integration->handle_panel_request( $data );

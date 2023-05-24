@@ -31,6 +31,14 @@ abstract class Base extends Base_Provider {
 	}
 
 	/**
+	 * Build Autocomplete API URL for given place predictions
+	 * @return mixed
+	 */
+	public function build_autocomplete_api_url( $query = '' ) {
+		return false;
+	}
+
+	/**
 	 * Make geocoding request to the given URL
 	 *
 	 * @param  [type] $url [description]
@@ -51,7 +59,7 @@ abstract class Base extends Base_Provider {
 	}
 
 	/**
-	 * Find coordinates in the reponse data and return it
+	 * Find coordinates in the response data and return it
 	 *
 	 * @param  array  $data [description]
 	 * @return [type]       [description]
@@ -61,12 +69,22 @@ abstract class Base extends Base_Provider {
 	}
 
 	/**
-	 * Find location name in the reverse geocoding reponse data and return it
+	 * Find location name in the reverse geocoding response data and return it
 	 *
 	 * @param  array  $data [description]
 	 * @return [type]       [description]
 	 */
 	public function extract_location_from_response_data( $data = array() ) {
+		return false;
+	}
+
+	/**
+	 * Find place predictions in the response data and return it
+	 *
+	 * @param  array $data
+	 * @return array|false
+	 */
+	public function extract_autocomplete_data_from_response_data( $data = array() ) {
 		return false;
 	}
 
@@ -124,6 +142,33 @@ abstract class Base extends Base_Provider {
 
 		return $this->extract_coordinates_from_response_data( $data );
 
+	}
+
+	/**
+	 * Returns data for the given place predictions
+	 *
+	 * @param  string $query
+	 * @return array|false
+	 */
+	public function get_autocomplete_data( $query = '' ) {
+
+		if ( ! $query ) {
+			return false;
+		}
+
+		$url = $this->build_autocomplete_api_url( esc_attr( $query ) );
+
+		if ( ! $url ) {
+			return false;
+		}
+
+		$data = $this->make_request( $url );
+
+		if ( ! $data ) {
+			return false;
+		}
+
+		return $this->extract_autocomplete_data_from_response_data( $data );
 	}
 
 }

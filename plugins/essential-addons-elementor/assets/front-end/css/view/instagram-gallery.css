@@ -12,6 +12,12 @@
   -o-object-fit: cover;
      object-fit: cover;
 }
+.eael-instafeed.eael-instafeed-square-img .eael-instafeed-item {
+  overflow: hidden;
+}
+.eael-instafeed.eael-instafeed-square-img .eael-instafeed-item-inner {
+  position: static;
+}
 .eael-instafeed .eael-instafeed-item,
 .eael-instafeed .eael-instafeed-item-inner {
   position: relative;
@@ -233,101 +239,78 @@
   .instafeed-gallery-eael-col-1 {
     position: relative;
   }
-
   .instafeed-gallery-eael-col-1 .eael-instafeed-item {
     width: 100%;
     float: left;
   }
-
   .instafeed-gallery-eael-col-2 {
     position: relative;
   }
-
   .instafeed-gallery-eael-col-2 .eael-instafeed-item {
     width: 50%;
     float: left;
   }
-
   .instafeed-gallery-eael-col-2 .eael-instafeed-item:nth-of-type(2n) {
     margin-right: 0 !important;
   }
-
   .instafeed-gallery-eael-col-2 .eael-instafeed-item:nth-of-type(2n+1) {
     clear: left;
   }
-
   .instafeed-gallery-eael-col-3 {
     position: relative;
   }
-
   .instafeed-gallery-eael-col-3 .eael-instafeed-item {
     width: 33.3333%;
     float: left;
   }
-
   .instafeed-gallery-eael-col-3 .eael-instafeed-item:nth-of-type(3n) {
     margin-right: 0 !important;
   }
-
   .instafeed-gallery-eael-col-3 .eael-instafeed-item:nth-of-type(3n+1) {
     clear: left;
   }
-
   .instafeed-gallery-eael-col-4 {
     position: relative;
   }
-
   .instafeed-gallery-eael-col-4 .eael-instafeed-item {
     width: 25%;
     float: left;
   }
-
   .instafeed-gallery-eael-col-4 .eael-instafeed-item:nth-of-type(4n) {
     margin-right: 0 !important;
   }
-
   .instafeed-gallery-eael-col-4 .eael-instafeed-item:nth-of-type(4n+1) {
     clear: left;
   }
-
   .instafeed-gallery-eael-col-5 {
     position: relative;
   }
-
   .instafeed-gallery-eael-col-5 .pp-logo-grid {
     margin-right: -5px;
   }
-
   .instafeed-gallery-eael-col-5 .eael-instafeed-item {
     width: 20%;
     float: left;
   }
-
   .instafeed-gallery-eael-col-5 .eael-instafeed-item:nth-of-type(5n) {
     margin-right: 0 !important;
   }
-
   .instafeed-gallery-eael-col-5 .eael-instafeed-item:nth-of-type(5n+1) {
     clear: left;
   }
-
   .instafeed-gallery-eael-col-6 {
     position: relative;
   }
-
   .instafeed-gallery-eael-col-6 .pp-logo-grid {
     margin-right: -6px;
   }
-
   .instafeed-gallery-eael-col-6 .eael-instafeed-item {
     width: 16.666%;
     float: left;
   }
-
   .instafeed-gallery-eael-col-6 .eael-instafeed-item:nth-of-type(6n) {
     margin-right: 0 !important;
   }
-
   .instafeed-gallery-eael-col-6 .eael-instafeed-item:nth-of-type(6n+1) {
     clear: left;
   }
@@ -337,97 +320,75 @@
   .instafeed-gallery-tablet-eael-col-1 {
     position: relative;
   }
-
   .instafeed-gallery-tablet-eael-col-1 .eael-instafeed-item {
     width: 100%;
     float: left;
   }
-
   .instafeed-gallery-tablet-eael-col-2 {
     position: relative;
   }
-
   .instafeed-gallery-tablet-eael-col-2 .eael-instafeed-item {
     width: 50%;
     float: left;
   }
-
   .instafeed-gallery-tablet-eael-col-2 .eael-instafeed-item:nth-of-type(2n) {
     margin-right: 0 !important;
   }
-
   .instafeed-gallery-tablet-eael-col-2 .eael-instafeed-item:nth-of-type(2n+1) {
     clear: left;
   }
-
   .instafeed-gallery-tablet-eael-col-3 {
     position: relative;
   }
-
   .instafeed-gallery-tablet-eael-col-3 .eael-instafeed-item {
     width: 33.3333%;
     float: left;
   }
-
   .instafeed-gallery-tablet-eael-col-3 .eael-instafeed-item:nth-of-type(3n) {
     margin-right: 0 !important;
   }
-
   .instafeed-gallery-tablet-eael-col-3 .eael-instafeed-item:nth-of-type(3n+1) {
     clear: left;
   }
-
   .instafeed-gallery-tablet-eael-col-4 {
     position: relative;
   }
-
   .instafeed-gallery-tablet-eael-col-4 .eael-instafeed-item {
     width: 25%;
     float: left;
   }
-
   .instafeed-gallery-tablet-eael-col-4 .eael-instafeed-item:nth-of-type(4n) {
     margin-right: 0 !important;
   }
-
   .instafeed-gallery-tablet-eael-col-4 .eael-instafeed-item:nth-of-type(4n+1) {
     clear: left;
   }
-
   .instafeed-gallery-tablet-eael-col-5 {
     position: relative;
   }
-
   .instafeed-gallery-tablet-eael-col-5 .eael-instafeed-item {
     width: 20%;
     float: left;
   }
-
   .instafeed-gallery-tablet-eael-col-5 .eael-instafeed-item:nth-of-type(5n) {
     margin-right: 0 !important;
   }
-
   .instafeed-gallery-tablet-eael-col-5 .eael-instafeed-item:nth-of-type(5n+1) {
     clear: left;
   }
-
   .instafeed-gallery-tablet-eael-col-6 {
     position: relative;
   }
-
   .instafeed-gallery-tablet-eael-col-6 .pp-logo-grid {
     margin-right: -6px;
   }
-
   .instafeed-gallery-tablet-eael-col-6 .eael-instafeed-item {
     width: 16%;
     float: left;
   }
-
   .instafeed-gallery-tablet-eael-col-6 .eael-instafeed-item:nth-of-type(6n) {
     margin-right: 0 !important;
   }
-
   .instafeed-gallery-tablet-eael-col-6 .eael-instafeed-item:nth-of-type(6n+1) {
     clear: left;
   }
@@ -436,97 +397,75 @@
   .instafeed-gallery-mobile-eael-col-1 {
     position: relative;
   }
-
   .instafeed-gallery-mobile-eael-col-1 .eael-instafeed-item {
     width: 100%;
     float: left;
   }
-
   .instafeed-gallery-mobile-eael-col-2 {
     position: relative;
   }
-
   .instafeed-gallery-mobile-eael-col-2 .eael-instafeed-item {
     width: 50%;
     float: left;
   }
-
   .instafeed-gallery-mobile-eael-col-2 .eael-instafeed-item:nth-of-type(2n) {
     margin-right: 0 !important;
   }
-
   .instafeed-gallery-mobile-eael-col-2 .eael-instafeed-item:nth-of-type(2n+1) {
     clear: left;
   }
-
   .instafeed-gallery-mobile-eael-col-3 {
     position: relative;
   }
-
   .instafeed-gallery-mobile-eael-col-3 .eael-instafeed-item {
     width: 33.3333%;
     float: left;
   }
-
   .instafeed-gallery-mobile-eael-col-3 .eael-instafeed-item:nth-of-type(3n) {
     margin-right: 0 !important;
   }
-
   .instafeed-gallery-mobile-eael-col-3 .eael-instafeed-item:nth-of-type(3n+1) {
     clear: left;
   }
-
   .instafeed-gallery-mobile-eael-col-4 {
     position: relative;
   }
-
   .instafeed-gallery-mobile-eael-col-4 .eael-instafeed-item {
     width: 25%;
     float: left;
   }
-
   .instafeed-gallery-mobile-eael-col-4 .eael-instafeed-item:nth-of-type(4n) {
     margin-right: 0 !important;
   }
-
   .instafeed-gallery-mobile-eael-col-4 .eael-instafeed-item:nth-of-type(4n+1) {
     clear: left;
   }
-
   .instafeed-gallery-mobile-eael-col-5 {
     position: relative;
   }
-
   .instafeed-gallery-mobile-eael-col-5 .eael-instafeed-item {
     width: 20%;
     float: left;
   }
-
   .instafeed-gallery-mobile-eael-col-5 .eael-instafeed-item:nth-of-type(5n) {
     margin-right: 0 !important;
   }
-
   .instafeed-gallery-mobile-eael-col-5 .eael-instafeed-item:nth-of-type(5n+1) {
     clear: left;
   }
-
   .instafeed-gallery-mobile-eael-col-6 {
     position: relative;
   }
-
   .instafeed-gallery-mobile-eael-col-6 .pp-logo-grid {
     margin-right: -6px;
   }
-
   .instafeed-gallery-mobile-eael-col-6 .eael-instafeed-item {
     width: 16%;
     float: left;
   }
-
   .instafeed-gallery-mobile-eael-col-6 .eael-instafeed-item:nth-of-type(6n) {
     margin-right: 0 !important;
   }
-
   .instafeed-gallery-mobile-eael-col-6 .eael-instafeed-item:nth-of-type(6n+1) {
     clear: left;
   }

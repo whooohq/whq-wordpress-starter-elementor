@@ -265,7 +265,7 @@ if ( ! class_exists( 'Jet_Engine_Forms_File_Upload' ) ) {
 
 				$img_preview = '';
 
-				$image_exts   = array( 'jpg', 'jpeg', 'jpe', 'gif', 'png', 'svg' );
+				$image_exts   = array( 'jpg', 'jpeg', 'jpe', 'gif', 'png', 'svg', 'webp' );
 				$img_ext_preg = '!\.(' . join( '|', $image_exts ) . ')$!i';
 
 				if ( preg_match( $img_ext_preg, $file['url'] ) ) {
@@ -504,6 +504,9 @@ if ( ! class_exists( 'Jet_Engine_Forms_File_Upload' ) ) {
 				if ( ! is_wp_error( $attachment ) ) {
 					$metadata = wp_generate_attachment_metadata( $attachment, $filepath );
 					wp_update_attachment_metadata( $attachment, $metadata );
+
+					// Updated an attachment url for compatibility with third party plugins ( Ex.: Performance Lab by WP )
+					$upload['url'] = wp_get_attachment_url( $attachment );
 				} else {
 					$this->errors[] = $attachment->get_error_message();
 				}

@@ -110,6 +110,7 @@ class Jet_Listing_Dynamic_Field_Widget extends \Jet_Listing_Dynamic_Widget {
 				'condition' => array(
 					'dynamic_field_source'      => 'object',
 					'dynamic_field_post_object' => 'post_excerpt',
+					'dynamic_field_wp_excerpt'  => 'yes',
 				),
 			)
 		);
@@ -125,6 +126,7 @@ class Jet_Listing_Dynamic_Field_Widget extends \Jet_Listing_Dynamic_Widget {
 				'condition' => array(
 					'dynamic_field_source'      => 'object',
 					'dynamic_field_post_object' => 'post_excerpt',
+					'dynamic_field_wp_excerpt'  => 'yes',
 				),
 			)
 		);
@@ -190,13 +192,13 @@ class Jet_Listing_Dynamic_Field_Widget extends \Jet_Listing_Dynamic_Widget {
 		$this->add_control(
 			'dynamic_field_post_meta_custom',
 			array(
-				'label'       => __( 'Custom meta field/repeater key', 'jet-engine' ),
+				'label'       => __( 'Custom Object field / Meta field / Repeater key', 'jet-engine' ),
 				'type'        => Controls_Manager::TEXT,
 				'default'     => '',
 				'label_block' => true,
-				'description' => __( 'Note: this field will override Meta Field value', 'jet-engine' ),
+				'description' => __( 'Note: this field will override Object field / Meta field value', 'jet-engine' ),
 				'condition'   => array(
-					'dynamic_field_source!' => array( 'object', 'query_var' ),
+					'dynamic_field_source!' => array( 'query_var', 'options_page', 'relations_hierarchy' ),
 				),
 			)
 		);
@@ -485,7 +487,7 @@ class Jet_Listing_Dynamic_Field_Widget extends \Jet_Listing_Dynamic_Widget {
 			array(
 				'label'      => __( 'Padding', 'jet-engine' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', '%', 'em' ) ),
 				'selectors'  => array(
 					$this->css_selector( '.display-multiline' ) => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					$this->css_selector( '.display-inline .jet-listing-dynamic-field__inline-wrap' ) => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -498,7 +500,7 @@ class Jet_Listing_Dynamic_Field_Widget extends \Jet_Listing_Dynamic_Widget {
 			array(
 				'label'      => __( 'Margin', 'jet-engine' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', '%', 'em' ) ),
 				'selectors'  => array(
 					$this->css_selector( '.display-multiline' ) => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					$this->css_selector( '.display-inline .jet-listing-dynamic-field__inline-wrap' ) => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -521,7 +523,7 @@ class Jet_Listing_Dynamic_Field_Widget extends \Jet_Listing_Dynamic_Widget {
 			array(
 				'label'      => __( 'Border Radius', 'jet-engine' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', '%' ) ),
 				'selectors'  => array(
 					$this->css_selector( '.display-multiline' ) => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					$this->css_selector( '.display-inline .jet-listing-dynamic-field__inline-wrap' ) => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',

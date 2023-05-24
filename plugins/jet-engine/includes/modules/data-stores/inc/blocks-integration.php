@@ -52,6 +52,37 @@ class Blocks_Integration {
 
 	}
 
+	public function get_store_options( $only_countable = false ) {
+
+		$stores = Module::instance()->stores->get_stores();
+
+		$options = array(
+			array(
+				'value' => '',
+				'label' => __( 'Select...', 'jet-engine' ),
+			)
+		);
+
+		foreach ( $stores as $store ) {
+
+			if ( $only_countable && $store->can_count_posts() ) {
+				$options[] = array(
+					'value' => $store->get_slug(),
+					'label' => $store->get_name(),
+				);
+			} elseif ( ! $only_countable ) {
+				$options[] = array(
+					'value' => $store->get_slug(),
+					'label' => $store->get_name(),
+				);
+			}
+
+		}
+
+		return $options;
+
+	}
+
 	public function register_store_atts( $atts ) {
 
 		$atts['dynamic_link_store'] = array(
@@ -78,30 +109,36 @@ class Blocks_Integration {
 		$link_controls = ! empty( $controls['dynamic-link'] ) ? $controls['dynamic-link'] : array();
 
 		$link_controls[] = array(
-			'prop' => 'dynamic_link_store',
-			'label' => __( 'Set store slug', 'jet-engine' ),
+			'name'      => 'dynamic_link_store',
+			'label'     => __( 'Select store', 'jet-engine' ),
+			'type'      => 'select',
+			'default'   => '',
+			'options'   => $this->get_store_options(),
 			'condition' => array(
-				'prop' => 'dynamic_link_source',
-				'val'  => array( 'add_to_store', 'remove_from_store' ),
-			)
+				'dynamic_link_source' => array( 'add_to_store', 'remove_from_store' ),
+			),
 		);
 
 		$link_controls[] = array(
-			'prop' => 'added_to_store_text',
-			'label' => __( 'Added to store link text', 'jet-engine' ),
-			'condition' => array(
-				'prop' => 'dynamic_link_source',
-				'val'  => array( 'add_to_store' ),
-			)
+			'name'      => 'added_to_store_text',
+			'label'       => __( 'Added to store text', 'jet-engine' ),
+			'type'        => 'text',
+			'default'     => '',
+			'label_block' => true,
+			'condition'   => array(
+				'dynamic_link_source' => array( 'add_to_store' ),
+			),
 		);
 
 		$link_controls[] = array(
-			'prop' => 'added_to_store_url',
-			'label' => __( 'Added to store link URL', 'jet-engine' ),
-			'condition' => array(
-				'prop' => 'dynamic_link_source',
-				'val'  => array( 'add_to_store' ),
-			)
+			'name'        => 'added_to_store_url',
+			'label'       => __( 'Added to store URL', 'jet-engine' ),
+			'type'        => 'text',
+			'default'     => '',
+			'label_block' => true,
+			'condition'   => array(
+				'dynamic_link_source' => array( 'add_to_store' ),
+			),
 		);
 
 		$controls['dynamic-link'] = $link_controls;

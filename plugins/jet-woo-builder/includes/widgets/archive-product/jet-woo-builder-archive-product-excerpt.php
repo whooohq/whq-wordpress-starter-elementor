@@ -68,6 +68,14 @@ class Jet_Woo_Builder_Archive_Product_Excerpt extends Widget_Base {
 			]
 		);
 
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'archive_excerpt_typography',
+				'selector' => $this->css_selector(),
+			]
+		);
+
 		$this->add_control(
 			'archive_excerpt_color',
 			[
@@ -76,14 +84,6 @@ class Jet_Woo_Builder_Archive_Product_Excerpt extends Widget_Base {
 				'selectors' => [
 					$this->css_selector() => 'color: {{VALUE}}',
 				],
-			]
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			[
-				'name'     => 'archive_excerpt_typography',
-				'selector' => $this->css_selector(),
 			]
 		);
 

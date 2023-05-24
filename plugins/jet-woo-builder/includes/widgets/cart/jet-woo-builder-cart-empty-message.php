@@ -149,22 +149,22 @@ class Jet_Woo_Builder_Cart_Empty_Message extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'empty_message_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['message'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'empty_message_padding',
 			[
-				'label'      => __( 'Padding', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['message'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -213,7 +213,7 @@ class Jet_Woo_Builder_Cart_Empty_Message extends Jet_Woo_Builder_Base {
 			[
 				'label'      => __( 'Size', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em' ],
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em' ] ),
 				'range'      => [
 					'px' => [
 						'min' => 0,
@@ -240,7 +240,7 @@ class Jet_Woo_Builder_Cart_Empty_Message extends Jet_Woo_Builder_Base {
 			[
 				'label'      => __( 'Indent', 'elementor' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em' ],
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em' ] ),
 				'range'      => [
 					'px' => [
 						'min' => 0,

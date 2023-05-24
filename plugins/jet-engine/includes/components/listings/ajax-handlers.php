@@ -53,11 +53,17 @@ if ( ! class_exists( 'Jet_Engine_Listings_Ajax_Handlers' ) ) {
 
 			define( 'DOING_AJAX', true );
 
+			do_action( 'jet-engine/ajax-handlers/referrer/request' );
+
 			$action = 'jet_engine_ajax';
 
 			if ( ! empty( $_REQUEST['jet_engine_action'] ) ) {
 				$action = sanitize_text_field( $_REQUEST['jet_engine_action'] );
 			}
+
+			$this->add_settings_to_request();
+
+			do_action( 'jet-engine/ajax-handlers/before-do-ajax', $this, $_REQUEST );
 
 			if ( is_user_logged_in() ) {
 				do_action( 'wp_ajax_' . $action );
@@ -86,9 +92,72 @@ if ( ! class_exists( 'Jet_Engine_Listings_Ajax_Handlers' ) ) {
 				}
 			}
 
-			do_action( 'jet-engine/ajax-handlers/before-call-handler', $this );
+			do_action( 'jet-engine/ajax-handlers/before-call-handler', $this, $_REQUEST );
 
 			call_user_func( array( $this, $_REQUEST['handler'] ) );
+
+		}
+
+		public function add_settings_to_request() {
+
+			$settings = ! empty( $_REQUEST['page_settings'] ) ? $_REQUEST['page_settings'] : $_REQUEST;
+
+			$query            = ! empty( $settings['query'] ) ? $settings['query'] : array();
+			$post_id          = ! empty( $settings['post_id'] ) ? absint( $settings['post_id'] ) : false;
+			$queried_obj_data = ! empty( $settings['queried_id'] ) ? explode( '|', $settings['queried_id'] ) : false;
+			$queried_id       = ! empty( $queried_obj_data[0] ) ? absint( $queried_obj_data[0] ) : false;
+			$queried_obj_type = ! empty( $queried_obj_data[1] ) ? $queried_obj_data[1] : 'WP_Post';
+			$element_id       = ( ! empty( $settings['element_id'] ) && 'false' !== $settings['element_id'] ) ? $settings['element_id'] : false;
+
+			if ( $queried_id && 'WP_Post' === $queried_obj_type ) {
+				global $post;
+				$post = get_post( $queried_id );
+			}
+
+			$widget_settings = false;
+
+			if ( $post_id && $element_id ) {
+
+				$listing_type = ( isset( $_REQUEST['listing_type'] ) && 'false' !== $_REQUEST['listing_type'] ) ? $_REQUEST['listing_type'] : false;
+
+				// Elementor-only legacy code
+				if ( jet_engine()->has_elementor() && ( ! $listing_type || 'elementor' === $listing_type ) ) {
+
+					$elementor = \Elementor\Plugin::instance();
+					$document = $elementor->documents->get( $post_id );
+
+					if ( $document ) {
+						$widget = $this->find_element_recursive( $document->get_elements_data(), $element_id );
+
+						if ( $widget ) {
+							$widget_instance = $elementor->elements_manager->create_element_instance( $widget );
+							$widget_settings = $widget_instance->get_settings_for_display();
+							//$_REQUEST['query'] = null;
+						}
+
+					}
+
+				} elseif ( $listing_type ) {
+
+
+					$widget_settings = apply_filters(
+						'jet-engine/listings/ajax/settings-by-id/' . $listing_type,
+						array(),
+						$element_id,
+						$post_id
+					);
+
+					if ( empty( $widget_settings['columns_mobile'] ) ) {
+						$widget_settings['columns_mobile'] = 1;
+					}
+
+				}
+
+			}
+
+			if ( $widget_settings ) {
+				$_REQUEST['widget_settings'] = $widget_settings;
+			}
 
 		}
 
@@ -243,42 +312,6 @@ if ( ! class_exists( 'Jet_Engine_Listings_Ajax_Handlers' ) ) {
 			if ( $queried_id && 'WP_Post' === $queried_obj_type ) {
 				global $post;
 				$post = get_post( $queried_id );
-			}
-
-			if ( $post_id && $element_id ) {
-
-				$listing_type = ( isset( $_REQUEST['listing_type'] ) && 'false' !== $_REQUEST['listing_type'] ) ? $_REQUEST['listing_type'] : false;
-
-				if ( jet_engine()->has_elementor() && ( ! $listing_type || 'elementor' === $listing_type ) ) {
-
-					$elementor = \Elementor\Plugin::instance();
-					$document = $elementor->documents->get( $post_id );
-
-					if ( $document ) {
-						$widget = $this->find_element_recursive( $document->get_elements_data(), $element_id );
-
-						if ( $widget ) {
-							$widget_instance = $elementor->elements_manager->create_element_instance( $widget );
-							$widget_settings = $widget_instance->get_settings_for_display();
-							//$_REQUEST['query'] = null;
-						}
-
-					}
-				} elseif ( $listing_type ) {
-
-					$widget_settings = apply_filters(
-						'jet-engine/listings/ajax/settings-by-id/' . $listing_type,
-						array(),
-						$element_id,
-						$post_id
-					);
-
-					if ( empty( $widget_settings['columns_mobile'] ) ) {
-						$widget_settings['columns_mobile'] = 1;
-					}
-
-				}
-
 			}
 
 			$_widget_settings = $widget_settings;

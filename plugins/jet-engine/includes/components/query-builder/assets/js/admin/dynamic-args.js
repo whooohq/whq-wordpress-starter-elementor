@@ -22,11 +22,16 @@ Vue.component( 'jet-query-dynamic-args', {
 			return;
 		}
 
-		const regexp     = /%([a-z_-]+)(\|[a-zA-Z0-9_\-\,\.\+\:\/\s|]+)?%(\{.+\})?/;
-		const parsedData = [ ...this.value.match( regexp ) ];
-
-		let macros = parsedData[1];
+		const regexp = /%([a-z_-]+)(\|[a-zA-Z0-9_\-\,\.\+\:\/\s\'\"\=\?\!\|\]\[]*)?%(\{.+\})?/;
+		const parsedData = this.value.match( regexp ) || [];
+		
+		let macros = parsedData[1] || null;
 		let data = null;
+
+		if ( ! macros ) {
+			console.warn( this.value + ' - incorrect macros value' );
+			return;
+		}
 
 		if ( parsedData[2] ) {
 			data = parsedData[2].substring( 1, parsedData[2].length );
@@ -190,6 +195,10 @@ Vue.component( 'jet-query-dynamic-args', {
 
 					case 'text':
 						type = 'cx-vui-input';
+						break;
+
+					case 'textarea':
+						type = 'cx-vui-textarea';
 						break;
 
 					case 'select':

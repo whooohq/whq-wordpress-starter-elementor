@@ -98,34 +98,41 @@
 .jet-switcher--preset-1 {
 
 	&.jet-switcher--disable {
-		.jet-switcher__control-handler {
-			transform: translateX(0);
+		& > .jet-switcher__control-wrapper{
+			.jet-switcher__control{
+				&-handler {
+					transform: translateX(0);
 
-			span {
-				background-color: #c3c3c3;
+					span {
+						background-color: #c3c3c3;
+					}
+				}
+				&--disable {
+					color: #fff;
+				}
 			}
-		}
-
-		.jet-switcher__control--disable {
-			color: #fff;
 		}
 	}
 
 	&.jet-switcher--enable {
-		.jet-switcher__control-handler {
-			transform: translateX(100%);
+		& > .jet-switcher__control-wrapper{
+			.jet-switcher__control{
+				&-handler {
+					transform: translateX(100%);
 
-			.rtl & {
-				transform: translateX(-100%);
+					.rtl & {
+						transform: translateX(-100%);
+					}
+
+					span {
+						background-color: #61ce70;
+					}
+				}
+
+				&--enable {
+					color: #fff;
+				}
 			}
-
-			span {
-				background-color: #61ce70;
-			}
-		}
-
-		.jet-switcher__control--enable {
-			color: #fff;
 		}
 	}
 
@@ -139,10 +146,13 @@
 		max-width: 50%;
 	}
 
-	.jet-switcher__control-handler {
-		width: 50%;
-		height: 100%;
-		transition: transform 0.3s cubic-bezier(.44,.95,.57,.97);
+	& > .jet-switcher__control-wrapper{
+
+		.jet-switcher__control-handler {
+			width: 50%;
+			height: 100%;
+			transition: transform 0.3s cubic-bezier(.44,.95,.57,.97);
+		}
 	}
 
 	.jet-switcher__control--disable {
@@ -159,22 +169,27 @@
 .jet-switcher--preset-2 {
 
 	&.jet-switcher--disable {
-		.jet-switcher__control-handler {
-			left: 0;
+		& > .jet-switcher__control-wrapper{
+			.jet-switcher__control-handler {
+				left: 0;
 
-			span {
-				background-color: #c3c3c3;
+				span {
+					background-color: #c3c3c3;
+				}
 			}
 		}
 	}
 
 	&.jet-switcher--enable {
 
-		.jet-switcher__control-handler {
-			left: calc(100% - 30px);
+		& > .jet-switcher__control-wrapper{
 
-			span {
-				background-color: #61ce70;
+			.jet-switcher__control-handler {
+				left: calc(100% - 30px);
+
+				span {
+					background-color: #61ce70;
+				}
 			}
 		}
 	}
@@ -184,10 +199,14 @@
 		height: 40px;
 	}
 
-	.jet-switcher__control-handler {
-		width: 60px;
-		height: 100%;
-		transition: left 0.3s cubic-bezier(.44,.95,.57,.97);
+	& > .jet-switcher__control-wrapper{
+
+		.jet-switcher__control-handler {
+			width: 60px;
+			height: 100%;
+			transition: left 0.3s cubic-bezier(.44,.95,.57,.97);
+		}
+
 	}
 
 	.jet-switcher__control--disable {

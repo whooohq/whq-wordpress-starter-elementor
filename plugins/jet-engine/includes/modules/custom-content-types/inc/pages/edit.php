@@ -57,6 +57,8 @@ class Edit extends \Jet_Engine_CPT_Page_Base {
 
 		$ui = new \CX_Vue_UI( $module_data );
 
+		\CX_Vue_UI::$templates_path = Module::instance()->module_path( 'templates/admin/rewrite/' );
+
 		$ui->enqueue_assets();
 
 		if ( ! class_exists( '\Jet_Engine_Meta_Boxes_Page_Edit' ) ) {
@@ -114,6 +116,7 @@ class Edit extends \Jet_Engine_CPT_Page_Base {
 				'post_types'        => \Jet_Engine_Tools::get_post_types_for_js(),
 				'db_prefix'         => DB::table_prefix(),
 				'positions'         => $this->get_positions(),
+				'default_position'  => \Jet_Engine_Tools::get_default_menu_position(),
 				'rest_base'         => rest_url( '/jet-cct/' ),
 				'service_fields'    => Module::instance()->manager->get_service_fields( array(
 					'add_id_field' => true,
@@ -145,64 +148,10 @@ class Edit extends \Jet_Engine_CPT_Page_Base {
 	 * @return [type] [description]
 	 */
 	public function get_positions() {
-		return apply_filters( 'jet-engine/options-pages/available-positions', array(
-			array(
-				'value' => 3,
-				'label' => __( 'Dashboard', 'jet-engine' ),
-			),
-			array(
-				'value' => 4,
-				'label' => __( 'First Separator', 'jet-engine' ),
-			),
-			array(
-				'value' => 6,
-				'label' => __( 'Posts', 'jet-engine' ),
-			),
-			array(
-				'value' => 11,
-				'label' => __( 'Media', 'jet-engine' ),
-			),
-			array(
-				'value' => 16,
-				'label' => __( 'Links', 'jet-engine' ),
-			),
-			array(
-				'value' => 21,
-				'label' => __( 'Pages', 'jet-engine' ),
-			),
-			array(
-				'value' => 26,
-				'label' => __( 'Comments', 'jet-engine' ),
-			),
-			array(
-				'value' => 59,
-				'label' => __( 'Second Separator', 'jet-engine' ),
-			),
-			array(
-				'value' => 61,
-				'label' => __( 'Appearance', 'jet-engine' ),
-			),
-			array(
-				'value' => 66,
-				'label' => __( 'Plugins', 'jet-engine' ),
-			),
-			array(
-				'value' => 71,
-				'label' => __( 'Users', 'jet-engine' ),
-			),
-			array(
-				'value' => 76,
-				'label' => __( 'Tools', 'jet-engine' ),
-			),
-			array(
-				'value' => 81,
-				'label' => __( 'Settings', 'jet-engine' ),
-			),
-			array(
-				'value' => 100,
-				'label' => __( 'Third Separator', 'jet-engine' ),
-			),
-		) );
+		return apply_filters(
+			'jet-engine/options-pages/available-positions',
+			\Jet_Engine_Tools::get_available_menu_positions()
+		);
 	}
 
 	/**

@@ -382,10 +382,8 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Dynamic_Field' ) ) {
 		}
 
 		public function render_callback( $attributes = array() ) {
-			return sprintf(
-				'<div class="jet-listing-dynamic-field-block">%s</div>',
-				parent::render_callback( $attributes )
-			);
+			$this->_root['class'][] = 'jet-listing-dynamic-field-block';
+			return parent::render_callback( $attributes, false );
 		}
 
 	}

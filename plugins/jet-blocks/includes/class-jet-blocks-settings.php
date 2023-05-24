@@ -153,7 +153,7 @@ if ( ! class_exists( 'Jet_Blocks_Settings' ) ) {
 			}
 
 			$settingsData = [
-				'widgets_load_level'      => [
+				'widgets_load_level'   => [
 					'value' => $this->get( 'widgets_load_level', 100 ),
 					'options' => [
 						[
@@ -178,13 +178,20 @@ if ( ! class_exists( 'Jet_Blocks_Settings' ) ) {
 						],
 					],
 				],
-				'avaliable_widgets'       =>[
+				'avaliable_widgets'    =>[
 					'value'   => $active_widgets,
 					'options' => $avaliable_widgets,
 				] ,
-				'avaliable_extensions'    => [
+				'avaliable_extensions' => [
 					'value'   => $active_extensions,
 					'options' => $avaliable_extensions,
+				],
+				'captcha'              => [
+					'value' => $this->get( 'captcha', [
+						'enable'     => 'false',
+						'site_key'   => '',
+						'secret_key' => '',
+					] )
 				],
 			];
 

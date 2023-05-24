@@ -5,6 +5,7 @@ class Frontend {
 
 	private $template_id = null;
 	private $has_access = false;
+	public $access = null;
 	public $menu = null;
 	public $current_user_obj = false;
 	public $user_page_title = null;
@@ -76,6 +77,12 @@ class Frontend {
 
 		$settings = Module::instance()->settings->get();
 		$template_mode = Module::instance()->settings->get( 'template_mode' );
+
+		// Render listing item with listing own render API
+		if ( jet_engine()->listings->post_type->slug() === get_post_type( $template_id ) ) {
+			echo jet_engine()->frontend->get_listing_item_content( $template_id );
+			return;
+		}
 
 		if ( 'rewrite' === $template_mode && ! empty( $settings['force_template_rewrite'] ) ) {
 
@@ -157,9 +164,9 @@ class Frontend {
 			$current_template = get_page_template_slug();
 
 			if ( $current_template && 'elementor_canvas' === $current_template ) {
-				$template = jet_engine()->get_template( 'profile-builder/page-canvas.php' );
+				$template = Module::instance()->get_template( 'page-canvas.php' );
 			} else {
-				$template = jet_engine()->get_template( 'profile-builder/page.php' );
+				$template = Module::instance()->get_template( 'page.php' );
 			}
 		}
 
@@ -198,7 +205,11 @@ class Frontend {
 			if ( 1 < count( $profile_page ) ) {
 				$this->maybe_set_user_obj_by_context();
 
-				$url = Module::instance()->settings->get_subpage_url( $profile_page[1], $profile_page[0] );
+				if ( $this->is_subpage_url_visible( $profile_page[1], $profile_page[0] ) ) {
+					$url = Module::instance()->settings->get_subpage_url( $profile_page[1], $profile_page[0] );
+				} else {
+					$url = null;
+				}
 
 				$this->maybe_reset_user_obj_by_context();
 			}
@@ -206,6 +217,30 @@ class Frontend {
 		}
 
 		return $url;
+	}
+
+	public function is_subpage_url_visible( $slug = null, $page = 'account_page' ) {
+
+		$page_data    = Module::instance()->settings->get_subpage_data( $slug, $page );
+		$page_visible = Module::instance()->query->is_subpage_visible( $page_data );
+
+		if ( ! $page_visible ) {
+			return false;
+		}
+
+		$slug    = Module::instance()->query->get_queried_user_slug();
+		$rewrite = Module::instance()->settings->get( 'user_page_rewrite', 'login' );
+		$rewrite = ( 'user_nicename' === $rewrite ) ? 'slug' : $rewrite;
+
+		$user = get_user_by( $rewrite, $slug );
+
+		if ( ! $user ) {
+			return false;
+		}
+
+		$roles_intersect = empty( $page_data['roles'] ) ? $user->roles : array_intersect( $user->roles, $page_data['roles'] );
+
+		return ! empty( $roles_intersect );
 	}
 
 	public function maybe_set_user_obj_by_context() {
@@ -283,7 +318,7 @@ class Frontend {
 		$title_macros = $this->get_user_page_title_macros();
 
 		$user_page_title = preg_replace_callback(
-			'/%([a-z0-9_-]+)%/',
+			'/%([a-z0-9_-]+)(\([a-zA-Z0-9_-]+\))?%/',
 			function( $matches ) use ( $title_macros ) {
 
 				$found = $matches[1];
@@ -302,7 +337,8 @@ class Frontend {
 					return $matches[0];
 				}
 
-				$result = call_user_func( $cb );
+				$args   = isset( $matches[2] ) ? trim( $matches[2], '()' ) : false;
+				$result = call_user_func( $cb, $args );
 
 				if ( is_array( $result ) ) {
 					$result = implode( ',', $result );
@@ -324,7 +360,7 @@ class Frontend {
 	public function get_user_page_title_macros() {
 		return apply_filters( 'jet-engine/profile-builder/user-page-title/macros', array(
 			'username' => array(
-				'label' => esc_html__( 'User Name', 'jet-engine' ),
+				'label' => esc_html__( 'User Display Name', 'jet-engine' ),
 				'cb'    => function() {
 					$user = Module::instance()->query->get_queried_user();
 					return $user ? $user->display_name : null;
@@ -353,6 +389,19 @@ class Frontend {
 				'label' => esc_html__( 'Site Name', 'jet-engine' ),
 				'cb'    => function() {
 					return get_bloginfo( 'name', 'display' );
+				},
+			),
+			'user_field' => array(
+				'label'    => esc_html__( 'User Field', 'jet-engine' ) . ' (<i>first_name, last_name, nickname, ...</i>)',
+				'variable' => 'user_field(field-name)',
+				'cb'       => function( $user_field ) {
+
+					if ( empty( $user_field ) ) {
+						return null;
+					}
+
+					$user = Module::instance()->query->get_queried_user();
+					return $user ? get_user_meta( $user->ID, $user_field, true ) : null;
 				},
 			),
 		) );

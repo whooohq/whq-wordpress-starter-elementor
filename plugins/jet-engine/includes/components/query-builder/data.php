@@ -114,6 +114,7 @@ class Data extends \Jet_Engine_Base_Data {
 			'preview_page_title',
 			'preview_query_string',
 			'query_id',
+			'description',
 		);
 
 		foreach ( $regular_args as $key ) {

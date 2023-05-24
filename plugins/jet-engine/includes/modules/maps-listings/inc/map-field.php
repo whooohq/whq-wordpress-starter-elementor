@@ -114,8 +114,8 @@ class Map_Field {
 
 		$result = '<p><b>' . esc_html__( 'Lat and Lng are separately stored in the following fields', 'jet-engine' ) . ':</b></p>';
 		$result .= '<ul>';
-		$result .= sprintf( '<li>%1$s: %2$s</li>', esc_html__( 'Lat', 'jet-engine' ), $prefix . '_lat' );
-		$result .= sprintf( '<li>%1$s: %2$s</li>', esc_html__( 'Lng', 'jet-engine' ), $prefix . '_lng' );
+		$result .= sprintf( '<li>%1$s: <span class="je-field-name">%2$s</span></li>', esc_html__( 'Lat', 'jet-engine' ), $prefix . '_lat' );
+		$result .= sprintf( '<li>%1$s: <span class="je-field-name">%2$s</span></li>', esc_html__( 'Lng', 'jet-engine' ), $prefix . '_lng' );
 		$result .= '</ul>';
 
 		return $result;
@@ -128,24 +128,58 @@ class Map_Field {
 		$provider->register_public_assets();
 		$provider->public_assets( null, array( 'marker_clustering' => false ), null );
 
+		wp_enqueue_style(
+			'jet-engine-map-field',
+			jet_engine()->plugin_url( 'includes/modules/maps-listings/assets/css/map-field.css' ),
+			array(),
+			jet_engine()->get_version()
+		);
+
 		wp_enqueue_script(
 			'jet-engine-map-field',
 			jet_engine()->plugin_url( 'includes/modules/maps-listings/assets/js/admin/map-field.js' ),
-			array( 'jquery', 'wp-api-fetch' ),
+			array( 'jquery', 'wp-api-fetch', 'wp-util' ),
 			jet_engine()->get_version(),
 			true
 		);
 
 		wp_localize_script( 'jet-engine-map-field', 'JetMapFieldsSettings', array(
-			'api'     => jet_engine()->api->get_route( 'get-map-point-data' ),
-			'apiHash' => jet_engine()->api->get_route( 'get-map-location-hash' ),
-			'i18n'    => array(
-				'loading'   => esc_html__( 'Loading ...', 'jet-engine' ),
-				'notFound'  => esc_html__( 'Address not found', 'jet-engine' ),
-				'resetBtn'  => esc_html__( 'Reset location', 'jet-engine' ),
-				'descTitle' => esc_html__( 'Lat and Lng are separately stored in the following fields', 'jet-engine' ),
+			'api'             => jet_engine()->api->get_route( 'get-map-point-data' ),
+			'apiHash'         => jet_engine()->api->get_route( 'get-map-location-hash' ),
+			'apiLocation'     => jet_engine()->api->get_route( 'get-map-location-data' ),
+			'apiAutocomplete' => jet_engine()->api->get_route( 'get-map-autocomplete-data' ),
+			'i18n' => array(
+				'loading'  => esc_html__( 'Loading ...', 'jet-engine' ),
+				'notFound' => esc_html__( 'Address not found', 'jet-engine' ),
 			),
 		) );
+
+		add_action( 'admin_print_footer_scripts', array( $this, 'print_field_js_template' ) );
+	}
+
+	public function print_field_js_template() {
+		?>
+		<script type="text/html" id="tmpl-jet-engine-map-field">
+			<div class="jet-engine-map-field__preview">
+				<address class="jet-engine-map-field__position"></address>
+				<div class="jet-engine-map-field__reset" role="button">× <?php _e( 'Reset location', 'jet-engine' ); ?></div>
+			</div>
+			<div class="jet-engine-map-field__search">
+				<input type="text" class="widefat cx-ui-text" placeholder="<?php _e( 'Search...', 'jet-engine' ); ?>">
+				<div class="jet-engine-map-field__search-loader"></div>
+				<ul class="jet-engine-map-field__search-list"></ul>
+			</div>
+			<div class="jet-engine-map-field__frame" style="height:{{{data.height}}}px"></div>
+			<# if ( data.isRepeater ) { #>
+			<div class="jet-engine-map-field__description">
+				<p>
+					<?php _e( 'Lat and Lng are separately stored in the following fields', 'jet-engine' ); ?>:&nbsp;
+					<span class="je-field-name">{{{data.fieldPrefix}}}_lat</span>, <span class="je-field-name">{{{data.fieldPrefix}}}_lng</span>
+				</p>
+			</div>
+			<# } #>
+		</script>
+		<?php
 	}
 
 	public function add_lat_lng_fields( $fields = array(), $instance = null ) {
@@ -267,7 +301,7 @@ class Map_Field {
 		}
 
 		if ( 'location_array' === $field['map_value_format'] ) {
-			return json_decode( $value, true );
+			return json_decode( wp_unslash( $value ), true );
 		} else {
 			return $value;
 		}

@@ -53,7 +53,37 @@ class Google extends Base {
 	}
 
 	/**
-	 * Find location name in the reverse geocoding reponse data and return it
+	 * Build Autocomplete API URL for given place predictions
+	 * @return mixed
+	 */
+	public function build_autocomplete_api_url( $query = '' ) {
+
+		$api_url           = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
+		$api_key           = Module::instance()->settings->get( 'api_key' );
+		$use_geocoding_key = Module::instance()->settings->get( 'use_geocoding_key' );
+		$geocoding_key     = Module::instance()->settings->get( 'geocoding_key' );
+
+		if ( $use_geocoding_key && $geocoding_key ) {
+			$api_key = $geocoding_key;
+		}
+
+		if ( ! $api_key ) {
+			return false;
+		}
+
+		return add_query_arg(
+			array(
+				'input'    => urlencode( $query ),
+				'key'      => urlencode( $api_key ),
+				'language' => substr( get_bloginfo( 'language' ), 0, 2 ),
+				//'sessiontoken' => '', // todo - add sessiontoken to optimize request.
+			),
+			$api_url
+		);
+	}
+
+	/**
+	 * Find location name in the reverse geocoding response data and return it
 	 *
 	 * @param  array  $data [description]
 	 * @return [type]       [description]
@@ -63,7 +93,7 @@ class Google extends Base {
 	}
 
 	/**
-	 * Find coordinates in the reponse data and return it
+	 * Find coordinates in the response data and return it
 	 *
 	 * @param  array  $data [description]
 	 * @return [type]       [description]
@@ -80,6 +110,31 @@ class Google extends Base {
 
 		return $coord;
 
+	}
+
+	/**
+	 * Find place predictions in the response data and return it
+	 *
+	 * @param  array $data
+	 * @return array|false
+	 */
+	public function extract_autocomplete_data_from_response_data( $data = array() ) {
+
+		$predictions = isset( $data['predictions'] ) ? $data['predictions'] : false;
+
+		if ( ! $predictions ) {
+			return false;
+		}
+
+		$result = array();
+
+		foreach ( $predictions as $prediction ) {
+			$result[] = array(
+				'address' => $prediction['description']
+			);
+		}
+
+		return $result;
 	}
 
 	/**

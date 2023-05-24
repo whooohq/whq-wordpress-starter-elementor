@@ -223,10 +223,7 @@ class Profile_Menu_Widget extends \Elementor\Widget_Base {
 			array(
 				'label'      => esc_html__( 'Item Width', 'jet-engine' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array(
-					'%',
-					'px',
-				),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( '%', 'px' ) ),
 				'range'      => array(
 					'%'  => array(
 						'min' => 0,
@@ -400,7 +397,7 @@ class Profile_Menu_Widget extends \Elementor\Widget_Base {
 			array(
 				'label'      => __( 'Padding', 'jet-engine' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', '%', 'em' ) ),
 				'selectors'  => array(
 					'{{WRAPPER}} .jet-profile-menu__item-link' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -412,7 +409,7 @@ class Profile_Menu_Widget extends \Elementor\Widget_Base {
 			array(
 				'label'      => __( 'Margin', 'jet-engine' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', '%', 'em' ) ),
 				'selectors'  => array(
 					'{{WRAPPER}} .jet-profile-menu__item' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -434,7 +431,7 @@ class Profile_Menu_Widget extends \Elementor\Widget_Base {
 			array(
 				'label'      => __( 'Border Radius', 'jet-engine' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', '%' ) ),
 				'selectors'  => array(
 					'{{WRAPPER}} .jet-profile-menu__item-link' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),

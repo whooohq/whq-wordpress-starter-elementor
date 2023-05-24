@@ -103,8 +103,8 @@ class Twitter_Feed_Carousel extends Widget_Base
                 'label' => esc_html__('Consumer Key', 'essential-addons-elementor'),
                 'type' => Controls_Manager::TEXT,
                 'label_block' => false,
-                'default' => 'wwC72W809xRKd9ySwUzXzjkmS',
-                'description' => '<a href="https://apps.twitter.com/app/" target="_blank">Get Consumer Key.</a> Create a new app or select existing app and grab the <b>consumer key.</b>',
+                'default' => '',
+                'description' => '<a href="https://developer.twitter.com/en/portal/dashboard" target="_blank">Get Consumer Key.</a> Create a new app or select existing app and grab the <b>consumer key.</b>',
             ]
         );
 
@@ -114,8 +114,8 @@ class Twitter_Feed_Carousel extends Widget_Base
                 'label' => esc_html__('Consumer Secret', 'essential-addons-elementor'),
                 'type' => Controls_Manager::TEXT,
                 'label_block' => false,
-                'default' => 'rn54hBqxjve2CWOtZqwJigT3F5OEvrriK2XAcqoQVohzr2UA8h',
-                'description' => '<a href="https://apps.twitter.com/app/" target="_blank">Get Consumer Secret.</a> Create a new app or select existing app and grab the <b>consumer secret.</b>',
+                'default' => '',
+                'description' => '<a href="https://developer.twitter.com/en/portal/dashboard" target="_blank">Get Consumer Secret.</a> Create a new app or select existing app and grab the <b>consumer secret.</b>',
             ]
         );
 
@@ -1453,7 +1453,12 @@ class Twitter_Feed_Carousel extends Widget_Base
 
     protected function render()
     {
-        $settings = $this->get_settings_for_display();
+	    $settings    = $this->get_settings_for_display();
+	    $render_html = $this->twitter_feed_render_items( $this->get_id(), $settings, 'swiper-slide' );
+
+	    if ( empty( $render_html ) ) {
+		    return;
+	    }
 
 	    $this->add_render_attribute( 'eael-twitter-feed-carousel-wrap', [
 		    'data-items'          => $this->get_settings( 'items' )['size'],
@@ -1469,9 +1474,9 @@ class Twitter_Feed_Carousel extends Widget_Base
 		    'data-dots'           => '1',
 	    ] );
 
-		echo '<div class="eael-twitter-feed eael-twitter-feed-carousel swiper-container eael-twitter-feed-' . $this->get_id() . '" ' . $this->get_render_attribute_string('eael-twitter-feed-carousel-wrap') . '>
+		echo '<div class="eael-twitter-feed eael-twitter-feed-carousel swiper swiper-container eael-twitter-feed-' . $this->get_id() . '" ' . $this->get_render_attribute_string('eael-twitter-feed-carousel-wrap') . '>
 			<div class="swiper-wrapper">
-				' . $this->twitter_feed_render_items($this->get_id(), $settings, 'swiper-slide') . '
+				' . $render_html . '
 			</div>';
 
         if ($settings['dots'] == 'yes') {
@@ -1486,6 +1491,9 @@ class Twitter_Feed_Carousel extends Widget_Base
 				<div class="swiper-button-prev swiper-button-prev-' . esc_attr($this->get_id()) . '">
 				    '. Helper::get_render_icon( $settings['arrow_left'] ) .'
 				</div>';
+        }else{
+            echo '<div class="swiper-button-next" style="display:none;"></div>
+				<div class="swiper-button-prev" style="display:none;"></div>';
         }
         echo '</div>';
     }

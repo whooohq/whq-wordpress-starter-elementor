@@ -2,28 +2,28 @@
 	:class="classes"
 	v-if="visible"
 >
-	<div class="alert-type-line"></div>
+	<div class="alert-type-line" :style="{ 'background': config.typeBgColor }"></div>
 	<div class="alert-icon" v-html="iconHtml"></div>
 	<div class="alert-content">
-		<div class="alert-title" v-if="title" v-html="title"></div>
-		<div class="alert-message" v-if="message" v-html="message"></div>
-		<div class="alert-buttons" v-if="buttons">
-			<cx-vui-button
-				v-for="(button, index) in buttons"
-				:key="`button-${index}`"
-				:class="`cx-vui-button--style-${button.type}`"
-				:button-style="button.style"
-				size="mini"
-				:url="button.url"
-				tag-name="a"
-				target="_blank"
-			>
+        <div class="alert-title" v-if="title" v-html="title"></div>
+        <div class="alert-message" v-if="message" v-html="message"></div>
+	</div>
+    <div class="alert-buttons" v-if="buttons">
+        <cx-vui-button
+                v-for="(button, index) in buttons"
+                :key="`button-${index}`"
+                :class="`cx-vui-button--style-${button.type}`"
+                :button-style="button.style"
+                size="mini"
+                :url="button.url"
+                tag-name="a"
+                target="_blank"
+        >
 				<span slot="label">
 					<span>{{ button.label }}</span>
 				</span>
-			</cx-vui-button>
-		</div>
-	</div>
+        </cx-vui-button>
+    </div>
 	<div
 		class="alert-close"
 		@click="closeAlert"

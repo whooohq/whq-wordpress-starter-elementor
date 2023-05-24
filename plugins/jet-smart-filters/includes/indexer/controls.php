@@ -80,6 +80,31 @@ if ( ! class_exists( 'Jet_Smart_Filters_Indexer_Controls' ) ) {
 				)
 			);
 
+			$obj->add_responsive_control(
+				'counter_position',
+				array(
+					'label'       => esc_html__( 'Position', 'jet-smart-filters' ),
+					'type'        => Elementor\Controls_Manager::CHOOSE,
+					'toggle'      => false,
+					'label_block' => false,
+					'default'     => 'default',
+					'options'     => array(
+						'default'       => array(
+							'title' => esc_html__( 'Default', 'jet-smart-filters' ),
+							'icon'  => 'eicon-justify-center-h',
+						),
+						'space-between' => array(
+							'title' => esc_html__( 'Space Between', 'jet-smart-filters' ),
+							'icon'  => 'eicon-justify-space-between-h',
+						),
+					),
+					'prefix_class' => 'jet-filters-counter-position-',
+					'condition'    => array(
+						'filters_position' => 'block',
+					),
+				)
+			);
+
 			$obj->add_group_control(
 				Elementor\Group_Control_Typography::get_type(),
 				array(
@@ -107,8 +132,8 @@ if ( ! class_exists( 'Jet_Smart_Filters_Indexer_Controls' ) ) {
 						'unit' => 'px',
 					),
 					'selectors'  => array(
-						'{{WRAPPER}} .jet-filters-counter'      => 'margin-left: {{SIZE}}{{UNIT}};',
-						'.rtl {{WRAPPER}} .jet-filters-counter' => 'margin-right: {{SIZE}}{{UNIT}};',
+						'{{WRAPPER}} .jet-filters-counter'      => 'padding-left: {{SIZE}}{{UNIT}};',
+						'.rtl {{WRAPPER}} .jet-filters-counter' => 'padding-right: {{SIZE}}{{UNIT}};',
 					),
 				)
 			);
@@ -204,6 +229,32 @@ if ( ! class_exists( 'Jet_Smart_Filters_Indexer_Controls' ) ) {
 			);
 
 			$obj->add_control(
+				'counter_prefix',
+				array(
+					'label'     => esc_html__( 'Counter Prefix', 'jet-smart-filters' ),
+					'type'      => Elementor\Controls_Manager::TEXT,
+					'default'   => '(',
+					'condition' => array(
+						'apply_indexer' => 'yes',
+						'show_counter'  => 'yes'
+					)
+				)
+			);
+
+			$obj->add_control(
+				'counter_suffix',
+				array(
+					'label'     => esc_html__( 'Counter Suffix', 'jet-smart-filters' ),
+					'type'      => Elementor\Controls_Manager::TEXT,
+					'default'   => ')',
+					'condition' => array(
+						'apply_indexer' => 'yes',
+						'show_counter'  => 'yes'
+					)
+				)
+			);
+
+			$obj->add_control(
 				'show_items_rule',
 				array(
 					'label'     => __( 'If Item Empty', 'jet-smart-filters' ),
@@ -245,19 +296,20 @@ if ( ! class_exists( 'Jet_Smart_Filters_Indexer_Controls' ) ) {
 		 */
 		public function get_counter_html( $args ) {
 
-			$options                   = $args['display_options'];
-			$options['counter_prefix'] = '(';
-			$options['counter_suffix'] = ')';
+			$options = $args['display_options'];
 
-			$format = apply_filters(
-				'jet-smart-filter/templates/counter/format',
-				'<span class="jet-filters-counter"><span class="counter-prefix">%s</span><span class="value">0</span><span class="counter-suffix">%s</span></span>'
-			);
-
-			$counter = sprintf( $format, $options['counter_prefix'], $options['counter_suffix'] );
+			$counter_html = '<span class="jet-filters-counter">';
+			if ( ! empty( $options['counter_prefix'] ) ) {
+				$counter_html .= '<span class="counter-prefix">' . $options['counter_prefix'] . '</span>';
+			}
+			$counter_html .= '<span class="value">0</span>';
+			if ( ! empty( $options['counter_suffix'] ) ) {
+				$counter_html .= '<span class="counter-suffix">' . $options['counter_suffix'] . '</span>';
+			}
+			$counter_html .= '</span>';
 
 			if ( $options['show_counter'] ) {
-				echo $counter;
+				echo apply_filters( 'jet-smart-filter/templates/counter/format', $counter_html );
 			}
 		}
 	}

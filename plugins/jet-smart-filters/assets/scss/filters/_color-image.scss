@@ -1,5 +1,9 @@
 .jet-color-image-list {
 	&-wrapper {
+		margin: 0;
+		border: 0;
+		padding: 0;
+
 		// Dropdown
 		.jet-filter-items-dropdown & {
 			padding: 5px 12px;
@@ -15,10 +19,10 @@
 		width: 30px;
 	}
 
-	.jet-color-image-list__item {
+	&__item {
+		cursor: pointer;
 		position: relative;
 		display: inline-block;
-		cursor: pointer;
 
 		input {
 			outline: 0;
@@ -36,27 +40,56 @@
 				}
 			}
 		}
+	}
 
-		.jet-color-image-list__button {
-			display: flex;
-			border-color: #ccc;
-			border-width: 1px;
-		}
+	&__button {
+		display: flex;
+		border-color: #ccc;
+		border-width: 1px;
+	}
 
-		.jet-color-image-list__label {
-			align-self: center;
-		}
+	&__label {
+		align-self: center;
+	}
 
-		.jet-color-image-list__decorator > * {
+	&__decorator {
+		& > * {
 			position: relative;
 			display: inline-block;
 			border: 1px solid transparent;
 			border-radius: 3px;
 			vertical-align: middle;
 		}
+	}
 
-		.jet-color-image-list__image {
-			font-size: 0;
-		}
+	&__image {
+		font-size: 0;
+	}
+}
+
+// Context Bricks
+.brxe-jet-smart-filters-color-image {
+	.jet-color-image-list-wrapper {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		flex-wrap: wrap;
+	}
+
+	.jet-color-image-list__item {
+		display: block;
+		margin-bottom: 0;
+	}
+
+	.jet-color-image-list__button {
+		align-items: center;
+	}
+
+	.jet-color-image-list__decorator {
+		display: inline-flex;
+	}
+
+	.jet-color-image-list__image img {
+		width: 100%;
 	}
 }

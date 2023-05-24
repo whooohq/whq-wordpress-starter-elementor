@@ -67,9 +67,9 @@ class Jet_Woo_Builder_Products_Ordering extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'ordering_select_input_width',
 			[
-				'label'      => __( 'Width', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ '%', 'px' ],
+				'label'      => __( 'Width', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', '%' ] ),
 				'range'      => [
 					'%'  => [
 						'min' => 10,
@@ -110,8 +110,8 @@ class Jet_Woo_Builder_Products_Ordering extends Jet_Woo_Builder_Base {
 		$this->add_control(
 			'ordering_select_color',
 			[
-				'label'     => __( 'Text Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['select'] => 'color: {{VALUE}};',
 				],
@@ -140,13 +140,13 @@ class Jet_Woo_Builder_Products_Ordering extends Jet_Woo_Builder_Base {
 
 		$this->add_control(
 			'ordering_select_focus_color',
-			array(
-				'label'     => esc_html__( 'Text Color', 'jet-woo-builder' ),
+			[
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
+				'label'     => __( 'Color', 'jet-woo-builder' ),
+				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['select'] . ':focus' => 'color: {{VALUE}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_control(
@@ -182,21 +182,21 @@ class Jet_Woo_Builder_Products_Ordering extends Jet_Woo_Builder_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name'      => 'ordering_select_border',
-				'selector'  => '{{WRAPPER}} ' . $css_scheme['select'],
 				'separator' => 'before',
+				'selector'  => '{{WRAPPER}} ' . $css_scheme['select'],
 			]
 		);
 
 		$this->add_control(
 			'ordering_select_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['select'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_group_control(
@@ -209,22 +209,22 @@ class Jet_Woo_Builder_Products_Ordering extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'ordering_select_margin',
-			array(
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['select'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'ordering_select_padding',
 			[
-				'label'      => __( 'Padding', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['select'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],

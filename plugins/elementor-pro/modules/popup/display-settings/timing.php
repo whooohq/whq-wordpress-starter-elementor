@@ -2,6 +2,7 @@
 
 namespace ElementorPro\Modules\Popup\DisplaySettings;
 
+use ElementorPro\Plugin;
 use Elementor\Controls_Manager;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -64,6 +65,22 @@ class Timing extends Base {
 				'label' => esc_html__( 'Times', 'elementor-pro' ),
 				'default' => 3,
 				'min' => 1,
+			]
+		);
+
+		$this->add_settings_group_control(
+			'period',
+			[
+				'type' => Controls_Manager::SELECT,
+				'label' => esc_html__( 'Per', 'elementor-pro' ),
+				'default' => '', // Backward Compatibility - Persisting is old default value.
+				'options' => [
+					'' => esc_html__( 'Persisting', 'elementor-pro' ),
+					'session' => esc_html__( 'Session', 'elementor-pro' ),
+					'day' => esc_html__( 'Day', 'elementor-pro' ),
+					'week' => esc_html__( 'Week', 'elementor-pro' ),
+					'month' => esc_html__( 'Month', 'elementor-pro' ),
+				],
 			]
 		);
 
@@ -162,6 +179,19 @@ class Timing extends Base {
 
 		$this->end_settings_group();
 
+		$available_devices = [
+			'desktop' => esc_html__( 'Desktop', 'elementor-pro' ),
+		];
+
+		$default_devices = [ 'desktop' ];
+
+		$active_breakpoints = Plugin::elementor()->breakpoints->get_active_breakpoints();
+
+		foreach ( $active_breakpoints as $breakpoint_key => $breakpoint ) {
+			$available_devices[ $breakpoint_key ] = $breakpoint->get_label();
+			$default_devices[] = $breakpoint_key;
+		}
+
 		$this->start_settings_group( 'devices', esc_html__( 'Show on devices', 'elementor-pro' ) );
 
 		$this->add_settings_group_control(
@@ -169,12 +199,8 @@ class Timing extends Base {
 			[
 				'type' => Controls_Manager::SELECT2,
 				'multiple' => true,
-				'default' => [ 'desktop', 'tablet', 'mobile' ],
-				'options' => [
-					'desktop' => esc_html__( 'Desktop', 'elementor-pro' ),
-					'tablet' => esc_html__( 'Tablet', 'elementor-pro' ),
-					'mobile' => esc_html__( 'Mobile', 'elementor-pro' ),
-				],
+				'default' => $default_devices,
+				'options' => $available_devices,
 			]
 		);
 
@@ -210,6 +236,70 @@ class Timing extends Base {
 				'condition' => [
 					'browsers' => 'custom',
 				],
+			]
+		);
+
+		$this->end_settings_group();
+
+		$this->start_settings_group( 'schedule', esc_html__( 'Schedule date and time', 'elementor-pro' ) );
+
+		$this->add_settings_group_control(
+			'timezone',
+			[
+				'type' => Controls_Manager::SELECT,
+				'label' => esc_html__( 'Timezone', 'elementor-pro' ),
+				'default' => 'site',
+				'options' => [
+					'site' => esc_html__( 'Site', 'elementor-pro' ),
+					'visitor' => esc_html__( 'Visitor', 'elementor-pro' ),
+				],
+			]
+		);
+
+		$this->add_settings_group_control(
+			'start_date',
+			[
+				'label' => esc_html__( 'Start', 'elementor-pro' ),
+				'type' => Controls_Manager::DATE_TIME,
+				'picker_options' => [
+					'enableTime' => true,
+					'minDate' => 'today',
+				],
+				'validation' => [
+					'date_time' => [
+						'control_name' => $this->get_prefixed_control_id( 'end_date' ),
+						'operator' => '<=',
+					],
+				],
+			]
+		);
+
+		$this->add_settings_group_control(
+			'end_date',
+			[
+				'label' => esc_html__( 'End', 'elementor-pro' ),
+				'type' => Controls_Manager::DATE_TIME,
+				'picker_options' => [
+					'enableTime' => true,
+					'minDate' => 'today',
+				],
+				'validation' => [
+					'date_time' => [
+						'control_name' => $this->get_prefixed_control_id( 'start_date' ),
+						'operator' => '>=',
+					],
+				],
+			]
+		);
+
+		$datetime = new \DateTime( 'now', new \DateTimeZone( wp_timezone_string() ) );
+		$datetime = $datetime->format( 'Y-m-d H:i:s' );
+
+		$this->add_settings_group_control(
+			'server_datetime',
+			[
+				'type' => Controls_Manager::HIDDEN,
+				'default' => $datetime,
 			]
 		);
 

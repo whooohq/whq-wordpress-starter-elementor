@@ -82,5 +82,6 @@
 		v-model="showDeleteDialog"
 		:tax-id="parseInt( deletedItem.id, 10 )"
 		:tax-slug="deletedItem.slug"
+		:tax-name="deletedItem.labels.name"
 	></jet-cpt-delete-dialog>
 </div>

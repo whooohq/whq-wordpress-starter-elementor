@@ -236,7 +236,7 @@ class Maps_Listings_Widget extends \Elementor\Jet_Listing_Grid_Widget {
 			array(
 				'label'   => __( 'Marker Type', 'jet-engine' ),
 				'type'    => Controls_Manager::SELECT,
-				'default' => 'image',
+				'default' => 'icon',
 				'options' => Module::instance()->get_marker_types(),
 			)
 		);
@@ -255,9 +255,13 @@ class Maps_Listings_Widget extends \Elementor\Jet_Listing_Grid_Widget {
 		$this->add_control(
 			'marker_icon',
 			array(
-				'label'            => __( 'Icon', 'jet-engine' ),
-				'type'             => Controls_Manager::ICONS,
-				'label_block'      => true,
+				'label'       => __( 'Icon', 'jet-engine' ),
+				'type'        => Controls_Manager::ICONS,
+				'label_block' => true,
+				'default' => array(
+					'value'   => 'fas fa-map-marker-alt',
+					'library' => 'fa-solid',
+				),
 				'condition' => array(
 					'marker_type' => 'icon',
 				),
@@ -284,7 +288,7 @@ class Maps_Listings_Widget extends \Elementor\Jet_Listing_Grid_Widget {
 				'type'        => Controls_Manager::TEXT,
 				'default'     => '',
 				'label_block' => true,
-				'description' => __( 'Note: this filed will override Meta Field value', 'jet-engine' ),
+				'description' => __( 'Note: this field will override Meta Field value', 'jet-engine' ),
 				'condition'   => array(
 					'marker_type' => 'dynamic_image',
 				),
@@ -325,7 +329,7 @@ class Maps_Listings_Widget extends \Elementor\Jet_Listing_Grid_Widget {
 				'type'        => Controls_Manager::TEXT,
 				'default'     => '',
 				'label_block' => true,
-				'description' => __( 'Note: this filed will override Meta Field value', 'jet-engine' ),
+				'description' => __( 'Note: this field will override Meta Field value', 'jet-engine' ),
 				'condition'   => array(
 					'marker_type'       => 'text',
 					'marker_label_type' => 'meta_field',
@@ -347,7 +351,7 @@ class Maps_Listings_Widget extends \Elementor\Jet_Listing_Grid_Widget {
 			)
 		);
 
-		do_action( 'jet-engine/maps-listing/widget/custom-marker-label-controls', $this );
+		do_action( 'jet-engine/maps-listing/widget/custom-marker-label-controls', $this, 'elementor' );
 
 		$callbacks = jet_engine()->listings->get_allowed_callbacks();
 		$callbacks = array( 0 => __( 'Select...', 'jet-engine' ) ) + $callbacks;
@@ -450,10 +454,10 @@ class Maps_Listings_Widget extends \Elementor\Jet_Listing_Grid_Widget {
 		$markers_repeater->add_control(
 			'marker_icon',
 			array(
-				'label'            => __( 'Icon', 'jet-engine' ),
-				'type'             => Controls_Manager::ICONS,
-				'label_block'      => true,
-				'condition' => array(
+				'label'       => __( 'Icon', 'jet-engine' ),
+				'type'        => Controls_Manager::ICONS,
+				'label_block' => true,
+				'condition'   => array(
 					'marker_type' => 'icon',
 				),
 			)
@@ -494,7 +498,7 @@ class Maps_Listings_Widget extends \Elementor\Jet_Listing_Grid_Widget {
 				'type'        => Controls_Manager::TEXT,
 				'default'     => '',
 				'label_block' => true,
-				'description' => __( 'Note: this filed will override Meta Field value', 'jet-engine' ),
+				'description' => __( 'Note: this field will override Meta Field value', 'jet-engine' ),
 				'condition'   => array(
 					'apply_type' => 'meta_field',
 				),

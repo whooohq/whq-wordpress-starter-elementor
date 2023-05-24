@@ -745,6 +745,7 @@ class Jet_Smart_Filters_Sorting_Widget extends Widget_Base {
 
 		jet_smart_filters()->set_filters_used();
 
+		$base_class          = $this->get_name();
 		$settings            = $this->get_settings();
 		$sorting_filter_type = jet_smart_filters()->filter_types->get_filter_types( 'sorting' );
 		$sorting_options     = $sorting_filter_type->sorting_options( $settings['sorting_list'] );
@@ -752,7 +753,11 @@ class Jet_Smart_Filters_Sorting_Widget extends Widget_Base {
 		$placeholder         = ! empty( $settings['placeholder'] ) ? $settings['placeholder'] : __( 'Sort...', 'jet-smart-filters' );
 		$label               = $settings['label'];
 
+		printf( '<div class="%1$s jet-filter">', $base_class );
+
 		include jet_smart_filters()->get_template( 'filters/sorting.php' );
 		include jet_smart_filters()->get_template( 'common/apply-filters.php' );
+
+		echo '</div>';
 	}
 }

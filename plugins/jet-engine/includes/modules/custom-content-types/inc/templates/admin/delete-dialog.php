@@ -7,7 +7,9 @@
 >
 	<div class="cx-vui-subtitle" slot="title"><?php
 		_e( 'Please confirm content type deletion', 'jet-engine' );
-	?></div>
+	?>
+		<template v-if="itemName">- <span class="jet-engine-accent-text">{{ itemName }}</span></template>
+	</div>
 	<p slot="content">
 		<?php _e( 'Are you sure you want to delete this content type? Related database table also will be deleted and all data will be lost.', 'jet-engine' ); ?><br>
 	</p>

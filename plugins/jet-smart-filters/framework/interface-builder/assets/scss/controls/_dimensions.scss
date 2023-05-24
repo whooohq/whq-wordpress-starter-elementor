@@ -10,9 +10,12 @@ label.cx-label{
 	max-width: 300px;
 
 	&__units {
-		margin-right: 20%;
+		margin: 0 20% 0 0;
 		display: flex;
 		justify-content: flex-end;
+		.rtl & {
+			margin: 0 0 0 20%;
+		}
 	}
 
 	&__unit {
@@ -42,17 +45,27 @@ label.cx-label{
 		input {
 			width: 100%;
 			margin: 0;
-			border: none;
 			box-shadow: none;
-			border-right: 1px solid #a4afb7;
+			border: solid #a4afb7;
+			border-width: 0 1px 0 0;
 			font-size: 12px;
-
-			&:first-child {
-				border-radius: 3px 0 0 3px;
+			border-radius: 0;
+			.rtl & {
+				border-width: 0 0 0 1px;
 			}
 
 			&:focus {
-				border-color: none;
+				border-color: #a4afb7;
+				box-shadow: none;
+			}
+		}
+
+		&:first-child {
+			input {
+				border-radius: 3px 0 0 3px;
+				.rtl & {
+					border-radius: 0 3px 3px 0;
+				}
 			}
 		}
 	}
@@ -70,7 +83,6 @@ label.cx-label{
 
 	&__is-linked {
 		width: 20%;
-		height: 28px;
 		background-color: white;
 		text-align: center;
 		color: #a4afb7;
@@ -78,7 +90,10 @@ label.cx-label{
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border-radius: 0 3px 3px 0;
+		border-radius: 0 2px 2px 0;
+		.rtl & {
+			border-radius: 2px 0 0 2px;
+		}
 
 		.link-icon {
 			display: none;

@@ -14,3 +14,14 @@
 	
 	}
 }
+
+// Context Bricks
+.brxe-jet-smart-filters-sorting {
+	.jet-sorting-label {
+		flex-shrink: 0;
+	}
+
+	.jet-sorting-select {
+		background-image: linear-gradient(45deg,transparent 50%,currentColor 0),linear-gradient(135deg,currentColor 50%,transparent 0);
+	}
+}

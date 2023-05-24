@@ -52,8 +52,10 @@ class Jet_Engine_CPT_Rest_Get_BI_Tax extends Jet_Engine_Base_API_Endpoint {
 		$settings = ! empty( $tax_data['advanced_settings'] ) ? $tax_data['advanced_settings'] : array();
 
 		if ( isset( $settings['rewrite'] ) && is_array( $settings['rewrite'] ) ) {
-			$tax_data['advanced_settings']['rewrite_slug'] = $settings['rewrite']['slug'];
-			$tax_data['advanced_settings']['rewrite']      = true;
+			$tax_data['advanced_settings']['rewrite']              = true;
+			$tax_data['advanced_settings']['rewrite_slug']         = $settings['rewrite']['slug'];
+			$tax_data['advanced_settings']['rewrite_hierarchical'] = isset( $settings['rewrite']['hierarchical'] ) ? $settings['rewrite']['hierarchical'] : false;
+			$tax_data['advanced_settings']['with_front']           = isset( $settings['rewrite']['with_front'] ) ? $settings['rewrite']['with_front'] : true;
 		}
 
 		$stored = jet_engine()->taxonomies->data->get_built_in_item_from_db( $tax );

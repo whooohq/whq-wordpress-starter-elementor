@@ -212,9 +212,10 @@ return array(
 			),
 		),
 		'_range_inputs_enabled' => array(
-			'type'       => 'switcher',
-			'title'      => __( 'Inputs enabled', 'jet-smart-filters' ),
-			'conditions' => array(
+			'type'        => 'switcher',
+			'title'       => __( 'Inputs enabled', 'jet-smart-filters' ),
+			'description' => $this->range_inputs_info,
+			'conditions'  => array(
 				'_filter_type' => 'range',
 			),
 		),
@@ -225,8 +226,7 @@ return array(
 			'max'         => 10,
 			'placeholder' => '0',
 			'conditions'  => array(
-				'_filter_type'           => array( 'range', 'check-range' ),
-				'_range_inputs_enabled!' => true
+				'_filter_type' => array( 'range', 'check-range' ),
 			),
 		),
 		'_values_decimal_sep' => array(
@@ -234,8 +234,7 @@ return array(
 			'title'       => __( 'Decimal separator', 'jet-smart-filters' ),
 			'placeholder' => '.',
 			'conditions'  => array(
-				'_filter_type'           => array( 'range', 'check-range' ),
-				'_range_inputs_enabled!' => true
+				'_filter_type' => array( 'range', 'check-range' ),
 			),
 		),
 		'_values_thousand_sep' => array(
@@ -243,8 +242,7 @@ return array(
 			'title'       => __( 'Thousands separator', 'jet-smart-filters' ),
 			'description' => __( 'Use <strong>&amp;nbsp;</strong> for space', 'jet-smart-filters' ),
 			'conditions'  => array(
-				'_filter_type'           => array( 'range', 'check-range' ),
-				'_range_inputs_enabled!' => true
+				'_filter_type' => array( 'range', 'check-range' ),
 			),
 		),
 
@@ -264,7 +262,7 @@ return array(
 		'_date_format' => array(
 			'type'        => 'text',
 			'title'       => __( 'Date Format', 'jet-smart-filters' ),
-			'description' => '<a href="https://api.jqueryui.com/datepicker/#utility-formatDate" target="_blank">' . __( 'Datepicker date formats', 'jet-smart-filters' ) . '</a>',
+			//'description' => '<a href="https://api.jqueryui.com/datepicker/#utility-formatDate" target="_blank">' . __( 'Datepicker date formats', 'jet-smart-filters' ) . '</a>',
 			'value'       => 'mm/dd/yy',
 			'placeholder' => 'mm/dd/yy',
 			'conditions'  => array(
@@ -318,6 +316,38 @@ return array(
 				'_date_period_type!' => ''
 			),
 		),
+		'_min_max_date_period_enabled' => array(
+			'type'       => 'switcher',
+			'title'      => __( 'Min/Max Dates Enabled', 'jet-smart-filters' ),
+			'value'      => false,
+			'conditions' => array(
+				'_filter_type'       => 'date-period',
+				'_date_source!'      => '',
+				'_date_period_type!' => ''
+			),
+		),
+		'_min_date_period' => array(
+			'type'       => 'text',
+			'title'      => __( 'Minimum possible date to select', 'jet-smart-filters' ),
+			'conditions' => array(
+				'_min_max_date_period_enabled' => true
+			),
+		),
+		'_max_date_period' => array(
+			'type'       => 'text',
+			'title'      => __( 'Maximum possible date to select', 'jet-smart-filters' ),
+			'conditions' => array(
+				'_min_max_date_period_enabled' => true
+			),
+		),
+		'_min_max_date_period_info' => array(
+			'type'       => 'html',
+			'fullwidth'  => true,
+			'html'       => $this->min_max_date_period_info,
+			'conditions' => array(
+				'_min_max_date_period_enabled' => true
+			),
+		),
 		'_date_period_start_end_enabled' => array(
 			'type'       => 'switcher',
 			'title'      => __( 'Start/End Date Period Enabled', 'jet-smart-filters' ),
@@ -339,7 +369,6 @@ return array(
 				'_date_period_start_end_enabled' => false
 			),
 		),
-
 		'_date_period_start_format' => array(
 			'type'        => 'text',
 			'title'       => __( 'Start Format', 'jet-smart-filters' ),
@@ -372,6 +401,17 @@ return array(
 				'_date_source!'                  => '',
 				'_date_period_type!'             => '',
 				'_date_period_start_end_enabled' => true
+			),
+		),
+		'_date_period_date_formats_info' => array(
+			'type'       => 'html',
+			'title'      => __( 'Date Formats', 'jet-smart-filters' ),
+			'fullwidth'  => true,
+			'html'       => $this->date_formats_info,
+			'conditions' => array(
+				'_filter_type'       => array( 'date-range', 'date-period' ),
+				'_date_source!'      => '',
+				'_date_period_type!' => ''
 			),
 		),
 

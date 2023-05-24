@@ -150,9 +150,9 @@ class Helper extends \Essential_Addons_Elementor\Classes\Helper
     }
 
     // Get Mailchimp list
-    public static function mailchimp_lists($element = 'mailchimp')
+    public static function mailchimp_lists($element = 'mailchimp', $type_double_optin = false)
     {
-        $lists = [];
+        $lists = $lists_double_optin = [];
         $api_key = get_option('eael_save_mailchimp_api');
 
         if($element === 'login-register-form'){
@@ -164,7 +164,7 @@ class Helper extends \Essential_Addons_Elementor\Classes\Helper
         }
 
         $response = wp_remote_get('https://' . substr($api_key,
-            strpos($api_key, '-') + 1) . '.api.mailchimp.com/3.0/lists/?fields=lists.id,lists.name&count=1000', [
+            strpos($api_key, '-') + 1) . '.api.mailchimp.com/3.0/lists/?fields=lists.id,lists.name,lists.double_optin&count=1000', [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Basic ' . base64_encode('user:' . $api_key),
@@ -179,11 +179,13 @@ class Helper extends \Essential_Addons_Elementor\Classes\Helper
 
                 for ($i = 0; $i < count($response->lists); $i++) {
                     $lists[$response->lists[$i]->id] = $response->lists[$i]->name;
+                    $lists[$response->lists[$i]->id] = $response->lists[$i]->name;
+                    $lists_double_optin[$response->lists[$i]->id] = $response->lists[$i]->double_optin;
                 }
             }
         }
 
-        return $lists;
+        return $type_double_optin ? $lists_double_optin : $lists;
     }
 
     public static function list_db_tables()
@@ -204,20 +206,23 @@ class Helper extends \Essential_Addons_Elementor\Classes\Helper
         return $result;
     }
 
-    public static function list_tablepress_tables()
-    {
-        $result = [];
-        $tables = \TablePress::$model_table->load_all(true);
+	public static function list_tablepress_tables() {
+		if ( empty( \TablePress::$model_table ) ) {
+			return [];
+		}
 
-        if ($tables) {
-            foreach ($tables as $table) {
-                $table = \TablePress::$model_table->load($table, false, false);
-                $result[$table['id']] = $table['name'];
-            }
-        }
+		$result = [];
+		$tables = \TablePress::$model_table->load_all( true );
 
-        return $result;
-    }
+		if ( $tables ) {
+			foreach ( $tables as $table ) {
+				$table                  = \TablePress::$model_table->load( $table, false, false );
+				$result[ $table['id'] ] = $table['name'];
+			}
+		}
+
+		return $result;
+	}
 
 	/**
 	 * eael_pro_validate_html_tag
@@ -257,7 +262,8 @@ class Helper extends \Essential_Addons_Elementor\Classes\Helper
             );
         }
 
-        $dropdown_options['none'] = esc_html__( 'None', 'essential-addons-elementor' );
+        $dropdown_options['desktop']    = esc_html__( 'Desktop (> 2400px)', 'essential-addons-elementor' );
+        $dropdown_options['none']       = esc_html__( 'None', 'essential-addons-elementor' );
         
         return $dropdown_options;
     }

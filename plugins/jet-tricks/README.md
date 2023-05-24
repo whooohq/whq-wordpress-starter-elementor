@@ -4,6 +4,14 @@ Enjoy adding animation on the fly without coding skills
 
 # ChangeLog
 
+## [1.4.4](https://github.com/ZemezLab/jet-tricks/releases/tag/1.4.4)
+* Added: [Crocoblock/suggestions#6527](https://github.com/Crocoblock/suggestions/issues/6527)
+
+## [1.4.3](https://github.com/ZemezLab/jet-tricks/releases/tag/1.4.3)
+* Update: JetDashboard Module to v2.0.9
+* Fixed: accessibility
+* Fixed: minor issues
+
 ## [1.4.2](https://github.com/ZemezLab/jet-tricks/releases/tag/1.4.2)
 * Added: [Crocoblock/suggestions#5531](https://github.com/Crocoblock/suggestions/issues/5531)
 * Fixed: сompatibility with Elementor 3.7

@@ -15,16 +15,6 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Section' ) ) {
 	 */
 	class Jet_Engine_Blocks_Views_Type_Section extends Jet_Engine_Blocks_Views_Type_Container {
 
-		public function __construct() {
-
-			parent::__construct();
-
-			if ( $this->has_style_manager() ) {
-				add_filter( 'jet_style_manager/gutenberg/prevent_block_wrap/' . $this->get_block_name(), '__return_true' );
-			}
-
-		}
-
 		/**
 		 * Returns block name
 		 *

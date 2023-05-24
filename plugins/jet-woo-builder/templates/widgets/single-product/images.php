@@ -4,9 +4,9 @@
  */
 
 $settings          = $this->get_settings_for_display();
-$nav_direction     = isset( $settings['control_nav_direction'] ) ? $settings['control_nav_direction'] : 'horizontal';
+$nav_direction     = $settings['control_nav_direction'] ?? 'horizontal';
 $nav_direction     = apply_filters( 'jet-woo-builder/jet-single-image-template/navigation-direction', $nav_direction );
-$vertical_position = isset( $settings['control_nav_v_position'] ) ? $settings['control_nav_v_position'] : 'left';
+$vertical_position = $settings['control_nav_v_position'] ?? 'left';
 $nav_position      = 'vertical' === $nav_direction ? 'jet-single-images-nav-' . $vertical_position : '';
 
 printf( '<div class="jet-single-images__wrap jet-single-images-nav-%s %s">', $nav_direction, $nav_position );

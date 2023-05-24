@@ -233,7 +233,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Apply_Button' ) ) {
 
 			ob_start();
 
-			echo '<div class="' . $base_class . ' jet-filter">';
+			echo '<div class="' . $base_class . ' jet-filter" data-is-block="jet-smart-filters/' . $this->get_name() . '">';
 			include jet_smart_filters()->get_template( 'common/apply-filters.php' );
 			echo '</div>';
 

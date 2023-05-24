@@ -2,7 +2,7 @@
 /**
  * Interface Builder module
  *
- * Version: 1.8.3
+ * Version: 1.9.1
  */
 
 // If this file is called directly, abort.
@@ -42,7 +42,7 @@ if ( ! class_exists( 'CX_Interface_Builder' ) ) {
 		 *
 		 * @var string
 		 */
-		protected $version = '1.8.3';
+		protected $version = '1.9.1';
 
 		/**
 		 * Conditions
@@ -574,6 +574,12 @@ if ( ! class_exists( 'CX_Interface_Builder' ) ) {
 				array(
 					'conditions' => self::$conditions,
 					'fields'     => self::$fields_value,
+					'i18n'       => apply_filters( 'cx-interface-builder/config/i18n',  array(
+						'requiredError' => 'This field is required.',
+						'minError'      => 'Please enter a value greater than or equal to %s.',
+						'maxError'      => 'Please enter a value less than or equal to %s.',
+						'stepError'     => 'Please enter a value multiple of %s.',
+					) ),
 				)
 			);
 

@@ -372,10 +372,20 @@ class Jet_Engine_Base_DB {
 
 		}
 
+		$this->maybe_transfer_data( $to_remove, $to_add );
+
 		if ( ! empty( $to_remove ) ) {
 			$this->delete_table_columns( $to_remove );
 		}
 
+	}
+
+	/**
+	 * Check if we can transfer data into new columns before removing
+	 *
+	 * Rewrite this method in the childrent where it supported
+	 */
+	public function maybe_transfer_data( $old_columns = array(), $new_columns = array() ) {
 	}
 
 	/**
@@ -740,8 +750,10 @@ class Jet_Engine_Base_DB {
 				$value = $this->adjust_value_by_type( $value, $type );
 			}
 
-			if ( in_array( $operator, $array_operators ) ) {
+			if ( in_array( $operator, array( 'IN', 'BETWEEN' ) ) ) {
 				$operator = '=';
+			} elseif ( in_array( $operator, array( 'NOT IN', 'NOT BETWEEN' ) ) ) {
+				$operator = '!=';
 			}
 
 		}

@@ -3,7 +3,7 @@
  * Plugin Name: JetWooBuilder For Elementor
  * Plugin URI:  https://crocoblock.com/plugins/jetwoobuilder/
  * Description: Your perfect asset in creating WooCommerce page templates using loads of special widgets & stylish page layouts
- * Version:     2.1.0
+ * Version:     2.1.4
  * Author:      Crocoblock
  * Author URI:  https://crocoblock.com/
  * Text Domain: jet-woo-builder
@@ -45,7 +45,7 @@ if ( ! class_exists( 'Jet_Woo_Builder' ) ) {
 		 *
 		 * @var string
 		 */
-		private $version = '2.1.0';
+		private $version = '2.1.4';
 
 		/**
 		 * Require Elementor Version
@@ -155,6 +155,13 @@ if ( ! class_exists( 'Jet_Woo_Builder' ) ) {
 
 			// Jet Dashboard Init
 			add_action( 'init', array( $this, 'jet_dashboard_init' ), -999 );
+
+			// Declare compatibility with WooCommerce High-Performance Order Storage (HPOS).
+			add_action( 'before_woocommerce_init', function() {
+				if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+					\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+				}
+			} );
 
 			// Register activation and deactivation hook.
 			register_activation_hook( __FILE__, array( $this, 'activation' ) );
@@ -417,7 +424,6 @@ if ( ! class_exists( 'Jet_Woo_Builder' ) ) {
 			require $this->plugin_path( 'includes/class-jet-woo-builder-macros.php' );
 			require $this->plugin_path( 'includes/class-jet-woo-builder-common-controls.php' );
 			require $this->plugin_path( 'includes/class-jet-woo-builder-template-functions.php' );
-			require $this->plugin_path( 'includes/class-jet-woo-builder-shortcodes.php' );
 			require $this->plugin_path( 'includes/export-import.php' );
 
 			require $this->plugin_path( 'includes/compatibility/manager.php' );
@@ -427,6 +433,8 @@ if ( ! class_exists( 'Jet_Woo_Builder' ) ) {
 			require $this->plugin_path( 'includes/settings/manager.php' );
 			require $this->plugin_path( 'includes/settings/class-jet-woo-builder-settings.php' );
 			require $this->plugin_path( 'includes/settings/class-jet-woo-builder-shop-settings.php' );
+
+			require_once $this->plugin_path( 'includes/shortcodes/manager.php' );
 
 			require $this->plugin_path( 'includes/rest-api/rest-api.php' );
 			require $this->plugin_path( 'includes/rest-api/endpoints/base.php' );

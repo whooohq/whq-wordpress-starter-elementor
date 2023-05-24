@@ -64,12 +64,22 @@ class Jet_Engine_Dynamic_Tags_Module extends Elementor\Modules\DynamicTags\Modul
 			}
 
 			if ( class_exists( $tag_class ) ) {
-				$dynamic_tags->register_tag( $tag_class );
+				$this->register_tag( $dynamic_tags, new $tag_class );
 			}
 
 		}
 
-		do_action( 'jet-engine/elementor-views/dynamic-tags/register', $dynamic_tags );
+		do_action( 'jet-engine/elementor-views/dynamic-tags/register', $dynamic_tags, $this );
 
+	}
+
+	public function register_tag( $dynamic_tags, $tag_class ) {
+
+		// `register_tag` method is deprecated since v3.5.0
+		if ( method_exists( $dynamic_tags, 'register' ) ) {
+			$dynamic_tags->register( $tag_class );
+		} else {
+			$dynamic_tags->register_tag( $tag_class );
+		}
 	}
 }

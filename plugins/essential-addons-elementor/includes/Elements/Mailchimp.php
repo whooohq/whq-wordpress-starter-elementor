@@ -105,6 +105,18 @@ class Mailchimp extends Widget_Base
             ]
         );
         $this->add_control(
+            'eael_mailchimp_email_placeholder_text',
+            [
+                'label' => esc_html__('Email Placeholder', 'essential-addons-elementor'),
+                'type' => Controls_Manager::TEXT,
+                'dynamic' => [
+                    'active' => true,
+                ],
+                'label_block' => false,
+                'default' => 'Email',
+            ]
+        );
+        $this->add_control(
             'eael_mailchimp_fname_show',
             [
                 'label' => esc_html__('Enable First Name', 'essential-addons-elementor'),
@@ -129,6 +141,21 @@ class Mailchimp extends Widget_Base
             ]
         );
         $this->add_control(
+            'eael_mailchimp_fname_placeholder_text',
+            [
+                'label' => esc_html__('First Name Placeholder', 'essential-addons-elementor'),
+                'type' => Controls_Manager::TEXT,
+                'dynamic' => [
+                    'active' => true,
+                ],
+                'label_block' => false,
+                'default' => 'First Name',
+                'condition' => [
+                    'eael_mailchimp_fname_show' => 'yes',
+                ],
+            ]
+        );
+        $this->add_control(
             'eael_mailchimp_lname_show',
             [
                 'label' => esc_html__('Enable Last Name', 'essential-addons-elementor'),
@@ -141,6 +168,21 @@ class Mailchimp extends Widget_Base
             'eael_mailchimp_lname_label_text',
             [
                 'label' => esc_html__('Last Name Label', 'essential-addons-elementor'),
+                'type' => Controls_Manager::TEXT,
+                'dynamic' => [
+                    'active' => true,
+                ],
+                'label_block' => false,
+                'default' => 'Last Name',
+                'condition' => [
+                    'eael_mailchimp_lname_show' => 'yes',
+                ],
+            ]
+        );
+        $this->add_control(
+            'eael_mailchimp_lname_placeholder_text',
+            [
+                'label' => esc_html__('Last Name Placeholder', 'essential-addons-elementor'),
                 'type' => Controls_Manager::TEXT,
                 'dynamic' => [
                     'active' => true,
@@ -249,6 +291,18 @@ class Mailchimp extends Widget_Base
                 ],
                 'label_block' => true,
                 'default' => esc_html__('You have subscribed successfully!', 'essential-addons-elementor'),
+            ]
+        );
+        $this->add_control(
+            'eael_section_mailchimp_pending_text',
+            [
+                'label' => esc_html__('Pending Text', 'essential-addons-elementor'),
+                'type' => Controls_Manager::TEXT,
+                'dynamic' => [
+                    'active' => true,
+                ],
+                'label_block' => true,
+                'default' => esc_html__('Please check your email and confirm subscription!', 'essential-addons-elementor'),
             ]
         );
         $this->end_controls_section();
@@ -855,6 +909,7 @@ class Mailchimp extends Widget_Base
         $this->add_render_attribute('eael-mailchimp-main-wrapper', 'data-list-id', $settings['eael_mailchimp_lists']);
         $this->add_render_attribute('eael-mailchimp-main-wrapper', 'data-button-text', $settings['eael_section_mailchimp_button_text']);
         $this->add_render_attribute('eael-mailchimp-main-wrapper', 'data-success-text', $settings['eael_section_mailchimp_success_text']);
+        $this->add_render_attribute('eael-mailchimp-main-wrapper', 'data-pending-text', $settings['eael_section_mailchimp_pending_text']);
         $this->add_render_attribute('eael-mailchimp-main-wrapper', 'data-loading-text', $settings['eael_section_mailchimp_loading_text']);
 
         ?>
@@ -864,18 +919,18 @@ class Mailchimp extends Widget_Base
 					<div class="eael-form-fields-wrapper eael-mailchimp-fields-wrapper <?php echo esc_attr($subscribe_btn_display); ?>">
 						<div class="eael-field-group eael-mailchimp-email">
 							<label for="<?php echo esc_attr($settings['eael_mailchimp_email_label_text'], 'essential-addons-elementor'); ?>"><?php echo esc_html__($settings['eael_mailchimp_email_label_text'], 'essential-addons-elementor'); ?></label>
-							<input type="email" name="eael_mailchimp_email" class="eael-mailchimp-input" placeholder="<?php echo esc_html__('Email', 'essential-addons-elementor'); ?>" required="required">
+							<input type="email" name="eael_mailchimp_email" class="eael-mailchimp-input" placeholder="<?php echo esc_html__($settings['eael_mailchimp_email_placeholder_text'], 'essential-addons-elementor'); ?>" required="required">
 						</div>
 						<?php if ('yes' == $settings['eael_mailchimp_fname_show']) : ?>
 							<div class="eael-field-group eael-mailchimp-fname">
 								<label for="<?php echo esc_attr($settings['eael_mailchimp_fname_label_text'], 'essential-addons-elementor'); ?>"><?php echo esc_html__($settings['eael_mailchimp_fname_label_text'], 'essential-addons-elementor'); ?></label>
-								<input type="text" name="eael_mailchimp_firstname" class="eael-mailchimp-input" placeholder="<?php echo esc_html__('First Name', 'essential-addons-elementor'); ?>">
+								<input type="text" name="eael_mailchimp_firstname" class="eael-mailchimp-input" placeholder="<?php echo esc_html__($settings['eael_mailchimp_fname_placeholder_text'], 'essential-addons-elementor'); ?>">
 							</div>
 						<?php endif; ?>
 						<?php if ('yes' == $settings['eael_mailchimp_lname_show']) : ?>
 							<div class="eael-field-group eael-mailchimp-lname">
 								<label for="<?php echo esc_attr($settings['eael_mailchimp_lname_label_text'], 'essential-addons-elementor'); ?>"><?php echo esc_html__($settings['eael_mailchimp_lname_label_text'], 'essential-addons-elementor'); ?></label>
-								<input type="text" name="eael_mailchimp_lastname" class="eael-mailchimp-input" placeholder="<?php echo esc_html__('Last Name', 'essential-addons-elementor'); ?>">
+								<input type="text" name="eael_mailchimp_lastname" class="eael-mailchimp-input" placeholder="<?php echo esc_html__($settings['eael_mailchimp_lname_placeholder_text'], 'essential-addons-elementor'); ?>">
 							</div>
 						<?php endif; ?>
 

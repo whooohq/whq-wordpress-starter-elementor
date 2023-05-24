@@ -170,16 +170,19 @@ class Manager extends \Jet_Engine_Base_WP_Intance {
 
 		require $this->component_path( 'query-editor.php' );
 		require $this->component_path( 'listings/manager.php' );
+		require $this->component_path( 'query-gateway/manager.php' );
 
 		$this->editor   = new Query_Editor();
 		$this->listings = new Listings\Manager();
+
+		new Query_Gateway\Manager;
 
 		do_action( 'jet-engine/query-builder/init', $this );
 
 		$this->setup_queries();
 
 		add_action( 'jet-engine/modules/dynamic-visibility/conditions/register', array( $this, 'register_visibility_conditions' ) );
-		add_action( 'jet-engine/elementor-views/dynamic-tags/register', array( $this, 'register_dynamic_tags' ) );
+		add_action( 'jet-engine/elementor-views/dynamic-tags/register', array( $this, 'register_dynamic_tags' ), 10, 2 );
 
 		add_filter( 'jet-engine/modules/dynamic-visibility/condition/args', array( $this, 'modify_condition_args_for_query_count' ) );
 
@@ -187,9 +190,9 @@ class Manager extends \Jet_Engine_Base_WP_Intance {
 
 	}
 
-	public function register_dynamic_tags( $tags_module ) {
+	public function register_dynamic_tags( $dynamic_tags, $tags_module ) {
 		require_once $this->component_path( 'dynamic-tags/query-count.php' );
-		$tags_module->register_tag( new Dynamic_Tags\Query_Count_Tag() );
+		$tags_module->register_tag( $dynamic_tags, new Dynamic_Tags\Query_Count_Tag() );
 	}
 
 	public function register_visibility_conditions( $manager ) {
@@ -201,9 +204,13 @@ class Manager extends \Jet_Engine_Base_WP_Intance {
 	}
 
 	public function register_macros() {
+
 		require_once $this->component_path( 'macros/query-count.php' );
+		require_once $this->component_path( 'macros/query-results.php' );
 
 		new Macros\Query_Count_Macro();
+		new Macros\Query_Results_Macro();
+
 	}
 
 	public function modify_condition_args_for_query_count( $args ) {
@@ -265,7 +272,12 @@ class Manager extends \Jet_Engine_Base_WP_Intance {
 		
 	}
 
-	public function get_query_by_id( $id ) {
+	public function get_query_by_id( $id = null ) {
+
+		if ( ! $id ) {
+			return false;
+		}
+
 		return isset( $this->queries[ $id ] ) ? $this->queries[ $id ] : false;
 	}
 

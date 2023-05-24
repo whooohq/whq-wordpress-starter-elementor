@@ -145,10 +145,8 @@ if ( ! class_exists( 'Jet_Smart_Filters_Block_Radio' ) ) {
 				'type'      => 'range',
 				'label'     => esc_html__( 'Space Between', 'jet-smart-filters' ),
 				'css_selector' => [
-					'{{WRAPPER}} ' . $this->css_scheme['child-items'] . ':not(:last-child)'  => 'margin-bottom: calc({{VALUE}}{{UNIT}}/2);',
-					'{{WRAPPER}} ' . $this->css_scheme['child-items'] . ':not(:first-child)' => 'padding-top: calc({{VALUE}}{{UNIT}}/2);',
-					'{{WRAPPER}} ' . $this->css_scheme['row'] . ':not(:last-child)'  => 'margin-bottom: calc({{VALUE}}{{UNIT}}/2);',
-					'{{WRAPPER}} ' . $this->css_scheme['row'] . ':not(:first-child)' => 'padding-top: calc({{VALUE}}{{UNIT}}/2);',
+					'{{WRAPPER}} ' . $this->css_scheme['child-items'] . ':not(:last-child)' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} ' . $this->css_scheme['row'] . ':not(:last-child)'         => 'margin-bottom: {{SIZE}}{{UNIT}};'
 				],
 				'attributes' => [
 					'default' => [

@@ -159,6 +159,8 @@ if ( ! class_exists( 'Jet_Engine_CPT_Page_Edit' ) ) {
 					'redirect'             => $redirect,
 					'is_built_in'          => $is_built_in,
 					'admin_columns_cb'     => $this->get_allowed_admin_columns_cb(),
+					'positions'            => Jet_Engine_Tools::get_available_menu_positions(),
+					'default_position'     => Jet_Engine_Tools::get_default_menu_position(),
 					'slug_error'           => __( 'Maximum 20 characters length', 'jet-engine' ),
 					'help_links'           => array(
 						array(

@@ -14,6 +14,7 @@ $checked_icon = apply_filters( 'jet-smart-filters/templates/checkboxes-item/chec
 			name="<?php echo $query_var; ?>"
 			value="<?php echo $value; ?>"
 			data-label="<?php echo $label; ?>"
+			aria-label="<?php echo $label; ?>"
 			<?php echo $checked; ?>
 		>
 		<div class="jet-checkboxes-list__button">

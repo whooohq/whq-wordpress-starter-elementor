@@ -13,6 +13,8 @@ if ( ! defined( 'WPINC' ) ) {
  */
 class Jet_Engine_Forms_Export_Import {
 
+	protected $nonce = 'jet-engine-export-import';
+
 	public function __construct() {
 
 		add_filter( 'post_row_actions', array( $this, 'action_links' ), 10, 2 );
@@ -25,11 +27,23 @@ class Jet_Engine_Forms_Export_Import {
 
 	}
 
+	public function verify_nonce() {
+		
+		$nonce = ! empty( $_REQUEST['_nonce'] ) ? $_REQUEST['_nonce'] : false;
+
+		if ( ! $nonce || ! wp_verify_nonce( $nonce, $this->nonce ) ) {
+			wp_die( 'Link is expired. Ppease reload page and try again.', 'Error' );
+		}
+
+	}
+
 	public function import_form_cb() {
 
 		if ( ! current_user_can( 'publish_posts' ) ) {
 			wp_die( 'Acess denied', 'Error' );
 		}
+
+		$this->verify_nonce();
 
 		$file = ! empty( $_FILES['form_file'] ) ? $_FILES['form_file'] : false;
 
@@ -47,9 +61,7 @@ class Jet_Engine_Forms_Export_Import {
 			wp_die( 'File to large', 'Error' );
 		}
 
-		ob_start();
-		include $file['tmp_name'];
-		$content = ob_get_clean();
+		$content = file_get_contents( $file['tmp_name'] );
 
 		unlink( $file['tmp_name'] );
 
@@ -77,6 +89,7 @@ class Jet_Engine_Forms_Export_Import {
 		$form_action = add_query_arg(
 			array(
 				'action' => 'jet_engine_forms_import',
+				'_nonce' => wp_create_nonce( $this->nonce ),
 			),
 			esc_url( admin_url( 'admin.php' ) )
 		);
@@ -176,7 +189,14 @@ class Jet_Engine_Forms_Export_Import {
 	 */
 	public function duplicate_form_cb() {
 
-		$post_id   = $this->get_post_id_from_request();
+		$this->verify_nonce();
+
+		$post_id = $this->get_post_id_from_request();
+
+		if ( ! current_user_can( 'publish_posts' ) || ! current_user_can( 'edit_post', $post_id ) ) {
+			wp_die( 'Acess denied', 'Error' );
+		}
+
 		$form_data = $this->get_from_data( $post_id );
 
 		$title              = $form_data['title'];
@@ -245,7 +265,14 @@ class Jet_Engine_Forms_Export_Import {
 	 */
 	public function export_form_cb() {
 
-		$post_id   = $this->get_post_id_from_request();
+		$this->verify_nonce();
+
+		$post_id = $this->get_post_id_from_request();
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			wp_die( 'Acess denied', 'Error' );
+		}
+
 		$form_data = $this->get_from_data( $post_id );
 		$form      = get_post( $post_id );
 
@@ -284,6 +311,7 @@ class Jet_Engine_Forms_Export_Import {
 			array(
 				'action' => 'jet_engine_forms_duplicate',
 				'post'   => $post->ID,
+				'_nonce' => wp_create_nonce( $this->nonce ),
 			),
 			$admin_url
 		);
@@ -292,6 +320,7 @@ class Jet_Engine_Forms_Export_Import {
 			array(
 				'action' => 'jet_engine_forms_export',
 				'post'   => $post->ID,
+				'_nonce' => wp_create_nonce( $this->nonce ),
 			),
 			$admin_url
 		);

@@ -10,9 +10,9 @@ abstract class Base_Query {
 	public $final_query   = null;
 	public $query_type    = null;
 	public $query_id      = null;
+	public $preview       = array();
 
-	public $dynamic_query_changed = false;
-	public $current_stack = null;
+	public $parsed_macros = array();
 
 	public function __construct( $args = array() ) {
 
@@ -22,6 +22,7 @@ abstract class Base_Query {
 		$this->query_type    = ! empty( $args['type'] ) ? $args['type'] : false;
 		$this->query         = ! empty( $args['query'] ) ? $args['query'] : false;
 		$this->dynamic_query = ! empty( $args['dynamic_query'] ) ? $args['dynamic_query'] : false;
+		$this->preview       = ! empty( $args['preview'] ) ? $args['preview'] : $this->preview;
 
 		$this->maybe_add_instance_fields_to_ui();
 
@@ -207,7 +208,6 @@ abstract class Base_Query {
 				if ( ! in_array( $key, $processed_dynamics ) ) {
 					if ( ! empty( $value ) ) {
 						$this->final_query[ $key ] = $this->apply_macros( $value );
-						$this->dynamic_query_changed = true;
 					}
 				}
 			}
@@ -219,7 +219,6 @@ abstract class Base_Query {
 			foreach ( $raw_dynamic as $key ) {
 				if ( ! empty( $this->final_query[ $key ] ) ) {
 					$this->final_query[ $key ] = $this->apply_macros( $this->final_query[ $key ] );
-					$this->dynamic_query_changed = true;
 				}
 			}
 		}
@@ -236,8 +235,6 @@ abstract class Base_Query {
 
 		$this->final_query['_query_type']       = $this->query_type;
 		$this->final_query['queried_object_id'] = jet_engine()->listings->data->get_current_object_id();
-
-		$this->current_stack = jet_engine()->listings->objects_stack->get_stack();
 
 		jet_engine()->admin_bar->register_item( $this->get_instance_id(), array(
 			'title'        => $this->get_instance_name(),
@@ -258,11 +255,21 @@ abstract class Base_Query {
 			return;
 		}
 
-		if ( $this->current_stack === jet_engine()->listings->objects_stack->get_stack() ) {
+		if ( empty( $this->parsed_macros ) ) {
 			return;
 		}
 
-		if ( ! $this->dynamic_query_changed ) {
+		$dynamic_query_changed = false;
+
+		foreach ( $this->parsed_macros as $macro => $value ) {
+
+			if ( $value !== jet_engine()->listings->macros->do_macros( $macro ) ) {
+				$dynamic_query_changed = true;
+				break;
+			}
+		}
+
+		if ( ! $dynamic_query_changed ) {
 			return;
 		}
 
@@ -288,14 +295,17 @@ abstract class Base_Query {
 			foreach ( $val as $key => $value ) {
 				if ( ! empty( $value ) ) {
 					$result[ $key ] = jet_engine()->listings->macros->do_macros( $value );
-					$this->dynamic_query_changed = true;
+					$this->parsed_macros[ $value ] = $result[ $key ];
 				}
 			}
 
 			return $result;
 
 		} else {
-			return jet_engine()->listings->macros->do_macros( $val );
+			$result = jet_engine()->listings->macros->do_macros( $val );
+			$this->parsed_macros[ $val ] = $result;
+
+			return $result;
 		}
 
 	}
@@ -460,5 +470,7 @@ abstract class Base_Query {
 		$group_by = $settings['group_by'];
 		return $args;
 	}
+
+	public function before_preview_body() {}
 
 }

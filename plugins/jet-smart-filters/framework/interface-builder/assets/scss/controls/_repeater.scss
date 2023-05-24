@@ -71,6 +71,10 @@
 			outline: none;
 			top: 13px;
 			left: 18px;
+			.rtl & {
+				left: auto;
+				right: 18px;
+			}
 			&:before {
 				content: "\f142";
 				transition: all 200ms linear;
@@ -81,6 +85,7 @@
 				color: $dark_color_1;
 			}
 		}
+		&-copy,
 		&-remove {
 			position: absolute;
 			border: none;
@@ -94,16 +99,47 @@
 			text-decoration: none;
 			box-shadow: none;
 			outline: none;
-			top: 13px;
-			right: 18px;
-			&:before {
-				content: "\f158";
-				transition: all 200ms linear;
-				font-family: dashicons;
-				vertical-align: middle;
-			}
+			top: 15px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 			&:hover {
 				color: $dark_color_1;
+			}
+
+			svg {
+				fill: currentColor;
+			}
+		}
+		&-remove {
+			right: 18px;
+			.rtl & {
+				left: 18px;
+				right: auto;
+			}
+			&:before {
+				content: none;
+			}
+
+			.cx-tooltip {
+				width: 80px;
+			}
+
+			&__confirm,
+			&__cancel {
+				text-decoration: underline;
+			}
+
+			&__confirm {
+				color: $remove_color;
+			}
+		}
+		&-copy {
+			right: 48px;
+
+			.rtl & {
+				left: 48px;
+				right: auto;
 			}
 		}
 		&-title{
@@ -119,6 +155,10 @@
 				box-shadow: none;
 			}
 		}
+		&-item-control +  .cx-ui-repeater-item-control {
+			margin-top: 10px;
+		}
+
 	}
 
 	.cx-ui-repeater-min {

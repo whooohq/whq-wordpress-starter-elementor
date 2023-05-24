@@ -55,8 +55,8 @@ class Include_User_Roles extends Base {
 		// See: https://github.com/Crocoblock/issues-tracker/issues/1072
 		global $pagenow;
 
-		if ( 'user-edit.php' === $pagenow && ! empty( $_GET['user_id'] ) ) {
-			$user_page_data = get_userdata( $_GET['user_id'] );
+		if ( 'user-edit.php' === $pagenow && ! empty( $_REQUEST['user_id'] ) ) {
+			$user_page_data = get_userdata( $_REQUEST['user_id'] );
 			$roles = (array) $user_page_data->roles;
 		}
 

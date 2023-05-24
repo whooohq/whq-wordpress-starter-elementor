@@ -544,15 +544,17 @@ class Jet_Smart_Filters_Base_Widget extends Widget_Base {
 			array(
 				'label'       => esc_html__( 'Filters Position', 'jet-smart-filters' ),
 				'type'        => Controls_Manager::CHOOSE,
+				'toggle'      => false,
 				'label_block' => false,
+				'default'     => 'block',
 				'options'     => array(
-					'inline-block'    => array(
-						'title' => esc_html__( 'Line', 'jet-smart-filters' ),
-						'icon'  => 'eicon-ellipsis-h',
-					),
 					'block' => array(
 						'title' => esc_html__( 'Column', 'jet-smart-filters' ),
 						'icon'  => 'eicon-menu-bar',
+					),
+					'inline-block'    => array(
+						'title' => esc_html__( 'Line', 'jet-smart-filters' ),
+						'icon'  => 'eicon-ellipsis-h',
 					),
 				),
 				'selectors' => array(
@@ -714,6 +716,11 @@ class Jet_Smart_Filters_Base_Widget extends Widget_Base {
 			$indexer_class   = 'jet-filter-indexed';
 			$show_counter    = 'yes' === $settings['show_counter'] ? $settings['show_counter'] : false;
 			$show_items_rule = ! empty( $settings['show_items_rule'] ) ? $settings['show_items_rule'] : 'show';
+
+			if ( $show_counter ) {
+				$counter_prefix = ! empty( $settings['counter_prefix'] ) ? $settings['counter_prefix'] : false;
+				$counter_suffix = ! empty( $settings['counter_suffix'] ) ? $settings['counter_suffix'] : false;
+			}
 		}
 
 		if ( $group ) {
@@ -752,6 +759,14 @@ class Jet_Smart_Filters_Base_Widget extends Widget_Base {
 					'show_counter'      => $show_counter,
 				),
 			);
+
+			if ( ! empty( $counter_prefix ) ) {
+				$filter_template_args['display_options']['counter_prefix'] = $counter_prefix;
+			}
+
+			if ( ! empty( $counter_suffix ) ) {
+				$filter_template_args['display_options']['counter_suffix'] = $counter_suffix;
+			}
 
 			// search
 			if ( $search_enabled ) $filter_template_args['search_enabled'] = $search_enabled;

@@ -72,8 +72,8 @@ class Jet_Woo_Builder_Single_Content extends Jet_Woo_Builder_Base {
 		$this->add_control(
 			'single_content_text_color',
 			[
-				'label'     => __( 'Text Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['content_wrapper'] => 'color: {{VALUE}};',
 				],

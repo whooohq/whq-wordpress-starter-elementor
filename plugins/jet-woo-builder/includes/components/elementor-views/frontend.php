@@ -9,6 +9,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'Jet_Woo_Builder_Elementor_Frontend' ) ) {
+
 	class Jet_Woo_Builder_Elementor_Frontend {
 
 		public function __construct() {
@@ -67,16 +68,15 @@ if ( ! class_exists( 'Jet_Woo_Builder_Elementor_Frontend' ) ) {
 				$overlay_attrs['data-target'] = '_blank';
 			}
 
-			$link = sprintf( '<a %s></a>', jet_woo_builder_tools()->get_attr_string( $link_attrs ) );
-
 			return sprintf(
-				'<div %3$s>%1$s%2$s</div>',
+				'<div %3$s>%1$s<a %2$s></a></div>',
 				$content,
-				$link,
+				jet_woo_builder_tools()->get_attr_string( $link_attrs ),
 				jet_woo_builder_tools()->get_attr_string( $overlay_attrs )
 			);
 
 		}
 
 	}
+
 }

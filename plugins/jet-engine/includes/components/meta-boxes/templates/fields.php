@@ -720,6 +720,20 @@
 									},
 								]"
 							></cx-vui-select>
+							<cx-vui-switcher
+								:label="'<?php _e( 'Save as timestamp', 'jet-engine' ); ?>'"
+								:description="'<?php _e( 'If this option is enabled date will be saved in database Unix timestamp. Toggle it if you need to sort or query posts by date', 'jet-engine' ); ?>'"
+								:wrapper-css="[ 'equalwidth' ]"
+								:value="fieldsList[ index ]['repeater-fields'][ rFieldIndex ].is_timestamp"
+								@input="setRepeaterFieldProp( index, rFieldIndex, 'is_timestamp', $event )"
+								:conditions="[
+									{
+										'input':   fieldsList[ index ]['repeater-fields'][ rFieldIndex ].type,
+										'compare': 'in',
+										'value':   [ 'date', 'datetime-local' ],
+									}
+								]"
+							></cx-vui-switcher>
 							<cx-vui-input
 								label="<?php _e( 'Min value', 'jet-engine' ); ?>"
 								description="<?php _e( 'Set a minimum value for a number field', 'jet-engine' ); ?>"
@@ -1062,15 +1076,15 @@
 			></cx-vui-input>
 			<cx-vui-switcher
 				label="<?php _e( 'Is required', 'jet-engine' ); ?>"
-				description="<?php _e( 'Toggle this option to make this field as required one. Note: so far, required fields don’t work properly with Blocks editor', 'jet-engine' ); ?>"
+				description="<?php _e( 'Toggle this option to make this field as required one', 'jet-engine' ); ?>"
 				:wrapper-css="[ 'equalwidth' ]"
 				:value="fieldsList[ index ].is_required"
 				@input="setFieldProp( index, 'is_required', $event )"
 				:conditions="[
 					{
 						'input':    fieldsList[ index ].type,
-						'compare': 'in',
-						'value':    [ 'text', 'date', 'time', 'datetime-local', 'textarea', 'iconpicker', 'select' ],
+						'compare': 'not_in',
+						'value':    [ 'switcher', 'html' ],
 					},
 					{
 						'input':    fieldsList[ index ].object_type,
@@ -1136,6 +1150,11 @@
 						'input':    fieldsList[ index ].object_type,
 						'compare': 'equal',
 						'value':   'field',
+					},
+					{
+						'input':   fieldsList[ index ].type,
+						'compare': 'not_equal',
+						'value':   'html',
 					},
 				]"
 			></cx-vui-switcher>
@@ -1300,7 +1319,7 @@
 									@input="setConditionProp( currentConditionIndex, conditionIndex, 'value', $event )"
 									:remote="isGlossaryField( currentConditionIndex, conditionIndex )"
 									:remote-callback="getGlossaryFields.bind( this, currentConditionIndex, conditionIndex )"
-									:remote-trigger="'2'"
+									:remote-trigger="2"
 									:conditions="[
 										{
 											'input':   getConditionFieldType( currentConditionIndex, conditionIndex ),
@@ -1324,7 +1343,7 @@
 									@input="setConditionProp( currentConditionIndex, conditionIndex, 'values', $event )"
 									:remote="isGlossaryField( currentConditionIndex, conditionIndex )"
 									:remote-callback="getGlossaryFields.bind( this, currentConditionIndex, conditionIndex )"
-									:remote-trigger="'2'"
+									:remote-trigger="2"
 									:conditions="[
 										{
 											'input':   getConditionFieldType( currentConditionIndex, conditionIndex ),

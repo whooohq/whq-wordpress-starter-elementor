@@ -62,7 +62,7 @@ export default class TemplateRender extends Component {
 		const {
 			onSuccess = () => { },
 			onError = () => { }
-		} = this.props
+		} = this.props;
 
 		// Store the latest fetch request so that when we process it, we can
 		// check if it is the current request, to avoid race conditions on slow networks.
@@ -74,7 +74,9 @@ export default class TemplateRender extends Component {
 					response
 				) {
 					this.setState({ response: response.rendered });
-					setTimeout(onSuccess(window.ReactDOM.findDOMNode(this)), 100);
+					setTimeout(() => {
+						onSuccess(window.ReactDOM.findDOMNode(this));
+					}, 100);
 				}
 			})
 			.catch((error) => {
@@ -112,7 +114,7 @@ export default class TemplateRender extends Component {
 			<Placeholder>
 				{__('Block rendered as empty.')}
 			</Placeholder>
-		)
+		);
 	}
 
 	ErrorResponsePlaceholder(response) {

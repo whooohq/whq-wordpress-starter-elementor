@@ -718,11 +718,14 @@ class One_Page_Navigation extends Widget_Base
 
         $this->add_render_attribute('onepage-nav', 'data-scroll-keys', $settings['scroll_keys']);
 
+        $this->add_render_attribute('onepage-nav', 'data-section-ids', wp_json_encode( wp_list_pluck( $settings['nav_dots'], 'section_id') ) );
+
         $this->add_render_attribute('tooltip', 'class', 'eael-nav-dot-tooltip');
 
         if ($settings['tooltip_arrow'] == 'yes') {
             $this->add_render_attribute('tooltip', 'class', 'eael-tooltip-arrow');
         }
+
 ?>
         <div <?php echo $this->get_render_attribute_string('onepage-nav-container'); ?>>
             <ul <?php echo $this->get_render_attribute_string('onepage-nav'); ?>>

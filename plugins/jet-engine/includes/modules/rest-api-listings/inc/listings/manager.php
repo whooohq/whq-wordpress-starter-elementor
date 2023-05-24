@@ -28,8 +28,8 @@ class Manager {
 			require_once Module::instance()->module_path( 'listings/elementor.php' );
 			new Elementor( $this );
 		}
+		
 		add_filter(
-
 			'jet-engine/templates/listing-sources',
 			array( $this, 'register_listing_source' )
 		);
@@ -95,6 +95,11 @@ class Manager {
 			'jet-engine/listings/dynamic-link/fields',
 			array( $this, 'add_source_fields' ),
 			10, 2
+		);
+
+		add_action(
+			'jet-engine/listings/document/get-preview/' . $this->source,
+			array( $this, 'setup_preview' )
 		);
 
 	}
@@ -311,7 +316,7 @@ class Manager {
 	 *
 	 * @return [type] [description]
 	 */
-	public function register_listing_popup_options() {
+	public function register_listing_popup_options( $data ) {
 		?>
 		<div class="jet-listings-popup__form-row jet-template-listing jet-template-<?php echo $this->source; ?>">
 			<label for="listing_rest_endpoint"><?php esc_html_e( 'From API endpoint:', 'jet-engine' ); ?></label>
@@ -320,7 +325,12 @@ class Manager {
 				<?php
 				foreach ( Module::instance()->settings->get() as $endpoint ) {
 					$url = jet_engine_trim_string( $endpoint['url'], 55, '...' );
-					printf( '<option value="%1$s">%2$s</option>', $endpoint['id'], $endpoint['name'] . ', ' . $url );
+					printf( 
+						'<option value="%1$s" %3$s>%2$s</option>',
+						$endpoint['id'],
+						$endpoint['name'] . ', ' . $url,
+						( ! empty( $data['rest_api_endpoint'] ) ? selected( $data['rest_api_endpoint'], $endpoint['id'], false ) : '' )
+					);
 				}
 			?></select>
 		</div>

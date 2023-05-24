@@ -22,6 +22,7 @@ if ( ! empty( $image[0] ) ) {
 			name="<?php echo $query_var; ?>"
 			value="<?php echo $value; ?>"
 			data-label="<?php echo $label; ?>"
+			aria-label="<?php echo $label; ?>"
 			<?php echo $checked; ?>
 		>
 		<div class="jet-color-image-list__button">

@@ -7,7 +7,9 @@
 >
 	<div class="cx-vui-subtitle" slot="title"><?php
 		_e( 'Please confirm meta box deletion', 'jet-engine' );
-	?></div>
+	?>
+		<template v-if="itemName">- <span class="jet-engine-accent-text">{{ itemName }}</span></template>
+	</div>
 	<p slot="content">
 		<?php _e( 'Are you sure you want to delete this meta box?', 'jet-engine' ); ?><br>
 	</p>

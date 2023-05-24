@@ -50,7 +50,26 @@ class Jet_Woo_Woocommerce_Actions extends Jet_Woo_Builder_Base {
 				'type'        => Controls_Manager::SELECT,
 				'label'       => __( 'Hook', 'jet-woo-builder' ),
 				'description' => __( 'The names of the hooks are based on the location of the elements in the default WooCommerce templates.', 'jet-woo-builder' ),
-				'groups'      => jet_woo_builder_tools()->get_woocommerce_actions(),
+				'groups'      => [
+					[
+						'label'   => __( 'Single Product', 'jet-woo-builder' ),
+						'options' => [
+							'woocommerce_before_single_product_summary' => __( 'Before Summary', 'jet-woo-builder' ),
+							'woocommerce_single_product_summary'        => __( 'Summary', 'jet-woo-builder' ),
+							'woocommerce_after_single_product_summary'  => __( 'After Summary', 'jet-woo-builder' ),
+						],
+					],
+					[
+						'label'   => __( 'Shop Loop', 'jet-woo-builder' ),
+						'options' => [
+							'woocommerce_before_shop_loop_item'       => __( 'Before Item', 'jet-woo-builder' ),
+							'woocommerce_before_shop_loop_item_title' => __( 'Before Item Title', 'jet-woo-builder' ),
+							'woocommerce_shop_loop_item_title'        => __( 'Item Title', 'jet-woo-builder' ),
+							'woocommerce_after_shop_loop_item_title'  => __( 'After Item Title', 'jet-woo-builder' ),
+							'woocommerce_after_shop_loop_item'        => __( 'After Item', 'jet-woo-builder' ),
+						],
+					],
+				],
 			]
 		);
 

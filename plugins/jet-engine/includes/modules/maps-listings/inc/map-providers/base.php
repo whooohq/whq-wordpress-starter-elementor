@@ -2,6 +2,7 @@
 namespace Jet_Engine\Modules\Maps_Listings\Providers;
 
 use Jet_Engine\Modules\Maps_Listings\Base_Provider;
+use Jet_Engine\Modules\Maps_Listings\Module;
 
 abstract class Base extends Base_Provider {
 
@@ -34,6 +35,10 @@ abstract class Base extends Base_Provider {
 
 	public function prepare_render_settings( $settings = array() ) {
 		return $settings;
+	}
+
+	public function is_active() {
+		return Module::instance()->providers->get_active_map_provider() && $this->get_id() === Module::instance()->providers->get_active_map_provider()->get_id();
 	}
 
 }

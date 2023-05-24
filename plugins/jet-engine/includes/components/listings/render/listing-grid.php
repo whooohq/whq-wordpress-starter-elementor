@@ -39,6 +39,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 				'use_load_more'            => '',
 				'load_more_id'             => '',
 				'load_more_type'           => 'click',
+				'load_more_offset'         => null,
 				'loader_text'              => '',
 				'loader_spinner'           => '',
 				'use_custom_post_types'    => '',
@@ -75,13 +76,14 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 				$settings
 			);
 
-			if ( ! $this->listing_id ) {
+			if ( ! $this->listing_id || ! get_post( $this->listing_id ) ) {
 				$this->print_no_listing_notice();
 				return;
 			}
 
 			$this->render_posts();
 			jet_engine()->frontend->frontend_scripts();
+
 		}
 
 		/**
@@ -938,7 +940,13 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 				return;
 			}
 
-			jet_engine()->admin_bar->register_post_item( $listing_id );
+			$view_type = jet_engine()->listings->data->get_listing_type( $listing_id );
+
+			jet_engine()->admin_bar->register_item( 'edit_post_' . $listing_id, array(
+				'title'     => get_the_title( $listing_id ),
+				'sub_title' => jet_engine()->admin_bar->get_post_type_label( jet_engine()->post_type->slug() ),
+				'href'      => jet_engine()->post_type->admin_screen->get_edit_url( $view_type, $listing_id ),
+			) );
 
 			if ( $this->maybe_prevent_recursion( $settings ) ) {
 				printf( '<div class="jet-listing-notice">%s</div>', __( 'Please select another listing to show to avoid recursion.', 'jet-engine' ) );
@@ -952,32 +960,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 
 			$current_listing = jet_engine()->listings->data->get_listing();
 
-			if ( jet_engine()->has_elementor() ) {
-				$doc = Elementor\Plugin::$instance->documents->get_doc_for_frontend( $listing_id );
-			} else {
-				$listing_settings = get_post_meta( $listing_id, '_elementor_page_settings', true );
-
-				if ( empty( $listing_settings ) ) {
-					$listing_settings = array();
-				}
-
-				$source          = ! empty( $listing_settings['listing_source'] ) ? $listing_settings['listing_source'] : 'posts';
-				$post_type       = ! empty( $listing_settings['listing_post_type'] ) ? $listing_settings['listing_post_type'] : 'post';
-				$tax             = ! empty( $listing_settings['listing_tax'] ) ? $listing_settings['listing_tax'] : 'category';
-				$repeater_source = ! empty( $listing_settings['repeater_source'] ) ? $listing_settings['repeater_source'] : '';
-				$repeater_field  = ! empty( $listing_settings['repeater_field'] ) ? $listing_settings['repeater_field'] : '';
-
-				$doc = jet_engine()->listings->get_new_doc( array(
-					'listing_source'    => $source,
-					'listing_post_type' => $post_type,
-					'listing_tax'       => $tax,
-					'is_main'           => true,
-					'repeater_source'   => $repeater_source,
-					'repeater_field'    => $repeater_field,
-				), absint( $listing_id ) );
-			}
-
-			jet_engine()->listings->data->set_listing( $doc );
+			jet_engine()->listings->data->set_listing_by_id( $listing_id );
 
 			$query = $this->get_query( $settings );
 
@@ -1139,7 +1122,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 			if ( 'acf' === $repeater_source ) {
 				$count = $meta_value;
 			} else {
-				$count = count( $meta_value );
+				$count = is_array( $meta_value ) ? count( $meta_value ) : 0;
 			}
 
 			$query = array_fill( 0, $count, $current_object );
@@ -1223,6 +1206,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 					'use_load_more'            => ! empty( $settings['use_load_more'] ) ? $settings['use_load_more'] : '',
 					'load_more_id'             => ! empty( $settings['load_more_id'] ) ? $settings['load_more_id'] : '',
 					'load_more_type'           => ! empty( $settings['load_more_type'] ) ? $settings['load_more_type'] : 'click',
+					'load_more_offset'         => ! empty( $settings['load_more_offset'] ) ? $settings['load_more_offset'] : null,
 					'use_custom_post_types'    => ! empty( $settings['use_custom_post_types'] ) ? $settings['use_custom_post_types'] : '',
 					'custom_post_types'        => ! empty( $settings['custom_post_types'] ) ? $settings['custom_post_types'] : array(),
 					'hide_widget_if'           => ! empty( $settings['hide_widget_if'] ) ? $settings['hide_widget_if'] : '',
@@ -1358,13 +1342,15 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 				do_action( 'jet-engine/listing/grid-items/before', $settings, $this );
 
 				printf(
-					'<div class="%1$s" %2$s data-nav="%3$s" data-page="%4$d" data-pages="%5$d" data-listing-source="%6$s">',
+					'<div class="%1$s" %2$s data-nav="%3$s" data-page="%4$d" data-pages="%5$d" data-listing-source="%6$s" data-listing-id="%7$s" data-query-id="%8$s">',
 					esc_attr( implode( ' ', $container_classes ) ),
 					implode( ' ', $container_attrs ),
 					$this->get_nav_settings( $settings ),
 					esc_attr( $this->query_vars['page'] ),
 					esc_attr( $this->query_vars['pages'] ),
-					jet_engine()->listings->data->get_listing_source()
+					jet_engine()->listings->data->get_listing_source(),
+					$this->listing_id,
+					$this->listing_query_id
 				);
 
 				do_action( 'jet-engine/listing/posts-loop/before', $settings, $this );
@@ -1386,6 +1372,9 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 				do_action( 'jet-engine/listing/grid/after', $this );
 
 			} else {
+
+				do_action( 'jet-engine/listing/grid/not-found/before', $this );
+
 				printf(
 					'<div class="jet-listing-not-found %3$s" data-nav="%2$s" %4$s>%1$s</div>',
 					wp_kses_post( do_shortcode( wp_unslash( $settings['not_found_message'] ) ) ),
@@ -1393,6 +1382,8 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 					$base_class . '__items',
 					implode( ' ', $container_attrs )
 				);
+
+				do_action( 'jet-engine/listing/grid/not-found/after', $this );
 			}
 
 			echo '</div>';
@@ -1418,6 +1409,8 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 				$i = 1;
 			}
 
+			$i = apply_filters( 'jet-engine/listing/posts-loop/start-from', $i, $settings, $this );
+
 			global $wp_query, $post;
 			$default_object = $wp_query->queried_object;
 
@@ -1426,6 +1419,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 
 			$temp_query = false;
 
+			// Added for correctly setup and reset global $post in nested listings.
 			if ( $this->posts_query ) {
 
 				$is_singular = is_singular();
@@ -1474,21 +1468,8 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 					$content = jet_engine()->frontend->get_listing_item( $post_obj );
 				}
 
-				$class = get_class( $post_obj );
-
-				switch ( $class ) {
-					case 'WP_Post':
-					case 'WP_User':
-						$post_id = $post_obj->ID;
-						break;
-
-					case 'WP_Term':
-						$post_id = $post_obj->term_id;
-						break;
-
-					default:
-						$post_id = apply_filters( 'jet-engine/listing/custom-post-id', get_the_ID(), $post_obj );
-				}
+				$class   = get_class( $post_obj );
+				$post_id = jet_engine()->listings->data->get_current_object_id();
 
 				$classes = array(
 					$base_class . '__item',
@@ -1621,7 +1602,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 
 			$options = apply_filters( 'jet-engine/listing/grid/masonry-options', array(
 				'columns' => $this->get_columns_settings( $settings ),
-			) );
+			), $settings, $this );
 
 			return sprintf( 'data-masonry-grid-options="%s"', htmlspecialchars( json_encode( $options ) ) );
 
@@ -1640,44 +1621,39 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 
 			switch ( $settings['arrow_icon'] ) {
 				case 'fa fa-angle-left':
-					$icon = '<svg viewBox="0 0 90 179" xmlns="http://www.w3.org/2000/svg"><path transform="scale(0.1,-0.1) translate(0,-1536)" d="M627 992q0 -13 -10 -23l-393 -393l393 -393q10 -10 10 -23t-10 -23l-50 -50q-10 -10 -23 -10t-23 10l-466 466q-10 10 -10 23t10 23l466 466q10 10 23 10t23 -10l50 -50q10 -10 10 -23z" /></svg>';
+					$icon = "<svg width='180' height='180' viewBox='0 0 180 180' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M119 47.3166C119 48.185 118.668 48.9532 118.003 49.6212L78.8385 89L118.003 128.379C118.668 129.047 119 129.815 119 130.683C119 131.552 118.668 132.32 118.003 132.988L113.021 137.998C112.356 138.666 111.592 139 110.729 139C109.865 139 109.101 138.666 108.436 137.998L61.9966 91.3046C61.3322 90.6366 61 89.8684 61 89C61 88.1316 61.3322 87.3634 61.9966 86.6954L108.436 40.002C109.101 39.334 109.865 39 110.729 39C111.592 39 112.356 39.334 113.021 40.002L118.003 45.012C118.668 45.68 119 46.4482 119 47.3166Z' fill='black'/></svg>";
 					break;
 
 				case 'fa fa-chevron-left':
-					$icon = '<svg viewBox="0 0 179 179" xmlns="http://www.w3.org/2000/svg"><path transform="scale(0.1,-0.1) translate(0,-1536)" d="M1171 1235l-531 -531l531 -531q19 -19 19 -45t-19 -45l-166 -166q-19 -19 -45 -19t-45 19l-742 742q-19 19 -19 45t19 45l742 742q19 19 45 19t45 -19l166 -166q19 -19 19 -45t-19 -45z" /></svg>';
+					$icon = "<svg width='180' height='180' viewBox='0 0 180 180' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M140.093 36.6365L86.7876 90L140.093 143.364C141.364 144.636 142 146.144 142 147.886C142 149.628 141.364 151.135 140.093 152.408L123.429 169.091C122.157 170.364 120.651 171 118.911 171C117.171 171 115.665 170.364 114.394 169.091L39.9073 94.5223C38.6358 93.2494 38 91.7419 38 90C38 88.2581 38.6358 86.7506 39.9073 85.4777L114.394 10.9094C115.665 9.63648 117.171 9 118.911 9C120.651 9 122.157 9.63648 123.429 10.9094L140.093 27.5918C141.364 28.8648 142 30.3722 142 32.1141C142 33.8561 141.364 35.3635 140.093 36.6365Z' fill='black'/></svg>";
 					break;
 
 				case 'fa fa-angle-double-left':
-					$icon = '<svg viewBox="0 0 90 179" xmlns="http://www.w3.org/2000/svg"><path transform="scale(0.1,-0.1) translate(0,-1536)" d="M627 160q0 -13 -10 -23l-50 -50q-10 -10 -23 -10t-23 10l-466 466q-10 10 -10 23t10 23l466 466q10 10 23 10t23 -10l50 -50q10 -10 10 -23t-10 -23l-393 -393l393 -393q10 -10 10 -23zM1011 160q0 -13 -10 -23l-50 -50q-10 -10 -23 -10t-23 10l-466 466q-10 10 -10 23
-t10 23l466 466q10 10 23 10t23 -10l50 -50q10 -10 10 -23t-10 -23l-393 -393l393 -393q10 -10 10 -23z" /></svg>';
+					$icon = "<svg width='180' height='180' viewBox='0 0 180 180' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M99.8385 131.683C99.8385 132.552 99.5072 133.32 98.8447 133.988L93.8758 138.998C93.2133 139.666 92.4513 140 91.5901 140C90.7288 140 89.9669 139.666 89.3043 138.998L42.9938 92.3046C42.3313 91.6366 42 90.8684 42 90C42 89.1316 42.3313 88.3634 42.9938 87.6954L89.3043 41.002C89.9669 40.334 90.7288 40 91.5901 40C92.4513 40 93.2133 40.334 93.8758 41.002L98.8447 46.012C99.5072 46.68 99.8385 47.4482 99.8385 48.3166C99.8385 49.185 99.5072 49.9532 98.8447 50.6212L59.7888 90L98.8447 129.379C99.5072 130.047 99.8385 130.815 99.8385 131.683ZM138 131.683C138 132.552 137.669 133.32 137.006 133.988L132.037 138.998C131.375 139.666 130.613 140 129.752 140C128.89 140 128.128 139.666 127.466 138.998L81.1553 92.3046C80.4928 91.6366 80.1615 90.8684 80.1615 90C80.1615 89.1316 80.4928 88.3634 81.1553 87.6954L127.466 41.002C128.128 40.334 128.89 40 129.752 40C130.613 40 131.375 40.334 132.037 41.002L137.006 46.012C137.669 46.68 138 47.4482 138 48.3166C138 49.185 137.669 49.9532 137.006 50.6212L97.9503 90L137.006 129.379C137.669 130.047 138 130.815 138 131.683Z' fill='black'/></svg>";
 					break;
 
 				case 'fa fa-arrow-left':
-					$icon = '<svg viewBox="0 0 179 179" xmlns="http://www.w3.org/2000/svg"><path transform="scale(0.1,-0.1) translate(0,-1536)" d="M1536 640v-128q0 -53 -32.5 -90.5t-84.5 -37.5h-704l293 -294q38 -36 38 -90t-38 -90l-75 -76q-37 -37 -90 -37q-52 0 -91 37l-651 652q-37 37 -37 90q0 52 37 91l651 650q38 38 91 38q52 0 90 -38l75 -74q38 -38 38 -91t-38 -91l-293 -293h704q52 0 84.5 -37.5
-t32.5 -90.5z" /></svg>';
+					$icon = "<svg width='180' height='180' viewBox='0 0 180 180' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M164 83.5918V96.4082C164 99.9461 162.911 102.967 160.732 105.47C158.554 107.973 155.722 109.225 152.236 109.225H81.4538L110.913 138.662C113.46 141.065 114.734 144.069 114.734 147.674C114.734 151.279 113.46 154.282 110.913 156.685L103.372 164.295C100.892 166.765 97.8759 168 94.3234 168C90.8379 168 87.788 166.765 85.1739 164.295L19.7201 99.0116C17.24 96.5417 16 93.5379 16 90C16 86.5289 17.24 83.4917 19.7201 80.8883L85.1739 15.8049C87.721 13.2683 90.7708 12 94.3234 12C97.8089 12 100.825 13.2683 103.372 15.8049L110.913 23.2144C113.46 25.751 114.734 28.7882 114.734 32.3261C114.734 35.8639 113.46 38.9012 110.913 41.4377L81.4538 70.7754H152.236C155.722 70.7754 158.554 72.027 160.732 74.5302C162.911 77.0334 164 80.0539 164 83.5918Z' fill='black'/></svg>";
 					break;
 
 				case 'fa fa-caret-left':
-					$icon = '<svg viewBox="0 0 90 179" xmlns="http://www.w3.org/2000/svg"><path transform="scale(0.1,-0.1) translate(0,-1536)" d="M640 1088v-896q0 -26 -19 -45t-45 -19t-45 19l-448 448q-19 19 -19 45t19 45l448 448q19 19 45 19t45 -19t19 -45z" /></svg>';
+					$icon = "<svg width='180' height='180' viewBox='0 0 180 180' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M120 44.5V135.5C120 137.26 119.34 138.784 118.021 140.07C116.701 141.357 115.139 142 113.333 142C111.528 142 109.965 141.357 108.646 140.07L61.9792 94.5703C60.6597 93.2839 60 91.7604 60 90C60 88.2396 60.6597 86.7161 61.9792 85.4297L108.646 39.9297C109.965 38.6432 111.528 38 113.333 38C115.139 38 116.701 38.6432 118.021 39.9297C119.34 41.2161 120 42.7396 120 44.5Z' fill='black'/></svg>";
 					break;
 
 				case 'fa fa-long-arrow-left':
-					$icon = '<svg viewBox="0 0 179 179" xmlns="http://www.w3.org/2000/svg"><path transform="scale(0.1,-0.1) translate(0,-1536)" d="M1792 736v-192q0 -14 -9 -23t-23 -9h-1248v-224q0 -21 -19 -29t-35 5l-384 350q-10 10 -10 23q0 14 10 24l384 354q16 14 35 6q19 -9 19 -29v-224h1248q14 0 23 -9t9 -23z" /></svg>';
+					$icon = "<svg width='180' height='180' viewBox='0 0 180 180' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M175 80.4926V99.4937C175 100.417 174.705 101.176 174.115 101.77C173.524 102.364 172.77 102.661 171.852 102.661H49.0741V124.828C49.0741 126.214 48.451 127.171 47.2049 127.698C45.9587 128.226 44.811 128.061 43.7616 127.204L5.9838 92.5662C5.32793 91.9064 5 91.1477 5 90.29C5 89.3664 5.32793 88.5747 5.9838 87.9149L43.7616 52.8817C44.811 51.958 45.9587 51.7601 47.2049 52.2879C48.451 52.8817 49.0741 53.8383 49.0741 55.1579V77.3258H171.852C172.77 77.3258 173.524 77.6227 174.115 78.2164C174.705 78.8102 175 79.5689 175 80.4926Z' fill='black'/></svg>";
 					break;
 
 				case 'fa fa-arrow-circle-left':
-					$icon = '<svg viewBox="0 0 179 179" xmlns="http://www.w3.org/2000/svg"><path transform="scale(0.1,-0.1) translate(0,-1536)" d="M1280 576v128q0 26 -19 45t-45 19h-502l189 189q19 19 19 45t-19 45l-91 91q-18 18 -45 18t-45 -18l-362 -362l-91 -91q-18 -18 -18 -45t18 -45l91 -91l362 -362q18 -18 45 -18t45 18l91 91q18 18 18 45t-18 45l-189 189h502q26 0 45 19t19 45zM1536 640
-q0 -209 -103 -385.5t-279.5 -279.5t-385.5 -103t-385.5 103t-279.5 279.5t-103 385.5t103 385.5t279.5 279.5t385.5 103t385.5 -103t279.5 -279.5t103 -385.5z" /></svg>';
+					$icon = "<svg width='180' height='180' viewBox='0 0 180 180' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M143.333 96.6667V83.3333C143.333 81.5278 142.674 79.9653 141.354 78.6458C140.035 77.3264 138.472 76.6667 136.667 76.6667H84.375L104.062 56.9792C105.382 55.6597 106.042 54.0972 106.042 52.2917C106.042 50.4861 105.382 48.9236 104.062 47.6042L94.5833 38.125C93.3333 36.875 91.7708 36.25 89.8958 36.25C88.0208 36.25 86.4583 36.875 85.2083 38.125L47.5 75.8333L38.0208 85.3125C36.7708 86.5625 36.1458 88.125 36.1458 90C36.1458 91.875 36.7708 93.4375 38.0208 94.6875L47.5 104.167L85.2083 141.875C86.4583 143.125 88.0208 143.75 89.8958 143.75C91.7708 143.75 93.3333 143.125 94.5833 141.875L104.062 132.396C105.312 131.146 105.937 129.583 105.937 127.708C105.937 125.833 105.312 124.271 104.062 123.021L84.375 103.333H136.667C138.472 103.333 140.035 102.674 141.354 101.354C142.674 100.035 143.333 98.4722 143.333 96.6667ZM170 90C170 104.514 166.424 117.899 159.271 130.156C152.118 142.413 142.413 152.118 130.156 159.271C117.899 166.424 104.514 170 90 170C75.4861 170 62.1007 166.424 49.8437 159.271C37.5868 152.118 27.8819 142.413 20.7292 130.156C13.5764 117.899 10 104.514 10 90C10 75.4861 13.5764 62.1007 20.7292 49.8438C27.8819 37.5868 37.5868 27.8819 49.8437 20.7292C62.1007 13.5764 75.4861 10 90 10C104.514 10 117.899 13.5764 130.156 20.7292C142.413 27.8819 152.118 37.5868 159.271 49.8438C166.424 62.1007 170 75.4861 170 90Z' fill='black'/></svg>";
 					break;
 
 				case 'fa fa-chevron-circle-left':
-					$icon = '<svg viewBox="0 0 179 179" xmlns="http://www.w3.org/2000/svg"><path transform="scale(0.1,-0.1) translate(0,-1536)" d="M909 141l102 102q19 19 19 45t-19 45l-307 307l307 307q19 19 19 45t-19 45l-102 102q-19 19 -45 19t-45 -19l-454 -454q-19 -19 -19 -45t19 -45l454 -454q19 -19 45 -19t45 19zM1536 640q0 -209 -103 -385.5t-279.5 -279.5t-385.5 -103t-385.5 103t-279.5 279.5
-t-103 385.5t103 385.5t279.5 279.5t385.5 103t385.5 -103t279.5 -279.5t103 -385.5z" /></svg>';
+					$icon = "<svg width='180' height='180' viewBox='0 0 180 180' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M104.687 141.979L115.312 131.354C116.632 130.035 117.292 128.472 117.292 126.667C117.292 124.861 116.632 123.299 115.312 121.979L83.3333 90L115.312 58.0208C116.632 56.7014 117.292 55.1389 117.292 53.3333C117.292 51.5278 116.632 49.9653 115.312 48.6458L104.687 38.0208C103.368 36.7014 101.806 36.0417 100 36.0417C98.1944 36.0417 96.6319 36.7014 95.3125 38.0208L48.0208 85.3125C46.7014 86.6319 46.0417 88.1944 46.0417 90C46.0417 91.8056 46.7014 93.3681 48.0208 94.6875L95.3125 141.979C96.6319 143.299 98.1944 143.958 100 143.958C101.806 143.958 103.368 143.299 104.687 141.979ZM170 90C170 104.514 166.424 117.899 159.271 130.156C152.118 142.413 142.413 152.118 130.156 159.271C117.899 166.424 104.514 170 90 170C75.4861 170 62.1007 166.424 49.8437 159.271C37.5868 152.118 27.8819 142.413 20.7292 130.156C13.5764 117.899 10 104.514 10 90C10 75.4861 13.5764 62.1007 20.7292 49.8438C27.8819 37.5868 37.5868 27.8819 49.8437 20.7292C62.1007 13.5764 75.4861 10 90 10C104.514 10 117.899 13.5764 130.156 20.7292C142.413 27.8819 152.118 37.5868 159.271 49.8438C166.424 62.1007 170 75.4861 170 90Z' fill='black'/></svg>";
 					break;
 
 				case 'fa fa-caret-square-o-left':
-					$icon = '<svg viewBox="0 0 179 179" xmlns="http://www.w3.org/2000/svg"><path transform="scale(0.1,-0.1) translate(0,-1536)" d="M1024 960v-640q0 -26 -19 -45t-45 -19q-20 0 -37 12l-448 320q-27 19 -27 52t27 52l448 320q17 12 37 12q26 0 45 -19t19 -45zM1280 160v960q0 13 -9.5 22.5t-22.5 9.5h-960q-13 0 -22.5 -9.5t-9.5 -22.5v-960q0 -13 9.5 -22.5t22.5 -9.5h960q13 0 22.5 9.5t9.5 22.5z
-M1536 1120v-960q0 -119 -84.5 -203.5t-203.5 -84.5h-960q-119 0 -203.5 84.5t-84.5 203.5v960q0 119 84.5 203.5t203.5 84.5h960q119 0 203.5 -84.5t84.5 -203.5z" /></svg>';
+					$icon = "<svg width='180' height='180' viewBox='0 0 180 180' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M116.667 56.6667V123.333C116.667 125.139 116.007 126.701 114.687 128.021C113.368 129.34 111.806 130 110 130C108.611 130 107.326 129.583 106.146 128.75L59.4792 95.4167C57.6042 94.0972 56.6667 92.2917 56.6667 90C56.6667 87.7083 57.6042 85.9028 59.4792 84.5833L106.146 51.25C107.326 50.4167 108.611 50 110 50C111.806 50 113.368 50.6597 114.687 51.9792C116.007 53.2986 116.667 54.8611 116.667 56.6667ZM143.333 140V40C143.333 39.0972 143.003 38.316 142.344 37.6563C141.684 36.9965 140.903 36.6667 140 36.6667H40C39.0972 36.6667 38.316 36.9965 37.6562 37.6563C36.9965 38.316 36.6667 39.0972 36.6667 40V140C36.6667 140.903 36.9965 141.684 37.6562 142.344C38.316 143.003 39.0972 143.333 40 143.333H140C140.903 143.333 141.684 143.003 142.344 142.344C143.003 141.684 143.333 140.903 143.333 140ZM170 40V140C170 148.264 167.066 155.33 161.198 161.198C155.33 167.066 148.264 170 140 170H40C31.7361 170 24.6701 167.066 18.8021 161.198C12.934 155.33 10 148.264 10 140V40C10 31.7361 12.934 24.6701 18.8021 18.8021C24.6701 12.934 31.7361 10 40 10H140C148.264 10 155.33 12.934 161.198 18.8021C167.066 24.6701 170 31.7361 170 40Z' fill='black'/></svg>";
 					break;
 
 				default:
@@ -1685,7 +1661,7 @@ M1536 1120v-960q0 -119 -84.5 -203.5t-203.5 -84.5h-960q-119 0 -203.5 84.5t-84.5 2
 			}
 
 			return sprintf(
-				'<div class="%1$s__slider-icon %3$s-arrow %4$s" role="button" aria-label="%5$s">%2$s</div>',
+				'<div class=\'%1$s__slider-icon %3$s-arrow %4$s\' role=\'button\' aria-label=\'%5$s\'>%2$s</div>',
 				$this->get_name(),
 				$icon,
 				$dir,
@@ -1761,11 +1737,11 @@ M1536 1120v-960q0 -119 -84.5 -203.5t-203.5 -84.5h-960q-119 0 -203.5 84.5t-84.5 2
 			$tablet_col  = ! empty( $settings['columns_tablet'] ) ? absint( $settings['columns_tablet'] ) : $desktop_col;
 			$mobile_col  = ! empty( $settings['columns_mobile'] ) ? absint( $settings['columns_mobile'] ) : $tablet_col;
 
-			return array(
+			return apply_filters( 'jet-engine/listing/grid/columns', array(
 				'desktop' => $desktop_col,
 				'tablet'  => $tablet_col,
 				'mobile'  => $mobile_col,
-			);
+			), $settings );
 		}
 
 		/**
@@ -1825,6 +1801,15 @@ M1536 1120v-960q0 -119 -84.5 -203.5t-203.5 -84.5h-960q-119 0 -203.5 84.5t-84.5 2
 			return sprintf( $format, $loader_spinner_html, $loader_text_html );
 		}
 
+		public function before_listing_grid() {
+			do_action( 'jet-engine/listing/grid/before-render', $this );
+		}
+
+		public function after_listing_grid() {
+			do_action( 'jet-engine/listing/grid/after-render', $this );
+		}
+
 	}
 
 }
+

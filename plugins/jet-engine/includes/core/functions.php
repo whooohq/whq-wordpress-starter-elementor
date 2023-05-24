@@ -469,7 +469,8 @@ function jet_engine_icon_html( $value = null ) {
 
 	$format = apply_filters(
 		'jet-engine/listings/icon-html-format',
-		'<i class="fa %s"></i>'
+		'<i class="fa %s"></i>',
+		$value
 	);
 
 	return sprintf( $format, $value );
@@ -1161,4 +1162,40 @@ function jet_engine_proportional( $value = null, $divisor = 1, $multiplier = 1, 
 
 	return round( $result, $precision );
 
+}
+
+/**
+ * Return new Jet_Engine_Datetime object
+ * @return Jet_Engine_Datetime
+ */
+function jet_engine_datetime() {
+
+	if ( ! class_exists( '\Jet_Engine_Datetime' ) ) {
+		require_once jet_engine()->plugin_path( 'includes/classes/datetime.php' );
+	}
+
+	return new \Jet_Engine_Datetime();
+
+}
+
+/**
+ * Returns formatted date according timezone settings
+ * 
+ * @param  [type] $format    [description]
+ * @param  [type] $timestamp [description]
+ * @return [type]            [description]
+ */
+function jet_engine_date( $format, $timestamp ) {
+	return jet_engine_datetime()->date( $format, $timestamp );
+}
+
+/**
+ * Retruns given user property by given user ID
+ * 
+ * @param  [type] $user_id [description]
+ * @param  [type] $prop    [description]
+ * @return [type]          [description]
+ */
+function jet_engine_get_user_data_by_id( $user_id = 0, $prop = 'display_name' ) {
+	return jet_engine()->listings->data->get_prop( $prop, get_user_by( 'ID', $user_id ) );
 }

@@ -47,7 +47,15 @@ class Bing extends Base {
 	}
 
 	/**
-	 * Find location name in the reverse geocoding reponse data and return it
+	 * Build Autocomplete API URL for given place predictions
+	 * @return mixed
+	 */
+	public function build_autocomplete_api_url( $query = '' ) {
+		return $this->build_api_url( $query );
+	}
+
+	/**
+	 * Find location name in the reverse geocoding response data and return it
 	 *
 	 * @param  array  $data [description]
 	 * @return [type]       [description]
@@ -64,7 +72,7 @@ class Bing extends Base {
 	}
 
 	/**
-	 * Find coordinates in the reponse data and return it
+	 * Find coordinates in the response data and return it
 	 *
 	 * @param  array  $data [description]
 	 * @return [type]       [description]
@@ -87,6 +95,54 @@ class Bing extends Base {
 
 		return $coord;
 
+	}
+
+	/**
+	 * Find place predictions in the response data and return it
+	 *
+	 * @param  array $data
+	 * @return array|false
+	 */
+	public function extract_autocomplete_data_from_response_data( $data = array() ) {
+
+		if ( empty( $data['resourceSets'] ) ) {
+			return false;
+		}
+
+		if ( empty( $data['resourceSets'][0]['resources'] ) ) {
+			return false;
+		}
+
+		$resources = $data['resourceSets'][0]['resources'];
+
+		$result = array();
+
+		foreach ( $resources as $resource ) {
+
+			$properties = isset( $resource['address'] ) ? $resource['address'] : false;
+
+			if ( ! $properties ) {
+				$address = $resource['name'];
+			} else {
+				$address = implode( ', ', array_filter( array(
+					$resource['name'],
+					$this->get_prop( $properties, 'adminDistrict2' ),
+					$this->get_prop( $properties, 'adminDistrict' ),
+				) ) );
+			}
+
+			$result[] = array(
+				'address' => $address,
+				'lat'     => $resource['point']['coordinates'][0],
+				'lng'     => $resource['point']['coordinates'][1],
+			);
+		}
+
+		return $result;
+	}
+
+	public function get_prop( $properties, $key ) {
+		return isset( $properties[ $key ] ) ? $properties[ $key ] : null;
 	}
 
 	/**

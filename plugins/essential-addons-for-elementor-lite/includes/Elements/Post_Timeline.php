@@ -153,6 +153,7 @@ class Post_Timeline extends Widget_Base
             [
                 'label'       => __('Background Color', 'essential-addons-for-elementor-lite'),
                 'type'        => Controls_Manager::COLOR,
+				'default'	  => '#3DB1C0',
                 'selectors'   => [
                     '{{WRAPPER}} .eael-timeline-post-inner' => 'background: {{VALUE}}',
                 ],
@@ -302,6 +303,7 @@ class Post_Timeline extends Widget_Base
                 'default'   => '#fff',
                 'selectors' => [
                     '{{WRAPPER}} .eael-timeline-post-title .eael-timeline-post-title-text' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .timeline-layout-card .eael-timeline-post-title .eael-timeline-post-title-text-card' => 'color: {{VALUE}};',
                 ],
 
             ]
@@ -440,6 +442,7 @@ class Post_Timeline extends Widget_Base
             [
                 'label'     => __('Arrow Color', 'essential-addons-for-elementor-lite'),
                 'type'      => Controls_Manager::COLOR,
+				'default'	=> '#3DB1C0',
                 'selectors' => [
                     '{{WRAPPER}} .eael-timeline-post-inner'                                          => 'border-color: {{VALUE}};',
                     '{{WRAPPER}} .eael-timeline-post-inner::after'                                   => 'border-left-color: {{VALUE}}; border-right-color: {{VALUE}}',
@@ -771,7 +774,8 @@ class Post_Timeline extends Widget_Base
                     $query = new \WP_Query($args);
                     if ($query->have_posts()) {
 	                    $found_posts      = $query->found_posts;
-	                    $max_page         = ceil( $found_posts / absint( $args['posts_per_page'] ) );
+	                    $ppp              = empty( $args['posts_per_page'] ) ? get_option( 'posts_per_page' ) : $args['posts_per_page'];
+	                    $max_page         = ceil( $found_posts / absint( $ppp ) );
 	                    $args['max_page'] = $max_page;
                         while ($query->have_posts()) {
                             $query->the_post();

@@ -22,14 +22,14 @@ class Manager {
 		
 		add_filter( 'jet-engine/listing/data/object-fields-groups', array( $this, 'add_source_fields' ) );
 
-		add_action( 'jet-engine/elementor-views/dynamic-tags/register', array( $this, 'register_dynamic_tags' ) );
+		add_action( 'jet-engine/elementor-views/dynamic-tags/register', array( $this, 'register_dynamic_tags' ), 10, 2 );
 		add_action( 'jet-engine/register-macros', array( $this, 'register_macros' ) );
 
 	}
 
-	public function register_dynamic_tags( $tags_module ) {
+	public function register_dynamic_tags( $dynamic_tags, $tags_module ) {
 		require_once Package::instance()->package_path( 'listings/dynamic-tag-form-field.php' );
-		$tags_module->register_tag( new Dynamic_Tag_Form_Field() );
+		$tags_module->register_tag( $dynamic_tags, new Dynamic_Tag_Form_Field() );
 	}
 
 	/**

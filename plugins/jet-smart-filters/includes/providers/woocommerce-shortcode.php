@@ -142,6 +142,22 @@ if ( ! class_exists( 'Jet_Smart_Filters_Provider_WooCommerce_Shortcode' ) ) {
 		}
 
 		/**
+		 * Get provider list selector
+		 */
+		public function get_list_selector() {
+
+			return '.products';
+		}
+
+		/**
+		 * Get provider list item selector
+		 */
+		public function get_item_selector() {
+
+			return '.product';
+		}
+
+		/**
 		 * Action for wrapper selector - 'insert' into it or 'replace'
 		 */
 		public function get_wrapper_action() {

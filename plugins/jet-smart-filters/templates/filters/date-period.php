@@ -11,6 +11,9 @@ $date_format            = isset( $args['date_format'] ) ? $args['date_format'] :
 $period_type            = isset( $args['period_type'] ) ? $args['period_type'] : 'week';
 $datepicker_button_text = isset( $args['datepicker_button_text'] ) ? $args['datepicker_button_text'] : __( 'Select Date', 'jet-smart-filters' );
 $period_duration        = isset( $args['period_duration'] ) ? $args['period_duration'] : '1';
+$min_date_attr          = isset( $args['min_date'] ) ? 'data-mindate="' . $args['min_date'] . '"' : '';
+$max_date_attr          = isset( $args['max_date'] ) ? 'data-maxdate="' . $args['max_date'] . '"' : '';
+$accessibility_label    = $args['accessibility_label'];
 
 $classes = array(
 	'jet-date-period'
@@ -30,9 +33,12 @@ if ( '' !== $args['button_icon'] ) {
 				class="jet-date-period__datepicker-input"
 				name="<?php echo $query_var; ?>"
 				value="<?php echo $current; ?>"
+				aria-label="<?php echo $accessibility_label; ?>"
 				type="hidden"
 				tabindex="-1"
 				data-format="<?php echo $date_format; ?>"
+				<?php echo $min_date_attr; ?>
+				<?php echo $max_date_attr; ?>
 			>
 		</div>
 		<div class="jet-date-period__next" <?php echo jet_smart_filters()->data->get_tabindex_attr(); ?>><i class="fa fa-chevron-right" aria-hidden="true"></i></div>

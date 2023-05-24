@@ -4,6 +4,7 @@ import General from 'blocks/editor/panels/general';
 import AdditionalSettings from 'blocks/editor/panels/additional-settings';
 import Indexer from 'blocks/editor/panels/indexer';
 import TemplateRender from 'blocks/editor/controls/templateRender';
+import CheckRange from 'filters/CheckRange';
 
 const { __ } = wp.i18n;
 
@@ -35,6 +36,8 @@ registerBlockType('jet-smart-filters/check-range', {
 		// Indexer
 		apply_indexer: attributes.apply_indexer,
 		show_counter: attributes.show_counter,
+		counter_prefix: attributes.counter_prefix,
+		counter_suffix: attributes.counter_suffix,
 		show_items_rule: attributes.show_items_rule,
 		change_items_rule: attributes.change_items_rule,
 		// Additional Settings
@@ -51,6 +54,21 @@ registerBlockType('jet-smart-filters/check-range', {
 	},
 	className: 'jet-smart-filters-check-range',
 	edit: class extends wp.element.Component {
+		componentDidMount() {
+			this._holder = $(window.ReactDOM.findDOMNode(this));
+		}
+
+		layoutUpdated() {
+			this.initCheckRange();
+		}
+
+		initCheckRange() {
+			const $filterContainer = this._holder.find('.' + window.JetSmartFilters.filtersList.CheckRange);
+
+			if ($filterContainer.length)
+				new CheckRange($filterContainer);
+		}
+
 		render() {
 			const props = this.props;
 
@@ -81,6 +99,7 @@ registerBlockType('jet-smart-filters/check-range', {
 					<TemplateRender
 						block="jet-smart-filters/check-range"
 						attributes={props.attributes}
+						onSuccess={() => { this.layoutUpdated(); }}
 					/>
 				</div>
 			];

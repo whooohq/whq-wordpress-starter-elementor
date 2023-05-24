@@ -756,8 +756,10 @@ JetGMInfoBox.prototype.open = function (map, anchor) {
 	this.setMap(map);
 
 	if ( this.div_ ) {
+		
+		let $infoBoxScope = jQuery( this.div_ );
 
-		jQuery( this.div_ ).find( 'div[data-element_type]' ).each( function() {
+		$infoBoxScope.find( 'div[data-element_type]' ).each( function() {
 
 			var $this       = jQuery( this ),
 				elementType = $this.data( 'element_type' );
@@ -781,6 +783,8 @@ JetGMInfoBox.prototype.open = function (map, anchor) {
 			);
 
 		});
+
+		window.JetPlugins.init( $infoBoxScope );
 
 		this.panBox_(this.disableAutoPan_); // BUG FIX 2/17/2018: add missing parameter
 
@@ -958,6 +962,11 @@ window.JetEngineMapsProvider = function() {
 
 	this.removeMarkers = function( markerCluster, markers ) {
 		markerCluster.removeMarkers( markers );
+	}
+
+	this.setCenterByPosition = function( data ) {
+		data.map.setCenter( data.position );
+		data.map.setZoom( data.zoom );
 	}
 
 	this.setAutoCenter = function( data ) {

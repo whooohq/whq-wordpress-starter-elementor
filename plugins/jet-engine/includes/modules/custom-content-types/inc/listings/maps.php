@@ -55,7 +55,8 @@ class Maps {
 
 		add_action(
 			'jet-engine/maps-listing/widget/custom-marker-label-controls',
-			array( $this, 'add_marker_cct_field_control' )
+			array( $this, 'add_marker_cct_field_control' ),
+			10, 2
 		);
 
 		add_filter(
@@ -78,6 +79,23 @@ class Maps {
 		add_filter( 'jet-engine/maps-listing/render/default-settings',
 			array( $this, 'update_maps_listing_default_settings' )
 		);
+
+		add_filter( 'jet-engine/bricks-views/element/parsed-attrs',
+			array( $this, 'prepare_map_settings_for_bricks' ),
+			10, 2
+		);
+
+	}
+
+	public function prepare_map_settings_for_bricks( $attrs, $element ) {
+
+		if ( 'jet-engine-maps-listing' === $element->name ) {
+			if ( ! empty( $attrs['marker_type'] ) && 'dynamic_image_cct' === $attrs['marker_type'] ) {
+				$attrs['marker_cct_field'] = ! empty( $attrs['marker_cct_field__image'] ) ? $attrs['marker_cct_field__image'] : '';
+			}
+		}
+
+		return $attrs;
 
 	}
 
@@ -151,7 +169,7 @@ class Maps {
 		return $types;
 	}
 
-	public function add_marker_cct_field_control( $widget ) {
+	public function add_marker_cct_field_control( $widget, $builder ) {
 
 		$groups = array();
 
@@ -171,13 +189,17 @@ class Maps {
 
 		}
 
-		$widget->add_control(
-			'marker_cct_field',
-			array(
-				'label'      => __( 'Field', 'jet-engine' ),
-				'type'       => \Elementor\Controls_Manager::SELECT,
-				'groups'     => $groups,
-				'conditions' => array(
+		$control_name = 'marker_cct_field';
+		$control_args = array(
+			'label'      => __( 'Field', 'jet-engine' ),
+			'type'       => 'select',
+			'groups'     => $groups,
+		);
+
+		switch ( $builder ) {
+			case 'elementor':
+
+				$control_args['conditions'] = array(
 					'relation' => 'or',
 					'terms'    => array(
 						array(
@@ -198,9 +220,33 @@ class Maps {
 							'value' => 'dynamic_image_cct',
 						),
 					),
-				),
-			)
-		);
+				);
+
+				$widget->add_control( $control_name, $control_args );
+				break;
+			
+			case 'bricks':
+
+				$control_args = \Jet_Engine\Bricks_Views\Helpers\Options_Converter::convert( $control_args );
+				
+				$widget->register_jet_control( $control_name . '__image', array_merge( $control_args, array(
+					'required' => array(
+						'marker_type',
+						'=',
+						'dynamic_image_cct'
+					)
+				) ) );
+
+				$widget->register_jet_control( $control_name, array_merge( $control_args, array(
+					'required' => array(
+						'marker_label_type',
+						'=',
+						'cct_field'
+					),
+				) ) );
+
+				break;
+		}
 
 	}
 

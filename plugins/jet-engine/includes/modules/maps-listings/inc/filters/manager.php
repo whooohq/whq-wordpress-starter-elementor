@@ -4,9 +4,9 @@ namespace Jet_Engine\Modules\Maps_Listings\Filters;
 class Manager {
 
 	public function __construct() {
-		
+
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_geolocation_assets' ) );
-		
+
 		add_action( 'jet-smart-filters/providers/register', array( $this, 'register_filters_provider' ) );
 		add_action( 'jet-smart-filters/filter-types/register', array( $this, 'register_filter_types' ) );
 
@@ -19,6 +19,8 @@ class Manager {
 		add_action( 'enqueue_block_editor_assets', array( $this, 'register_blocks_assets' ), 9 );
 		add_action( 'init', array( $this, 'register_blocks_types' ), 999 );
 		add_action( 'jet-smart-filters/blocks/localized-data', array( $this, 'modify_filters_localized_data' ) );
+
+		add_action( 'init', array( $this, 'register_bricks_types' ), 999 );
 
 		add_filter( 'jet-smart-filters/query/vars', array( $this, 'register_query_var' ) );
 
@@ -41,6 +43,17 @@ class Manager {
 			true
 		);
 
+	}
+
+	public function register_bricks_types() {
+
+		if ( ! $this->has_bricks() || ! class_exists( '\Jet_Smart_Filters\Bricks_Views\Elements\Jet_Smart_Filters_Bricks_Base' ) ) {
+			return;
+		}
+
+		$user_geolocation = jet_engine()->modules->modules_path( 'maps-listings/inc/filters/bricks-views/user-geolocation.php' );
+
+		\Bricks\Elements::register_element( $user_geolocation );
 	}
 
 	public function register_query_var( $vars ) {
@@ -96,4 +109,7 @@ class Manager {
 		return $data;
 	}
 
+	public function has_bricks() {
+		return defined( 'BRICKS_VERSION' );
+	}
 }

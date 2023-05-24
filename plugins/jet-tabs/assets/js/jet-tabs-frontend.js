@@ -89,30 +89,27 @@
 			}
 
 			if ( 'left' !== $tabsPositionBreakpoints[currentDeviceMode] && 'right' !== $tabsPositionBreakpoints[currentDeviceMode] ) {
-				var observerConfig = { attributes: true, subtree: true },
+				var observerConfig = {childList: true, subtree: true },
 					observerTarget = $( ".jet-tabs__content.active-content", $scope );
 
-				var observerCallback = ( mutationList, observer ) => {
-					for ( var mutation of mutationList ) {
-						if ( mutation.type === 'attributes' ) {
-
-							observerTarget.on('transitionstart webkitTransitionStart oTransitionStart', function () {
+				if ( observerTarget[0] ) {
+					var observerCallback = ( mutationList, observer ) => {
+						for ( var mutation of mutationList ) {
+							if ( mutation.type === 'childList' ) {
 								observerTarget.closest( '.jet-tabs__content-wrapper' ).css( 'min-height', 'auto' );
-							} );
 
-							observerTarget.on('transitionend webkitTransitionEnd oTransitionEnd', function () {
 								var activeContentHeight = observerTarget.outerHeight( true );
 
 								activeContentHeight += parseInt( observerTarget.css( 'border-top-width' ) ) + parseInt( observerTarget.css( 'border-bottom-width' ) );
 								observerTarget.closest( '.jet-tabs__content-wrapper' ).css( 'min-height', activeContentHeight );
-							} );
+							}
 						}
-					}
-				};
+					};
 
-				var observer = new MutationObserver( observerCallback );
+					var observer = new MutationObserver( observerCallback );
 
-				observer.observe( observerTarget[0], observerConfig );
+					observer.observe( observerTarget[0], observerConfig );
+				}
 			}
 
 			if ( settings['autoSwitch'] ) {
@@ -312,11 +309,24 @@
 				} else {
 					$contentWrapper.css( { 'min-height': activeContentHeight } );
 
-					$contentWrapper.on( 'transitionend webkitTransitionEnd oTransitionEnd', function () {
-						activeContentHeight = $activeContent.outerHeight( true );
-						activeContentHeight += parseInt( $contentWrapper.css( 'border-top-width' ) ) + parseInt( $contentWrapper.css( 'border-bottom-width' ) );
-						$contentWrapper.css( { 'min-height': activeContentHeight } );
-					} );
+					var observerConfig = { childList: true, subtree: true },
+						observerTarget = $contentWrapper;
+
+					if ( observerTarget[0] ) {
+						var observerCallback = ( mutationList, observer ) => {
+							for ( var mutation of mutationList ) {
+								if ( mutation.type === 'childList' ) {
+									activeContentHeight = $activeContent.outerHeight( true );
+									activeContentHeight += parseInt( $contentWrapper.css( 'border-top-width' ) ) + parseInt( $contentWrapper.css( 'border-bottom-width' ) );
+									$contentWrapper.css( { 'min-height': activeContentHeight } );
+								}
+							}
+						};
+
+						var observer = new MutationObserver( observerCallback );
+
+						observer.observe( observerTarget[0], observerConfig );
+					}
 				}
 
 				$window.trigger( 'jet-tabs/tabs/show-tab-event/before', {
@@ -675,6 +685,7 @@
 								}
 
 								timer = setTimeout( function() {
+
 									$window.trigger( 'jet-tabs/accordion/show-toggle-event/after', {
 										target: $target,
 										toggleIndex: toggleIndex,
@@ -684,10 +695,10 @@
 
 									if ( true === settings['switchScrolling'] ) {
 										$( 'html, body' ).animate( {
-											scrollTop: $toggleContent.offset().top - settings['switchScrollingOffset']['size']
+											scrollTop: $this.offset().top - settings['switchScrollingOffset']['size']
 										}, 300 );
 									}
-								}, 300 );
+								}, 500 );
 
 							} else {
 								if ( $this.hasClass( 'active-toggle' ) ) {
@@ -743,10 +754,10 @@
 
 							if ( true === settings['switchScrolling'] ) {
 								$( 'html, body' ).animate( {
-									scrollTop: $toggleContent.offset().top - settings['switchScrollingOffset']['size']
+									scrollTop: $this.offset().top - settings['switchScrollingOffset']['size']
 								}, 300 );
 							}
-						}, 300 );
+						}, 500 );
 
 					} else {
 						$toggleContent.css( { 'height': $toggleContent.outerHeight() } );

@@ -584,7 +584,6 @@ class Checkout extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'section_normal_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => $this->get_main_woocommerce_sections_selectors(),
 			]
 		);
@@ -607,7 +606,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Width', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					$this->get_main_woocommerce_sections_selectors() => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -636,7 +635,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Radius', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}}' => '--sections-border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -648,7 +647,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Padding', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}}' => '--sections-padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					// move the 'Ship to a different address?' checkbox
@@ -662,7 +661,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Margin', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}}' => '--sections-margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -710,7 +709,6 @@ class Checkout extends Base_Widget {
 			Group_Control_Text_Shadow::get_type(),
 			[
 				'name' => 'sections_titles_text_shadow',
-				'label' => esc_html__( 'Text Shadow', 'elementor-pro' ),
 				'selector' => $this->get_main_woocommerce_sections_title_selectors(),
 			]
 		);
@@ -720,7 +718,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Spacing', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
-				'size_units' => [ 'px' ],
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
 					'px' => [
 						'min' => 0,
@@ -767,7 +765,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Spacing', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
-				'size_units' => [ 'px' ],
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
 					'px' => [
 						'min' => 0,
@@ -814,7 +812,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Spacing', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
-				'size_units' => [ 'px' ],
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
 					'px' => [
 						'min' => 0,
@@ -975,7 +973,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Columns Gap', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
-				'size_units' => [ 'px' ],
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
 					'px' => [
 						'min' => 0,
@@ -994,7 +992,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Rows Gap', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
-				'size_units' => [ 'px' ],
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
 					'px' => [
 						'min' => 0,
@@ -1040,7 +1038,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Spacing', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
-				'size_units' => [ 'px' ],
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
 					'px' => [
 						'min' => 0,
@@ -1102,7 +1100,6 @@ class Checkout extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'forms_fields_normal_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} #customer_details .input-text, {{WRAPPER}}  #customer_details .form-row textarea, {{WRAPPER}} .woocommerce form #customer_details select, {{WRAPPER}} .e-woocommerce-login-anchor .input-text, {{WRAPPER}} #coupon_code, {{WRAPPER}} .select2-container--default .select2-selection--single',
 			]
 		);
@@ -1137,7 +1134,6 @@ class Checkout extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'forms_fields_focus_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} #customer_details .input-text:focus, {{WRAPPER}} #customer_details textarea:focus, {{WRAPPER}} #customer_details select:focus, {{WRAPPER}} .e-woocommerce-login-anchor .input-text:focus, {{WRAPPER}} #coupon_code:focus, {{WRAPPER}} .select2-container--default .select2-selection--single:focus',
 			]
 		);
@@ -1191,7 +1187,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Radius', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}}' => '--forms-fields-border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1203,7 +1199,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Padding', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}}' => '--forms-fields-padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					// style select2
@@ -1235,7 +1231,6 @@ class Checkout extends Base_Widget {
 			Group_Control_Text_Shadow::get_type(),
 			[
 				'name' => 'forms_button_text_shadow',
-				'label' => esc_html__( 'Text Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .woocommerce-button',
 			]
 		);
@@ -1269,7 +1264,6 @@ class Checkout extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'forms_buttons_normal_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .woocommerce-button',
 			]
 		);
@@ -1303,7 +1297,6 @@ class Checkout extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'forms_buttons_focus_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .woocommerce-button:hover',
 			]
 		);
@@ -1369,7 +1362,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Width', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .e-apply-coupon, {{WRAPPER}} .woocommerce-form-login__submit' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1398,7 +1391,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Radius', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}}' => '--forms-buttons-border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1410,7 +1403,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Padding', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .woocommerce-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; width: auto;',
 				],
@@ -1432,7 +1425,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Rows Gap', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
-				'size_units' => [ 'px' ],
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
 					'px' => [
 						'min' => 0,
@@ -1527,7 +1520,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Weight', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em' ],
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}}' => '--order-summary-items-divider-weight: {{SIZE}}{{UNIT}};',
 				],
@@ -1585,7 +1578,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Weight', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em' ],
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}}' => '--order-summary-totals-divider-weight: {{SIZE}}{{UNIT}};',
 				],
@@ -1614,7 +1607,6 @@ class Checkout extends Base_Widget {
 			Group_Control_Text_Shadow::get_type(),
 			[
 				'name' => 'purchase_button_text_shadow',
-				'label' => esc_html__( 'Text Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .woocommerce #payment #place_order',
 			]
 		);
@@ -1648,7 +1640,6 @@ class Checkout extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'purchase_button_normal_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} #place_order',
 			]
 		);
@@ -1682,7 +1673,6 @@ class Checkout extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'purchase_button_hover_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} #place_order:hover',
 			]
 		);
@@ -1746,7 +1736,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Radius', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}}' => '--purchase-button-border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1758,7 +1748,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Padding', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}}' => '--purchase-button-padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; --purchase-button-width: fit-content;',
 				],
@@ -1856,7 +1846,6 @@ class Checkout extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'returning_customers_section_normal_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .e-woocommerce-login-section',
 			]
 		);
@@ -1879,7 +1868,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Width', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .e-woocommerce-login-section' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1908,7 +1897,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Radius', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .e-woocommerce-login-section' => '--sections-border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1920,7 +1909,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Padding', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .e-woocommerce-login-section' => '--sections-padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1932,7 +1921,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Margin', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .e-woocommerce-login-section' => '--sections-margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -2103,7 +2092,6 @@ class Checkout extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'billing_details_section_normal_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .e-checkout__column-start .col2-set .col-1',
 			]
 		);
@@ -2126,7 +2114,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Width', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .e-checkout__column-start #customer_details .col-1' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -2155,7 +2143,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Radius', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .col2-set .col-1' => '--sections-border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -2167,7 +2155,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Padding', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .col2-set .col-1' => '--sections-padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -2179,7 +2167,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Margin', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .col2-set .col-1' => '--sections-margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -2218,7 +2206,6 @@ class Checkout extends Base_Widget {
 			Group_Control_Text_Shadow::get_type(),
 			[
 				'name' => 'billing_details_titles_text_shadow',
-				'label' => esc_html__( 'Text Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .woocommerce-billing-fields h3',
 			]
 		);
@@ -2286,7 +2273,6 @@ class Checkout extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'additional_information_section_normal_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .woocommerce-additional-fields',
 			]
 		);
@@ -2309,7 +2295,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Width', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .woocommerce-additional-fields' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -2338,7 +2324,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Radius', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .woocommerce-additional-fields' => '--sections-border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -2350,7 +2336,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Padding', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .woocommerce-additional-fields' => '--sections-padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -2362,7 +2348,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Margin', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .woocommerce-additional-fields' => '--sections-margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					'{{WRAPPER}}.e-checkout-layout-one-column .e-checkout__container' => 'grid-row-gap: {{BOTTOM}}{{UNIT}};',
@@ -2402,7 +2388,6 @@ class Checkout extends Base_Widget {
 			Group_Control_Text_Shadow::get_type(),
 			[
 				'name' => 'additional_information_titles_text_shadow',
-				'label' => esc_html__( 'Text Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .woocommerce-additional-fields h3',
 			]
 		);
@@ -2451,7 +2436,6 @@ class Checkout extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'order_summary_section_normal_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .e-checkout__order_review',
 			]
 		);
@@ -2474,7 +2458,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Width', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .e-checkout__order_review' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -2503,7 +2487,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Radius', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .e-checkout__order_review' => '--sections-border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -2515,7 +2499,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Padding', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .e-checkout__order_review' => '--sections-padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -2527,7 +2511,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Margin', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .e-checkout__order_review' => '--sections-margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -2566,7 +2550,6 @@ class Checkout extends Base_Widget {
 			Group_Control_Text_Shadow::get_type(),
 			[
 				'name' => 'order_summary_titles_text_shadow',
-				'label' => esc_html__( 'Text Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} h3#order_review_heading',
 			]
 		);
@@ -2661,7 +2644,6 @@ class Checkout extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'payment_section_normal_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .woocommerce-checkout #payment',
 			]
 		);
@@ -2684,7 +2666,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Width', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .woocommerce-checkout #payment' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -2713,7 +2695,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Radius', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .woocommerce-checkout #payment' => '--sections-border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -2725,7 +2707,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Padding', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .woocommerce-checkout #payment' => '--sections-padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -2737,7 +2719,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Margin', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .woocommerce-checkout #payment' => '--sections-margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -3364,7 +3346,6 @@ class Checkout extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'shipping_address_section_normal_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .woocommerce-shipping-fields .shipping_address',
 			]
 		);
@@ -3387,7 +3368,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Width', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .woocommerce-shipping-fields .shipping_address' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -3416,7 +3397,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Radius', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .woocommerce-shipping-fields .shipping_address' => '--sections-border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -3428,7 +3409,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Padding', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .woocommerce-shipping-fields .shipping_address' => '--sections-padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -3440,7 +3421,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Margin', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .woocommerce-shipping-fields .shipping_address' => '--sections-margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -3514,7 +3495,6 @@ class Checkout extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'coupon_section_normal_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .e-coupon-box',
 			]
 		);
@@ -3537,7 +3517,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Width', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .e-coupon-box' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -3566,7 +3546,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Radius', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .e-coupon-box' => '--sections-border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -3578,7 +3558,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Padding', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .e-coupon-box' => '--sections-padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -3590,7 +3570,7 @@ class Checkout extends Base_Widget {
 			[
 				'label' => esc_html__( 'Margin', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .e-coupon-box' => '--sections-margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],

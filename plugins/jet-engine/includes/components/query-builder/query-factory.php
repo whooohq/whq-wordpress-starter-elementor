@@ -36,6 +36,11 @@ class Query_Factory {
 		$query_config['query']         = isset( $args[ $type ] ) ? $args[ $type ] : array();
 		$query_config['dynamic_query'] = isset( $args[ '__dynamic_' . $type ] ) ? $args[ '__dynamic_' . $type ] : array();
 
+		$query_config['preview'] = array(
+			'post_id'      => ! empty( $args['preview_page'] ) ? $args['preview_page'] : false,
+			'query_string' => ! empty( $args['preview_query_string'] ) ? $args['preview_query_string'] : '',
+		);
+
 		$this->type = $type;
 		$this->config = $query_config;
 
@@ -68,6 +73,7 @@ class Query_Factory {
 			require_once Manager::instance()->component_path( 'queries/terms.php' );
 			require_once Manager::instance()->component_path( 'queries/users.php' );
 			require_once Manager::instance()->component_path( 'queries/comments.php' );
+			require_once Manager::instance()->component_path( 'queries/repeater.php' );
 
 			$defaults = array(
 				'sql'      => __NAMESPACE__ . '\Queries\SQL_Query',
@@ -75,6 +81,7 @@ class Query_Factory {
 				'terms'    => __NAMESPACE__ . '\Queries\Terms_Query',
 				'users'    => __NAMESPACE__ . '\Queries\Users_Query',
 				'comments' => __NAMESPACE__ . '\Queries\Comments_Query',
+				'repeater' => __NAMESPACE__ . '\Queries\Repeater_Query',
 			);
 
 			foreach ( $defaults as $type => $class ) {

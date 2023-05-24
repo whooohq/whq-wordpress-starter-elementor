@@ -120,6 +120,21 @@ class Jet_Elements_Lottie extends Jet_Elements_Base {
 			)
 		);
 
+		$this->add_control(
+			'link_accessibility',
+			array(
+				'label'       => esc_html__( 'Link Title for Accessibility', 'jet-elements' ),
+				'type'        => Controls_Manager::TEXT,
+				'label_block' => true,
+				'dynamic'     => array( 'active' => true ),
+				'condition'   => array(
+					'link[url]!' => '',
+				),
+			)
+		);
+
+		
+
 		$this->end_controls_section();
 
 		$this->start_controls_section(
@@ -323,7 +338,7 @@ class Jet_Elements_Lottie extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Width', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'vw' ),
+				'size_units' => array( 'px', '%', 'vw', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => 1,
@@ -341,7 +356,7 @@ class Jet_Elements_Lottie extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Max Width', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'vw' ),
+				'size_units' => array( 'px', '%', 'vw', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => 1,
@@ -466,7 +481,7 @@ class Jet_Elements_Lottie extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['wrap'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -527,8 +542,10 @@ class Jet_Elements_Lottie extends Jet_Elements_Base {
 		$inner = '<div class="jet-lottie__elem"></div>';
 
 		if ( ! empty( $settings['link']['url'] ) ) {
+			$aria_label = ! empty( $settings['link_accessibility'] ) ? $settings['link_accessibility'] : '';
+
 			$this->_add_link_attributes( 'link', $settings['link'] );
-			$inner = sprintf( '<a class="jet-lottie__link" %2$s>%1$s</a>', $inner, $this->get_render_attribute_string( 'link' ) );
+			$inner = sprintf( '<a class="jet-lottie__link" %2$s aria-label="' . $aria_label . '">%1$s</a>', $inner, $this->get_render_attribute_string( 'link' ) );
 		}
 
 		$this->_open_wrap();

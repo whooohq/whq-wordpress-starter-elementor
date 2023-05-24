@@ -142,6 +142,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			[
 				'label' => esc_html__( 'Image Width', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'range' => [
 					'%' => [
 						'min' => 10,
@@ -164,7 +165,6 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 					'size' => 100,
 					'unit' => '%',
 				],
-				'size_units' => [ '%', 'px' ],
 				'selectors' => [
 					'{{WRAPPER}} .elementor-post__thumbnail__link' => 'width: {{SIZE}}{{UNIT}};',
 				],
@@ -384,6 +384,9 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 				'label' => esc_html__( 'Separator Between', 'elementor-pro' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '///',
+				'ai' => [
+					'active' => false,
+				],
 				'selectors' => [
 					'{{WRAPPER}} .elementor-post__meta-data span + span:before' => 'content: "{{VALUE}}"',
 				],
@@ -414,6 +417,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			[
 				'label' => esc_html__( 'Columns Gap', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'default' => [
 					'size' => 30,
 				],
@@ -434,6 +438,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			[
 				'label' => esc_html__( 'Rows Gap', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'default' => [
 					'size' => 35,
 				],
@@ -493,7 +498,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			[
 				'label' => esc_html__( 'Border Radius', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}} .elementor-post__thumbnail' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -508,6 +513,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			[
 				'label' => esc_html__( 'Spacing', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
 					'px' => [
 						'max' => 100,
@@ -630,6 +636,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			[
 				'label' => esc_html__( 'Spacing', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
 					'px' => [
 						'max' => 100,
@@ -703,6 +710,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			[
 				'label' => esc_html__( 'Spacing', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
 					'px' => [
 						'max' => 100,
@@ -762,6 +770,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			[
 				'label' => esc_html__( 'Spacing', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
 					'px' => [
 						'max' => 100,
@@ -825,6 +834,7 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			[
 				'label' => esc_html__( 'Spacing', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
 					'px' => [
 						'max' => 100,
@@ -971,13 +981,19 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			return;
 		}
 
+		$aria_label_text = sprintf(
+			/* translators: %s: Post title. */
+			esc_attr__( 'Read more about %s', 'elementor-pro' ),
+			get_the_title()
+		);
+
 		$optional_attributes_html = $this->get_optional_link_attributes_html();
 
 		if ( $this->display_read_more_bottom() ) : ?>
 			<div class="elementor-post__read-more-wrapper">
 		<?php endif; ?>
 
-		<a class="elementor-post__read-more" href="<?php echo esc_url( $this->current_permalink ); ?>" <?php Utils::print_unescaped_internal_string( $optional_attributes_html ); ?>>
+		<a class="elementor-post__read-more" href="<?php echo esc_url( $this->current_permalink ); ?>" aria-label="<?php echo esc_attr( $aria_label_text ); ?>" <?php Utils::print_unescaped_internal_string( $optional_attributes_html ); ?>>
 			<?php echo wp_kses_post( $read_more ); ?>
 		</a>
 
@@ -1029,9 +1045,11 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			$classes[] = 'elementor-grid';
 		}
 
-		$this->parent->add_render_attribute( 'container', [
+		$render_attributes = apply_filters( 'elementor/skin/loop_header_attributes', [
 			'class' => $classes,
 		] );
+
+		$this->parent->add_render_attribute( 'container', $render_attributes );
 
 		?>
 		<div <?php $this->parent->print_render_attribute_string( 'container' ); ?>>

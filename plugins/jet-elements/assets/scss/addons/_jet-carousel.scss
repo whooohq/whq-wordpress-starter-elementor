@@ -40,6 +40,12 @@
 		.jet-banner {
 			float: none;
 		}
+
+		&-link {
+			&:focus-visible {
+				outline: auto;
+			}
+		}
 	}
 
 	& &__item-title {

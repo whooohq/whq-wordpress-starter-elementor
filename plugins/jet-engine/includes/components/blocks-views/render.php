@@ -45,6 +45,8 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Render' ) ) {
 			add_action( 'jet-engine/listing/grid/after', array( $this, 'print_preview_css' ) );
 
 			add_action( 'jet-engine/blocks-views/print-template-styles', array( $this, 'print_template_css' ) );
+
+			add_filter( 'jet-engine/listing/content/blocks', array( $this, 'get_listing_content_cb' ), 10, 2 );
 		}
 
 		/**
@@ -65,6 +67,10 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Render' ) ) {
 			}
 		}
 
+		public function get_listing_content_cb( $content, $listing_id ) {
+			return $this->get_listing_content( $listing_id );
+		}
+
 		/**
 		 * Returns listing content for given listing ID
 		 *
@@ -74,8 +80,34 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Render' ) ) {
 			$content = $this->get_raw_content( $listing_id );
 			$this->enqueue_listing_css( $listing_id );
 			$content = do_shortcode( $this->parse_content( $content, $listing_id ) );
+			$content = $this->add_link_to_content( $content, $listing_id );
 
 			return apply_filters( 'jet-engine/blocks-views/render/listing-content', $content, $listing_id );
+		}
+
+		public function add_link_to_content( $content, $listing_id ) {
+
+			$settings = get_post_meta( $listing_id, '_elementor_page_settings', true );
+
+			if ( empty( $settings ) || empty( $settings['listing_link'] ) ) {
+				return $content;
+			}
+
+			$dynamic_settings = array(
+				'listing_link_aria_label',
+			);
+
+			foreach ( $dynamic_settings as $dynamic_setting ) {
+
+				if ( empty( $settings[ $dynamic_setting ] ) ) {
+					continue;
+				}
+
+				$settings[ $dynamic_setting ] = jet_engine()->listings->macros->do_macros( $settings[ $dynamic_setting ] );
+				$settings[ $dynamic_setting ] = do_shortcode( $settings[ $dynamic_setting ] );
+			}
+
+			return jet_engine()->frontend->add_listing_link_to_content( $content, $settings );
 		}
 
 		public function fix_context( $context ) {

@@ -779,7 +779,15 @@ class Factory {
 			case 'datetime-local':
 
 				if ( ! empty( $field['is_timestamp'] ) && ! \Jet_Engine_Tools::is_valid_timestamp( $value ) ) {
-					$value = strtotime( $value );
+					$value = apply_filters( 
+						'jet-engine/custom-content-types/strtotime',
+						strtotime( $value ),
+						$value
+					);
+
+					if ( ! $value ) {
+						$value = null;
+					}
 				}
 
 				break;
@@ -808,14 +816,14 @@ class Factory {
 		switch ( $input_type ) {
 
 			case 'date':
-				if ( ! empty( $field['is_timestamp'] ) ) {
+				if ( ! empty( $field['is_timestamp'] ) && \Jet_Engine_Tools::is_valid_timestamp( $value ) ) {
 					$value = date( 'Y-m-d', $value );
 				}
 				break;
 
 			case 'datetime':
 			case 'datetime-local':
-				if ( ! empty( $field['is_timestamp'] ) ) {
+				if ( ! empty( $field['is_timestamp'] ) && \Jet_Engine_Tools::is_valid_timestamp( $value ) ) {
 					$value = date( 'Y-m-d\TH:i', $value );
 				}
 				break;
@@ -824,6 +832,15 @@ class Factory {
 
 		return $value;
 
+	}
+
+	/**
+	 * Returns date converted from timestamp
+	 * 
+	 * @return [type] [description]
+	 */
+	public function get_date( $format, $time ) {
+		return apply_filters( 'jet-engine/custom-content-types/date', date( $format, $time ), $time, $format );
 	}
 
 	public function maybe_save_custom_check_radio_values( $fields ) {

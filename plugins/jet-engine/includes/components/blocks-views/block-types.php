@@ -19,6 +19,23 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Types' ) ) {
 
 		public function __construct() {
 			add_action( 'init', array( $this, 'register_block_types' ), 99 );
+			add_filter( 'block_categories_all', array( $this, 'add_blocks_category' ) );
+		}
+
+		/**
+		 * Add new category for JetEngine blocks
+		 */
+		function add_blocks_category( $categories ) {
+			return array_merge(
+				array(
+					array(
+						'slug'  => 'jet-engine',
+						'title' => __( 'JetEngine', 'jet-engine' ),
+						'icon'  => 'database-add',
+					),
+				),
+				$categories
+			);
 		}
 
 		/**
@@ -150,6 +167,15 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Types' ) ) {
 			}
 
 			return $atts;
+		}
+
+		public function get_block_type_instance( $block = null ) {
+
+			if ( empty( $block ) ) {
+				return null;
+			}
+
+			return isset( $this->_types[ $block ] ) ? $this->_types[ $block ] : null;
 		}
 
 	}

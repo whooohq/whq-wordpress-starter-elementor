@@ -66,23 +66,48 @@ if ( ! class_exists( 'Jet_Engine_Module_Gallery_Grid' ) ) {
 		 */
 		public function module_init() {
 
+			// Common
 			add_filter( 'jet-engine/listings/allowed-callbacks', array( $this, 'add_grid_cb' ) );
 			add_filter( 'jet-engine/listing/dynamic-field/callback-args', array( $this, 'cb_args' ), 10, 4 );
 			add_filter( 'jet-engine/listings/allowed-callbacks-args', array( $this, 'add_cb_args' ) );
 			add_action( 'jet-engine/listing/dynamic-field/misc-style-controls', array( $this, 'style_controls' ) );
+			
+			// Blocks-specific
 			add_action( 'jet-engine/blocks-views/dynamic-field/misc-style-controls', array( $this, 'block_style_controls' ), 10, 2 );
 			add_filter( 'jet-engine/blocks-views/editor-data', array( $this, 'modify_cb_args' ) );
+
+			// Bricks-specific
+			add_action( 'jet-engine/bricks-views/dynamic-field/misc-style-controls', array( $this, 'bricks_style_controls' ), 10, 2 );
+			add_action( 'jet-engine/bricks-views/dynamic-field/assets', array( $this, 'bricks_gallery_assets' ) );
+
+		}
+
+		/**
+		 * Gallery assets
+		 * 
+		 * @return [type] [description]
+		 */
+		public function bricks_gallery_assets( $element ) {
+
+			$settings = $element->get_jet_settings();
+
+			if ( ! empty( $settings['dynamic_field_filter'] ) && 'jet_engine_img_gallery_grid' === $settings['filter_callback'] ) {
+				wp_enqueue_style( 'bricks-photoswipe' );
+				wp_enqueue_script( 'bricks-photoswipe' );
+			}
 
 		}
 
 		/**
 		 * Add grid gallery to callbacks
 		 *
-		 * @param  array $callbacks
+		 * @param array $callbacks
+		 *
 		 * @return array
 		 */
 		public function add_grid_cb( $callbacks = array() ) {
 			$callbacks['jet_engine_img_gallery_grid'] = __( 'Images gallery grid', 'jet-engine' );
+
 			return $callbacks;
 		}
 
@@ -90,6 +115,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Gallery_Grid' ) ) {
 		 * Add gallery style controls
 		 *
 		 * @param  [type] $widget [description]
+		 *
 		 * @return [type]         [description]
 		 */
 		public function style_controls( $widget ) {
@@ -108,9 +134,9 @@ if ( ! class_exists( 'Jet_Engine_Module_Gallery_Grid' ) ) {
 					),
 					'selectors'  => array(
 						$widget->css_selector( ' .jet-engine-gallery-grid__item' ) => 'padding: calc( {{SIZE}}{{UNIT}}/2 );',
-						$widget->css_selector( ' .jet-engine-gallery-grid' ) => 'margin: calc( -{{SIZE}}{{UNIT}}/2 );',
+						$widget->css_selector( ' .jet-engine-gallery-grid' )       => 'margin: calc( -{{SIZE}}{{UNIT}}/2 );',
 					),
-					'condition' => array(
+					'condition'  => array(
 						'dynamic_field_filter' => 'yes',
 						'filter_callback'      => array( 'jet_engine_img_gallery_grid' ),
 					),
@@ -122,7 +148,10 @@ if ( ! class_exists( 'Jet_Engine_Module_Gallery_Grid' ) ) {
 				array(
 					'condition' => array(
 						'dynamic_field_filter' => 'yes',
-						'filter_callback'      => array( 'jet_engine_img_gallery_grid', 'jet_engine_img_gallery_slider' ),
+						'filter_callback'      => array(
+							'jet_engine_img_gallery_grid',
+							'jet_engine_img_gallery_slider'
+						),
 					),
 				)
 			);
@@ -180,7 +209,10 @@ if ( ! class_exists( 'Jet_Engine_Module_Gallery_Grid' ) ) {
 					),
 					'condition' => array(
 						'dynamic_field_filter' => 'yes',
-						'filter_callback'      => array( 'jet_engine_img_gallery_grid', 'jet_engine_img_gallery_slider' ),
+						'filter_callback'      => array(
+							'jet_engine_img_gallery_grid',
+							'jet_engine_img_gallery_slider'
+						),
 					),
 				)
 			);
@@ -190,10 +222,10 @@ if ( ! class_exists( 'Jet_Engine_Module_Gallery_Grid' ) ) {
 
 			$controls_manager->add_responsive_control(
 				array(
-					'id'    => 'img_gallery_gap',
-					'label' => __( 'Images gap', 'jet-engine' ),
-					'type'  => 'range',
-					'units' => array(
+					'id'           => 'img_gallery_gap',
+					'label'        => __( 'Images gap', 'jet-engine' ),
+					'type'         => 'range',
+					'units'        => array(
 						array(
 							'value'     => 'px',
 							'intervals' => array(
@@ -205,15 +237,37 @@ if ( ! class_exists( 'Jet_Engine_Module_Gallery_Grid' ) ) {
 					),
 					'css_selector' => array(
 						$block->css_selector( ' .jet-engine-gallery-grid__item' ) => 'padding: calc( {{VALUE}}{{UNIT}}/2 );',
-						$block->css_selector( ' .jet-engine-gallery-grid' ) => 'margin: calc( -{{VALUE}}{{UNIT}}/2 );',
+						$block->css_selector( ' .jet-engine-gallery-grid' )       => 'margin: calc( -{{VALUE}}{{UNIT}}/2 );',
 					),
-					'condition' => array(
+					'condition'    => array(
 						'dynamic_field_filter' => true,
 						'filter_callback'      => array( 'jet_engine_img_gallery_grid' ),
 					),
 				)
 			);
 
+		}
+
+		/**
+		 * Add gallery style controls for Bricks
+		 */
+		public function bricks_style_controls( $widget ) {
+			$widget->register_jet_control(
+				'img_gallery_gap',
+				[
+					'tab'   => 'style',
+					'label' => esc_html__( 'Images gap', 'jet-engine' ),
+					'type'  => 'number',
+					'units' => true,
+					'css'   => [
+						[
+							'property' => '--gap',
+							'selector' => '.jet-engine-gallery-grid',
+						],
+					],
+					'required' => [ 'filter_callback', '=', 'jet_engine_img_gallery_grid' ],
+				]
+			);
 		}
 
 		public function add_cb_args( $args = array() ) {
@@ -229,7 +283,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Gallery_Grid' ) ) {
 				'selectors'  => array(
 					'{{WRAPPER}} .jet-listing-dynamic-field .jet-engine-gallery-grid' => '--columns: {{VALUE}}',
 				),
-				'condition' => array(
+				'condition'  => array(
 					'dynamic_field_filter' => 'yes',
 					'filter_callback'      => array( 'jet_engine_img_gallery_grid' ),
 				),
@@ -266,6 +320,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Gallery_Grid' ) ) {
 		 * @param  [type] $callback [description]
 		 * @param  [type] $settings [description]
 		 * @param  [type] $widget   [description]
+		 *
 		 * @return [type]           [description]
 		 */
 		public function cb_args( $args, $callback, $settings, $widget ) {

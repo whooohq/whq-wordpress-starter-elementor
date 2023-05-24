@@ -22,7 +22,7 @@ class Advanced_Search extends Widget_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'Advanced Search', 'essential-addons-for-elementor-lite' );
+		return esc_html__( 'Advanced Search', 'essential-addons-elementor' );
 	}
 
 	public function get_icon() {
@@ -79,14 +79,14 @@ class Advanced_Search extends Widget_Base {
 		$this->start_controls_section(
 			'eael_section_tooltip_settings',
 			[
-				'label' => esc_html__( 'Search Settings', 'essential-addons-for-elementor-lite' )
+				'label' => esc_html__( 'Search Settings', 'essential-addons-elementor' )
 			]
 		);
 
 		$this->add_control(
 			'eael_adv_search_post_list',
 			[
-				'label'       => esc_html__( 'Select Post Type', 'essential-addons-for-elementor-lite' ),
+				'label'       => esc_html__( 'Select Post Type', 'essential-addons-elementor' ),
 				'type'        => Controls_Manager::SELECT2,
 				'multiple'    => true,
 				'label_block' => true,
@@ -97,7 +97,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'show_initial_result',
 			[
-				'label'   => esc_html__( 'Show Initial Result ', 'essential-addons-for-elementor-lite' ),
+				'label'   => esc_html__( 'Show Initial Result ', 'essential-addons-elementor' ),
 				'type'    => Controls_Manager::NUMBER,
 				'min'     => 1,
 				'default' => '5',
@@ -107,10 +107,10 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'show_category_list',
 			[
-				'label'        => esc_html__( 'Show Category List', 'essential-addons-for-elementor-lite' ),
+				'label'        => esc_html__( 'Show Category List', 'essential-addons-elementor' ),
 				'type'         => Controls_Manager::SWITCHER,
-				'label_on'     => __( 'Show', 'essential-addons-for-elementor-lite' ),
-				'label_off'    => __( 'Hide', 'essential-addons-for-elementor-lite' ),
+				'label_on'     => __( 'Show', 'essential-addons-elementor' ),
+				'label_off'    => __( 'Hide', 'essential-addons-elementor' ),
 				'return_value' => 'yes',
 				'default'      => 'no',
 			]
@@ -119,10 +119,10 @@ class Advanced_Search extends Widget_Base {
         $this->add_control(
             'use_include_exclude_in_result',
             [
-                'label'        => esc_html__( 'Use Include & Exclude for Result', 'essential-addons-for-elementor-lite' ),
+                'label'        => esc_html__( 'Use Include & Exclude for Result', 'essential-addons-elementor' ),
                 'type'         => Controls_Manager::SWITCHER,
-                'label_on'     => __( 'Show', 'essential-addons-for-elementor-lite' ),
-                'label_off'    => __( 'Hide', 'essential-addons-for-elementor-lite' ),
+                'label_on'     => __( 'Show', 'essential-addons-elementor' ),
+                'label_off'    => __( 'Hide', 'essential-addons-elementor' ),
                 'return_value' => 'yes',
                 'default'      => 'no',
                 'condition'   => [
@@ -134,7 +134,7 @@ class Advanced_Search extends Widget_Base {
         $this->add_control(
             'include_category_list',
             [
-                'label'       => esc_html__( 'Include Category To List', 'essential-addons-for-elementor-lite' ),
+                'label'       => esc_html__( 'Include Category To List', 'essential-addons-elementor' ),
                 'type'        => 'eael-select2',
                 'source_name' => 'taxonomy',
                 'source_type' => 'all',
@@ -148,7 +148,7 @@ class Advanced_Search extends Widget_Base {
         $this->add_control(
             'exclude_category_list',
             [
-                'label'       => esc_html__( 'Exclude Category From List', 'essential-addons-for-elementor-lite' ),
+                'label'       => esc_html__( 'Exclude Category From List', 'essential-addons-elementor' ),
                 'type'        => 'eael-select2',
                 'source_name' => 'taxonomy',
                 'source_type' => 'all',
@@ -163,10 +163,10 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'show_category_search_result',
 			[
-				'label'        => esc_html__( 'Show Category Result', 'essential-addons-for-elementor-lite' ),
+				'label'        => esc_html__( 'Show Category Result', 'essential-addons-elementor' ),
 				'type'         => Controls_Manager::SWITCHER,
-				'label_on'     => __( 'Show', 'essential-addons-for-elementor-lite' ),
-				'label_off'    => __( 'Hide', 'essential-addons-for-elementor-lite' ),
+				'label_on'     => __( 'Show', 'essential-addons-elementor' ),
+				'label_off'    => __( 'Hide', 'essential-addons-elementor' ),
 				'return_value' => 'yes',
 				'default'      => 'no',
 			]
@@ -175,10 +175,10 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'show_popular_keyword',
 			[
-				'label'        => esc_html__( 'Show Popular Keywords', 'essential-addons-for-elementor-lite' ),
+				'label'        => esc_html__( 'Show Popular Keywords', 'essential-addons-elementor' ),
 				'type'         => Controls_Manager::SWITCHER,
-				'label_on'     => __( 'Show', 'essential-addons-for-elementor-lite' ),
-				'label_off'    => __( 'Hide', 'essential-addons-for-elementor-lite' ),
+				'label_on'     => __( 'Show', 'essential-addons-elementor' ),
+				'label_off'    => __( 'Hide', 'essential-addons-elementor' ),
 				'return_value' => 'yes',
 				'default'      => 'no',
 			]
@@ -187,11 +187,11 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'total_number_of_popular_search',
 			[
-				'label'     => esc_html__( 'Popular Keywords', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Popular Keywords', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::NUMBER,
 				'min'       => 1,
 				'default'   => 5,
-                'description' => esc_html__( 'Number of popular searches to display.',  'essential-addons-for-elementor-lite' ),
+                'description' => esc_html__( 'Number of popular searches to display.',  'essential-addons-elementor' ),
 				'condition' => [
 					'show_popular_keyword' => 'yes',
 				]
@@ -201,10 +201,24 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'show_popular_keyword_rank',
 			[
-				'label'       => esc_html__( 'Keywords Search', 'essential-addons-for-elementor-lite' ),
+				'label'       => esc_html__( 'Keywords Search', 'essential-addons-elementor' ),
 				'type'        => Controls_Manager::NUMBER,
-				'description' => esc_html__( 'Minimum number of searches for a keyword to be considered a popular search.', 'essential-addons-for-elementor-lite' ),
+				'description' => esc_html__( 'Minimum number of searches for a keyword to be considered a popular search.', 'essential-addons-elementor' ),
 				'default'     => 5,
+				'min'         => 1,
+				'condition'   => [
+					'show_popular_keyword' => 'yes',
+				]
+			]
+		);
+
+		$this->add_control(
+			'show_popular_keyword_rank_length',
+			[
+				'label'       => esc_html__( 'Keywords Length', 'essential-addons-elementor' ),
+				'type'        => Controls_Manager::NUMBER,
+				'description' => esc_html__( 'Minimum number of characters for a keyword to be considered a popular search.', 'essential-addons-elementor' ),
+				'default'     => 4,
 				'min'         => 1,
 				'condition'   => [
 					'show_popular_keyword' => 'yes',
@@ -215,10 +229,10 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'show_content_image',
 			[
-				'label'        => esc_html__( 'Show Content Image', 'essential-addons-for-elementor-lite' ),
+				'label'        => esc_html__( 'Show Content Image', 'essential-addons-elementor' ),
 				'type'         => Controls_Manager::SWITCHER,
-				'label_on'     => __( 'Show', 'essential-addons-for-elementor-lite' ),
-				'label_off'    => __( 'Hide', 'essential-addons-for-elementor-lite' ),
+				'label_on'     => __( 'Show', 'essential-addons-elementor' ),
+				'label_off'    => __( 'Hide', 'essential-addons-elementor' ),
 				'return_value' => 'yes',
 				'default'      => 'yes',
 			]
@@ -227,10 +241,10 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'show_search_result_all_results',
 			[
-				'label'        => esc_html__( 'Show Total Results', 'essential-addons-for-elementor-lite' ),
+				'label'        => esc_html__( 'Show Total Results', 'essential-addons-elementor' ),
 				'type'         => Controls_Manager::SWITCHER,
-				'label_on'     => __( 'Show', 'essential-addons-for-elementor-lite' ),
-				'label_off'    => __( 'Hide', 'essential-addons-for-elementor-lite' ),
+				'label_on'     => __( 'Show', 'essential-addons-elementor' ),
+				'label_off'    => __( 'Hide', 'essential-addons-elementor' ),
 				'return_value' => 'yes',
 				'default'      => 'no',
 			]
@@ -243,34 +257,34 @@ class Advanced_Search extends Widget_Base {
 		$this->start_controls_section(
 			'search_field_text',
 			[
-				'label' => esc_html__( 'Search Field', 'essential-addons-for-elementor-lite' ),
+				'label' => esc_html__( 'Search Field', 'essential-addons-elementor' ),
 			]
 		);
 
 		$this->add_control(
 			'search_field_placeholder_text',
 			[
-				'label'   => esc_html__( 'Placeholder Text', 'essential-addons-for-elementor-lite' ),
+				'label'   => esc_html__( 'Placeholder Text', 'essential-addons-elementor' ),
 				'type'    => Controls_Manager::TEXT,
-				'default' => __( 'Enter Search Keyword', 'essential-addons-for-elementor-lite' )
+				'default' => __( 'Enter Search Keyword', 'essential-addons-elementor' )
 			]
 		);
 
 		$this->add_control(
 			'category_list_text',
 			[
-				'label'   => esc_html__( 'Category List Text', 'essential-addons-for-elementor-lite' ),
+				'label'   => esc_html__( 'Category List Text', 'essential-addons-elementor' ),
 				'type'    => Controls_Manager::TEXT,
-				'default' => __( 'All Categories', 'essential-addons-for-elementor-lite' )
+				'default' => __( 'All Categories', 'essential-addons-elementor' )
 			]
 		);
 
 		$this->add_control(
 			'search_field_button_text',
 			[
-				'label'   => esc_html__( 'Button Text', 'essential-addons-for-elementor-lite' ),
+				'label'   => esc_html__( 'Button Text', 'essential-addons-elementor' ),
 				'type'    => Controls_Manager::TEXT,
-				'default' => __( 'Search', 'essential-addons-for-elementor-lite' )
+				'default' => __( 'Search', 'essential-addons-elementor' )
 			]
 		);
 
@@ -281,53 +295,53 @@ class Advanced_Search extends Widget_Base {
 		$this->start_controls_section(
 			'search_result_text',
 			[
-				'label' => esc_html__( 'Search Result', 'essential-addons-for-elementor-lite' ),
+				'label' => esc_html__( 'Search Result', 'essential-addons-elementor' ),
 			]
 		);
 
 		$this->add_control(
 			'popular_search_text',
 			[
-				'label'   => esc_html__( 'Popular Search Text', 'essential-addons-for-elementor-lite' ),
+				'label'   => esc_html__( 'Popular Search Text', 'essential-addons-elementor' ),
 				'type'    => Controls_Manager::TEXT,
-				'default' => __( 'Popular Keywords', 'essential-addons-for-elementor-lite' )
+				'default' => __( 'Popular Keywords', 'essential-addons-elementor' )
 			]
 		);
 
 		$this->add_control(
 			'category_search_text',
 			[
-				'label'   => esc_html__( 'Category Search Text', 'essential-addons-for-elementor-lite' ),
+				'label'   => esc_html__( 'Category Search Text', 'essential-addons-elementor' ),
 				'type'    => Controls_Manager::TEXT,
-				'default' => __( 'Categories', 'essential-addons-for-elementor-lite' )
+				'default' => __( 'Categories', 'essential-addons-elementor' )
 			]
 		);
 
 		$this->add_control(
 			'load_more_text',
 			[
-				'label'   => esc_html__( 'Load More Text', 'essential-addons-for-elementor-lite' ),
+				'label'   => esc_html__( 'Load More Text', 'essential-addons-elementor' ),
 				'type'    => Controls_Manager::TEXT,
-				'default' => __( 'View All Results', 'essential-addons-for-elementor-lite' )
+				'default' => __( 'View All Results', 'essential-addons-elementor' )
 			]
 		);
 
 		$this->add_control(
 			'total_results_text',
 			[
-				'label'   => esc_html__( 'Total Results Text', 'essential-addons-for-elementor-lite' ),
-				'description' => esc_html__('Total result count will be displayed on [post count].', 'essential-addons-for-elementor-lite'),
+				'label'   => esc_html__( 'Total Results Text', 'essential-addons-elementor' ),
+				'description' => esc_html__('Total result count will be displayed on [post count].', 'essential-addons-elementor'),
 				'type'    => Controls_Manager::TEXT,
-				'default' => __( 'Total [post_count] Results', 'essential-addons-for-elementor-lite' )
+				'default' => __( 'Total [post_count] Results', 'essential-addons-elementor' )
 			]
 		);
 
 		$this->add_control(
 			'not_found_text',
 			[
-				'label'   => esc_html__( 'Not Found Text', 'essential-addons-for-elementor-lite' ),
+				'label'   => esc_html__( 'Not Found Text', 'essential-addons-elementor' ),
 				'type'    => Controls_Manager::TEXT,
-				'default' => __( 'No Record Found', 'essential-addons-for-elementor-lite' )
+				'default' => __( 'No Record Found', 'essential-addons-elementor' )
 			]
 		);
 
@@ -339,7 +353,7 @@ class Advanced_Search extends Widget_Base {
 		$this->start_controls_section(
 			'search_box_style',
 			[
-				'label' => esc_html__( 'Search Box', 'essential-addons-for-elementor-lite' ),
+				'label' => esc_html__( 'Search Box', 'essential-addons-elementor' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -356,7 +370,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'search_box_padding',
 			[
-				'label'      => esc_html__( 'Padding', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Padding', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors'  => [
@@ -368,7 +382,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'search_box_margin',
 			[
-				'label'      => esc_html__( 'Margin', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Margin', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors'  => [
@@ -381,14 +395,14 @@ class Advanced_Search extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name'     => 'search_box_border',
-				'label'    => esc_html__( 'Border', 'essential-addons-for-elementor-lite' ),
+				'label'    => esc_html__( 'Border', 'essential-addons-elementor' ),
 				'selector' => '{{WRAPPER}} .eael-adv-search-wrapper',
 			]
 		);
 		$this->add_responsive_control(
 			'search_box_border_radius',
 			[
-				'label'      => esc_html__( 'Border Radius', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Border Radius', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors'  => [
@@ -413,7 +427,7 @@ class Advanced_Search extends Widget_Base {
 		$this->start_controls_section(
 			'search_field_style',
 			[
-				'label' => esc_html__( 'Search Field', 'essential-addons-for-elementor-lite' ),
+				'label' => esc_html__( 'Search Field', 'essential-addons-elementor' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -421,13 +435,13 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'eael_adv_search_style',
 			[
-				'label'   => esc_html__( 'Layout Style', 'essential-addons-for-elementor-lite' ),
+				'label'   => esc_html__( 'Layout Style', 'essential-addons-elementor' ),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 1,
 				'options' => [
-					'1' => __( 'Style 1', 'essential-addons-for-elementor-lite' ),
-					'2' => __( 'Style 2', 'essential-addons-for-elementor-lite' ),
-					'3' => __( 'Style 3', 'essential-addons-for-elementor-lite' ),
+					'1' => __( 'Style 1', 'essential-addons-elementor' ),
+					'2' => __( 'Style 2', 'essential-addons-elementor' ),
+					'3' => __( 'Style 3', 'essential-addons-elementor' ),
 				]
 			]
 		);
@@ -435,7 +449,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'search_field_bg',
 			[
-				'label'     => esc_html__( 'Background Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Background Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-advanced-search' => 'background: {{VALUE}};',
@@ -446,7 +460,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'search_field_text_color',
 			[
-				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-advanced-search' => 'color: {{VALUE}};',
@@ -457,7 +471,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'search_field_placeholder_text_color',
 			[
-				'label'     => esc_html__( 'Placeholder Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Placeholder Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-advanced-search::placeholder' => 'color: {{VALUE}};',
@@ -476,7 +490,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'field_search_field_height',
 			[
-				'label'      => esc_html__( 'Height', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Height', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => [ 'px' ],
 				'range'      => [
@@ -498,7 +512,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'field_search_field_width',
 			[
-				'label'      => esc_html__( 'Width', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Width', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', '%' ],
 				'range'      => [
@@ -523,7 +537,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'search_field_padding_radius',
 			[
-				'label'      => esc_html__( 'Border Radius', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Border Radius', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors'  => [
@@ -536,7 +550,7 @@ class Advanced_Search extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name'     => 'search_field_border',
-				'label'    => __( 'Border', 'essential-addons-for-elementor-lite' ),
+				'label'    => __( 'Border', 'essential-addons-elementor' ),
 				'selector' => '{{WRAPPER}} .eael-advanced-search-wrap .eael-advanced-search',
 			]
 		);
@@ -545,7 +559,7 @@ class Advanced_Search extends Widget_Base {
 			'search_icon',
 			[
 				'type'      => Controls_Manager::HEADING,
-				'label'     => __( 'Icon', 'essential-addons-for-elementor-lite' ),
+				'label'     => __( 'Icon', 'essential-addons-elementor' ),
 				'separator' => 'before',
 			]
 		);
@@ -553,7 +567,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'search_icon_color',
 			[
-				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-advanced-search-form .eael-advanced-search-wrap .icon i' => 'color: {{VALUE}};',
@@ -564,7 +578,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'search_icon_size',
 			[
-				'label'      => esc_html__( 'Size', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Size', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => [ 'px' ],
 				'range'      => [
@@ -585,7 +599,7 @@ class Advanced_Search extends Widget_Base {
 		$this->start_controls_section(
 			'category_field_style',
 			[
-				'label'     => esc_html__( 'Category List', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Category List', 'essential-addons-elementor' ),
 				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'show_category_list' => 'yes',
@@ -596,7 +610,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'category_field_bg',
 			[
-				'label'     => esc_html__( 'Background Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Background Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-adv-search-cate' => 'background: {{VALUE}};',
@@ -607,7 +621,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'category_field_text_color',
 			[
-				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-adv-search-cate' => 'color: {{VALUE}};',
@@ -627,7 +641,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'category_field_width',
 			[
-				'label'      => esc_html__( 'Width', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Width', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', '%' ],
 				'range'      => [
@@ -656,7 +670,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'category_field_padding_radius',
 			[
-				'label'      => esc_html__( 'Border Radius', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Border Radius', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors'  => [
@@ -669,7 +683,7 @@ class Advanced_Search extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name'     => 'category_field_border',
-				'label'    => __( 'Border', 'essential-addons-for-elementor-lite' ),
+				'label'    => __( 'Border', 'essential-addons-elementor' ),
 				'selector' => '{{WRAPPER}} select.eael-adv-search-cate',
 			]
 		);
@@ -681,7 +695,7 @@ class Advanced_Search extends Widget_Base {
 		$this->start_controls_section(
 			'search_button_style',
 			[
-				'label' => esc_html__( 'Search Button', 'essential-addons-for-elementor-lite' ),
+				'label' => esc_html__( 'Search Button', 'essential-addons-elementor' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -689,7 +703,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'search_button_width',
 			[
-				'label'      => esc_html__( 'Width', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Width', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', '%' ],
 				'range'      => [
@@ -717,7 +731,7 @@ class Advanced_Search extends Widget_Base {
 
 		$this->start_controls_tabs( 'eael_serach_button_tabs' );
 
-		$this->start_controls_tab( 'normal', [ 'label' => esc_html__( 'Normal', 'essential-addons-for-elementor-lite' ) ] );
+		$this->start_controls_tab( 'normal', [ 'label' => esc_html__( 'Normal', 'essential-addons-elementor' ) ] );
 
 		$this->add_group_control(
 			Group_Control_Background::get_type(),
@@ -731,7 +745,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'search_button_text_color',
 			[
-				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-advanced-search-button' => 'color: {{VALUE}};',
@@ -741,7 +755,7 @@ class Advanced_Search extends Widget_Base {
 
 		$this->end_controls_tab();
 
-		$this->start_controls_tab( 'hover', [ 'label' => esc_html__( 'Hover', 'essential-addons-for-elementor-lite' ) ] );
+		$this->start_controls_tab( 'hover', [ 'label' => esc_html__( 'Hover', 'essential-addons-elementor' ) ] );
 
 		$this->add_group_control(
 			Group_Control_Background::get_type(),
@@ -755,7 +769,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'search_button_hover_text_color',
 			[
-				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-advanced-search-button:hover' => 'color: {{VALUE}};',
@@ -778,7 +792,7 @@ class Advanced_Search extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name'     => 'search_button_border',
-				'label'    => __( 'Border', 'essential-addons-for-elementor-lite' ),
+				'label'    => __( 'Border', 'essential-addons-elementor' ),
 				'selector' => '{{WRAPPER}} .eael-advanced-search-button',
 			]
 		);
@@ -786,7 +800,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'search_button_padding_radius',
 			[
-				'label'      => esc_html__( 'Border Radius', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Border Radius', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors'  => [
@@ -802,7 +816,7 @@ class Advanced_Search extends Widget_Base {
 		$this->start_controls_section(
 			'search_result_style',
 			[
-				'label' => esc_html__( 'Search Result Box', 'essential-addons-for-elementor-lite' ),
+				'label' => esc_html__( 'Search Result Box', 'essential-addons-elementor' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -810,7 +824,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'search_result_bg',
 			[
-				'label'     => esc_html__( 'Background Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Background Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-advanced-search-result' => 'background: {{VALUE}};',
@@ -820,7 +834,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'search_result_width',
 			[
-				'label'      => esc_html__( 'Width', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Width', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => [ '%' ],
 				'range'      => [
@@ -841,7 +855,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'search_result_padding',
 			[
-				'label'      => esc_html__( 'Padding', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Padding', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px' ],
 				'selectors'  => [
@@ -853,7 +867,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'search_result_margin',
 			[
-				'label'      => esc_html__( 'Margin', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Margin', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px' ],
 				'selectors'  => [
@@ -865,7 +879,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'search_result_padding_radius',
 			[
-				'label'      => esc_html__( 'Border Radius', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Border Radius', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors'  => [
@@ -878,7 +892,7 @@ class Advanced_Search extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name'     => 'search_result_border',
-				'label'    => __( 'Border', 'essential-addons-for-elementor-lite' ),
+				'label'    => __( 'Border', 'essential-addons-elementor' ),
 				'selector' => '{{WRAPPER}} .eael-advanced-search-result',
 			]
 		);
@@ -887,7 +901,7 @@ class Advanced_Search extends Widget_Base {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name'     => 'search_result_shadow',
-				'label'    => __( 'Box Shadow', 'essential-addons-for-elementor-lite' ),
+				'label'    => __( 'Box Shadow', 'essential-addons-elementor' ),
 				'selector' => '{{WRAPPER}} .eael-advanced-search-result',
 			]
 		);
@@ -899,7 +913,7 @@ class Advanced_Search extends Widget_Base {
 		$this->start_controls_section(
 			'popular_keyword_style',
 			[
-				'label'     => esc_html__( 'Popular Keywords', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Popular Keywords', 'essential-addons-elementor' ),
 				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'show_popular_keyword' => 'yes',
@@ -910,7 +924,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'popular_search_label',
 			[
-				'label' => esc_html__( 'Label', 'essential-addons-for-elementor-lite' ),
+				'label' => esc_html__( 'Label', 'essential-addons-elementor' ),
 				'type'  => Controls_Manager::HEADING,
 			]
 		);
@@ -918,7 +932,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'popular_search_text_label_color',
 			[
-				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-advanced-search-popular-keyword h4' => 'color: {{VALUE}};',
@@ -937,19 +951,19 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'popular_search_tag',
 			[
-				'label' => esc_html__( 'Popular Tag', 'essential-addons-for-elementor-lite' ),
+				'label' => esc_html__( 'Popular Tag', 'essential-addons-elementor' ),
 				'type'  => Controls_Manager::HEADING,
 			]
 		);
 
 		$this->start_controls_tabs( 'popular_search_tag_normal' );
 
-		$this->start_controls_tab( 'popular_search_tag_normal_tab', [ 'label' => esc_html__( 'Normal', 'essential-addons-for-elementor-lite' ) ] );
+		$this->start_controls_tab( 'popular_search_tag_normal_tab', [ 'label' => esc_html__( 'Normal', 'essential-addons-elementor' ) ] );
 
 		$this->add_control(
 			'popular_search_bg',
 			[
-				'label'     => esc_html__( 'Background Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Background Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-popular-keyword-content .eael-popular-keyword-item' => 'background: {{VALUE}};',
@@ -960,7 +974,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'popular_search_text_color',
 			[
-				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-popular-keyword-content .eael-popular-keyword-item' => 'color: {{VALUE}};',
@@ -978,12 +992,12 @@ class Advanced_Search extends Widget_Base {
 
 		$this->end_controls_tab();
 
-		$this->start_controls_tab( 'popular_search_tag_hover_tab', [ 'label' => esc_html__( 'Hover', 'essential-addons-for-elementor-lite' ) ] );
+		$this->start_controls_tab( 'popular_search_tag_hover_tab', [ 'label' => esc_html__( 'Hover', 'essential-addons-elementor' ) ] );
 
 		$this->add_control(
 			'popular_search_bg_hover',
 			[
-				'label'     => esc_html__( 'Background Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Background Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-popular-keyword-content .eael-popular-keyword-item:hover' => 'background: {{VALUE}};',
@@ -994,7 +1008,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'popular_search_text_color_hover',
 			[
-				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-popular-keyword-content .eael-popular-keyword-item:hover' => 'color: {{VALUE}};',
@@ -1017,7 +1031,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'popular_search_padding',
 			[
-				'label'      => esc_html__( 'Padding', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Padding', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px' ],
 				'selectors'  => [
@@ -1029,7 +1043,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'popular_search_margin',
 			[
-				'label'      => esc_html__( 'Margin', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Margin', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px' ],
 				'selectors'  => [
@@ -1041,7 +1055,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'popular_search_radius',
 			[
-				'label'      => esc_html__( 'Border Radius', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Border Radius', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors'  => [
@@ -1054,7 +1068,7 @@ class Advanced_Search extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name'     => 'popular_search_border',
-				'label'    => __( 'Border', 'essential-addons-for-elementor-lite' ),
+				'label'    => __( 'Border', 'essential-addons-elementor' ),
 				'selector' => '{{WRAPPER}} .eael-popular-keyword-content .eael-popular-keyword-item',
 			]
 		);
@@ -1063,7 +1077,7 @@ class Advanced_Search extends Widget_Base {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name'     => 'popular_search_shadow',
-				'label'    => __( 'Box Shadow', 'essential-addons-for-elementor-lite' ),
+				'label'    => __( 'Box Shadow', 'essential-addons-elementor' ),
 				'selector' => '{{WRAPPER}} .eael-popular-keyword-content .eael-popular-keyword-item',
 			]
 		);
@@ -1075,7 +1089,7 @@ class Advanced_Search extends Widget_Base {
 		$this->start_controls_section(
 			'category_style',
 			[
-				'label'     => esc_html__( 'Category Result', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Category Result', 'essential-addons-elementor' ),
 				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'show_category_search_result' => 'yes',
@@ -1086,7 +1100,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'category_label',
 			[
-				'label' => esc_html__( 'Label', 'essential-addons-for-elementor-lite' ),
+				'label' => esc_html__( 'Label', 'essential-addons-elementor' ),
 				'type'  => Controls_Manager::HEADING,
 			]
 		);
@@ -1094,7 +1108,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'category_label_color',
 			[
-				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-advanced-search-category h4' => 'color: {{VALUE}};',
@@ -1113,7 +1127,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'category_list',
 			[
-				'label' => esc_html__( 'Category', 'essential-addons-for-elementor-lite' ),
+				'label' => esc_html__( 'Category', 'essential-addons-elementor' ),
 				'type'  => Controls_Manager::HEADING,
 			]
 		);
@@ -1121,12 +1135,12 @@ class Advanced_Search extends Widget_Base {
 
 		$this->start_controls_tabs( 'eael_category_normal' );
 
-		$this->start_controls_tab( 'category_normal', [ 'label' => esc_html__( 'Normal', 'essential-addons-for-elementor-lite' ) ] );
+		$this->start_controls_tab( 'category_normal', [ 'label' => esc_html__( 'Normal', 'essential-addons-elementor' ) ] );
 
 		$this->add_control(
 			'category_text_color',
 			[
-				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-popular-category-content ul li a' => 'color: {{VALUE}};',
@@ -1144,12 +1158,12 @@ class Advanced_Search extends Widget_Base {
 
 		$this->end_controls_tab();
 
-		$this->start_controls_tab( 'category_hover', [ 'label' => esc_html__( 'Hover', 'essential-addons-for-elementor-lite' ) ] );
+		$this->start_controls_tab( 'category_hover', [ 'label' => esc_html__( 'Hover', 'essential-addons-elementor' ) ] );
 
 		$this->add_control(
 			'category_text_color_hover',
 			[
-				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-popular-category-content ul li a:hover' => 'color: {{VALUE}};',
@@ -1171,7 +1185,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'category_list_padding',
 			[
-				'label'      => esc_html__( 'Padding', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Padding', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px' ],
 				'selectors'  => [
@@ -1183,7 +1197,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'category_list_margin',
 			[
-				'label'      => esc_html__( 'Margin', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Margin', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px' ],
 				'selectors'  => [
@@ -1195,7 +1209,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'category_list_radius',
 			[
-				'label'      => esc_html__( 'Border Radius', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Border Radius', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors'  => [
@@ -1208,7 +1222,7 @@ class Advanced_Search extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name'     => 'category_list_border',
-				'label'    => __( 'Border', 'essential-addons-for-elementor-lite' ),
+				'label'    => __( 'Border', 'essential-addons-elementor' ),
 				'selector' => '{{WRAPPER}} .eael-popular-category-content ul li a',
 			]
 		);
@@ -1217,7 +1231,7 @@ class Advanced_Search extends Widget_Base {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name'     => 'category_list_shadow',
-				'label'    => __( 'Box Shadow', 'essential-addons-for-elementor-lite' ),
+				'label'    => __( 'Box Shadow', 'essential-addons-elementor' ),
 				'selector' => '{{WRAPPER}} .eael-popular-category-content ul li a',
 			]
 		);
@@ -1229,7 +1243,7 @@ class Advanced_Search extends Widget_Base {
 		$this->start_controls_section(
 			'content_style',
 			[
-				'label' => esc_html__( 'Search Content', 'essential-addons-for-elementor-lite' ),
+				'label' => esc_html__( 'Search Content', 'essential-addons-elementor' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -1237,25 +1251,25 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'eael_adv_search_result',
 			[
-				'label'   => esc_html__( 'Content Layout', 'essential-addons-for-elementor-lite' ),
+				'label'   => esc_html__( 'Content Layout', 'essential-addons-elementor' ),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 1,
 				'options' => [
-					'1' => __( 'Style 1', 'essential-addons-for-elementor-lite' ),
-					'2' => __( 'Style 2', 'essential-addons-for-elementor-lite' ),
-					'3' => __( 'Style 3', 'essential-addons-for-elementor-lite' ),
+					'1' => __( 'Style 1', 'essential-addons-elementor' ),
+					'2' => __( 'Style 2', 'essential-addons-elementor' ),
+					'3' => __( 'Style 3', 'essential-addons-elementor' ),
 				]
 			]
 		);
 
 		$this->start_controls_tabs( 'search_result_tab' );
 
-		$this->start_controls_tab( 'search_result_tab_normal', [ 'label' => esc_html__( 'Normal', 'essential-addons-for-elementor-lite' ) ] );
+		$this->start_controls_tab( 'search_result_tab_normal', [ 'label' => esc_html__( 'Normal', 'essential-addons-elementor' ) ] );
 
 		$this->add_control(
 			'search_result_content_list_bg',
 			[
-				'label'     => esc_html__( 'Background Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Background Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-advanced-search-content .eael-advanced-search-content-item' => 'background: {{VALUE}};',
@@ -1266,12 +1280,12 @@ class Advanced_Search extends Widget_Base {
 
 		$this->end_controls_tab();
 
-		$this->start_controls_tab( 'search_result_tab_hover', [ 'label' => esc_html__( 'Hover', 'essential-addons-for-elementor-lite' ) ] );
+		$this->start_controls_tab( 'search_result_tab_hover', [ 'label' => esc_html__( 'Hover', 'essential-addons-elementor' ) ] );
 
 		$this->add_control(
 			'search_result_content_list_bg_hover',
 			[
-				'label'     => esc_html__( 'Background Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Background Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-advanced-search-content .eael-advanced-search-content-item:hover' => 'background: {{VALUE}};',
@@ -1285,7 +1299,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'search_result_content_list_bg_padding',
 			[
-				'label'      => esc_html__( 'Padding', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Padding', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px' ],
 				'selectors'  => [
@@ -1297,7 +1311,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'search_result_content_list_margin',
 			[
-				'label'      => esc_html__( 'Margin', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Margin', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px' ],
 				'selectors'  => [
@@ -1309,7 +1323,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'search_result_content_list_radius',
 			[
-				'label'      => esc_html__( 'Border Radius', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Border Radius', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors'  => [
@@ -1322,7 +1336,7 @@ class Advanced_Search extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name'     => 'search_result_content_list_border',
-				'label'    => __( 'Border', 'essential-addons-for-elementor-lite' ),
+				'label'    => __( 'Border', 'essential-addons-elementor' ),
 				'selector' => '{{WRAPPER}} .eael-advanced-search-content .eael-advanced-search-content-item',
 			]
 		);
@@ -1331,7 +1345,7 @@ class Advanced_Search extends Widget_Base {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name'     => 'search_result_content_list_shadow',
-				'label'    => __( 'Box Shadow', 'essential-addons-for-elementor-lite' ),
+				'label'    => __( 'Box Shadow', 'essential-addons-elementor' ),
 				'selector' => '{{WRAPPER}} .eael-advanced-search-content .eael-advanced-search-content-item',
 			]
 		);
@@ -1339,7 +1353,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'category_list_title',
 			[
-				'label'     => esc_html__( 'Title', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Title', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::HEADING,
 				'separator' => 'before',
 			]
@@ -1347,12 +1361,12 @@ class Advanced_Search extends Widget_Base {
 
 		$this->start_controls_tabs( 'search_result_list_title_normal' );
 
-		$this->start_controls_tab( 'search_title_normal', [ 'label' => esc_html__( 'Normal', 'essential-addons-for-elementor-lite' ) ] );
+		$this->start_controls_tab( 'search_title_normal', [ 'label' => esc_html__( 'Normal', 'essential-addons-elementor' ) ] );
 
 		$this->add_control(
 			'search_result_list_title_color',
 			[
-				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-advanced-search-content .eael-advanced-search-content-item .item-content h4' => 'color: {{VALUE}};',
@@ -1370,12 +1384,12 @@ class Advanced_Search extends Widget_Base {
 
 		$this->end_controls_tab();
 
-		$this->start_controls_tab( 'search_title_hover', [ 'label' => esc_html__( 'Hover', 'essential-addons-for-elementor-lite' ) ] );
+		$this->start_controls_tab( 'search_title_hover', [ 'label' => esc_html__( 'Hover', 'essential-addons-elementor' ) ] );
 
 		$this->add_control(
 			'search_result_list_title_color_hover',
 			[
-				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-advanced-search-content .eael-advanced-search-content-item:hover .item-content h4' => 'color: {{VALUE}};',
@@ -1397,7 +1411,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'search_result_list_content',
 			[
-				'label'     => esc_html__( 'Content', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Content', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::HEADING,
 				'separator' => 'before',
 			]
@@ -1405,12 +1419,12 @@ class Advanced_Search extends Widget_Base {
 
 		$this->start_controls_tabs( 'search_result_list_content_tab' );
 
-		$this->start_controls_tab( 'csearch_result_list_content_normal', [ 'label' => esc_html__( 'Normal', 'essential-addons-for-elementor-lite' ) ] );
+		$this->start_controls_tab( 'csearch_result_list_content_normal', [ 'label' => esc_html__( 'Normal', 'essential-addons-elementor' ) ] );
 
 		$this->add_control(
 			'search_result_list_content_color',
 			[
-				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-advanced-search-content .eael-advanced-search-content-item .item-content p' => 'color: {{VALUE}};',
@@ -1428,12 +1442,12 @@ class Advanced_Search extends Widget_Base {
 
 		$this->end_controls_tab();
 
-		$this->start_controls_tab( 'search_result_list_content_hover', [ 'label' => esc_html__( 'Hover', 'essential-addons-for-elementor-lite' ) ] );
+		$this->start_controls_tab( 'search_result_list_content_hover', [ 'label' => esc_html__( 'Hover', 'essential-addons-elementor' ) ] );
 
 		$this->add_control(
 			'search_result_list_content_color_hover',
 			[
-				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-advanced-search-content .eael-advanced-search-content-item:hover .item-content p' => 'color: {{VALUE}};',
@@ -1459,7 +1473,7 @@ class Advanced_Search extends Widget_Base {
 		$this->start_controls_section(
 			'search_result_all_results_style',
 			[
-				'label' => esc_html__( 'Total Results', 'essential-addons-for-elementor-lite' ),
+				'label' => esc_html__( 'Total Results', 'essential-addons-elementor' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'show_search_result_all_results' => 'yes'
@@ -1495,7 +1509,7 @@ class Advanced_Search extends Widget_Base {
 
 		$this->start_controls_tabs( 'search_result_all_results_normal' );
 
-		$this->start_controls_tab( 'search_result_all_results_normal_tab', [ 'label' => esc_html__( 'Normal', 'essential-addons-for-elementor-lite' ) ] );
+		$this->start_controls_tab( 'search_result_all_results_normal_tab', [ 'label' => esc_html__( 'Normal', 'essential-addons-elementor' ) ] );
 
 		$this->add_group_control(
 			Group_Control_Background::get_type(),
@@ -1509,7 +1523,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'search_result_all_results_text_color',
 			[
-				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-advanced-search-total-results-wrap' => 'color: {{VALUE}};',
@@ -1527,7 +1541,7 @@ class Advanced_Search extends Widget_Base {
 
 		$this->end_controls_tab();
 
-		$this->start_controls_tab( 'search_result_all_results_hover', [ 'label' => esc_html__( 'Hover', 'essential-addons-for-elementor-lite' ) ] );
+		$this->start_controls_tab( 'search_result_all_results_hover', [ 'label' => esc_html__( 'Hover', 'essential-addons-elementor' ) ] );
 
 		$this->add_group_control(
 			Group_Control_Background::get_type(),
@@ -1541,7 +1555,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'search_result_all_results_text_color_hover',
 			[
-				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-advanced-search-total-results-wrap:hover' => 'color: {{VALUE}};',
@@ -1563,7 +1577,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'search_result_all_results_padding',
 			[
-				'label'      => esc_html__( 'Padding', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Padding', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px' ],
 				'selectors'  => [
@@ -1575,7 +1589,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'search_result_all_results_margin',
 			[
-				'label'      => esc_html__( 'Margin', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Margin', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px' ],
 				'selectors'  => [
@@ -1587,7 +1601,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'search_result_all_results_radius',
 			[
-				'label'      => esc_html__( 'Border Radius', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Border Radius', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors'  => [
@@ -1600,7 +1614,7 @@ class Advanced_Search extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name'     => 'search_result_all_results_border',
-				'label'    => __( 'Border', 'essential-addons-for-elementor-lite' ),
+				'label'    => __( 'Border', 'essential-addons-elementor' ),
 				'selector' => '{{WRAPPER}} .eael-advanced-search-total-results-wrap',
 			]
 		);
@@ -1609,7 +1623,7 @@ class Advanced_Search extends Widget_Base {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name'     => 'search_result_all_results_shadow',
-				'label'    => __( 'Box Shadow', 'essential-addons-for-elementor-lite' ),
+				'label'    => __( 'Box Shadow', 'essential-addons-elementor' ),
 				'selector' => '{{WRAPPER}} .eael-advanced-search-total-results-wrap',
 			]
 		);
@@ -1621,14 +1635,14 @@ class Advanced_Search extends Widget_Base {
 		$this->start_controls_section(
 			'load_more_style',
 			[
-				'label' => esc_html__( 'Load More', 'essential-addons-for-elementor-lite' ),
+				'label' => esc_html__( 'Load More', 'essential-addons-elementor' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
 
 		$this->start_controls_tabs( 'load_more_button_normal' );
 
-		$this->start_controls_tab( 'load_more_button_normal_tab', [ 'label' => esc_html__( 'Normal', 'essential-addons-for-elementor-lite' ) ] );
+		$this->start_controls_tab( 'load_more_button_normal_tab', [ 'label' => esc_html__( 'Normal', 'essential-addons-elementor' ) ] );
 
 		$this->add_group_control(
 			Group_Control_Background::get_type(),
@@ -1642,7 +1656,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'load_more_button_text_color',
 			[
-				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-advanced-search-load-more .eael-advanced-search-load-more-button' => 'color: {{VALUE}};',
@@ -1660,7 +1674,7 @@ class Advanced_Search extends Widget_Base {
 
 		$this->end_controls_tab();
 
-		$this->start_controls_tab( 'load_more_button_hover', [ 'label' => esc_html__( 'Hover', 'essential-addons-for-elementor-lite' ) ] );
+		$this->start_controls_tab( 'load_more_button_hover', [ 'label' => esc_html__( 'Hover', 'essential-addons-elementor' ) ] );
 
 		$this->add_group_control(
 			Group_Control_Background::get_type(),
@@ -1674,7 +1688,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'load_more_button_text_color_hover',
 			[
-				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-advanced-search-load-more .eael-advanced-search-load-more-button:hover' => 'color: {{VALUE}};',
@@ -1696,7 +1710,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'load_more_button_padding',
 			[
-				'label'      => esc_html__( 'Padding', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Padding', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px' ],
 				'selectors'  => [
@@ -1708,7 +1722,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'load_more_button_margin',
 			[
-				'label'      => esc_html__( 'Margin', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Margin', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px' ],
 				'selectors'  => [
@@ -1720,7 +1734,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_responsive_control(
 			'load_more_button_radius',
 			[
-				'label'      => esc_html__( 'Border Radius', 'essential-addons-for-elementor-lite' ),
+				'label'      => esc_html__( 'Border Radius', 'essential-addons-elementor' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors'  => [
@@ -1733,7 +1747,7 @@ class Advanced_Search extends Widget_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name'     => 'load_more_button_border',
-				'label'    => __( 'Border', 'essential-addons-for-elementor-lite' ),
+				'label'    => __( 'Border', 'essential-addons-elementor' ),
 				'selector' => '{{WRAPPER}} .eael-advanced-search-load-more .eael-advanced-search-load-more-button',
 			]
 		);
@@ -1742,7 +1756,7 @@ class Advanced_Search extends Widget_Base {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name'     => 'load_more_button_shadow',
-				'label'    => __( 'Box Shadow', 'essential-addons-for-elementor-lite' ),
+				'label'    => __( 'Box Shadow', 'essential-addons-elementor' ),
 				'selector' => '{{WRAPPER}} .eael-advanced-search-load-more .eael-advanced-search-load-more-button',
 			]
 		);
@@ -1754,7 +1768,7 @@ class Advanced_Search extends Widget_Base {
 		$this->start_controls_section(
 			'not_found_style',
 			[
-				'label' => esc_html__( 'Not Found Message', 'essential-addons-for-elementor-lite' ),
+				'label' => esc_html__( 'Not Found Message', 'essential-addons-elementor' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -1762,7 +1776,7 @@ class Advanced_Search extends Widget_Base {
 		$this->add_control(
 			'not_found_color',
 			[
-				'label'     => esc_html__( 'Color', 'essential-addons-for-elementor-lite' ),
+				'label'     => esc_html__( 'Color', 'essential-addons-elementor' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .eael-advanced-search-not-found p' => 'color: {{VALUE}};',
@@ -1868,6 +1882,7 @@ class Advanced_Search extends Widget_Base {
 		];
 		if ( $args[ 'show_popular_keyword' ] ) {
 			$args[ 'show_popular_keyword_rank' ]      = $settings[ 'show_popular_keyword_rank' ];
+			$args[ 'show_popular_keyword_rank_length' ]      = $settings[ 'show_popular_keyword_rank_length' ];
 			$args[ 'total_number_of_popular_search' ] = $settings[ 'total_number_of_popular_search' ];
 		}
 
@@ -1971,7 +1986,7 @@ class Advanced_Search extends Widget_Base {
 				<?php if( ! empty( $settings['show_search_result_all_results'] ) && 'yes' === $settings['show_search_result_all_results'] ) : ?>
 				<p class="eael-advanced-search-total-results-wrap">
 					<?php 
-						$settings[ 'total_results_text' ] = !empty( $settings[ 'total_results_text' ] ) ? $settings[ 'total_results_text' ] : __( 'Total [post_count] Results', 'essential-addons-for-elementor-lite' );
+						$settings[ 'total_results_text' ] = !empty( $settings[ 'total_results_text' ] ) ? $settings[ 'total_results_text' ] : __( 'Total [post_count] Results', 'essential-addons-elementor' );
 						$total_results_text = explode('[post_count]', $settings[ 'total_results_text' ] );
 						if ( count( $total_results_text ) ) {
 							esc_html_e( $total_results_text[0] );

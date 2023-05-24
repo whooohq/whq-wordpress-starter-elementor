@@ -97,7 +97,7 @@ class Get_Related_Items_Count extends \Jet_Engine_Base_Macros {
 				'default' => '',
 			),
 			'rel_object' => array(
-				'label'   => __( 'From Object', 'jet-engine' ),
+				'label'   => __( 'From Object (what to show)', 'jet-engine' ),
 				'type'    => 'select',
 				'options' => array(
 					'parent_object' => __( 'Parent Object', 'jet-engine' ),
@@ -106,7 +106,7 @@ class Get_Related_Items_Count extends \Jet_Engine_Base_Macros {
 				'default' => 'child_object',
 			),
 			'rel_object_from' => array(
-				'label'   => __( 'Initial Object ID From', 'jet-engine' ),
+				'label'   => __( 'Initial Object ID From (get initial ID here)', 'jet-engine' ),
 				'type'    => 'select',
 				'options' => array( jet_engine()->relations->sources, 'get_sources' ),
 				'default' => 'current_object',

@@ -13,6 +13,10 @@ if ( ! class_exists( 'Jet_Engine_WPML_Package' ) ) {
 	class Jet_Engine_WPML_Package {
 
 		public function __construct() {
+
+			if ( ! class_exists( 'SitePress' ) ) {
+				return;
+			}
 			
 			add_filter( 'wpml_elementor_widgets_to_translate',              array( $this, 'add_translatable_nodes' ) );
 			add_filter( 'jet-engine/listings/frontend/rendered-listing-id', array( $this, 'set_translated_object' ) );
@@ -42,6 +46,23 @@ if ( ! class_exists( 'Jet_Engine_WPML_Package' ) ) {
 			// Post meta conditions
 			add_filter( 'jet-engine/meta-boxes/conditions/post-has-terms/check-terms', array( $this, 'set_translated_check_terms' ), 10, 2 );
 
+			// Disable `suppress_filters` in the `get_posts` args.
+			add_filter( 'jet-engine/compatibility/get-posts/args', array( $this, 'disable_suppress_filters' ) );
+
+			// Data stores hooks
+			add_filter( 'jet-engine/data-stores/store/data', array( $this, 'set_translated_store' ), 10, 2 );
+
+			// Translated media and posts fields.
+			add_filter( 'jet-engine/listing/data/get-post-meta', array( $this, 'set_translated_post_meta' ), 10, 3 );
+
+			// Fixed the translated tax query on archive page at ajax( pagination, load more, lazy load ).
+			// See: https://github.com/Crocoblock/issues-tracker/issues/2055
+			if ( wpml_is_ajax() && class_exists( 'WPML_Display_As_Translated_Tax_Query' ) ) {
+				global $sitepress, $wpml_term_translations;
+
+				$translated_tax_query = new WPML_Display_As_Translated_Tax_Query( $sitepress, $wpml_term_translations );
+				$translated_tax_query->add_hooks();
+			}
 		}
 
 		public function relations_hooks() {
@@ -377,7 +398,7 @@ if ( ! class_exists( 'Jet_Engine_WPML_Package' ) ) {
 			$name = "Admin Label - {$label}";
 
 			if ( 160 < strlen( $name ) ) {
-				$name = substr( $name, 0, 100 ) . '... - ' . md5( $label );
+				$name = jet_engine_trim_string( $name, 100, '' ) . '... - ' . md5( $label );
 			}
 
 			if ( $lang === $wpml_default_lang ) {
@@ -422,6 +443,136 @@ if ( ! class_exists( 'Jet_Engine_WPML_Package' ) ) {
 			return array_map( function ( $term ) use ( $tax ) {
 				return apply_filters( 'wpml_object_id', $term, $tax, true );
 			}, $terms );
+		}
+
+		public function disable_suppress_filters( $args = array() ) {
+			$args['suppress_filters'] = false;
+			return $args;
+		}
+
+		public function set_translated_store( $store, $store_id ) {
+
+			if ( empty( $store ) ) {
+				return $store;
+			}
+
+			$store_instance = Jet_Engine\Modules\Data_Stores\Module::instance()->stores->get_store( $store_id );
+
+			if ( $store_instance->is_user_store() || $store_instance->get_arg( 'is_cct' ) ) {
+				return $store;
+			}
+
+			$store = array_map( function( $item ) {
+
+				if ( ! is_array( $item ) ) {
+					$item = apply_filters( 'wpml_object_id', $item, get_post_type( $item ), true );
+				}
+
+				return $item;
+			}, $store );
+
+			return $store;
+		}
+
+		public function set_translated_post_meta( $value, $key, $post_id ) {
+
+			if ( empty( $value ) ) {
+				return $value;
+			}
+
+			$post_type = get_post_type( $post_id );
+
+			if ( ! is_post_type_translated( $post_type ) ) {
+				return $value;
+			}
+
+			$post_type_fields = jet_engine()->meta_boxes->get_meta_fields_for_object( $post_type );
+
+			if ( empty( $post_type_fields ) ) {
+				return $value;
+			}
+
+			$field_args = null;
+
+			foreach ( $post_type_fields as $field ) {
+				if ( ! empty( $field['name'] ) && $key === $field['name'] ) {
+					$field_args = $field;
+					break;
+				}
+			}
+
+			if ( empty( $field_args ) ) {
+				return $value;
+			}
+
+			$supported_field_types = array( 'media', 'posts' );
+
+			if ( empty( $field_args['type'] ) || ! in_array( $field_args['type'], $supported_field_types ) ) {
+				return $value;
+			}
+
+			$tm_settings = wpml_load_core_tm()->get_settings();
+
+			if ( empty( $tm_settings ) ) {
+				return $value;
+			}
+
+			if ( ! isset( $tm_settings['custom_fields_translation'] ) || ! isset( $tm_settings['custom_fields_translation'][ $key ] ) ) {
+				return $value;
+			}
+
+			if ( WPML_IGNORE_CUSTOM_FIELD === $tm_settings['custom_fields_translation'][ $key ] ) {
+				return $value;
+			}
+
+			switch ( $field_args['type'] ) {
+
+				case 'media':
+
+					if ( is_numeric( $value ) ) {
+
+						$value = apply_filters( 'wpml_object_id', $value, 'attachment', true );
+
+					} elseif ( is_array( $value ) && isset( $value['id'] ) ) {
+
+						$value['id'] = apply_filters( 'wpml_object_id', $value['id'], 'attachment', true );
+
+					} elseif ( is_array( $value ) ) {
+
+						$value = array_map( function( $item ) {
+
+							if ( is_numeric( $item ) ) {
+
+								return apply_filters( 'wpml_object_id', $item, 'attachment', true );
+
+							} elseif ( is_array( $item ) && isset( $item['id'] )  ) {
+
+								$item['id'] = apply_filters( 'wpml_object_id', $item['id'], 'attachment', true );
+								return $item;
+							}
+
+							return $item;
+						}, $value );
+					}
+
+					break;
+
+				case 'posts':
+
+					if ( is_array( $value ) ) {
+
+						$value = array_map( function( $item ) {
+							return apply_filters( 'wpml_object_id', $item, get_post_type( $item ), true );
+						}, $value );
+
+					} else {
+						$value = apply_filters( 'wpml_object_id', $value, get_post_type( $value ), true );
+					}
+
+					break;
+			}
+
+			return $value;
 		}
 
 	}

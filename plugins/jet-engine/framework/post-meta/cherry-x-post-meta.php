@@ -2,7 +2,7 @@
 /**
  * Post Meta module
  *
- * Version: 1.5.7
+ * Version: 1.7.0
  */
 
 // If this file is called directly, abort.
@@ -375,12 +375,13 @@ if ( ! class_exists( 'Cherry_X_Post_Meta' ) ) {
 		 * @return array
 		 */
 		public function prepare_field_value( $field, $value ) {
+
 			switch ( $field['type'] ) {
 				case 'repeater':
 
 					if ( is_array( $value ) && ! empty( $field['fields'] ) ) {
 
-						$repeater_fields =  $field['fields'];
+						$repeater_fields = $field['fields'];
 
 						foreach ( $value as $item_id => $item_value ) {
 							foreach ( $item_value as $repeater_field_id => $repeater_field_value ) {
@@ -415,9 +416,35 @@ if ( ! class_exists( 'Cherry_X_Post_Meta' ) ) {
 					}
 
 					break;
+
+				case 'text':
+
+					if ( ! empty( $value ) && $this->to_timestamp( $field ) && is_numeric( $value ) ) {
+
+						switch ( $field['input_type'] ) {
+							case 'date':
+								$value = $this->get_date( 'Y-m-d', $value );
+								break;
+
+							case 'datetime-local':
+								$value = $this->get_date( 'Y-m-d\TH:i', $value );
+								break;
+						}
+					}
+
+					break;
 			}
 
 			return $value;
+		}
+
+		/**
+		 * Returns date converted from timestamp
+		 * 
+		 * @return [type] [description]
+		 */
+		public function get_date( $format, $time ) {
+			return apply_filters( 'cx_post_meta/date', date( $format, $time ), $time, $format );
 		}
 
 		/**
@@ -567,11 +594,7 @@ if ( ! class_exists( 'Cherry_X_Post_Meta' ) ) {
 
 				}
 
-				if ( $this->to_timestamp( $field ) ) {
-					$value = strtotime( $_POST[ $key ] );
-				} else {
-					$value = $this->sanitize_meta( $key, $_POST[ $key ] );
-				}
+				$value = $this->sanitize_meta( $key, $_POST[ $key ] );
 
 				/**
 				 * Fires on specific key saving
@@ -650,7 +673,10 @@ if ( ! class_exists( 'Cherry_X_Post_Meta' ) ) {
 				}
 
 				return $result;
+			}
 
+			if ( $this->to_timestamp( $field ) ) {
+				return apply_filters( 'cx_post_meta/strtotime', strtotime( $value ), $value );
 			}
 
 			if ( empty( $field['sanitize_callback'] ) ) {
@@ -710,18 +736,6 @@ if ( ! class_exists( 'Cherry_X_Post_Meta' ) ) {
 			}
 
 			$meta = get_post_meta( $post->ID, $key, false );
-
-			if ( ! empty( $meta[0] ) && $this->to_timestamp( $field ) && is_numeric( $meta[0] ) ) {
-
-				switch ( $field['input_type'] ) {
-					case 'date':
-						return date( 'Y-m-d', $meta[0] );
-
-					case 'datetime-local':
-						return date( 'Y-m-d\TH:i', $meta[0] );
-				}
-
-			}
 
 			return ( empty( $meta ) ) ? $default : $meta[0];
 

@@ -81,6 +81,7 @@ class Jet_Engine_CPT_Rest_Edit_Post_Type extends Jet_Engine_Base_API_Endpoint {
 			'query_var'             => $this->safe_get( $params, 'advanced_settings', 'query_var' ),
 			'rewrite'               => $this->safe_get( $params, 'advanced_settings', 'rewrite' ),
 			'with_front'            => $this->safe_get( $params, 'advanced_settings', 'with_front' ),
+			'map_meta_cap'          => $this->safe_get( $params, 'advanced_settings', 'map_meta_cap' ),
 			'has_archive'           => $this->safe_get( $params, 'advanced_settings', 'has_archive' ),
 			'hierarchical'          => $this->safe_get( $params, 'advanced_settings', 'hierarchical' ),
 			'rewrite_slug'          => $this->safe_get( $params, 'advanced_settings', 'rewrite_slug' ),

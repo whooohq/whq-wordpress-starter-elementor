@@ -34,12 +34,14 @@ class Query_Editor {
 		require_once Manager::instance()->component_path( 'editor/users.php' );
 		require_once Manager::instance()->component_path( 'editor/comments.php' );
 		require_once Manager::instance()->component_path( 'editor/sql.php' );
+		require_once Manager::instance()->component_path( 'editor/repeater.php' );
 
 		$this->register_type( new Query_Editor\Posts_Query() );
 		$this->register_type( new Query_Editor\Terms_Query() );
 		$this->register_type( new Query_Editor\Users_Query() );
 		$this->register_type( new Query_Editor\Comments_Query() );
 		$this->register_type( new Query_Editor\SQL_Query() );
+		$this->register_type( new Query_Editor\Repeater_Query() );
 
 		do_action( 'jet-engine/query-builder/query-editor/register', $this );
 

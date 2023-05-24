@@ -2,6 +2,8 @@
 namespace Essential_Addons_Elementor\Pro\Classes\License;
 
 // Exit if accessed directly
+use Essential_Addons_Elementor\Pro\Classes\Helper;
+
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
@@ -427,7 +429,7 @@ class EAELicense {
 		if ( isset( $_GET['sl_activation'] ) && ! empty( $_GET['response_message'] ) ) {
 			switch( $_GET['sl_activation'] ) {
 				case 'false':
-					$message = urldecode( $_GET['response_message'] );
+					$message = esc_html(urldecode( $_GET['response_message'] ));
 					break;
 				case 'true':
 				default:
@@ -444,7 +446,7 @@ class EAELicense {
 			$output .= '<p>'. $message .'</p>';
 		$output .= '</div>';
 
-		echo $output;
+		echo Helper::eael_wp_kses( $output );
 	}
 	/**
 	 * Its a helper function for HTTP remote post.

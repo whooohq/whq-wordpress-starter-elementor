@@ -93,7 +93,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("window.enableProSorter = function ($, $_this) {\n  var $enable_table = $_this.data('table_enabled'),\n      $id = $_this.data('table_id');\n  if (true == $enable_table) $(\"#eael-data-table-\" + $id).tablesorter();\n\n  if ($enable_table != true) {\n    $('table#eael-data-table-' + $id + ' .sorting').addClass('sorting-none');\n    $('table#eael-data-table-' + $id + ' .sorting_desc').addClass('sorting-none');\n    $('table#eael-data-table-' + $id + ' .sorting_asc').addClass('sorting-none');\n  }\n};\n\n//# sourceURL=webpack:///./src/js/view/data-table.js?");
+eval("window.enableProSorter = function ($, $_this) {\n  var $enable_table = $_this.data('table_enabled'),\n    $id = $_this.data('table_id');\n  if (true == $enable_table) $(\"#eael-data-table-\" + $id).tablesorter();\n  if ($enable_table != true) {\n    $('table#eael-data-table-' + $id + ' .sorting').addClass('sorting-none');\n    $('table#eael-data-table-' + $id + ' .sorting_desc').addClass('sorting-none');\n    $('table#eael-data-table-' + $id + ' .sorting_asc').addClass('sorting-none');\n  }\n};\n\n//# sourceURL=webpack:///./src/js/view/data-table.js?");
 
 /***/ })
 

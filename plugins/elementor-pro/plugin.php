@@ -4,6 +4,7 @@ namespace ElementorPro;
 use ElementorPro\Core\Admin\Admin;
 use ElementorPro\Core\App\App;
 use ElementorPro\Core\Connect;
+use ElementorPro\Core\Compatibility\Compatibility;
 use Elementor\Core\Responsive\Files\Frontend as FrontendFile;
 use Elementor\Utils;
 use ElementorPro\Core\Editor\Editor;
@@ -81,6 +82,11 @@ class Plugin {
 	];
 
 	/**
+	 * @var \ElementorPro\License\Updater
+	 */
+	public $updater;
+
+	/**
 	 * Throw error on object clone
 	 *
 	 * The whole idea of the singleton design pattern is that there is a single
@@ -90,8 +96,11 @@ class Plugin {
 	 * @return void
 	 */
 	public function __clone() {
-		// Cloning instances of the class is forbidden
-		_doing_it_wrong( __FUNCTION__, esc_html__( 'Something went wrong.', 'elementor-pro' ), '1.0.0' );
+		_doing_it_wrong(
+			__FUNCTION__,
+			sprintf( 'Cloning instances of the singleton "%s" class is forbidden.', get_class( $this ) ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			'1.0.0'
+		);
 	}
 
 	/**
@@ -101,8 +110,11 @@ class Plugin {
 	 * @return void
 	 */
 	public function __wakeup() {
-		// Unserializing instances of the class is forbidden
-		_doing_it_wrong( __FUNCTION__, esc_html__( 'Something went wrong.', 'elementor-pro' ), '1.0.0' );
+		_doing_it_wrong(
+			__FUNCTION__,
+			sprintf( 'Unserializing instances of the singleton "%s" class is forbidden.', get_class( $this ) ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			'1.0.0'
+		);
 	}
 
 	/**
@@ -461,6 +473,8 @@ class Plugin {
 	 */
 	private function __construct() {
 		spl_autoload_register( [ $this, 'autoload' ] );
+
+		Compatibility::register_actions();
 
 		new Connect\Manager();
 

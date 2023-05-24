@@ -140,7 +140,7 @@ if ( ! class_exists( 'CX_Control_Iconpicker' ) ) {
 
 			$html .= '<div class="cx-ui-container ' . esc_attr( $class ) . '">';
 				if ( '' !== $this->settings['label'] ) {
-					$html .= '<label class="cx-label" for="' . esc_attr( $this->settings['id'] ) . '">' . esc_html( $this->settings['label'] ) . '</label> ';
+					$html .= '<label class="cx-label" for="' . esc_attr( $this->settings['id'] ) . '">' . wp_kses_post( $this->settings['label'] ) . '</label> ';
 				}
 
 				$this->settings['icon_data'] = wp_parse_args(
@@ -204,7 +204,7 @@ if ( ! class_exists( 'CX_Control_Iconpicker' ) ) {
 		 */
 		private function render_picker() {
 
-			$format = '<span class="input-group-addon"></span><input type="text" name="%1$s" id="%2$s" value="%3$s" class="widefat cx-ui-text cx-ui-iconpicker %4$s" data-set="%5$s">';
+			$format = '<span class="input-group-addon"></span><input type="text" name="%1$s" id="%2$s" value="%3$s" class="widefat cx-ui-text cx-ui-iconpicker %4$s" data-set="%5$s" %6$s>';
 
 			$this->prepare_icon_set();
 
@@ -214,7 +214,8 @@ if ( ! class_exists( 'CX_Control_Iconpicker' ) ) {
 				$this->settings['id'],
 				$this->settings['value'],
 				$this->settings['class'],
-				$this->settings['icon_data']['icon_set']
+				$this->settings['icon_data']['icon_set'],
+				$this->get_required()
 			);
 
 		}

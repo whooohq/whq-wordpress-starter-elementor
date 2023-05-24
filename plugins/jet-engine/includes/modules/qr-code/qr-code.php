@@ -174,10 +174,13 @@ if ( ! class_exists( 'Jet_Engine_Module_QR_Code' ) ) {
 				return $cached;
 			}
 
+			// Fixed '&' double-encoding bug
+			$value = str_replace( '&amp;', '&', $value );
+
 			$request = add_query_arg(
 				array(
 					'size'   => $size . 'x' . $size,
-					'data'   => $value,
+					'data'   => urlencode( $value ),
 					'format' => 'svg',
 				),
 				$this->qr_code_api

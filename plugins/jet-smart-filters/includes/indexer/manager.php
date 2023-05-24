@@ -20,9 +20,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Indexer_Manager' ) ) {
 	class Jet_Smart_Filters_Indexer_Manager {
 
 		public $is_indexer_enabled = false;
-		public $data               = null;
-		public $controls           = null;
-		public $table_name         = null;
+		public $data = null;
+		public $controls = null;
+		public $bricks_controls = null;
+		public $table_name = null;
 		public $indexed_post_types = array();
 
 		/**
@@ -40,6 +41,11 @@ if ( ! class_exists( 'Jet_Smart_Filters_Indexer_Manager' ) ) {
 			require jet_smart_filters()->plugin_path( 'includes/indexer/data.php' );
 			require jet_smart_filters()->plugin_path( 'includes/indexer/controls.php' );
 
+			if ( $this->has_bricks() ) {
+				require jet_smart_filters()->plugin_path( 'includes/indexer/bricks/controls.php' );
+				$this->controls = new Jet_Smart_Filters_Bricks_Indexer_Controls();
+			}
+
 			$this->data       = new Jet_Smart_Filters_Indexer_Data();
 			$this->controls   = new Jet_Smart_Filters_Indexer_Controls();
 			$this->table_name = Jet_Smart_Filters_DB::get_table_full_name( 'indexer' );
@@ -50,7 +56,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Indexer_Manager' ) ) {
 				}
 			}
 
-			add_action( 'wp_ajax_jet_smart_filters_admin_indexer', array( $this, 'index_filters' ) );
+			add_action( 'wp_ajax_jet_smart_filters_admin_indexer', array( $this, 'ajax_filter_indexing' ) );
 
 			if ( filter_var( jet_smart_filters()->settings->get( 'use_auto_indexing' ), FILTER_VALIDATE_BOOLEAN ) ) {
 				add_action( 'wp_after_insert_post', array( $this, 'post_updated' ), 10, 2 );
@@ -69,6 +75,22 @@ if ( ! class_exists( 'Jet_Smart_Filters_Indexer_Manager' ) ) {
 			$filter_id    = $args['filter_id'];
 
 			$this->data->add_indexing_data_from_filter( $provider_key, $filter_id );
+		}
+
+		/**
+		 *  AJAX callback to reindex filters data
+		 */
+		public function ajax_filter_indexing() {
+
+			if (
+				empty( $_REQUEST['nonce'] )
+				|| ! wp_verify_nonce( $_REQUEST['nonce'], 'wp_rest' )
+				|| ! current_user_can( 'edit_posts' )
+			) {
+				die( 'Permission denied' );
+			}
+
+			$this->index_filters();
 		}
 
 		/**
@@ -650,13 +672,13 @@ if ( ! class_exists( 'Jet_Smart_Filters_Indexer_Manager' ) ) {
 						break;
 
 					default:
-						
+
 						$query_var   = isset( $data['_query_var'] ) ? $data['_query_var'] : NULL;
 						$custom_args = apply_filters( 'jet-smart-filters/indexer/custom-args', array(), $filter_id );
 						$options     = ! empty( $custom_args['options'] ) ? $custom_args['options'] : false;
 
 						if ( empty( $options ) ) {
-						
+
 							$options = apply_filters( 'jet-smart-filters/filters/filter-options', $options, $filter_id, false );
 
 							if ( ! empty( $options ) ) {
@@ -669,7 +691,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Indexer_Manager' ) ) {
 
 						if ( ! $query_var || ! $options ) {
 							break;
-						}				
+						}
 
 						$is_serialized_data = filter_var( $data['_is_custom_checkbox'], FILTER_VALIDATE_BOOLEAN );
 						$data_type          = $is_serialized_data ? 'serialized' : 'normal';
@@ -697,6 +719,10 @@ if ( ! class_exists( 'Jet_Smart_Filters_Indexer_Manager' ) ) {
 			}
 
 			return $filters_data;
+		}
+
+		public function has_bricks() {
+			return defined( 'BRICKS_VERSION' );
 		}
 	}
 }

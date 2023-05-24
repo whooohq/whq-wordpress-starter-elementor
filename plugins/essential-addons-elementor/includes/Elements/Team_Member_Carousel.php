@@ -2324,7 +2324,7 @@ class Team_Member_Carousel extends Widget_Base
 		$this->add_render_attribute(
 			'team-member-carousel',
 			[
-				'class'           => ['swiper-container', 'eael-tm-wrapper', 'eael-tm-carousel'],
+				'class'           => [ 'swiper', 'swiper-container', 'eael-tm-wrapper', 'eael-tm-carousel'],
 				'id'              => 'swiper-container-' . esc_attr($this->get_id()),
 				'data-pagination' => '.swiper-pagination-' . esc_attr($this->get_id()),
 				'data-arrow-next' => '.swiper-button-next-' . esc_attr($this->get_id()),

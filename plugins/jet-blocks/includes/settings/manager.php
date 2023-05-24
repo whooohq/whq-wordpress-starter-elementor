@@ -47,6 +47,10 @@ class Settings {
 				'class' => '\\Jet_Blocks\\Settings\\General',
 				'args'  => array(),
 			),
+			'jet-blocks-integrations-settings' => array(
+				'class' => '\\Jet_Blocks\\Settings\\Integrations',
+				'args'  => array(),
+			),
 			'jet-blocks-avaliable-addons' => array(
 				'class' => '\\Jet_Blocks\\Settings\\Avaliable_Addons',
 				'args'  => array(),
@@ -77,6 +81,7 @@ class Settings {
 	 */
 	public function init_plugin_subpage_modules() {
 		require jet_blocks()->plugin_path( 'includes/settings/subpage-modules/general.php' );
+		require jet_blocks()->plugin_path( 'includes/settings/subpage-modules/integrations.php' );
 		require jet_blocks()->plugin_path( 'includes/settings/subpage-modules/avaliable-addons.php' );
 
 		foreach ( $this->subpage_modules as $subpage => $subpage_data ) {

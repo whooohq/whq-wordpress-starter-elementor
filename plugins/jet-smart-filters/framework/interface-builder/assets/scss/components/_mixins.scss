@@ -121,6 +121,9 @@
 	&:before {
 		@include button_icon( $icon );
 		padding: 0 5px 0 0;
+		.rtl & {
+			padding: 0 0 0 5px;
+		}
 	}
 }
 
@@ -128,6 +131,9 @@
 	&:after {
 		@include button_icon( $icon );
 		padding: 0 0 0 5px;
+		.rtl & {
+			padding: 0 5px 0 0;
+		}
 	}
 }
 
@@ -165,6 +171,9 @@
 		@include button_icon( $icon );
 		padding: 0 5px 0 0;
 		color: $grey_color_4;
+		.rtl & {
+			padding: 0 0 0 5px;
+		}
 	}
 	&:hover {
 		&:before {

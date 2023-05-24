@@ -235,7 +235,7 @@ class Lat_Lng {
 
 		}
 
-		return $coord;
+		return is_array( $coord ) ? array_map( 'floatval', $coord ) : $coord;
 
 	}
 

@@ -18,6 +18,9 @@ if ( ! class_exists( 'Jet_Engine_Polylang_Package' ) ) {
 
 			// Translate Admin Labels
 			add_filter( 'jet-engine/compatibility/translate-string', array( $this, 'translate_admin_labels' ) );
+
+			// Disable `suppress_filters` in the `get_posts` args.
+			add_filter( 'jet-engine/compatibility/get-posts/args', array( $this, 'disable_suppress_filters' ) );
 		}
 
 		/**
@@ -59,6 +62,11 @@ if ( ! class_exists( 'Jet_Engine_Polylang_Package' ) ) {
 			pll_register_string( 'jet-engine', $label, 'JetEngine', true );
 
 			return pll__( $label );
+		}
+
+		public function disable_suppress_filters( $args = array() ) {
+			$args['suppress_filters'] = false;
+			return $args;
 		}
 
 	}

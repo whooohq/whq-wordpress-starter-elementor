@@ -1,0 +1,25 @@
+@mixin jet-nav_breakpoints{
+	&.m-layout-tablet_extra {
+		@media ( max-width: ELEMENTOR_SCREEN_TABLET_EXTRA_MAX ) {
+			@content;
+		}
+	}
+	
+	&.m-layout-tablet {
+		@media ( max-width: ELEMENTOR_SCREEN_TABLET_MAX ) {
+			@content;
+		}
+	}
+	
+	&.m-layout-mobile_extra {
+		@media ( max-width: ELEMENTOR_SCREEN_MOBILE_EXTRA_MAX ) {
+			@content;
+		}
+	}
+	
+	&.m-layout-mobile {
+		@media ( max-width: ELEMENTOR_SCREEN_MOBILE_MAX ) {
+			@content;
+		}
+	}
+}

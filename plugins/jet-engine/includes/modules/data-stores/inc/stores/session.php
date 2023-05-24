@@ -102,7 +102,7 @@ class Session_Store extends Base_Store {
 		$all_stores = isset( $_SESSION[ $this->prefix ] ) ? $_SESSION[ $this->prefix ] : array();
 		$store      = isset( $all_stores[ $store_id ] ) ? $all_stores[ $store_id ] : array();
 
-		return $store;
+		return apply_filters( 'jet-engine/data-stores/store/data', $store, $store_id );
 	}
 
 }

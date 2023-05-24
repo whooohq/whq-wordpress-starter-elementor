@@ -166,35 +166,7 @@ class Edit extends \Jet_Engine_CPT_Page_Base {
 	}
 
 	public function get_macros_for_editor() {
-
-		$res = array();
-
-		foreach ( jet_engine()->listings->macros->get_all( false, true ) as $macros_id => $data ) {
-
-			$macros_data = array(
-				'id' => $macros_id,
-			);
-
-			if ( ! is_array( $data ) || empty( $data['label'] ) ) {
-				$macros_data['name'] = $macros_id;
-			} elseif ( ! empty( $data['label'] ) ) {
-				$macros_data['name'] = $data['label'];
-			}
-
-			if ( is_array( $data ) && ! empty( $data['args'] ) ) {
-				$macros_data['controls'] = $data['args'];
-			}
-
-			$res[] = $macros_data;
-
-		}
-
-		usort( $res, function ( $a, $b ) {
-			return strcmp( $a['name'], $b['name'] );
-		} );
-
-		return $res;
-
+		return jet_engine()->listings->macros->get_macros_for_js();
 	}
 
 	/**

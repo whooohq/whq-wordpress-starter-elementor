@@ -115,14 +115,32 @@ class Jet_Woo_Builder_Products_Navigation extends Jet_Woo_Builder_Base {
 			]
 		);
 
+		$this->add_responsive_control(
+			'items_min_width',
+			[
+				'type'       => Controls_Manager::SLIDER,
+				'label'      => __( 'Link Min Width', 'jet-woo-builder' ),
+				'size_units' => [ 'px' ],
+				'default'    => [
+					'unit' => 'px',
+					'size' => 20,
+				],
+				'range'      => [
+					'px' => [
+						'min' => 0,
+						'max' => 150,
+					],
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .jet-woo-builder-shop-navigation > a' => 'min-width: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'items_typography',
-				'scheme'   => Typography::TYPOGRAPHY_3,
-				'exclude'  => [
-					'text_decoration',
-				],
 				'selector' => '{{WRAPPER}} .jet-woo-builder-shop-navigation > a',
 			]
 		);
@@ -138,14 +156,14 @@ class Jet_Woo_Builder_Products_Navigation extends Jet_Woo_Builder_Base {
 
 		$this->add_control(
 			'items_color',
-			array(
-				'label'     => esc_html__( 'Text Color', 'jet-woo-builder' ),
+			[
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
+				'label'     => __( 'Color', 'jet-woo-builder' ),
+				'selectors' => [
 					'{{WRAPPER}} .jet-woo-builder-shop-navigation > a' => 'color: {{VALUE}}',
 
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_control(
@@ -170,13 +188,13 @@ class Jet_Woo_Builder_Products_Navigation extends Jet_Woo_Builder_Base {
 
 		$this->add_control(
 			'items_color_hover',
-			array(
-				'label'     => esc_html__( 'Text Color', 'jet-woo-builder' ),
+			[
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
+				'label'     => __( 'Color', 'jet-woo-builder' ),
+				'selectors' => [
 					'{{WRAPPER}} .jet-woo-builder-shop-navigation > a:hover' => 'color: {{VALUE}}',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_control(
@@ -208,80 +226,49 @@ class Jet_Woo_Builder_Products_Navigation extends Jet_Woo_Builder_Base {
 
 		$this->end_controls_tabs();
 
-		$this->add_responsive_control(
-			'items_min_width',
-			[
-				'label'      => __( 'Link Min Width', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px' ],
-				'default'    => [
-					'unit' => 'px',
-					'size' => 20,
-				],
-				'range'      => [
-					'px' => [
-						'min' => 0,
-						'max' => 150,
-					],
-				],
-				'separator'  => 'before',
-				'selectors'  => [
-					'{{WRAPPER}} .jet-woo-builder-shop-navigation > a' => 'min-width: {{SIZE}}{{UNIT}};',
-				],
-			]
-		);
-
 		$this->add_group_control(
 			Group_Control_Border::get_type(),
-			array(
+			[
 				'name'        => 'items_border',
-				'label'       => esc_html__( 'Border', 'jet-woo-builder' ),
-				'placeholder' => '1px',
+				'separator'  => 'before',
 				'selector'    => '{{WRAPPER}} .jet-woo-builder-shop-navigation > a',
-			)
+			]
 		);
 
 		$this->add_responsive_control(
 			'items_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} .jet-woo-builder-shop-navigation > a' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'items_margin',
-			array(
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
-				'selectors'  => array(
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} .jet-woo-builder-shop-navigation > a' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'items_padding',
-			array(
-				'label'      => esc_html__( 'Padding', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
-				'default'    => array(
-					'top'      => 10,
-					'right'    => 10,
-					'bottom'   => 10,
-					'left'     => 10,
-					'isLinked' => true,
-				),
-				'selectors'  => array(
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} .jet-woo-builder-shop-navigation > a' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_control(
@@ -374,24 +361,24 @@ class Jet_Woo_Builder_Products_Navigation extends Jet_Woo_Builder_Base {
 
 		$this->add_control(
 			'icons_color',
-			array(
-				'label'     => esc_html__( 'Text Color', 'jet-woo-builder' ),
+			[
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
+				'label'     => __( 'Color', 'jet-woo-builder' ),
+				'selectors' => [
 					'{{WRAPPER}} .jet-woo-builder-shop-navigation .jet-woo-builder-shop-navigation__arrow' => 'color: {{VALUE}}',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_control(
 			'icons_bg_color',
-			array(
-				'label'     => esc_html__( 'Background Color', 'jet-woo-builder' ),
+			[
+				'label'     => __( 'Background Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
+				'selectors' => [
 					'{{WRAPPER}} .jet-woo-builder-shop-navigation .jet-woo-builder-shop-navigation__arrow' => 'background-color: {{VALUE}}',
-				),
-			)
+				],
+			]
 		);
 
 		$this->end_controls_tab();
@@ -405,13 +392,13 @@ class Jet_Woo_Builder_Products_Navigation extends Jet_Woo_Builder_Base {
 
 		$this->add_control(
 			'icons_color_hover',
-			array(
-				'label'     => esc_html__( 'Text Color', 'jet-woo-builder' ),
+			[
 				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
+				'label'     => __( 'Color', 'jet-woo-builder' ),
+				'selectors' => [
 					'{{WRAPPER}} .jet-woo-builder-shop-navigation > a:hover .jet-woo-builder-shop-navigation__arrow' => 'color: {{VALUE}}',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_control(
@@ -430,11 +417,11 @@ class Jet_Woo_Builder_Products_Navigation extends Jet_Woo_Builder_Base {
 			[
 				'label'     => __( 'Border Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'condition' => [
-					'items_border_border!' => '',
-				],
 				'selectors' => [
 					'{{WRAPPER}} .jet-woo-builder-shop-navigation > a:hover .jet-woo-builder-shop-navigation__arrow' => 'border-color: {{VALUE}};',
+				],
+				'condition' => [
+					'items_border_border!' => '',
 				],
 			]
 		);
@@ -447,7 +434,6 @@ class Jet_Woo_Builder_Products_Navigation extends Jet_Woo_Builder_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name'      => 'icons_border',
-				'label'     => __( 'Border', 'jet-woo-builder' ),
 				'separator' => 'before',
 				'selector'  => '{{WRAPPER}} .jet-woo-builder-shop-navigation .jet-woo-builder-shop-navigation__arrow',
 			]
@@ -455,14 +441,14 @@ class Jet_Woo_Builder_Products_Navigation extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'icons_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} .jet-woo-builder-shop-navigation .jet-woo-builder-shop-navigation__arrow' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->end_controls_section();
@@ -473,8 +459,8 @@ class Jet_Woo_Builder_Products_Navigation extends Jet_Woo_Builder_Base {
 
 		$settings = $this->get_settings_for_display();
 
-		$prev_text = isset( $settings['prev_text'] ) ? $settings['prev_text'] : '';
-		$next_text = isset( $settings['next_text'] ) ? $settings['next_text'] : '';
+		$prev_text = $settings['prev_text'] ?? '';
+		$next_text = $settings['next_text'] ?? '';
 		$prev_icon = $this->__render_icon( 'prev_icon', '%s', '', false );
 		$next_icon = $this->__render_icon( 'next_icon', '%s', '', false );
 

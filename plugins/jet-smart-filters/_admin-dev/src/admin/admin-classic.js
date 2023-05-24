@@ -81,8 +81,9 @@
 				dataType: 'json',
 				data: {
 					action: 'jet_smart_filters_admin_indexer',
+					nonce: JetSmartFiltersAdminData.nonce
 				},
-			}).done(function (response) {
+			}).done(function() {
 				$this.removeClass('loading');
 				$this.html(defaultText);
 			});

@@ -17,16 +17,6 @@ class Elementor {
 		$this->manager = $manager;
 
 		add_action(
-			'jet-engine/listings/document/get-preview/' . $this->manager->source,
-			array( $this->manager, 'setup_preview' )
-		);
-
-		add_action(
-			'jet-engine/listings/document/get-preview/' . $this->manager->repeater_source,
-			array( $this->manager, 'setup_preview' )
-		);
-
-		add_action(
 			'jet-engine/listings/document/custom-source-control',
 			array( $this, 'add_document_controls' )
 		);
@@ -34,12 +24,6 @@ class Elementor {
 		add_action(
 			'elementor/document/after_save',
 			array( $this, 'update_settings_on_document_save' ),
-			10, 2
-		);
-
-		add_filter(
-			'jet-engine/elementor-views/frontend/custom-listing-url',
-			array( $this, 'custom_listing_url' ),
 			10, 2
 		);
 
@@ -153,21 +137,6 @@ class Elementor {
 			)
 		);
 
-	}
-
-	public function custom_listing_url( $result, $settings ) {
-
-		$url = $this->manager->get_custom_value_by_setting( 'listing_link_source', $settings );
-
-		if ( is_numeric( $url ) ) {
-			$url = get_permalink( $url );
-		}
-
-		if ( ! $url ) {
-			return $result;
-		} else {
-			return $url;
-		}
 	}
 
 }

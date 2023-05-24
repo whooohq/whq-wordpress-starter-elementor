@@ -18,6 +18,7 @@
 			toUpdate: dashboardConfig.modules_to_update,
 			componentsList: dashboardConfig.components_list,
 			isLicenseActive: dashboardConfig.is_license_active,
+			activeTab: 'modules',
 			shortcode: {
 				component: '',
 				meta_field: '',
@@ -40,57 +41,25 @@
 			errorMessage: '',
 			successMessage: '',
 			moduleDetails: false,
-			showCopyShortcode: undefined !== navigator.clipboard && undefined !== navigator.clipboard.writeText,
 			updateLog: {}
+		},
+		created: function() {
+
+			let tab = window.location.hash;
+
+			if ( tab ) {
+				tab = tab.replace( '#', '' );
+				this.activeTab = tab;
+			}
+
 		},
 		mounted: function() {
 			this.$el.className = 'is-mounted';
 		},
-		computed: {
-			generatedShortcode: function() {
-
-				var result = '[jet_engine ';
-
-				if ( ! this.shortcode.component ) {
-					return result + ']';
-				}
-
-				result += ' component="' + this.shortcode.component + '"';
-
-				switch ( this.shortcode.component ) {
-
-					case 'meta_field':
-						result += ' field="' + this.shortcode.meta_field + '"';
-
-						if ( this.shortcode.post_id ) {
-							result += ' post_id="' + this.shortcode.post_id + '"';
-						}
-
-						break;
-
-					case 'option':
-						result += ' page="' + this.shortcode.page + '" field="' + this.shortcode.field + '"';
-						break;
-
-					case 'forms':
-						result += ' _form_id="' + this.shortcode.form_id + '" fields_layout="' + this.shortcode.fields_layout + '"';
-						result += ' fields_label_tag="' + this.shortcode.fields_label_tag + '" submit_type="' + this.shortcode.submit_type + '"';
-
-						if ( this.shortcode.cache_form ) {
-							result += ' cache_form="' + this.shortcode.cache_form + '"';
-						}
-
-						break;
-
-				}
-
-				result += ']';
-
-				return result;
-
-			},
-		},
 		methods: {
+			addTabLocationHash: function( activeTab ) {
+				window.history.replaceState( null, null, '#' + activeTab );
+			},
 			isActive: function( module ) {
 				return 0 <= this.activeModules.indexOf( module );
 			},
@@ -127,6 +96,7 @@
 					data: {
 						action: 'jet_engine_update_module',
 						file: file,
+						_nonce: dashboardConfig._nonce,
 					},
 				}).done( ( response ) => {
 
@@ -191,6 +161,7 @@
 					data: {
 						action: 'jet_engine_uninstall_module',
 						module: module,
+						_nonce: dashboardConfig._nonce,
 					},
 				}).done( function( response ) {
 
@@ -237,6 +208,7 @@
 					data: {
 						action: 'jet_engine_install_module',
 						module: module,
+						_nonce: dashboardConfig._nonce,
 					},
 				}).done( function( response ) {
 
@@ -268,6 +240,7 @@
 					data: {
 						action: 'jet_engine_save_modules',
 						modules: self.activeModules,
+						_nonce: dashboardConfig._nonce,
 					},
 				}).done( function( response ) {
 
@@ -291,6 +264,10 @@
 					} else {
 						self.result = 'error';
 						self.errorMessage = 'Error!';
+
+						if ( response.data && response.data.message ) {
+							self.errorMessage += ' ' + response.data.message;
+						}
 					}
 
 					self.hideNotice();
@@ -309,19 +286,6 @@
 					self.result       = false;
 					self.errorMessage = '';
 				}, 8000 );
-			},
-			copyShortcodeToClipboard: function() {
-				var self = this;
-
-				navigator.clipboard.writeText( this.generatedShortcode ).then( function() {
-					// clipboard successfully set
-					self.shortcode.copied = true;
-					setTimeout( function() {
-						self.shortcode.copied = false;
-					}, 2000 );
-				}, function() {
-					// clipboard write failed
-				} );
 			},
 			getForms: function( query ) {
 				return wp.apiFetch( {

@@ -14,7 +14,7 @@ const {
 
 class CustomControl extends Component {
 
-	isEnbaled() {
+	isEnabled() {
 
 		if ( ! this.props.condition ) {
 			return true;
@@ -81,7 +81,7 @@ class CustomControl extends Component {
 			children
 		} = this.props;
 
-		if ( ! this.isEnbaled() ) {
+		if ( ! this.isEnabled() ) {
 			return null;
 		}
 

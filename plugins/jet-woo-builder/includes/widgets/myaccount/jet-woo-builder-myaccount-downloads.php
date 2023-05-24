@@ -236,9 +236,9 @@ class Jet_Woo_Builder_MyAccount_Downloads extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'empty_message_border_radius',
 			[
-				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['message'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -248,9 +248,9 @@ class Jet_Woo_Builder_MyAccount_Downloads extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'empty_message_padding',
 			[
-				'label'      => __( 'Padding', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['message'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -291,9 +291,9 @@ class Jet_Woo_Builder_MyAccount_Downloads extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'empty_message_icon_size',
 			[
-				'label'      => __( 'Size', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em' ],
+				'label'      => __( 'Size', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em' ] ),
 				'range'      => [
 					'px' => [
 						'min' => 0,

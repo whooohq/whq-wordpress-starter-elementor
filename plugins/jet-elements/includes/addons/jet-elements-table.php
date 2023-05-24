@@ -249,7 +249,7 @@ class Jet_Elements_Table extends Jet_Elements_Base {
 			array(
 				'label' => esc_html__( 'Column Width', 'jet-elements' ),
 				'type'  => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'range' => array(
 					'px' => array(
 						'min' => 0,
@@ -749,7 +749,7 @@ class Jet_Elements_Table extends Jet_Elements_Base {
 			array(
 				'label' => esc_html__( 'Column Width', 'jet-elements' ),
 				'type'  => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'range' => array(
 					'px' => array(
 						'min' => 0,
@@ -882,7 +882,7 @@ class Jet_Elements_Table extends Jet_Elements_Base {
 			array(
 				'label' => esc_html__( 'Table Width', 'jet-elements' ),
 				'type'  => Controls_Manager::SLIDER,
-				'size_units' => array( '%', 'px' ),
+				'size_units' => array( '%', 'px', 'custom' ),
 				'range' => array(
 					'px' => array(
 						'min' => 0,
@@ -953,7 +953,7 @@ class Jet_Elements_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['table_head_row'] . ':first-child ' . $css_scheme['table_cell'] . ':first-child' => ! is_rtl() ? 'border-top-left-radius: {{TOP}}{{UNIT}};' : 'border-top-right-radius: {{RIGHT}}{{UNIT}};',
 					'{{WRAPPER}} ' . $css_scheme['table_head_row'] . ':first-child ' . $css_scheme['table_cell'] . ':last-child' => ! is_rtl() ? 'border-top-right-radius: {{RIGHT}}{{UNIT}};' : 'border-top-left-radius: {{TOP}}{{UNIT}};',
@@ -1000,7 +1000,7 @@ class Jet_Elements_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['table_head_cell_inner'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					'{{WRAPPER}} ' . $css_scheme['table_foot_cell_inner'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -1141,7 +1141,7 @@ class Jet_Elements_Table extends Jet_Elements_Base {
 				'label' => esc_html__( 'Font Size', 'jet-elements' ),
 				'type'  => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px', 'em', 'rem',
+					'px', 'em', 'rem', 'custom'
 				),
 				'range' => array(
 					'px' => array(
@@ -1287,7 +1287,7 @@ class Jet_Elements_Table extends Jet_Elements_Base {
 				'label' => esc_html__( 'Font Size', 'jet-elements' ),
 				'type'  => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px', 'em', 'rem',
+					'px', 'em', 'rem', 'custom'
 				),
 				'range' => array(
 					'px' => array(
@@ -1408,7 +1408,7 @@ class Jet_Elements_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['table_head_img'] . ' img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1531,7 +1531,7 @@ class Jet_Elements_Table extends Jet_Elements_Base {
 				'label' => esc_html__( 'Font Size', 'jet-elements' ),
 				'type'  => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px', 'em', 'rem',
+					'px', 'em', 'rem', 'custom'
 				),
 				'range' => array(
 					'px' => array(
@@ -1652,7 +1652,7 @@ class Jet_Elements_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['table_foot_img'] . ' img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1881,7 +1881,7 @@ class Jet_Elements_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['table_body_cell_inner'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2013,7 +2013,7 @@ class Jet_Elements_Table extends Jet_Elements_Base {
 				'label' => esc_html__( 'Font Size', 'jet-elements' ),
 				'type'  => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px', 'em', 'rem',
+					'px', 'em', 'rem', 'custom'
 				),
 				'range' => array(
 					'px' => array(
@@ -2134,7 +2134,7 @@ class Jet_Elements_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['table_body_img'] . ' img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),

@@ -90,7 +90,7 @@ class Cookies_Store extends Base_Store {
 			$store = array();
 		}
 
-		return $store;
+		return apply_filters( 'jet-engine/data-stores/store/data', $store, $store_id );
 	}
 
 }

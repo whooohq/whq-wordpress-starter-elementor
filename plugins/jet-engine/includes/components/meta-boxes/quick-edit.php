@@ -56,7 +56,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Quick_Edit' ) ) {
 
 		/**
 		 * Run cx_post_meta/after_save hook after save all quick edit boxes to better compatibility with Cherry_X_Post_Meta
-		 * 
+		 *
 		 * @return void
 		 */
 		public function after_save_all() {
@@ -214,6 +214,21 @@ if ( ! class_exists( 'Jet_Engine_CPT_Quick_Edit' ) ) {
 			if ( 'checkbox' === $this->get_field( 'type' ) ) {
 				$this->set_field( 'type', 'checkbox-raw' );
 				$this->set_field( 'value', array() );
+			}
+
+			if ( 'text' === $this->get_field( 'type' ) && ! empty( $value )
+				 && $post_meta->to_timestamp( $this->get_field() ) && is_numeric( $value )
+			) {
+
+				switch ( $this->get_field( 'input_type' ) ) {
+					case 'date':
+						$value = date( 'Y-m-d', $value );
+						break;
+
+					case 'datetime-local':
+						$value = date( 'Y-m-d\TH:i', $value );
+						break;
+				}
 			}
 
 			printf(

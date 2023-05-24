@@ -369,9 +369,21 @@ if ( ! class_exists( 'Jet_Woo_Builder_Tools' ) ) {
 				$options['effect'] = $carousel_settings['effect'];
 			}
 
-			$options           = apply_filters( 'jet-woo-builder/tools/carousel/options', $options, $settings );
-			$pagination        = $carousel_settings['dots'] ? '<div class="swiper-pagination"></div>' : '';
-			$swiper_prev_arrow = $carousel_settings['arrows'] ? $this->get_carousel_arrow( [ 'prev-arrow', 'jet-swiper-button-prev' ], $carousel_settings['prev_arrow'] ) : '';
+			$pagination_classes = [ 'swiper-pagination' ];
+
+			if ( $carousel_settings['dynamic_bullets'] ) {
+				$pagination_classes[] = 'swiper-pagination-bullets-dynamic';
+			}
+
+			$options            = apply_filters( 'jet-woo-builder/tools/carousel/options', $options, $settings );
+			$prev_arrow_classes = [ 'prev-arrow', 'jet-swiper-button-prev' ];
+
+			if ( ! $options['loop'] ) {
+				$prev_arrow_classes[] = 'swiper-button-disabled';
+			}
+
+			$pagination        = $carousel_settings['dots'] ? '<div class="' . implode( ' ', $pagination_classes ) . '"></div>' : '';
+			$swiper_prev_arrow = $carousel_settings['arrows'] ? $this->get_carousel_arrow( $prev_arrow_classes, $carousel_settings['prev_arrow'] ) : '';
 			$swiper_next_arrow = $carousel_settings['arrows'] ? $this->get_carousel_arrow( [ 'next-arrow', 'jet-swiper-button-next' ], $carousel_settings['next_arrow'] ) : '';
 			$is_rtl            = is_rtl() ? 'rtl' : 'ltr';
 
@@ -648,6 +660,33 @@ if ( ! class_exists( 'Jet_Woo_Builder_Tools' ) ) {
 		}
 
 		/**
+		 * Get available units ranges.
+		 *
+		 * Returns list of units ranges for Elementor controls.
+		 *
+		 * @since  2.1.4
+		 * @access public
+		 *
+		 * @return int[][]
+		 */
+		public function get_available_units_ranges() {
+			return [
+				'px' => [
+					'min' => -400,
+					'max' => 400,
+				],
+				'em' => [
+					'min' => -50,
+					'max' => 50,
+				],
+				'%'  => [
+					'min' => -100,
+					'max' => 100,
+				],
+			];
+		}
+
+		/**
 		 * Get product categories.
 		 *
 		 * Returns the full list of products categories.
@@ -863,39 +902,6 @@ if ( ! class_exists( 'Jet_Woo_Builder_Tools' ) ) {
 		}
 
 		/**
-		 * WooCommerce actions.
-		 *
-		 * Return list of WooCommerce actions based on template where it used.
-		 *
-		 * @since  2.0.0
-		 * @access public
-		 *
-		 * @return array
-		 */
-		public function get_woocommerce_actions() {
-			return [
-				[
-					'label'   => __( 'Single Product', 'jet-woo-builder' ),
-					'options' => [
-						'woocommerce_before_single_product_summary' => __( 'Before Summary', 'jet-woo-builder' ),
-						'woocommerce_single_product_summary'        => __( 'Summary', 'jet-woo-builder' ),
-						'woocommerce_after_single_product_summary'  => __( 'After Summary', 'jet-woo-builder' ),
-					],
-				],
-				[
-					'label'   => __( 'Shop Loop', 'jet-woo-builder' ),
-					'options' => [
-						'woocommerce_before_shop_loop_item'       => __( 'Before Item', 'jet-woo-builder' ),
-						'woocommerce_before_shop_loop_item_title' => __( 'Before Item Title', 'jet-woo-builder' ),
-						'woocommerce_shop_loop_item_title'        => __( 'Item Title', 'jet-woo-builder' ),
-						'woocommerce_after_shop_loop_item_title'  => __( 'After Item Title', 'jet-woo-builder' ),
-						'woocommerce_after_shop_loop_item'        => __( 'After Item', 'jet-woo-builder' ),
-					],
-				],
-			];
-		}
-
-		/**
 		 * Additional HTML tags validation
 		 *
 		 * @param $input
@@ -906,6 +912,118 @@ if ( ! class_exists( 'Jet_Woo_Builder_Tools' ) ) {
 			$available_tags = [ 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span', 'a', 'section', 'header', 'footer', 'main', 'b', 'em', 'i', 'nav', 'article', 'aside' ];
 
 			return in_array( strtolower( $input ), $available_tags ) ? $input : 'div';
+		}
+
+		/**
+		 * Get products query type.
+		 *
+		 * Return list of possible query types.
+		 *
+		 * @since  1.7.5
+		 * @since  2.0.4 Added `jet-woo-builder/shortcodes/query-types`, updated naming.
+		 * @access public
+		 *
+		 * @return array
+		 */
+		public function get_products_query_type() {
+
+			$query_types = [
+				'all'               => __( 'All', 'jet-woo-builder' ),
+				'featured'          => __( 'Featured', 'jet-woo-builder' ),
+				'bestsellers'       => __( 'Bestsellers', 'jet-woo-builder' ),
+				'sale'              => __( 'Sale', 'jet-woo-builder' ),
+				'tag'               => __( 'Tag', 'jet-woo-builder' ),
+				'category'          => __( 'Category', 'jet-woo-builder' ),
+				'ids'               => __( 'Specific IDs', 'jet-woo-builder' ),
+				'viewed'            => __( 'Recently Viewed', 'jet-woo-builder' ),
+				'custom_tax'        => __( 'Custom Taxonomy', 'jet-woo-builder' ),
+				'stock_status'      => __( 'Stock Status', 'jet-woo-builder' ),
+				'product_variation' => __( 'Product Variation', 'jet-woo-builder' ),
+			];
+
+			$single_query_types = [
+				'related'     => __( 'Related', 'jet-woo-builder' ),
+				'up-sells'    => __( 'Up Sells', 'jet-woo-builder' ),
+				'cross-sells' => __( 'Cross Sells', 'jet-woo-builder' ),
+			];
+
+			$template_type = jet_woo_builder()->documents->get_current_type();
+
+			if ( ! $template_type ) {
+				$document = \Elementor\Plugin::$instance->documents->get_current();
+
+				if ( $document ) {
+					$template_type = $document->get_template_type();
+				}
+			}
+
+			if ( 'jet-woo-builder' === $template_type || is_product() ) {
+				$query_types = wp_parse_args( $single_query_types, $query_types );
+			}
+
+			$cart_query_types = [
+				'cross-sells' => __( 'Cross Sells', 'jet-woo-builder' ),
+			];
+
+			if ( 'jet-woo-builder-cart' === $template_type || is_cart() ) {
+				$query_types = wp_parse_args( $cart_query_types, $query_types );
+			}
+
+			return apply_filters( 'jet-woo-builder/shortcodes/query-types', $query_types );
+
+		}
+
+		/**
+		 * Get WC catalog ordering args.
+		 *
+		 * Add WooCommerce catalog ordering args to current query.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 *
+		 * @param array $query_args Query arguments list.
+		 *
+		 * @return array
+		 */
+		public function get_wc_catalog_ordering_args( $query_args ) {
+
+			if ( ! isset( $query_args['orderby'] ) ) {
+				$query_args['orderby'] = 'date';
+			}
+
+			$orderby = $query_args['orderby'] ?? 'title';
+			$order   = $query_args['order'] ?? 'DESC';
+
+			$ordering_args = WC()->query->get_catalog_ordering_args( $orderby, $order );
+
+			$query_args['orderby'] = $ordering_args['orderby'];
+			$query_args['order']   = $ordering_args['order'];
+
+			if ( $ordering_args['meta_key'] ) {
+				$query_args['meta_key'] = $ordering_args['meta_key'];
+			}
+
+			return $query_args;
+
+		}
+
+		/**
+		 * Get products not found message.
+		 *
+		 * @since  2.1.0
+		 * @access public
+		 *
+		 * @param string $tag       Shortcode tag name.
+		 * @param string $message   Not found message.
+		 * @param object $shortcode Shortcode instance.
+		 *
+		 * @return string
+		 */
+		public function get_products_not_found_message( $tag, $message, $shortcode ) {
+			return sprintf(
+				'<div class="jet-woo-products__not-found">%s</div>',
+				apply_filters( 'jet-woo-builder/shortcodes/' . $tag . '/not-found-message', $message, $shortcode )
+			);
 		}
 
 		/**

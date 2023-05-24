@@ -11,6 +11,7 @@ $filter_type         = ! empty( $args['behavior'] ) ? $args['behavior'] : 'check
 $query_var           = $args['query_var'];
 $scroll_height_style = $args['scroll_height'] ? 'style="max-height:' . $args['scroll_height'] . 'px"' : false;
 $extra_classes       = '';
+$accessibility_label = $args['accessibility_label'];
 
 if ( ! $options ) {
 	return;
@@ -24,14 +25,12 @@ $current = $this->get_current_filter_value( $args );
 
 	if ( $scroll_height_style ) {echo '<div class="jet-filter-items-scroll" ' . $scroll_height_style . '><div class="jet-filter-items-scroll-container">'; }
 
-	echo '<div class="jet-color-image-list-wrapper">';
-
+	echo '<fieldset class="jet-color-image-list-wrapper">';
+	echo '<legend style="display:none;">' . $accessibility_label . '</legend>';
 	foreach ( $options as $value => $option ) {
-
 		$checked = '';
 
 		if ( $current ) {
-
 			if ( is_array( $current ) && in_array( $value, $current ) ) {
 				$checked = 'checked';
 			}
@@ -39,16 +38,13 @@ $current = $this->get_current_filter_value( $args );
 			if ( ! is_array( $current ) && $value == $current ) {
 				$checked = 'checked';
 			}
-
 		}
 
 		if( '' !== $value ){
 			include jet_smart_filters()->get_template( 'filters/color-image-item.php' );
 		}
-
 	}
-
-	echo '</div>';
+	echo '</fieldset>';
 
 	if ( $scroll_height_style ) { echo '</div></div>'; }
 

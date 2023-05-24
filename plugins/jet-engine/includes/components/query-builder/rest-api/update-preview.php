@@ -57,6 +57,7 @@ class Update_Preview extends \Jet_Engine_Base_API_Endpoint {
 			) );
 		}
 
+		$count = $query->get_items_total_count();
 		$items = $query->get_items();
 		$more  = '';
 		$count = $query->get_items_total_count();
@@ -68,8 +69,8 @@ class Update_Preview extends \Jet_Engine_Base_API_Endpoint {
 
 		return rest_ensure_response( array(
 			'success' => true,
-			'count'   => $query->get_items_total_count(),
-			'data'    => $this->stringify_data( $items, $more ),
+			'count'   => $count,
+			'data'    => $this->stringify_data( $query, $items, $more ),
 		) );
 
 	}
@@ -106,8 +107,9 @@ class Update_Preview extends \Jet_Engine_Base_API_Endpoint {
 
 	}
 
-	public function stringify_data( $items = array(), $more = '' ) {
+	public function stringify_data( $query = null, $items = array(), $more = '' ) {
 		ob_start();
+		$query->before_preview_body();
 		print_r( $items );
 		return ob_get_clean() . $more;
 	}

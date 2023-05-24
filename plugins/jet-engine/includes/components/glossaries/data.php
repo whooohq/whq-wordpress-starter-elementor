@@ -38,6 +38,13 @@ class Data extends \Jet_Engine_Base_Data {
 	public $table_format = array( '%s', '%s', '%s', '%s', '%s' );
 
 	/**
+	 * Found items
+	 *
+	 * @var array
+	 */
+	public $found_items = array();
+
+	/**
 	 * Returns blacklisted post types slugs
 	 *
 	 * @return array
@@ -189,91 +196,7 @@ class Data extends \Jet_Engine_Base_Data {
 		$item = parent::get_item_for_edit( $id );
 
 		if ( ! empty( $item['source'] ) && 'file' === $item['source'] ) {
-
-			$file    = ! empty( $item['source_file'] ) ? $item['source_file'] : array();
-			$file_id = ! empty( $file['id'] ) ? absint( $file['id'] ) : false;
-			$fields  = array();
-
-			if ( $file_id ) {
-
-				$file_path = get_attached_file( $file_id );
-				$mime      = get_post_mime_type( $file_id );
-				$label_col = ! empty( $item['label_col'] ) ? $item['label_col'] : false;
-				$value_col = ! empty( $item['value_col'] ) ? $item['value_col'] : false;
-
-				switch ( $mime ) {
-					case 'text/csv':
-
-						$handle      = fopen( $file_path, "r" );
-						$label_index = false;
-						$value_index = false;
-						$index       = 0;
-
-						while ( false !== ( $row = fgetcsv( $handle, 0 ) ) ) {
-
-							if ( ! $index ) {
-
-								$index++;
-
-								if ( $label_col ) {
-									$label_index = array_search( $label_col, $row );
-								}
-								if ( $value_col ) {
-									$value_index = array_search( $value_col, $row );
-								}
-
-								if ( false !== $label_index || false !== $value_index ) {
-									continue;
-								}
-
-							}
-
-							$default_val   = $row[0];
-							$default_label = isset( $row[1] ) ? $row[1] : $row[0];
-
-							$value    = ( false !== $value_index ) ? $row[ $value_index ] : $default_val;
-							$label    = ( false !== $label_index ) ? $row[ $label_index ] : $default_label;
-							$fields[] = array(
-								'value' => $value,
-								'label' => $label,
-							);
-						}
-
-						break;
-
-					case 'application/json':
-
-						ob_start();
-						include $file_path;
-						$content = ob_get_clean();
-						$data = json_decode( $content, true );
-
-						if ( ! empty( $data ) ) {
-							$data = array_values( $data );
-							foreach ( $data as $row ) {
-								$row_values = array_values( $row );
-
-								$value = ( false !== $value_col && isset( $row[ $value_col ] ) ) ? $row[ $value_col ] : $row_values[0];
-								$label = ( false !== $label_col && isset( $row[ $label_col ] ) ) ? $row[ $label_col ] : $row_values[1];
-
-								if ( is_array( $value ) || is_array( $label ) ) {
-									continue;
-								}
-
-								$fields[] = array(
-									'value' => $value,
-									'label' => $label,
-								);
-							}
-						}
-
-						break;
-				}
-
-				$item['fields'] = $fields;
-
-			}
-
+			$item['fields'] = $this->get_fields_from_file( $item );
 		}
 
 		if ( empty( $item ) || empty( $item['fields'] ) ) {
@@ -302,6 +225,91 @@ class Data extends \Jet_Engine_Base_Data {
 		$this->found_items[ $id ] = $item;
 
 		return $item;
+	}
+
+	public function get_fields_from_file( $item ) {
+		$file    = ! empty( $item['source_file'] ) ? $item['source_file'] : array();
+		$file_id = ! empty( $file['id'] ) ? absint( $file['id'] ) : false;
+		$fields  = array();
+
+		if ( $file_id ) {
+
+			$file_path = get_attached_file( $file_id );
+			$mime      = get_post_mime_type( $file_id );
+			$label_col = ! empty( $item['label_col'] ) ? $item['label_col'] : false;
+			$value_col = ! empty( $item['value_col'] ) ? $item['value_col'] : false;
+
+			switch ( $mime ) {
+				case 'text/csv':
+
+					$handle      = fopen( $file_path, "r" );
+					$label_index = false;
+					$value_index = false;
+					$index       = 0;
+
+					while ( false !== ( $row = fgetcsv( $handle, 0 ) ) ) {
+
+						if ( ! $index ) {
+
+							$index++;
+
+							if ( $label_col ) {
+								$label_index = array_search( $label_col, $row );
+							}
+							if ( $value_col ) {
+								$value_index = array_search( $value_col, $row );
+							}
+
+							if ( false !== $label_index || false !== $value_index ) {
+								continue;
+							}
+
+						}
+
+						$default_val   = $row[0];
+						$default_label = isset( $row[1] ) ? $row[1] : $row[0];
+
+						$value    = ( false !== $value_index ) ? $row[ $value_index ] : $default_val;
+						$label    = ( false !== $label_index ) ? $row[ $label_index ] : $default_label;
+						$fields[] = array(
+							'value' => $value,
+							'label' => $label,
+						);
+					}
+
+					break;
+
+				case 'application/json':
+
+					ob_start();
+					include $file_path;
+					$content = ob_get_clean();
+					$data = json_decode( $content, true );
+
+					if ( ! empty( $data ) ) {
+						$data = array_values( $data );
+						foreach ( $data as $row ) {
+							$row_values = array_values( $row );
+
+							$value = ( false !== $value_col && isset( $row[ $value_col ] ) ) ? $row[ $value_col ] : $row_values[0];
+							$label = ( false !== $label_col && isset( $row[ $label_col ] ) ) ? $row[ $label_col ] : $row_values[1];
+
+							if ( is_array( $value ) || is_array( $label ) ) {
+								continue;
+							}
+
+							$fields[] = array(
+								'value' => $value,
+								'label' => $label,
+							);
+						}
+					}
+
+					break;
+			}
+		}
+
+		return $fields;
 	}
 
 }

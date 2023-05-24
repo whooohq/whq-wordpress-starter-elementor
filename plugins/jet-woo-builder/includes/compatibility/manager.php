@@ -31,27 +31,31 @@ if ( ! class_exists( 'Jet_Woo_Builder_Compatibility' ) ) {
 		public function load_plugin_compatibility_packages() {
 
 			$packages = [
-				'jet-popup.php'  => [
+				'jet-popup.php'         => [
 					'cb'   => 'class_exists',
 					'args' => 'Jet_Popup',
 				],
-				'jet-cw.php'     => [
+				'jet-cw.php'            => [
 					'cb'   => 'class_exists',
 					'args' => 'Jet_CW',
 				],
-				'jet-engine.php' => [
+				'jet-engine.php'        => [
 					'cb'   => 'class_exists',
 					'args' => 'Jet_Engine',
+				],
+				'jet-gallery.php'       => [
+					'cb'   => 'class_exists',
+					'args' => 'Jet_Woo_Product_Gallery',
 				],
 				'jet-smart-filters.php' => [
 					'cb'   => 'class_exists',
 					'args' => 'Jet_Smart_Filters',
 				],
-				'polylang.php'   => [
+				'polylang.php'          => [
 					'cb'   => 'class_exists',
 					'args' => 'Polylang',
 				],
-				'wpml.php'       => [
+				'wpml.php'              => [
 					'cb'   => 'defined',
 					'args' => 'WPML_ST_VERSION',
 				],

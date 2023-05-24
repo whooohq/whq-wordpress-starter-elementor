@@ -169,6 +169,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Color_Image_Filter' ) ) {
 				'scroll_height'        => $scroll_height,
 				'dropdown_enabled'     => $dropdown_enabled,
 				'dropdown_placeholder' => $dropdown_placeholder,
+				'accessibility_label'  => $this->get_accessibility_label( $filter_id )
 			);
 		}
 	}

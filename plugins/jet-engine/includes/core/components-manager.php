@@ -26,7 +26,7 @@ if ( ! class_exists( 'Jet_Engine_Components' ) ) {
 		}
 
 		/**
-		 * Register components before run init to allow unregister befor init
+		 * Register components before run init to allow unregister before init
 		 *
 		 * @return void
 		 */
@@ -95,6 +95,10 @@ if ( ! class_exists( 'Jet_Engine_Components' ) ) {
 				'blocks_views' => array(
 					'filepath'   => jet_engine()->plugin_path( 'includes/components/blocks-views/manager.php' ),
 					'class_name' => 'Jet_Engine_Blocks_Views',
+				),
+				'bricks_views' => array(
+					'filepath'   => jet_engine()->plugin_path( 'includes/components/bricks-views/manager.php' ),
+					'class_name' => '\Jet_Engine\Bricks_Views\Manager',
 				),
 			);
 

@@ -25,7 +25,18 @@ class Photon extends Base {
 	}
 
 	/**
-	 * Find coordinates in the reponse data and return it
+	 * Build Autocomplete API URL for given place predictions
+	 * @return mixed
+	 */
+	public function build_autocomplete_api_url( $query = '' ) {
+		return add_query_arg(
+			array( 'limit' => 5 ),
+			$this->build_api_url( $query )
+		);
+	}
+
+	/**
+	 * Find coordinates in the response data and return it
 	 *
 	 * @param  array  $data [description]
 	 * @return [type]       [description]
@@ -55,7 +66,7 @@ class Photon extends Base {
 	}
 
 	/**
-	 * Find location name in the reverse geocoding reponse data and return it
+	 * Find location name in the reverse geocoding response data and return it
 	 *
 	 * @param  array  $data [description]
 	 * @return [type]       [description]
@@ -76,6 +87,49 @@ class Photon extends Base {
 			$this->get_prop( $properties, 'country' ),
 		) ) );
 
+	}
+
+	/**
+	 * Find place predictions in the response data and return it
+	 *
+	 * @param  array $data
+	 * @return array|false
+	 */
+	public function extract_autocomplete_data_from_response_data( $data = array() ) {
+
+		$features = isset( $data['features'] ) ? $data['features'] : false;
+
+		if ( ! $features ) {
+			return false;
+		}
+
+		$result = array();
+
+		foreach ( $features as $feature ) {
+
+			$properties = isset( $feature['properties'] ) ? $feature['properties'] : false;
+
+			if ( ! $properties ) {
+				continue;
+			}
+
+			$address = implode( ', ', array_filter( array(
+				$this->get_prop( $properties, 'name' ),
+				$this->get_prop( $properties, 'street' ),
+				$this->get_prop( $properties, 'district' ),
+				$this->get_prop( $properties, 'city' ),
+				$this->get_prop( $properties, 'state' ),
+				$this->get_prop( $properties, 'country' ),
+			) ) );
+
+			$result[] = array(
+				'address' => $address,
+				'lat'     => $feature['geometry']['coordinates'][1],
+				'lng'     => $feature['geometry']['coordinates'][0],
+			);
+		}
+
+		return $result;
 	}
 
 	/**

@@ -175,39 +175,6 @@ class Jet_Woo_Builder_Cart_Cross_Sells extends Jet_Woo_Builder_Base {
 			]
 		);
 
-		$this->add_group_control(
-			Group_Control_Border::get_type(),
-			[
-				'name'     => 'cross_sells_card_border',
-				'label'    => __( 'Border', 'jet-woo-builder' ),
-				'selector' => '{{WRAPPER}} ' . $css_scheme['item'],
-			]
-		);
-
-		$this->add_responsive_control(
-			'cross_sells_card_border_radius',
-			[
-				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
-				'selectors'  => [
-					'{{WRAPPER}} ' . $css_scheme['item'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
-		);
-
-		$this->add_responsive_control(
-			'cross_sells_card_padding',
-			[
-				'label'      => __( 'Padding', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%', 'em' ],
-				'selectors'  => [
-					'{{WRAPPER}} ' . $css_scheme['item'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
-		);
-
 		$this->start_controls_tabs( 'cross_sells_card_style_tabs' );
 
 		$this->start_controls_tab(
@@ -217,22 +184,22 @@ class Jet_Woo_Builder_Cart_Cross_Sells extends Jet_Woo_Builder_Base {
 			]
 		);
 
+		$this->add_control(
+			'cross_sells_card_bg_color',
+			[
+				'type'      => Controls_Manager::COLOR,
+				'label'     => __( 'Background Color', 'jet-woo-builder' ),
+				'selectors' => [
+					'{{WRAPPER}} ' . $css_scheme['item'] => 'background-color: {{VALUE}}',
+				],
+			]
+		);
+
 		$this->add_group_control(
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name'     => 'cross_sells_card_box_shadow',
 				'selector' => '{{WRAPPER}} ' . $css_scheme['item'],
-			]
-		);
-
-		$this->add_control(
-			'cross_sells_card_bg_color',
-			[
-				'label'     => __( 'Background Color', 'jet-woo-builder' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => [
-					'{{WRAPPER}} ' . $css_scheme['item'] => 'background-color: {{VALUE}}',
-				],
 			]
 		);
 
@@ -245,19 +212,11 @@ class Jet_Woo_Builder_Cart_Cross_Sells extends Jet_Woo_Builder_Base {
 			]
 		);
 
-		$this->add_group_control(
-			Group_Control_Box_Shadow::get_type(),
-			[
-				'name'     => 'cross_sells_card_box_shadow_hover',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['item'] . ':hover',
-			]
-		);
-
 		$this->add_control(
 			'cross_sells_card_bg_color_hover',
 			[
-				'label'     => __( 'Background Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
+				'label'     => __( 'Background Color', 'jet-woo-builder' ),
 				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['item'] . ':hover' => 'background-color: {{VALUE}}',
 				],
@@ -267,8 +226,8 @@ class Jet_Woo_Builder_Cart_Cross_Sells extends Jet_Woo_Builder_Base {
 		$this->add_control(
 			'cross_sells_card_border_color_hover',
 			[
-				'label'     => __( 'Border Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
+				'label'     => __( 'Border Color', 'jet-woo-builder' ),
 				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['item'] . ':hover' => 'border-color: {{VALUE}}',
 				],
@@ -278,9 +237,50 @@ class Jet_Woo_Builder_Cart_Cross_Sells extends Jet_Woo_Builder_Base {
 			]
 		);
 
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name'     => 'cross_sells_card_box_shadow_hover',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['item'] . ':hover',
+			]
+		);
+
 		$this->end_controls_tab();
 
 		$this->end_controls_tabs();
+
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			[
+				'name'      => 'cross_sells_card_border',
+				'separator' => 'before',
+				'selector'  => '{{WRAPPER}} ' . $css_scheme['item'],
+			]
+		);
+
+		$this->add_responsive_control(
+			'cross_sells_card_border_radius',
+			[
+				'type'       => Controls_Manager::DIMENSIONS,
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
+					'{{WRAPPER}} ' . $css_scheme['item'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'cross_sells_card_padding',
+			[
+				'type'       => Controls_Manager::DIMENSIONS,
+				'label'      => __( 'Padding', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
+					'{{WRAPPER}} ' . $css_scheme['item'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
 
 		$this->add_responsive_control(
 			'cross_sells_card_align',
@@ -288,7 +288,6 @@ class Jet_Woo_Builder_Cart_Cross_Sells extends Jet_Woo_Builder_Base {
 				'label'     => __( 'Alignment', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::CHOOSE,
 				'options'   => jet_woo_builder_tools()->get_available_h_align_types(),
-				'separator' => 'before',
 				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['item'] => 'text-align: {{VALUE}}',
 				],
@@ -317,26 +316,26 @@ class Jet_Woo_Builder_Cart_Cross_Sells extends Jet_Woo_Builder_Base {
 
 		$this->add_responsive_control(
 			'cross_sells_thumb_border_radius',
-			array(
-				'label'      => esc_html__( 'Border Radius', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['thumb'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->add_responsive_control(
 			'cross_sells_thumb_margin',
-			array(
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
-				'selectors'  => array(
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['thumb'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->end_controls_section();
@@ -405,9 +404,9 @@ class Jet_Woo_Builder_Cart_Cross_Sells extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'cross_sells_title_margin',
 			[
-				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%', 'em' ],
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['title'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -450,9 +449,9 @@ class Jet_Woo_Builder_Cart_Cross_Sells extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'cross_sells_rating_font_size',
 			[
-				'label'      => __( 'Star Size', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em' ],
+				'label'      => __( 'Star Size', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em' ] ),
 				'range'      => [
 					'px' => [
 						'min' => 0,
@@ -477,9 +476,9 @@ class Jet_Woo_Builder_Cart_Cross_Sells extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'cross_sells_rating_margin',
 			[
-				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%', 'em' ],
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['rating'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -520,9 +519,9 @@ class Jet_Woo_Builder_Cart_Cross_Sells extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'cross_sells_price_margin',
 			[
-				'label'      => __( 'Margin', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['price'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -538,6 +537,14 @@ class Jet_Woo_Builder_Cart_Cross_Sells extends Jet_Woo_Builder_Base {
 			)
 		);
 
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'cross_sells_price_regular_typography',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['price'] . ' del, {{WRAPPER}} ' . $css_scheme['price'] . ' del .amount',
+			]
+		);
+
 		$this->add_control(
 			'cross_sells_price_regular_color',
 			array(
@@ -550,15 +557,6 @@ class Jet_Woo_Builder_Cart_Cross_Sells extends Jet_Woo_Builder_Base {
 			)
 		);
 
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			[
-				'name'     => 'cross_sells_price_regular_typography',
-				'label'    => __( 'Typography', 'jet-woo-builder' ),
-				'selector' => '{{WRAPPER}} ' . $css_scheme['price'] . ' del, {{WRAPPER}} ' . $css_scheme['price'] . ' del .amount',
-			]
-		);
-
 		$this->end_controls_tab();
 
 		$this->start_controls_tab(
@@ -566,6 +564,14 @@ class Jet_Woo_Builder_Cart_Cross_Sells extends Jet_Woo_Builder_Base {
 			array(
 				'label' => esc_html__( 'Sale', 'jet-woo-builder' ),
 			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'cross_sells_price_sale_typography',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['price'] . ' ins, {{WRAPPER}} ' . $css_scheme['price'] . ' ins .amount',
+			]
 		);
 
 		$this->add_control(
@@ -578,15 +584,6 @@ class Jet_Woo_Builder_Cart_Cross_Sells extends Jet_Woo_Builder_Base {
 					'{{WRAPPER}} ' . $css_scheme['price'] . ' ins .amount' => 'color: {{VALUE}}',
 				),
 			)
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			[
-				'name'     => 'cross_sells_price_sale_typography',
-				'label'    => __( 'Typography', 'jet-woo-builder' ),
-				'selector' => '{{WRAPPER}} ' . $css_scheme['price'] . ' ins, {{WRAPPER}} ' . $css_scheme['price'] . ' ins .amount',
-			]
 		);
 
 		$this->end_controls_tab();
@@ -615,13 +612,36 @@ class Jet_Woo_Builder_Cart_Cross_Sells extends Jet_Woo_Builder_Base {
 			]
 		);
 
+		$this->add_responsive_control(
+			'cross_sells_badges_min_width',
+			[
+				'type'       => Controls_Manager::SLIDER,
+				'label'      => __( 'Min Width', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
+					'{{WRAPPER}} ' . $css_scheme['badge'] => 'min-width: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'cross_sells_badges_min_height',
+			[
+				'type'       => Controls_Manager::SLIDER,
+				'label'      => __( 'Min Height', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
+					'{{WRAPPER}} ' . $css_scheme['badge'] => 'min-height: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
-			array(
+			[
 				'name'     => 'cross_sells_badges_typography',
-				'label'    => esc_html__( 'Typography', 'jet-woo-builder' ),
 				'selector' => '{{WRAPPER}} ' . $css_scheme['badge'],
-			)
+			]
 		);
 
 		$this->add_control(
@@ -658,9 +678,9 @@ class Jet_Woo_Builder_Cart_Cross_Sells extends Jet_Woo_Builder_Base {
 		$this->add_responsive_control(
 			'cross_sells_badges_border_radius',
 			[
-				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'label'      => __( 'Border Radius', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
 				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['badge'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -668,39 +688,15 @@ class Jet_Woo_Builder_Cart_Cross_Sells extends Jet_Woo_Builder_Base {
 		);
 
 		$this->add_responsive_control(
-			'cross_sells_badges_min_width',
-			[
-				'label'      => __( 'Min Width', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em' ],
-				'selectors'  => [
-					'{{WRAPPER}} ' . $css_scheme['badge'] => 'min-width: {{SIZE}}{{UNIT}};',
-				],
-			]
-		);
-
-		$this->add_responsive_control(
-			'cross_sells_badges_min_height',
-			[
-				'label'      => __( 'Min Height', 'jet-woo-builder' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em' ],
-				'selectors'  => [
-					'{{WRAPPER}} ' . $css_scheme['badge'] => 'min-height: {{SIZE}}{{UNIT}};',
-				],
-			]
-		);
-
-		$this->add_responsive_control(
 			'cross_sells_badges_margin',
-			array(
-				'label'      => esc_html__( 'Margin', 'jet-woo-builder' ),
+			[
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
-				'selectors'  => array(
+				'label'      => __( 'Margin', 'jet-woo-builder' ),
+				'size_units' => $this->set_custom_size_unit( [ 'px', 'em', '%' ] ),
+				'selectors'  => [
 					'{{WRAPPER}} ' . $css_scheme['badge'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				),
-			)
+				],
+			]
 		);
 
 		$this->end_controls_section();

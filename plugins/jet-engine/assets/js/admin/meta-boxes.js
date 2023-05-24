@@ -80,6 +80,14 @@
 					}
 				} );
 
+				$datepicker.on( 'change', function() {
+					$( window ).trigger( {
+						type:          'cx-control-change',
+						controlName:   $this.attr( 'name' ),
+						controlStatus: $this.val(),
+					} );
+				} );
+
 			} );
 
 			$( 'input[type="time"]:not(.hasDatepicker)', $scope ).each( function() {
@@ -124,6 +132,14 @@
 					if ( ! $timepicker.val() ) {
 						$this.val( '' );
 					}
+				} );
+
+				$timepicker.on( 'change', function() {
+					$( window ).trigger( {
+						type:          'cx-control-change',
+						controlName:   $this.attr( 'name' ),
+						controlStatus: $this.val(),
+					} );
 				} );
 
 			} );
@@ -184,6 +200,14 @@
 					if ( ! $datetimepicker.val() ) {
 						$this.val( '' );
 					}
+				} );
+
+				$datetimepicker.on( 'change', function() {
+					$( window ).trigger( {
+						type:          'cx-control-change',
+						controlName:   $this.attr( 'name' ),
+						controlStatus: $this.val(),
+					} );
 				} );
 
 			} );

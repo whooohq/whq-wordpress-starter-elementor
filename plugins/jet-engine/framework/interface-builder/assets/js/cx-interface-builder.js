@@ -15,6 +15,9 @@
 			// Control Init
 			this.control.init();
 			$( document ).on( 'cxFramework:interfaceBuilder:control', this.control.init.bind( this.control ) );
+
+			// Control Validation
+			this.controlValidation.init();
 		},
 
 		component: {
@@ -765,6 +768,8 @@
 
 			// CX-Media
 			media: {
+				inputClass: 'input.cx-upload-input:not([name*="__i__"])',
+
 				init: function() {
 
 					$( this.mediaRender.bind( this ) );
@@ -772,6 +777,9 @@
 					$( document )
 						//.on( 'ready.cxMedia', this.mediaRender.bind( this ) )
 						.on( 'cx-control-init', this.mediaRender.bind( this ) );
+
+					$( 'body' )
+						.on( 'change.cxMedia', this.inputClass, cxInterfaceBuilder.control.text.changeHandler.bind( this ) );
 				},
 
 				mediaRender: function( event ) {
@@ -1304,6 +1312,18 @@
 								window.wp.oldEditor.initialize( id, self.getEditorSettings() );
 							}
 
+							var editor = window.tinymce.get( id );
+
+							if ( editor ) {
+								editor.on( 'change', function( event ) {
+									$( window ).trigger( {
+										type:          'cx-control-change',
+										controlName:   $this.attr( 'name' ),
+										controlStatus: editor.getContent()
+									} );
+								} );
+							}
+
 							self.addSaveTriggerOnEditTagsPage( id );
 
 							$this.data( 'init', true );
@@ -1792,10 +1812,330 @@
 
 				return ! isNaN( num ) ? !! num : !! String( value ).toLowerCase().replace( !!0, '' );
 			}
-		}
+		},
+
+		controlValidation: {
+
+			errorMessages: {
+				required: window.cxInterfaceBuilder.i18n.requiredError,
+				min:      window.cxInterfaceBuilder.i18n.minError,
+				max:      window.cxInterfaceBuilder.i18n.maxError,
+				step:     window.cxInterfaceBuilder.i18n.stepError,
+			},
+
+			init: function() {
+
+				if ( this.isBlockEditor() ) {
+					this.onBlockEditorSavePost();
+				} else {
+					$( '#post, #edittag, #your-profile, .cx-form' ).on( 'submit', this.onSubmitForm.bind( this ) );
+				}
+
+				cxInterfaceBuilder.filters.addFilter( 'cxInterfaceBuilder/form/validation', this.requiredValidation.bind( this ) );
+				cxInterfaceBuilder.filters.addFilter( 'cxInterfaceBuilder/form/validation', this.numberValidation.bind( this ) );
+
+				$( window ).on(
+					'cx-control-change cx-checkbox-change cx-radio-change cx-select-change cx-select2-change',
+					this.removeFieldErrorOnChange.bind( this )
+				);
+
+				$( '.cx-control-repeater' ).on( 'focusin', this.removeRepeaterErrorOnChange.bind( this ) );
+			},
+
+			isBlockEditor: function() {
+				return $( 'body' ).hasClass( 'block-editor-page' );
+			},
+
+			onBlockEditorSavePost: function() {
+				var self     = this,
+					editor   = wp.data.dispatch( 'core/editor' ),
+					savePost = editor.savePost;
+
+					editor.savePost = function( options ) {
+						options = options || {};
+
+						if ( options.isAutosave || options.isPreview ) {
+							savePost( options );
+							return;
+						}
+
+						self.beforeValidation();
+
+						var validation = cxInterfaceBuilder.filters.applyFilters( 'cxInterfaceBuilder/form/validation', true, $( '#editor' ) );
+
+						if ( validation ) {
+							savePost( options );
+						} else {
+							self.scrollToFirstErrorField();
+						}
+					};
+			},
+
+			onSubmitForm: function( event ) {
+
+				this.beforeValidation();
+
+				var validation = cxInterfaceBuilder.filters.applyFilters( 'cxInterfaceBuilder/form/validation', true, $( event.target ) );
+
+				if ( ! validation ) {
+					this.scrollToFirstErrorField();
+					event.preventDefault();
+				}
+			},
+
+			beforeValidation: function() {
+				this.removeAllFieldsErrors();
+
+				if ( 'undefined' !== typeof window.tinyMCE ) {
+					window.tinyMCE.triggerSave();
+				}
+			},
+
+			requiredValidation: function( validation, $form ) {
+
+				if ( ! validation ) {
+					return validation;
+				}
+
+				var self            = this,
+					$requiredFields = $form.find( '.cx-control-required:not(.cx-control-hidden)' ),
+					hasEmptyFields  = false;
+
+				if ( ! $requiredFields.length ) {
+					return validation;
+				}
+
+				$requiredFields.each( function() {
+					var $field      = $( this ),
+						controlName = $field.data( 'control-name' ),
+						controlVal  = false;
+
+					if ( $field.hasClass( 'cx-control-checkbox' ) || $field.hasClass( 'cx-control-radio' ) ) {
+						controlVal = !! $field.find( '[name^="' + controlName + '"]' ).filter( ':checked' ).length;
+					} else if ( $field.hasClass( 'cx-control-repeater' ) ) {
+						controlVal = !! $field.find( '.cx-ui-repeater-item' ).length;
+					} else {
+						controlVal = $field.find( '[name^="' + controlName +'"]' ).val();
+					}
+
+					if ( Array.isArray( controlVal ) ) {
+						controlVal = !! controlVal.length;
+					}
+
+					if ( ! controlVal ) {
+						self.addFieldError( $field, self.errorMessages.required );
+						hasEmptyFields = true;
+					}
+				} );
+
+				if ( hasEmptyFields ) {
+					return false;
+				}
+
+				return validation;
+			},
+
+			numberValidation: function( validation, $form ) {
+
+				if ( ! validation ) {
+					return validation;
+				}
+
+				if ( ! this.isBlockEditor() ) {
+					return validation;
+				}
+
+				var self             = this,
+					$numberFields    = $form.find( '.cx-control-stepper:not(.cx-control-hidden)' ),
+					hasInValidFields = false;
+
+				if ( ! $numberFields.length ) {
+					return validation;
+				}
+
+				$numberFields.each( function() {
+					var $field   = $( this ),
+						$input   = $field.find( 'input.cx-ui-stepper-input' ),
+						minAttr  = $input.attr( 'min' ),
+						maxAttr  = $input.attr( 'max' ),
+						stepAttr = $input.attr( 'step' ),
+						value    = $input.val();
+
+					if ( '' !== minAttr && value && Number( value ) < Number( minAttr ) ) {
+						self.addFieldError( $field, self.errorMessages.min.replace( '%s', minAttr ) );
+						hasInValidFields = true;
+					} else if ( '' !== maxAttr && value && Number( value ) > Number( maxAttr ) ) {
+						self.addFieldError( $field, self.errorMessages.max.replace( '%s', maxAttr ) );
+						hasInValidFields = true;
+					} else if ( '' !== stepAttr && value ) {
+						var decimalPlaces = function( num ) {
+								var match = ( "" + num ).match( /(?:\.(\d+))?$/ );
+
+								if ( !match ) {
+									return 0;
+								}
+
+								return match[ 1 ] ? match[ 1 ].length : 0;
+							},
+							valueDecimalCount = decimalPlaces( value ),
+							stepDecimalCount = decimalPlaces( stepAttr ),
+							decimalCount = valueDecimalCount > stepDecimalCount ? valueDecimalCount : stepDecimalCount,
+							remainder = Math.round( value * Math.pow( 10, decimalCount ) ) % Math.round( stepAttr * Math.pow( 10, decimalCount ) );
+
+						if ( 0 !== remainder ) {
+							self.addFieldError( $field, self.errorMessages.step.replace( '%s', stepAttr ) );
+							hasInValidFields = true;
+						}
+					}
+				} );
+
+				if ( hasInValidFields ) {
+					return false;
+				}
+
+				return validation;
+			},
+
+			addFieldError: function( $field, message ) {
+				var $error = $field.find( '.cx-control__error' );
+
+				if ( $error.length ) {
+					$error.html( message );
+				} else {
+					$field.find('.cx-control__content').append( '<div class="cx-control__error">' + message + '</div>' );
+				}
+
+				$field.addClass( 'cx-control--error' );
+			},
+
+			removeFieldError: function( $field ) {
+				$field.find( '.cx-control__error' ).remove();
+				$field.removeClass( 'cx-control--error' );
+			},
+
+			removeFieldErrorOnChange: function( event ) {
+				var $field = $( '.cx-control[data-control-name="' + event.controlName + '"]' );
+
+				if ( ! $field.hasClass( 'cx-control--error' ) ) {
+					return;
+				}
+
+				this.removeFieldError( $field );
+			},
+
+			removeRepeaterErrorOnChange: function( event ) {
+				var $field = $( event.currentTarget ).closest( '.cx-control' );
+
+				if ( ! $field.hasClass( 'cx-control--error' ) ) {
+					return;
+				}
+
+				this.removeFieldError( $field );
+			},
+
+			removeAllFieldsErrors: function() {
+				var self = this,
+					$errorFields = $( '.cx-control--error' );
+
+				if ( $errorFields.length ) {
+					$errorFields.each( function() {
+						self.removeFieldError( $( this ) );
+					} );
+				}
+			},
+
+			scrollToFirstErrorField: function() {
+				var $field = $( '.cx-control--error' ).first();
+
+				if ( ! $field.is( ':visible' ) ) {
+
+					// Field inside hidden component.
+					var $parentComponent = $field.closest( '.cx-component' );
+
+					if ( $parentComponent.length ) {
+						var componentID = $field.closest( '.cx-settings__content' ).attr( 'id' );
+						$parentComponent.find( '[data-content-id="#' + componentID + '"]' ).trigger( 'click' );
+					}
+
+					// Field inside hidden postbox.
+					var $postbox = $field.closest( '.postbox.closed' );
+
+					if ( $postbox.length ) {
+						$postbox.find( 'button.handlediv' ).trigger( 'click' );
+					}
+				}
+
+				var $scrollSelector = $( 'html, body' ),
+					scrollTop = $field.offset().top,
+					offset = 40;
+
+				if ( this.isBlockEditor() ) {
+
+					if ( $( 'body' ).hasClass( 'is-fullscreen-mode' ) ) {
+						offset += 20;
+					} else {
+						offset += 60;
+					}
+
+					if ( $field.closest( '.interface-interface-skeleton__sidebar' ).length ) {
+						$scrollSelector = $( '#editor .interface-interface-skeleton__sidebar' );
+						offset += 50;
+					} else {
+						$scrollSelector = $( '#editor .interface-interface-skeleton__content' );
+					}
+
+					scrollTop += $scrollSelector.scrollTop();
+				}
+
+				$scrollSelector.stop().animate( { scrollTop: scrollTop - offset }, 500 );
+			}
+		},
+
+		filters: ( function() {
+
+			var callbacks = {};
+
+			return {
+
+				addFilter: function( name, callback ) {
+
+					if ( ! callbacks.hasOwnProperty( name ) ) {
+						callbacks[name] = [];
+					}
+
+					callbacks[name].push(callback);
+
+				},
+
+				applyFilters: function( name, value, args ) {
+
+					if ( ! callbacks.hasOwnProperty( name ) ) {
+						return value;
+					}
+
+					if ( args === undefined ) {
+						args = [];
+					}
+
+					var container = callbacks[ name ];
+					var cbLen     = container.length;
+
+					for (var i = 0; i < cbLen; i++) {
+						if (typeof container[i] === 'function') {
+							value = container[i](value, args);
+						}
+					}
+
+					return value;
+				}
+			};
+
+		})()
 
 	};
 
 	cxInterfaceBuilder.init();
+
+	window.cxInterfaceBuilderAPI = cxInterfaceBuilder;
 
 }( jQuery, window._ ) );

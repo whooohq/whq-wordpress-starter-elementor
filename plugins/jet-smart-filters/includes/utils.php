@@ -14,6 +14,16 @@ if ( ! class_exists( 'Jet_Smart_Filters_Utils' ) ) {
 	 */
 	class Jet_Smart_Filters_Utils {
 		/**
+		 * Returns HTML as string from file
+		 */
+		public function get_file_html( $path ) {
+
+			ob_start();
+			include jet_smart_filters()->plugin_path( $path );
+			return ob_get_clean();
+		}
+
+		/**
 		 * Returns template content as string
 		 */
 		public function get_template_html( $template ) {
@@ -110,6 +120,14 @@ if ( ! class_exists( 'Jet_Smart_Filters_Utils' ) ) {
 			foreach ( $new_query_args as $key => $value ) {
 				if ( in_array( $key, array( 'tax_query', 'meta_query' ) ) && ! empty( $current_query_args[$key] ) ) {
 					$value = array_merge( $current_query_args[$key], $value );
+				}
+
+				if ( in_array( $key, array( 'post__in', 'post__not_in' ) ) && ! empty( $current_query_args[ $key ] ) ) {
+					$value = array_intersect( $current_query_args[ $key ], $value );
+
+					if ( empty( $value ) ) {
+						$value = array( PHP_INT_MAX );
+					}
 				}
 
 				$current_query_args[$key] = $value;
@@ -360,6 +378,17 @@ if ( ! class_exists( 'Jet_Smart_Filters_Utils' ) ) {
 		
 			//Return rgb(a) color string
 			return $output;
+		}
+
+		/**
+		 * Checks if the current request is a WP REST API request
+		 */
+		public function is_rest_request() {
+
+			$rest_url    = wp_parse_url( trailingslashit( rest_url() ) );
+			$current_url = wp_parse_url( add_query_arg( array() ) );
+			
+			return strpos( $current_url['path'] ?? '/', $rest_url['path'], 0 ) === 0;
 		}
 	}
 }

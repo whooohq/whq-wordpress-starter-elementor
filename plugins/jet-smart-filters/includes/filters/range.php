@@ -128,6 +128,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Range_Filter' ) ) {
 				'prefix'               => jet_smart_filters_macros( $prefix ),
 				'suffix'               => jet_smart_filters_macros( $suffix ),
 				'filter_id'            => $filter_id,
+				'accessibility_label'  => $this->get_accessibility_label( $filter_id )
 			);
 		}
 

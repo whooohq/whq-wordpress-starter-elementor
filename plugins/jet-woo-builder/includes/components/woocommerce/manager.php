@@ -1271,6 +1271,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Woocommerce' ) ) {
 		 * Add custom columns for product archive item template
 		 *
 		 * @since  1.13.0
+		 * @since  2.1.3 Added Additional option check.
 		 * @access public
 		 *
 		 * @param string $content Products loop content.
@@ -1285,24 +1286,29 @@ if ( ! class_exists( 'Jet_Woo_Builder_Woocommerce' ) ) {
 
 			$template_id        = apply_filters( 'jet-woo-builder/woocommerce/products-loop/custom-archive-template', $this->get_custom_archive_template() );
 			$settings           = get_post_meta( $template_id, '_elementor_page_settings', true );
-			$use_custom_columns = isset( $settings['use_custom_template_columns'] ) ? $settings['use_custom_template_columns'] : '';
+			$use_custom_columns = isset( $settings['use_custom_template_columns'] ) ? filter_var( $settings['use_custom_template_columns'], FILTER_VALIDATE_BOOLEAN ) : false;
 			$classes            = [ 'products', 'jet-woo-builder-layout-' . $template_id ];
 
 			$settings_cat           = get_post_meta( $this->get_custom_archive_category_template(), '_elementor_page_settings', true );
-			$use_custom_cat_columns = isset( $settings_cat['use_custom_template_category_columns'] ) ? $settings_cat['use_custom_template_category_columns'] : '';
+			$use_custom_cat_columns = isset( $settings_cat['use_custom_template_category_columns'] ) ? filter_var( $settings_cat['use_custom_template_category_columns'], FILTER_VALIDATE_BOOLEAN ) : false;
 			$classes_cat            = [ 'products' ];
-			$content_cat            = '';
 
 			if ( ! $settings && ! $settings_cat ) {
 				return $content;
 			}
 
+			if ( ! $use_custom_cat_columns && ! $use_custom_columns ) {
+				return $content;
+			}
+
 			remove_filter( 'woocommerce_product_loop_start', 'woocommerce_maybe_show_product_subcategories' );
+
+			$content_cat = '';
 
 			if ( ! empty( woocommerce_maybe_show_product_subcategories() ) ) {
 				$classes_cat = implode( ' ', $classes_cat );
 
-				if ( 'yes' === $use_custom_cat_columns ) {
+				if ( $use_custom_cat_columns ) {
 					$before = sprintf( '<ul class="jet-woo-builder-categories--columns %s">', $classes_cat );
 					$after  = '</ul>';
 				} else {
@@ -1313,7 +1319,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Woocommerce' ) ) {
 				$content_cat = $before . woocommerce_maybe_show_product_subcategories() . $after;
 			}
 
-			if ( 'yes' === $use_custom_columns ) {
+			if ( $use_custom_columns ) {
 				$content = sprintf( '<ul class="jet-woo-builder-products--columns %s">', implode( ' ', $classes ) );
 			} else {
 				$classes      = 'products columns-' . esc_attr( wc_get_loop_prop( 'columns' ) );

@@ -15,6 +15,9 @@
 			// Control Init
 			this.control.init();
 			$( document ).on( 'cxFramework:interfaceBuilder:control', this.control.init.bind( this.control ) );
+
+			// Control Validation
+			this.controlValidation.init();
 		},
 
 		component: {
@@ -107,9 +110,21 @@
 					self.renderConditionRules();
 				});
 
+				$( window ).on( 'cx-control-change', function( event ) {
+					var controlName   = event.controlName,
+						controlStatus = event.controlStatus;
+
+					self.updateConditionRules( controlName, controlStatus );
+					self.renderConditionRules();
+				});
+
 				this.generateConditionRules();
 				self.renderConditionRules();
 
+			},
+
+			getControlNameParts: function( controlName ) {
+				return controlName.match(/([a-zA-Z0-9_-]+)?(!?)$/i);
 			},
 
 			generateConditionRules: function() {
@@ -117,6 +132,11 @@
 
 				$.each( this.controlConditions, function( control, conditions ) {
 					$.each( conditions, function( control, value ) {
+
+						var controlNameParts = self.getControlNameParts( control );
+
+						control = controlNameParts[1];
+
 						if ( self.controlValues.hasOwnProperty( control ) ) {
 							self.conditionState[ control ] = self.controlValues[ control ];
 						}
@@ -140,12 +160,18 @@
 					$.each( conditions, function( control, value ) {
 						hidden = true;
 
+						var controlNameParts = self.getControlNameParts( control ),
+							isNegativeCondition;
+
+						control = controlNameParts[1];
+						isNegativeCondition = !!controlNameParts[2];
+
 						if ( self.conditionState.hasOwnProperty( control ) ) {
 							var type = typeof value;
 
 							switch ( type ) {
 								case 'string':
-									if ( self.conditionState[control] === value ) {
+									if ( self.conditionState[control].toString() === value ) {
 										hidden = false;
 									}
 									break;
@@ -169,19 +195,34 @@
 									break;
 							}
 
-							if ( 'object' === typeof self.conditionState[ control ] ) {
-								hidden = false;
+							if ( $.isArray( self.conditionState[ control ] ) ) { // for Select-2 control
+
+								$.each( self.conditionState[ control ], function( index, val ) {
+
+									if ( val && -1 !== value.indexOf( val ) ) {
+
+										hidden = false;
+
+										return false;
+									}
+								} );
+
+							} else if ( 'object' === typeof self.conditionState[ control ] ) { // for Checkboxes control
 
 								$.each( self.conditionState[ control ], function( prop, val ) {
 
-									if ( ! val && -1 !== value.indexOf( prop ) ) {
-										hidden = true;
+									if ( cxInterfaceBuilder.utils.filterBoolValue( val ) && -1 !== value.indexOf( prop ) ) {
+
+										hidden = false;
 
 										return false;
 									}
 								} );
 							}
+						}
 
+						if ( isNegativeCondition ) {
+							hidden = ! hidden;
 						}
 
 						if ( hidden ) {
@@ -192,8 +233,14 @@
 
 					if ( hidden ) {
 						$selector.addClass( 'cx-control-hidden' );
+						$selector.find( '[required]' )
+								.removeAttr( 'required' )
+								.attr( 'data-required', 1 );
 					} else {
 						$selector.removeClass( 'cx-control-hidden' );
+						$selector.find( '[data-required="1"]' )
+								.removeAttr( 'data-required' )
+								.attr( 'required', true );
 					}
 				} );
 			},
@@ -351,6 +398,7 @@
 				this.dimensions.init();
 				this.wysiwyg.init();
 				this.repeater.init();
+				this.text.init();
 			},
 
 			// CX-Switcher
@@ -389,19 +437,37 @@
 			checkbox: {
 				inputClass: '.cx-checkbox-input[type="hidden"]:not([name*="__i__"])',
 				itemClass: '.cx-checkbox-label, .cx-checkbox-item',
+				itemWrapClass: '.cx-checkbox-item-wrap',
+				addButtonClass: '.cx-checkbox-add-button',
+				customValueInputClass: '.cx-checkbox-custom-value',
 
 				init: function() {
-					$( 'body' ).on( 'click.cxCheckbox', this.itemClass, this.switchState.bind( this ) );
+					$( 'body' )
+						.on( 'click.cxCheckbox', this.itemClass, this.switchState.bind( this ) )
+						.on( 'click.cxCheckbox', this.addButtonClass, this.addCustomCheckbox.bind( this ) )
+						.on( 'input.cxCheckbox', this.customValueInputClass, this.updateCustomValue.bind( this ) );
+
+					this.resetOnEditTagsPage();
 				},
 
 				switchState: function( event ) {
-					var $_input    = $( event.currentTarget ).siblings( this.inputClass ),
-						status     = $_input[0].checked,
-						$parent    = $( event.currentTarget ).closest( '.cx-control-checkbox' ),
-						name       = $parent.data( 'control-name' ),
-						statusData = {};
+					var $_input           = $( event.currentTarget ).siblings( this.inputClass ),
+						$customValueInput = $( event.target ).closest( this.customValueInputClass ),
+						//status            = $_input[0].checked,
+						status            = cxInterfaceBuilder.utils.filterBoolValue( $_input.val() ),
+						$parent           = $( event.currentTarget ).closest( '.cx-control-checkbox' ),
+						name              = $parent.data( 'control-name' ),
+						statusData        = {};
+
+					if ( $customValueInput[0] ) {
+						return;
+					}
 
 					$_input.val( ! status ? 'true' : 'false' ).attr( 'checked', ! status ? true : false );
+
+					if ( !$parent[0] ) {
+						return;
+					}
 
 					statusData = cxInterfaceBuilder.utils.serializeObject( $parent );
 
@@ -410,26 +476,164 @@
 						controlName: name,
 						controlStatus: statusData
 					} );
+				},
+				addCustomCheckbox: function( event ) {
+					var $addButton = $( event.currentTarget ),
+						html;
+
+					event.preventDefault();
+
+					html = '<div class="cx-checkbox-item-wrap">';
+						html += '<span class="cx-label-content">';
+							html += '<input type="hidden" class="cx-checkbox-input" checked value="true">';
+							html += '<span class="cx-checkbox-item"><span class="marker dashicons dashicons-yes"></span></span>';
+							html += '<label class="cx-checkbox-label"><input type="text" class="cx-checkbox-custom-value cx-ui-text"></label>';
+						html += '</span>';
+					html += '</div>';
+
+					$addButton.before( html );
+				},
+				updateCustomValue: function( event ) {
+					var $this   = $( event.currentTarget ),
+						value   = $this.val(),
+						$label  = $this.closest( '.cx-checkbox-label' ),
+						$_input = $label.siblings( this.inputClass ),
+						$parent = $this.closest( '.cx-control-checkbox' ),
+						name    = $parent.data( 'control-name' );
+
+					$_input.attr( 'name', value ? name + '[' + value + ']' : '' );
+				},
+				resetOnEditTagsPage: function() {
+					var self = this;
+
+					if ( -1 === window.location.href.indexOf( 'edit-tags.php' ) ) {
+						return;
+					}
+
+					var $input = $( self.inputClass ),
+						defaultCheckInputs = [];
+
+					if ( !$input[0] ) {
+						return;
+					}
+
+					$input.each( function() {
+						if ( 'true' !== $( this ).val() ) {
+							return;
+						}
+
+						defaultCheckInputs.push( $( this ).attr( 'name' ) );
+					} );
+
+					$( document ).ajaxComplete( function( event, xhr, settings ) {
+
+						if ( ! settings.data || -1 === settings.data.indexOf( 'action=add-tag' ) ) {
+							return;
+						}
+
+						if ( -1 !== xhr.responseText.indexOf( 'wp_error' ) ) {
+							return;
+						}
+
+						var $customFields = $( self.customValueInputClass );
+
+						if ( $customFields[0] ) {
+							$customFields.closest( self.itemWrapClass ).remove();
+						}
+
+						$input.each( function() {
+							if ( -1 !== defaultCheckInputs.indexOf( $( this ).attr( 'name' ) ) ) {
+								$( this ).val( 'true' ).attr( 'checked', true );
+							} else {
+								$( this ).val( 'false' ).attr( 'checked', false );
+							}
+						} );
+					} );
 				}
 			},//End CX-Checkbox
 
 			// CX-Radio
 			radio: {
 				inputClass: '.cx-radio-input:not([name*="__i__"])',
+				customValueInputClass: '.cx-radio-custom-value',
 
 				init: function() {
-					$( 'body' ).on( 'click.cxRadio', this.inputClass, this.switchState.bind( this ) );
+					$( 'body' )
+						.on( 'click.cxRadio', this.inputClass, this.switchState.bind( this ) )
+						.on( 'input.cxRadio', this.customValueInputClass, this.updateCustomValue.bind( this ) );
+
+					this.resetOnEditTagsPage();
 				},
 
 				switchState: function( event ) {
-					var $this   = $( event.currentTarget ),
-						$parent = $( event.currentTarget ).closest( '.cx-control-radio' ),
-						name    = $parent.data( 'control-name' );
+					var $this             = $( event.currentTarget ),
+						$parent           = $( event.currentTarget ).closest( '.cx-control-radio' ),
+						$customValueInput = $( event.currentTarget ).siblings( this.customValueInputClass ),
+						name              = $parent.data( 'control-name' );
+
+					if ( $customValueInput[0] ) {
+						$customValueInput.focus();
+					}
 
 					$( window ).trigger( {
 						type: 'cx-radio-change',
 						controlName: name,
 						controlStatus: $( $this ).val()
+					} );
+				},
+
+				updateCustomValue: function( event ) {
+					var $this   = $( event.currentTarget ),
+						value   = $this.val(),
+						$_input = $this.siblings( this.inputClass );
+
+					$_input.attr( 'value', value );
+				},
+				resetOnEditTagsPage: function() {
+					var self = this;
+
+					if ( -1 === window.location.href.indexOf( 'edit-tags.php' ) ) {
+						return;
+					}
+
+					var $input = $( self.inputClass ),
+						defaultCheckInputs = [];
+
+					if ( !$input[0] ) {
+						return;
+					}
+
+					$input.each( function() {
+						if ( ! $( this ).prop( 'checked' ) ) {
+							return;
+						}
+
+						defaultCheckInputs.push( $( this ).attr( 'name' ) + '[' + $( this ).val() + ']' );
+					} );
+
+					$( document ).ajaxComplete( function( event, xhr, settings ) {
+
+						if ( ! settings.data || -1 === settings.data.indexOf( 'action=add-tag' ) ) {
+							return;
+						}
+
+						if ( -1 !== xhr.responseText.indexOf( 'wp_error' ) ) {
+							return;
+						}
+
+						var $customFields = $( self.customValueInputClass );
+
+						if ( $customFields[0] ) {
+							$customFields.siblings( self.inputClass ).val( '' );
+						}
+
+						$input.each( function() {
+							if ( -1 !== defaultCheckInputs.indexOf( $( this ).attr( 'name' ) + '[' + $( this ).val() + ']' ) ) {
+								$( this ).prop( 'checked', true );
+							} else {
+								$( this ).prop( 'checked', false );
+							}
+						} );
 					} );
 				}
 			},//End CX-Radio
@@ -445,12 +649,23 @@
 						$thisVal         = $this.val(),
 						$sliderWrapper   = $this.closest( '.cx-slider-wrap' ),
 						$sliderContainer = $this.closest( '.cx-ui-container' ),
-						$sliderSettings  = $sliderContainer.data( 'settings' ),
+						$sliderSettings  = $sliderContainer.data( 'settings' ) || {},
+						$stepperInput    = $( '.cx-ui-stepper-input', $sliderContainer ),
+						controlName      = $stepperInput.attr( 'name' ),
+						rangeLabel       = $sliderSettings['range_label'] || false,
 						targetClass      = ( ! $this.hasClass( 'cx-slider-unit' ) ) ? '.cx-slider-unit' : '.cx-ui-stepper-input';
 
 					$( targetClass, $sliderWrapper ).val( $thisVal );
 
-					if ( $sliderSettings['range_label'] ) {
+					if ( controlName ) {
+						$( window ).trigger( {
+							type: 'cx-control-change',
+							controlName: controlName,
+							controlStatus: $thisVal
+						} );
+					}
+
+					if ( rangeLabel ) {
 						var $rangeLabel = $( '.cx-slider-range-label', $sliderWrapper ),
 							rangeLabels = $sliderSettings['range_labels'];
 
@@ -476,14 +691,17 @@
 
 			// CX-Select
 			select: {
+				selectWrapClass: '.cx-ui-select-wrapper',
 				selectClass: '.cx-ui-select[data-filter="false"]:not([name*="__i__"])',
 				select2Class: '.cx-ui-select[data-filter="true"]:not([name*="__i__"]), .cx-ui-select[multiple]:not([name*="__i__"])',
 				selectClearClass: '.cx-ui-select-clear',
 
 				init: function() {
 
+					$( this.selectRender.bind( this ) );
+
 					$( document )
-						.on( 'ready.cxSelect', this.selectRender.bind( this ) )
+						//.on( 'ready.cxSelect', this.selectRender.bind( this ) )
 						.on( 'cx-control-init', this.selectRender.bind( this ) )
 						.on( 'click.cxSelect', this.selectClearClass, this.clearSelect );
 
@@ -491,7 +709,9 @@
 
 				clearSelect: function( event ) {
 					event.preventDefault();
-					$( this ).siblings( 'select' ).val( null ).trigger( 'change' );
+					var $select = $( this ).siblings( 'select' );
+					$select.find( ':selected' ).removeAttr( 'selected' );
+					$select.val( null ).trigger( 'change' );
 				},
 
 				selectRender: function( event ) {
@@ -516,8 +736,9 @@
 
 				select2Init: function ( index, element ) {
 					var $this    = $( element ),
+						$wrapper = $this.closest( this.selectWrapClass ),
 						name     = $this.attr( 'id' ),
-						settings = { placeholder: $this.data( 'placeholder' ) },
+						settings = { placeholder: $this.data( 'placeholder' ), dropdownCssClass: 'cx-ui-select2-dropdown' },
 						postType = $this.data( 'post-type' ),
 						exclude  = $this.data( 'exclude' ),
 						action   = $this.data( 'action' );
@@ -547,15 +768,48 @@
 
 			// CX-Media
 			media: {
+				inputClass: 'input.cx-upload-input:not([name*="__i__"])',
+
 				init: function() {
+
+					$( this.mediaRender.bind( this ) );
+
 					$( document )
-						.on( 'ready.cxMedia', this.mediaRender.bind( this ) )
+						//.on( 'ready.cxMedia', this.mediaRender.bind( this ) )
 						.on( 'cx-control-init', this.mediaRender.bind( this ) );
+
+					$( 'body' )
+						.on( 'change.cxMedia', this.inputClass, cxInterfaceBuilder.control.text.changeHandler.bind( this ) );
 				},
 
 				mediaRender: function( event ) {
 					var target   = ( event._target ) ? event._target : $( 'body' ),
-						$buttons = $( '.cx-upload-button', target );
+						$buttons = $( '.cx-upload-button', target ),
+						prepareInputValue = function( input_value, settings ) {
+
+							if ( !input_value.length ) {
+								return '';
+							}
+
+							if ( 'both' === settings.value_format ) {
+								if ( !settings.multiple ) {
+									input_value = input_value[0];
+								}
+
+								input_value = JSON.stringify( input_value );
+							} else {
+								input_value = input_value.join( ',' );
+							}
+
+							return input_value;
+						};
+
+					var $postId = $( '#post_ID' );
+
+					// Added for attach a media file to post.
+					if ( $postId.length && wp.media.view && wp.media.view.settings && wp.media.view.settings.post && ! wp.media.view.settings.post.id ) {
+						wp.media.view.settings.post.id = $postId.val();
+					}
 
 					$buttons.each( function() {
 						var button = $( this ),
@@ -566,6 +820,7 @@
 								title_text: button.data('title'),
 								multiple: button.data('multi-upload'),
 								library_type: button.data('library-type'),
+								value_format: button.data('value-format') || 'id',
 							},
 							cx_uploader = wp.media.frames.file_frame = wp.media({
 								title: settings.title_text,
@@ -585,7 +840,7 @@
 								cx_uploader.on( 'open', function() {
 
 									var selection = cx_uploader.state().get( 'selection' );
-									var selected  = settings.input.val();
+									var selected  = settings.input.attr( 'data-ids-attr' );
 
 									if ( selected ) {
 										selected = selected.split(',');
@@ -597,65 +852,97 @@
 							}
 
 							cx_uploader.on('select', function() {
-									var attachment     = cx_uploader.state().get( 'selection' ).toJSON(),
-										count          = 0,
-										input_value    = '',
-										new_img_object = $( '.cx-all-images-wrap', settings.img_holder ),
-										new_img        = '',
-										delimiter      = '';
+								var attachment       = cx_uploader.state().get( 'selection' ).toJSON(),
+									count            = 0,
+									input_value      = [],
+									input_ids        = [],
+									new_img_object   = $( '.cx-all-images-wrap', settings.img_holder ),
+									new_img          = '',
+									fetchAttachments = [];
 
-									if ( settings.multiple ) {
-										delimiter = ',';
+								attachment.forEach( function( attachmentData, index ) {
+
+									if ( !attachmentData.url && attachmentData.id ) {
+										fetchAttachments.push(
+											wp.media.attachment( attachmentData.id ).fetch().then( function( data ) {
+												attachment[index] = data;
+											} )
+										);
 									}
+								} );
 
-									while( attachment[ count ] ) {
-										var img_data    = attachment[ count ],
-											return_data = img_data.id,
-											mimeType    = img_data.mime,
-											img_src     = '',
-											thumb       = '';
+								Promise.all( fetchAttachments ).then( function() {
+									while ( attachment[count] ) {
+										var attachment_data = attachment[count],
+											attachment_id   = attachment_data.id,
+											attachment_url  = attachment_data.url,
+											mimeType        = attachment_data.mime,
+											return_data     = '',
+											img_src         = '',
+											thumb           = '',
+											thumb_type      = 'icon';
 
-											switch (mimeType) {
-												case 'image/jpeg':
-												case 'image/png':
-												case 'image/gif':
-														if ( img_data.sizes !== undefined ) {
-															img_src = img_data.sizes.thumbnail ? img_data.sizes.thumbnail.url : img_data.sizes.full.url;
-														}
-														thumb = '<img  src="' + img_src + '" alt="" data-img-attr="' + return_data + '">';
-													break;
-												case 'image/x-icon':
-														thumb = '<span class="dashicons dashicons-format-image"></span>';
-													break;
-												case 'video/mpeg':
-												case 'video/mp4':
-												case 'video/quicktime':
-												case 'video/webm':
-												case 'video/ogg':
-														thumb = '<span class="dashicons dashicons-format-video"></span>';
-													break;
-												case 'audio/mpeg':
-												case 'audio/wav':
-												case 'audio/ogg':
-														thumb = '<span class="dashicons dashicons-format-audio"></span>';
-													break;
+										if ( 'both' === settings.value_format ) {
+											return_data = {
+												id:  attachment_id,
+												url: attachment_url,
 											}
+										} else {
+											return_data = attachment_data[settings.value_format];
+										}
 
-											new_img += '<div class="cx-image-wrap">'+
-														'<div class="inner">'+
-															'<div class="preview-holder"  data-id-attr="' + return_data +'"><div class="centered">' + thumb + '</div></div>'+
-															'<a class="cx-remove-image" href="#"><i class="dashicons dashicons-no"></i></a>'+
-															'<span class="title">' + img_data.title + '</span>'+
-														'</div>'+
+										switch ( mimeType ) {
+											case 'image/jpeg':
+											case 'image/png':
+											case 'image/gif':
+											case 'image/svg+xml':
+											case 'image/webp':
+												if ( attachment_data.sizes !== undefined ) {
+													img_src = attachment_data.sizes.thumbnail ? attachment_data.sizes.thumbnail.url : attachment_data.sizes.full.url;
+												} else {
+													img_src = attachment_url;
+												}
+
+												thumb = '<img  src="' + img_src + '" alt="" data-img-attr="' + attachment_id + '">';
+												thumb_type = 'image';
+												break;
+											case 'application/pdf':
+												thumb = '<span class="dashicons dashicons-media-document"></span>';
+												break;
+											case 'image/x-icon':
+												thumb = '<span class="dashicons dashicons-format-image"></span>';
+												break;
+											case 'video/mpeg':
+											case 'video/mp4':
+											case 'video/quicktime':
+											case 'video/webm':
+											case 'video/ogg':
+												thumb = '<span class="dashicons dashicons-format-video"></span>';
+												break;
+											case 'audio/mpeg':
+											case 'audio/wav':
+											case 'audio/ogg':
+												thumb = '<span class="dashicons dashicons-format-audio"></span>';
+												break;
+										}
+
+										new_img += '<div class="cx-image-wrap cx-image-wrap--' + thumb_type + '">' +
+														'<div class="inner">' +
+															'<div class="preview-holder" data-id-attr="' + attachment_id + '" data-url-attr="' + attachment_url + '"><div class="centered">' + thumb + '</div></div>' +
+															'<a class="cx-remove-image" href="#"><i class="dashicons dashicons-no"></i></a>' +
+															'<span class="title">' + attachment_data.title + '</span>' +
+														'</div>' +
 													'</div>';
 
-										input_value += delimiter + return_data;
+										input_value.push( return_data );
+										input_ids.push( attachment_id );
 										count++;
 									}
 
-									settings.input.val( input_value.replace( /(^,)/, '' ) ).trigger( 'change' );
+									settings.input.val( prepareInputValue( input_value, settings ) ).attr( 'data-ids-attr', input_ids.join( ',' ) ).trigger( 'change' );
 									new_img_object.html( new_img );
 								} );
+							} );
 
 							var removeMediaPreview = function( item ) {
 								var buttonParent = item.closest( '.cx-ui-media-wrap' ),
@@ -663,12 +950,43 @@
 									img_holder    = item.parent().parent( '.cx-image-wrap' ),
 									img_attr      = $( '.preview-holder', img_holder ).data( 'id-attr' ),
 									input_value   = input.attr( 'value' ),
-									pattern       = new RegExp( img_attr + '(,*)', 'i' );
+									input_ids     = [];
 
-									input_value = input_value.replace( pattern, '' );
-									input_value = input_value.replace( /(,$)/, '' );
-									input.attr( { 'value': input_value } ).trigger( 'change' );
+									if ( ! input_value ) {
+										return;
+									}
+
 									img_holder.remove();
+									input_value = [];
+
+									buttonParent.find( '.cx-image-wrap' ).each( function() {
+										var attachment_id  = $( '.preview-holder', this ).data( 'id-attr' ),
+											attachment_url = $( '.preview-holder', this ).data( 'url-attr' );
+
+										input_ids.push( attachment_id );
+
+										switch ( settings.value_format ) {
+											case 'id':
+												input_value.push( attachment_id );
+												break;
+
+											case 'url':
+												input_value.push( attachment_url );
+												break;
+
+											case 'both':
+												input_value.push( {
+													id:  attachment_id,
+													url: attachment_url,
+												} );
+												break;
+										}
+									} );
+
+									input.attr( {
+										'value': prepareInputValue( input_value, settings ),
+										'data-ids-attr': input_ids.join( ',' ),
+									} ).trigger( 'change' );
 							};
 
 							// This function remove upload image
@@ -693,17 +1011,40 @@
 							start:function(){},
 							stop:function(){},
 							update: function() {
-								var attachment_ids = '';
+								var input_value = [],
+									input_ids = [],
+									input = $( this ).parent().siblings( '.cx-element-wrap' ).find( 'input.cx-upload-input' ),
+									button = $( this ).parent().siblings( '.cx-element-wrap' ).find( 'button.cx-upload-button' ),
+									settings = {
+										multiple:     button.data( 'multi-upload' ),
+										value_format: button.data( 'value-format' ),
+									};
 
-								$('.cx-image-wrap', this).each(
-									function() {
-										var attachment_id = $('.preview-holder', this).data( 'id-attr' );
-											attachment_ids = attachment_ids + attachment_id + ',';
+								$( '.cx-image-wrap', this ).each( function() {
+									var attachment_id  = $( '.preview-holder', this ).data( 'id-attr' ),
+										attachment_url = $( '.preview-holder', this ).data( 'url-attr' );
+
+									input_ids.push( attachment_id );
+
+									switch ( settings.value_format ) {
+										case 'id':
+											input_value.push( attachment_id );
+											break;
+
+										case 'url':
+											input_value.push( attachment_url );
+											break;
+
+										case 'both':
+											input_value.push( {
+												id:  attachment_id,
+												url: attachment_url,
+											} );
+											break;
 									}
-								);
+								} );
 
-								attachment_ids = attachment_ids.substr(0, attachment_ids.lastIndexOf(',') );
-								$(this).parent().siblings('.cx-element-wrap').find('input.cx-upload-input').val( attachment_ids ).trigger( 'change' );
+								input.val( prepareInputValue( input_value, settings ) ).attr( 'data-ids-attr', input_ids.join( ',' ) ).trigger( 'change' );
 							}
 						} );
 					}
@@ -712,19 +1053,43 @@
 
 			// CX-Colorpicker
 			colorpicker: {
+				inputClass: 'input.cx-ui-colorpicker:not([name*="__i__"])',
+
 				init: function() {
+
+					$( this.render.bind( this ) );
+
 					$( document )
-						.on( 'ready.cxColorpicker', this.render.bind( this ) )
+						//.on( 'ready.cxColorpicker', this.render.bind( this ) )
 						.on( 'cx-control-init', this.render.bind( this ) );
 				},
 
 				render: function( event ) {
 					var target = ( event._target ) ? event._target : $( 'body' ),
-						input = $( 'input.cx-ui-colorpicker:not([name*="__i__"])', target );
+						input = $( this.inputClass, target );
 
 					if ( input[0] ) {
-						input.wpColorPicker();
+						input.wpColorPicker( {
+							change: this.changeHandler
+						} );
 					}
+				},
+
+				changeHandler: function( event, ui ) {
+					var $this = $( event.target ),
+						name  = $this.attr( 'name' );
+
+					if ( ! name ) {
+						return;
+					}
+
+					setTimeout( function() {
+						$( window ).trigger( {
+							type:          'cx-control-change',
+							controlName:   name,
+							controlStatus: $this.val()
+						} );
+					} );
 				}
 			},//End CX-Colorpicker
 
@@ -734,9 +1099,13 @@
 				iconSetsKey: 'cx-icon-sets',
 
 				init: function() {
+
+					$( this.setIconsSets.bind( this, window.CxIconSets ) );
+					$( this.render.bind( this ) );
+
 					$( document )
-						.on( 'ready.cxIconpicker', this.setIconsSets.bind( this, window.CxIconSets ) )
-						.on( 'ready.cxIconpicker', this.render.bind( this ) )
+						//.on( 'ready.cxIconpicker', this.setIconsSets.bind( this, window.CxIconSets ) )
+						//.on( 'ready.cxIconpicker', this.render.bind( this ) )
 						.on( 'cx-control-init', this.render.bind( this ) );
 				},
 
@@ -893,7 +1262,7 @@
 			// CX-Wysiwyg
 			wysiwyg: {
 
-				editorSettings: {
+				defaultEditorSettings: {
 					tinymce: {
 						wpautop: true,
 						toolbar1: 'formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_more,spellchecker,wp_adv,dfw',
@@ -905,7 +1274,18 @@
 					mediaButtons: true
 				},
 
+				editorSettings: false,
+
 				init: function() {
+
+					var self = this;
+
+					$( window ).on( 'load', function() {
+						setTimeout( function() {
+							$( self.render.bind( self ) );
+						} )
+					} );
+
 					$( document )
 						.on( 'cx-control-init', this.render.bind( this ) );
 
@@ -927,10 +1307,24 @@
 							}
 
 							if ( typeof window.wp.editor.initialize !== 'undefined' ) {
-								window.wp.editor.initialize( id, self.editorSettings );
+								window.wp.editor.initialize( id, self.getEditorSettings() );
 							} else {
-								window.wp.oldEditor.initialize( id, self.editorSettings );
+								window.wp.oldEditor.initialize( id, self.getEditorSettings() );
 							}
+
+							var editor = window.tinymce.get( id );
+
+							if ( editor ) {
+								editor.on( 'change', function( event ) {
+									$( window ).trigger( {
+										type:          'cx-control-change',
+										controlName:   $this.attr( 'name' ),
+										controlStatus: editor.getContent()
+									} );
+								} );
+							}
+
+							self.addSaveTriggerOnEditTagsPage( id );
 
 							$this.data( 'init', true );
 						} );
@@ -948,14 +1342,64 @@
 
 							if ( typeof window.wp.editor.initialize !== 'undefined' ) {
 								window.wp.editor.remove( id );
-								window.wp.editor.initialize( id, self.editorSettings );
+								window.wp.editor.initialize( id, self.getEditorSettings() );
 							} else {
 								window.wp.oldEditor.remove( id );
-								window.wp.oldEditor.initialize( id, self.editorSettings );
+								window.wp.oldEditor.initialize( id, self.getEditorSettings() );
 							}
 						} );
 					}
-				}
+				},
+				getEditorSettings: function() {
+					if ( this.editorSettings ) {
+						return this.editorSettings;
+					}
+
+					this.editorSettings = this.defaultEditorSettings;
+
+					if ( window.tinyMCEPreInit ) {
+						if ( window.tinyMCEPreInit.mceInit && window.tinyMCEPreInit.mceInit.cx_wysiwyg ) {
+							this.editorSettings.tinymce = window.tinyMCEPreInit.mceInit.cx_wysiwyg;
+						}
+
+						if ( window.tinyMCEPreInit.qtInit && window.tinyMCEPreInit.qtInit.cx_wysiwyg ) {
+							this.editorSettings.quicktags = window.tinyMCEPreInit.qtInit.cx_wysiwyg;
+						}
+					}
+
+					return this.editorSettings;
+				},
+				addSaveTriggerOnEditTagsPage: function( id ) {
+
+					if ( -1 === window.location.href.indexOf( 'edit-tags.php' ) ) {
+						return;
+					}
+
+					if ( window.tinymce ) {
+						var editor = window.tinymce.get( id );
+
+						if ( editor ) {
+							editor.on( 'change', function() {
+								editor.save();
+							} );
+						}
+
+						// Reset editor content after added new term.
+						$( document ).ajaxComplete( function( event, xhr, settings ) {
+
+							if ( ! settings.data || -1 === settings.data.indexOf( 'action=add-tag' ) ) {
+								return;
+							}
+
+							if ( -1 !== xhr.responseText.indexOf( 'wp_error' ) ) {
+								return;
+							}
+
+							editor.setContent( '' );
+
+						} );
+					}
+				},
 			},//End CX-Wysiwyg
 
 			// CX-Repeater
@@ -967,18 +1411,26 @@
 				repeaterTitleClass: '.cx-ui-repeater-title',
 				addItemButtonClass: '.cx-ui-repeater-add',
 				removeItemButtonClass: '.cx-ui-repeater-remove',
+				removeConfirmItemButtonClass: '.cx-ui-repeater-remove__confirm',
+				removeCancelItemButtonClass: '.cx-ui-repeater-remove__cancel',
+				copyItemButtonClass: '.cx-ui-repeater-copy',
 				toggleItemButtonClass: '.cx-ui-repeater-toggle',
 				minItemClass: 'cx-ui-repeater-min',
 				sortablePlaceholderClass: 'sortable-placeholder',
 
 				init: function() {
-					$( document ).on( 'ready.cxRepeat', this.addEvents.bind( this ) );
+
+					$( this.addEvents.bind( this ) );
+					//$( document ).on( 'ready.cxRepeat', this.addEvents.bind( this ) );
 				},
 
 				addEvents: function() {
 					$( 'body' )
 						.on( 'click', this.addItemButtonClass, { 'self': this }, this.addItem )
-						.on( 'click', this.removeItemButtonClass, { 'self': this }, this.removeItem )
+						.on( 'click', this.removeItemButtonClass, { 'self': this }, this.showRemoveItemTooltip )
+						.on( 'click', this.removeConfirmItemButtonClass, { 'self': this }, this.removeItem )
+						.on( 'click', this.removeCancelItemButtonClass, { 'self': this }, this.hideRemoveItemTooltip )
+						.on( 'click', this.copyItemButtonClass, { 'self': this }, this.copyItem )
 						.on( 'click', this.toggleItemButtonClass, { 'self': this }, this.toggleItem )
 						.on( 'change', this.repeaterListClass + ' input, ' + this.repeaterListClass + ' textarea, ' + this.repeaterListClass + ' select', { 'self': this }, this.changeWrapperLable )
 						.on( 'sortable-init', { 'self': this }, this.sortableItem );
@@ -1025,6 +1477,114 @@
 					$list.data( 'index', index );
 
 					self.triggers( $( self.repeaterItemClass + ':last', $list ) ).stopDefaultEvent( event );
+				},
+
+				copyItem: function( event ) {
+					var self        = event.data.self,
+						$item       = $( this ).closest( self.repeaterItemClass ),
+						$list       = $( this ).closest( self.repeaterListClass ),
+						$parent     = $list.parent().closest( self.repeaterListClass ),
+						itemIndex   = $item.data( 'item-index' ),
+						newIndex    = $list.data( 'index' ),
+						tmplName    = $list.data( 'name' ),
+						widgetId    = $list.data( 'widget-id' ),
+						rowTemplate = wp.template( tmplName ),
+						data        = { index: newIndex },
+						newItemHtml,
+						$newItem;
+
+					widgetId = '__i__' !== widgetId ? widgetId : $list.attr( 'id' ) ;
+
+					if ( widgetId ) {
+						data.widgetId = widgetId;
+					}
+
+					if ( $parent.length ) {
+						data.parentIndex = parseInt( $parent.data( 'index' ), 10 ) - 1;
+					}
+
+					$newItem = $( rowTemplate( data ) );
+
+					// Set values.
+					$item.find( '.cx-ui-repeater-item-control' ).each( function() {
+						var controlName = $( this ).data( 'repeater-control-name' ),
+							$field      = $( this ).find( '[name^="' + widgetId + '\[item-' + itemIndex + '\]\[' + controlName + '\]"]' );
+
+						// Set value for checkbox, radio, switcher fields.
+						if ( $field.filter( '.cx-checkbox-input, .cx-radio-input, .cx-input-switcher' ).length ) {
+
+							$field.each( function() {
+								var $this       = $( this ),
+									checked     = $this.prop( 'checked' ),
+									value       = $this.val(),
+									nameAttr    = $this.attr( 'name' ),
+									newNameAttr = nameAttr.replace( '[item-' + itemIndex + ']', '[item-' + newIndex + ']' );
+
+								if ( $this.hasClass( 'cx-checkbox-input' ) ) {
+									$newItem.find( '[name="' + newNameAttr + '"]' ).val( value ).attr( 'checked', checked );
+								} else {
+									$newItem.find( '[name="' + newNameAttr + '"][value="' + value + '"]' ).prop( 'checked', checked );
+								}
+							} );
+
+						// Set value for select fields.
+						} else if ( $field.filter( '.cx-ui-select' ).length ) {
+							var hasFilter  = $field.data( 'filter' );
+
+							if ( hasFilter ) {
+								$newItem
+									.find( '.cx-ui-select[name^="' + widgetId + '\[item-' + newIndex + '\]\[' + controlName + '\]"]' )
+									.html( $field.html() );
+							} else {
+								$newItem
+									.find( '.cx-ui-select[name^="' + widgetId + '\[item-' + newIndex + '\]\[' + controlName + '\]"]' )
+									.val( $field.val() );
+							}
+
+						} else {
+							$newItem
+								.find( '[name="' + widgetId + '\[item-' + newIndex + '\]\[' + controlName + '\]"]' )
+								.val( $field.val() );
+						}
+
+						// Add media preview.
+						var $mediaWrap = $( this ).find( '.cx-ui-media-wrap' );
+
+						if ( $mediaWrap.length ) {
+							var previewHtml = $mediaWrap.find( '.cx-upload-preview' ).html();
+
+							$newItem
+								.find( '.cx-ui-repeater-item-control[data-repeater-control-name="' + controlName + '"] .cx-upload-preview' )
+								.html( previewHtml );
+						}
+					} );
+
+					// Add repeater title.
+					$newItem.find( '.cx-ui-repeater-title' ).html( $item.find( '.cx-ui-repeater-title' ).html() );
+
+					$item.after( $newItem );
+
+					newIndex++;
+					$list.data( 'index', newIndex );
+
+					self.triggers( $newItem )
+						.stopDefaultEvent( event );
+				},
+
+				showRemoveItemTooltip: function( event ) {
+					var self = event.data.self;
+
+					$( this ).find( '.cx-tooltip' ).addClass( 'cx-tooltip--show' );
+
+					self.stopDefaultEvent( event );
+				},
+
+				hideRemoveItemTooltip: function( event ) {
+					var self = event.data.self;
+
+					$( this ).closest( '.cx-tooltip' ).removeClass( 'cx-tooltip--show' );
+
+					self.stopDefaultEvent( event );
 				},
 
 				removeItem: function( event ) {
@@ -1140,6 +1700,31 @@
 					return this;
 				}
 
+			},
+
+			// CX-Text, CX-Textarea
+			text: {
+				inputClass: '.cx-ui-text:not([name*="__i__"]), .cx-ui-textarea:not([name*="__i__"])',
+
+				init: function() {
+					$( 'body' )
+						.on( 'input.cxText, change.cxText', this.inputClass, this.changeHandler.bind( this ) );
+				},
+
+				changeHandler: function( event ) {
+					var $this = $( event.currentTarget ),
+						name  = $this.attr( 'name' );
+
+					if ( ! name ) {
+						return;
+					}
+
+					$( window ).trigger( {
+						type: 'cx-control-change',
+						controlName: name,
+						controlStatus: $this.val()
+					} );
+				}
 			}
 		},
 
@@ -1156,11 +1741,11 @@
 					json = {},
 					pushCounters = {},
 					patterns = {
-						'validate': /^[a-zA-Z][a-zA-Z0-9_-]*(?:\[(?:\d*|[a-zA-Z0-9_-]+)\])*$/,
-						'key':      /[a-zA-Z0-9_-]+|(?=\[\])/g,
+						'validate': /^[a-zA-Z_][a-zA-Z0-9_-]*(?:\[(?:\d*|[a-zA-Z0-9\s_-]+)\])*$/,
+						'key':      /[a-zA-Z0-9\s_-]+|(?=\[\])/g,
 						'push':     /^$/,
 						'fixed':    /^\d+$/,
-						'named':    /^[a-zA-Z0-9_-]+$/
+						'named':    /^[a-zA-Z0-9\s_-]+$/
 					},
 					serialized;
 
@@ -1205,7 +1790,7 @@
 						if ( k.match( patterns.push ) ) {
 							merge = self.build( [], self.push_counter( reverseKey ), merge );
 						} else if ( k.match( patterns.fixed ) ) {
-							merge = self.build( [], k, merge );
+							merge = self.build( {}, k, merge );
 						} else if ( k.match( patterns.named ) ) {
 							merge = self.build( {}, k, merge );
 						}
@@ -1227,10 +1812,314 @@
 
 				return ! isNaN( num ) ? !! num : !! String( value ).toLowerCase().replace( !!0, '' );
 			}
-		}
+		},
+
+		controlValidation: {
+
+			errorMessages: {
+				required: window.cxInterfaceBuilder.i18n.requiredError,
+				min:      window.cxInterfaceBuilder.i18n.minError,
+				max:      window.cxInterfaceBuilder.i18n.maxError,
+				step:     window.cxInterfaceBuilder.i18n.stepError,
+			},
+
+			init: function() {
+
+				if ( this.isBlockEditor() ) {
+					this.onBlockEditorSavePost();
+				} else {
+					$( '#post, #edittag, #your-profile, .cx-form' ).on( 'submit', this.onSubmitForm.bind( this ) );
+				}
+
+				cxInterfaceBuilder.filters.addFilter( 'cxInterfaceBuilder/form/validation', this.requiredValidation.bind( this ) );
+				cxInterfaceBuilder.filters.addFilter( 'cxInterfaceBuilder/form/validation', this.numberValidation.bind( this ) );
+
+				$( window ).on(
+					'cx-control-change cx-checkbox-change cx-radio-change cx-select-change cx-select2-change',
+					this.removeFieldErrorOnChange.bind( this )
+				);
+
+				$( '.cx-control-repeater' ).on( 'focusin', this.removeRepeaterErrorOnChange.bind( this ) );
+			},
+
+			isBlockEditor: function() {
+				return $( 'body' ).hasClass( 'block-editor-page' );
+			},
+
+			onBlockEditorSavePost: function() {
+				var self     = this,
+					editor   = wp.data.dispatch( 'core/editor' ),
+					savePost = editor.savePost;
+
+					editor.savePost = function( options ) {
+						options = options || {};
+
+						if ( options.isAutosave || options.isPreview ) {
+							savePost( options );
+							return;
+						}
+
+						self.beforeValidation();
+
+						var validation = cxInterfaceBuilder.filters.applyFilters( 'cxInterfaceBuilder/form/validation', true, $( '#editor' ) );
+
+						if ( validation ) {
+							savePost( options );
+						} else {
+							self.scrollToFirstErrorField();
+						}
+					};
+			},
+
+			onSubmitForm: function( event ) {
+
+				this.beforeValidation();
+
+				var validation = cxInterfaceBuilder.filters.applyFilters( 'cxInterfaceBuilder/form/validation', true, $( event.target ) );
+
+				if ( ! validation ) {
+					this.scrollToFirstErrorField();
+					event.preventDefault();
+				}
+			},
+
+			beforeValidation: function() {
+				this.removeAllFieldsErrors();
+
+				if ( 'undefined' !== typeof window.tinyMCE ) {
+					window.tinyMCE.triggerSave();
+				}
+			},
+
+			requiredValidation: function( validation, $form ) {
+
+				if ( ! validation ) {
+					return validation;
+				}
+
+				var self            = this,
+					$requiredFields = $form.find( '.cx-control-required:not(.cx-control-hidden)' ),
+					hasEmptyFields  = false;
+
+				if ( ! $requiredFields.length ) {
+					return validation;
+				}
+
+				$requiredFields.each( function() {
+					var $field      = $( this ),
+						controlName = $field.data( 'control-name' ),
+						controlVal  = false;
+
+					if ( $field.hasClass( 'cx-control-checkbox' ) || $field.hasClass( 'cx-control-radio' ) ) {
+						controlVal = !! $field.find( '[name^="' + controlName + '"]' ).filter( ':checked' ).length;
+					} else if ( $field.hasClass( 'cx-control-repeater' ) ) {
+						controlVal = !! $field.find( '.cx-ui-repeater-item' ).length;
+					} else {
+						controlVal = $field.find( '[name^="' + controlName +'"]' ).val();
+					}
+
+					if ( Array.isArray( controlVal ) ) {
+						controlVal = !! controlVal.length;
+					}
+
+					if ( ! controlVal ) {
+						self.addFieldError( $field, self.errorMessages.required );
+						hasEmptyFields = true;
+					}
+				} );
+
+				if ( hasEmptyFields ) {
+					return false;
+				}
+
+				return validation;
+			},
+
+			numberValidation: function( validation, $form ) {
+
+				if ( ! validation ) {
+					return validation;
+				}
+
+				if ( ! this.isBlockEditor() ) {
+					return validation;
+				}
+
+				var self             = this,
+					$numberFields    = $form.find( '.cx-control-stepper:not(.cx-control-hidden)' ),
+					hasInValidFields = false;
+
+				if ( ! $numberFields.length ) {
+					return validation;
+				}
+
+				$numberFields.each( function() {
+					var $field   = $( this ),
+						$input   = $field.find( 'input.cx-ui-stepper-input' ),
+						minAttr  = $input.attr( 'min' ),
+						maxAttr  = $input.attr( 'max' ),
+						stepAttr = $input.attr( 'step' ),
+						value    = $input.val();
+
+					if ( '' !== minAttr && value && Number( value ) < Number( minAttr ) ) {
+						self.addFieldError( $field, self.errorMessages.min.replace( '%s', minAttr ) );
+						hasInValidFields = true;
+					} else if ( '' !== maxAttr && value && Number( value ) > Number( maxAttr ) ) {
+						self.addFieldError( $field, self.errorMessages.max.replace( '%s', maxAttr ) );
+						hasInValidFields = true;
+					} else if ( '' !== stepAttr && value && 0 !== ( Number( value ) % Number( stepAttr ) ) ) {
+						self.addFieldError( $field, self.errorMessages.step.replace( '%s', stepAttr ) );
+						hasInValidFields = true;
+					}
+				} );
+
+				if ( hasInValidFields ) {
+					return false;
+				}
+
+				return validation;
+			},
+
+			addFieldError: function( $field, message ) {
+				var $error = $field.find( '.cx-control__error' );
+
+				if ( $error.length ) {
+					$error.html( message );
+				} else {
+					$field.find('.cx-control__content').append( '<div class="cx-control__error">' + message + '</div>' );
+				}
+
+				$field.addClass( 'cx-control--error' );
+			},
+
+			removeFieldError: function( $field ) {
+				$field.find( '.cx-control__error' ).remove();
+				$field.removeClass( 'cx-control--error' );
+			},
+
+			removeFieldErrorOnChange: function( event ) {
+				var $field = $( '.cx-control[data-control-name="' + event.controlName + '"]' );
+
+				if ( ! $field.hasClass( 'cx-control--error' ) ) {
+					return;
+				}
+
+				this.removeFieldError( $field );
+			},
+
+			removeRepeaterErrorOnChange: function( event ) {
+				var $field = $( event.currentTarget ).closest( '.cx-control' );
+
+				if ( ! $field.hasClass( 'cx-control--error' ) ) {
+					return;
+				}
+
+				this.removeFieldError( $field );
+			},
+
+			removeAllFieldsErrors: function() {
+				var self = this,
+					$errorFields = $( '.cx-control--error' );
+
+				if ( $errorFields.length ) {
+					$errorFields.each( function() {
+						self.removeFieldError( $( this ) );
+					} );
+				}
+			},
+
+			scrollToFirstErrorField: function() {
+				var $field = $( '.cx-control--error' ).first();
+
+				if ( ! $field.is( ':visible' ) ) {
+
+					// Field inside hidden component.
+					var $parentComponent = $field.closest( '.cx-component' );
+
+					if ( $parentComponent.length ) {
+						var componentID = $field.closest( '.cx-settings__content' ).attr( 'id' );
+						$parentComponent.find( '[data-content-id="#' + componentID + '"]' ).trigger( 'click' );
+					}
+
+					// Field inside hidden postbox.
+					var $postbox = $field.closest( '.postbox.closed' );
+
+					if ( $postbox.length ) {
+						$postbox.find( 'button.handlediv' ).trigger( 'click' );
+					}
+				}
+
+				var $scrollSelector = $( 'html, body' ),
+					scrollTop = $field.offset().top,
+					offset = 40;
+
+				if ( this.isBlockEditor() ) {
+
+					if ( $( 'body' ).hasClass( 'is-fullscreen-mode' ) ) {
+						offset += 20;
+					} else {
+						offset += 60;
+					}
+
+					if ( $field.closest( '.interface-interface-skeleton__sidebar' ).length ) {
+						$scrollSelector = $( '#editor .interface-interface-skeleton__sidebar' );
+						offset += 50;
+					} else {
+						$scrollSelector = $( '#editor .interface-interface-skeleton__content' );
+					}
+
+					scrollTop += $scrollSelector.scrollTop();
+				}
+
+				$scrollSelector.stop().animate( { scrollTop: scrollTop - offset }, 500 );
+			}
+		},
+
+		filters: ( function() {
+
+			var callbacks = {};
+
+			return {
+
+				addFilter: function( name, callback ) {
+
+					if ( ! callbacks.hasOwnProperty( name ) ) {
+						callbacks[name] = [];
+					}
+
+					callbacks[name].push(callback);
+
+				},
+
+				applyFilters: function( name, value, args ) {
+
+					if ( ! callbacks.hasOwnProperty( name ) ) {
+						return value;
+					}
+
+					if ( args === undefined ) {
+						args = [];
+					}
+
+					var container = callbacks[ name ];
+					var cbLen     = container.length;
+
+					for (var i = 0; i < cbLen; i++) {
+						if (typeof container[i] === 'function') {
+							value = container[i](value, args);
+						}
+					}
+
+					return value;
+				}
+			};
+
+		})()
 
 	};
 
 	cxInterfaceBuilder.init();
+
+	window.cxInterfaceBuilderAPI = cxInterfaceBuilder;
 
 }( jQuery, window._ ) );

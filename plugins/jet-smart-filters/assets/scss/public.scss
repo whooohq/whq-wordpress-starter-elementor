@@ -12,9 +12,10 @@
 @import "filters/rating";
 @import "filters/sorting";
 @import "filters/alphabet";
-@import "common/additional-filter-settings.scss";
-@import "tabindex-focus.scss";
-@import "rtl.scss";
+@import "common/additional-filter-settings";
+@import "common/indexer";
+@import "tabindex-focus";
+@import "rtl";
 
 .jet-filters-loading {
 	opacity: 0.6 !important;
@@ -42,6 +43,7 @@
 .jet-remove-all-filters {
 	display: flex;
 	flex-direction: column;
+
 	.jet-remove-all-filters__button {
 		align-self: flex-start;
 	}
@@ -63,4 +65,37 @@
 
 body:not(.elementor-editor-active) .elementor-widget.hide-widget {
 	display: none;
+}
+
+// Context Bricks
+[class*="brxe-jet-smart-filters-"] {
+	.apply-filters {
+		align-items: flex-start;
+
+		.apply-filters__button {
+			align-self: auto;
+		}
+	}
+
+	.apply-filters__button {
+		margin-top: 0;
+	}
+
+	.jet-filters-group {
+		display: flex;
+		flex-wrap: wrap;
+		--columns: 1;
+		--column-gap: 20px;
+		column-gap: var(--column-gap);
+	}
+
+	.jet-filter {
+		max-width: calc((100% - (var(--columns) - 1) * var(--column-gap)) / var(--columns));
+		flex-basis: calc((100% - (var(--columns) - 1) * var(--column-gap)) / var(--columns));
+		margin-top: 0;
+	}
+
+	.jet-filters-counter {
+		align-self: center;
+	}
 }

@@ -343,14 +343,15 @@ class Jet_Posts_Shortcode extends Jet_Elements_Shortcode_Base {
 				'return_value' => 'yes',
 				'default'      => 'yes',
 			),
-			'excerpt_length' => array(
-				'type'       => 'number',
-				'label'      => esc_html__( 'Excerpt Length', 'jet-elements' ),
-				'default'    => 20,
-				'min'        => 1,
-				'max'        => 300,
-				'step'       => 1,
-				'condition' => array(
+			'excerpt_length'  => array(
+				'type'        => 'number',
+				'label'       => esc_html__( 'Excerpt Length', 'jet-elements' ),
+				'description' => esc_html__( 'Type "-1" to display the entire excerpt with allowed HTML tags', 'jet-elements' ),
+				'default'     => 20,
+				'min'         => -1,
+				'max'         => 300,
+				'step'        => 1,
+				'condition'   => array(
 					'show_excerpt' => array( 'yes' ),
 				),
 			),

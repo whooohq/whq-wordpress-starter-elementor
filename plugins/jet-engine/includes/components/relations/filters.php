@@ -235,6 +235,8 @@ class Filters {
 					}
 				}
 
+				$data = array_unique( $data );
+
 				foreach ( $data as $value ) {
 
 					$rel_ids = false;
@@ -302,11 +304,6 @@ class Filters {
 					unset( $args['meta_query'][ $key ] );
 				}
 			}
-
-			// Not found posts.
-			if ( empty( $args['post__in'] ) ) {
-				$args['post__in'] = array( 'not-found' );
-			}
 		}
 
 		return $args;
@@ -314,7 +311,7 @@ class Filters {
 	}
 
 	/**
-	 * Pervent relation meta keys from indexing with defaul CCT logic
+	 * Prevent relation meta keys from indexing with default CCT logic
 	 *
 	 * @param  [type] $result [description]
 	 * @param  [type] $key    [description]
@@ -495,9 +492,15 @@ class Filters {
 		}
 
 		$new_args = jet_engine()->relations->types_helper->filtered_query_args( $object, $rel_ids );
-		
+
 		if ( ! empty( $args['post__in'] ) && ! empty( $new_args['post__in'] ) ) {
 			$args['post__in'] = array_intersect( $args['post__in'], $new_args['post__in'] );
+
+			// Not found posts.
+			if ( empty( $args['post__in'] ) ) {
+				$args['post__in'] = array( PHP_INT_MAX );
+			}
+
 			$result = $args;
 		} else {
 			$result = array_merge_recursive( $args, $new_args );

@@ -1,7 +1,7 @@
 const { __ } = wp.i18n;
 const { addFilter } = wp.hooks;
 const { Fragment } = wp.element;
-const { InspectorAdvancedControls } = wp.editor;
+const { InspectorAdvancedControls } = wp.blockEditor;
 const { createHigherOrderComponent } = wp.compose;
 const { TextControl } = wp.components;
 

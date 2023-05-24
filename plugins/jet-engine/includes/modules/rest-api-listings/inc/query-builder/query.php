@@ -31,7 +31,7 @@ class REST_API_Query extends \Jet_Engine\Query_Builder\Queries\Base_Query {
 		if ( ! empty( $this->final_query['args'] ) ) {
 			foreach ( $this->final_query['args'] as $arg ) {
 				if ( ! empty( $arg['field'] ) ) {
-					$query_args[ $arg['field'] ] = $arg['value'];
+					$query_args[ $arg['field'] ] = jet_engine()->listings->macros->do_macros( $arg['value'] );
 				}
 			}
 		}

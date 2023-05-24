@@ -101,7 +101,7 @@ class Query {
 				continue;
 			}
 
-			if ( 'is-front' !== $value[0] ) {
+			if ( isset( $value[0] ) && 'is-front' !== $value[0] ) {
 				continue;
 			}
 
@@ -132,7 +132,7 @@ class Query {
 		}
 
 		if ( ! empty( $_REQUEST['query']['post__in'] ) ) {
-			$query->set_filtered_prop( 'post__in', $_REQUEST['query']['post__in'] );
+			$query->final_query['post__in'] = $_REQUEST['query']['post__in'];
 		}
 
 	}

@@ -7,7 +7,9 @@
 >
 	<div class="cx-vui-subtitle" slot="title"><?php
 		_e( 'Please confirm query deletion', 'jet-engine' );
-	?></div>
+	?>
+		<template v-if="itemName">- <span class="jet-engine-accent-text">{{ itemName }}</span></template>
+	</div>
 	<p slot="content">
 		<?php _e( 'Are you sure you want to delete this query? Please ensure you removed it from all widgets and blocks where it was used.', 'jet-engine' ); ?><br>
 	</p>

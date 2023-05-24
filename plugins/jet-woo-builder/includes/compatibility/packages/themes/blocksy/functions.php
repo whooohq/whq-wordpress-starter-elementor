@@ -12,6 +12,10 @@ if ( 'yes' === jet_woo_builder_shop_settings()->get( 'custom_single_page' ) ) {
 
 	//Change the view of the gallery to be used in single product.
 	add_filter( 'blocksy:woocommerce:product-view:use-default', function ( $current_value ) {
+		if ( is_admin() ) {
+			return $current_value;
+		}
+
 		return true;
 	} );
 

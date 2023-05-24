@@ -79,6 +79,7 @@ if ( ! class_exists( 'Jet_Smart_Filters_Rating_Filter' ) ) {
 				'button_text'          => $button_text,
 				'rating_icon'          => $rating_icon,
 				'__widget_id'          => $widget_id,
+				'accessibility_label'  => $this->get_accessibility_label( $filter_id )
 			);
 		}
 	}

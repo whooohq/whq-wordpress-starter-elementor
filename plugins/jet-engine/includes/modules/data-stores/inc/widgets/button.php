@@ -186,22 +186,7 @@ class Button extends \Elementor\Widget_Base {
 				'label'   => __( 'Add "rel" attr', 'jet-engine' ),
 				'type'    => \Elementor\Controls_Manager::SELECT,
 				'default' => '',
-				'options' => array(
-					''           => __( 'No', 'jet-engine' ),
-					'alternate'  => __( 'Alternate', 'jet-engine' ),
-					'author'     => __( 'Author', 'jet-engine' ),
-					'bookmark'   => __( 'Bookmark', 'jet-engine' ),
-					'external'   => __( 'External', 'jet-engine' ),
-					'help'       => __( 'Help', 'jet-engine' ),
-					'license'    => __( 'License', 'jet-engine' ),
-					'next'       => __( 'Next', 'jet-engine' ),
-					'nofollow'   => __( 'Nofollow', 'jet-engine' ),
-					'noreferrer' => __( 'Noreferrer', 'jet-engine' ),
-					'noopener'   => __( 'Noopener', 'jet-engine' ),
-					'prev'       => __( 'Prev', 'jet-engine' ),
-					'search'     => __( 'Search', 'jet-engine' ),
-					'tag'        => __( 'Tag', 'jet-engine' ),
-				),
+				'options' => \Jet_Engine_Tools::get_rel_attr_options(),
 				'condition' => array(
 					'action_after_added' => array( 'switch_status' ),
 				),
@@ -494,7 +479,7 @@ class Button extends \Elementor\Widget_Base {
 			array(
 				'label'      => __( 'Border Radius', 'jet-engine' ),
 				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', '%', 'em' ) ),
 				'selectors'  => array(
 					'{{WRAPPER}} .jet-data-store-link' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -514,7 +499,7 @@ class Button extends \Elementor\Widget_Base {
 			array(
 				'label'      => __( 'Padding', 'jet-engine' ),
 				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', 'em', '%' ) ),
 				'selectors'  => array(
 					'{{WRAPPER}} .jet-data-store-link' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),

@@ -24,6 +24,10 @@ class Jet_Engine_Custom_Image_Tag extends Elementor\Core\DynamicTags\Data_Tag {
 		);
 	}
 
+	public function is_settings_required() {
+		return true;
+	}
+
 	protected function register_controls() {
 
 		$this->add_control(
@@ -69,6 +73,16 @@ class Jet_Engine_Custom_Image_Tag extends Elementor\Core\DynamicTags\Data_Tag {
 		}
 
 		$this->add_control(
+			'object_context',
+			array(
+				'label'   => __( 'Context', 'jet-engine' ),
+				'type'    => \Elementor\Controls_Manager::SELECT,
+				'default' => 'default_object',
+				'options' => jet_engine()->listings->allowed_context_list(),
+			)
+		);
+
+		$this->add_control(
 			'fallback',
 			array(
 				'label' => __( 'Fallback', 'jet-engine' ),
@@ -87,7 +101,12 @@ class Jet_Engine_Custom_Image_Tag extends Elementor\Core\DynamicTags\Data_Tag {
 			return $this->get_settings( 'fallback' );
 		}
 
-		$current_object = jet_engine()->listings->data->get_current_object();
+		$object_context = $this->get_settings( 'object_context' );
+		$current_object = jet_engine()->listings->data->get_object_by_context( $object_context );
+
+		if ( ! $current_object ) {
+			$current_object = jet_engine()->listings->data->get_current_object();
+		}
 
 		if ( ! empty( $thumb_key ) ) {
 
@@ -122,23 +141,20 @@ class Jet_Engine_Custom_Image_Tag extends Elementor\Core\DynamicTags\Data_Tag {
 			return $this->get_settings( 'fallback' );
 		}
 
-		$source = jet_engine()->listings->data->get_listing_source();
-		$img_id = false;
-
 		if ( 'post_thumbnail' === $meta_field ) {
 
-			$post = jet_engine()->listings->data->get_current_object();
-
-			if ( ! has_post_thumbnail( $post->ID ) ) {
+			if ( 'WP_Post' !== get_class( $current_object ) ) {
 				return $this->get_settings( 'fallback' );
 			}
 
-			if ( 'posts' === $source ) {
-				$img_id = get_post_thumbnail_id( $post->ID );
+			if ( ! has_post_thumbnail( $current_object->ID ) ) {
+				return $this->get_settings( 'fallback' );
 			}
 
+			$img_id = get_post_thumbnail_id( $current_object->ID );
+
 		} else {
-			$img_id = jet_engine()->listings->data->get_meta( $meta_field );
+			$img_id = jet_engine()->listings->data->get_meta_by_context( $meta_field, $object_context );
 		}
 
 		if ( $img_id ) {

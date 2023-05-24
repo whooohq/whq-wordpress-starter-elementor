@@ -11,6 +11,7 @@ class Blocks_Integration {
 		add_filter( 'jet-engine/profile-builder/template/content', array( $this, 'render_template_content' ), 10, 2 );
 		add_action( 'jet-engine/blocks-views/register-block-types', array( $this, 'register_block_types' ) );
 		add_action( 'jet-engine/blocks-views/editor-script/before', array( $this, 'enqueue_block_assets' ) );
+		add_filter( 'jet-engine/blocks-views/block-types/attributes/dynamic-image', array( $this, 'add_dynamic_image_block_attrs') );
 	}
 
 	/**
@@ -114,6 +115,16 @@ class Blocks_Integration {
 
 		return $config;
 
+	}
+
+	public function add_dynamic_image_block_attrs( $attrs ) {
+
+		$attrs['dynamic_link_profile_page'] = array(
+			'type'    => 'string',
+			'default' => '',
+		);
+
+		return $attrs;
 	}
 
 }

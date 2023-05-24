@@ -37,7 +37,8 @@ if ( ! class_exists( 'Jet_Engine_Img_Gallery' ) ) {
 			}
 
 			wp_enqueue_script( 'jquery-slick' );
-			wp_enqueue_script( 'imagesloaded' );
+
+			jet_engine()->frontend->ensure_lib( 'imagesloaded' );
 			jet_engine()->frontend->frontend_scripts();
 
 			$args = wp_parse_args( $args, array(
@@ -53,8 +54,8 @@ if ( ! class_exists( 'Jet_Engine_Img_Gallery' ) ) {
 				'dots'           => false,
 				'slidesToScroll' => 1,
 				'adaptiveHeight' => true,
-				'prevArrow'      => '<div class="prev-arrow jet-engine-arrow slick-arrow"><svg class="svg-inline--fa fa-angle-left fa-w-8" style="" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="angle-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512" data-fa-i2svg=""><path fill="currentColor" d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"></path></svg></div>',
-				'nextArrow'      => '<div class="next-arrow jet-engine-arrow slick-arrow"><svg class="svg-inline--fa fa-angle-right fa-w-8" style="" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512" data-fa-i2svg=""><path fill="currentColor" d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"></path></svg></div>',
+				'prevArrow'      => "<div class='prev-arrow jet-engine-arrow slick-arrow'><svg width='180' height='180' viewBox='0 0 180 180' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M119 47.3166C119 48.185 118.668 48.9532 118.003 49.6212L78.8385 89L118.003 128.379C118.668 129.047 119 129.815 119 130.683C119 131.552 118.668 132.32 118.003 132.988L113.021 137.998C112.356 138.666 111.592 139 110.729 139C109.865 139 109.101 138.666 108.436 137.998L61.9966 91.3046C61.3322 90.6366 61 89.8684 61 89C61 88.1316 61.3322 87.3634 61.9966 86.6954L108.436 40.002C109.101 39.334 109.865 39 110.729 39C111.592 39 112.356 39.334 113.021 40.002L118.003 45.012C118.668 45.68 119 46.4482 119 47.3166Z' fill='black'/></svg></div>",
+				'nextArrow'      => "<div class='next-arrow jet-engine-arrow slick-arrow'><svg width='180' height='180' viewBox='0 0 180 180' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M61 48.3166C61 49.185 61.3322 49.9532 61.9966 50.6212L101.162 90L61.9966 129.379C61.3322 130.047 61 130.815 61 131.683C61 132.552 61.3322 133.32 61.9966 133.988L66.9794 138.998C67.6438 139.666 68.4078 140 69.2715 140C70.1352 140 70.8992 139.666 71.5636 138.998L118.003 92.3046C118.668 91.6366 119 90.8684 119 90C119 89.1316 118.668 88.3634 118.003 87.6954L71.5636 41.002C70.8992 40.334 70.1352 40 69.2715 40C68.4078 40 67.6438 40.334 66.9794 41.002L61.9966 46.012C61.3322 46.68 61 47.4482 61 48.3166Z' fill='black'/></svg></div>",
 				'rtl'            => is_rtl(),
 			);
 
@@ -88,16 +89,25 @@ if ( ! class_exists( 'Jet_Engine_Img_Gallery' ) ) {
 
 			$gallery_id = self::get_gallery_id();
 
-			foreach ( $images as $img_id ) {
+			foreach ( $images as $img_data ) {
 
-				$img_data = self::get_img_data( $img_id, $args );
+				$img_data = self::get_img_data( $img_data, $args );
+				$img_id   = $img_data['id'];
 				$img_url  = $img_data['url'];
 				$img_full = $img_data['full'];
 
 				echo '<div class="jet-engine-gallery-slider__item">';
 
 				if ( $args['lightbox'] ) {
-					echo '<a href="' . $img_full . '" class="jet-engine-gallery-slider__item-wrap jet-engine-gallery-item-wrap is-lightbox" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="' . $gallery_id . '">';
+
+					$lightbox_attr = array(
+						'href'  => $img_full,
+						'class' => array( 'jet-engine-gallery-slider__item-wrap', 'jet-engine-gallery-item-wrap', 'is-lightbox' ),
+					);
+
+					$lightbox_attr = apply_filters( 'jet-engine/gallery/lightbox-attr', $lightbox_attr, $img_data, $gallery_id );
+
+					echo '<a ' . Jet_Engine_Tools::get_attr_string( $lightbox_attr ) . '>';
 				} else {
 					echo '<span class="jet-engine-gallery-slider__item-wrap jet-engine-gallery-item-wrap">';
 				}
@@ -173,16 +183,31 @@ if ( ! class_exists( 'Jet_Engine_Img_Gallery' ) ) {
 
 			$gallery_id = self::get_gallery_id();
 
-			foreach ( $images as $img_id ) {
+			foreach ( $images as $img_data ) {
 
-				$img_data = self::get_img_data( $img_id, $args );
+				$img_data = self::get_img_data( $img_data, $args );
+				$img_id   = $img_data['id'];
 				$img_url  = $img_data['url'];
 				$img_full = $img_data['full'];
+
+				$full_img_sizes  = self::get_full_img_sizes( $img_id );
+				$full_img_width  = $full_img_sizes['width'];
+				$full_img_height = $full_img_sizes['height'];
 
 				echo '<div class="jet-engine-gallery-grid__item">';
 
 				if ( $args['lightbox'] ) {
-					echo '<a href="' . $img_full . '" class="jet-engine-gallery-grid__item-wrap jet-engine-gallery-item-wrap is-lightbox" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="' . $gallery_id . '">';
+
+					$lightbox_attr = array(
+						'href'  => $img_full,
+						'class' => array( 'jet-engine-gallery-grid__item-wrap', 'jet-engine-gallery-item-wrap', 'is-lightbox' ),
+						'data-full-img-width'  => $full_img_width,
+						'data-full-img-height' => $full_img_height,
+					);
+
+					$lightbox_attr = apply_filters( 'jet-engine/gallery/lightbox-attr', $lightbox_attr, $img_data, $gallery_id );
+
+					echo '<a ' . Jet_Engine_Tools::get_attr_string( $lightbox_attr ) . '>';
 				} else {
 					echo '<span class="jet-engine-gallery-grid__item-wrap jet-engine-gallery-item-wrap">';
 				}
@@ -204,29 +229,30 @@ if ( ! class_exists( 'Jet_Engine_Img_Gallery' ) ) {
 			echo '</div>';
 
 			return ob_get_clean();
-
 		}
 
-		public static function get_img_data( $img_id = null, $args = array() ) {
+		public static function get_img_data( $img_data = null, $args = array() ) {
 
-			$result = array();
+			$result = Jet_Engine_Tools::get_attachment_image_data_array( $img_data );
 
-			if ( is_numeric( $img_id ) ) {
-				if ( 'full' === $args['size'] ) {
-					$result['url'] = $result['full'] = wp_get_attachment_image_url( $img_id, $args['size'] );
-				} else {
-					$result['url']  = wp_get_attachment_image_url( $img_id, $args['size'] );
-					$result['full'] = wp_get_attachment_image_url( $img_id, 'full' );
-				}
-			} elseif ( is_array( $img_id ) ) {
-				$result['url']  = wp_get_attachment_image_url( $img_id['id'], $args['size'] );
-				$result['full'] = $img_id['url'];
-			} else {
-				$result['url'] = $result['full'] = $img_id;
+			$result['full'] = $result['url'];
+
+			if ( 'full' !== $args['size'] ) {
+				$result['url'] = wp_get_attachment_image_url( $result['id'], $args['size'] );
 			}
 
 			return $result;
+		}
 
+		public static function get_full_img_sizes( $img_id = null ) {
+
+			$result  = array();
+			$img_src = wp_get_attachment_image_src( $img_id, 'full' );
+
+			$result['width'] = $img_src[1];
+			$result['height'] = $img_src[2];
+
+			return $result;
 		}
 
 		/**
@@ -237,7 +263,6 @@ if ( ! class_exists( 'Jet_Engine_Img_Gallery' ) ) {
 		public static function get_gallery_id() {
 			return 'gallery_' . rand( 1000, 9999 );
 		}
-
 	}
 
 }

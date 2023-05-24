@@ -1841,6 +1841,7 @@ class Testimonial_Slider extends Widget_Base
 
 		$this->add_render_attribute('testimonial-slider', [
 			'class' => [
+				'swiper',
 				'swiper-container',
 				'eael-testimonial-slider-main',
 				'swiper-container-' . esc_attr($this->get_id())
@@ -2138,7 +2139,7 @@ class Testimonial_Slider extends Widget_Base
 		}
 
 		$this->add_render_attribute('eael_gallery_pagination_wrapper', [
-			'class' => ['swiper-container eael-testimonial-gallary-pagination', $visibility]
+			'class' => ['swiper swiper-container eael-testimonial-gallary-pagination', $visibility]
 		]);
 
 

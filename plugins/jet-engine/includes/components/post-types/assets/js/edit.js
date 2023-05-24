@@ -323,6 +323,9 @@
 			buttonLabel: JetEngineCPTConfig.edit_button_label,
 			isEdit: JetEngineCPTConfig.item_id,
 			helpLinks: JetEngineCPTConfig.help_links,
+			availablePositions: JetEngineCPTConfig.positions,
+			defaultMenuPosition: JetEngineCPTConfig.default_position,
+			positionIDs: [],
 			showDeleteDialog: false,
 			isBuiltIn: false,
 			saving: false,
@@ -354,6 +357,10 @@
 				self.isBuiltIn = true;
 			}
 
+			for ( var i = 0; i < this.availablePositions.length; i++ ) {
+				this.positionIDs.push( this.availablePositions[ i ].value );
+			}
+
 			if ( JetEngineCPTConfig.item_id ) {
 
 				if ( JetEngineCPTConfig.item_id > 0 ) {
@@ -371,6 +378,11 @@
 
 						self.generalSettings  = response.data.general_settings;
 						self.labels           = response.data.labels;
+
+						if ( response.data.advanced_settings.menu_position ) {
+							response.data.advanced_settings.menu_position = parseInt( response.data.advanced_settings.menu_position );
+						}
+
 						self.advancedSettings = response.data.advanced_settings;
 						self.metaFields       = response.data.meta_fields;
 						self.adminColumns     = response.data.admin_columns;
@@ -395,6 +407,11 @@
 
 			} else {
 				self.preSetIsPublicDeps();
+				self.$set(
+					self.advancedSettings,
+					'menu_position',
+					parseInt( self.defaultMenuPosition, 10 )
+				);
 			}
 		},
 		methods: {

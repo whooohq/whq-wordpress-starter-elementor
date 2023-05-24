@@ -56,7 +56,7 @@ class Jet_Group_Control_Box_Style extends Elementor\Group_Control_Base {
 		$fields['color_stop'] = array(
 			'label'      => _x( 'Location', 'Background Control', 'jet-elements' ),
 			'type'       => Controls_Manager::SLIDER,
-			'size_units' => array( '%' ),
+			'size_units' => array( '%', 'custom' ),
 			'default'    => array(
 				'unit' => '%',
 				'size' => 0,
@@ -82,7 +82,7 @@ class Jet_Group_Control_Box_Style extends Elementor\Group_Control_Base {
 		$fields['color_b_stop'] = array(
 			'label'      => _x( 'Location', 'Background Control', 'jet-elements' ),
 			'type'       => Controls_Manager::SLIDER,
-			'size_units' => array( '%' ),
+			'size_units' => array( '%', 'custom' ),
 			'default'    => array(
 				'unit' => '%',
 				'size' => 100,
@@ -112,7 +112,7 @@ class Jet_Group_Control_Box_Style extends Elementor\Group_Control_Base {
 		$fields['gradient_angle'] = array(
 			'label'      => _x( 'Angle', 'Background Control', 'jet-elements' ),
 			'type'       => Controls_Manager::SLIDER,
-			'size_units' => array( 'deg' ),
+			'size_units' => array( 'deg', 'custom' ),
 			'default'    => array(
 				'unit' => 'deg',
 				'size' => 180,
@@ -170,7 +170,7 @@ class Jet_Group_Control_Box_Style extends Elementor\Group_Control_Base {
 			'label'      => esc_html__( 'Icon Size', 'jet-elements' ),
 			'type'       => Controls_Manager::SLIDER,
 			'size_units' => array(
-				'px', 'em', 'rem',
+				'px', 'em', 'rem', 'custom'
 			),
 			'responsive' => true,
 			'range'      => array(
@@ -190,7 +190,7 @@ class Jet_Group_Control_Box_Style extends Elementor\Group_Control_Base {
 			'label'      => esc_html__( 'Box Size', 'jet-elements' ),
 			'type'       => Controls_Manager::SLIDER,
 			'size_units' => array(
-				'px', 'em', '%',
+				'px', 'em', '%', 'custom'
 			),
 			'range'      => array(
 				'px' => array(
@@ -245,7 +245,7 @@ class Jet_Group_Control_Box_Style extends Elementor\Group_Control_Base {
 		$fields['box_border_radius'] = array(
 			'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 			'type'       => Controls_Manager::DIMENSIONS,
-			'size_units' => array( 'px', '%' ),
+			'size_units' => array( 'px', '%', 'custom' ),
 			'selectors'  => array(
 				'{{SELECTOR}}' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 			),

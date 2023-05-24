@@ -112,6 +112,19 @@
 					font-size: 14px;
 				}
 			}
+			&-group {
+				display: flex;
+				justify-content: space-between;
+				gap: 10px;
+				.button.button-hero {
+					padding: 0;
+					width: 100%;
+					.spinner {
+						//display: none;
+						visibility: visible;
+					}
+				}
+			}
 		}
 	}
 	&__error {
@@ -212,4 +225,31 @@
 
 .jet_engine_dashboard_tabs {
 	padding: 0 !important;
+}
+
+.wp-list-table {
+	.type-jet-engine {
+		.jet-engine-listing-edit-settings {
+			margin: 0 0 0 15px;
+			display: none;
+			.spinner {
+				visibility: visible;
+				margin: 4px 0 0 5px;
+				background-size: 16px 16px;
+				width: 16px;
+				height: 16px;
+				display: none;
+			}
+			&--is-loading {
+				.spinner {
+					display: block;
+				}
+			}
+		}
+		&:hover {
+			.jet-engine-listing-edit-settings {
+				display: inline-block;
+			}
+		}
+	}
 }

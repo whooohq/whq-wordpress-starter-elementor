@@ -35,6 +35,11 @@ class Users_Query extends Base_Query {
 
 		$args = $this->final_query;
 
+		// Prevent php error if `paged` argument is empty string.
+		if ( empty( $args['paged'] ) ) {
+			unset( $args['paged'] );
+		}
+
 		if ( ! empty( $args['meta_query'] ) ) {
 			$args['meta_query'] = $this->prepare_meta_query_args( $args );
 		}

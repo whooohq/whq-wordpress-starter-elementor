@@ -4,6 +4,18 @@ Brand new addon for Elementor Page builder. It provides the set of modules to cr
 
 # ChangeLog
 
+## [2.6.9](https://github.com/ZemezLab/jet-elements/archive/2.6.9.zip) - 14.02.2023
+* Added: [Crocoblock/suggestions#6345](https://github.com/Crocoblock/suggestions/issues/6345)
+* Fixed: Widgets Accessibility
+* Added: `Random Slides Order` option in the Advanced Carousel widget
+* Added: `jet-elements/slider/slider-options` filter hook
+* Added: `jet-elements/jet-testimonials/carousel-options` filter hook
+* Added: `jet-elements/jet-image-comparison/carousel-options` filter hook
+* Added: `jet-elements/jet-posts/carousel-options` filter hook
+* Added: `jet-elements/jet-carousel/carousel-options` filter hook
+* Added: `Show Title in a Lightbox Popup`, `Show Description in a Lightbox Popup` options for Instagram, Images Layout, Advanced Carousel, Portfolio widgets
+* Fixed: minor issues
+
 ## [2.6.8](https://github.com/ZemezLab/jet-elements/archive/2.6.8.zip) - 21.11.2022
 * Added: [Crocoblock/suggestions#5895](https://github.com/Crocoblock/suggestions/issues/5895)
 * Added: [Crocoblock/suggestions#5938](https://github.com/Crocoblock/suggestions/issues/5938)

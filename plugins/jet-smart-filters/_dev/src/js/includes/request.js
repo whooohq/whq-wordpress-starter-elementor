@@ -2,7 +2,8 @@ import {
 	objectSlice,
 	someIsFalse,
 	getNesting,
-	isValidUrl
+	isValidUrl,
+	applyAliases
 } from 'includes/utility';
 
 export default {
@@ -45,7 +46,7 @@ export default {
 				requestData.paged = paged;
 			}
 
-			if ( referrerData ) {
+			if (referrerData) {
 				requestData.referrer = referrerData;
 			}
 
@@ -55,7 +56,7 @@ export default {
 
 			let requestURL = url;
 
-			if ( referrerURL ) {
+			if (referrerURL) {
 				requestURL = referrerURL;
 			}
 
@@ -103,15 +104,19 @@ export default {
 		if (!redirectPath)
 			return;
 
-		if (!isValidUrl(redirectPath))
-			redirectPath = getNesting(JetSmartFilterSettings, 'siteurl') + '/' + redirectPath;
+		redirectPath = (redirectPath.charAt(0) !== '/' ? '/' : '')
+			+ redirectPath
+			+ (redirectPath.charAt(redirectPath.length - 1) !== '/' ? '/' : '');
 
-		redirectPath += redirectPath.endsWith('/') ? '' : '/';
+		let url = applyAliases(redirectPath + getParams);
+
+		if (!isValidUrl(url))
+			url = getNesting(JetSmartFilterSettings, 'siteurl') + url;
 
 		if (redirectInNewWindow) {
-			window.open(redirectPath + getParams, '_blank');
+			window.open(url, '_blank');
 		} else {
-			window.location.replace(redirectPath + getParams);
+			window.location.replace(url);
 		}
 	},
 
@@ -153,4 +158,4 @@ export default {
 			return $field;
 		}
 	}
-}
+};

@@ -212,7 +212,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Left Indent', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => -200,
@@ -242,7 +242,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Right Indent', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => -200,
@@ -272,7 +272,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Top Indent', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'range'      => array(
 					'px' => array(
 						'min' => -200,
@@ -649,7 +649,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Animation Delay', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'ms',
+					'ms', 'custom'
 				),
 				'range' => array(
 					'ms' => array(
@@ -671,7 +671,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Appearance Duration', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'ms',
+					'ms', 'custom'
 				),
 				'range' => array(
 					'ms' => array(
@@ -693,7 +693,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Disappearance Duration', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'ms',
+					'ms', 'custom'
 				),
 				'range' => array(
 					'ms' => array(
@@ -715,7 +715,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Distance', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px',
+					'px', 'custom'
 				),
 				'range' => array(
 					'px' => array(
@@ -795,7 +795,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Duration', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'ms' ),
+				'size_units' => array( 'ms', 'custom' ),
 				'range'      => array(
 					'ms' => array(
 						'min'  => 100,
@@ -853,7 +853,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Duration', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'ms' ),
+				'size_units' => array( 'ms', 'custom' ),
 				'range'      => array(
 					'ms' => array(
 						'min'  => 100,
@@ -983,6 +983,18 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			)
 		);
 
+		$this->add_control(
+			'button_fold_text_accessibility',
+			array(
+				'label'     => esc_html__( 'Fold Text for Accessibility', 'jet-elements' ),
+				'type'      => Controls_Manager::TEXT,
+				'default'   => esc_html__( 'Hide', 'jet-elements' ),
+				'condition' => array(
+					'button_fold_text' => '',
+				),
+			)
+		);
+
 		$this->end_controls_tab();
 
 		$this->start_controls_tab(
@@ -1014,6 +1026,18 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 				'label'   => esc_html__( 'Unfold Text', 'jet-elements' ),
 				'type'    => Controls_Manager::TEXT,
 				'default' => esc_html__( 'Show', 'jet-elements' ),
+			)
+		);
+
+		$this->add_control(
+			'button_unfold_text_accessibility',
+			array(
+				'label'     => esc_html__( 'Fold Text for Accessibility', 'jet-elements' ),
+				'type'      => Controls_Manager::TEXT,
+				'default'   => esc_html__( 'Show', 'jet-elements' ),
+				'condition' => array(
+					'button_unfold_text' => '',
+				),
 			)
 		);
 
@@ -1077,7 +1101,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['table'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1090,7 +1114,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Table Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} '  . $css_scheme['table'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1295,7 +1319,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Header Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} '  . $css_scheme['header'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1348,7 +1372,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['header'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1405,7 +1429,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['icon_wrap'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1690,7 +1714,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Pricing Block Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['price'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1715,7 +1739,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['price'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1779,7 +1803,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Features Block Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['features'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1803,7 +1827,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['features'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2165,7 +2189,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['action'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2189,7 +2213,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['action'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2314,7 +2338,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Icon Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'condition'  => array(
 					'add_button_icon' => 'yes',
 				),
@@ -2394,7 +2418,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['button'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2407,7 +2431,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['button'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2499,7 +2523,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => array( 'px', '%', 'em', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['button'] . ':hover' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2512,7 +2536,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => esc_html__( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['button'] . ':hover' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2642,7 +2666,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 				'label'      => esc_html__( 'Width', 'jet-elements' ),
 				'type'       => Controls_Manager::SLIDER,
 				'size_units' => array(
-					'px', 'em',
+					'px', 'em', 'custom'
 				),
 				'range'      => array(
 					'px' => array(
@@ -2675,7 +2699,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['table'] . ' ' . $css_scheme['tooltip'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2700,7 +2724,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['table'] . ' ' . $css_scheme['tooltip'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2862,7 +2886,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Padding', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => array( 'px', 'em', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['fold_button'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2876,7 +2900,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['fold_trigger'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2912,7 +2936,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Icon margin', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px' ),
+				'size_units' => array( 'px', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['fold_button_icon'] => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2935,7 +2959,7 @@ class Jet_Elements_Pricing_Table extends Jet_Elements_Base {
 			array(
 				'label'      => __( 'Border Radius', 'jet-elements' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => array( 'px', '%', 'custom' ),
 				'selectors'  => array(
 					'{{WRAPPER}} ' . $css_scheme['fold_button'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),

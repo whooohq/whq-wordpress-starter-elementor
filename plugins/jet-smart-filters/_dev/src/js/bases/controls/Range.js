@@ -45,14 +45,18 @@ export default class RangeControl extends Filter {
 		});
 
 		if (this.$rangeInputMin.length)
-			this.$rangeInputMin.on('input', (event) => {
+			this.$rangeInputMin.on('input keydown blur', (event) => {
 				this.minVal = this.inputNumberRangeValidation(parseFloat(this.$rangeInputMin.val())) || this.minConstraint;
-				this.valuesUpdated('min');
+
+				if (event.type === 'blur' || event.keyCode === 13)
+					this.valuesUpdated('min');
 			});
 		if (this.$rangeInputMax.length)
-			this.$rangeInputMax.on('input', (event) => {
+			this.$rangeInputMax.on('input keydown blur', (event) => {
 				this.maxVal = this.inputNumberRangeValidation(parseFloat(this.$rangeInputMax.val())) || this.maxConstraint;
-				this.valuesUpdated('max');
+
+				if (event.type === 'blur' || event.keyCode === 13)
+					this.valuesUpdated('max');
 			});
 	}
 
@@ -84,6 +88,11 @@ export default class RangeControl extends Filter {
 	}
 
 	setData(newData) {
+		this.reset();
+
+		if (!newData)
+			return;
+
 		const data = newData.split('_');
 
 		if (data[0]) {

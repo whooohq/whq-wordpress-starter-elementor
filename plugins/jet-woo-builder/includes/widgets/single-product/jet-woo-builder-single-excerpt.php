@@ -68,8 +68,8 @@ class Jet_Woo_Builder_Single_Excerpt extends Jet_Woo_Builder_Base {
 		$this->add_control(
 			'single_excerpt_color',
 			[
-				'label'     => __( 'Text Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['excerpt'] => 'color: {{VALUE}}',
 				],

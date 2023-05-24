@@ -3,6 +3,26 @@ namespace Jet_Engine\Blocks_Views\Dynamic_Content\Blocks;
 
 abstract class Base {
 
+	private $parser = null;
+
+	/**
+	 * Set current block parser
+	 * 
+	 * @param [type] $parser [description]
+	 */
+	public function set_parser( $parser ) {
+		$this->parser = $parser;
+	}
+
+	/**
+	 * Set current block parser
+	 * 
+	 * @param [type] $parser [description]
+	 */
+	public function get_parser() {
+		return $this->parser;
+	}
+
 	/**
 	 * Returns block name to register dynamic attributes for
 	 *
@@ -75,7 +95,13 @@ abstract class Base {
 			}
 
 			if ( ! empty( $attr_data['replace_callback'] ) && is_callable( $attr_data['replace_callback'] ) ) {
-				return call_user_func( $attr_data['replace_callback'], $value, $content, $dynamic_attrs, $parsed_attrs );
+				return call_user_func( 
+					$attr_data['replace_callback'],
+					$value,
+					$content,
+					$dynamic_attrs,
+					$parsed_attrs
+				);
 			} elseif ( ! empty( $attr_data['replace'] ) ) {
 
 

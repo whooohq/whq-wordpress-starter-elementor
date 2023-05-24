@@ -1,4 +1,4 @@
-/*! elementor - v3.8.1 - 13-11-2022 */
+/*! elementor - v3.13.3 - 22-05-2023 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -15,45 +15,44 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
-
 var matchUserAgent = function matchUserAgent(UserAgentStr) {
-  return userAgent.indexOf(UserAgentStr) >= 0;
-},
-    userAgent = navigator.userAgent,
-    // Solution influenced by https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
-// Opera 8.0+
-isOpera = !!window.opr && !!opr.addons || !!window.opera || matchUserAgent(' OPR/'),
-    // Firefox 1.0+
-isFirefox = matchUserAgent('Firefox'),
-    // Safari 3.0+ "[object HTMLElementConstructor]"
-isSafari = /^((?!chrome|android).)*safari/i.test(userAgent) || /constructor/i.test(window.HTMLElement) || function (p) {
-  return '[object SafariRemoteNotification]' === p.toString();
-}(!window.safari || typeof safari !== 'undefined' && safari.pushNotification),
-    // Internet Explorer 6-11
-isIE = /Trident|MSIE/.test(userAgent) && (
-/* @cc_on!@*/
- false || !!document.documentMode),
-    // Edge 20+
-isEdge = !isIE && !!window.StyleMedia || matchUserAgent('Edg'),
-    // Google Chrome (Not accurate)
-isChrome = !!window.chrome && matchUserAgent('Chrome') && !(isEdge || isOpera),
-    // Blink engine
-isBlink = matchUserAgent('Chrome') && !!window.CSS,
-    // Apple Webkit engine
-isAppleWebkit = matchUserAgent('AppleWebKit') && !isBlink,
-    environment = {
-  appleWebkit: isAppleWebkit,
-  blink: isBlink,
-  chrome: isChrome,
-  edge: isEdge,
-  firefox: isFirefox,
-  ie: isIE,
-  mac: matchUserAgent('Macintosh'),
-  opera: isOpera,
-  safari: isSafari,
-  webkit: matchUserAgent('AppleWebKit')
-};
+    return userAgent.indexOf(UserAgentStr) >= 0;
+  },
+  userAgent = navigator.userAgent,
+  // Solution influenced by https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
 
+  // Opera 8.0+
+  isOpera = !!window.opr && !!opr.addons || !!window.opera || matchUserAgent(' OPR/'),
+  // Firefox 1.0+
+  isFirefox = matchUserAgent('Firefox'),
+  // Safari 3.0+ "[object HTMLElementConstructor]"
+  isSafari = /^((?!chrome|android).)*safari/i.test(userAgent) || /constructor/i.test(window.HTMLElement) || function (p) {
+    return '[object SafariRemoteNotification]' === p.toString();
+  }(!window.safari || typeof safari !== 'undefined' && safari.pushNotification),
+  // Internet Explorer 6-11
+  isIE = /Trident|MSIE/.test(userAgent) && ( /* @cc_on!@*/ false || !!document.documentMode),
+  // Edge 20+
+  isEdge = !isIE && !!window.StyleMedia || matchUserAgent('Edg'),
+  // Google Chrome (Not accurate)
+  isChrome = !!window.chrome && matchUserAgent('Chrome') && !(isEdge || isOpera),
+  // Blink engine
+  isBlink = matchUserAgent('Chrome') && !!window.CSS,
+  // Apple Webkit engine
+  isAppleWebkit = matchUserAgent('AppleWebKit') && !isBlink,
+  isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0,
+  environment = {
+    isTouchDevice: isTouchDevice,
+    appleWebkit: isAppleWebkit,
+    blink: isBlink,
+    chrome: isChrome,
+    edge: isEdge,
+    firefox: isFirefox,
+    ie: isIE,
+    mac: matchUserAgent('Macintosh'),
+    opera: isOpera,
+    safari: isSafari,
+    webkit: matchUserAgent('AppleWebKit')
+  };
 var _default = environment;
 exports["default"] = _default;
 
@@ -70,52 +69,42 @@ exports["default"] = _default;
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = AdminTopBar;
-
 var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
-
 var _barButton = _interopRequireDefault(__webpack_require__(/*! ./components/bar-button/bar-button */ "../modules/admin-top-bar/assets/js/components/bar-button/bar-button.js"));
-
 var _barHeading = _interopRequireDefault(__webpack_require__(/*! ./components/bar-heading/bar-heading */ "../modules/admin-top-bar/assets/js/components/bar-heading/bar-heading.js"));
-
 var _connectionButton = _interopRequireDefault(__webpack_require__(/*! ./components/connection-button/connection-button */ "../modules/admin-top-bar/assets/js/components/connection-button/connection-button.js"));
-
 var _usePageTitle = __webpack_require__(/*! ./hooks/use-page-title/use-page-title */ "../modules/admin-top-bar/assets/js/hooks/use-page-title/use-page-title.js");
-
 var _environment = _interopRequireDefault(__webpack_require__(/*! elementor-common/utils/environment */ "../core/common/assets/js/utils/environment.js"));
-
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 function AdminTopBar() {
-  var actionButtonsRef = (0, _react.useRef)(); // Handle Top Bar visibility on initiation: Indicate that the admin top bar is visible and the page content needs to push down below the admin top bar for visibility.
+  var actionButtonsRef = (0, _react.useRef)();
 
+  // Handle Top Bar visibility on initiation: Indicate that the admin top bar is visible and the page content needs to push down below the admin top bar for visibility.
   (0, _react.useEffect)(function () {
     var adminTopBarElement = document.querySelector('#e-admin-top-bar-root');
     adminTopBarElement.classList.add('e-admin-top-bar--active');
-  }, []); // Handle the page title visibility in admin top bar.
+  }, []);
 
-  var pageTitleText = (0, _usePageTitle.usePageTitle)(); // Handle the action buttons visibility in admin top bar on initiation.
+  // Handle the page title visibility in admin top bar.
+  var pageTitleText = (0, _usePageTitle.usePageTitle)();
 
+  // Handle the action buttons visibility in admin top bar on initiation.
   (0, _react.useEffect)(function () {
     var actionButtonElements = document.querySelectorAll('.page-title-action');
     actionButtonElements.forEach(function (actionButtonElement) {
       actionButtonsRef.current.appendChild(actionButtonElement);
     });
   }, []);
-
   var finderAction = function finderAction() {
     $e.route('finder');
   };
-
-  var controlSign = _environment.default.mac ? '⌘' : '^';
+  var controlSign = _environment.default.mac ? '&#8984;' : '^';
   var finderTooltipText = __('Search or do anything in Elementor', 'elementor') + " ".concat(controlSign, "+E");
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "e-admin-top-bar"
@@ -148,18 +137,13 @@ function AdminTopBar() {
 
 
 var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = BarButton;
-
 var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
-
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 function BarButton(props) {
   (0, _react.useEffect)(function () {
     if (props.dataInfo) {
@@ -184,11 +168,10 @@ function BarButton(props) {
     target: props.target
   }, /*#__PURE__*/_react.default.createElement("i", {
     className: "e-admin-top-bar__bar-button-icon ".concat(props.icon)
-  }), /*#__PURE__*/_react.default.createElement("h1", {
+  }), /*#__PURE__*/_react.default.createElement("span", {
     className: "e-admin-top-bar__bar-button-title"
   }, props.children));
 }
-
 BarButton.propTypes = {
   children: PropTypes.any,
   dataInfo: PropTypes.string,
@@ -212,27 +195,23 @@ BarButton.propTypes = {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = BarHeading;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 function BarHeading(props) {
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "e-admin-top-bar__heading"
   }, /*#__PURE__*/_react.default.createElement("div", {
-    className: "e-admin-top-bar__heading-logo"
+    className: "e-logo-wrapper"
   }, /*#__PURE__*/_react.default.createElement("i", {
     className: "eicon-elementor",
     "aria-hidden": "true"
-  })), /*#__PURE__*/_react.default.createElement("h1", {
+  })), /*#__PURE__*/_react.default.createElement("span", {
     className: "e-admin-top-bar__heading-title"
   }, props.children));
 }
-
 BarHeading.propTypes = {
   children: PropTypes.any
 };
@@ -250,22 +229,15 @@ BarHeading.propTypes = {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = ConnectionButton;
-
 var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
-
 var _barButton = _interopRequireDefault(__webpack_require__(/*! ../bar-button/bar-button */ "../modules/admin-top-bar/assets/js/components/bar-button/bar-button.js"));
-
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 function ConnectionButton() {
   var buttonRef = (0, _react.useRef)();
   var isUserConnected = elementorAdminTopBarConfig.is_user_connected;
@@ -273,22 +245,18 @@ function ConnectionButton() {
     if (!buttonRef.current || isUserConnected) {
       return;
     }
-
     jQuery(buttonRef.current).elementorConnect();
   }, []);
-
   var tooltipText = __('Connect your account to get access to Elementor\'s Template Library & more.', 'elementor'),
-      connectUrl = elementorAdminTopBarConfig.connect_url,
-      buttonText = __('Connect Account', 'elementor'),
-      targetUrl = '_self';
-
+    connectUrl = elementorAdminTopBarConfig.connect_url,
+    buttonText = __('Connect Account', 'elementor'),
+    targetUrl = '_self';
   if (isUserConnected) {
     tooltipText = '';
     connectUrl = 'https://go.elementor.com/wp-dash-admin-bar-account/';
     buttonText = __('My Elementor', 'elementor');
     targetUrl = '_blank';
   }
-
   return /*#__PURE__*/_react.default.createElement(_barButton.default, {
     icon: "eicon-user-circle-o",
     buttonRef: buttonRef,
@@ -310,34 +278,26 @@ function ConnectionButton() {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports.usePageTitle = void 0;
-
 var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
-
 var _react = __webpack_require__(/*! react */ "react");
-
 var usePageTitle = function usePageTitle() {
   var _useState = (0, _react.useState)('Elementor'),
-      _useState2 = (0, _slicedToArray2.default)(_useState, 2),
-      pageTitle = _useState2[0],
-      setPageTitle = _useState2[1];
-
+    _useState2 = (0, _slicedToArray2.default)(_useState, 2),
+    pageTitle = _useState2[0],
+    setPageTitle = _useState2[1];
   (0, _react.useEffect)(function () {
     var pageTitleElement = document.querySelector('.wp-heading-inline');
-
     if (!pageTitleElement) {
       return;
     }
-
     setPageTitle(pageTitleElement.innerText);
   }, []);
   return pageTitle;
 };
-
 exports.usePageTitle = usePageTitle;
 
 /***/ }),
@@ -1486,14 +1446,9 @@ module.exports = wp.i18n;
 
 function _arrayLikeToArray(arr, len) {
   if (len == null || len > arr.length) len = arr.length;
-
-  for (var i = 0, arr2 = new Array(len); i < len; i++) {
-    arr2[i] = arr[i];
-  }
-
+  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
   return arr2;
 }
-
 module.exports = _arrayLikeToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1507,7 +1462,6 @@ module.exports = _arrayLikeToArray, module.exports.__esModule = true, module.exp
 function _arrayWithHoles(arr) {
   if (Array.isArray(arr)) return arr;
 }
-
 module.exports = _arrayWithHoles, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1523,7 +1477,6 @@ function _interopRequireDefault(obj) {
     "default": obj
   };
 }
-
 module.exports = _interopRequireDefault, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1535,35 +1488,32 @@ module.exports = _interopRequireDefault, module.exports.__esModule = true, modul
 /***/ ((module) => {
 
 function _iterableToArrayLimit(arr, i) {
-  var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
-
-  if (_i == null) return;
-  var _arr = [];
-  var _n = true;
-  var _d = false;
-
-  var _s, _e;
-
-  try {
-    for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
-      _arr.push(_s.value);
-
-      if (i && _arr.length === i) break;
-    }
-  } catch (err) {
-    _d = true;
-    _e = err;
-  } finally {
+  var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"];
+  if (null != _i) {
+    var _s,
+      _e,
+      _x,
+      _r,
+      _arr = [],
+      _n = !0,
+      _d = !1;
     try {
-      if (!_n && _i["return"] != null) _i["return"]();
+      if (_x = (_i = _i.call(arr)).next, 0 === i) {
+        if (Object(_i) !== _i) return;
+        _n = !1;
+      } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0);
+    } catch (err) {
+      _d = !0, _e = err;
     } finally {
-      if (_d) throw _e;
+      try {
+        if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return;
+      } finally {
+        if (_d) throw _e;
+      }
     }
+    return _arr;
   }
-
-  return _arr;
 }
-
 module.exports = _iterableToArrayLimit, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1577,7 +1527,6 @@ module.exports = _iterableToArrayLimit, module.exports.__esModule = true, module
 function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-
 module.exports = _nonIterableRest, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1589,17 +1538,12 @@ module.exports = _nonIterableRest, module.exports.__esModule = true, module.expo
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var arrayWithHoles = __webpack_require__(/*! ./arrayWithHoles.js */ "../node_modules/@babel/runtime/helpers/arrayWithHoles.js");
-
 var iterableToArrayLimit = __webpack_require__(/*! ./iterableToArrayLimit.js */ "../node_modules/@babel/runtime/helpers/iterableToArrayLimit.js");
-
 var unsupportedIterableToArray = __webpack_require__(/*! ./unsupportedIterableToArray.js */ "../node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js");
-
 var nonIterableRest = __webpack_require__(/*! ./nonIterableRest.js */ "../node_modules/@babel/runtime/helpers/nonIterableRest.js");
-
 function _slicedToArray(arr, i) {
   return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || unsupportedIterableToArray(arr, i) || nonIterableRest();
 }
-
 module.exports = _slicedToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1619,7 +1563,6 @@ function _typeof(obj) {
     return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
   }, module.exports.__esModule = true, module.exports["default"] = module.exports), _typeof(obj);
 }
-
 module.exports = _typeof, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -1631,7 +1574,6 @@ module.exports = _typeof, module.exports.__esModule = true, module.exports["defa
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var arrayLikeToArray = __webpack_require__(/*! ./arrayLikeToArray.js */ "../node_modules/@babel/runtime/helpers/arrayLikeToArray.js");
-
 function _unsupportedIterableToArray(o, minLen) {
   if (!o) return;
   if (typeof o === "string") return arrayLikeToArray(o, minLen);
@@ -1640,7 +1582,6 @@ function _unsupportedIterableToArray(o, minLen) {
   if (n === "Map" || n === "Set") return Array.from(o);
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray(o, minLen);
 }
-
 module.exports = _unsupportedIterableToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ })
@@ -1683,11 +1624,8 @@ var __webpack_exports__ = {};
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _adminTopBar = _interopRequireDefault(__webpack_require__(/*! ./admin-top-bar */ "../modules/admin-top-bar/assets/js/admin-top-bar.js"));
-
 var AppWrapper = elementorCommon.config.isDebug ? _react.default.StrictMode : _react.default.Fragment;
 var adminTopBarElement = document.getElementById('e-admin-top-bar-root');
 var elementorMenuItemIds = ['toplevel_page_elementor', 'menu-posts-elementor_library'];
@@ -1695,7 +1633,6 @@ var menuItemSelector = elementorMenuItemIds.map(function (itemId) {
   return "#".concat(itemId, " .wp-menu-open");
 }).join(', ');
 var isElementorPage = !!document.querySelector(menuItemSelector);
-
 if (isElementorPage) {
   ReactDOM.render( /*#__PURE__*/_react.default.createElement(AppWrapper, null, /*#__PURE__*/_react.default.createElement(_adminTopBar.default, null)), adminTopBarElement);
 }

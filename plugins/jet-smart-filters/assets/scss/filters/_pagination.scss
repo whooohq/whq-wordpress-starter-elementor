@@ -1,14 +1,13 @@
 .jet-filters-pagination {
-	margin-left: -3px;
-	margin-right: -3px;
-	margin-bottom: -6px;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	margin: -3px;
 
 	&__item {
 		display: inline-block;
 		cursor: pointer;
-		margin-bottom: 6px;
-		margin-left: 3px;
-		margin-right: 3px;
+		margin: 3px;
 	}
 
 	&__link {
@@ -17,5 +16,42 @@
 
 	&__disabled {
 		display: none;
+	}
+
+	&__load-more {
+		margin: 3px;
+	}
+	&__load-more &__link {
+		cursor: pointer;
+		display: inline-block;
+		padding: 8px 16px;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		text-decoration: none;
+		border: none;
+		border-radius: 4px;
+		box-shadow: none;
+		transition: all 0.3s ease;
+		color: #fff;
+		background-color: #398ffc;
+
+		&:hover {
+			color: #fff;
+			background-color: #5fb5ff;
+		}
+	}
+}
+
+// Context Bricks
+.brxe-jet-smart-filters-pagination {
+	.jet-filters-pagination {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.jet-filters-pagination,
+	.jet-filters-pagination__item,
+	.jet-filters-pagination__load-more {
+		margin: 0;
 	}
 }

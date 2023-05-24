@@ -2,7 +2,7 @@ import { rangeIcon } from 'blocks/editor/icons';
 import attributes from 'blocks/editor/attributes';
 import General from 'blocks/editor/panels/general';
 import TemplateRender from 'blocks/editor/controls/templateRender';
-import RangeFilter from 'filters/Range';
+import Range from 'filters/Range';
 
 const { __ } = wp.i18n;
 
@@ -38,11 +38,15 @@ registerBlockType('jet-smart-filters/range', {
 			this._holder = $(window.ReactDOM.findDOMNode(this));
 		}
 
-		layoutUpdated(container) {
-			const $filterContainer = $('.' + window.JetSmartFilters.filtersList.Range, container);
+		layoutUpdated() {
+			this.initRange();
+		}
+
+		initRange() {
+			const $filterContainer = this._holder.find('.' + window.JetSmartFilters.filtersList.Range);
 
 			if ($filterContainer.length)
-				new RangeFilter($filterContainer);
+				new Range($filterContainer);
 		}
 
 		render() {
@@ -69,7 +73,7 @@ registerBlockType('jet-smart-filters/range', {
 					<TemplateRender
 						block="jet-smart-filters/range"
 						attributes={props.attributes}
-						onSuccess={container => { this.layoutUpdated(container) }}
+						onSuccess={container => { this.layoutUpdated(container); }}
 					/>
 				</div>
 			];

@@ -268,6 +268,7 @@
 					data: {
 						action: 'jet_engine_save_settings',
 						settings: self.settings,
+						_nonce: JetEngineProfileBuilder._nonce,
 					},
 				}).done( function( response ) {
 
@@ -281,7 +282,7 @@
 						} );
 					} else {
 						self.$CXNotice.add( {
-							message: response.message,
+							message: response.data.message,
 							type: 'error',
 							duration: 7000,
 						} );

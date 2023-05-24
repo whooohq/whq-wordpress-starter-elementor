@@ -701,7 +701,7 @@ class Jet_Elements_Line_Chart extends Jet_Elements_Base {
 			array(
 				'label'       => esc_html__( 'Padding', 'jet-elements' ),
 				'type'        => Controls_Manager::DIMENSIONS,
-				'size_units'  => array( 'px' ),
+				'size_units'  => array( 'px', 'custom' ),
 				'render_type' => 'template',
 				'selectors'   => array(
 					$css_scheme['tooltip'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',

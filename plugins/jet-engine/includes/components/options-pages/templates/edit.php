@@ -88,6 +88,58 @@
 						}
 					]"
 				></cx-vui-select>
+				<cx-vui-select
+					label="<?php _e( 'Fields storage type', 'jet-engine' ); ?>"
+					description="<?php _e( 'Select `Separate` to store field values in separate options', 'jet-engine' ); ?>"
+					:wrapper-css="[ 'equalwidth' ]"
+					size="fullwidth"
+					:options-list="[
+						{
+							value: 'default',
+							label: '<?php _e( 'Default (as array)', 'jet-engine' ); ?>',
+						},
+						{
+							value: 'separate',
+							label: '<?php _e( 'Separate', 'jet-engine' ); ?>',
+						}
+					]"
+					v-model="generalSettings.storage_type"
+				></cx-vui-select>
+				<cx-vui-switcher
+					label="<?php _e( 'Add prefix for separate options', 'jet-engine' ); ?>"
+					description="<?php _e( 'Toggle this option to add page slug as prefix for separate options', 'jet-engine' ); ?>"
+					:wrapper-css="[ 'equalwidth' ]"
+					v-model="generalSettings.option_prefix"
+					:conditions="[
+						{
+							input: generalSettings.storage_type,
+							compare: 'equal',
+							value: 'separate'
+						}
+					]"
+				></cx-vui-switcher>
+				<cx-vui-select
+					label="<?php _e( 'Update options', 'jet-engine' ); ?>"
+					description="<?php _e( 'Toggle this if you already have added options of this option page and want to automatically change storage type for these options', 'jet-engine' ); ?>"
+					:wrapper-css="[ 'equalwidth' ]"
+					size="fullwidth"
+					:options-list="[
+						{
+							value: '',
+							label: '<?php _e( 'No', 'jet-engine' ); ?>',
+						},
+						{
+							value: 'update',
+							label: '<?php _e( 'Update and leave options saved in the previous storage type without changes', 'jet-engine' ); ?>',
+						},
+						{
+							value: 'update_and_delete',
+							label: '<?php _e( 'Update and delete options saved in the previous storage type', 'jet-engine' ); ?>',
+						}
+					]"
+					v-if="storageTypeIsChanged"
+					v-model="updateOptions"
+				></cx-vui-select>
 				<cx-vui-switcher
 					label="<?php _e( 'Hide field names', 'jet-engine' ); ?>"
 					description="<?php _e( 'Hide field names on option page', 'jet-engine' ); ?>"
@@ -160,7 +212,6 @@
 	<jet-cpt-delete-dialog
 		v-if="showDeleteDialog"
 		v-model="showDeleteDialog"
-		:post-type-id="parseInt( isEdit, 10 )"
-		:post-type-slug="generalSettings.slug"
+		:item-id="parseInt( isEdit, 10 )"
 	></jet-cpt-delete-dialog>
 </div>

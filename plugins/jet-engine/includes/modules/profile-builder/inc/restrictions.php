@@ -26,18 +26,24 @@ class Restrictions {
 		$found_restriction = false;
 
 		if ( ! is_user_logged_in() ) {
-			$role = 'jet-engine-guest';
+			$roles = array( 'jet-engine-guest' );
 		} else {
 			$user  = wp_get_current_user();
 			$roles = array_values( $user->roles );
-			$role  = $roles[0];
 		}
 
 		$found_restrictions = array();
 		$find_by_post_type  = false;
 
 		foreach ( $restrictions as $restriction ) {
-			if ( ! empty( $restriction['role'] ) && in_array( $role, $restriction['role'] ) ) {
+
+			if ( empty( $restriction['role'] ) ) {
+				continue;
+			}
+
+			$intersect = array_intersect( $roles, $restriction['role'] );
+
+			if ( ! empty( $intersect ) ) {
 				$_post_type = ! empty( $restriction['post_type'] ) ? $restriction['post_type'] : 'all';
 
 				if ( is_array( $_post_type ) ) {

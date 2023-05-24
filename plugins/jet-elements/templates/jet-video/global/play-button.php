@@ -5,6 +5,13 @@
 
 $this->add_render_attribute( 'play_button', 'class', 'jet-video__play-button' );
 $this->add_render_attribute( 'play_button', 'role', 'button' );
+$this->add_render_attribute( 'play_button', 'tabindex', 0 );
+
+if ( isset( $settings['play_button_accessibility'] ) ) {
+	$this->add_render_attribute( 'play_button', 'aria-label', $settings['play_button_accessibility'] );
+} else {
+	$this->add_render_attribute( 'play_button', 'aria-label', '' );
+}
 
 if ( ! empty( $settings['play_button_hover_animation'] ) ) {
 	$this->add_render_attribute( 'play_button', 'class', 'jet-video__play-button--animation-' . esc_attr( $settings['play_button_hover_animation'] ) );

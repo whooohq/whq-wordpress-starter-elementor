@@ -128,7 +128,7 @@ if ( ! class_exists( 'CX_Control_Repeater' ) ) {
 			$html        = '';
 			$class       = $this->settings['class'];
 			$ui_kit      = ! empty( $this->settings['ui_kit'] ) ? 'cx-ui-kit' : '';
-			$value       = ! empty( $this->settings['value'] ) ? count( $this->settings['value'] ) : 0 ;
+			$value       = ( ! empty( $this->settings['value'] ) && is_array( $this->settings['value'] ) ) ? count( $this->settings['value'] ) : 0 ;
 			$title_field = ! empty( $this->settings['title_field'] ) ? 'data-title-field="' . $this->settings['title_field'] . '"' : '' ;
 
 			add_filter( 'cx_control/is_repeater', '__return_true' );

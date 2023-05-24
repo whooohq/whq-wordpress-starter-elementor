@@ -14,16 +14,13 @@ export default class SelectControl extends Filter {
 
 		this.processData();
 		this.initEvent();
-
-		// reset the select when returning to the page
-		this.resetSelectOnInitialization();
 	}
 
 	addFilterChangeEvent() {
 		this.$select.on('change', () => {
 			this.processData();
 			this.emitFiterChange();
-		})
+		});
 
 		if (!this.isSelect && this.canDeselect) {
 			this.$select.on('click', evt => {
@@ -31,7 +28,7 @@ export default class SelectControl extends Filter {
 
 				if ($radioItem.val() === this.dataValue)
 					$radioItem.prop('checked', false).trigger('change');
-			})
+			});
 		}
 	}
 
@@ -50,6 +47,11 @@ export default class SelectControl extends Filter {
 	}
 
 	setData(newData) {
+		this.reset();
+
+		if (!newData)
+			return;
+
 		const $item = this.getItemByValue(newData);
 
 		if ($item)
@@ -61,34 +63,6 @@ export default class SelectControl extends Filter {
 	reset() {
 		this.$selected.prop(this.isSelect ? 'selected' : 'checked', false);
 		this.processData();
-	}
-
-	resetSelectOnInitialization() {
-		if (!this.isSelect)
-			return;
-
-		$(document).ready(function () {
-			if (this.filterGroup && this.filterGroup.currentQuery && this.filterGroup.currentQuery[this.queryKey])
-				return;
-
-			setTimeout(() => {
-				this.$select.prop('selectedIndex', 0);
-			});
-		}.bind(this));
-	}
-
-	resetSelectOnInitialization() {
-		if (!this.isSelect)
-			return;
-
-		$(document).ready(function () {
-			if (this.filterGroup && this.filterGroup.currentQuery && this.filterGroup.currentQuery[this.queryKey])
-				return;
-
-			setTimeout(() => {
-				this.$select.prop('selectedIndex', 0);
-			});
-		}.bind(this));
 	}
 
 	get activeValue() {
@@ -113,7 +87,7 @@ export default class SelectControl extends Filter {
 				const $option = $(item);
 
 				if ($option.val() === value)
-					$item = $option
+					$item = $option;
 			});
 		} else {
 			$item = this.$select.filter('[value="' + value + '"]');

@@ -29,6 +29,9 @@ class Module {
 	public $data;
 	public $request;
 	public $settings;
+	public $listings;
+	public $auth_types;
+	public $form;
 
 	/**
 	 * Constructor for the class

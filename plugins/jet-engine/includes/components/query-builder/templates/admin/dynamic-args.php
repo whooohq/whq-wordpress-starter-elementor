@@ -45,6 +45,18 @@
 				size="fullwidth"
 				v-model="advancedSettings.fallback"
 			></cx-vui-input>
+			<cx-vui-input
+				label="<?php _e( 'Before', 'jet-engine' ); ?>"
+				:wrapper-css="[ 'mini-label' ]"
+				size="fullwidth"
+				v-model="advancedSettings.before"
+			></cx-vui-input>
+			<cx-vui-input
+				label="<?php _e( 'After', 'jet-engine' ); ?>"
+				:wrapper-css="[ 'mini-label' ]"
+				size="fullwidth"
+				v-model="advancedSettings.after"
+			></cx-vui-input>
 		</div>
 		<div class="jet-query-macros__content" v-else-if="editMacros">
 			<div class="jet-query-macros__title">

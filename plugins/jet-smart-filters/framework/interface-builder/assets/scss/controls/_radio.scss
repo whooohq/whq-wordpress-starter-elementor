@@ -9,7 +9,8 @@ input.cx-radio-input{
 	}
 
 	label {
-		display: inline-block;
+		display: inline-flex;
+		align-items: center;
 		font-size: 12px;
 		line-height: 14px;
 		color: $dark_color_1;
@@ -19,13 +20,18 @@ input.cx-radio-input{
 		width: 16px;
 		height: 16px;
 		border-radius: 25px;
-		margin-right: 10px;
+		margin: 0 10px 0 0;
 		cursor: pointer;
 		position: relative;
 		background-color: white;
 		display: inline-block;
 		float: left;
 		box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2);
+
+		.rtl & {
+			float: right;
+			margin: 0 0 0 10px;
+		}
 
 		i {
 			width: 8px;
@@ -41,14 +47,17 @@ input.cx-radio-input{
 }
 
 .cx-radio-item {
-	.cx-radio-input:checked{
-		& + label{
-			span{
-				i{
-					transform: scale(1);
-				}
+	.cx-radio-input:checked {
+		& + label .cx-radio-item,
+		& + .cx-radio-item {
+			i {
+				transform: scale(1);
 			}
 		}
+	}
+
+	.cx-radio-input:not(:checked) ~ .cx-radio-custom-value {
+		pointer-events: none;
 	}
 }
 
@@ -59,6 +68,9 @@ input.cx-radio-input{
 	max-width: 60px;
 	font-size: 12px;
 	position: relative;
+	.rtl & {
+		float: right;
+	}
 
 	.cx-lable-content {
 		display: flex;
@@ -87,5 +99,13 @@ input.cx-radio-input{
 				box-shadow: 0 0 0 2px rgba(255, 254, 255, 1), 0 0 0 5px #49c66a;
 			}
 		}
+	}
+}
+
+.cx-check-radio-group {
+	&--horizontal {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+		column-gap: 5px;
 	}
 }

@@ -45,10 +45,13 @@ export default class RatingControl extends Filter {
 	}
 
 	setData(newData) {
+		this.reset();
+
+		if (!newData)
+			return;
+
 		this.$checked.removeClass('is-checked');
 		this.$starsRating.filter('[value="' + newData + '"]').addClass('is-checked');
-
-		this.processData();
 	}
 
 	reset() {

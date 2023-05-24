@@ -12,6 +12,10 @@ Vue.component( 'jet-cpt-delete-dialog', {
 		postTypeSlug: {
 			type: String,
 		},
+		postTypeName: {
+			type: String,
+			default: '',
+		},
 	},
 	data: function() {
 		return {

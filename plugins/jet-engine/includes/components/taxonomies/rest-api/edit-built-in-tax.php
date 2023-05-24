@@ -79,6 +79,7 @@ class Jet_Engine_CPT_Rest_Edit_BI_Tax extends Jet_Engine_Base_API_Endpoint {
 			'capability_type'            => $this->safe_get( $params, 'advanced_settings', 'capability_type' ),
 			'hierarchical'               => $this->safe_get( $params, 'advanced_settings', 'hierarchical' ),
 			'rewrite_slug'               => $this->safe_get( $params, 'advanced_settings', 'rewrite_slug' ),
+			'rewrite_hierarchical'       => $this->safe_get( $params, 'advanced_settings', 'rewrite_hierarchical' ),
 			'description'                => $this->safe_get( $params, 'advanced_settings', 'description' ),
 			'meta_fields'                => ! empty( $params['meta_fields'] ) ? $params['meta_fields'] : array(),
 		);
@@ -101,11 +102,15 @@ class Jet_Engine_CPT_Rest_Edit_BI_Tax extends Jet_Engine_Base_API_Endpoint {
 		);
 
 		if ( isset( $default_data['advanced_settings']['rewrite'] ) && is_array( $default_data['advanced_settings']['rewrite'] ) ) {
-			$default_data['advanced_settings']['rewrite_slug'] = $default_data['advanced_settings']['rewrite']['slug'];
-			$default_data['advanced_settings']['rewrite']      = true;
+			$default_data['advanced_settings']['rewrite_slug']         = $default_data['advanced_settings']['rewrite']['slug'];
+			$default_data['advanced_settings']['rewrite_hierarchical'] = isset( $default_data['advanced_settings']['rewrite']['hierarchical'] ) ? $default_data['advanced_settings']['rewrite']['hierarchical'] : false;
+			$default_data['advanced_settings']['with_front']           = isset( $default_data['advanced_settings']['rewrite']['with_front'] ) ? $default_data['advanced_settings']['rewrite']['with_front'] : true;
+			$default_data['advanced_settings']['rewrite']              = true;
 		} else {
 			$default_data['advanced_settings']['rewrite_slug'] = '';
 		}
+
+		$default_data['advanced_settings']['capability_type'] = '';
 
 		$raw_default = array_merge(
 			$raw_default,
@@ -145,6 +150,10 @@ class Jet_Engine_CPT_Rest_Edit_BI_Tax extends Jet_Engine_Base_API_Endpoint {
 
 			if ( ! empty( $request_data['id'] ) ) {
 				$to_update['id'] = $request_data['id'];
+			}
+
+			if ( empty( $to_update['object_type'] ) ) {
+				$to_update['object_type'] = ! empty( $request_data['object_type'] ) ? $request_data['object_type'] : array();
 			}
 
 			jet_engine()->taxonomies->data->set_request( $to_update );

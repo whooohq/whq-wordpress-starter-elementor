@@ -269,6 +269,8 @@ class Data_Manager {
 				delete_site_transient( 'jet-dashboard-all-config-data' );
 				delete_site_transient( 'jet_dashboard_remote_jet_plugin_list' );
 				delete_site_transient( 'kava_theme_data' );
+				delete_site_transient( 'update_themes' );
+				delete_site_transient( 'jet_core_theme_data' );
 
 				wp_send_json(
 					array(

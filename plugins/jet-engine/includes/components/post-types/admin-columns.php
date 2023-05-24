@@ -136,7 +136,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Admin_Columns' ) ) {
 
 			$orderby = $query->get( 'orderby' );
 
-			if ( ! empty( $this->sortable_columns[ $orderby ] ) ) {
+			if ( is_string( $orderby ) && ! empty( $this->sortable_columns[ $orderby ] ) ) {
 
 				$column = $this->sortable_columns[ $orderby ];
 

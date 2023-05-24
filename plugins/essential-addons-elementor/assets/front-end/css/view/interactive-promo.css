@@ -1312,37 +1312,30 @@ figure.effect-ming:hover img {
   .eael-interactive-promo figure figcaption h2 {
     font-size: 0.8em;
   }
-
   .eael-interactive-promo figure p,
-.eael-interactive-promo figure ul,
-.eael-interactive-promo figure ol {
+  .eael-interactive-promo figure ul,
+  .eael-interactive-promo figure ol {
     font-size: 50%;
   }
-
   .eael-interactive-promo figure figcaption {
     padding: 10px 40px !important;
   }
-
   .eael-interactive-promo figure.effect-bubba figcaption {
     padding: 0 10px !important;
   }
-
   .eael-interactive-promo figure.effect-bubba h2 {
     padding-top: 50px;
   }
-
   .eael-interactive-promo figure.effect-romeo p,
-.eael-interactive-promo figure.effect-romeo ul,
-.eael-interactive-promo figure.effect-romeo ol {
+  .eael-interactive-promo figure.effect-romeo ul,
+  .eael-interactive-promo figure.effect-romeo ol {
     top: 50px;
   }
-
   .eael-interactive-promo figure.effect-romeo:hover p,
-.eael-interactive-promo figure.effect-romeo:hover ul,
-.eael-interactive-promo figure.effect-romeo:hover ol {
+  .eael-interactive-promo figure.effect-romeo:hover ul,
+  .eael-interactive-promo figure.effect-romeo:hover ol {
     top: 65px;
   }
-
   .eael-interactive-promo figure.effect-lily figcaption > div {
     height: 80%;
   }

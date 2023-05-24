@@ -132,8 +132,8 @@ class Bootstrap
         add_filter('eael/login-register/register-user-password-validation', [$this, 'lr_register_user_password_validation'], 10, 3);
 
         // ajax
-        add_action('wp_ajax_eael_woo_checkout_post_code_validate', [$this, 'eael_woo_checkout_post_code_validate']);
-        add_action('wp_ajax_nopriv_eael_woo_checkout_post_code_validate', [$this, 'eael_woo_checkout_post_code_validate']);
+        add_action('wp_ajax_woo_checkout_post_code_validate', [$this, 'eael_woo_checkout_post_code_validate']);
+        add_action('wp_ajax_nopriv_woo_checkout_post_code_validate', [$this, 'eael_woo_checkout_post_code_validate']);
         add_action('wp_ajax_mailchimp_subscribe', [$this, 'mailchimp_subscribe_with_ajax']);
         add_action('wp_ajax_nopriv_mailchimp_subscribe', [$this, 'mailchimp_subscribe_with_ajax']);
         add_action('wp_ajax_instafeed_load_more', [$this, 'instafeed_render_items']);

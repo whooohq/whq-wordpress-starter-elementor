@@ -11,6 +11,7 @@ export default class Pagination extends Filter {
 
 	paginationListClass = 'jet-filters-pagination';
 	paginationItemClass = 'jet-filters-pagination__item';
+	paginationLoadMoreClass = 'jet-filters-pagination__load-more';
 	paginationCurrentClass = 'jet-filters-pagination__current';
 	paginationDisabledClass = 'jet-filters-pagination__disabled';
 	navClass = 'prev-next';
@@ -24,11 +25,15 @@ export default class Pagination extends Filter {
 		this.dataValue = this.pageIndex;
 		this.pagesCount = this.maxNumPagesProp;
 		this.controls = this.$filter.data('controls');
-		this.isNav = this.controls.nav || false;
-		this.prevText = this.controls.prev;
-		this.nextText = this.controls.next;
+		this.isItems = this.controls.items_enabled || false;
 		this.midSize = this.controls.pages_mid_size || 0;
 		this.endSize = this.controls.pages_end_size || 0;
+		this.isNav = this.controls.nav_enabled || false;
+		this.prevText = this.controls.prev;
+		this.nextText = this.controls.next;
+		this.isLoadMore = this.controls.load_more_enabled || false;
+		this.loadMoreText = this.controls.load_more_text;
+		this.moreActiveIndexes = [];
 
 		if (undefined !== this.controls.provider_top_offset)
 			this.topOffset = this.controls.provider_top_offset || 0;
@@ -56,6 +61,10 @@ export default class Pagination extends Filter {
 		});
 	}
 
+	reinit() {
+		this.update();
+	}
+
 	buildPagination() {
 		if (this.pagesCount < 2) {
 			this.$filter.html('');
@@ -73,28 +82,34 @@ export default class Pagination extends Filter {
 
 		let isPrevItemDots = false;
 
-		for (let i = 1; i <= this.pagesCount; i++) {
-			const showDots = this.midSize !== 0 ?
-				(this.endSize < i && i < this.pageIndex - this.midSize) || (this.endSize <= (this.pagesCount - i) && i > this.pageIndex + this.midSize) :
-				false;
+		if (this.isItems) {
+			for (let i = 1; i <= this.pagesCount; i++) {
+				const showDots = this.midSize !== 0 ?
+					(this.endSize < i && i < this.pageIndex - this.midSize) || (this.endSize <= (this.pagesCount - i) && i > this.pageIndex + this.midSize) :
+					false;
 
-			if (showDots) {
-				if (!isPrevItemDots) {
-					elList.appendChild(this.buildDotsItem());
-					isPrevItemDots = true;
+				if (showDots) {
+					if (!isPrevItemDots) {
+						elList.appendChild(this.buildDotsItem());
+						isPrevItemDots = true;
+					}
+				} else {
+					elList.appendChild(this.buildPaginationItem('numeral', i, this.onPaginationItemClick.bind(this), paginationItemTemplate));
+					isPrevItemDots = false;
 				}
-			} else {
-				elList.appendChild(this.buildPaginationItem('numeral', i, this.onPaginationItemClick.bind(this), paginationItemTemplate));
-				isPrevItemDots = false;
 			}
 		}
 
 		if (this.isNav) {
-			if (this.pageIndex > 1)
+			if (this.pageIndex > 1 && !this.moreActiveIndexes.includes(1))
 				elList.insertBefore(this.buildPaginationItem('prev', this.prevText, this.onPaginationItemClick.bind(this), paginationItemTemplate), elList.firstChild);
 
 			if (this.pageIndex < this.pagesCount)
 				elList.appendChild(this.buildPaginationItem('next', this.nextText, this.onPaginationItemClick.bind(this), paginationItemTemplate));
+		}
+
+		if (this.isLoadMore && this.pageIndex < this.pagesCount) {
+			elList.appendChild(this.buildLoadMore());
 		}
 
 		this.$filter.html(elList);
@@ -145,14 +160,35 @@ export default class Pagination extends Filter {
 		return elDotsItem;
 	}
 
+	buildLoadMore() {
+		const elLoadMore = document.createElement('div');
+
+		elLoadMore.className = this.paginationLoadMoreClass;
+		elLoadMore.innerHTML = templateParser(getNesting(JetSmartFilterSettings, 'templates', 'pagination_load_more'), {
+			$value: this.loadMoreText
+		});
+
+		if (getNesting(JetSmartFilterSettings, 'plugin_settings', 'use_tabindex') === 'true')
+			elLoadMore.tabIndex = 0;
+
+		$(elLoadMore).on('click', this.onPaginationLoadMoreClick.bind(this));
+
+		return elLoadMore;
+	}
+
 	onPaginationItemClick(evt) {
+		if (this.isAjaxLoading)
+			return;
+			
 		const $item = $(evt.currentTarget);
 		let value = $item.data('value');
 
 		switch (value) {
 			case 'prev':
-				if (this.pageIndex > 1) {
-					value = this.pageIndex - 1;
+				const pageIndex = this.moreActiveIndexes[0] || this.pageIndex;
+
+				if (pageIndex > 1) {
+					value = pageIndex - 1;
 				} else {
 					value = 1;
 				}
@@ -169,10 +205,29 @@ export default class Pagination extends Filter {
 				break;
 		}
 
-		if (this.pageIndex !== value) {
+		if (this.pageIndex !== value && !this.moreActiveIndexes.includes(value)) {
+			this.moreActiveIndexes = [];
+
 			// emit pagination change
 			this.dataValue = value;
 			eventBus.publish('pagination/change', this);
+		}
+	}
+
+	onPaginationLoadMoreClick(evt) {
+		if (this.isAjaxLoading)
+			return;
+
+		let value = this.dataValue;
+
+		value++;
+
+		if (value <= this.pagesCount) {
+			this.moreActiveIndexes.push(this.dataValue);
+
+			// emit pagination load more
+			this.dataValue = value;
+			eventBus.publish('pagination/load-more', this);
 		}
 	}
 
@@ -181,14 +236,17 @@ export default class Pagination extends Filter {
 			return;
 
 		const $container = this.$filter.find('.' + this.paginationListClass);
+		const activeItemsSelector = [this.pageIndex, ...this.moreActiveIndexes]
+			.map(item => "[data-value='" + item + "']")
+			.join(', ');
 
 		$container.children().removeClass(this.paginationCurrentClass);
-		$container.find("[data-value='" + this.pageIndex + "']").addClass(this.paginationCurrentClass);
+		$container.find(activeItemsSelector).addClass(this.paginationCurrentClass);
 	}
 
 	update() {
-		const currentPagesCount = this.maxNumPagesProp,
-			currentDataValue = this.pageProp;
+		const currentPagesCount = this.maxNumPagesProp;
+		const currentDataValue = this.pageProp;
 
 		if (currentPagesCount === this.pagesCount && currentDataValue === this.pageIndex)
 			return;
@@ -196,6 +254,19 @@ export default class Pagination extends Filter {
 		this.pagesCount = currentPagesCount;
 		this.pageIndex = currentDataValue;
 
+		this.buildPagination();
+	}
+
+	reset() {
+		this.dataValue = 1;
+		this.moreActiveIndexes = [];
+	}
+
+	resetMoreActive() {
+		if (!this.moreActiveIndexes.length)
+			return;
+
+		this.moreActiveIndexes = [];
 		this.buildPagination();
 	}
 

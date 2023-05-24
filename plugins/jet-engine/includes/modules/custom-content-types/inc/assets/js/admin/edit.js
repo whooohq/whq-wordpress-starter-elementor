@@ -16,6 +16,7 @@
 			prefix: JetEngineCCTConfig.db_prefix,
 			icons: JetEngineCCTConfig.icons,
 			availablePositions: JetEngineCCTConfig.positions,
+			defaultMenuPosition: JetEngineCCTConfig.default_position,
 			restBase: JetEngineCCTConfig.rest_base,
 			saving: false,
 			showAPIParamsInfo: false,
@@ -74,6 +75,12 @@
 					console.log( e );
 				} );
 
+			} else {
+				self.$set(
+					self.generalSettings,
+					'position',
+					parseInt( self.defaultMenuPosition, 10 )
+				);
 			}
 		},
 		watch: {

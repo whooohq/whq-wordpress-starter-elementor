@@ -986,6 +986,9 @@ class Jet_Accordion_Widget extends Jet_Tabs_Base {
 			<div class="jet-accordion__inner">
 				<?php
 					foreach ( $toggles as $index => $item ) {
+
+						do_action( 'jet-engine-query-gateway/do-item', $item );
+						
 						$toggle_count = $index + 1;
 
 						$toggle_setting_key         = $this->get_repeater_setting_key( 'jet_toggle', 'toggles', $index );
@@ -1108,7 +1111,10 @@ class Jet_Accordion_Widget extends Jet_Tabs_Base {
 								),
 							);
 						}
-					}?>
+					}
+
+					do_action( 'jet-engine-query-gateway/reset-item' );
+					?>
 					<?php if ( 'yes' === $faq_schema ) : ?>
 						<script type="application/ld+json"><?php echo wp_json_encode( $json ); ?></script>
 					<?php endif?>

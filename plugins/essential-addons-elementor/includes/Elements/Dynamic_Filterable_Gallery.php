@@ -1849,18 +1849,19 @@ class Dynamic_Filterable_Gallery extends Widget_Base
 
                     $query = new \WP_Query($args);
 
-                    if ($query->have_posts()) {
-	                    $found_posts      = $query->found_posts;
-	                    $max_page         = ceil( $found_posts / absint( $args['posts_per_page'] ) );
-	                    $args['max_page'] = $max_page;
+	                if ( $query->have_posts() ) {
+		                $found_posts      = $query->found_posts;
+		                $ppp              = empty( $args['posts_per_page'] ) ? get_option( 'posts_per_page' ) : $args['posts_per_page'];
+		                $max_page         = ceil( $found_posts / absint( $ppp ) );
+		                $args['max_page'] = $max_page;
 
-                        while ($query->have_posts()) {
-                            $query->the_post();
-                                include($template);
-                        }
-                    } else {
-                        _e('<p class="no-posts-found">No posts found!</p>', 'essential-addons-elementor');
-                    }
+		                while ( $query->have_posts() ) {
+			                $query->the_post();
+			                include( $template );
+		                }
+	                } else {
+		                _e( '<p class="no-posts-found">No posts found!</p>', 'essential-addons-elementor' );
+	                }
                 } else {
                     _e('<p class="no-posts-found">No Layout Found!</p>', 'essential-addons-elementor');
                 }

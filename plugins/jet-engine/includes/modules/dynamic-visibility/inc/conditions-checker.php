@@ -24,6 +24,7 @@ class Condition_Checker {
 		$is_or_relation = 'OR' === $relation;
 		$type           = ! empty( $settings['jedv_type'] ) ? $settings['jedv_type'] : 'show';
 		$has_conditions = false;
+		$result         = true;
 
 		foreach ( $conditions as $index => $condition ) {
 

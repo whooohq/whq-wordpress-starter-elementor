@@ -1,7 +1,11 @@
 <?php
 namespace Jet_Engine\Compatibility\Packages\Jet_Form_Builder\Query_Builder;
 
+use \Jet_Engine\Query_Builder\Queries\Traits\Meta_Query_Trait;
+
 class Form_Query extends \Jet_Engine\Query_Builder\Queries\SQL_Query {
+
+	use Meta_Query_Trait;
 
 	/**
 	 * Returns queries items
@@ -59,6 +63,43 @@ class Form_Query extends \Jet_Engine\Query_Builder\Queries\SQL_Query {
 		}, $fields );
 
 		return $res;
+	}
+
+	public function set_filtered_prop( $prop = '', $value = null ) {
+
+		switch ( $prop ) {
+
+			case '_page':
+
+				$page = absint( $value );
+
+				if ( 0 < $page ) {
+					$this->final_query['_page']  = $page;
+				}
+
+				break;
+
+			case 'orderby':
+			case 'order':
+			case 'meta_key':
+
+				$key = $prop;
+
+				if ( 'orderby' === $prop ) {
+					$key = 'type';
+					$value = ( in_array( $value, array( 'meta_key', 'meta_value' ) ) ) ? 'CHAR' : 'DECIMAL';
+				} elseif ( 'meta_key' === $prop ) {
+					$key = 'orderby';
+				}
+
+				$this->set_filtered_order( $key, $value );
+				break;
+
+			case 'meta_query':
+				$this->replace_meta_query_row( $value );
+				break;
+		}
+
 	}
 
 	public function build_sql_query( $is_count = false ) {

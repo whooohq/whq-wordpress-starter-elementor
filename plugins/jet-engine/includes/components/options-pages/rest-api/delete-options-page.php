@@ -58,8 +58,49 @@ class Jet_Engine_Rest_Delete_Options_Page extends Jet_Engine_Base_API_Endpoint {
 
 		$slug = $item_data['general_settings']['slug'];
 
+		$storage_type  = $item_data['general_settings']['storage_type'];
+		$option_prefix = $item_data['general_settings']['option_prefix'];
+
 		if ( 'delete' === $action ) {
-			delete_option( $slug );
+
+			if ( 'separate' === $storage_type ) {
+
+				$fields = $item_data['fields'];
+				$fields = array_filter( $fields, function ( $field ) {
+
+					if ( empty( $field['object_type'] ) ) {
+						return false;
+					}
+
+					if ( 'field' !== $field['object_type'] ) {
+						return false;
+					}
+
+					if ( empty( $field['type'] ) ) {
+						return false;
+					}
+
+					if ( 'html' === $field['type'] ) {
+						return false;
+					}
+
+					return true;
+				} );
+
+				$option_keys = wp_list_pluck( $fields, 'name' );
+
+				foreach ( $option_keys as $key ) {
+
+					if ( ! empty( $option_prefix ) ) {
+						$key = $slug . '_' . $key;
+					}
+
+					delete_option( $key );
+				}
+
+			} else {
+				delete_option( $slug );
+			}
 		}
 
 		jet_engine()->options_pages->data->set_request( array( 'id' => $id ) );

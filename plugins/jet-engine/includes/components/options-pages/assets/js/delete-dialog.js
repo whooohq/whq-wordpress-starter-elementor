@@ -10,6 +10,10 @@ Vue.component( 'jet-cpt-delete-dialog', {
 			type: Number,
 			default: 0,
 		},
+		itemName: {
+			type: String,
+			default: '',
+		},
 	},
 	data: function() {
 		return {

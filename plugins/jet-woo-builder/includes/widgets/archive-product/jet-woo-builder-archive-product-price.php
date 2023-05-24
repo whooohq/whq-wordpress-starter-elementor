@@ -111,24 +111,23 @@ class Jet_Woo_Builder_Archive_Product_Price extends Widget_Base {
 			]
 		);
 
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'archive_price_typography',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['price'],
+			]
+		);
+
 		$this->add_control(
 			'archive_price_color',
 			[
-				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
-				'separator' => 'before',
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['price'] => 'color: {{VALUE}}',
 				],
 			]
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			array(
-				'name'     => 'archive_price_typography',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['price'],
-			)
 		);
 
 		$this->start_controls_tabs( 'tabs_archive_price_style' );

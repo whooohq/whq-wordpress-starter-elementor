@@ -6,7 +6,7 @@
  *
  * This template can be overridden by copying it to yourtheme/jet-woo-builder/woocommerce/myaccount/orders.php.
  *
- * @version 3.7.0
+ * @version 7.0.1
  */
 
 defined( 'ABSPATH' ) || exit;

@@ -2,6 +2,9 @@
 	&__inputs {
 		display: flex;
 		justify-content: space-between;
+		margin: 0;
+		border: 0;
+		padding: 0;
 	}
 	&__control {
 		width: 100% !important;
@@ -267,4 +270,33 @@
 .ui-datepicker .ui-icon {
 	display: block;
 	font-size: 0;
+}
+
+// Context Bricks
+.brxe-jet-smart-filters-date-range {
+	.jet-date-range {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.jet-date-range__submit {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		white-space: nowrap;
+	}
+
+	.jet-date-range__submit-icon {
+		display: inline-flex;
+
+		svg {
+			width: 1em;
+			height: 1em;
+		}
+
+		svg,
+		path {
+			fill: currentColor;
+		}
+	}
 }

@@ -34,6 +34,8 @@ if ( ! class_exists( 'Jet_Woo_Builder_Elementor_Views' ) ) {
 			add_action( 'elementor/editor/after_enqueue_styles', [ $this, 'editor_styles' ] );
 			add_action( 'elementor/editor/before_enqueue_scripts', [ $this, 'init_editor_wc_cart' ] );
 
+			add_filter( 'jet-woo-builder/shortcodes/query-types', [ $this, 'set_additional_query_types' ] );
+
 			$controls_register_action = 'elementor/controls/controls_registered';
 
 			if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.5.0', '>=' ) ) {
@@ -204,7 +206,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Elementor_Views' ) ) {
 				'myaccount' => jet_woo_builder_settings()->get( 'myaccount_available_widgets' ),
 			];
 
-			require_once jet_woo_builder()->plugin_path( 'includes/base/class-jet-woo-builder-base.php' );
+			require_once jet_woo_builder()->plugin_path( 'includes/components/elementor-views/widget-base.php' );
 
 			foreach ( glob( jet_woo_builder()->plugin_path( 'includes/widgets/global/' ) . '*.php' ) as $file ) {
 				$slug    = basename( $file, '.php' );
@@ -501,6 +503,40 @@ if ( ! class_exists( 'Jet_Woo_Builder_Elementor_Views' ) ) {
 		 */
 		public function is_editor_ajax() {
 			return is_admin() && isset( $_REQUEST['action'] ) && 'elementor_ajax' === $_REQUEST['action'];
+		}
+
+		/**
+		 * Set additional query types.
+		 *
+		 * Returns extended list of query types for Elementor editor documents.
+		 *
+		 * @since  2.1.4
+		 * @access public
+		 *
+		 * @param array $query_types List of query types.
+		 *
+		 * @return array|mixed|object|string
+		 */
+		public function set_additional_query_types( $query_types ) {
+
+			$document = \Elementor\Plugin::$instance->documents->get_current();
+
+			if ( ! $document ) {
+				return $query_types;
+			}
+
+			$single_query_types = [
+				'related'     => __( 'Related', 'jet-woo-builder' ),
+				'up-sells'    => __( 'Up Sells', 'jet-woo-builder' ),
+				'cross-sells' => __( 'Cross Sells', 'jet-woo-builder' ),
+			];
+
+			if ( 'product' === $document->get_template_type() ) {
+				$query_types = wp_parse_args( $single_query_types, $query_types );
+			}
+
+			return $query_types;
+
 		}
 
 	}

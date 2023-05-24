@@ -1,41 +1,50 @@
-import filtersInitializer from './filters-initializer';
-
-// Includes
-import elementorEditorMode from 'includes/elementor-editor-mode';
-
 "use strict";
 
-//JetSmartFilters
-window.JetSmartFilters = filtersInitializer;
+// Init JetSamrtFilters
+import JSF from './filters-initializer';
 
-// Init filters
+// Includes
+import editorMode from 'includes/editor-mode.js';
+
 $(document).ready(function () {
-	window.JetSmartFilters.initializeFilters();
+	window.JetPlugins.init(false, JSF.filterNames.map(filterName => {
+		return {
+			block: 'jet-smart-filters/' + filterName,
+			callback: $scope => {
+				JSF.initFilter($scope);
+			}
+		};
+	}));
 });
 
 // If elementor
 $(window).on('elementor/frontend/init', function () {
-	// edit mode filters init
-	if (elementorFrontend.isEditMode())
-		elementorEditorMode.initFilters();
-});
+	JSF.filterNames.forEach(filterName => {
+		elementorFrontend.hooks.addAction('frontend/element_ready/jet-smart-filters-' + filterName + '.default', function ($scope) {
+			if (elementorFrontend.isEditMode()) {
+				// init filter in editor
+				editorMode.initFilter(filterName, $scope);
+			} else {
+				// init filter
+				const $filters = $scope.find('.jet-filter');
 
-// Reinit filters events
-$(window)
-	.on('jet-popup/render-content/ajax/success', function (evt, popup) {
-		window.JetSmartFilters.initializeFiltersInContainer($('#jet-popup-' + popup.popup_id));
-	})
-	.on('jet-tabs/ajax-load-template/after', function (evt, props) {
-		window.JetSmartFilters.initializeFiltersInContainer(props.contentHolder);
-	})
-	.on('jet-blocks/ajax-load-template/after', function (evt, props) {
-		window.JetSmartFilters.initializeFiltersInContainer(props.contentHolder);
+				if (!$filters.length)
+					return;
+
+				$filters.each(index => {
+					JSF.initFilter($filters.eq(index));
+				});
+			}
+		});
 	});
-
-// Elementor pro popup
-$(document).on('elementor/popup/show', (event, id, instance) => {
-	window.JetSmartFilters.initializeFiltersInContainer(instance.$element);
 });
+
+// If bricks
+window.JetSmartFiltersBricksInit = function () {
+	// init filter in editor
+	if (!window.bricksIsFrontend)
+		editorMode.intiAllFilters();
+};
 
 // Extensions
 import './extensions';

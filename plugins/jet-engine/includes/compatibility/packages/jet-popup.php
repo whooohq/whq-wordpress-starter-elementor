@@ -34,6 +34,18 @@ if ( ! class_exists( 'Jet_Engine_Popup_Package' ) ) {
 				array( $this, 'get_popup_content' ),
 				10, 2
 			);
+
+			add_action( 'jet-popup/data-attributes/register', function( $attributes ) {
+				$attributes->register_attribute( [
+					'name'        => 'jetPopupIsJetEngine',
+					'type'        => 'switcher',
+					'dataType'    => 'boolean',
+					'dataAttr'    => 'data-popup-is-jet-engine',
+					'default'     => false,
+					'label'       => __( 'JetEngine Listing popup' ),
+					'description' => __( 'Enable this to use this popup inside Listing Grid items' ),
+				] );
+			} );
 		}
 
 		/**
@@ -100,7 +112,18 @@ if ( ! class_exists( 'Jet_Engine_Popup_Package' ) ) {
 			$plugin = Elementor\Plugin::instance();
 			$source = ! empty( $popup_data['listingSource'] ) ? $popup_data['listingSource'] : 'posts';
 
+			$query_id = ! empty( $popup_data['queryId'] ) ? $popup_data['queryId'] : false;
+
+			if ( $query_id ) {
+				$query = \Jet_Engine\Query_Builder\Manager::instance()->get_query_by_id( $query_id );
+
+				if ( $query ) {
+					$source = $query->query_type;
+				}
+			}
+
 			switch ( $source ) {
+				
 				case 'terms':
 					$post_obj = get_term( $popup_data['postId'] );
 					break;
@@ -131,6 +154,37 @@ if ( ! class_exists( 'Jet_Engine_Popup_Package' ) ) {
 
 				$post = $post_obj;
 				setup_postdata( $post );
+
+			}
+
+			if ( $query_id ) {
+
+				$query = \Jet_Engine\Query_Builder\Manager::instance()->get_query_by_id( $query_id );
+
+				if ( $query && 'repeater' === $query->query_type ) {
+
+					$id_data = explode( '-', $popup_data['postId'] );
+
+					if ( 3 === count( $id_data ) ) {
+						$object_id = $id_data[1];
+						$item_index = $id_data[2];
+					} else {
+						$object_id = false;
+						$item_index = $id_data[1];
+					}
+
+					$query->setup_query();
+
+					if ( $object_id ) {
+						$query->final_query['object_id'] = $object_id;
+					}
+
+					$items = $query->get_items();
+
+					$post_obj = isset( $items[ $item_index ] ) ? $items[ $item_index ] : false;
+
+				}
+
 			}
 
 			jet_engine()->listings->data->set_current_object( $post_obj, true );

@@ -31,19 +31,7 @@ class Title extends \Jet_Engine_Base_Macros {
 			return '';
 		}
 
-		$class  = get_class( $object );
-		$result = '';
+		return jet_engine()->listings->data->get_current_object_title( $object );
 
-		switch ( $class ) {
-			case 'WP_Post':
-				$result = $object->post_title;
-				break;
-
-			case 'WP_Term':
-				$result = $object->name;
-				break;
-		}
-
-		return $result;
 	}
 }

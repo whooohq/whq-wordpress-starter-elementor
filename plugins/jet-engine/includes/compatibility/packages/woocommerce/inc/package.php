@@ -35,7 +35,7 @@ class Package {
 		add_filter( 'jet-engine/modules/dynamic-visibility/conditions/groups', [ $this, 'register_conditions_group' ] );
 		add_action( 'jet-engine/modules/dynamic-visibility/conditions/register', [ $this, 'register_conditions' ] );
 
-		add_action( 'jet-engine/elementor-views/dynamic-tags/register', [ $this, 'register_dynamic_tags' ] );
+		add_action( 'jet-engine/elementor-views/dynamic-tags/register', [ $this, 'register_dynamic_tags' ], 10, 2 );
 		add_action( 'jet-engine/register-macros', [ $this, 'register_macros' ] );
 
 	}
@@ -104,15 +104,15 @@ class Package {
 
 	}
 
-	public function register_dynamic_tags( $tags_module ) {
+	public function register_dynamic_tags( $dynamic_tags, $tags_module ) {
 
 		require_once $this->package_path( 'dynamic-tags/product-field-tag.php' );
 		require_once $this->package_path( 'dynamic-tags/product-image-tag.php' );
 		require_once $this->package_path( 'dynamic-tags/product-gallery-tag.php' );
 
-		$tags_module->register_tag( new Dynamic_Tags\Product_Field_Tag() );
-		$tags_module->register_tag( new Dynamic_Tags\Product_Image_Tag() );
-		$tags_module->register_tag( new Dynamic_Tags\Product_Gallery_Tag() );
+		$tags_module->register_tag( $dynamic_tags, new Dynamic_Tags\Product_Field_Tag() );
+		$tags_module->register_tag( $dynamic_tags, new Dynamic_Tags\Product_Image_Tag() );
+		$tags_module->register_tag( $dynamic_tags, new Dynamic_Tags\Product_Gallery_Tag() );
 
 	}
 

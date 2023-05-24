@@ -183,12 +183,14 @@ if ( ! class_exists( 'Jet_Engine_Options_Data' ) ) {
 				'icon'             => 'dashicons-admin-generic',
 				'capability'       => 'manage_options',
 				'position'         => '',
+				'storage_type'     => 'default',
+				'option_prefix'    => true,
 				'hide_field_names' => false,
 			);
 
 			foreach ( $regular_args as $key => $default ) {
-				if ( in_array( $key, array( 'hide_field_names' ) ) ) {
-					$args[ $key ] = ! empty( $request[ $key ] ) ? filter_var( $request[ $key ], FILTER_VALIDATE_BOOLEAN ) : $default;
+				if ( in_array( $key, array( 'option_prefix', 'hide_field_names' ) ) ) {
+					$args[ $key ] = isset( $request[ $key ] ) ? filter_var( $request[ $key ], FILTER_VALIDATE_BOOLEAN ) : $default;
 				} else {
 					$args[ $key ] = ! empty( $request[ $key ] ) ? $request[ $key ] : $default;
 				}
@@ -280,6 +282,16 @@ if ( ! class_exists( 'Jet_Engine_Options_Data' ) ) {
 			$args   = maybe_unserialize( $item['args'] );
 			$labels = maybe_unserialize( $item['labels'] );
 			$fields = array();
+
+			// Set default value for `storage_type` setting if setting is not existing.
+			if ( empty( $args['storage_type'] ) ) {
+				$args['storage_type'] = 'default';
+			}
+
+			// Set default value for `option_prefix` setting if setting is not existing.
+			if ( ! isset( $args['option_prefix'] ) ) {
+				$args['option_prefix'] = true;
+			}
 
 			$result['general_settings'] = array_merge( array( 'slug' => $item['slug'] ), $labels, $args );
 

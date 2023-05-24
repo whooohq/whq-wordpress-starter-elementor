@@ -57,23 +57,23 @@ class Jet_Woo_Builder_Products_Result_Count extends Jet_Woo_Builder_Base {
 			)
 		);
 
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'result_count_typography',
+				'selector' => '{{WRAPPER}} ' . $css_scheme['result_count'],
+			]
+		);
+
 		$this->add_control(
 			'result_count_text_color',
 			[
-				'label'     => __( 'Text Color', 'jet-woo-builder' ),
 				'type'      => Controls_Manager::COLOR,
+				'label'     => __( 'Color', 'jet-woo-builder' ),
 				'selectors' => [
 					'{{WRAPPER}} ' . $css_scheme['result_count'] => 'color: {{VALUE}};',
 				],
 			]
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			array(
-				'name'     => 'result_count_typography',
-				'selector' => '{{WRAPPER}} ' . $css_scheme['result_count'],
-			)
 		);
 
 		$this->add_responsive_control(

@@ -30,25 +30,26 @@
 			this.presetCols()
 		},
 		computed: {
-			availableColumns: function() {
-
+			columnSchema: function() {
+				
 				var result = [];
 
 				if ( this.query.table ) {
+					
 					let columns = this.getColumns( this.query.table );
-					result = JSON.parse( JSON.stringify( columns ) );
+					
+					result.push( {
+						table: this.query.table,
+						columns: [ ...columns ],
+					} );
+
 				}
 
 				if ( this.query.use_join && this.query.join_tables.length ) {
 
-					for (var i = 0; i < result.length; i++) {
-						result[ i ].value = this.query.table + '.' + result[ i ].value;
-						result[ i ].label = this.query.table + '.' + result[ i ].label;
-					}
-
 					let processedTables = { [ this.query.table ]: 1 };
 
-					for (var i = 0; i < this.query.join_tables.length; i++) {
+					for ( var i = 0; i < this.query.join_tables.length; i++ ) {
 
 						let joinTable = this.query.join_tables[ i ].table;
 						let preparedJoinTable = joinTable;
@@ -63,16 +64,50 @@
 						if ( preparedJoinTable ) {
 
 							let joinColumns = this.getColumns( joinTable );
-								joinColumns = JSON.parse( JSON.stringify( joinColumns ) );
+							let preparedColumns = [];
+							
+							joinColumns = [ ...joinColumns ];
 
 							for ( var j = 0; j < joinColumns.length; j++ ) {
-								result.push( {
+								preparedColumns.push( {
 									value: preparedJoinTable + '.' + joinColumns[ j ].value,
 									label: preparedJoinTable + '.' + joinColumns[ j ].label,
 								} )
 							}
+
+							result.push( {
+								table: preparedJoinTable,
+								columns: preparedColumns,
+							} );
 						}
 
+					}
+
+				}
+
+				return result;
+
+			},
+			availableColumns: function() {
+
+				var result = [];
+				var schema = JSON.parse( JSON.stringify( this.columnSchema ) );
+
+				for ( var i = 0; i < schema.length; i++ ) {
+
+					let addPrefix = false;
+
+					if ( 0 === i && 1 < schema.length ) {
+						addPrefix = true;
+					}
+
+					for ( var j = 0; j < schema[ i ].columns.length; j++ ) {
+						if ( addPrefix ) {
+							schema[ i ].columns[ j ].value = schema[ i ].table + '.' + schema[ i ].columns[ j ].value;
+							schema[ i ].columns[ j ].label = schema[ i ].table + '.' + schema[ i ].columns[ j ].label;
+						}
+
+						result.push( schema[ i ].columns[ j ] );
 					}
 
 				}
@@ -142,6 +177,42 @@
 			},
 			getColumns: function( table ) {
 				return window.jet_query_component_sql.columns[ table ] || [];
+			},
+			getJoinTitle( item, currentIndex ) {
+				
+				const allColumns = [ ...this.columnSchema ];
+
+				currentIndex++;
+				
+				for ( var i = 0; i < allColumns.length; i++ ) {
+
+					if ( i === currentIndex ) {
+						return allColumns[ i ].table;
+					}
+					
+				}
+
+			},
+			getJoinColumns( currentIndex ) {
+
+				const allColumns = [ ...this.columnSchema ];
+				const result = [];
+
+				currentIndex++;
+
+				for ( var i = 0; i < allColumns.length; i++ ) {
+
+					if ( i !== currentIndex ) {
+						result.push( {
+							label: allColumns[ i ].table,
+							options: allColumns[ i ].columns,
+						} );
+					}
+					
+				}
+
+				return result;
+
 			},
 			presetOrder: function() {
 				if ( ! this.query.orderby ) {

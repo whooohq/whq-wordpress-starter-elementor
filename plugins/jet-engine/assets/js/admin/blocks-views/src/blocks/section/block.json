@@ -2,7 +2,7 @@
 	"name": "jet-engine/section",
 	"title": "Section",
 	"icon": "list-view",
-	"category": "widgets",
+	"category": "jet-engine",
 	"keywords": [ "container", "section", "box" ],
 	"attributes": {
 		"layout": {

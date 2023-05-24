@@ -11,6 +11,7 @@ use \Elementor\Core\Schemes\Typography;
 use \Elementor\Utils;
 use \Elementor\Widget_Base;
 use \Essential_Addons_Elementor\Classes\Helper;
+use \Elementor\Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -1137,7 +1138,7 @@ class Logo_Carousel extends Widget_Base {
 
 		$this->add_render_attribute( 'logo-carousel-wrap', 'class', 'swiper-container-wrap eael-logo-carousel-wrap' );
 
-		$this->add_render_attribute( 'logo-carousel', 'class', 'swiper-container eael-logo-carousel' );
+		$this->add_render_attribute( 'logo-carousel', 'class', 'swiper swiper-container eael-logo-carousel' );
 		$this->add_render_attribute( 'logo-carousel', 'class', 'swiper-container-' . esc_attr( $this->get_id() ) );
 		$this->add_render_attribute( 'logo-carousel', 'data-pagination', '.swiper-pagination-' . esc_attr( $this->get_id() ) );
 		$this->add_render_attribute( 'logo-carousel', 'data-arrow-next', '.swiper-button-next-' . esc_attr( $this->get_id() ) );
@@ -1159,23 +1160,23 @@ class Logo_Carousel extends Widget_Base {
 			$this->add_render_attribute( 'logo-carousel', 'class', 'grayscale-hover' );
 		}
 
+        if ( method_exists( Plugin::$instance->breakpoints, 'get_breakpoints_config' ) && ! empty( $breakpoints = Plugin::$instance->breakpoints->get_breakpoints_config() ) ) {
+            foreach ( $breakpoints as $key => $breakpoint ){
+                if ($breakpoint['is_enabled']) {
+                    if (!empty($settings['items_'.$key]['size'])) {
+                        $this->add_render_attribute('logo-carousel', 'data-items-'.$key, $settings['items_'.$key]['size']);
+                    }
+                    if (!empty($settings['margin_'.$key]['size'])) {
+                        $this->add_render_attribute('logo-carousel', 'data-margin-'.$key, $settings['margin_'.$key]['size']);
+                    }
+                }
+            }
+        }
 		if ( ! empty( $settings['items']['size'] ) ) {
 			$this->add_render_attribute( 'logo-carousel', 'data-items', $settings['items']['size'] );
 		}
-		if ( ! empty( $settings['items_tablet']['size'] ) ) {
-			$this->add_render_attribute( 'logo-carousel', 'data-items-tablet', $settings['items_tablet']['size'] );
-		}
-		if ( ! empty( $settings['items_mobile']['size'] ) ) {
-			$this->add_render_attribute( 'logo-carousel', 'data-items-mobile', $settings['items_mobile']['size'] );
-		}
 		if ( ! empty( $settings['margin']['size'] ) ) {
 			$this->add_render_attribute( 'logo-carousel', 'data-margin', $settings['margin']['size'] );
-		}
-		if ( ! empty( $settings['margin_tablet']['size'] ) ) {
-			$this->add_render_attribute( 'logo-carousel', 'data-margin-tablet', $settings['margin_tablet']['size'] );
-		}
-		if ( ! empty( $settings['margin_mobile']['size'] ) ) {
-			$this->add_render_attribute( 'logo-carousel', 'data-margin-mobile', $settings['margin_mobile']['size'] );
 		}
 		if ( $settings['carousel_effect'] ) {
 			$this->add_render_attribute( 'logo-carousel', 'data-effect', $settings['carousel_effect'] );

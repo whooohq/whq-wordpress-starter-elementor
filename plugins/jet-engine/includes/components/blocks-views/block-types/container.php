@@ -16,7 +16,16 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Container' ) ) {
 	class Jet_Engine_Blocks_Views_Type_Container extends Jet_Engine_Blocks_Views_Type_Base {
 
 		public function __construct() {
+
 			parent::__construct();
+
+			if ( $this->has_style_manager() ) {
+				add_filter(
+					'jet_style_manager/gutenberg/prevent_block_wrap/' . $this->get_block_name(),
+					'__return_true'
+				);
+			}
+
 			add_filter( 'render_block', array( $this, 'update_background_image' ), 11, 2 );
 		}
 

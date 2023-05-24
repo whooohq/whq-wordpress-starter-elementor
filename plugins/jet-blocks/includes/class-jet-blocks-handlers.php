@@ -78,6 +78,21 @@ if ( ! class_exists( 'Jet_Blocks_Handlers' ) ) {
 				return;
 			}
 
+			$recaptcha_token    = isset( $_POST['token'] ) ? $_POST['token'] : '';
+			$recaptcha_settings = jet_blocks_settings()->get( 'captcha' );
+
+			if ( true === $recaptcha_settings['enable'] ) {
+				$recaptcha_instance = jet_blocks()->integration_manager->get_integration_module_instance( 'recaptcha' );
+
+				if ( '' != $recaptcha_token ) {
+					$recaptcha_verify = $recaptcha_instance->maybe_verify( $recaptcha_token );
+
+					if( true != $recaptcha_verify ) {
+						return;
+					}
+				}
+			}
+
 			try {
 
 				if ( empty( $_POST['log'] ) ) {
@@ -124,6 +139,21 @@ if ( ! class_exists( 'Jet_Blocks_Handlers' ) ) {
 
 			if ( ! wp_verify_nonce( $_POST['jet-register-nonce'], 'jet-register' ) ) {
 				return;
+			}
+
+			$recaptcha_token    = isset( $_POST['token'] ) ? $_POST['token'] : '';
+			$recaptcha_settings = jet_blocks_settings()->get( 'captcha' );
+
+			if ( true === $recaptcha_settings['enable'] ) {
+				$recaptcha_instance = jet_blocks()->integration_manager->get_integration_module_instance( 'recaptcha' );
+
+				if ( '' != $recaptcha_token ) {
+					$recaptcha_verify = $recaptcha_instance->maybe_verify( $recaptcha_token );
+
+					if( true != $recaptcha_verify ) {
+						return;
+					}
+				}
 			}
 
 			try {
@@ -183,6 +213,21 @@ if ( ! class_exists( 'Jet_Blocks_Handlers' ) ) {
 				$error      = new \WP_Error( 'jet_reset_error', '<strong>ERROR</strong>: ' . esc_html__( 'something went wrong with that!', 'jet-blocks' ) );
 				$site_title = get_bloginfo( 'name' );
 				wp_die( $error, $site_title . ' - Error', $args );
+			}
+
+			$recaptcha_token    = isset( $_POST['token'] ) ? $_POST['token'] : '';
+			$recaptcha_settings = jet_blocks_settings()->get( 'captcha' );
+
+			if ( true === $recaptcha_settings['enable'] ) {
+				$recaptcha_instance = jet_blocks()->integration_manager->get_integration_module_instance( 'recaptcha' );
+
+				if ( '' != $recaptcha_token ) {
+					$recaptcha_verify = $recaptcha_instance->maybe_verify( $recaptcha_token );
+
+					if( true != $recaptcha_verify ) {
+						return;
+					}
+				}
 			}
 
 			$errors           = array();

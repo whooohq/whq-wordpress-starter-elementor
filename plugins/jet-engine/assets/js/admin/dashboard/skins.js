@@ -29,6 +29,7 @@
 					data: {
 						action: 'jet_engine_import_preset',
 						preset: self.currentPreset,
+						_nonce: window.JetEngineDashboardConfig._nonce,
 					},
 				}).done(function() {
 					self.successMessage = self.getPresetMsg( self.currentPreset );
@@ -203,6 +204,8 @@
 				formData = new FormData();
 				formData.append( '_skin', self.file );
 				formData.append( 'action', 'jet_engine_import_skin' );
+				formData.append( '_nonce', window.JetEngineDashboardConfig._nonce );
+
 
 				xhr = new XMLHttpRequest();
 

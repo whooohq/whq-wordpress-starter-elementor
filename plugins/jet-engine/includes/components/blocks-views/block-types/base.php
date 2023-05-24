@@ -20,6 +20,7 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Base' ) ) {
 		public $block_manager    = null;
 		public $controls_manager = null;
 		public $block_data       = null;
+		public $_root            = [];
 
 		public function __construct() {
 
@@ -52,7 +53,7 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Base' ) ) {
 				$render_callback = $this->get_file_data( 'render_callback' );
 
 				if ( $render_callback ) {
-					$args['render_callback'] = array( $this, 'render_callback' );
+					$args['render_callback'] = array( $this, '_render_callback' );
 				}
 
 			} else {
@@ -60,7 +61,7 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Base' ) ) {
 				$block = $this->get_block_name();
 
 				$args['attributes']      = $attributes;
-				$args['render_callback'] = array( $this, 'render_callback' );
+				$args['render_callback'] = array( $this, '_render_callback' );
 
 			}
 
@@ -204,6 +205,26 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Base' ) ) {
 			return jet_engine()->listings->get_render_instance( $this->get_name(), $attributes );
 		}
 
+		public function reset_root() {
+			$this->_root = [
+				'class' => [],
+			];
+		}
+
+		public function get_root_attr_string() {
+			
+			$result = [];
+
+			foreach ( $this->_root as $attr => $value ) {
+				if ( is_array( $value ) ) {
+					$value = implode( ' ', array_filter( $value ) );
+				}
+				$result[] = sprintf( '%1$s="%2$s"', $attr, esc_attr( $value ) );
+			}
+
+			return implode( $result );
+		}
+
 		public function render_callback( $attributes = array() ) {
 
 			$item       = $this->get_name();
@@ -224,15 +245,28 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Base' ) ) {
 			$render->setup_listing( $listing, $object_id, true, $listing_id );
 
 			$content = $render->get_content();
+			$el_id = ! empty( $attributes['_element_id'] ) ? : '';
 
-			$add_wrapper = ! empty( $attributes['_element_id'] );
-
-			if ( $add_wrapper ) {
-				$content = sprintf( '<div id="%1$s">%2$s</div>', esc_attr( $attributes['_element_id'] ), $content );
+			if ( $el_id ) {
+				$this->_root['id'] = $el_id;
 			}
+
+			$this->_root['data-is-block'] = $this->get_block_name();
+
+			$content = sprintf(
+				'<div %1$s>%2$s</div>',
+				$this->get_root_attr_string(),
+				$content
+			);
 
 			return $content;
 
+		}
+
+		public function _render_callback( $attributes ) {
+			$result = $this->render_callback( $attributes );
+			$this->reset_root();
+			return $result;
 		}
 
 	}

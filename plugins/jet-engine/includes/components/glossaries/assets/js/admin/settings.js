@@ -258,6 +258,7 @@
 				nonce: JetEngineGlossariesConfig._nonce,
 				saveLabel: JetEngineGlossariesConfig.save_label,
 				savingLabel: JetEngineGlossariesConfig.saving_label,
+				isConverting: false,
 			};
 		},
 		mounted: function() {
@@ -378,6 +379,73 @@
 
 				} );
 
+			},
+
+			convertSource: function() {
+				var self = this;
+
+				self.isConverting = true;
+
+				jQuery.ajax( {
+					url: window.ajaxurl,
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						action: 'jet_engine_glossary_get_fields_from_file',
+						nonce: self.nonce,
+						item: self.settings,
+					},
+				} ).done( function( response ) {
+
+					if ( ! response.success ) {
+
+						var errorMessage = response.data ? response.data.message : 'Unknown error. Please try again later or contact our support.';
+
+						self.$CXNotice.add( {
+							message: errorMessage,
+							type: 'error',
+							duration: 15000,
+						} );
+
+					} else {
+
+						if ( response.data && response.data.fields ) {
+
+							self.$set( self.settings, 'source', 'manual' );
+							self.$set( self.settings, 'fields', response.data.fields );
+
+							self.$emit( 'input', self.settings );
+
+							self.$CXNotice.add( {
+								message: response.data.message,
+								type: 'success',
+								duration: 7000,
+							} );
+
+						} else {
+
+							self.$CXNotice.add( {
+								message: 'Unknown error. Please try again later or contact our support.',
+								type: 'error',
+								duration: 15000,
+							} );
+
+						}
+					}
+
+					self.isConverting = false;
+
+				} ).fail( function( jqXHR, textStatus, errorThrown ) {
+
+					self.$CXNotice.add( {
+						message: errorThrown,
+						type: 'error',
+						duration: 15000,
+					} );
+
+					self.isConverting = false;
+
+				} );
 			}
 		}
 	} );

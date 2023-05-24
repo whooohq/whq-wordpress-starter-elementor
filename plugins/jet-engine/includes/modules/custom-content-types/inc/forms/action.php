@@ -1,4 +1,5 @@
 <?php
+
 namespace Jet_Engine\Modules\Custom_Content_Types\Forms;
 
 use Jet_Engine\Modules\Custom_Content_Types\Module;
@@ -141,7 +142,7 @@ class Action extends Base {
 			}
 
 			$author = absint( $existing_item['cct_author_id'] );
-			$cct = Module::instance()->manager->get_content_types( $existing_item['cct_slug'] );
+			$cct    = Module::instance()->manager->get_content_types( $existing_item['cct_slug'] );
 
 			if ( ! $cct ) {
 				throw ( new Action_Exception(
@@ -167,6 +168,11 @@ class Action extends Base {
 			) )->dynamic_error();
 		}
 
+		jet_fb_action_handler()->add_request(
+			array(
+				'inserted_cct_' . $type => (int) $item_id,
+			)
+		);
 	}
 
 	public function recursive_parse_values( $source ) {

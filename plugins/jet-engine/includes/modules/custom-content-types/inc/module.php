@@ -88,6 +88,9 @@ class Module {
 
 			require_once $this->module_path( 'dashboard/skins-export-import.php' );
 			new Dashboard\Skins_Export_Import();
+
+			require_once $this->module_path( 'delete-users.php' );
+			new Delete_Users();
 		}
 
 		require_once $this->module_path( 'query-builder/manager.php' );

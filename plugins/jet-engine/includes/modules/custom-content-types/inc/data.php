@@ -23,6 +23,12 @@ class Data extends \Jet_Engine_Base_Data {
 	);
 
 	/**
+	 * Store old item data before update
+	 * @var array
+	 */
+	public $prev_item = array();
+
+	/**
 	 * Table format
 	 *
 	 * @var string
@@ -394,7 +400,7 @@ class Data extends \Jet_Engine_Base_Data {
 						$step = floatval( $field['step_value'] );
 						$dec  = $step - floor( $step );
 
-						if ( 1 > $dec ) {
+						if ( 1 > $dec && 0 < $dec ) {
 							$length = strlen( str_replace( '0.', '', $dec ) );
 							$m      = 10 + $length;
 							$type   = 'DECIMAL(' . $m . ',' . $length . ')';
@@ -443,6 +449,10 @@ class Data extends \Jet_Engine_Base_Data {
 		return Module::instance()->manager->get_service_fields( $args );
 	}
 
+	public function before_item_update( $item ) {
+		$this->prev_item = $this->get_item_for_edit( $item['id'] );
+	}
+
 	/**
 	 * Rewrite this function in the child class to perform any actions on item update
 	 */
@@ -461,6 +471,12 @@ class Data extends \Jet_Engine_Base_Data {
 		}
 
 		if ( ! $is_new ) {
+			$old_fields = ! empty( $this->prev_item['meta_fields'] ) ? $this->prev_item['meta_fields'] : array();
+			$new_fields = ! empty( $item['meta_fields'] ) ? $item['meta_fields'] : array();
+			$old_schema = $this->get_sql_columns_from_fields( $old_fields );
+
+			$db->adjusted_fields_map( $old_fields, $new_fields );
+			$db->adjusted_fields_types( $old_schema, $old_fields, $new_fields );
 			$db->adjust_fields_to_schema();
 		}
 

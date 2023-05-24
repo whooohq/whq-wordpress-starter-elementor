@@ -24,14 +24,21 @@ if ( ! class_exists( 'Jet_Woo_Builder_Template_Functions' ) ) {
 		private static $instance = null;
 
 		/**
-		 * Returns sale badge.
+		 * Get product sale flash.
 		 *
-		 * @param string $badge_text
-		 * @param array  $settings
+		 * @since 1.0.0
+		 * @since 2.1.1 Added check for empty badge label.
+		 *
+		 * @param string $badge_text Sale flash label.
+		 * @param array  $settings   Widget settings list.
 		 *
 		 * @return string
 		 */
 		public function get_product_sale_flash( $badge_text = '', $settings = [] ) {
+
+			if ( empty( $badge_text ) ) {
+				return '';
+			}
 
 			global $product;
 
@@ -257,25 +264,24 @@ if ( ! class_exists( 'Jet_Woo_Builder_Template_Functions' ) ) {
 		}
 
 		/**
-		 * Returns product permalink depending on using template
+		 * Get product permalink.
+		 *
+		 * Returns product permalink depending on using template.
+		 *
+		 * @since 1.0.0
+		 * @since 2.1.2.1 Updated handling.
+		 *
+		 * @param object|null $product Product instance.
 		 *
 		 * @return string
 		 */
-		public function get_product_permalink( $object = null ) {
+		public function get_product_permalink( $product = null ) {
 
-			if ( function_exists( 'jet_engine' ) ) {
-				if ( ! $object ) {
-					$object = jet_engine()->listings->data->get_current_object();
-				}
-
-				if ( $object && is_a( $object, 'WC_Product' ) ) {
-					if ( is_callable( [ $object, 'get_permalink' ] ) ) {
-						return call_user_func( [ $object, 'get_permalink' ] );
-					}
-				}
+			if ( ! is_a( $product, 'WC_Product' ) ) {
+				return esc_url( get_permalink() );
 			}
 
-			return esc_url( get_permalink() );
+			return esc_url( $product->get_permalink() );
 
 		}
 
@@ -401,7 +407,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Template_Functions' ) ) {
 		 *
 		 * @return string
 		 */
-		public function get_product_add_to_cart_button( $classes = array(), $quantity = false ) {
+		public function get_product_add_to_cart_button( $classes = [], $quantity = false ) {
 
 			global $product;
 
@@ -409,29 +415,29 @@ if ( ! class_exists( 'Jet_Woo_Builder_Template_Functions' ) ) {
 				return null;
 			}
 
-			$args                     = array();
-			$ajax_add_to_cart_enabled = 'yes' === get_option( 'woocommerce_enable_ajax_add_to_cart' );
+			$args = [];
 
 			if ( $product ) {
 				$defaults = apply_filters(
 					'jet-woo-builder/template-functions/product-add-to-cart-settings',
-					array(
+					[
 						'quantity'   => 1,
 						'class'      => implode( ' ', array_filter(
-							array(
+							[
 								'button',
 								$classes,
 								'product_type_' . $product->get_type(),
 								$product->is_purchasable() && $product->is_in_stock() ? 'add_to_cart_button' : '',
-								$product->supports( 'ajax_add_to_cart' ) && $product->is_purchasable() && $product->is_in_stock() && $ajax_add_to_cart_enabled ? 'ajax_add_to_cart' : '',
-							) ) ),
-						'attributes' => array(
+								$product->supports( 'ajax_add_to_cart' ) && $product->is_purchasable() && $product->is_in_stock() ? 'ajax_add_to_cart' : '',
+							] ) ),
+						'attributes' => [
 							'data-product_id'  => $product->get_id(),
 							'data-product_sku' => $product->get_sku(),
 							'aria-label'       => $product->add_to_cart_description(),
 							'rel'              => 'nofollow',
-						),
-					)
+						],
+					],
+					$product
 				);
 
 				$args = wp_parse_args( $args, $defaults );
@@ -466,7 +472,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Template_Functions' ) ) {
 		public function qty_for_woocommerce_loop_add_to_cart_link( $html, $product, $args ) {
 
 			if ( $product && ( $product->is_type( 'simple' ) || $product->is_type( 'variation' ) ) && $product->is_purchasable() && $product->is_in_stock() && ! $product->is_sold_individually() ) {
-				$quantity = esc_attr( isset( $args['quantity'] ) ? $args['quantity'] : 1 );
+				$quantity = esc_attr( $args['quantity'] ?? $product->get_min_purchase_quantity() );
 
 				$html = '<form action="' . esc_url( $product->add_to_cart_url() ) . '" class="cart" method="post" enctype="multipart/form-data">';
 				$html .= woocommerce_quantity_input( [
@@ -534,11 +540,7 @@ if ( ! class_exists( 'Jet_Woo_Builder_Template_Functions' ) ) {
 
 			global $wp;
 
-			$order_received_id = null;
-
-			if ( isset( $wp->query_vars['order-received'] ) ) {
-				$order_received_id = $wp->query_vars['order-received'];
-			}
+			$order_received_id = $wp->query_vars['order-received'] ?? null;
 
 			if ( jet_woo_builder()->elementor_views->in_elementor() ) {
 				$order_received_id = $this->get_last_received_order();
@@ -553,7 +555,13 @@ if ( ! class_exists( 'Jet_Woo_Builder_Template_Functions' ) ) {
 		}
 
 		/**
-		 * WooCommerce Product last order id return
+		 * Get last received order.
+		 *
+		 * Returns WooCommerce last order id.
+		 *
+		 * @since  1.7.0
+		 * @since  2.1.4 Added integration with WooCommerce High-Performance Order Storage.
+		 * @access public
 		 *
 		 * @return string
 		 */
@@ -561,14 +569,20 @@ if ( ! class_exists( 'Jet_Woo_Builder_Template_Functions' ) ) {
 
 			global $wpdb;
 
-			$statuses = array_keys( wc_get_order_statuses() );
-			$statuses = implode( "','", $statuses );
+			$statuses = implode( "','", array_keys( wc_get_order_statuses() ) );
 
-			$results = $wpdb->get_col( "
-				SELECT MAX(ID) FROM {$wpdb->prefix}posts
-				WHERE post_type LIKE 'shop_order'
-				AND post_status IN ( '$statuses' )"
-			);
+			if ( Automattic\WooCommerce\Utilities\OrderUtil::custom_orders_table_usage_is_enabled() ) {
+				$results = $wpdb->get_col( "
+					SELECT MAX(id) FROM " . Automattic\WooCommerce\Internal\DataStores\Orders\OrdersTableDataStore::get_orders_table_name() . "
+					WHERE status IN ( '$statuses' )
+				" );
+			} else {
+				$results = $wpdb->get_col( "
+					SELECT MAX(ID) FROM {$wpdb->prefix}posts
+					WHERE post_type LIKE 'shop_order'
+					AND post_status IN ( '$statuses' )
+				" );
+			}
 
 			return reset( $results );
 

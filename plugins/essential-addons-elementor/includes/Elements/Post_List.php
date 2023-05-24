@@ -464,6 +464,7 @@ class Post_List extends Widget_Base
                     'col-1' => esc_html__('1 Column', 'essential-addons-elementor'),
                     'col-2' => esc_html__('2 Columns', 'essential-addons-elementor'),
                     'col-3' => esc_html__('3 Columns', 'essential-addons-elementor'),
+                    'col-4' => esc_html__('4 Columns', 'essential-addons-elementor'),
                 ],
                 'prefix_class' => 'eael-post-list-',
             ]
@@ -627,6 +628,36 @@ class Post_List extends Widget_Base
                 'label_on' => __('Yes', 'essential-addons-elementor'),
                 'label_off' => __('No', 'essential-addons-elementor'),
                 'return_value' => 'yes',
+            ]
+        );
+
+        $this->add_control(
+            'eael_post_list_post_cat_max_length',
+            [
+                'label' => __('Max Items to Show', 'essential-addons-for-elementor-lite'),
+                'type' => Controls_Manager::SELECT,
+                'options' => [
+                    1 => __('1', 'essential-addons-for-elementor-lite'),
+                    2 => __('2', 'essential-addons-for-elementor-lite'),
+                    3 => __('3', 'essential-addons-for-elementor-lite'),
+                ],
+                'default' => 1,
+                'condition' => [
+                    'eael_post_list_post_cat' => 'yes'
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'eael_post_list_post_cat_separator',
+            [
+                'label' => esc_html__('Items Separator', 'essential-addons-for-elementor-lite'),
+                'type' => Controls_Manager::TEXT,
+                'label_block' => false,
+                'default' => esc_html__('', 'essential-addons-for-elementor-lite'),
+                'condition' => [
+                    'eael_post_list_post_cat' => 'yes',
+                ],
             ]
         );
 
@@ -1954,7 +1985,7 @@ class Post_List extends Widget_Base
             'post_list_category_tabs',
             [
                 'condition' => [
-                    'eael_post_list_layout_type!' => 'advanced',
+                    // 'eael_post_list_layout_type!' => 'advanced',
                 ],
             ]
         );
@@ -1968,7 +1999,7 @@ class Post_List extends Widget_Base
                 'type' => Controls_Manager::COLOR,
                 'default' => '#8040FF',
                 'selectors' => [
-                    '{{WRAPPER}} .eael-post-list-container.layout-default .eael-post-list-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-2 .eael-post-list-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-3 .eael-post-list-content .meta-categories a' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .eael-post-list-container.layout-default .eael-post-list-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-2 .eael-post-list-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-3 .eael-post-list-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-advanced .eael-post-list-content .boxed-meta .meta-categories .meta-cats-wrap a' => 'color: {{VALUE}};',
                     '{{WRAPPER}} .eael-post-list-container.layout-default .featured-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-2 .featured-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-3 .featured-content .meta-categories a' => 'color: {{VALUE}};',
                 ],
             ]
@@ -1979,7 +2010,7 @@ class Post_List extends Widget_Base
                 'label' => esc_html__('Background', 'essential-addons-elementor'),
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .eael-post-list-container.layout-default .eael-post-list-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-2 .eael-post-list-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-3 .eael-post-list-content .meta-categories a' => 'background-color: {{VALUE}};',
+                    '{{WRAPPER}} .eael-post-list-container.layout-default .eael-post-list-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-2 .eael-post-list-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-3 .eael-post-list-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-advanced .eael-post-list-content .boxed-meta .meta-categories .meta-cats-wrap' => 'background-color: {{VALUE}};',
                     '{{WRAPPER}} .eael-post-list-container.layout-default .featured-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-2 .featured-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-3 .featured-content .meta-categories a' => 'background-color: {{VALUE}};',
                 ],
             ]
@@ -1998,7 +2029,7 @@ class Post_List extends Widget_Base
                     ],
                 ],
                 'selectors' => [
-                    '{{WRAPPER}} .eael-post-list-container.layout-default .eael-post-list-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-2 .eael-post-list-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-3 .eael-post-list-content .meta-categories a' => 'border-radius: {{SIZE}}px;',
+                    '{{WRAPPER}} .eael-post-list-container.layout-default .eael-post-list-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-2 .eael-post-list-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-3 .eael-post-list-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-advanced .eael-post-list-content .boxed-meta .meta-categories .meta-cats-wrap' => 'border-radius: {{SIZE}}px;',
                     '{{WRAPPER}} .eael-post-list-container.layout-default .featured-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-2 .featured-content .meta-categories a, {{WRAPPER}} .eael-post-list-container.layout-preset-3 .featured-content .meta-categories a' => 'border-radius: {{SIZE}}px;',
                 ],
             ]
@@ -2015,7 +2046,7 @@ class Post_List extends Widget_Base
                 'type' => Controls_Manager::COLOR,
                 'default' => '#543bc2',
                 'selectors' => [
-                    '{{WRAPPER}} .eael-post-list-container.layout-default .eael-post-list-content .meta-categories a:hover, {{WRAPPER}} .eael-post-list-container.layout-preset-2 .eael-post-list-content .meta-categories a:hover, {{WRAPPER}} .eael-post-list-container.layout-preset-3 .eael-post-list-content .meta-categories a:hover' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .eael-post-list-container.layout-default .eael-post-list-content .meta-categories a:hover, {{WRAPPER}} .eael-post-list-container.layout-preset-2 .eael-post-list-content .meta-categories a:hover, {{WRAPPER}} .eael-post-list-container.layout-preset-3 .eael-post-list-content .meta-categories a:hover, {{WRAPPER}} .eael-post-list-container.layout-advanced .eael-post-list-content .boxed-meta .meta-categories .meta-cats-wrap a:hover' => 'color: {{VALUE}};',
                     '{{WRAPPER}} .eael-post-list-container.layout-default .featured-content .meta-categories a:hover, {{WRAPPER}} .eael-post-list-container.layout-preset-2 .featured-content .meta-categories a:hover, {{WRAPPER}} .eael-post-list-container.layout-preset-3 .featured-content .meta-categories a:hover' => 'color: {{VALUE}};',
                 ],
             ]
@@ -2027,7 +2058,7 @@ class Post_List extends Widget_Base
                 'label' => esc_html__('Background', 'essential-addons-elementor'),
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .eael-post-list-container.layout-default .eael-post-list-content .meta-categories a:hover, {{WRAPPER}} .eael-post-list-container.layout-preset-2 .eael-post-list-content .meta-categories a:hover, {{WRAPPER}} .eael-post-list-container.layout-preset-3 .eael-post-list-content .meta-categories a:hover' => 'background-color: {{VALUE}};',
+                    '{{WRAPPER}} .eael-post-list-container.layout-default .eael-post-list-content .meta-categories a:hover, {{WRAPPER}} .eael-post-list-container.layout-preset-2 .eael-post-list-content .meta-categories a:hover, {{WRAPPER}} .eael-post-list-container.layout-preset-3 .eael-post-list-content .meta-categories a:hover, {{WRAPPER}} .eael-post-list-container.layout-advanced .eael-post-list-content .boxed-meta .meta-categories .meta-cats-wrap a:hover' => 'background-color: {{VALUE}};',
                     '{{WRAPPER}} .eael-post-list-container.layout-default .featured-content .meta-categories a:hover, {{WRAPPER}} .eael-post-list-container.layout-preset-2 .featured-content .meta-categories a:hover, {{WRAPPER}} .eael-post-list-container.layout-preset-3 .featured-content .meta-categories a:hover' => 'background-color: {{VALUE}};',
                 ],
             ]

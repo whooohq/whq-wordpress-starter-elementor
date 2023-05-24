@@ -2,7 +2,7 @@
 /**
  * Term Meta module
  *
- * Version: 1.4.1
+ * Version: 1.6.0
  */
 
 // If this file is called directly, abort.
@@ -71,7 +71,7 @@ if ( ! class_exists( 'Cherry_X_Term_Meta' ) ) {
 			$tax      = esc_attr( $this->args['tax'] );
 
 			add_action( "{$tax}_add_form_fields", array( $this, 'render_add_fields' ), $priority );
-			add_action( "{$tax}_edit_form_fields", array( $this, 'render_edit_fields' ), $priority, 2 );
+			add_action( "{$tax}_edit_form", array( $this, 'render_edit_fields' ), $priority, 2 );
 
 			add_action( "created_{$tax}", array( $this, 'save_meta' ) );
 			add_action( "edited_{$tax}", array( $this, 'save_meta' ) );
@@ -223,9 +223,35 @@ if ( ! class_exists( 'Cherry_X_Term_Meta' ) ) {
 					}
 
 					break;
+
+				case 'text':
+
+					if ( ! empty( $value ) && $this->to_timestamp( $field ) && is_numeric( $value ) ) {
+
+						switch ( $field['input_type'] ) {
+							case 'date':
+								$value = $this->get_date( 'Y-m-d', $value );
+								break;
+
+							case 'datetime-local':
+								$value = $this->get_date( 'Y-m-d\TH:i', $value );
+								break;
+						}
+					}
+
+					break;
 			}
 
 			return $value;
+		}
+
+		/**
+		 * Returns date converted from timestamp
+		 * 
+		 * @return [type] [description]
+		 */
+		public function get_date( $format, $time ) {
+			return apply_filters( 'cx_term_meta/date', date( $format, $time ), $time, $format );
 		}
 
 		/**
@@ -246,18 +272,6 @@ if ( ! class_exists( 'Cherry_X_Term_Meta' ) ) {
 			}
 
 			$meta = get_term_meta( $term->term_id, $key, false );
-
-			if ( ! empty( $meta[0] ) && $this->to_timestamp( $field ) && is_numeric( $meta[0] ) ) {
-
-				switch ( $field['input_type'] ) {
-					case 'date':
-						return date( 'Y-m-d', $meta[0] );
-
-					case 'datetime-local':
-						return date( 'Y-m-d\TH:i', $meta[0] );
-				}
-
-			}
 
 			return ( empty( $meta ) ) ? $default : $meta[0];
 		}
@@ -351,11 +365,7 @@ if ( ! class_exists( 'Cherry_X_Term_Meta' ) ) {
 					continue;
 				}
 
-				if ( $this->to_timestamp( $field ) ) {
-					$new_val = strtotime( $_POST[ $key ] );
-				} else {
-					$new_val = $this->sanitize_meta( $field, $_POST[ $key ] );
-				}
+				$new_val = $this->sanitize_meta( $field, $_POST[ $key ] );
 
 				/**
 				 * Hook on before current metabox saving with meta box id as dynamic part
@@ -432,6 +442,10 @@ if ( ! class_exists( 'Cherry_X_Term_Meta' ) ) {
 				}
 
 				return $result;
+			}
+
+			if ( $this->to_timestamp( $field ) ) {
+				return apply_filters( 'cx_term_meta/strtotime', strtotime( $value ), $value );
 			}
 
 			if ( ! empty( $field['sanitize_callback'] ) && is_callable( $field['sanitize_callback'] ) ) {

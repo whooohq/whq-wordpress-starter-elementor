@@ -51,6 +51,11 @@ class Current_Terms extends \Jet_Engine_Base_Macros {
 		}
 
 		$object = $this->get_macros_object();
+
+		if ( ! $object || ! is_object( $object ) ) {
+			return '';
+		}
+
 		$class  = get_class( $object );
 
 		if ( 'WP_Post' !== $class ) {
