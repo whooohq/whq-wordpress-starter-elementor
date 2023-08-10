@@ -98,7 +98,6 @@ figure.effect-lily img {
   opacity: 0.7;
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: translate3d(-40px, 0, 0);
@@ -129,7 +128,6 @@ figure.effect-lily ol {
 figure.effect-lily h2 {
   -webkit-transition: -webkit-transform 0.35s;
   transition: -webkit-transform 0.35s;
-  -o-transition: transform 0.35s;
   transition: transform 0.35s;
   transition: transform 0.35s, -webkit-transform 0.35s;
 }
@@ -140,7 +138,6 @@ figure.effect-lily ol {
   opacity: 0;
   -webkit-transition: opacity 0.2s, -webkit-transform 0.35s;
   transition: opacity 0.2s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.2s, transform 0.35s;
   transition: opacity 0.2s, transform 0.35s;
   transition: opacity 0.2s, transform 0.35s, -webkit-transform 0.35s;
 }
@@ -165,11 +162,9 @@ figure.effect-lily:hover p,
 figure.effect-lily:hover ul,
 figure.effect-lily:hover ol {
   -webkit-transition-delay: 0.05s;
-  -o-transition-delay: 0.05s;
-     transition-delay: 0.05s;
+  transition-delay: 0.05s;
   -webkit-transition-duration: 0.35s;
-  -o-transition-duration: 0.35s;
-     transition-duration: 0.35s;
+  transition-duration: 0.35s;
 }
 
 /*--- Sadie ---*/
@@ -181,7 +176,6 @@ figure.effect-sadie figcaption::before {
   width: 100%;
   height: 100%;
   background: -webkit-gradient(linear, left top, left bottom, from(rgba(72, 76, 97, 0)), color-stop(75%, rgba(72, 76, 97, 0.8)));
-  background: -o-linear-gradient(top, rgba(72, 76, 97, 0) 0%, rgba(72, 76, 97, 0.8) 75%);
   background: linear-gradient(to bottom, rgba(72, 76, 97, 0) 0%, rgba(72, 76, 97, 0.8) 75%);
   content: "";
   opacity: 0;
@@ -198,7 +192,6 @@ figure.effect-sadie h2 {
   -webkit-transition: -webkit-transform 0.35s, color 0.35s;
   -webkit-transition: color 0.35s, -webkit-transform 0.35s;
   transition: color 0.35s, -webkit-transform 0.35s;
-  -o-transition: transform 0.35s, color 0.35s;
   transition: transform 0.35s, color 0.35s;
   transition: transform 0.35s, color 0.35s, -webkit-transform 0.35s;
   -webkit-transform: translate3d(0, -50%, 0);
@@ -211,7 +204,6 @@ figure.effect-sadie ul,
 figure.effect-sadie ol {
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
 }
@@ -301,7 +293,6 @@ figure.effect-layla h2 {
   padding-top: 26%;
   -webkit-transition: -webkit-transform 0.35s;
   transition: -webkit-transform 0.35s;
-  -o-transition: transform 0.35s;
   transition: transform 0.35s;
   transition: transform 0.35s, -webkit-transform 0.35s;
 }
@@ -330,7 +321,6 @@ figure.effect-layla ul,
 figure.effect-layla ol {
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
 }
@@ -365,21 +355,18 @@ figure.effect-layla:hover img,
 figure.effect-layla:hover ul,
 figure.effect-layla:hover ol {
   -webkit-transition-delay: 0.15s;
-  -o-transition-delay: 0.15s;
-     transition-delay: 0.15s;
+  transition-delay: 0.15s;
 }
 
 /*--- Oscar ---*/
 
 figure.effect-oscar {
-  background: -o-linear-gradient(45deg, #22682a 0%, #9b4a1b 40%, #3a342a 100%);
   background: linear-gradient(45deg, #22682a 0%, #9b4a1b 40%, #3a342a 100%);
 }
 
 figure.effect-oscar img {
   opacity: 0.9;
   -webkit-transition: opacity 0.35s;
-  -o-transition: opacity 0.35s;
   transition: opacity 0.35s;
 }
 
@@ -387,7 +374,6 @@ figure.effect-oscar figcaption {
   padding: 3em;
   background-color: rgba(58, 52, 42, 0.7);
   -webkit-transition: background-color 0.35s;
-  -o-transition: background-color 0.35s;
   transition: background-color 0.35s;
 }
 
@@ -405,7 +391,6 @@ figure.effect-oscar h2 {
   margin: 20% 0 10px 0;
   -webkit-transition: -webkit-transform 0.35s;
   transition: -webkit-transform 0.35s;
-  -o-transition: transform 0.35s;
   transition: transform 0.35s;
   transition: transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: translate3d(0, 100%, 0);
@@ -419,7 +404,6 @@ figure.effect-oscar ol {
   opacity: 0;
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: scale(0);
@@ -479,7 +463,6 @@ figure.effect-marley h2 {
   top: 30px;
   -webkit-transition: -webkit-transform 0.35s;
   transition: -webkit-transform 0.35s;
-  -o-transition: transform 0.35s;
   transition: transform 0.35s;
   transition: transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: translate3d(0, 20px, 0);
@@ -510,7 +493,6 @@ figure.effect-marley ol {
   opacity: 0;
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
 }
@@ -534,7 +516,6 @@ figure.effect-ruby img {
   opacity: 0.7;
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: scale(1.15);
@@ -553,7 +534,6 @@ figure.effect-ruby h2 {
   margin-top: 5%;
   -webkit-transition: -webkit-transform 0.35s;
   transition: -webkit-transform 0.35s;
-  -o-transition: transform 0.35s;
   transition: transform 0.35s;
   transition: transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: translate3d(0, 20px, 0);
@@ -569,7 +549,6 @@ figure.effect-ruby ol {
   opacity: 0;
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: translate3d(0, 20px, 0) scale(1.1);
@@ -592,7 +571,6 @@ figure.effect-ruby:hover ol {
 /*--- Roxy ---*/
 
 figure.effect-roxy {
-  background: -o-linear-gradient(45deg, #ff89e9 0%, #05abe0 100%);
   background: linear-gradient(45deg, #ff89e9 0%, #05abe0 100%);
 }
 
@@ -601,7 +579,6 @@ figure.effect-roxy img {
   width: calc(100% + 30px);
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: translate3d(-50px, 0, 0);
@@ -619,7 +596,6 @@ figure.effect-roxy figcaption::before {
   opacity: 0;
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: translate3d(-20px, 0, 0);
@@ -641,7 +617,6 @@ figure.effect-roxy ol {
   opacity: 0;
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: translate3d(-10px, 0, 0);
@@ -672,7 +647,6 @@ figure.effect-bubba {
 figure.effect-bubba img {
   opacity: 0.7;
   -webkit-transition: opacity 0.35s;
-  -o-transition: opacity 0.35s;
   transition: opacity 0.35s;
 }
 
@@ -691,7 +665,6 @@ figure.effect-bubba figcaption::after {
   opacity: 0;
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
 }
@@ -716,7 +689,6 @@ figure.effect-bubba h2 {
   padding-top: 30%;
   -webkit-transition: -webkit-transform 0.35s;
   transition: -webkit-transform 0.35s;
-  -o-transition: transform 0.35s;
   transition: transform 0.35s;
   transition: transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: translate3d(0, -20px, 0);
@@ -730,7 +702,6 @@ figure.effect-bubba ol {
   opacity: 0;
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: translate3d(0, 20px, 0);
@@ -764,7 +735,6 @@ figure.effect-romeo {
 figure.effect-romeo img {
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: translate3d(0, 0, 300px);
@@ -788,7 +758,6 @@ figure.effect-romeo figcaption::after {
   content: "";
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: translate3d(-50%, -50%, 0);
@@ -817,7 +786,6 @@ figure.effect-romeo ol {
   width: 100%;
   -webkit-transition: -webkit-transform 0.35s;
   transition: -webkit-transform 0.35s;
-  -o-transition: transform 0.35s;
   transition: transform 0.35s;
   transition: transform 0.35s, -webkit-transform 0.35s;
 }
@@ -858,7 +826,6 @@ figure.effect-sarah img {
   width: calc(100% + 20px);
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: translate3d(-10px, 0, 0);
@@ -893,7 +860,6 @@ figure.effect-sarah h2::after {
   content: "";
   -webkit-transition: -webkit-transform 0.35s;
   transition: -webkit-transform 0.35s;
-  -o-transition: transform 0.35s;
   transition: transform 0.35s;
   transition: transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: translate3d(-100%, 0, 0);
@@ -912,7 +878,6 @@ figure.effect-sarah ol {
   opacity: 0;
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: translate3d(100%, 0, 0);
@@ -932,7 +897,6 @@ figure.effect-sarah:hover ol {
 figure.effect-chico img {
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: scale(1.12);
@@ -971,7 +935,6 @@ figure.effect-chico ol {
   opacity: 0;
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
 }
@@ -1013,7 +976,6 @@ figure.effect-milo img {
   opacity: 1;
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: translate3d(-30px, 0, 0) scale(1.12);
@@ -1045,7 +1007,6 @@ figure.effect-milo ol {
   opacity: 0;
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: translate3d(-40px, 0, 0);
@@ -1070,7 +1031,6 @@ figure.effect-apollo img {
   opacity: 0.95;
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: scale3d(1.05, 1.05, 1);
@@ -1087,7 +1047,6 @@ figure.effect-apollo figcaption::before {
   content: "";
   -webkit-transition: -webkit-transform 0.6s;
   transition: -webkit-transform 0.6s;
-  -o-transition: transform 0.6s;
   transition: transform 0.6s;
   transition: transform 0.6s, -webkit-transform 0.6s;
   -webkit-transform: scale3d(1.9, 1.4, 1) rotate3d(0, 0, 1, 45deg) translate3d(0, -100%, 0);
@@ -1107,7 +1066,6 @@ figure.effect-apollo ol {
   text-align: right;
   opacity: 0;
   -webkit-transition: opacity 0.35s;
-  -o-transition: opacity 0.35s;
   transition: opacity 0.35s;
 }
 
@@ -1131,14 +1089,12 @@ figure.effect-apollo:hover ul,
 figure.effect-apollo:hover ol {
   opacity: 1;
   -webkit-transition-delay: 0.1s;
-  -o-transition-delay: 0.1s;
-     transition-delay: 0.1s;
+  transition-delay: 0.1s;
 }
 
 /*--- Jazz ---*/
 
 figure.effect-jazz {
-  background: -o-linear-gradient(135deg, #f3cf3f 0%, #f33f58 100%);
   background: linear-gradient(-45deg, #f3cf3f 0%, #f33f58 100%);
 }
 
@@ -1153,7 +1109,6 @@ figure.effect-jazz ul,
 figure.effect-jazz ol {
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
 }
@@ -1188,7 +1143,6 @@ figure.effect-jazz h2 {
   padding-top: 26%;
   -webkit-transition: -webkit-transform 0.35s;
   transition: -webkit-transform 0.35s;
-  -o-transition: transform 0.35s;
   transition: transform 0.35s;
   transition: transform 0.35s, -webkit-transform 0.35s;
 }
@@ -1232,7 +1186,6 @@ figure.effect-ming {
 figure.effect-ming img {
   opacity: 0.9;
   -webkit-transition: opacity 0.35s;
-  -o-transition: opacity 0.35s;
   transition: opacity 0.35s;
 }
 
@@ -1249,7 +1202,6 @@ figure.effect-ming figcaption::before {
   opacity: 0;
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: scale3d(1.4, 1.4, 1);
@@ -1260,7 +1212,6 @@ figure.effect-ming h2 {
   margin: 20% 0 10px 0;
   -webkit-transition: -webkit-transform 0.35s;
   transition: -webkit-transform 0.35s;
-  -o-transition: transform 0.35s;
   transition: transform 0.35s;
   transition: transform 0.35s, -webkit-transform 0.35s;
 }
@@ -1272,7 +1223,6 @@ figure.effect-ming ol {
   opacity: 0;
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s, -webkit-transform 0.35s;
-  -o-transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s;
   transition: opacity 0.35s, transform 0.35s, -webkit-transform 0.35s;
   -webkit-transform: scale(1.5);

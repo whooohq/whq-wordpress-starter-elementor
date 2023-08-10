@@ -4,7 +4,7 @@ namespace Essential_Addons_Elementor\Pro\Elements;
 
 use \Elementor\Controls_Manager;
 use \Elementor\Group_Control_Background;
-use \Elementor\Core\Schemes\Typography;
+use \Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
@@ -108,6 +108,9 @@ class One_Page_Navigation extends Widget_Base
                     'active'            => true,
                 ],
                 'default'               => __('Section Title', 'essential-addons-elementor'),
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -120,6 +123,9 @@ class One_Page_Navigation extends Widget_Base
                     'active'            => true,
                 ],
                 'default'               => '',
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -673,7 +679,9 @@ class One_Page_Navigation extends Widget_Base
             [
                 'name'                  => 'tooltip_typography',
                 'label'                 => __('Typography', 'essential-addons-elementor'),
-                'scheme'                => Typography::TYPOGRAPHY_4,
+                'global' => [
+	                'default' => Global_Typography::TYPOGRAPHY_ACCENT
+                ],
                 'selector'              => '{{WRAPPER}} .eael-nav-dot-tooltip',
                 'condition'             => [
                     'nav_tooltip'  => 'yes',

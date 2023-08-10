@@ -145,7 +145,10 @@ class Conditional_Display {
 				],
 				'condition'   => [
 					'logic_type' => 'dynamic'
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -287,7 +290,10 @@ class Conditional_Display {
 					'default'     => '',
 					'condition'   => [
 						'logic_type' => 'dynamic'
-					]
+					],
+					'ai' => [
+						'active' => false,
+					],
 				]
 			);
 

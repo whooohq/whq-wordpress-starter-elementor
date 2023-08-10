@@ -435,6 +435,9 @@ class Woo_Product_Slider extends Widget_Base {
                 'condition'   => [
                     'eael_product_slider_excerpt' => 'yes',
                 ],
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
         
@@ -497,7 +500,10 @@ class Woo_Product_Slider extends Widget_Base {
 			    'label'     => __( 'Not Found Message', 'essential-addons-elementor' ),
 			    'type'      => Controls_Manager::TEXT,
 			    'default'   => __( 'Products Not Found', 'essential-addons-elementor' ),
-			    'separator' => 'before'
+			    'separator' => 'before',
+                'ai' => [
+					'active' => false,
+				],
 		    ]
 	    );
 
@@ -932,6 +938,9 @@ class Woo_Product_Slider extends Widget_Base {
 			    'label'       => esc_html__( 'Sale Text', 'essential-addons-elementor' ),
 			    'type'        => Controls_Manager::TEXT,
                 'separator' => 'before',
+                'ai' => [
+					'active' => false,
+				],
 		    ]
 	    );
 
@@ -940,6 +949,9 @@ class Woo_Product_Slider extends Widget_Base {
 		    [
 			    'label'       => esc_html__( 'Stock Out Text', 'essential-addons-elementor' ),
 			    'type'        => Controls_Manager::TEXT,
+                'ai' => [
+					'active' => false,
+				],
 		    ]
 	    );
         
@@ -3053,13 +3065,19 @@ class Woo_Product_Slider extends Widget_Base {
                 'swiper-container-wrap-dots-' . $settings[ 'dots_position' ] );
         }
 
+        $swiper_class = $swiper_version_class = '';
+        if ( class_exists( 'Elementor\Plugin' ) ) {
+            $swiper_class           = \Elementor\Plugin::$instance->experiments->is_feature_active( 'e_swiper_latest' ) ? 'swiper' : 'swiper-container';
+            $swiper_version_class   = 'swiper' === $swiper_class ? 'swiper-8' : 'swiper-8-lower';
+        }
+        
         $this->add_render_attribute(
             'eael-woo-product-slider-wrap',
             [
                 'class'           => [
                     'woocommerce',
-                    'swiper',
-                    'swiper-container',
+                    esc_attr( $swiper_class ),
+                    esc_attr( $swiper_version_class ),
                     'eael-woo-product-slider',
                     'swiper-container-' . esc_attr( $this->get_id() ),
                     'eael-product-appender-' . esc_attr( $this->get_id() ),
@@ -3191,8 +3209,14 @@ class Woo_Product_Slider extends Widget_Base {
 			$visibility .= ' eael_gallery_pagination_hide_on_tablet';
 		}
 
+        $swiper_class = $swiper_version_class = '';
+        if ( class_exists( 'Elementor\Plugin' ) ) {
+            $swiper_class           = \Elementor\Plugin::$instance->experiments->is_feature_active( 'e_swiper_latest' ) ? 'swiper' : 'swiper-container';
+            $swiper_version_class   = 'swiper' === $swiper_class ? 'swiper-8' : 'swiper-8-lower';
+        }
+
 		$this->add_render_attribute('eael_gallery_pagination_wrapper', [
-			'class' => ['swiper swiper-container eael-woo-product-slider-gallary-pagination', $visibility]
+			'class' => [ esc_attr( $swiper_class ) . ' ' . esc_attr( $swiper_version_class ) . ' eael-woo-product-slider-gallary-pagination', $visibility]
 		]);
 
 		if ( $settings['direction'] == 'right' ) {

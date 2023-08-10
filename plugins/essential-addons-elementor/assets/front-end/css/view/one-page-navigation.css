@@ -98,7 +98,6 @@
   visibility: hidden;
   -webkit-transition: opacity 0.3s ease, visibility 0.3s ease, -webkit-transform 0.3s ease;
   transition: opacity 0.3s ease, visibility 0.3s ease, -webkit-transform 0.3s ease;
-  -o-transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
   transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
   transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease, -webkit-transform 0.3s ease;
 }
@@ -229,14 +228,12 @@
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   -webkit-transition: color 0.3s ease, border 0.3s ease;
-  -o-transition: color 0.3s ease, border 0.3s ease;
   transition: color 0.3s ease, border 0.3s ease;
 }
 
 .eael-nav-dot-wrap {
   display: block;
   -webkit-transition: all 0.3s ease, border 0.3s ease;
-  -o-transition: all 0.3s ease, border 0.3s ease;
   transition: all 0.3s ease, border 0.3s ease;
 }
 

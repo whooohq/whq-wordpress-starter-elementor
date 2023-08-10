@@ -355,6 +355,9 @@ class Testimonial_Slider extends Widget_Base
 				'condition' => [
 					'eael_testimonial_enable_avatar' => 'yes',
 				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -364,7 +367,10 @@ class Testimonial_Slider extends Widget_Base
 				'label' => esc_html__( 'User Name', 'essential-addons-elementor' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => esc_html__( 'John Doe', 'essential-addons-elementor' ),
-				'dynamic' => [ 'active' => true ]
+				'dynamic' => [ 'active' => true ],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -375,7 +381,10 @@ class Testimonial_Slider extends Widget_Base
 				'label' => esc_html__( 'Company Name', 'essential-addons-elementor' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => esc_html__( 'Codetic', 'essential-addons-elementor' ),
-				'dynamic' => [ 'active' => true ]
+				'dynamic' => [ 'active' => true ],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -477,7 +486,10 @@ class Testimonial_Slider extends Widget_Base
 				'default' => esc_html__( '...', 'essential-addons-elementor' ),
 				'condition' => [
 					'eael_testimonial_enable_read_more' => 'yes'
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -489,7 +501,10 @@ class Testimonial_Slider extends Widget_Base
 				'default' => esc_html__( 'Read More', 'essential-addons-elementor' ),
 				'condition' => [
 					'eael_testimonial_enable_read_more' => 'yes'
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -1839,10 +1854,16 @@ class Testimonial_Slider extends Widget_Base
 			'id'    => 'eael-testimonial-' . esc_attr($this->get_id()),
 		]);
 
+		$swiper_class = $swiper_version_class = '';
+        if ( class_exists( 'Elementor\Plugin' ) ) {
+            $swiper_class           = \Elementor\Plugin::$instance->experiments->is_feature_active( 'e_swiper_latest' ) ? 'swiper' : 'swiper-container';
+            $swiper_version_class   = 'swiper' === $swiper_class ? 'swiper-8' : 'swiper-8-lower';
+        }
+
 		$this->add_render_attribute('testimonial-slider', [
 			'class' => [
-				'swiper',
-				'swiper-container',
+				esc_attr( $swiper_class ),
+				esc_attr( $swiper_version_class ),
 				'eael-testimonial-slider-main',
 				'swiper-container-' . esc_attr($this->get_id())
 			],

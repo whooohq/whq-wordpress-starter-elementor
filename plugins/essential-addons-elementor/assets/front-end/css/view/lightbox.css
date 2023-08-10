@@ -140,7 +140,6 @@ button.mfp-close {
   width: auto;
   opacity: 1;
   -webkit-transition: all 0.5s;
-  -o-transition: all 0.5s;
   transition: all 0.5s;
 }
 
@@ -168,7 +167,6 @@ button.mfp-close {
 
 .eael-lightbox-popup-window .mfp-close {
   -webkit-transition: 300ms;
-  -o-transition: 300ms;
   transition: 300ms;
   width: auto;
 }
@@ -185,7 +183,6 @@ button.mfp-close {
 .mfp-zoom-in .eael-lightbox-popup-window {
   opacity: 0;
   -webkit-transition: all 0.2s ease-in-out;
-  -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   -webkit-transform: scale(0.8);
       -ms-transform: scale(0.8);
@@ -194,7 +191,6 @@ button.mfp-close {
 
 .mfp-zoom-in.mfp-bg {
   -webkit-transition: all 0.3s ease-out;
-  -o-transition: all 0.3s ease-out;
   transition: all 0.3s ease-out;
 }
 
@@ -219,7 +215,6 @@ button.mfp-close {
 .mfp-zoom-out .eael-lightbox-popup-window {
   opacity: 0;
   -webkit-transition: all 0.3s ease-in-out;
-  -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
   -webkit-transform: scale(1.3);
       -ms-transform: scale(1.3);
@@ -228,7 +223,6 @@ button.mfp-close {
 
 .mfp-zoom-out.mfp-bg {
   -webkit-transition: all 0.3s ease-out;
-  -o-transition: all 0.3s ease-out;
   transition: all 0.3s ease-out;
 }
 
@@ -257,7 +251,6 @@ button.mfp-close {
 .mfp-move-from-top .eael-lightbox-popup-window {
   opacity: 0;
   -webkit-transition: all 0.2s;
-  -o-transition: all 0.2s;
   transition: all 0.2s;
   -webkit-transform: translateY(-100px);
       -ms-transform: translateY(-100px);
@@ -266,7 +259,6 @@ button.mfp-close {
 
 .mfp-move-from-top.mfp-bg {
   -webkit-transition: all 0.2s;
-  -o-transition: all 0.2s;
   transition: all 0.2s;
 }
 
@@ -296,7 +288,6 @@ button.mfp-close {
 .mfp-3d-unfold .eael-lightbox-popup-window {
   opacity: 0;
   -webkit-transition: all 0.3s ease-in-out;
-  -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
   -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
@@ -306,7 +297,6 @@ button.mfp-close {
 
 .mfp-3d-unfold.mfp-bg {
   -webkit-transition: all 0.5s;
-  -o-transition: all 0.5s;
   transition: all 0.5s;
 }
 
@@ -329,7 +319,6 @@ button.mfp-close {
 .mfp-move-right .eael-lightbox-popup-window {
   opacity: 0;
   -webkit-transition: all 0.3s;
-  -o-transition: all 0.3s;
   transition: all 0.3s;
   -webkit-transform: translateX(-100px);
       -ms-transform: translateX(-100px);
@@ -338,7 +327,6 @@ button.mfp-close {
 
 .mfp-move-right.mfp-bg {
   -webkit-transition: all 0.3s;
-  -o-transition: all 0.3s;
   transition: all 0.3s;
 }
 
@@ -363,7 +351,6 @@ button.mfp-close {
 .mfp-move-left .eael-lightbox-popup-window {
   opacity: 0;
   -webkit-transition: all 0.3s;
-  -o-transition: all 0.3s;
   transition: all 0.3s;
   -webkit-transform: translateX(100px);
       -ms-transform: translateX(100px);
@@ -372,7 +359,6 @@ button.mfp-close {
 
 .mfp-move-left.mfp-bg {
   -webkit-transition: all 0.3s;
-  -o-transition: all 0.3s;
   transition: all 0.3s;
 }
 
@@ -398,7 +384,6 @@ button.mfp-close {
   opacity: 0;
   -webkit-transition: all 0.2s ease-in-out;
   -webkit-transition: all 0.5s;
-  -o-transition: all 0.5s;
   transition: all 0.5s;
   -webkit-transform: scale(0) rotate(500deg);
       -ms-transform: scale(0) rotate(500deg);
@@ -407,7 +392,6 @@ button.mfp-close {
 
 .mfp-newspaper.mfp-bg {
   -webkit-transition: all 0.5s;
-  -o-transition: all 0.5s;
   transition: all 0.5s;
 }
 

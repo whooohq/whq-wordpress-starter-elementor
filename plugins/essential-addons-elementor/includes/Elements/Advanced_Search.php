@@ -266,7 +266,10 @@ class Advanced_Search extends Widget_Base {
 			[
 				'label'   => esc_html__( 'Placeholder Text', 'essential-addons-elementor' ),
 				'type'    => Controls_Manager::TEXT,
-				'default' => __( 'Enter Search Keyword', 'essential-addons-elementor' )
+				'default' => __( 'Enter Search Keyword', 'essential-addons-elementor' ),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -275,7 +278,10 @@ class Advanced_Search extends Widget_Base {
 			[
 				'label'   => esc_html__( 'Category List Text', 'essential-addons-elementor' ),
 				'type'    => Controls_Manager::TEXT,
-				'default' => __( 'All Categories', 'essential-addons-elementor' )
+				'default' => __( 'All Categories', 'essential-addons-elementor' ),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -284,7 +290,10 @@ class Advanced_Search extends Widget_Base {
 			[
 				'label'   => esc_html__( 'Button Text', 'essential-addons-elementor' ),
 				'type'    => Controls_Manager::TEXT,
-				'default' => __( 'Search', 'essential-addons-elementor' )
+				'default' => __( 'Search', 'essential-addons-elementor' ),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -304,7 +313,10 @@ class Advanced_Search extends Widget_Base {
 			[
 				'label'   => esc_html__( 'Popular Search Text', 'essential-addons-elementor' ),
 				'type'    => Controls_Manager::TEXT,
-				'default' => __( 'Popular Keywords', 'essential-addons-elementor' )
+				'default' => __( 'Popular Keywords', 'essential-addons-elementor' ),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -313,7 +325,10 @@ class Advanced_Search extends Widget_Base {
 			[
 				'label'   => esc_html__( 'Category Search Text', 'essential-addons-elementor' ),
 				'type'    => Controls_Manager::TEXT,
-				'default' => __( 'Categories', 'essential-addons-elementor' )
+				'default' => __( 'Categories', 'essential-addons-elementor' ),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -322,7 +337,10 @@ class Advanced_Search extends Widget_Base {
 			[
 				'label'   => esc_html__( 'Load More Text', 'essential-addons-elementor' ),
 				'type'    => Controls_Manager::TEXT,
-				'default' => __( 'View All Results', 'essential-addons-elementor' )
+				'default' => __( 'View All Results', 'essential-addons-elementor' ),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -332,7 +350,10 @@ class Advanced_Search extends Widget_Base {
 				'label'   => esc_html__( 'Total Results Text', 'essential-addons-elementor' ),
 				'description' => esc_html__('Total result count will be displayed on [post count].', 'essential-addons-elementor'),
 				'type'    => Controls_Manager::TEXT,
-				'default' => __( 'Total [post_count] Results', 'essential-addons-elementor' )
+				'default' => __( 'Total [post_count] Results', 'essential-addons-elementor' ),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -341,7 +362,10 @@ class Advanced_Search extends Widget_Base {
 			[
 				'label'   => esc_html__( 'Not Found Text', 'essential-addons-elementor' ),
 				'type'    => Controls_Manager::TEXT,
-				'default' => __( 'No Record Found', 'essential-addons-elementor' )
+				'default' => __( 'No Record Found', 'essential-addons-elementor' ),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -1989,18 +2013,18 @@ class Advanced_Search extends Widget_Base {
 						$settings[ 'total_results_text' ] = !empty( $settings[ 'total_results_text' ] ) ? $settings[ 'total_results_text' ] : __( 'Total [post_count] Results', 'essential-addons-elementor' );
 						$total_results_text = explode('[post_count]', $settings[ 'total_results_text' ] );
 						if ( count( $total_results_text ) ) {
-							esc_html_e( $total_results_text[0] );
+							echo esc_html( $total_results_text[0] );
 							
 							if ( isset( $total_results_text[1] ) ) {
 								echo '<span class="eael-advanced-search-total-results-count"></span>';
-								esc_html_e( $total_results_text[1] );
+								echo esc_html( $total_results_text[1] );
 							}
 						}
 					?>
 				</p>
 				<?php endif; ?>
 			</div>
-            <div class="eael-advanced-search-content <?php echo $content_style; ?>">
+            <div class="eael-advanced-search-content <?php echo esc_attr( $content_style ); ?>">
             </div>
             <div class="eael-advanced-search-not-found">
                 <p><?php echo esc_html( $settings[ 'not_found_text' ] ); ?></p></div>
@@ -2030,19 +2054,19 @@ class Advanced_Search extends Widget_Base {
 		arsort( $popular_keywords );
 		$lists = null;
 		$rank  = $settings[ 'show_popular_keyword_rank' ];
-		foreach ( array_slice( $popular_keywords, 1, $settings[ 'total_number_of_popular_search' ] ) as $key => $item ) {
+		foreach ( array_slice( $popular_keywords, 1, $settings['total_number_of_popular_search'] ) as $key => $item ) {
 			if ( $item <= $rank ) {
 				continue;
 			}
 			$keywords = ucfirst( str_replace( '_', ' ', $key ) );
-			$lists    .= sprintf( '<a href="javascript:void(0)" data-keyword="%1$s" class="eael-popular-keyword-item">%1$s</a>', $keywords );
+			$lists    .= sprintf( '<a href="javascript:void(0)" data-keyword="%1$s" class="eael-popular-keyword-item">%2$s</a>', esc_attr( $keywords ), esc_html( $keywords ) );
 		}
 
 		?>
 		<?php if ( !empty( $lists ) ): ?>
             <div class="eael-advanced-search-popular-keyword eael-after-adv-search">
                 <h4> <?php echo esc_html( $settings[ 'popular_search_text' ] ); ?></h4>
-                <div class="eael-popular-keyword-content"><?php echo $lists; ?></div>
+                <div class="eael-popular-keyword-content"><?php printf("%s", $lists); ?></div>
             </div>
 		<?php endif; ?>
 		<?php

@@ -40,10 +40,10 @@ trait Helper
             return;
         }
 
-        $api_key = sanitize_text_field( $_POST['apiKey'] );
+        $api_key = get_option('eael_save_mailchimp_api');
         $list_id = sanitize_text_field( $_POST['listId'] );
 
-        $pattern = '/^[0-9a-z]{32}(-us)(0?[1-9]|1[0-3])?$/';
+        $pattern = '/^[0-9a-z]{32}(-us)(0?[1-9]|[1-9][0-9])?$/';
         if ( ! preg_match($pattern, $api_key) ) {
             return;
         }
@@ -121,7 +121,7 @@ trait Helper
             return;
         }
 
-        $pattern = '/^[0-9a-z]{32}(-us)(0?[1-9]|1[0-3])?$/';
+        $pattern = '/^[0-9a-z]{32}(-us)(0?[1-9]|[1-9][0-9])?$/';
         if ( ! preg_match($pattern, $api_key) ) {
             return;
         }
@@ -159,23 +159,22 @@ trait Helper
         }
     }
 
-    public function ajax_post_search()
-    {
-        if (!isset($_POST['_nonce']) && !wp_verify_nonce($_POST['_nonce'], 'eael_ajax_post_search_nonce_action')) {
+    public function ajax_post_search() {
+        if ( ! isset( $_POST['_nonce'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'essential-addons-elementor' ) ) {
             return;
         }
 
         $html = '';
         $args = array(
-            'post_type' => esc_attr($_POST['post_type']),
+            'post_type'   => esc_attr( $_POST['post_type'] ),
             'post_status' => 'publish',
-            's' => esc_attr($_POST['key']),
+            's'           => esc_attr( $_POST['key'] ),
         );
 
-        $query = new \WP_Query($args);
+        $query = new \WP_Query( $args );
 
-        if ($query->have_posts()) {
-            while ($query->have_posts()) {
+        if ( $query->have_posts() ) {
+            while ( $query->have_posts() ) {
                 $query->the_post();
 
                 $html .= '<div class="ajax-search-result-post">
@@ -184,7 +183,7 @@ trait Helper
             }
         }
 
-        echo $html;
+        echo ClassesHelper::eael_wp_kses( $html );
         die();
     }
 
@@ -515,9 +514,9 @@ trait Helper
                     $post_lists .= is_array( $image ) ? sprintf( '<div class="item-thumb"><img src="%s"></div>', current( $image ) ) : '';
                 }
 
-                $title = '<h4>' . $this->highlight_search_keyword( strip_tags( get_the_title() ), ucwords( $search ) ) . '</h4>';
+				$title = '<h4>' . $this->highlight_search_keyword( html_entity_decode( strip_tags( get_the_title() ) ), ucwords( $search ) ) . '</h4>';
 
-                $content = '<p>' . $this->highlight_search_keyword( wp_trim_words( strip_shortcodes( get_the_excerpt() ), 30 ), $search ) . '</p>';
+				$content = '<p>' . $this->highlight_search_keyword( wp_trim_words( html_entity_decode( strip_shortcodes( get_the_excerpt() ) ), 30, '…' ), $search ) . '</p>';
 
                 $post_lists .= sprintf( '<div class="item-content">%s %s</div>', $title , $content );
 				$post_lists .= '</a>';
@@ -548,12 +547,15 @@ trait Helper
      * @param $search
      * @return string
      */
-    public function highlight_search_keyword( $content, $search ) {
-        $search_keys = implode('|', explode(' ', $search));
-        $content = preg_replace('/(' . $search_keys .')/iu', "<strong>$1</strong>", $content);
-
-        return $content;
-    }
+	public function highlight_search_keyword( $content, $search ) {
+        $arr = [$content, $search];
+		$search_keys = implode( '|', explode( ' ', $search ) );
+		$search_keys = str_replace( '/', '\/', $search_keys );
+		$content     = preg_replace( '/(' . $search_keys . ')/iu', "<strong>$1</strong>", $content );
+        array_push($arr, $content);
+update_option('linkon', $arr);
+		return $content;
+	}
 
     /**
      * manage_include_exclude_category
@@ -612,7 +614,7 @@ trait Helper
 					continue;
 				}
 				$keywords = ucfirst( str_replace( '_', ' ', $key ) );
-				$lists    .= sprintf( '<a href="javascript:void(0)" data-keyword="%1$s" class="eael-popular-keyword-item">%1$s</a>', $keywords, $key );
+				$lists    .= sprintf( '<a href="javascript:void(0)" data-keyword="%1$s" class="eael-popular-keyword-item">%2$s</a>', esc_attr($keywords), esc_html($keywords) );
 			}
 			return $lists;
 		}

@@ -9,7 +9,7 @@ use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
 use \Elementor\Plugin;
-use \Elementor\Core\Schemes\Typography;
+use \Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use \Elementor\Utils;
 use \Elementor\Widget_Base;
 use \Essential_Addons_Elementor\Classes\Helper;
@@ -262,7 +262,10 @@ class Lightbox extends Widget_Base
 					'popup_lightbox_title'  => 'yes',
 					'eael_lightbox_type'  => ['lightbox_type_content','lightbox_type_custom_html'],
 				],
-				'dynamic'	=> ['active', true]
+				'dynamic'	=> ['active', true],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -292,6 +295,9 @@ class Lightbox extends Widget_Base
 				],
 				'condition' => [
 					'eael_lightbox_type' => 'lightbox_type_image',
+				],
+				'ai' => [
+					'active' => false,
 				],
 			]
 		);
@@ -421,6 +427,9 @@ class Lightbox extends Widget_Base
 					'eael_lightbox_trigger_type' => 'eael_lightbox_trigger_button',
 					'trigger_type'	=> 'button'
 				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -480,6 +489,9 @@ class Lightbox extends Widget_Base
 					'eael_lightbox_trigger_type' => 'eael_lightbox_trigger_button',
 					'trigger_type'               => 'image'
 				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -538,6 +550,9 @@ class Lightbox extends Widget_Base
 				'condition'             => [
 					'eael_lightbox_trigger_type'	=> 'eael_lightbox_trigger_pageload',
 				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -551,6 +566,9 @@ class Lightbox extends Widget_Base
 				'default'               => '1',
 				'condition'             => [
 					'eael_lightbox_trigger_type'	=> 'eael_lightbox_trigger_pageload',
+				],
+				'ai' => [
+					'active' => false,
 				],
 			]
 		);
@@ -579,6 +597,9 @@ class Lightbox extends Widget_Base
 				'condition'             => [
 					'eael_lightbox_trigger_type'	=> 'eael_lightbox_trigger_exit_intent',
 				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 		# End of exit intent
@@ -597,6 +618,9 @@ class Lightbox extends Widget_Base
 				'description' => __('You can also use class identifier such as <strong>.open-popup</strong>', 'essential-addons-elementor'),
 				'condition'   => [
 					'eael_lightbox_trigger_type' => 'eael_lightbox_trigger_external',
+				],
+				'ai' => [
+					'active' => false,
 				],
 			]
 		);
@@ -1346,7 +1370,9 @@ class Lightbox extends Widget_Base
 			Group_Control_Typography::get_type(),
 			[
 				'name'      => 'eael_lightbox_open_btn_typography',
-				'scheme'    => Typography::TYPOGRAPHY_1,
+				'global' => [
+					'default' => Global_Typography::TYPOGRAPHY_PRIMARY
+				],
 				'selector'  => '{{WRAPPER}} .eael-lightbox-btn > span'
 			]
 		);
@@ -1489,7 +1515,9 @@ class Lightbox extends Widget_Base
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'eael_lightbox_content_typography',
-				'scheme'   => Typography::TYPOGRAPHY_1,
+				'global' => [
+					'default' => Global_Typography::TYPOGRAPHY_PRIMARY
+				],
 				'selector' => '.eael-lightbox-container .eael-lightbox-content'
 			]
 		);
@@ -1859,6 +1887,8 @@ class Lightbox extends Widget_Base
 
 		$this->end_controls_tab();
 
+		$this->end_controls_tabs();
+
 		$this->end_controls_section();
 	}
 
@@ -2054,8 +2084,12 @@ class Lightbox extends Widget_Base
                     echo '</div>';
 				} elseif ('lightbox_type_template' == $settings['eael_lightbox_type']) {
 
-					if (!empty($settings['eael_primary_templates'])) {
-						echo Plugin::$instance->frontend->get_builder_content($settings['eael_primary_templates'], true);
+					if ( ! empty( $settings['eael_primary_templates'] ) ) {
+						// WPML Compatibility
+						if ( ! is_array( $settings['eael_primary_templates'] ) ) {
+							$settings['eael_primary_templates'] = apply_filters( 'wpml_object_id', $settings['eael_primary_templates'], 'wp_template', true );
+						}
+						echo Plugin::$instance->frontend->get_builder_content( $settings['eael_primary_templates'], true );
 					}
 				} else if ('lightbox_type_custom_html' == $settings['eael_lightbox_type']) {
 					echo $settings['custom_html'];

@@ -5,13 +5,12 @@ namespace Essential_Addons_Elementor\Pro\Elements;
 use \Elementor\Controls_Manager;
 use \Elementor\Group_Control_Background;
 use Elementor\Repeater;
-use \Elementor\Core\Schemes\Typography;
+use \Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
 use \Elementor\Utils;
 use \Elementor\Widget_Base;
-use \Elementor\ElementsCommonFunctions;
 
 //use \Essential_Addons_Elementor\Classes\Helper;
 use \Essential_Addons_Elementor\Pro\Classes\Helper;
@@ -114,7 +113,10 @@ class Content_Timeline extends Widget_Base
 				'type' => Controls_Manager::TEXT,
 				'label_block' => true,
 				'default' => esc_html__('The Ultimate Addons For Elementor', 'essential-addons-elementor'),
-				'dynamic' => ['active' => true]
+				'dynamic' => ['active' => true],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -135,6 +137,9 @@ class Content_Timeline extends Widget_Base
 				'type' => Controls_Manager::TEXT,
 				'dynamic' => ['active' => true],
 				'default' => esc_html__('Nov 09, 2017', 'essential-addons-elementor'),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -172,6 +177,9 @@ class Content_Timeline extends Widget_Base
 				],
                 'condition' => [
 					'eael_show_custom_image_or_icon' => 'img',
+				],
+				'ai' => [
+					'active' => false,
 				],
 			]
 		);
@@ -234,7 +242,10 @@ class Content_Timeline extends Widget_Base
 				'default' => esc_html__('Read More', 'essential-addons-elementor'),
 				'condition' => [
 					'eael_show_custom_read_more' => '1',
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -1123,7 +1134,9 @@ class Content_Timeline extends Widget_Base
 			[
 				'name' => 'eael_timeline_title_typography',
 				'label' => __('Typography', 'essential-addons-elementor'),
-				'scheme' => Typography::TYPOGRAPHY_1,
+				'global' => [
+					'default' => Global_Typography::TYPOGRAPHY_PRIMARY
+				],
                 'selector' =>'{{WRAPPER}} .eael-content-timeline-content .eael-timeline-title, {{WRAPPER}} .eael-horizontal-timeline-item .eael-horizontal-timeline-item__card-title',
 			]
 		);
@@ -1186,7 +1199,9 @@ class Content_Timeline extends Widget_Base
 			[
 				'name' => 'eael_timeline_excerpt_typography',
 				'label' => __('Excerpt Typography', 'essential-addons-elementor'),
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+					'default' => Global_Typography::TYPOGRAPHY_TEXT
+				],
 				'selector' => '{{WRAPPER}} .eael-content-timeline-content p, {{WRAPPER}} .eael-horizontal-timeline-item__card-inner p',
 			]
 		);
@@ -1231,7 +1246,9 @@ class Content_Timeline extends Widget_Base
 			[
 				'name' => 'eael_timeline_date_typography',
 				'label' => __('Date Typography', 'essential-addons-elementor'),
-				'scheme' => Typography::TYPOGRAPHY_3,
+				'global' => [
+					'default' => Global_Typography::TYPOGRAPHY_TEXT
+				],
 				'selector' => '{{WRAPPER}} .eael-content-timeline-content .eael-date, {{WRAPPER}} .eael-horizontal-timeline-item .eael-horizontal-timeline-item__meta',
 			]
 		);

@@ -122,7 +122,10 @@ class Google_Map extends Widget_Base
 				'condition' => [
 					'eael_google_map_address_type' => ['address'],
 					'eael_google_map_type' => ['basic']
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 		$this->add_control(
@@ -135,7 +138,10 @@ class Google_Map extends Widget_Base
 				'condition' => [
 					'eael_google_map_type!' => ['routes'],
 					'eael_google_map_address_type' => ['coordinates']
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 		$this->add_control(
@@ -148,7 +154,10 @@ class Google_Map extends Widget_Base
 				'condition' => [
 					'eael_google_map_type!' => ['routes'],
 					'eael_google_map_address_type' => ['coordinates']
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 		// Only for static
@@ -161,7 +170,10 @@ class Google_Map extends Widget_Base
 				'default' => esc_html__('28.948790', 'essential-addons-elementor'),
 				'condition' => [
 					'eael_google_map_type' => ['static'],
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 		$this->add_control(
@@ -173,7 +185,10 @@ class Google_Map extends Widget_Base
 				'default' => esc_html__('-81.298843', 'essential-addons-elementor'),
 				'condition' => [
 					'eael_google_map_type' => ['static'],
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 		$this->add_control(
@@ -233,7 +248,10 @@ class Google_Map extends Widget_Base
 				'default' => esc_html__('28.948790', 'essential-addons-elementor'),
 				'condition' => [
 					'eael_google_map_type' => ['overlay'],
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 		$this->add_control(
@@ -245,7 +263,10 @@ class Google_Map extends Widget_Base
 				'default' => esc_html__('-81.298843', 'essential-addons-elementor'),
 				'condition' => [
 					'eael_google_map_type' => ['overlay'],
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 		// Only for panorama
@@ -258,7 +279,10 @@ class Google_Map extends Widget_Base
 				'default' => esc_html__('28.948790', 'essential-addons-elementor'),
 				'condition' => [
 					'eael_google_map_type' => ['panorama'],
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 		$this->add_control(
@@ -270,7 +294,10 @@ class Google_Map extends Widget_Base
 				'default' => esc_html__('-81.298843', 'essential-addons-elementor'),
 				'condition' => [
 					'eael_google_map_type' => ['panorama'],
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 		$this->add_control(
@@ -307,7 +334,10 @@ class Google_Map extends Widget_Base
                     'active' => true,
                 ],
 				'label_block' => true,
-				'default' => esc_html__('Google Map Title', 'essential-addons-elementor')
+				'default' => esc_html__('Google Map Title', 'essential-addons-elementor'),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 		$this->add_control(
@@ -343,7 +373,10 @@ class Google_Map extends Widget_Base
 				],
 				'condition' => [
 					'eael_google_map_basic_marker_icon_enable' => 'yes'
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 		$this->add_control(
@@ -405,6 +438,9 @@ class Google_Map extends Widget_Base
                 'type' => Controls_Manager::TEXT,
                 'label_block' => true,
                 'default' => esc_html__( '28.948790', 'essential-addons-elementor' ),
+				'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -415,6 +451,9 @@ class Google_Map extends Widget_Base
                 'type' => Controls_Manager::TEXT,
                 'label_block' => true,
                 'default' => esc_html__( '-81.298843', 'essential-addons-elementor' ),
+				'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -425,6 +464,9 @@ class Google_Map extends Widget_Base
                 'type' => Controls_Manager::TEXT,
                 'label_block' => true,
                 'default' => esc_html__( 'Marker Title', 'essential-addons-elementor' ),
+				'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -435,6 +477,9 @@ class Google_Map extends Widget_Base
                 'type' => Controls_Manager::TEXTAREA,
                 'label_block' => true,
                 'default' => esc_html__( 'Marker Content. You can put html here.', 'essential-addons-elementor' ),
+				'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -470,7 +515,10 @@ class Google_Map extends Widget_Base
                 ],
                 'condition' => [
                     'eael_google_map_marker_icon_enable' => 'yes'
-                ]
+				],
+				'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -535,6 +583,9 @@ class Google_Map extends Widget_Base
                 'type' => Controls_Manager::TEXT,
                 'label_block' => true,
                 'default' => esc_html__( '#', 'essential-addons-elementor' ),
+				'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -543,7 +594,10 @@ class Google_Map extends Widget_Base
             [
                 'label' => esc_html__( 'Latitude', 'essential-addons-elementor' ),
                 'type' => Controls_Manager::TEXT,
-                'label_block' => true
+                'label_block' => true,
+				'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -552,7 +606,10 @@ class Google_Map extends Widget_Base
             [
                 'label' => esc_html__( 'Longitude', 'essential-addons-elementor' ),
                 'type' => Controls_Manager::TEXT,
-                'label_block' => true
+                'label_block' => true,
+				'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -616,6 +673,9 @@ class Google_Map extends Widget_Base
 				'type' => Controls_Manager::TEXT,
 				'label_block' => false,
 				'default' => esc_html__('-12.044012922866312', 'essential-addons-elementor'),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 		$this->add_control(
@@ -625,6 +685,9 @@ class Google_Map extends Widget_Base
 				'type' => Controls_Manager::TEXT,
 				'label_block' => false,
 				'default' => esc_html__('-77.02470665341184', 'essential-addons-elementor'),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 		$this->add_control(
@@ -642,6 +705,9 @@ class Google_Map extends Widget_Base
 				'type' => Controls_Manager::TEXT,
 				'label_block' => false,
 				'default' => esc_html__('-12.090814532191756', 'essential-addons-elementor'),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 		$this->add_control(
@@ -651,6 +717,9 @@ class Google_Map extends Widget_Base
 				'type' => Controls_Manager::TEXT,
 				'label_block' => false,
 				'default' => esc_html__('-77.02271108990476', 'essential-addons-elementor'),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 		$this->add_control(
@@ -764,7 +833,10 @@ class Google_Map extends Widget_Base
 				'default' => esc_html__('28.948790', 'essential-addons-elementor'),
 				'condition' => [
 					'eael_google_map_center_point' => 'custom',
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 		$this->add_control(
@@ -776,7 +848,10 @@ class Google_Map extends Widget_Base
 				'default' => esc_html__('90.403947', 'essential-addons-elementor'),
 				'condition' => [
 					'eael_google_map_center_point' => 'custom',
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 		$this->end_controls_section();

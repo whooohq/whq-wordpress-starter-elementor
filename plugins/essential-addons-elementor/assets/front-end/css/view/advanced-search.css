@@ -377,7 +377,6 @@
   font-weight: 400;
   font-size: 16px;
   -webkit-transition: color, 0.3s ease;
-  -o-transition: color, 0.3s ease;
   transition: color, 0.3s ease;
   text-transform: capitalize;
   text-decoration: none;
@@ -397,7 +396,6 @@
           align-items: center;
   text-decoration: none;
   -webkit-transition: all 0.3s ease;
-  -o-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
 
@@ -430,7 +428,6 @@
   color: #434872;
   margin-bottom: 5px;
   -webkit-transition: color, 0.3s ease;
-  -o-transition: color, 0.3s ease;
   transition: color, 0.3s ease;
 }
 

@@ -6,7 +6,7 @@ use \Elementor\Group_Control_Background;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
-use \Elementor\Core\Schemes\Typography;
+use \Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use \Elementor\Utils;
 use \Elementor\Widget_Base;
 
@@ -72,6 +72,9 @@ class Image_Comparison extends Widget_Base {
                 'label_block' => true,
                 'default'     => 'Before',
                 'title'       => __( 'Input before image label', 'essential-addons-elementor' ),
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -86,6 +89,9 @@ class Image_Comparison extends Widget_Base {
                 'default' => [
                     'url' => Utils::get_placeholder_image_src(),
                 ],
+                'ai' => [
+                    'active' => false,
+                ],
             ]
         );
 
@@ -99,6 +105,9 @@ class Image_Comparison extends Widget_Base {
                 'default'     => '',
                 'placeholder' => __( 'Enter alter tag for the image', 'essential-addons-elementor' ),
                 'title'       => __( 'Input image alter tag here', 'essential-addons-elementor' ),
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -113,6 +122,9 @@ class Image_Comparison extends Widget_Base {
                 ],
                 'default'     => 'After',
                 'title'       => __( 'Input after image label', 'essential-addons-elementor' ),
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
         $this->add_control(
@@ -125,6 +137,9 @@ class Image_Comparison extends Widget_Base {
 	            ],
                 'default' => [
                     'url' => Utils::get_placeholder_image_src(),
+                ],
+                'ai' => [
+                    'active' => false,
                 ],
             ]
         );
@@ -139,6 +154,9 @@ class Image_Comparison extends Widget_Base {
                 'default'     => '',
                 'placeholder' => __( 'Enter alter tag for the image', 'essential-addons-elementor' ),
                 'title'       => __( 'Input image alter tag here', 'essential-addons-elementor' ),
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -708,7 +726,9 @@ class Image_Comparison extends Widget_Base {
             [
                 'name'      => 'label_typography',
                 'label'     => __( 'Typography', 'essential-addons-elementor' ),
-                'scheme'    => Typography::TYPOGRAPHY_4,
+                'global' => [
+	                'default' => Global_Typography::TYPOGRAPHY_ACCENT
+                ],
                 'selector'  => '{{WRAPPER}} .twentytwenty-before-label:before, {{WRAPPER}} .twentytwenty-after-label:before',
                 'separator' => 'before',
             ]

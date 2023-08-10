@@ -1,4 +1,4 @@
-/*! elementor - v3.13.3 - 22-05-2023 */
+/*! elementor - v3.15.0 - 02-08-2023 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -250,9 +250,9 @@ module.exports = _typeof, module.exports.__esModule = true, module.exports["defa
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if (chunkId === "modules_nested-elements_assets_js_editor_module_js") return "765551b6f9005a42004c.bundle.js";
-/******/ 			if (chunkId === "vendors-node_modules_prop-types_index_js-node_modules_babel_runtime_helpers_defineProperty_js-fe2f09") return "468f41fa91dee0f38b7d.bundle.js";
-/******/ 			if (chunkId === "modules_nested-elements_assets_js_editor_nested-element-types-base_js") return "adea2c8e99ec77c3e05d.bundle.js";
+/******/ 			if (chunkId === "modules_nested-elements_assets_js_editor_module_js") return "bed68029fb022da5f97e.bundle.js";
+/******/ 			if (chunkId === "vendors-node_modules_prop-types_index_js-node_modules_babel_runtime_helpers_slicedToArray_js") return "6ed74dd3befaff90b65c.bundle.js";
+/******/ 			if (chunkId === "modules_nested-elements_assets_js_editor_nested-element-types-base_js") return "1268ff89b5a9b9f27951.bundle.js";
 /******/ 			if (chunkId === "modules_nested-elements_assets_js_editor_views_view_js") return "96124ada3ba05750eec1.bundle.js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
@@ -448,7 +448,7 @@ elementorCommon.elements.$window.on('elementor:init-components', function () {
   elementor.modules.nestedElements = __webpack_require__.e(/*! import() */ "modules_nested-elements_assets_js_editor_module_js").then(__webpack_require__.bind(__webpack_require__, /*! ../editor/module */ "../modules/nested-elements/assets/js/editor/module.js"));
   elementor.modules.nestedElements.then(function (module) {
     elementor.modules.nestedElements = new module.default();
-    elementor.modules.elements.types.NestedElementBase = Promise.all(/*! import() */[__webpack_require__.e("vendors-node_modules_prop-types_index_js-node_modules_babel_runtime_helpers_defineProperty_js-fe2f09"), __webpack_require__.e("modules_nested-elements_assets_js_editor_nested-element-types-base_js")]).then(__webpack_require__.bind(__webpack_require__, /*! ./nested-element-types-base */ "../modules/nested-elements/assets/js/editor/nested-element-types-base.js"));
+    elementor.modules.elements.types.NestedElementBase = Promise.all(/*! import() */[__webpack_require__.e("vendors-node_modules_prop-types_index_js-node_modules_babel_runtime_helpers_slicedToArray_js"), __webpack_require__.e("modules_nested-elements_assets_js_editor_nested-element-types-base_js")]).then(__webpack_require__.bind(__webpack_require__, /*! ./nested-element-types-base */ "../modules/nested-elements/assets/js/editor/nested-element-types-base.js"));
     elementor.modules.elements.types.NestedElementBase.then(function (nestedElementBaseModule) {
       elementor.modules.elements.types.NestedElementBase = nestedElementBaseModule.default;
       __webpack_require__.e(/*! import() */ "modules_nested-elements_assets_js_editor_views_view_js").then(__webpack_require__.bind(__webpack_require__, /*! ./views/view */ "../modules/nested-elements/assets/js/editor/views/view.js")).then(function (View) {

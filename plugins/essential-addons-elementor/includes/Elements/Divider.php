@@ -4,7 +4,7 @@ namespace Essential_Addons_Elementor\Pro\Elements;
 
 use \Elementor\Controls_Manager;
 use \Elementor\Group_Control_Background;
-use \Elementor\Core\Schemes\Typography;
+use \Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
@@ -246,6 +246,9 @@ class Divider extends Widget_Base
 				'condition'             => [
 					'divider_type'    => 'text',
 				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -298,6 +301,9 @@ class Divider extends Widget_Base
 				],
 				'condition'             => [
 					'divider_type'    => 'image',
+				],
+				'ai' => [
+					'active' => false,
 				],
 			]
 		);
@@ -661,7 +667,9 @@ class Divider extends Widget_Base
 			[
 				'name'                  => 'typography',
 				'label'                 => __('Typography', 'essential-addons-elementor'),
-				'scheme'                => Typography::TYPOGRAPHY_4,
+				'global' => [
+					'default' => Global_Typography::TYPOGRAPHY_ACCENT
+				],
 				'selector'              => '{{WRAPPER}} .eael-divider-text',
 				'condition'             => [
 					'divider_type'    => 'text',
@@ -964,23 +972,23 @@ class Divider extends Widget_Base
 		$this->add_render_attribute('divider', 'class', 'eael-divider');
 
 		if ($settings['divider_direction']) {
-			$this->add_render_attribute('divider', 'class', $settings['divider_direction']);
+			$this->add_render_attribute( 'divider', 'class', esc_attr( $settings['divider_direction'] ) );
 		}
 
 		if ($settings['divider_style']) {
-			$this->add_render_attribute('divider', 'class', $settings['divider_style']);
+			$this->add_render_attribute('divider', 'class', esc_attr( $settings['divider_style'] ) );
 		}
 
-		$this->add_render_attribute('divider-content', 'class', 'eael-divider-' . $settings['divider_type']);
+	    $this->add_render_attribute( 'divider-content', 'class', 'eael-divider-' . esc_attr( $settings['divider_type'] ) );
 
 		$this->add_inline_editing_attributes('divider_text', 'none');
-		$this->add_render_attribute('divider_text', 'class', 'eael-divider-' . $settings['divider_type']);
+	    $this->add_render_attribute( 'divider_text', 'class', 'eael-divider-' . esc_attr( $settings['divider_type'] ) );
 		$this->add_render_attribute(
 			'divider-wrap',
 			[
 				'class'	=> [
 					'eael-divider-wrap',
-					"divider-direction-{$settings['divider_direction']}"
+					"divider-direction-" . esc_attr( $settings['divider_direction'] )
 				]
 			]
 		);
@@ -1004,13 +1012,13 @@ class Divider extends Widget_Base
 						<span class="eael-divider-content">
 							<?php if ($settings['divider_type'] == 'text' && $settings['divider_text']) { ?>
 								<?php
-								printf('<%1$s %2$s>%3$s</%1$s>', $settings['text_html_tag'], $this->get_render_attribute_string('divider_text'), $settings['divider_text']);
+								printf( '<%1$s %2$s>%3$s</%1$s>', $settings['text_html_tag'], $this->get_render_attribute_string( 'divider_text' ), esc_html( $settings['divider_text'] ) );
 								?>
 							<?php } elseif ($settings['divider_type'] == 'icon') { ?>
 								<span <?php echo $this->get_render_attribute_string('divider-content'); ?>>
 									<?php if ($icon_migrated || $icon_is_new) { ?>
 										<?php if (isset($settings['divider_icon_new']['value']['url'])) : ?>
-											<img class="eael-divider-svg-icon" src="<?php echo esc_attr($settings['divider_icon_new']['value']['url']); ?>" alt="<?php echo esc_attr(get_post_meta($settings['divider_icon_new']['value']['id'], '_wp_attachment_image_alt', true)); ?>" />
+											<img class="eael-divider-svg-icon" src="<?php echo esc_url( $settings['divider_icon_new']['value']['url'] ); ?>" alt="<?php echo esc_attr( get_post_meta( $settings['divider_icon_new']['value']['id'], '_wp_attachment_image_alt', true ) ); ?>"/>
 										<?php else :
                                             Icons_Manager::render_icon($settings['divider_icon_new'], ['aria-hidden'=>'false']);
                                         endif; ?>

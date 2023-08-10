@@ -3,7 +3,7 @@ namespace Essential_Addons_Elementor\Pro\Elements;
 
 use \Elementor\Controls_Manager;
 use \Elementor\Group_Control_Background;
-use \Elementor\Core\Schemes\Typography;
+use \Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
@@ -118,6 +118,9 @@ class Toggle extends Widget_Base {
                 'type'                  => Controls_Manager::TEXT,
                 'dynamic'	            => [ 'active' => true ],
                 'default'               => __( 'Annual', 'essential-addons-elementor' ),
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
         
@@ -172,6 +175,9 @@ class Toggle extends Widget_Base {
                 'condition'             => [
                     'primary_content_type'      => 'image',
                 ],
+                'ai' => [
+                    'active' => false,
+                ],
             ]
         );
         
@@ -194,6 +200,9 @@ class Toggle extends Widget_Base {
                 'type'                  => Controls_Manager::TEXT,
                 'dynamic'	            => [ 'active' => true ],
                 'default'               => __( 'Lifetime', 'essential-addons-elementor' ),
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
         
@@ -247,6 +256,9 @@ class Toggle extends Widget_Base {
                 ],
                 'condition'             => [
                     'secondary_content_type'      => 'image',
+                ],
+                'ai' => [
+                    'active' => false,
                 ],
             ]
         );
@@ -583,7 +595,9 @@ class Toggle extends Widget_Base {
             [
                 'name'              => 'label_typography_primary',
                 'label'             => __( 'Typography', 'essential-addons-elementor' ),
-                'scheme'            => Typography::TYPOGRAPHY_4,
+                'global' => [
+	                'default' => Global_Typography::TYPOGRAPHY_ACCENT
+                ],
                 'selector'          => '{{WRAPPER}} .eael-primary-toggle-label',
                 'separator'         => 'before',
             ]
@@ -627,7 +641,9 @@ class Toggle extends Widget_Base {
             [
                 'name'              => 'label_typography_secondary',
                 'label'             => __( 'Typography', 'essential-addons-elementor' ),
-                'scheme'            => Typography::TYPOGRAPHY_4,
+                'global' => [
+	                'default' => Global_Typography::TYPOGRAPHY_ACCENT
+                ],
                 'selector'          => '{{WRAPPER}} .eael-secondary-toggle-label',
                 'separator'         => 'before',
             ]
@@ -693,7 +709,9 @@ class Toggle extends Widget_Base {
             [
                 'name'              => 'content_typography',
                 'label'             => __( 'Typography', 'essential-addons-elementor' ),
-                'scheme'            => Typography::TYPOGRAPHY_4,
+                'global' => [
+	                'default' => Global_Typography::TYPOGRAPHY_ACCENT
+                ],
                 'selector'          => '{{WRAPPER}} .eael-toggle-content-wrap',
             ]
         );
@@ -755,9 +773,13 @@ class Toggle extends Widget_Base {
                         
                         printf( '<img %s />', $this->get_render_attribute_string( 'primary-image' ) );
                     } elseif ( $settings['primary_content_type'] == 'template' ) {
-                        if ( !empty( $settings['primary_templates'] ) ) {
-                            echo Plugin::$instance->frontend->get_builder_content($settings['primary_templates'], true);
-                        }
+	                    if ( ! empty( $settings['primary_templates'] ) ) {
+		                    // WPML Compatibility
+		                    if ( ! is_array( $settings['primary_templates'] ) ) {
+			                    $settings['primary_templates'] = apply_filters( 'wpml_object_id', $settings['primary_templates'], 'wp_template', true );
+		                    }
+		                    echo Plugin::$instance->frontend->get_builder_content( $settings['primary_templates'], true );
+	                    }
                     }
                     ?>
                 </div>
@@ -772,9 +794,13 @@ class Toggle extends Widget_Base {
                         
                         printf( '<img %s />', $this->get_render_attribute_string( 'secondary-image' ) );
                     } elseif ( $settings['secondary_content_type'] == 'template' ) {
-                        if ( !empty( $settings['secondary_templates'] ) ) {
-                            echo Plugin::$instance->frontend->get_builder_content($settings['secondary_templates'], true);
-                        }
+	                    if ( ! empty( $settings['secondary_templates'] ) ) {
+		                    // WPML Compatibility
+		                    if ( ! is_array( $settings['secondary_templates'] ) ) {
+			                    $settings['secondary_templates'] = apply_filters( 'wpml_object_id', $settings['secondary_templates'], 'wp_template', true );
+		                    }
+		                    echo Plugin::$instance->frontend->get_builder_content( $settings['secondary_templates'], true );
+	                    }
                     }
                     ?>
                 </div>

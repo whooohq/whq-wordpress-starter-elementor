@@ -148,6 +148,9 @@ class EAEL_Parallax_Section
                     'url' => Utils::get_placeholder_image_src(),
                 ],
                 'label_block' => true,
+                'ai' => [
+                    'active' => false,
+                ],
             ]
         );
 

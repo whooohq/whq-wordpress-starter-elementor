@@ -63,6 +63,9 @@ class EAEL_Tooltip_Section
                 'condition' => [
                     'eael_tooltip_section_enable!' => '',
                 ],
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 

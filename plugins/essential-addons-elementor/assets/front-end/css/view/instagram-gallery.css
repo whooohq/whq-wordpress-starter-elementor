@@ -41,7 +41,6 @@
           transform: scale(0.8);
   opacity: 0;
   -webkit-transition: all 200ms;
-  -o-transition: all 200ms;
   transition: all 200ms;
 }
 .eael-instafeed .eael-instafeed-item:hover .eael-instafeed-caption,

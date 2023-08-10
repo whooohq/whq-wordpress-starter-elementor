@@ -82,8 +82,7 @@
 .eael-social-feed-element p.social-feed-text {
   margin: 0;
   overflow: hidden;
-  -o-text-overflow: ellipsis;
-     text-overflow: ellipsis;
+  text-overflow: ellipsis;
   -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
 }
@@ -144,7 +143,6 @@
 
 .eael-social-feed-element {
   -webkit-transition: 0.25s;
-  -o-transition: 0.25s;
   transition: 0.25s;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -160,7 +158,6 @@
 .eael-social-feed-element .eael-content {
   padding: 20px 15px 15px;
   -webkit-transition: 0.4s;
-  -o-transition: 0.4s;
   transition: 0.4s;
   background: #fff;
 }
@@ -234,7 +231,6 @@
       -ms-flex-pack: center;
           justify-content: center;
   -webkit-transition: 0.5s;
-  -o-transition: 0.5s;
   transition: 0.5s;
 }
 

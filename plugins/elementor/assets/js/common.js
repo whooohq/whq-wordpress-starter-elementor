@@ -1,4 +1,4 @@
-/*! elementor - v3.13.3 - 22-05-2023 */
+/*! elementor - v3.15.0 - 02-08-2023 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -3069,28 +3069,55 @@ var Helpers = /*#__PURE__*/function () {
   }
   (0, _createClass2.default)(Helpers, [{
     key: "softDeprecated",
-    value: function softDeprecated(name, version, replacement) {
+    value:
+    /**
+     * @param {string} name
+     * @param {string} version
+     * @param {string} replacement
+     * @deprecated since 3.7.0, use `elementorDevTools.deprecation.deprecated()` instead.
+     */
+    function softDeprecated(name, version, replacement) {
       elementorDevTools.deprecation.deprecated(name, version, replacement);
 
       // This is is self is deprecated.
-      elementorDevTools.deprecation.deprecated('elementorCommon.helpers.softDeprecated', '3.7.0', 'elementorDevTools.deprecation.deprecated');
+      elementorDevTools.deprecation.deprecated('elementorCommon.helpers.softDeprecated()', '3.7.0', 'elementorDevTools.deprecation.deprecated()');
     }
+
+    /**
+     * @param {string} name
+     * @param {string} version
+     * @param {string} replacement
+     * @deprecated since 3.7.0, use `elementorDevTools.deprecation.deprecated()` instead.
+     */
   }, {
     key: "hardDeprecated",
     value: function hardDeprecated(name, version, replacement) {
       elementorDevTools.deprecation.deprecated(name, version, replacement);
 
       // This is is self is deprecated.
-      elementorDevTools.deprecation.deprecated('elementorCommon.helpers.hardDeprecated', '3.7.0', 'elementorDevTools.deprecation.deprecated');
+      elementorDevTools.deprecation.deprecated('elementorCommon.helpers.hardDeprecated()', '3.7.0', 'elementorDevTools.deprecation.deprecated()');
     }
+
+    /**
+     * @param {string} type
+     * @param {string} name
+     * @param {string} version
+     * @param {string} replacement
+     * @deprecated since 3.7.0, use `elementorDevTools.deprecation.deprecated()` instead.
+     */
   }, {
     key: "deprecatedMessage",
     value: function deprecatedMessage(type, name, version, replacement) {
       elementorDevTools.deprecation.deprecated(name, version, replacement);
 
       // This is is self is deprecated.
-      elementorDevTools.deprecation.deprecated('elementorCommon.helpers.deprecatedMessage', '3.7.0', 'elementorDevTools.deprecation.deprecated');
+      elementorDevTools.deprecation.deprecated('elementorCommon.helpers.deprecatedMessage()', '3.7.0', 'elementorDevTools.deprecation.deprecated()');
     }
+
+    /**
+     * @param {*} args
+     * @deprecated since 3.7.0, use `elementorDevTools.consoleWarn()` instead.
+     */
   }, {
     key: "consoleWarn",
     value: function consoleWarn() {
@@ -3098,8 +3125,13 @@ var Helpers = /*#__PURE__*/function () {
       (_elementorDevTools = elementorDevTools).consoleWarn.apply(_elementorDevTools, arguments);
 
       // This is is self is deprecated.
-      elementorDevTools.deprecation.deprecated('elementorCommon.helpers.consoleWarn', '3.7.0', 'elementorDevTools.consoleWarn');
+      elementorDevTools.deprecation.deprecated('elementorCommon.helpers.consoleWarn()', '3.7.0', 'elementorDevTools.consoleWarn()');
     }
+
+    /**
+     * @param {string} message
+     * @deprecated since 3.7.0, use `console.error()` instead.
+     */
   }, {
     key: "consoleError",
     value: function consoleError(message) {
@@ -3107,15 +3139,22 @@ var Helpers = /*#__PURE__*/function () {
       console.error(message);
 
       // This is is self is deprecated.
-      elementorDevTools.deprecation.deprecated('elementorCommon.helpers.consoleError', '3.7.0', 'console.error');
+      elementorDevTools.deprecation.deprecated('elementorCommon.helpers.consoleError()', '3.7.0', 'console.error()');
     }
+
+    /**
+     * @param {string} methodName
+     * @param {string} version
+     * @param {string} replacement
+     * @deprecated since 2.8.0, use `elementorDevTools.deprecation.deprecated()` instead.
+     */
   }, {
     key: "deprecatedMethod",
     value: function deprecatedMethod(methodName, version, replacement) {
       elementorDevTools.deprecation.deprecated(methodName, version, replacement);
 
       // This itself is deprecated.
-      elementorDevTools.deprecation.deprecated('elementorCommon.helpers.deprecatedMethod', '2.8.0', 'elementorDevTools.deprecation.deprecated');
+      elementorDevTools.deprecation.deprecated('elementorCommon.helpers.deprecatedMethod()', '2.8.0', 'elementorDevTools.deprecation.deprecated()');
     }
   }, {
     key: "cloneObject",
@@ -5008,6 +5047,7 @@ var CommandBase = /*#__PURE__*/function (_CommandInfra) {
      * Validate `arg.container` & `arg.containers`.
      *
      * @param {{}} args
+     * @deprecated since 3.7.0, extend `$e.modules.editor.CommandContainerBase` or `$e.modules.editor.CommandContainerInternalBase` instead.
      *
      * @throws {Error}
      */
@@ -5016,7 +5056,7 @@ var CommandBase = /*#__PURE__*/function (_CommandInfra) {
     value: function requireContainer() {
       var _this = this;
       var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.args;
-      _deprecation.default.deprecated('requireContainer', '3.7.0', 'Extend `$e.modules.editor.CommandContainerBase` or `$e.modules.editor.CommandContainerInternalBase`');
+      _deprecation.default.deprecated('requireContainer()', '3.7.0', 'Extend `$e.modules.editor.CommandContainerBase` or `$e.modules.editor.CommandContainerInternalBase`');
       if (!args.container && !args.containers) {
         throw Error('container or containers are required.');
       }
@@ -5495,7 +5535,9 @@ var CommandInfra = /*#__PURE__*/function (_ArgsObject) {
   (0, _createClass2.default)(CommandInfra, [{
     key: "currentCommand",
     get:
-    // TODO - Remove backwards compatibility.
+    /**
+     * @deprecated since 3.7.0, use `this.command` instead.
+     */
     function get() {
       _deprecation.default.deprecated('this.currentCommand', '3.7.0', 'this.command');
       return this.command;
@@ -5951,6 +5993,10 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
     value: function getNamespace() {
       (0, _forceMethodImplementation.default)();
     }
+
+    /**
+     * @deprecated since 3.7.0, use `getServiceName()` instead.
+     */
   }, {
     key: "getRootContainer",
     value: function getRootContainer() {
@@ -6317,7 +6363,6 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
     key: "activateTab",
     value: function activateTab(tab, args) {
       var _this4 = this;
-      this.currentTab = tab;
       this.renderTab(tab, args);
       jQuery(this.getTabsWrapperSelector() + ' .elementor-component-tab').off('click').on('click', function (event) {
         $e.route(_this4.getTabRoute(event.currentTarget.dataset.tab), args);

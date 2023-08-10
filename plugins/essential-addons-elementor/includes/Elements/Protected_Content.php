@@ -7,7 +7,7 @@ use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
 use \Elementor\Plugin;
-use \Elementor\Core\Schemes\Typography;
+use \Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use \Elementor\Widget_Base;
 use \Essential_Addons_Elementor\Pro\Classes\Helper;
 
@@ -170,6 +170,9 @@ class Protected_Content extends Widget_Base {
 				'condition'  => [
 					'eael_protected_content_protection_type' => 'password',
 				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -182,6 +185,9 @@ class Protected_Content extends Widget_Base {
 				'default'   => 'Enter Password',
 				'condition' => [
 					'eael_protected_content_protection_type' => 'password',
+				],
+				'ai' => [
+					'active' => false,
 				],
 			]
 		);
@@ -196,6 +202,9 @@ class Protected_Content extends Widget_Base {
 				'condition' => [
 					'eael_protected_content_protection_type' => 'password',
 				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -209,6 +218,21 @@ class Protected_Content extends Widget_Base {
 				'label_off'    => __( 'Hide', 'essential-addons-elementor' ),
 				'return_value' => 'yes',
 				'description'  => 'You can force show content in order to style them properly.',
+				'condition'    => [
+					'eael_protected_content_protection_type' => 'password',
+				],
+			]
+		);
+
+		$this->add_control(
+			'eael_scroll_to_section',
+			[
+				'label'        => __( 'Scroll to Section', 'essential-addons-elementor' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'default'      => 'yes',
+				'label_on'     => __( 'Yes', 'essential-addons-elementor' ),
+				'label_off'    => __( 'No', 'essential-addons-elementor' ),
+				'return_value' => 'yes',
 				'condition'    => [
 					'eael_protected_content_protection_type' => 'password',
 				],
@@ -319,6 +343,9 @@ class Protected_Content extends Widget_Base {
 				'dynamic' => [
 					'active' => true,
 				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -348,7 +375,9 @@ class Protected_Content extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'eael_protected_content_typography',
-				'scheme'   => Typography::TYPOGRAPHY_2,
+				'global' => [
+					'default' => Global_Typography::TYPOGRAPHY_SECONDARY
+				],
 				'selector' => '{{WRAPPER}} .eael-protected-content .protected-content',
 			]
 		);
@@ -430,7 +459,9 @@ class Protected_Content extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'      => 'eael_protected_content_message_text_typography',
-				'scheme'    => Typography::TYPOGRAPHY_2,
+				'global' => [
+					'default' => Global_Typography::TYPOGRAPHY_SECONDARY
+				],
 				'selector'  => '{{WRAPPER}} .eael-protected-content-message',
 				'condition' => [
 					'eael_protected_content_message_type' => 'text',
@@ -509,7 +540,9 @@ class Protected_Content extends Widget_Base {
             Group_Control_Typography::get_type(),
             [
                 'name' => 'eael_protected_content_error_message_text_typography',
-                'scheme' => Typography::TYPOGRAPHY_2,
+                'global' => [
+	                'default' => Global_Typography::TYPOGRAPHY_SECONDARY
+                ],
                 'selector' => '{{WRAPPER}} .protected-content-error-msg',
                 'condition' => [
                     'eael_protected_content_message_type' => 'text',
@@ -939,11 +972,15 @@ class Protected_Content extends Widget_Base {
 				//nothing happen
 			} elseif ( 'text' == $settings[ 'eael_protected_content_message_type' ] ) { ?>
 				<?php if ( !empty( $settings[ 'eael_protected_content_message_type' ] ) ) : ?>
-                    <div class="eael-protected-content-message-text"><?php echo $settings[ 'eael_protected_content_message_text' ]; ?></div>
+					<div class="eael-protected-content-message-text"><?php echo Helper::eael_wp_kses( $settings['eael_protected_content_message_text'] ); ?></div>
 				<?php endif; ?>
 			<?php } else {
-				if ( !empty( $settings[ 'eael_protected_content_message_template' ] ) ) {
-					echo Plugin::$instance->frontend->get_builder_content( $settings[ 'eael_protected_content_message_template' ], true );
+				if ( ! empty( $settings['eael_protected_content_message_template'] ) ) {
+					// WPML Compatibility
+					if ( ! is_array( $settings['eael_protected_content_message_template'] ) ) {
+						$settings['eael_protected_content_message_template'] = apply_filters( 'wpml_object_id', $settings['eael_protected_content_message_template'], 'wp_template', true );
+					}
+					echo Plugin::$instance->frontend->get_builder_content( $settings['eael_protected_content_message_template'], true );
 				}
 			}
 			?>
@@ -960,11 +997,15 @@ class Protected_Content extends Widget_Base {
 			<?php
 			if ( 'content' === $settings[ 'eael_protected_content_type' ] ) {
 				if ( !empty( $editor_content ) ) {
-					printf( "<p>%s</p>", $editor_content );
+					printf( "<p>%s</p>", $this->parse_text_editor( $editor_content ) );
 				}
 			} elseif ( 'template' === $settings[ 'eael_protected_content_type' ] ) {
-				if ( !empty( $settings[ 'eael_protected_content_template' ] ) ) {
-					echo Plugin::$instance->frontend->get_builder_content( $settings[ 'eael_protected_content_template' ], true );
+				if ( ! empty( $settings['eael_protected_content_template'] ) ) {
+					// WPML Compatibility
+					if ( ! is_array( $settings['eael_protected_content_template'] ) ) {
+						$settings['eael_protected_content_template'] = apply_filters( 'wpml_object_id', $settings['eael_protected_content_template'], 'wp_template', true );
+					}
+					echo Plugin::$instance->frontend->get_builder_content( $settings['eael_protected_content_template'], true );
 				}
 			}
 			?>
@@ -998,10 +1039,11 @@ class Protected_Content extends Widget_Base {
 				     && ( $settings[ 'protection_password' ] === $_POST[ 'protection_password_' . $this->get_id() ] )
 				     && ( wp_verify_nonce( $_POST[ 'eael_protected_content_nonce_' . $this->get_id() ], 'eael_protected_nonce' ) ) ) {
 					$unlocked = true;
-					$this->eael_remember_cookie();
+					$token = md5( 'eael_pc_' . $_POST[ 'protection_password_' . $this->get_id() ] );
+					$this->eael_remember_cookie( $token );
 				}
 
-				if ( isset( $_COOKIE[ 'protection_password_' . $this->get_id() ] ) || $unlocked ) {
+				if ( ( ! empty( $_COOKIE[ 'protection_password_' . $this->get_id() ] ) && $_COOKIE[ 'protection_password_' . $this->get_id() ] === md5( 'eael_pc_' . $settings['protection_password'] ) ) || $unlocked ) {
 					echo '<div class="eael-protected-content">'
 					     . $this->eael_render_content( $settings ) .
 					     '</div>';
@@ -1030,34 +1072,36 @@ class Protected_Content extends Widget_Base {
         <div class="eael-password-protected-content-fields">
             <form id ="eael_protected_content_form_<?php echo $widget_id; ?>" name="eael_protected_content_form_<?php echo $widget_id; ?>" method="post">
                 <input type="password" name="protection_password_<?php echo $widget_id; ?>" class="eael-password"
-                       placeholder="<?php echo $settings[ 'protection_password_placeholder' ]; ?>">
+                       placeholder="<?php echo Helper::eael_wp_kses( $settings[ 'protection_password_placeholder' ] ); ?>">
                 <input type="hidden" name="eael_protected_content_nonce_<?php echo $widget_id; ?>"
                        value="<?php echo esc_attr( wp_create_nonce( 'eael_protected_nonce' ) ); ?>">
-                <input type="submit" value="<?php echo $settings[ 'protection_password_submit_btn_txt' ]; ?>"
+                <input type="submit" value="<?php echo Helper::eael_wp_kses( $settings[ 'protection_password_submit_btn_txt' ] ); ?>"
                        class="eael-submit">
 				<?php
 
 				if ( 'template' === $settings[ 'eael_protected_content_type' ] ) {
 					echo sprintf( '<input name="eael_protected_content_id" value="%s" type="hidden">', $widget_id );
 				}
-
-				if ( isset( $_POST[ 'protection_password_' . $widget_id ] ) && ( $settings[ 'protection_password' ] !== $_POST[ 'protection_password_' . $widget_id ] ) ) {
-					echo sprintf(
-						__( '<p class="protected-content-error-msg">%s</p>', 'essential-addons-elementor' ),
-						$settings[ 'password_incorrect_message' ]
-					);
-				}
 				?>
             </form>
+	        <?php
+	        if ( isset( $_POST[ 'protection_password_' . $widget_id ] ) && ( $settings[ 'protection_password' ] !== $_POST[ 'protection_password_' . $widget_id ] ) ) {
+		        echo sprintf(
+			        __( '<p class="protected-content-error-msg">%s</p>', 'essential-addons-elementor' ),
+			        Helper::eael_wp_kses( $settings[ 'password_incorrect_message' ] )
+		        );
+	        }
+	        ?>
         </div>
 		<?php
+		$this->eael_protected_content_scroll( 'form' );
 	}
 
 
 	/**
 	 * eael_remember_cookie
 	 */
-	public function eael_remember_cookie() {
+	public function eael_remember_cookie( $token ) {
 		if ( !isset( $_POST[ 'protection_password_' . $this->get_id() ] )){
 			return false;
 		}
@@ -1068,22 +1112,30 @@ class Protected_Content extends Widget_Base {
                 var expires = new Date();
                 var expires_time = expires.getTime() + parseInt(" . $expire_time . ");
                 expires.setTime(expires_time);
-                document.cookie = 'protection_password_{$this->get_id()}=true;expires=' + expires.toUTCString();
+                document.cookie = 'protection_password_{$this->get_id()}={$token};expires=' + expires.toUTCString();
             </script>";
 		}
 	}
 
-	public function eael_protected_content_scroll(){
+	public function eael_protected_content_scroll( $content = 'content' ){
+
+		if ( $this->get_settings_for_display( 'eael_scroll_to_section' ) !== 'yes' ) return;
+
 		if ( isset( $_POST[ 'protection_password_' . $this->get_id() ] )){
-			$form_id = "eael-protected-content-render-".$this->get_id();
+
+			$form_id = "eael-protected-content-render-" . $this->get_id();
+
+			if ( $content === 'form' ) {
+				$form_id = "eael_protected_content_form_" . $this->get_id();
+			}
 			?>
             <script>
-				jQuery(document).ready(function($) {
-					var id = "#<?php echo $form_id; ?>";
-					$('html, body').animate({
-												scrollTop: $(id).offset().top
-											}, 2000);
-				});
+                jQuery(document).ready(function ($) {
+                    var id = "#<?php echo $form_id; ?>";
+                    $('html, body').animate({
+                        scrollTop: $(id).offset().top
+                    }, 2000);
+                });
             </script>
 			<?php
 		}

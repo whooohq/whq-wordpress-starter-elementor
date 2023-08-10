@@ -217,7 +217,6 @@
 
 .eael-content-timeline-img.eael-picture {
   -webkit-transition: 0.5s;
-  -o-transition: 0.5s;
   transition: 0.5s;
   background: #f1f2f3;
 }
@@ -225,7 +224,6 @@
 .eael-content-timeline-block.eael-highlight .eael-content-timeline-img.eael-picture {
   background: #3ccd94;
   -webkit-transition: 0.5s;
-  -o-transition: 0.5s;
   transition: 0.5s;
 }
 
@@ -360,7 +358,6 @@
   color: #fff;
   background-color: #3ccd94;
   -webkit-transition: 0.4s;
-  -o-transition: 0.4s;
   transition: 0.4s;
   text-decoration: none;
   text-transform: uppercase;
@@ -766,7 +763,6 @@
 .eael-horizontal-timeline--arrows-nav .eael-horizontal-timeline-track {
   -webkit-transition: -webkit-transform 500ms ease;
   transition: -webkit-transform 500ms ease;
-  -o-transition: transform 500ms ease;
   transition: transform 500ms ease;
   transition: transform 500ms ease, -webkit-transform 500ms ease;
 }
@@ -819,7 +815,6 @@
           flex: 0 0 33.33%;
   max-width: 33.33%;
   -webkit-transition: 0.2s;
-  -o-transition: 0.2s;
   transition: 0.2s;
 }
 
@@ -845,7 +840,6 @@
   border-width: 1px;
   background-color: #f8f8f8;
   -webkit-transition: inherit;
-  -o-transition: inherit;
   transition: inherit;
 }
 
@@ -872,7 +866,6 @@
   z-index: 1;
   background-color: #f8f8f8;
   -webkit-transition: inherit;
-  -o-transition: inherit;
   transition: inherit;
 }
 
@@ -888,7 +881,6 @@
   margin: 0 0 10px;
   padding: 0;
   -webkit-transition: inherit;
-  -o-transition: inherit;
   transition: inherit;
 }
 
@@ -902,7 +894,6 @@
   height: 20px;
   border-width: 1px;
   -webkit-transition: inherit;
-  -o-transition: inherit;
   transition: inherit;
 }
 
@@ -918,7 +909,6 @@
   height: 100%;
   background-color: #f8f8f8;
   -webkit-transition: inherit;
-  -o-transition: inherit;
   transition: inherit;
 }
 
@@ -966,7 +956,6 @@
 
 .eael-horizontal-timeline-item__meta {
   -webkit-transition: inherit;
-  -o-transition: inherit;
   transition: inherit;
 }
 
@@ -997,7 +986,6 @@
 .eael-horizontal-timeline-item__point {
   z-index: 1;
   -webkit-transition: inherit;
-  -o-transition: inherit;
   transition: inherit;
 }
 
@@ -1021,7 +1009,6 @@
   background-color: #EFEFF1;
   border-radius: 50%;
   -webkit-transition: inherit;
-  -o-transition: inherit;
   transition: inherit;
 }
 
@@ -1061,7 +1048,6 @@
   height: 100%;
   background-color: #55cdff;
   -webkit-transition: 500ms ease;
-  -o-transition: 500ms ease;
   transition: 500ms ease;
 }
 
@@ -1080,7 +1066,6 @@
   cursor: pointer;
   z-index: 999;
   -webkit-transition: all 200ms linear;
-  -o-transition: all 200ms linear;
   transition: all 200ms linear;
   width: 36px;
   height: 36px;

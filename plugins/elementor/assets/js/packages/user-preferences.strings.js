@@ -1,1 +1,0 @@
-__('User Preferences', 'elementor');

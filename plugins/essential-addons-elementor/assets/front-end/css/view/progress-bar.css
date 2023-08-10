@@ -22,7 +22,6 @@
 }
 .eael-progressbar-line-rainbow .eael-progressbar-line-fill {
   background: -webkit-gradient(linear, right top, left top, from(#9400d3), color-stop(#4b0082), color-stop(#0000ff), color-stop(#00ff00), color-stop(#ffff00), color-stop(#ff7f00), to(#ff0000));
-  background: -o-linear-gradient(right, #9400d3, #4b0082, #0000ff, #00ff00, #ffff00, #ff7f00, #ff0000);
   background: linear-gradient(270deg, #9400d3, #4b0082, #0000ff, #00ff00, #ffff00, #ff7f00, #ff0000);
   background-size: 500% 500%;
   -webkit-animation: animateRainbow 5s ease infinite;
@@ -67,6 +66,5 @@
   height: 0;
   background-color: #000000;
   -webkit-transition: height 1500ms linear;
-  -o-transition: height 1500ms linear;
   transition: height 1500ms linear;
 }

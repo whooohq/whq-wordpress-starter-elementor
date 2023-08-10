@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 } // Exit if accessed directly
 
 use \Elementor\Controls_Manager;
-use \Elementor\Core\Schemes;
+use \Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use \Elementor\Group_Control_Background;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
@@ -483,7 +483,9 @@ endforeach;
 
         $obj->add_group_control(Group_Control_Typography::get_type(), [
             'name' => 'eael_creative_button_typography',
-            'scheme' => Schemes\Typography::TYPOGRAPHY_1,
+            'global' => [
+	            'default' => Global_Typography::TYPOGRAPHY_PRIMARY
+            ],
             'selector' => '{{WRAPPER}} .eael-creative-button .cretive-button-text',
         ]);
 
@@ -523,7 +525,9 @@ endforeach;
 
         $obj->add_group_control(Group_Control_Typography::get_type(), [
             'name' => 'eael_creative_button_secondary_typography',
-            'scheme' => Schemes\Typography::TYPOGRAPHY_1,
+            'global' => [
+	            'default' => Global_Typography::TYPOGRAPHY_PRIMARY
+            ],
             'selector' => '{{WRAPPER}} .eael-creative-button--rayen::before, 
                             {{WRAPPER}} .eael-creative-button--winona::after, 
                             {{WRAPPER}} .eael-creative-button--tamaya .eael-creative-button--tamaya-secondary span,
@@ -834,6 +838,9 @@ endforeach;
             ],
             'condition' => [
                 'eael_pricing_table_style' => 'style-4',
+            ],
+            'ai' => [
+                'active' => false,
             ],
         ]);
     }

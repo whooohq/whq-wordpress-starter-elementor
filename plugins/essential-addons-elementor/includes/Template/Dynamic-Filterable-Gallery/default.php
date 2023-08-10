@@ -8,10 +8,10 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
-$show_category_child_items = !empty($settings['category_show_child_items']) && 'yes' === $settings['category_show_child_items'] ? 1 : 0;
-$show_product_cat_child_items = !empty($settings['product_cat_show_child_items']) && 'yes' === $settings['product_cat_show_child_items'] ? 1 : 0;
-
-$classes = \Essential_Addons_Elementor\Pro\Traits\Dynamic_Filterable_Gallery::get_dynamic_gallery_item_classes($show_category_child_items, $show_product_cat_child_items);
+$helperClass                  = new Essential_Addons_Elementor\Pro\Classes\Helper();
+$show_category_child_items    = ! empty( $settings['category_show_child_items'] ) && 'yes' === $settings['category_show_child_items'] ? 1 : 0;
+$show_product_cat_child_items = ! empty( $settings['product_cat_show_child_items'] ) && 'yes' === $settings['product_cat_show_child_items'] ? 1 : 0;
+$classes                      = $helperClass->get_dynamic_gallery_item_classes( $show_category_child_items, $show_product_cat_child_items );
 
 $linkNofollow = $settings['link_nofollow'] ? 'rel="nofollow"' : '';
 $imageNofollow = $settings['image_link_nofollow'] ? 'rel="nofollow"' : '';

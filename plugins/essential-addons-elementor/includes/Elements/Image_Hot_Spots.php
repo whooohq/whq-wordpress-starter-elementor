@@ -9,7 +9,6 @@ use \Elementor\Group_Control_Typography;
 use \Elementor\Utils;
 use \Elementor\Widget_Base;
 use Elementor\Group_Control_Image_Size;
-use Essential_Addons_Elementor\Pro\Traits\Helper;
 
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
@@ -20,6 +19,7 @@ if (!defined('ABSPATH')) {
  */
 class Image_Hot_Spots extends Widget_Base
 {
+	use \Essential_Addons_Elementor\Pro\Traits\Helper;
 
     /**
      * Retrieve image hotspots widget name.
@@ -103,6 +103,9 @@ class Image_Hot_Spots extends Widget_Base
                 'default'               => [
                     'url' => Utils::get_placeholder_image_src(),
                 ],
+                'ai' => [
+                    'active' => false,
+                ],
             ]
         );
 
@@ -175,6 +178,9 @@ class Image_Hot_Spots extends Widget_Base
                     'default'         => 'Go',
                     'condition'       => [
                         'hotspot_type'   => 'text',
+                    ],
+                    'ai' => [
+                        'active' => false,
                     ],
                 ]
             );
@@ -941,7 +947,7 @@ class Image_Hot_Spots extends Widget_Base
 
                     $this->add_render_attribute('hotspot' . $i, 'data-tooltip-position-global', $settings['tooltip_position']);
                     if ( isset( $item['hotspot_link']['url'] ) && $item['hotspot_link']['url'] != '' ) {
-                        $eael_wp_allowed_tags = Helper::eael_wp_allowed_tags( array( 'viber' ) );
+                        $eael_wp_allowed_tags = $this->eael_wp_allowed_tags( array( 'viber' ) );
 		                $this->add_render_attribute( 'hotspot' . $i, 'data-link', esc_url( $item['hotspot_link']['url'], $eael_wp_allowed_tags ) );
 
 		                $this->add_render_attribute( 'hotspot' . $i, 'href', esc_url( $item['hotspot_link']['url'] ) );

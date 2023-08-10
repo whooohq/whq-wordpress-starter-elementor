@@ -12,9 +12,8 @@ use \Elementor\Controls_Manager;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
-use \Elementor\Core\Schemes\Typography;
+use \Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use Elementor\Icons_Manager;
-use Essential_Addons_Elementor\Pro\Classes\Custom_Walker_Nav_Menu;
 use Essential_Addons_Elementor\Pro\Classes\Helper;
 
 class Skin_Seven extends Skin_Base
@@ -233,7 +232,9 @@ class Skin_Seven extends Skin_Base
             [
                 'name' => 'eael_advanced_menu_item_typography',
                 'label' => __('Typography', 'essential-addons-elementor'),
-                'scheme' => Typography::TYPOGRAPHY_1,
+                'global' => [
+	                'default' => Global_Typography::TYPOGRAPHY_PRIMARY
+                ],
                 'selector' => '{{WRAPPER}} .eael-advanced-menu li > a, .eael-advanced-menu-container .eael-advanced-menu-toggle-text',
                 'fields_options' => [
                     'font_family' => [
@@ -540,7 +541,9 @@ class Skin_Seven extends Skin_Base
             [
                 'name' => 'eael_advanced_menu_dropdown_item_typography',
                 'label' => __('Typography', 'essential-addons-elementor'),
-                'scheme' => Typography::TYPOGRAPHY_1,
+                'global' => [
+	                'default' => Global_Typography::TYPOGRAPHY_PRIMARY
+                ],
                 'selector' => '{{WRAPPER}} .eael-advanced-menu li ul li > a',
                 'fields_options' => [
                     'font_family' => [

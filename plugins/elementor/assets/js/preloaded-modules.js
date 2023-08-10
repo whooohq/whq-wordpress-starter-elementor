@@ -1,4 +1,4 @@
-/*! elementor - v3.13.3 - 22-05-2023 */
+/*! elementor - v3.15.0 - 02-08-2023 */
 (self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["preloaded-modules"],{
 
 /***/ "../assets/dev/js/frontend/handlers/accordion.js":
@@ -595,10 +595,6 @@ class Video extends elementorModules.frontend.handlers.Base {
     const lightbox = await elementorFrontend.utils.lightbox;
     lightbox.setEntranceAnimation(this.getCurrentDeviceSetting('lightbox_content_animation'));
   }
-  async handleAspectRatio() {
-    const lightbox = await elementorFrontend.utils.lightbox;
-    lightbox.setVideoAspectRatio(this.getElementSettings('aspect_ratio'));
-  }
   async hideLightbox() {
     const lightbox = await elementorFrontend.utils.lightbox;
     lightbox.getModal().hide();
@@ -711,10 +707,6 @@ class Video extends elementorModules.frontend.handlers.Base {
     const isLightBoxEnabled = this.getElementSettings('lightbox');
     if ('lightbox' === propertyName && !isLightBoxEnabled) {
       this.hideLightbox();
-      return;
-    }
-    if ('aspect_ratio' === propertyName && isLightBoxEnabled) {
-      this.handleAspectRatio();
     }
   }
 }
@@ -742,6 +734,7 @@ var _video = _interopRequireDefault(__webpack_require__(/*! ./handlers/video */ 
 var _imageCarousel = _interopRequireDefault(__webpack_require__(/*! ./handlers/image-carousel */ "../assets/dev/js/frontend/handlers/image-carousel.js"));
 var _textEditor = _interopRequireDefault(__webpack_require__(/*! ./handlers/text-editor */ "../assets/dev/js/frontend/handlers/text-editor.js"));
 var _nestedTabs = _interopRequireDefault(__webpack_require__(/*! elementor/modules/nested-tabs/assets/js/frontend/handlers/nested-tabs */ "../modules/nested-tabs/assets/js/frontend/handlers/nested-tabs.js"));
+var _nestedAccordion = _interopRequireDefault(__webpack_require__(/*! elementor/modules/nested-accordion/assets/js/frontend/handlers/nested-accordion */ "../modules/nested-accordion/assets/js/frontend/handlers/nested-accordion.js"));
 var _lightbox = _interopRequireDefault(__webpack_require__(/*! elementor-frontend/utils/lightbox/lightbox */ "../assets/dev/js/frontend/utils/lightbox/lightbox.js"));
 elementorFrontend.elements.$window.on('elementor/frontend/init', () => {
   elementorFrontend.elementsHandler.elementsHandlers = {
@@ -751,6 +744,7 @@ elementorFrontend.elements.$window.on('elementor/frontend/init', () => {
     'progress.default': _progress.default,
     'tabs.default': _tabs.default,
     'nested-tabs.default': _nestedTabs.default,
+    'nested-accordion.default': _nestedAccordion.default,
     'toggle.default': _toggle.default,
     'video.default': _video.default,
     'image-carousel.default': _imageCarousel.default,
@@ -1052,7 +1046,6 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 var _screenfull = _interopRequireDefault(__webpack_require__(/*! ./screenfull */ "../assets/dev/js/frontend/utils/lightbox/screenfull.js"));
 var _eIcons = __webpack_require__(/*! @elementor/e-icons */ "../assets/dev/js/frontend/utils/icons/e-icons.js");
 module.exports = elementorModules.ViewModule.extend({
-  oldAspectRatio: null,
   oldAnimation: null,
   swiper: null,
   player: null,
@@ -1060,11 +1053,10 @@ module.exports = elementorModules.ViewModule.extend({
   getDefaultSettings() {
     return {
       classes: {
-        aspectRatio: 'elementor-aspect-ratio-%s',
         item: 'elementor-lightbox-item',
         image: 'elementor-lightbox-image',
         videoContainer: 'elementor-video-container',
-        videoWrapper: 'elementor-fit-aspect-ratio',
+        videoWrapper: 'elementor-video-wrapper',
         playButton: 'elementor-custom-embed-play',
         playButtonIcon: 'fa',
         playing: 'elementor-playing',
@@ -1238,7 +1230,7 @@ module.exports = elementorModules.ViewModule.extend({
   },
   setHTMLContent(html) {
     if (window.elementorCommon) {
-      elementorDevTools.deprecation.deprecated('elementorFrontend.utils.lightbox.setHTMLContent', '3.1.4');
+      elementorDevTools.deprecation.deprecated('elementorFrontend.utils.lightbox.setHTMLContent()', '3.1.4');
     }
     this.getModal().setMessage(html);
   },
@@ -1266,24 +1258,51 @@ module.exports = elementorModules.ViewModule.extend({
       });
     }
     const classes = this.getSettings('classes'),
+      aspectRatio = this.getRatioDictionry(this.getSettings('modalOptions.videoAspectRatio')),
       $videoContainer = $('<div>', {
         class: `${classes.videoContainer} ${classes.preventClose}`
       }),
       $videoWrapper = $('<div>', {
-        class: classes.videoWrapper
+        class: `${classes.videoWrapper} elementor-video-${this.getRatioType(aspectRatio)}`,
+        style: '--video-aspect-ratio: ' + aspectRatio
       });
     $videoWrapper.append($videoElement);
     $videoContainer.append($videoWrapper);
     const modal = this.getModal();
     modal.setMessage($videoContainer);
-    this.setVideoAspectRatio();
     const onHideMethod = modal.onHide;
     modal.onHide = function () {
       onHideMethod();
       this.$buttons = jQuery();
       this.focusedButton = null;
-      modal.getElements('message').removeClass('elementor-fit-aspect-ratio');
+      modal.getElements('message').removeClass('elementor-video-wrapper');
     };
+  },
+  getRatioDictionry(ratio) {
+    const aspectRatiosDictionary = {
+      219: 2.33333,
+      // 21/9
+      169: 1.77777,
+      // 16/9
+      43: 1.33333,
+      // 4/3
+      32: 1.5,
+      // 3/2
+      11: 1,
+      // 1/1
+      916: 0.5625 // 9/16
+    };
+
+    return aspectRatiosDictionary[ratio] || ratio;
+  },
+  getRatioType(ratio) {
+    let type = '';
+    if (1 === ratio) {
+      type = 'square';
+    } else {
+      type = ratio < 1 ? 'portrait' : 'landscape';
+    }
+    return type;
   },
   getShareLinks() {
     const {
@@ -1691,7 +1710,6 @@ module.exports = elementorModules.ViewModule.extend({
 
       // Expose the swiper instance in the frontend
       $container.data('swiper', this.swiper);
-      this.setVideoAspectRatio();
       this.playSlideVideo();
       if (showFooter) {
         this.updateFooterText();
@@ -1753,19 +1771,6 @@ module.exports = elementorModules.ViewModule.extend({
       }
     }
   },
-  setVideoAspectRatio(aspectRatio) {
-    aspectRatio = aspectRatio || this.getSettings('modalOptions.videoAspectRatio');
-    const $widgetContent = this.getModal().getElements('widgetContent'),
-      oldAspectRatio = this.oldAspectRatio,
-      aspectRatioClass = this.getSettings('classes.aspectRatio');
-    this.oldAspectRatio = aspectRatio;
-    if (oldAspectRatio) {
-      $widgetContent.removeClass(aspectRatioClass.replace('%s', oldAspectRatio));
-    }
-    if (aspectRatio) {
-      $widgetContent.addClass(aspectRatioClass.replace('%s', aspectRatio));
-    }
-  },
   getSlide(slideState) {
     return jQuery(this.swiper.slides).filter(this.getSettings('selectors.slideshow.' + slideState + 'Slide'));
   },
@@ -1790,11 +1795,13 @@ module.exports = elementorModules.ViewModule.extend({
       return;
     }
     const classes = this.getSettings('classes'),
+      aspectRatio = this.getRatioDictionry(this.getSettings('modalOptions.videoAspectRatio')),
       $videoContainer = jQuery('<div>', {
         class: classes.videoContainer + ' ' + classes.invisible
       }),
       $videoWrapper = jQuery('<div>', {
-        class: classes.videoWrapper
+        class: `${classes.videoWrapper} elementor-video-${this.getRatioType(aspectRatio)}`,
+        style: '--video-aspect-ratio: ' + aspectRatio
       }),
       $playIcon = $activeSlide.children('.' + classes.playButton);
     let videoType, apiProvider;

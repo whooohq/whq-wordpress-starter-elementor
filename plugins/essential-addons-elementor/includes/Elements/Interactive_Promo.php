@@ -6,7 +6,7 @@ use \Elementor\Controls_Manager;
 use \Elementor\Group_Control_Background;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Typography;
-use \Elementor\Core\Schemes\Typography;
+use \Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use \Elementor\Utils;
 use \Elementor\Widget_Base;
 
@@ -77,6 +77,9 @@ class Interactive_Promo extends Widget_Base
 	            'dynamic' => [
 		            'active' => true,
 	            ],
+                'ai' => [
+                    'active' => false,
+                ],
             ]
         );
 
@@ -90,6 +93,9 @@ class Interactive_Promo extends Widget_Base
                 'placeholder' => __('Enter alter tag for the image', 'essential-addons-elementor'),
                 'title' => __('Input image alter tag here', 'essential-addons-elementor'),
                 'dynamic' => ['action' => true],
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -103,6 +109,9 @@ class Interactive_Promo extends Widget_Base
                 'placeholder' => __('Enter heading for the promo', 'essential-addons-elementor'),
                 'title' => __('Enter heading for the promo', 'essential-addons-elementor'),
                 'dynamic' => ['active' => true],
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -125,6 +134,9 @@ class Interactive_Promo extends Widget_Base
                 'default' => '#',
                 'placeholder' => __('Enter link URL for the promo', 'essential-addons-elementor'),
                 'title' => __('Enter URL for the promo', 'essential-addons-elementor'),
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -268,7 +280,9 @@ class Interactive_Promo extends Widget_Base
             Group_Control_Typography::get_type(),
             [
                 'name' => 'eael_promo_title_typography',
-                'scheme' => Typography::TYPOGRAPHY_1,
+                'global' => [
+	                'default' => Global_Typography::TYPOGRAPHY_PRIMARY
+                ],
                 'selector' => '{{WRAPPER}} .eael-interactive-promo figure figcaption h2',
             ]
         );
@@ -289,7 +303,9 @@ class Interactive_Promo extends Widget_Base
             Group_Control_Typography::get_type(),
             [
                 'name' => 'eael_promo_content_typography',
-                'scheme' => Typography::TYPOGRAPHY_1,
+                'global' => [
+	                'default' => Global_Typography::TYPOGRAPHY_PRIMARY
+                ],
                 'selector' => '{{WRAPPER}} .eael-interactive-promo figure p',
             ]
         );

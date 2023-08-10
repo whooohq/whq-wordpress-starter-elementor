@@ -46,7 +46,6 @@
   opacity: 0;
   -webkit-transition: opacity 0.2s ease-in-out, -webkit-transform 0.25s cubic-bezier(0.19, 1, 0.22, 1);
   transition: opacity 0.2s ease-in-out, -webkit-transform 0.25s cubic-bezier(0.19, 1, 0.22, 1);
-  -o-transition: opacity 0.2s ease-in-out, transform 0.25s cubic-bezier(0.19, 1, 0.22, 1);
   transition: opacity 0.2s ease-in-out, transform 0.25s cubic-bezier(0.19, 1, 0.22, 1);
   transition: opacity 0.2s ease-in-out, transform 0.25s cubic-bezier(0.19, 1, 0.22, 1), -webkit-transform 0.25s cubic-bezier(0.19, 1, 0.22, 1);
   display: -webkit-box;
@@ -87,7 +86,6 @@
 .eael-static-product .eael-static-product-details .eael-static-product-btn-wrap a.eael-static-product-btn {
   padding: 10px 20px;
   font-size: 14px;
-  -o-transition: color 0.5s ease;
   transition: color 0.5s ease;
   -webkit-transition: color 0.5s ease;
   -moz-transition: color 0.5s ease;

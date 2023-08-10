@@ -8,6 +8,7 @@ use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
 use \Elementor\Widget_Base;
 use \Essential_Addons_Elementor\Classes\Helper;
+use \Elementor\Core\Kits\Documents\Tabs\Global_Colors;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -82,6 +83,9 @@ class Twitter_Feed_Carousel extends Widget_Base
                 'default' => '@wpdevteam',
                 'label_block' => false,
                 'description' => esc_html__('Use @ sign with your account name.', 'essential-addons-elementor'),
+                'ai' => [
+					'active' => false,
+				],
 
             ]
         );
@@ -93,6 +97,9 @@ class Twitter_Feed_Carousel extends Widget_Base
                 'type' => Controls_Manager::TEXT,
                 'label_block' => false,
                 'description' => esc_html__('Remove # sign from your hashtag name.', 'essential-addons-elementor'),
+                'ai' => [
+					'active' => false,
+				],
 
             ]
         );
@@ -105,6 +112,9 @@ class Twitter_Feed_Carousel extends Widget_Base
                 'label_block' => false,
                 'default' => '',
                 'description' => '<a href="https://developer.twitter.com/en/portal/dashboard" target="_blank">Get Consumer Key.</a> Create a new app or select existing app and grab the <b>consumer key.</b>',
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -116,6 +126,9 @@ class Twitter_Feed_Carousel extends Widget_Base
                 'label_block' => false,
                 'default' => '',
                 'description' => '<a href="https://developer.twitter.com/en/portal/dashboard" target="_blank">Get Consumer Secret.</a> Create a new app or select existing app and grab the <b>consumer secret.</b>',
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -1438,9 +1451,8 @@ class Twitter_Feed_Carousel extends Widget_Base
             [
                 'label'     => __('Color', 'essential-addons-elementor'),
                 'type'      => \Elementor\Controls_Manager::COLOR,
-                'scheme'    => [
-                    'type'  => \Elementor\Core\Schemes\Color::get_type(),
-                    'value' => \Elementor\Core\Schemes\Color::COLOR_1,
+                'global' => [
+	                'default' => Global_Colors::COLOR_PRIMARY
                 ],
                 'selectors' => [
                     '{{WRAPPER}} .eael-twitter-feed-item .eael-twitter-feed-item-icon' => 'color: {{VALUE}}',
@@ -1474,7 +1486,13 @@ class Twitter_Feed_Carousel extends Widget_Base
 		    'data-dots'           => '1',
 	    ] );
 
-		echo '<div class="eael-twitter-feed eael-twitter-feed-carousel swiper swiper-container eael-twitter-feed-' . $this->get_id() . '" ' . $this->get_render_attribute_string('eael-twitter-feed-carousel-wrap') . '>
+        $swiper_class = $swiper_version_class = '';
+        if ( class_exists( 'Elementor\Plugin' ) ) {
+            $swiper_class           = \Elementor\Plugin::$instance->experiments->is_feature_active( 'e_swiper_latest' ) ? 'swiper' : 'swiper-container';
+            $swiper_version_class   = 'swiper' === $swiper_class ? 'swiper-8' : 'swiper-8-lower';
+        }
+
+		echo '<div class="eael-twitter-feed eael-twitter-feed-carousel ' . esc_attr( $swiper_class ) . ' ' . esc_attr( $swiper_version_class ) . ' eael-twitter-feed-' . $this->get_id() . '" ' . $this->get_render_attribute_string('eael-twitter-feed-carousel-wrap') . '>
 			<div class="swiper-wrapper">
 				' . $render_html . '
 			</div>';

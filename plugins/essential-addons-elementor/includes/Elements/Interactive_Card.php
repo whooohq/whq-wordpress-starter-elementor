@@ -136,6 +136,9 @@ class Interactive_Card extends Widget_Base
 				'selectors' => [
 					'{{WRAPPER}} .interactive-card .front-content .image-screen' => 'background: center / cover url({{URL}}) no-repeat !important;',
 				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -149,7 +152,10 @@ class Interactive_Card extends Widget_Base
 				'dynamic' => ['active' => true],
 				'condition' => [
 					'eael_interactive_card_style' => 'text-card',
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -183,7 +189,10 @@ class Interactive_Card extends Widget_Base
 				'condition' => [
 					'eael_interactive_card_style' => 'text-card',
 				],
-				'dynamic' => ['active' => true]
+				'dynamic' => ['active' => true],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 		$this->add_control(
@@ -199,6 +208,9 @@ class Interactive_Card extends Widget_Base
 				],
 				'selectors' => [
 					'{{WRAPPER}} .interactive-card .front-content .image-screen' => 'background-image: url({{URL}});',
+				],
+				'ai' => [
+					'active' => false,
 				],
 			]
 		);
@@ -275,7 +287,10 @@ class Interactive_Card extends Widget_Base
 				'default' => esc_html__( 'More', 'essential-addons-elementor' ),
 				'condition' => [
 					'eael_interactive_card_style' => 'text-card',
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 		$this->add_control(
@@ -356,7 +371,10 @@ class Interactive_Card extends Widget_Base
 				],
 				'condition' => [
 					'eael_interactive_card_type' => 'img-grid'
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -419,7 +437,10 @@ class Interactive_Card extends Widget_Base
 				'condition' => [
 					'eael_interactive_card_type' => 'img-grid'
 				],
-				'dynamic' => ['active' => true]
+				'dynamic' => ['active' => true],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 		$this->add_control(
@@ -494,7 +515,10 @@ class Interactive_Card extends Widget_Base
 				'default' => esc_html__('Read More', 'essential-addons-elementor'),
 				'condition' => [
 					'eael_interactive_card_type' => 'img-grid'
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -608,7 +632,10 @@ class Interactive_Card extends Widget_Base
 				'default' => esc_html__('https://www.youtube.com/watch?v=3rV9imkbV7k', 'essential-addons-elementor'),
 				'condition' => [
 					'eael_interactive_card_type' => 'video'
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 
 		);
@@ -664,7 +691,10 @@ class Interactive_Card extends Widget_Base
 				'label' => esc_html__('Timing (ms)', 'essential-addons-elementor'),
 				'type' => Controls_Manager::TEXT,
 				'label_block' => false,
-				'default' => 400
+				'default' => 400,
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -2087,8 +2117,12 @@ class Interactive_Card extends Widget_Base
 						<?php elseif ('template' == $settings['eael_interactive_card_text_type']) : ?>
 							<div class="front-text-body">
 								<?php
-								if (!empty($settings['eael_primary_templates'])) {
-									echo Plugin::$instance->frontend->get_builder_content($settings['eael_primary_templates'], true);
+								if ( ! empty( $settings['eael_primary_templates'] ) ) {
+									// WPML Compatibility
+									if ( ! is_array( $settings['eael_primary_templates'] ) ) {
+										$settings['eael_primary_templates'] = apply_filters( 'wpml_object_id', $settings['eael_primary_templates'], 'wp_template', true );
+									}
+									echo Plugin::$instance->frontend->get_builder_content( $settings['eael_primary_templates'], true );
 								}
 								?>
 							</div>
@@ -2141,8 +2175,12 @@ class Interactive_Card extends Widget_Base
 									<?php echo wpautop($settings['eael_interactive_card_rear_content']); ?>
 								<?php elseif ('template' == $settings['eael_interactive_card_rear_text_type']) : ?>
 									<?php
-									if (!empty($settings['eael_primary_rear_templates'])) {
-										echo Plugin::$instance->frontend->get_builder_content($settings['eael_primary_rear_templates'], true);
+									if ( ! empty( $settings['eael_primary_rear_templates'] ) ) {
+										// WPML Compatibility
+										if ( ! is_array( $settings['eael_primary_rear_templates'] ) ) {
+											$settings['eael_primary_rear_templates'] = apply_filters( 'wpml_object_id', $settings['eael_primary_rear_templates'], 'wp_template', true );
+										}
+										echo Plugin::$instance->frontend->get_builder_content( $settings['eael_primary_rear_templates'], true );
 									}
 									?>
 								<?php endif; ?>
@@ -2175,8 +2213,12 @@ class Interactive_Card extends Widget_Base
 							<?php echo do_shortcode(wp_kses_post($settings['eael_interactive_card_rear_custom_code'])); ?>
 						<?php elseif ('template' == $settings['eael_interactive_card_rear_text_type']) : ?>
 							<?php
-							if (!empty($settings['eael_primary_rear_templates'])) {
-								echo Plugin::$instance->frontend->get_builder_content($settings['eael_primary_rear_templates'], true);
+							if ( ! empty( $settings['eael_primary_rear_templates'] ) ) {
+								// WPML Compatibility
+								if ( ! is_array( $settings['eael_primary_rear_templates'] ) ) {
+									$settings['eael_primary_rear_templates'] = apply_filters( 'wpml_object_id', $settings['eael_primary_rear_templates'], 'wp_template', true );
+								}
+								echo Plugin::$instance->frontend->get_builder_content( $settings['eael_primary_rear_templates'], true );
 							}
 							?>
 						<?php endif; ?>

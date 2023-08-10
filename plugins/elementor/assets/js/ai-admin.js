@@ -1,4 +1,4 @@
-/*! elementor - v3.13.3 - 22-05-2023 */
+/*! elementor - v3.15.0 - 02-08-2023 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -134,17 +134,24 @@ exports.translateLanguages = translateLanguages;
 /*!***************************************************!*\
   !*** ../modules/ai/assets/js/editor/api/index.js ***!
   \***************************************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.setStatusFeedback = exports.setGetStarted = exports.getUserInformation = exports.getEditText = exports.getCustomCode = exports.getCustomCSS = exports.getCompletionText = void 0;
+exports.uploadImage = exports.setStatusFeedback = exports.setGetStarted = exports.getUserInformation = exports.getTextToImageGeneration = exports.getImageToImageUpscale = exports.getImageToImageReplaceBackground = exports.getImageToImageRemoveText = exports.getImageToImageRemoveBackground = exports.getImageToImageOutPainting = exports.getImageToImageMaskGeneration = exports.getImageToImageGeneration = exports.getImagePromptEnhanced = exports.getEditText = exports.getCustomCode = exports.getCustomCSS = exports.getCompletionText = void 0;
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var request = function request(endpoint) {
   var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  if (Object.keys(data).length) {
+    data.context = window.elementorAiCurrentContext;
+  }
   return new Promise(function (resolve, reject) {
     return elementorCommon.ajax.addRequest(endpoint, {
       success: resolve,
@@ -195,6 +202,75 @@ var setStatusFeedback = function setStatusFeedback(responseId) {
   });
 };
 exports.setStatusFeedback = setStatusFeedback;
+var getTextToImageGeneration = function getTextToImageGeneration(prompt, promptSettings) {
+  return request('ai_get_text_to_image', {
+    prompt: prompt,
+    promptSettings: promptSettings
+  });
+};
+exports.getTextToImageGeneration = getTextToImageGeneration;
+var getImageToImageGeneration = function getImageToImageGeneration(prompt, promptSettings, image) {
+  return request('ai_get_image_to_image', {
+    prompt: prompt,
+    promptSettings: promptSettings,
+    image: image
+  });
+};
+exports.getImageToImageGeneration = getImageToImageGeneration;
+var getImageToImageMaskGeneration = function getImageToImageMaskGeneration(prompt, promptSettings, image, mask) {
+  return request('ai_get_image_to_image_mask', {
+    prompt: prompt,
+    promptSettings: promptSettings,
+    image: image,
+    mask: mask
+  });
+};
+exports.getImageToImageMaskGeneration = getImageToImageMaskGeneration;
+var getImageToImageOutPainting = function getImageToImageOutPainting(prompt, promptSettings, image, mask) {
+  return request('ai_get_image_to_image_outpainting', {
+    prompt: prompt,
+    promptSettings: promptSettings,
+    mask: mask
+  });
+};
+exports.getImageToImageOutPainting = getImageToImageOutPainting;
+var getImageToImageUpscale = function getImageToImageUpscale(prompt, promptSettings, image) {
+  return request('ai_get_image_to_image_upscale', {
+    prompt: prompt,
+    promptSettings: promptSettings,
+    image: image
+  });
+};
+exports.getImageToImageUpscale = getImageToImageUpscale;
+var getImageToImageRemoveBackground = function getImageToImageRemoveBackground(image) {
+  return request('ai_get_image_to_image_remove_background', {
+    image: image
+  });
+};
+exports.getImageToImageRemoveBackground = getImageToImageRemoveBackground;
+var getImageToImageReplaceBackground = function getImageToImageReplaceBackground(prompt, image) {
+  return request('ai_get_image_to_image_replace_background', {
+    prompt: prompt,
+    image: image
+  });
+};
+exports.getImageToImageReplaceBackground = getImageToImageReplaceBackground;
+var getImageToImageRemoveText = function getImageToImageRemoveText(image) {
+  return request('ai_get_image_to_image_remove_text', {
+    image: image
+  });
+};
+exports.getImageToImageRemoveText = getImageToImageRemoveText;
+var getImagePromptEnhanced = function getImagePromptEnhanced(prompt) {
+  return request('ai_get_image_prompt_enhancer', {
+    prompt: prompt
+  });
+};
+exports.getImagePromptEnhanced = getImagePromptEnhanced;
+var uploadImage = function uploadImage(image) {
+  return request('ai_upload_image', _objectSpread({}, image));
+};
+exports.uploadImage = uploadImage;
 
 /***/ }),
 
@@ -229,6 +305,7 @@ var App = function App(props) {
     onConnect: _helpers.onConnect,
     getControlValue: props.getControlValue,
     setControlValue: props.setControlValue,
+    controlView: props.controlView,
     additionalOptions: props.additionalOptions
   })));
 };
@@ -240,6 +317,7 @@ App.propTypes = {
   getControlValue: PropTypes.func,
   setControlValue: PropTypes.func,
   additionalOptions: PropTypes.object,
+  controlView: PropTypes.object,
   isRTL: PropTypes.bool
 };
 var _default = App;
@@ -289,31 +367,28 @@ var StyledElementorLogo = (0, _ui.styled)(ElementorLogo)(function (_ref) {
 });
 var DialogHeader = function DialogHeader(props) {
   return /*#__PURE__*/_react.default.createElement(_ui.DialogTitle, {
-    component: "div",
     sx: {
       fontWeight: 'normal'
     }
-  }, /*#__PURE__*/_react.default.createElement(_ui.Stack, {
-    direction: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  }, /*#__PURE__*/_react.default.createElement(_ui.Stack, {
-    direction: "row",
-    spacing: 3,
-    alignItems: "center"
-  }, /*#__PURE__*/_react.default.createElement(StyledElementorLogo, null), /*#__PURE__*/_react.default.createElement(_ui.Typography, {
-    variant: "h6",
+  }, /*#__PURE__*/_react.default.createElement(StyledElementorLogo, {
     sx: {
-      color: 'text.primary'
+      mr: 3
     }
-  }, __('AI', 'elementor')), /*#__PURE__*/_react.default.createElement(_styledChip.default, {
+  }), __('AI', 'elementor'), /*#__PURE__*/_react.default.createElement(_styledChip.default, {
     label: __('Beta', 'elementor'),
-    color: "default"
-  })), /*#__PURE__*/_react.default.createElement(_ui.Stack, {
+    color: "default",
+    sx: {
+      ml: 3
+    }
+  }), /*#__PURE__*/_react.default.createElement(_ui.Stack, {
     direction: "row",
     spacing: 3,
-    alignItems: "center"
+    alignItems: "center",
+    sx: {
+      ml: 'auto'
+    }
   }, props.children, /*#__PURE__*/_react.default.createElement(_ui.IconButton, {
+    size: "small",
     "aria-label": "close",
     onClick: props.onClose,
     sx: {
@@ -321,7 +396,7 @@ var DialogHeader = function DialogHeader(props) {
         mr: -4
       }
     }
-  }, /*#__PURE__*/_react.default.createElement(_icons.XIcon, null)))));
+  }, /*#__PURE__*/_react.default.createElement(_icons.XIcon, null))));
 };
 DialogHeader.propTypes = {
   onClose: PropTypes.func.isRequired,
@@ -386,16 +461,18 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports["default"] = void 0;
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
 var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
-var Loader = function Loader() {
+var Loader = function Loader(props) {
   return /*#__PURE__*/_react.default.createElement(_ui.Box, {
     sx: {
       px: 4,
       py: 6
-    }
-  }, /*#__PURE__*/_react.default.createElement(_ui.LinearProgress, {
+    },
+    width: "100%"
+  }, /*#__PURE__*/_react.default.createElement(_ui.LinearProgress, (0, _extends2.default)({
     color: "secondary"
-  }));
+  }, props)));
 };
 var _default = Loader;
 exports["default"] = _default;
@@ -424,41 +501,56 @@ var labelToDashCash = function labelToDashCash(str) {
 };
 var PromptActionSelection = function PromptActionSelection(props) {
   var actionId = labelToDashCash(props.label);
-  return /*#__PURE__*/_react.default.createElement(_ui.FormControl, {
-    sx: {
+  var _props$wrapperStyle = props.wrapperStyle,
+    wrapperStyle = _props$wrapperStyle === void 0 ? {
       width: 138
-    }
+    } : _props$wrapperStyle;
+  return /*#__PURE__*/_react.default.createElement(_ui.FormControl, {
+    sx: wrapperStyle
   }, /*#__PURE__*/_react.default.createElement(_ui.InputLabel, {
     id: actionId
   }, props.label), /*#__PURE__*/_react.default.createElement(_ui.Select, {
     labelId: actionId,
     id: actionId,
-    value: "",
+    value: props.value || '',
     color: "secondary",
     onChange: props.onChange,
     size: "small",
     label: props.label,
+    disabled: props.disabled,
     MenuProps: {
       PaperProps: {
         sx: {
           width: 138
         }
       }
+    },
+    sx: {
+      // Fixing global CSS of the editor that targets input[disabled] globally.
+      '&.Mui-disabled .MuiSelect-nativeInput': {
+        backgroundColor: 'initial',
+        opacity: 0
+      }
     }
   }, props.options.map(function (option) {
+    var _option$value;
     return /*#__PURE__*/_react.default.createElement(_ui.MenuItem, {
       dense: true,
       key: option.label,
-      value: option.label
+      value: (_option$value = option.value) !== null && _option$value !== void 0 ? _option$value : option.label
     }, option.label);
   })));
 };
 PromptActionSelection.propTypes = {
   label: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.shape({
-    label: PropTypes.string.isRequired
+    label: PropTypes.string.isRequired,
+    value: PropTypes.string
   })).isRequired,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.string,
+  wrapperStyle: PropTypes.object,
+  disabled: PropTypes.bool
 };
 var _default = PromptActionSelection;
 exports["default"] = _default;
@@ -517,12 +609,13 @@ var PromptCredits = function PromptCredits(props) {
   if (props.usagePercentage < 80) {
     return null;
   }
+  var upgradeLink = props.usagePercentage < 100 ? 'https://go.elementor.com/ai-popup-purchase-limit-reached-80-percent/' : 'https://go.elementor.com/ai-popup-purchase-limit-reached/';
   return /*#__PURE__*/_react.default.createElement(_ui.Typography, {
     variant: "caption",
     color: "text.tertiary"
   }, /* Translators: %s: AI prompt remained credits. */
   sprintf(__('You\'ve used %s of the free trial.', 'elementor'), props.usagePercentage + '%'), ' ', /*#__PURE__*/_react.default.createElement("a", {
-    href: "https://go.elementor.com/ai-popup-purchase-limit-reached-80-percent/",
+    href: upgradeLink,
     target: "_blank",
     rel: "noreferrer"
   }, __('Upgrade for unlimited access', 'elementor')), ".");
@@ -551,6 +644,7 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports["default"] = void 0;
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
 var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
 var _reactDraggable = _interopRequireDefault(__webpack_require__(/*! react-draggable */ "../node_modules/react-draggable/build/cjs/cjs.js"));
 var _dialogHeader = _interopRequireDefault(__webpack_require__(/*! ./dialog-header */ "../modules/ai/assets/js/editor/components/dialog-header.js"));
@@ -558,32 +652,32 @@ var PromptDialog = function PromptDialog(props) {
   return /*#__PURE__*/_react.default.createElement(_reactDraggable.default, {
     handle: ".MuiDialogTitle-root",
     cancel: '[class*="MuiDialogContent-root"]'
-  }, /*#__PURE__*/_react.default.createElement(_ui.Dialog, {
+  }, /*#__PURE__*/_react.default.createElement(_ui.Dialog, (0, _extends2.default)({
     open: true,
-    onClose: props.onClose,
     fullWidth: true,
     hideBackdrop: true,
-    maxWidth: "sm",
+    scroll: "paper",
     sx: {
       '& .MuiDialog-container': {
         alignItems: 'flex-start',
-        mt: '17vh'
+        mt: '18vh'
       }
     },
     PaperProps: {
       sx: {
-        maxHeight: '72vh'
+        m: 0,
+        maxHeight: '76vh'
       }
     }
-  }, /*#__PURE__*/_react.default.createElement(_dialogHeader.default, {
-    onClose: props.onClose
-  }, props.headerAction), /*#__PURE__*/_react.default.createElement(_ui.DialogContent, null, props.children)));
+  }, props), props.children));
 };
 PromptDialog.propTypes = {
-  headerAction: PropTypes.node,
   onClose: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  maxWidth: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl', false])
 };
+PromptDialog.Header = _dialogHeader.default;
+PromptDialog.Content = _ui.DialogContent;
 var _default = PromptDialog;
 exports["default"] = _default;
 
@@ -609,11 +703,13 @@ var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
 var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "../node_modules/@babel/runtime/helpers/objectWithoutProperties.js"));
 var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
-var _excluded = ["error", "onRetry"];
+var _excluded = ["error", "onRetry", "actionPosition"];
 var PromptErrorMessage = function PromptErrorMessage(_ref) {
   var error = _ref.error,
     _ref$onRetry = _ref.onRetry,
     onRetry = _ref$onRetry === void 0 ? function () {} : _ref$onRetry,
+    _ref$actionPosition = _ref.actionPosition,
+    actionPosition = _ref$actionPosition === void 0 ? 'default' : _ref$actionPosition,
     props = (0, _objectWithoutProperties2.default)(_ref, _excluded);
   var messages = {
     default: {
@@ -634,25 +730,31 @@ var PromptErrorMessage = function PromptErrorMessage(_ref) {
         href: "https://elementor.com/help/disconnecting-reconnecting-your-elementor-account/",
         target: "_blank",
         rel: "noreferrer"
-      }, __('Show me how', 'elementor')))
+      }, __('Show me how', 'elementor'))),
+      buttonText: __('Reconnect', 'elementor'),
+      buttonAction: function buttonAction() {
+        return window.open(window.ElementorAiConfig.connect_url);
+      }
     },
     not_connected: {
       text: /*#__PURE__*/_react.default.createElement(_ui.AlertTitle, null, __('You aren\'t connected to Elementor AI.', 'elementor')),
-      description: __('Elementor AI is just a few clicks away. Connect your account to instantly create texts and custom code.', 'elementor')
+      description: __('Elementor AI is just a few clicks away. Connect your account to instantly create texts and custom code.', 'elementor'),
+      buttonText: __('Connect', 'elementor'),
+      buttonAction: function buttonAction() {
+        return window.open(window.ElementorAiConfig.connect_url);
+      }
     },
     quota_reached_trail: {
-      severity: 'info',
       text: /*#__PURE__*/_react.default.createElement(_ui.AlertTitle, null, __('It\'s time to upgrade.', 'elementor')),
-      description: __('Enjoy the free trial? Upgrade now for unlimited access to built-in text and custom code generators.', 'elementor'),
+      description: __('Enjoy the free trial? Upgrade now for unlimited access to built-in image, text and custom code generators.', 'elementor'),
       buttonText: __('Upgrade', 'elementor'),
       buttonAction: function buttonAction() {
         return window.open('https://go.elementor.com/ai-popup-purchase-limit-reached/', '_blank');
       }
     },
     quota_reached_subscription: {
-      severity: 'info',
       text: /*#__PURE__*/_react.default.createElement(_ui.AlertTitle, null, __('It\'s time to upgrade.', 'elementor')),
-      description: __('Love Elementor AI? Upgrade to continue creating with built-in text and custom code generators.', 'elementor'),
+      description: __('Love Elementor AI? Upgrade to continue creating with built-in image, text and custom code generators.', 'elementor'),
       buttonText: __('Upgrade', 'elementor'),
       buttonAction: function buttonAction() {
         return window.open('https://go.elementor.com/ai-popup-purchase-limit-reached/', '_blank');
@@ -661,27 +763,32 @@ var PromptErrorMessage = function PromptErrorMessage(_ref) {
     rate_limit_network: {
       text: /*#__PURE__*/_react.default.createElement(_ui.AlertTitle, null, __('Whoa! Slow down there.', 'elementor')),
       description: __('We can’t process that many requests so fast. Try again in 15 minutes.', 'elementor')
+    },
+    invalid_prompts: {
+      text: /*#__PURE__*/_react.default.createElement(_ui.AlertTitle, null, __('We were unable to generate that prompt.', 'elementor')),
+      description: __('Seems like the prompt contains words that could generate harmful content. Write a different prompt to continue.', 'elementor')
     }
   };
   var message = messages[error] || messages.default;
+  var action = (message === null || message === void 0 ? void 0 : message.buttonText) && /*#__PURE__*/_react.default.createElement(_ui.Button, {
+    color: "inherit",
+    size: "small",
+    variant: "outlined",
+    onClick: message.buttonAction
+  }, message.buttonText);
   return /*#__PURE__*/_react.default.createElement(_ui.Alert, (0, _extends2.default)({
     severity: message.severity || 'error',
-    action: (message === null || message === void 0 ? void 0 : message.buttonText) && /*#__PURE__*/_react.default.createElement(_ui.Button, {
-      color: "inherit",
-      size: "small",
-      variant: "outlined",
-      onClick: message.buttonAction,
-      sx: {
-        height: 'auto',
-        // TODO: Fix in UI library.
-        minHeight: '32px'
-      }
-    }, message.buttonText)
-  }, props), message.text, message.description);
+    action: 'default' === actionPosition && action
+  }, props), message.text, message.description, 'bottom' === actionPosition && /*#__PURE__*/_react.default.createElement(_ui.Box, {
+    sx: {
+      mt: 3
+    }
+  }, action));
 };
 PromptErrorMessage.propTypes = {
   error: PropTypes.string,
-  onRetry: PropTypes.func
+  onRetry: PropTypes.func,
+  actionPosition: PropTypes.oneOf(['default', 'bottom'])
 };
 var _default = PromptErrorMessage;
 exports["default"] = _default;
@@ -777,10 +884,10 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ "../modules/ai/assets/js/editor/components/text-area.js":
-/*!**************************************************************!*\
-  !*** ../modules/ai/assets/js/editor/components/text-area.js ***!
-  \**************************************************************/
+/***/ "../modules/ai/assets/js/editor/components/textarea.js":
+/*!*************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/components/textarea.js ***!
+  \*************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -798,24 +905,179 @@ var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/he
 var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-var TextArea = (0, _react.forwardRef)(function (props, ref) {
+var Textarea = (0, _react.forwardRef)(function (props, ref) {
   return /*#__PURE__*/_react.default.createElement(_ui.TextField, (0, _extends2.default)({
     ref: ref,
     multiline: true,
-    fullWidth: true,
     minRows: 4,
     maxRows: 20,
-    value: props.value,
-    onChange: props.onChange,
-    helperText: props.helperText
+    color: "secondary"
   }, props));
 });
-TextArea.propTypes = {
+Textarea.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   helperText: PropTypes.string
 };
-var _default = TextArea;
+var _default = Textarea;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/components/ui/overlay-bar-text.js":
+/*!************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/components/ui/overlay-bar-text.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "../node_modules/@babel/runtime/helpers/objectWithoutProperties.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _excluded = ["children"];
+var OverlayBarText = function OverlayBarText(_ref) {
+  var children = _ref.children,
+    props = (0, _objectWithoutProperties2.default)(_ref, _excluded);
+  return /*#__PURE__*/_react.default.createElement(_ui.Typography, (0, _extends2.default)({
+    variant: "caption",
+    color: "common.white"
+  }, props), children);
+};
+OverlayBarText.propTypes = {
+  children: PropTypes.node
+};
+var _default = OverlayBarText;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/components/ui/overlay-bar.js":
+/*!*******************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/components/ui/overlay-bar.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var OverlayBar = (0, _ui.styled)(_ui.Stack)(function (_ref) {
+  var theme = _ref.theme,
+    position = _ref.position;
+  var style = {
+    width: '100%',
+    position: 'absolute',
+    left: 0,
+    padding: theme.spacing(6)
+  };
+  if ('top' === position) {
+    style.top = 0;
+  } else if ('bottom' === position) {
+    style.bottom = 0;
+  }
+  return style;
+});
+var _default = OverlayBar;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/components/ui/overlay.js":
+/*!***************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/components/ui/overlay.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var Overlay = (0, _ui.styled)(_ui.Box)(function (_ref) {
+  var theme = _ref.theme;
+  return {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    transition: "opacity ".concat(theme.transitions.duration.short, "ms ").concat(theme.transitions.easing.easeInOut),
+    opacity: 0,
+    '&:hover': {
+      opacity: 1
+    }
+  };
+});
+var _default = Overlay;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/components/ui/panel.js":
+/*!*************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/components/ui/panel.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "../node_modules/@babel/runtime/helpers/objectWithoutProperties.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _excluded = ["sx"];
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+var Panel = function Panel(_ref) {
+  var _ref$sx = _ref.sx,
+    sx = _ref$sx === void 0 ? {} : _ref$sx,
+    props = (0, _objectWithoutProperties2.default)(_ref, _excluded);
+  return /*#__PURE__*/_react.default.createElement(_ui.Drawer, (0, _extends2.default)({
+    open: true,
+    anchor: "left",
+    variant: "persistent",
+    PaperProps: {
+      sx: {
+        position: 'relative',
+        width: 360,
+        px: 8,
+        pt: 8,
+        bgcolor: 'background.default'
+      }
+    },
+    sx: _objectSpread({
+      height: '100%'
+    }, sx)
+  }, props), props.children);
+};
+Panel.propTypes = {
+  children: PropTypes.node,
+  sx: PropTypes.object
+};
+var _default = Panel;
 exports["default"] = _default;
 
 /***/ }),
@@ -929,6 +1191,7 @@ exports["default"] = _default;
 
 "use strict";
 /* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
@@ -948,7 +1211,7 @@ var StyledContent = (0, _ui.styled)(_ui.Box)(function (_ref) {
   var theme = _ref.theme;
   return {
     position: 'relative',
-    marginTop: theme.spacing(7),
+    marginTop: theme.spacing(6),
     padding: theme.spacing(7),
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[4],
@@ -991,7 +1254,11 @@ var Chip = (0, _ui.styled)(_ui.Chip)(function () {
     }
   };
 });
-var UpgradeChip = function UpgradeChip() {
+var UpgradeChip = function UpgradeChip(_ref3) {
+  var _ref3$hasSubscription = _ref3.hasSubscription,
+    hasSubscription = _ref3$hasSubscription === void 0 ? false : _ref3$hasSubscription,
+    _ref3$usagePercentage = _ref3.usagePercentage,
+    usagePercentage = _ref3$usagePercentage === void 0 ? 0 : _ref3$usagePercentage;
   var _useState = (0, _react.useState)(false),
     _useState2 = (0, _slicedToArray2.default)(_useState, 2),
     isPopoverOpen = _useState2[0],
@@ -1003,13 +1270,20 @@ var UpgradeChip = function UpgradeChip() {
   var hidePopover = function hidePopover() {
     return setIsPopoverOpen(false);
   };
+  var actionUrl = 'https://go.elementor.com/ai-popup-purchase-dropdown/';
+  if (hasSubscription) {
+    actionUrl = usagePercentage >= 100 ? 'https://go.elementor.com/ai-popup-upgrade-limit-reached/' : 'https://go.elementor.com/ai-popup-upgrade-limit-reached-80-percent/';
+  }
+  var actionLabel = hasSubscription ? __('Upgrade Elementor AI', 'elementor') : __('Get Elementor AI', 'elementor');
   return /*#__PURE__*/_react.default.createElement(_ui.Box, {
     component: "span",
     "aria-owns": isPopoverOpen ? popoverId : undefined,
     "aria-haspopup": "true",
     onMouseEnter: showPopover,
     onMouseLeave: hidePopover,
-    ref: anchorEl
+    ref: anchorEl,
+    display: "flex",
+    alignItems: "center"
   }, /*#__PURE__*/_react.default.createElement(Chip, {
     color: "accent",
     label: __('Upgrade', 'elementor'),
@@ -1051,7 +1325,7 @@ var UpgradeChip = function UpgradeChip() {
     variant: "contained",
     color: "accent",
     size: "small",
-    href: "https://go.elementor.com/ai-popup-purchase-dropdown/",
+    href: actionUrl,
     target: "_blank",
     startIcon: /*#__PURE__*/_react.default.createElement(_icons.UpgradeIcon, null),
     sx: {
@@ -1059,10 +1333,14 @@ var UpgradeChip = function UpgradeChip() {
         color: 'accent.contrastText'
       }
     }
-  }, __('Get Elementor AI', 'elementor')))));
+  }, actionLabel))));
 };
 var _default = UpgradeChip;
 exports["default"] = _default;
+UpgradeChip.propTypes = {
+  hasSubscription: PropTypes.bool,
+  usagePercentage: PropTypes.number
+};
 
 /***/ }),
 
@@ -1082,8 +1360,14 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports["default"] = void 0;
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "../node_modules/@babel/runtime/helpers/objectWithoutProperties.js"));
 var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
 var _dialogHeader = _interopRequireDefault(__webpack_require__(/*! ./dialog-header */ "../modules/ai/assets/js/editor/components/dialog-header.js"));
+var _excluded = ["sx"];
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var WizardDialog = function WizardDialog(props) {
   return /*#__PURE__*/_react.default.createElement(_ui.Dialog, {
     open: true,
@@ -1099,21 +1383,29 @@ var WizardDialog = function WizardDialog(props) {
     sx: {
       zIndex: 9999
     }
-  }, /*#__PURE__*/_react.default.createElement(_dialogHeader.default, {
-    onClose: props.onClose
-  }, props.headerAction), /*#__PURE__*/_react.default.createElement(_ui.DialogContent, {
-    sx: {
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center'
-    }
-  }, props.children));
+  }, props.children);
 };
 WizardDialog.propTypes = {
-  headerAction: PropTypes.node,
   onClose: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired
 };
+var WizardDialogContent = function WizardDialogContent(_ref) {
+  var _ref$sx = _ref.sx,
+    sx = _ref$sx === void 0 ? {} : _ref$sx,
+    props = (0, _objectWithoutProperties2.default)(_ref, _excluded);
+  return /*#__PURE__*/_react.default.createElement(_ui.DialogContent, (0, _extends2.default)({}, props, {
+    sx: _objectSpread({
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center'
+    }, sx)
+  }));
+};
+WizardDialogContent.propTypes = {
+  sx: PropTypes.object
+};
+WizardDialog.Header = _dialogHeader.default;
+WizardDialog.Content = WizardDialogContent;
 var _default = WizardDialog;
 exports["default"] = _default;
 
@@ -1203,6 +1495,114 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "../modules/ai/assets/js/editor/hooks/use-image-navigation.js":
+/*!********************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/hooks/use-image-navigation.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+var _react = __webpack_require__(/*! react */ "react");
+var initialIndex = -1;
+var useImageNavigation = function useImageNavigation(images) {
+  var _useState = (0, _react.useState)(initialIndex),
+    _useState2 = (0, _slicedToArray2.default)(_useState, 2),
+    zoomIndex = _useState2[0],
+    setZoomIndex = _useState2[1];
+  var actions = {
+    reset: function reset() {
+      return setZoomIndex(initialIndex);
+    },
+    prev: function prev() {
+      var prevImage = zoomIndex + 1;
+      if (prevImage >= images.length) {
+        prevImage = 0;
+      }
+      setZoomIndex(prevImage);
+    },
+    next: function next() {
+      var nextImage = zoomIndex - 1;
+      if (nextImage < 0) {
+        nextImage = images.length - 1;
+      }
+      setZoomIndex(nextImage);
+    }
+  };
+  return {
+    zoomIndex: zoomIndex,
+    setZoomIndex: setZoomIndex,
+    actions: actions
+  };
+};
+var _default = useImageNavigation;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/hooks/use-images-preload.js":
+/*!******************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/hooks/use-images-preload.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+var _react = __webpack_require__(/*! react */ "react");
+var loadImage = function loadImage(url) {
+  return new Promise(function (resolve, reject) {
+    var loadImg = new Image();
+    loadImg.src = url;
+    loadImg.onload = function () {
+      return resolve(url);
+    };
+    loadImg.onerror = function (err) {
+      return reject(err);
+    };
+  });
+};
+var useImagesPreload = function useImagesPreload() {
+  var _useState = (0, _react.useState)(false),
+    _useState2 = (0, _slicedToArray2.default)(_useState, 2),
+    ready = _useState2[0],
+    setReady = _useState2[1];
+  var preloadImages = function preloadImages(images) {
+    setReady(false);
+    Promise.all(images.map(function (url) {
+      return loadImage(url);
+    })).then(function () {
+      return setReady(true);
+    })
+    // eslint-disable-next-line no-console
+    .catch(function (err) {
+      return console.log('Failed to load images', err);
+    }); // Todo error better handling
+  };
+
+  return {
+    ready: ready,
+    preloadImages: preloadImages
+  };
+};
+var _default = useImagesPreload;
+exports["default"] = _default;
+
+/***/ }),
+
 /***/ "../modules/ai/assets/js/editor/hooks/use-prompt.js":
 /*!**********************************************************!*\
   !*** ../modules/ai/assets/js/editor/hooks/use-prompt.js ***!
@@ -1225,11 +1625,13 @@ var _api = __webpack_require__(/*! ../api */ "../modules/ai/assets/js/editor/api
 var normalizeResponse = function normalizeResponse(_ref) {
   var text = _ref.text,
     responseId = _ref.response_id,
-    usage = _ref.usage;
+    usage = _ref.usage,
+    images = _ref.images;
   var creditsData = usage ? usage.quota - usage.usedQuota : 0;
   var credits = Math.max(creditsData, 0);
+  var result = text || images;
   return {
-    result: text,
+    result: result,
     responseId: responseId,
     credits: credits
   };
@@ -1249,20 +1651,32 @@ var usePrompt = function usePrompt(fetchData, initialState) {
     setData = _useState6[1];
   var send = /*#__PURE__*/function () {
     var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
-      var _args = arguments;
+      var _len,
+        args,
+        _key,
+        _args = arguments;
       return _regenerator.default.wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
-            setError('');
-            setIsLoading(true);
-            fetchData.apply(void 0, _args).then(function (result) {
-              return setData(normalizeResponse(result));
-            }).catch(function (err) {
-              return setError((err === null || err === void 0 ? void 0 : err.responseText) || err);
-            }).finally(function () {
-              return setIsLoading(false);
-            });
-          case 3:
+            for (_len = _args.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+              args[_key] = _args[_key];
+            }
+            return _context.abrupt("return", new Promise(function (resolve, reject) {
+              setError('');
+              setIsLoading(true);
+              fetchData.apply(void 0, args).then(function (result) {
+                var normalizedData = normalizeResponse(result);
+                setData(normalizedData);
+                resolve(normalizedData);
+              }).catch(function (err) {
+                var finalError = (err === null || err === void 0 ? void 0 : err.responseText) || err;
+                setError(finalError);
+                reject(finalError);
+              }).finally(function () {
+                return setIsLoading(false);
+              });
+            }));
+          case 2:
           case "end":
             return _context.stop();
         }
@@ -1297,6 +1711,48 @@ var usePrompt = function usePrompt(fetchData, initialState) {
   };
 };
 var _default = usePrompt;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/hooks/use-session-storage.js":
+/*!*******************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/hooks/use-session-storage.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+var _react = __webpack_require__(/*! react */ "react");
+var useSessionStorage = function useSessionStorage(storageKey) {
+  var initialValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  var getSessionStorageData = function getSessionStorageData() {
+    return JSON.parse(sessionStorage.getItem(storageKey)) || initialValue;
+  };
+  var setSessionStorageData = function setSessionStorageData(value) {
+    return sessionStorage.setItem(storageKey, JSON.stringify(value));
+  };
+  var _useState = (0, _react.useState)(getSessionStorageData()),
+    _useState2 = (0, _slicedToArray2.default)(_useState, 2),
+    data = _useState2[0],
+    setData = _useState2[1];
+  var setStateAndSessionData = function setStateAndSessionData(value) {
+    setSessionStorageData(value);
+    setData(value);
+  };
+  return {
+    data: data,
+    setStateAndSessionData: setStateAndSessionData
+  };
+};
+var _default = useSessionStorage;
 exports["default"] = _default;
 
 /***/ }),
@@ -1436,6 +1892,602 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "../modules/ai/assets/js/editor/icons/brush-icon.js":
+/*!**********************************************************!*\
+  !*** ../modules/ai/assets/js/editor/icons/brush-icon.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var BrushIcon = _react.default.forwardRef(function (props, ref) {
+  return /*#__PURE__*/_react.default.createElement(_ui.SvgIcon, (0, _extends2.default)({
+    viewBox: "0 0 24 24"
+  }, props, {
+    ref: ref
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M20.8815 2.25919C20.9203 2.25301 20.9599 2.24983 21 2.24988C21.0827 2.24978 21.1629 2.26335 21.2384 2.2887C21.367 2.33162 21.4784 2.40776 21.5642 2.5058C21.6895 2.64891 21.76 2.83868 21.749 3.03992C21.7477 3.06492 21.7452 3.08966 21.7414 3.11407C21.3311 6.09743 20.124 8.91507 18.2472 11.2703C16.5079 13.4529 14.2532 15.1635 11.6906 16.2509C11.8289 17.1168 11.7249 18.0054 11.3884 18.8177C11.0289 19.6857 10.4201 20.4275 9.63896 20.9495C8.85782 21.4714 7.93946 21.75 7 21.75H3C2.58579 21.75 2.25 21.4142 2.25 21V17C2.25 16.0605 2.52858 15.1421 3.05052 14.361C3.57246 13.5799 4.3143 12.9711 5.18225 12.6115C5.99455 12.2751 6.88314 12.1711 7.74905 12.3094C8.83643 9.74682 10.547 7.49212 12.7296 5.75287C15.0837 3.87693 17.8998 2.67012 20.8815 2.25919ZM10.0984 16.0649C10.077 16.0082 10.0629 15.9506 10.0557 15.893C9.89413 15.4471 9.63624 15.04 9.2981 14.7019C8.96001 14.3638 8.55301 14.1059 8.10721 13.9444C8.04953 13.9372 7.99178 13.9231 7.93499 13.9016C7.90509 13.8903 7.87632 13.8773 7.84877 13.8628C7.77794 13.8436 7.70633 13.8268 7.63404 13.8124C7.0036 13.687 6.35014 13.7514 5.75628 13.9974C5.16242 14.2433 4.65484 14.6599 4.29772 15.1944C3.94061 15.7288 3.75 16.3572 3.75 17V20.25H7C7.64279 20.25 8.27114 20.0594 8.8056 19.7022C9.34006 19.3451 9.75662 18.8376 10.0026 18.2437C10.2486 17.6498 10.313 16.9964 10.1876 16.3659C10.1732 16.2935 10.1563 16.2218 10.1371 16.1509C10.1226 16.1234 10.1097 16.0947 10.0984 16.0649ZM10.3588 13.6412C10.7069 13.9894 10.9969 14.3876 11.2204 14.8204C12.2258 14.3839 13.1782 13.8417 14.0621 13.2048C13.3066 11.827 12.173 10.6933 10.7952 9.93782C10.1583 10.8218 9.61603 11.7741 9.17957 12.7795C9.61238 13.0031 10.0106 13.293 10.3588 13.6412ZM11.7434 8.75107C13.1943 9.59789 14.4021 10.8057 15.2489 12.2565C15.9093 11.6727 16.5204 11.0304 17.0741 10.3355C18.5698 8.45849 19.5983 6.25889 20.0821 3.9179C17.7411 4.40165 15.5415 5.43018 13.6644 6.92595C12.9696 7.47964 12.3273 8.0907 11.7434 8.75107Z"
+  }));
+});
+var _default = BrushIcon;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/icons/chevron-left-icon.js":
+/*!*****************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/icons/chevron-left-icon.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var ChevronLeftIcon = _react.default.forwardRef(function (props, ref) {
+  return /*#__PURE__*/_react.default.createElement(_ui.SvgIcon, (0, _extends2.default)({
+    viewBox: "0 0 24 24"
+  }, props, {
+    ref: ref
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M15.5303 18.2803C15.8232 17.9874 15.8232 17.5126 15.5303 17.2197L10.0607 11.75L15.5303 6.28033C15.8232 5.98744 15.8232 5.51256 15.5303 5.21967C15.2374 4.92678 14.7626 4.92678 14.4697 5.21967L8.46967 11.2197C8.17678 11.5126 8.17678 11.9874 8.46967 12.2803L14.4697 18.2803C14.7626 18.5732 15.2374 18.5732 15.5303 18.2803Z"
+  }));
+});
+var _default = ChevronLeftIcon;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/icons/chevron-right-icon.js":
+/*!******************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/icons/chevron-right-icon.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var ChevronRightIcon = _react.default.forwardRef(function (props, ref) {
+  return /*#__PURE__*/_react.default.createElement(_ui.SvgIcon, (0, _extends2.default)({
+    viewBox: "0 0 24 24"
+  }, props, {
+    ref: ref
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M8.46967 18.2803C8.17678 17.9874 8.17678 17.5126 8.46967 17.2197L13.9393 11.75L8.46967 6.28033C8.17678 5.98744 8.17678 5.51256 8.46967 5.21967C8.76256 4.92678 9.23744 4.92678 9.53033 5.21967L15.5303 11.2197C15.8232 11.5126 15.8232 11.9874 15.5303 12.2803L9.53033 18.2803C9.23744 18.5732 8.76256 18.5732 8.46967 18.2803Z"
+  }));
+});
+var _default = ChevronRightIcon;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/icons/copy-icon.js":
+/*!*********************************************************!*\
+  !*** ../modules/ai/assets/js/editor/icons/copy-icon.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var CopyIcon = _react.default.forwardRef(function (props, ref) {
+  return /*#__PURE__*/_react.default.createElement(_ui.SvgIcon, (0, _extends2.default)({
+    viewBox: "0 0 24 24"
+  }, props, {
+    ref: ref
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M9 3.75C8.30964 3.75 7.75 4.30964 7.75 5V15C7.75 15.6904 8.30964 16.25 9 16.25H19C19.6904 16.25 20.25 15.6904 20.25 15V5C20.25 4.30964 19.6904 3.75 19 3.75H9ZM6.25 5C6.25 3.48122 7.48122 2.25 9 2.25H19C20.5188 2.25 21.75 3.48122 21.75 5V15C21.75 16.5188 20.5188 17.75 19 17.75H9C7.48122 17.75 6.25 16.5188 6.25 15V5Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M5 7.75C4.66848 7.75 4.35054 7.8817 4.11612 8.11612C3.8817 8.35054 3.75 8.66848 3.75 9V19C3.75 19.3315 3.8817 19.6495 4.11612 19.8839C4.35054 20.1183 4.66848 20.25 5 20.25H15C15.3315 20.25 15.6495 20.1183 15.8839 19.8839C16.1183 19.6495 16.25 19.3315 16.25 19V17C16.25 16.5858 16.5858 16.25 17 16.25C17.4142 16.25 17.75 16.5858 17.75 17V19C17.75 19.7293 17.4603 20.4288 16.9445 20.9445C16.4288 21.4603 15.7293 21.75 15 21.75H5C4.27065 21.75 3.57118 21.4603 3.05546 20.9445C2.53973 20.4288 2.25 19.7293 2.25 19V9C2.25 8.27065 2.53973 7.57118 3.05546 7.05546C3.57118 6.53973 4.27065 6.25 5 6.25H7C7.41421 6.25 7.75 6.58579 7.75 7C7.75 7.41421 7.41421 7.75 7 7.75H5Z"
+  }));
+});
+var _default = CopyIcon;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/icons/download-icon.js":
+/*!*************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/icons/download-icon.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var DownloadIcon = _react.default.forwardRef(function (props, ref) {
+  return /*#__PURE__*/_react.default.createElement(_ui.SvgIcon, (0, _extends2.default)({
+    viewBox: "0 0 24 24"
+  }, props, {
+    ref: ref
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M4 16.25C4.41421 16.25 4.75 16.5858 4.75 17V19C4.75 19.3315 4.8817 19.6495 5.11612 19.8839C5.35054 20.1183 5.66848 20.25 6 20.25H18C18.3315 20.25 18.6495 20.1183 18.8839 19.8839C19.1183 19.6495 19.25 19.3315 19.25 19V17C19.25 16.5858 19.5858 16.25 20 16.25C20.4142 16.25 20.75 16.5858 20.75 17V19C20.75 19.7293 20.4603 20.4288 19.9445 20.9445C19.4288 21.4603 18.7293 21.75 18 21.75H6C5.27065 21.75 4.57118 21.4603 4.05546 20.9445C3.53973 20.4288 3.25 19.7293 3.25 19V17C3.25 16.5858 3.58579 16.25 4 16.25Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M6.46967 10.4697C6.76256 10.1768 7.23744 10.1768 7.53033 10.4697L12 14.9393L16.4697 10.4697C16.7626 10.1768 17.2374 10.1768 17.5303 10.4697C17.8232 10.7626 17.8232 11.2374 17.5303 11.5303L12.5303 16.5303C12.2374 16.8232 11.7626 16.8232 11.4697 16.5303L6.46967 11.5303C6.17678 11.2374 6.17678 10.7626 6.46967 10.4697Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M12 3.25C12.4142 3.25 12.75 3.58579 12.75 4V16C12.75 16.4142 12.4142 16.75 12 16.75C11.5858 16.75 11.25 16.4142 11.25 16V4C11.25 3.58579 11.5858 3.25 12 3.25Z"
+  }));
+});
+var _default = DownloadIcon;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/icons/edit-icon.js":
+/*!*********************************************************!*\
+  !*** ../modules/ai/assets/js/editor/icons/edit-icon.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var EditIcon = _react.default.forwardRef(function (props, ref) {
+  return /*#__PURE__*/_react.default.createElement(_ui.SvgIcon, (0, _extends2.default)({
+    viewBox: "0 0 24 24"
+  }, props, {
+    ref: ref
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M13.9697 4.96967C14.6408 4.29858 15.5509 3.92157 16.5 3.92157C17.4491 3.92157 18.3592 4.29858 19.0303 4.96967C19.7014 5.64075 20.0784 6.55094 20.0784 7.5C20.0784 8.44905 19.7014 9.35924 19.0303 10.0303L8.53033 20.5303C8.38968 20.671 8.19891 20.75 8 20.75H4C3.58579 20.75 3.25 20.4142 3.25 20V16C3.25 15.8011 3.32902 15.6103 3.46967 15.4697L13.9697 4.96967ZM16.5 5.42157C15.9488 5.42157 15.4201 5.64055 15.0303 6.03033L4.75 16.3107V19.25H7.68934L17.9697 8.96967C18.3595 8.57989 18.5784 8.05123 18.5784 7.5C18.5784 6.94876 18.3595 6.42011 17.9697 6.03033C17.5799 5.64055 17.0512 5.42157 16.5 5.42157Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M12.9697 5.96967C13.2626 5.67677 13.7374 5.67677 14.0303 5.96967L18.0303 9.96967C18.3232 10.2626 18.3232 10.7374 18.0303 11.0303C17.7374 11.3232 17.2626 11.3232 16.9697 11.0303L12.9697 7.03033C12.6768 6.73743 12.6768 6.26256 12.9697 5.96967Z"
+  }));
+});
+var _default = EditIcon;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/icons/enlarger-icon.js":
+/*!*************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/icons/enlarger-icon.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var ExpandIcon = _react.default.forwardRef(function (props, ref) {
+  return /*#__PURE__*/_react.default.createElement(_ui.SvgIcon, (0, _extends2.default)({
+    viewBox: "0 0 24 24"
+  }, props, {
+    ref: ref
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M5.11612 5.11612C5.35054 4.8817 5.66848 4.75 6 4.75H18C18.3315 4.75 18.6495 4.8817 18.8839 5.11612C19.1183 5.35054 19.25 5.66848 19.25 6V18C19.25 18.3315 19.1183 18.6495 18.8839 18.8839C18.6495 19.1183 18.3315 19.25 18 19.25H11.7335C11.7444 19.1709 11.75 19.0908 11.75 19.01V14.01C11.75 13.8051 11.7141 13.604 11.6457 13.4149L16.25 8.81066V11C16.25 11.4142 16.5858 11.75 17 11.75C17.4142 11.75 17.75 11.4142 17.75 11V7C17.75 6.89831 17.7298 6.80134 17.6931 6.71291C17.6565 6.62445 17.6022 6.54158 17.5303 6.46967C17.4584 6.39776 17.3755 6.34351 17.2871 6.30691C17.1993 6.27051 17.1031 6.2503 17.0022 6.25C17.0015 6.25 17.0007 6.25 17 6.25H16.9997H13C12.5858 6.25 12.25 6.58579 12.25 7C12.25 7.41421 12.5858 7.75 13 7.75H15.1893L10.5803 12.359C10.3956 12.2941 10.1995 12.26 10 12.26H5C4.91585 12.26 4.83232 12.2661 4.75 12.278V6C4.75 5.66848 4.8817 5.35054 5.11612 5.11612ZM4.75 14.01V18C4.75 18.3315 4.8817 18.6495 5.11612 18.8839C5.35054 19.1183 5.66848 19.25 6 19.25H10.07C10.11 19.2383 10.1468 19.2168 10.1768 19.1868C10.2237 19.1399 10.25 19.0763 10.25 19.01V14.01C10.25 13.9437 10.2237 13.8801 10.1768 13.8332C10.1299 13.7863 10.0663 13.76 10 13.76H5C4.9337 13.76 4.87011 13.7863 4.82322 13.8332C4.77634 13.8801 4.75 13.9437 4.75 14.01ZM3.25 14.01V6C3.25 5.27065 3.53973 4.57118 4.05546 4.05546C4.57118 3.53973 5.27065 3.25 6 3.25H18C18.7293 3.25 19.4288 3.53973 19.9445 4.05546C20.4603 4.57118 20.75 5.27065 20.75 6V18C20.75 18.7293 20.4603 19.4288 19.9445 19.9445C19.4288 20.4603 18.7293 20.75 18 20.75H10.187C10.1251 20.7566 10.0627 20.76 10 20.76H5C4.53587 20.76 4.09075 20.5756 3.76256 20.2474C3.43438 19.9193 3.25 19.4741 3.25 19.01V18V14.01Z"
+  }));
+});
+var _default = ExpandIcon;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/icons/evolve-icon.js":
+/*!***********************************************************!*\
+  !*** ../modules/ai/assets/js/editor/icons/evolve-icon.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var EvolveIcon = _react.default.forwardRef(function (props, ref) {
+  return /*#__PURE__*/_react.default.createElement(_ui.SvgIcon, (0, _extends2.default)({
+    viewBox: "0 0 24 24"
+  }, props, {
+    ref: ref
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M2.30691 2.71291C2.27024 2.80134 2.25 2.89831 2.25 3V8C2.25 8.41421 2.58579 8.75 3 8.75C3.41421 8.75 3.75 8.41421 3.75 8V4.81066L10.0056 11.0663L10.0057 11.0663C10.8022 11.8631 11.2497 12.9434 11.25 14.07V14.0702V15V21C11.25 21.4142 11.5858 21.75 12 21.75C12.4142 21.75 12.75 21.4142 12.75 21V15V14.0702V14.07C12.7503 12.9434 13.1979 11.863 13.9944 11.0663L20.25 4.81066V8C20.25 8.41421 20.5858 8.75 21 8.75C21.4142 8.75 21.75 8.41421 21.75 8V3C21.75 2.98706 21.7497 2.97419 21.749 2.96141C21.7446 2.87376 21.7251 2.79009 21.6931 2.71291C21.6565 2.62445 21.6022 2.54158 21.5303 2.46967C21.4584 2.39776 21.3755 2.34351 21.2871 2.30691C21.1987 2.27024 21.1017 2.25 21 2.25H16C15.5858 2.25 15.25 2.58579 15.25 3C15.25 3.41421 15.5858 3.75 16 3.75H19.1893L12.9337 10.0057L12.9336 10.0057C12.5656 10.3739 12.2526 10.7867 12 11.2316C11.7474 10.7867 11.4344 10.3739 11.0664 10.0057L11.0663 10.0057L4.81066 3.75H8C8.41421 3.75 8.75 3.41421 8.75 3C8.75 2.58579 8.41421 2.25 8 2.25H3C2.7937 2.25 2.60686 2.33329 2.47126 2.46808C2.47073 2.46861 2.4702 2.46914 2.46967 2.46967C2.46914 2.4702 2.46861 2.47073 2.46808 2.47126C2.39696 2.5428 2.34324 2.62511 2.30691 2.71291Z"
+  }));
+});
+var _default = EvolveIcon;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/icons/expand-icon.js":
+/*!***********************************************************!*\
+  !*** ../modules/ai/assets/js/editor/icons/expand-icon.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var ExpandIcon = _react.default.forwardRef(function (props, ref) {
+  return /*#__PURE__*/_react.default.createElement(_ui.SvgIcon, (0, _extends2.default)({
+    viewBox: "0 0 24 24"
+  }, props, {
+    ref: ref
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M16 3.25C15.5858 3.25 15.25 3.58579 15.25 4C15.25 4.41421 15.5858 4.75 16 4.75H18.1893L13.4697 9.46967C13.1768 9.76256 13.1768 10.2374 13.4697 10.5303C13.7626 10.8232 14.2374 10.8232 14.5303 10.5303L19.25 5.81066V8C19.25 8.41421 19.5858 8.75 20 8.75C20.4142 8.75 20.75 8.41421 20.75 8V4C20.75 3.80806 20.6768 3.61612 20.5303 3.46967C20.4584 3.39776 20.3755 3.34351 20.2871 3.30691C20.1987 3.27024 20.1017 3.25 20 3.25H16ZM4 15.25C4.41421 15.25 4.75 15.5858 4.75 16V18.1893L9.46967 13.4697C9.76256 13.1768 10.2374 13.1768 10.5303 13.4697C10.8232 13.7626 10.8232 14.2374 10.5303 14.5303L5.81066 19.25H8C8.41421 19.25 8.75 19.5858 8.75 20C8.75 20.4142 8.41421 20.75 8 20.75H4C3.80806 20.75 3.61612 20.6768 3.46967 20.5303C3.39776 20.4584 3.34351 20.3755 3.30691 20.2871C3.27024 20.1987 3.25 20.1017 3.25 20V16C3.25 15.5858 3.58579 15.25 4 15.25ZM20.75 16V20C20.75 20.1017 20.7298 20.1987 20.6931 20.2871C20.6565 20.3755 20.6022 20.4584 20.5303 20.5303C20.4584 20.6022 20.3755 20.6565 20.2871 20.6931C20.2099 20.7251 20.1262 20.7446 20.0386 20.749C20.0258 20.7497 20.0129 20.75 20 20.75H16C15.5858 20.75 15.25 20.4142 15.25 20C15.25 19.5858 15.5858 19.25 16 19.25H18.1893L13.4697 14.5303C13.1768 14.2374 13.1768 13.7626 13.4697 13.4697C13.7626 13.1768 14.2374 13.1768 14.5303 13.4697L19.25 18.1893V16C19.25 15.5858 19.5858 15.25 20 15.25C20.4142 15.25 20.75 15.5858 20.75 16ZM3.71291 3.30691C3.80134 3.27024 3.89831 3.25 4 3.25H8C8.41421 3.25 8.75 3.58579 8.75 4C8.75 4.41421 8.41421 4.75 8 4.75H5.81066L10.5303 9.46967C10.8232 9.76256 10.8232 10.2374 10.5303 10.5303C10.2374 10.8232 9.76256 10.8232 9.46967 10.5303L4.75 5.81066V8C4.75 8.41421 4.41421 8.75 4 8.75C3.58579 8.75 3.25 8.41421 3.25 8V4C3.25 3.7937 3.33329 3.60686 3.46808 3.47126C3.46861 3.47073 3.46914 3.4702 3.46967 3.46967C3.4702 3.46914 3.47073 3.46861 3.47126 3.46808C3.5428 3.39696 3.62511 3.34324 3.71291 3.30691Z"
+  }));
+});
+var _default = ExpandIcon;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/icons/redo-icon.js":
+/*!*********************************************************!*\
+  !*** ../modules/ai/assets/js/editor/icons/redo-icon.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var RedoIcon = _react.default.forwardRef(function (props, ref) {
+  return /*#__PURE__*/_react.default.createElement(_ui.SvgIcon, (0, _extends2.default)({
+    viewBox: "0 0 24 24"
+  }, props, {
+    ref: ref
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M15.5303 5.46967C15.2374 5.17678 14.7626 5.17678 14.4697 5.46967C14.1768 5.76256 14.1768 6.23744 14.4697 6.53033L17.1893 9.25H8C6.74022 9.25 5.53204 9.75044 4.64124 10.6412C3.75044 11.532 3.25 12.7402 3.25 14C3.25 15.2598 3.75044 16.468 4.64124 17.3588C5.53204 18.2496 6.74022 18.75 8 18.75H9C9.41421 18.75 9.75 18.4142 9.75 18C9.75 17.5858 9.41421 17.25 9 17.25H8C7.13805 17.25 6.3114 16.9076 5.7019 16.2981C5.09241 15.6886 4.75 14.862 4.75 14C4.75 13.138 5.09241 12.3114 5.7019 11.7019C6.3114 11.0924 7.13805 10.75 8 10.75H17.1893L14.4697 13.4697C14.1768 13.7626 14.1768 14.2374 14.4697 14.5303C14.7626 14.8232 15.2374 14.8232 15.5303 14.5303L19.5303 10.5303C19.6768 10.3839 19.75 10.1919 19.75 10C19.75 9.89831 19.7298 9.80134 19.6931 9.71291C19.6565 9.62445 19.6022 9.54158 19.5303 9.46967L15.5303 5.46967Z"
+  }));
+});
+var _default = RedoIcon;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/icons/refresh-icon.js":
+/*!************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/icons/refresh-icon.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var RefreshIcon = _react.default.forwardRef(function (props, ref) {
+  return /*#__PURE__*/_react.default.createElement(_ui.SvgIcon, (0, _extends2.default)({
+    viewBox: "0 0 24 24"
+  }, props, {
+    ref: ref
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M7.55012 4.45178C9.23098 3.48072 11.1845 3.08925 13.1097 3.33767C15.035 3.58609 16.8251 4.46061 18.2045 5.82653C19.5838 7.19245 20.4757 8.97399 20.743 10.8967C20.8 11.307 20.5136 11.6858 20.1033 11.7428C19.6931 11.7998 19.3142 11.5135 19.2572 11.1032C19.0353 9.50635 18.2945 8.02677 17.149 6.89236C16.0035 5.75795 14.5167 5.03165 12.9178 4.82534C11.3189 4.61902 9.69644 4.94414 8.30047 5.75061C7.24361 6.36117 6.36093 7.22198 5.72541 8.24995H8.00009C8.41431 8.24995 8.75009 8.58574 8.75009 8.99995C8.75009 9.41417 8.41431 9.74995 8.00009 9.74995H4.51686C4.5055 9.75021 4.49412 9.75021 4.48272 9.74995H4.00009C3.58588 9.74995 3.25009 9.41417 3.25009 8.99995V4.99995C3.25009 4.58574 3.58588 4.24995 4.00009 4.24995C4.41431 4.24995 4.75009 4.58574 4.75009 4.99995V7.00691C5.48358 5.96916 6.43655 5.0951 7.55012 4.45178Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M3.89686 12.2571C4.30713 12.2001 4.68594 12.4864 4.74295 12.8967C4.96487 14.4936 5.70565 15.9731 6.85119 17.1075C7.99673 18.242 9.48347 18.9683 11.0824 19.1746C12.6813 19.3809 14.3037 19.0558 15.6997 18.2493C16.7566 17.6387 17.6393 16.7779 18.2748 15.75H16.0001C15.5859 15.75 15.2501 15.4142 15.2501 15C15.2501 14.5857 15.5859 14.25 16.0001 14.25H19.4833C19.4947 14.2497 19.5061 14.2497 19.5175 14.25H20.0001C20.4143 14.25 20.7501 14.5857 20.7501 15V19C20.7501 19.4142 20.4143 19.75 20.0001 19.75C19.5859 19.75 19.2501 19.4142 19.2501 19V16.993C18.5166 18.0307 17.5636 18.9048 16.4501 19.5481C14.7692 20.5192 12.8157 20.9107 10.8904 20.6622C8.9652 20.4138 7.17504 19.5393 5.79572 18.1734C4.4164 16.8074 3.52443 15.0259 3.25723 13.1032C3.20022 12.6929 3.48658 12.3141 3.89686 12.2571Z"
+  }));
+});
+var _default = RefreshIcon;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/icons/remove-bg.js":
+/*!*********************************************************!*\
+  !*** ../modules/ai/assets/js/editor/icons/remove-bg.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var RemoveBackgroundIcon = _react.default.forwardRef(function (props, ref) {
+  return /*#__PURE__*/_react.default.createElement(_ui.SvgIcon, (0, _extends2.default)({
+    viewBox: "0 0 16 16"
+  }, props, {
+    ref: ref
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M5.74996 2.50038C5.74996 2.2242 5.52607 2.00031 5.24989 2.00031C4.9737 2.00031 4.74981 2.2242 4.74981 2.50038V2.50705C4.74981 2.78323 4.9737 3.00712 5.24989 3.00712C5.52607 3.00712 5.74996 2.78323 5.74996 2.50705V2.50038Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M7.9997 2.00031C8.27588 2.00031 8.49978 2.2242 8.49978 2.50038V2.50705C8.49978 2.78323 8.27588 3.00712 7.9997 3.00712C7.72352 3.00712 7.49963 2.78323 7.49963 2.50705V2.50038C7.49963 2.2242 7.72352 2.00031 7.9997 2.00031Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M11.2496 2.50038C11.2496 2.2242 11.0257 2.00031 10.7495 2.00031C10.4733 2.00031 10.2494 2.2242 10.2494 2.50038V2.50705C10.2494 2.78323 10.4733 3.00712 10.7495 3.00712C11.0257 3.00712 11.2496 2.78323 11.2496 2.50705V2.50038Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M13.4993 2.00031C13.7755 2.00031 13.9994 2.2242 13.9994 2.50038V2.50705C13.9994 2.78323 13.7755 3.00712 13.4993 3.00712C13.2231 3.00712 12.9993 2.78323 12.9993 2.50705V2.50038C12.9993 2.2242 13.2231 2.00031 13.4993 2.00031Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M13.9994 5.25019C13.9994 4.97401 13.7755 4.75012 13.4993 4.75012C13.2231 4.75012 12.9993 4.97401 12.9993 5.25019V5.25686C12.9993 5.53304 13.2231 5.75694 13.4993 5.75694C13.7755 5.75694 13.9994 5.53304 13.9994 5.25686V5.25019Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M13.9994 8.00001C13.9994 7.72382 13.7755 7.49993 13.4993 7.49993C13.2231 7.49993 12.9993 7.72382 12.9993 8.00001V8.00667C12.9993 8.28286 13.2231 8.50675 13.4993 8.50675C13.7755 8.50675 13.9994 8.28286 13.9994 8.00667V8.00001Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M2.50007 7.49993C2.77626 7.49993 3.00015 7.72382 3.00015 8.00001V8.00667C3.00015 8.28286 2.77626 8.50675 2.50007 8.50675C2.22389 8.50675 2 8.28286 2 8.00667V8.00001C2 7.72382 2.22389 7.49993 2.50007 7.49993Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M3.00015 5.25019C3.00015 4.97401 2.77626 4.75012 2.50007 4.75012C2.22389 4.75012 2 4.97401 2 5.25019V5.25686C2 5.53304 2.22389 5.75694 2.50007 5.75694C2.77626 5.75694 3.00015 5.53304 3.00015 5.25686V5.25019Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M2.50007 2.00031C2.77626 2.00031 3.00015 2.2242 3.00015 2.50038V2.50705C3.00015 2.78323 2.77626 3.00712 2.50007 3.00712C2.22389 3.00712 2 2.78323 2 2.50705V2.50038C2 2.2242 2.22389 2.00031 2.50007 2.00031Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M9.37461 7.31255C9.94411 7.31255 10.4058 6.85088 10.4058 6.28137C10.4058 5.71187 9.94411 5.25019 9.37461 5.25019C8.8051 5.25019 8.34343 5.71187 8.34343 6.28137C8.34343 6.85088 8.8051 7.31255 9.37461 7.31255Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M9.37461 9.21061L7.6724 7.44357L7.66567 7.43672C7.27331 7.04478 6.79598 6.81248 6.28107 6.81248C5.76615 6.81248 5.28883 7.04478 4.89647 7.43672L4.88973 7.44358L2.13992 10.2982C2.05015 10.3913 2 10.5157 2 10.6451V13.4996C2 13.7758 2.22389 13.9997 2.50007 13.9997H13.4993C13.7755 13.9997 13.9994 13.7758 13.9994 13.4996V10.6451C13.9994 10.6365 13.9992 10.6279 13.9988 10.6194C13.9958 10.562 13.9833 10.5072 13.9627 10.4566C13.9409 10.403 13.9093 10.3523 13.8681 10.3073C13.8651 10.304 13.8621 10.3008 13.859 10.2976L12.4846 8.87085L12.4778 8.86399C12.0855 8.47205 11.6082 8.23975 11.0932 8.23975C10.5783 8.23975 10.101 8.47205 9.70864 8.86399L9.70191 8.87084L9.37461 9.21061ZM5.60649 8.14113L3.00015 10.8468V12.9996H12.9993V10.8468L11.7678 9.5684C11.5234 9.32549 11.2897 9.2399 11.0932 9.2399C10.8968 9.2399 10.6631 9.32549 10.4187 9.5684L10.069 9.93142L11.1097 11.0118C11.3013 11.2107 11.2954 11.5272 11.0965 11.7188C10.8975 11.9104 10.581 11.9045 10.3894 11.7056L9.01604 10.28C9.01482 10.2787 9.01361 10.2775 9.01241 10.2762L6.95564 8.14113C6.7112 7.89822 6.4775 7.81263 6.28107 7.81263C6.08463 7.81263 5.85094 7.89822 5.60649 8.14113Z"
+  }));
+});
+var _default = RemoveBackgroundIcon;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/icons/replace-bg.js":
+/*!**********************************************************!*\
+  !*** ../modules/ai/assets/js/editor/icons/replace-bg.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var ReplaceBackgroundIcon = _react.default.forwardRef(function (props, ref) {
+  return /*#__PURE__*/_react.default.createElement(_ui.SvgIcon, (0, _extends2.default)({
+    viewBox: "0 0 16 16"
+  }, props, {
+    ref: ref
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M4.35355 1.64645C4.54882 1.84171 4.54882 2.15829 4.35355 2.35355L2.35355 4.35355C2.15829 4.54882 1.84171 4.54882 1.64645 4.35355C1.45118 4.15829 1.45118 3.84171 1.64645 3.64645L3.64645 1.64645C3.84171 1.45118 4.15829 1.45118 4.35355 1.64645Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M7.68689 1.64645C7.88215 1.84171 7.88215 2.15829 7.68689 2.35355L2.35355 7.68689C2.15829 7.88215 1.84171 7.88215 1.64645 7.68689C1.45118 7.49162 1.45118 7.17504 1.64645 6.97978L6.97978 1.64645C7.17504 1.45118 7.49162 1.45118 7.68689 1.64645Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M11.0202 1.64645C11.2155 1.84171 11.2155 2.15829 11.0202 2.35355L6.68689 6.68689C6.49162 6.88215 6.17504 6.88215 5.97978 6.68689C5.78452 6.49162 5.78452 6.17504 5.97978 5.97978L10.3131 1.64645C10.5084 1.45118 10.825 1.45118 11.0202 1.64645Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M14.3536 1.64645C14.5488 1.84171 14.5488 2.15829 14.3536 2.35355L11.0202 5.68689C10.825 5.88215 10.5084 5.88215 10.3131 5.68689C10.1179 5.49162 10.1179 5.17504 10.3131 4.97978L13.6464 1.64645C13.8417 1.45118 14.1583 1.45118 14.3536 1.64645Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M14.3536 4.97978C14.5488 5.17504 14.5488 5.49162 14.3536 5.68689L12.0202 8.02022C11.825 8.21548 11.5084 8.21548 11.3131 8.02022C11.1179 7.82496 11.1179 7.50838 11.3131 7.31311L13.6464 4.97978C13.8417 4.78452 14.1583 4.78452 14.3536 4.97978Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M14.3536 8.31311C14.5488 8.50838 14.5488 8.82496 14.3536 9.02022L14.0202 9.35355C13.825 9.54882 13.5084 9.54882 13.3131 9.35355C13.1179 9.15829 13.1179 8.84171 13.3131 8.64645L13.6464 8.31311C13.8417 8.11785 14.1583 8.11785 14.3536 8.31311Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M10.3333 7C10.3333 7.55228 9.88562 8 9.33333 8C8.78105 8 8.33333 7.55228 8.33333 7C8.33333 6.44772 8.78105 6 9.33333 6C9.88562 6 10.3333 6.44772 10.3333 7Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M6.33333 8.5C6.14679 8.5 5.92267 8.58153 5.6867 8.81725C5.67587 8.82806 5.66455 8.83838 5.65278 8.84816L2.5 11.4665V13.5H13.5V11.2318C13.5 10.9556 13.7239 10.7318 14 10.7318C14.2761 10.7318 14.5 10.9556 14.5 11.2318V14C14.5 14.2761 14.2761 14.5 14 14.5H2C1.72386 14.5 1.5 14.2761 1.5 14V11.2318C1.5 11.0831 1.56617 10.9421 1.68056 10.8471L4.99717 8.09274C5.37661 7.72073 5.83674 7.5 6.33333 7.5C6.83746 7.5 7.304 7.72747 7.6867 8.10976L7.69343 8.11662L11.0268 11.5769C11.2183 11.7758 11.2124 12.0923 11.0136 12.2839C10.8147 12.4755 10.4981 12.4696 10.3066 12.2707L6.97679 8.81408C6.74199 8.5808 6.51904 8.5 6.33333 8.5Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M10.3564 10.1984L9.69343 10.8866C9.50185 11.0854 9.18532 11.0914 8.98645 10.8998C8.78757 10.7082 8.78166 10.3917 8.97324 10.1928L9.6399 9.50073L9.64663 9.49387C10.4992 8.64223 11.843 8.83788 12.6387 9.45172C12.6435 9.45538 12.6482 9.45913 12.6528 9.46297L14.3194 10.8471C14.5319 11.0235 14.5611 11.3388 14.3846 11.5512C14.2082 11.7636 13.893 11.7928 13.6806 11.6164L12.0213 10.2384C11.4855 9.82976 10.7405 9.81862 10.3564 10.1984Z"
+  }));
+});
+var _default = ReplaceBackgroundIcon;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/icons/undo-icon.js":
+/*!*********************************************************!*\
+  !*** ../modules/ai/assets/js/editor/icons/undo-icon.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var UndoIcon = _react.default.forwardRef(function (props, ref) {
+  return /*#__PURE__*/_react.default.createElement(_ui.SvgIcon, (0, _extends2.default)({
+    viewBox: "0 0 24 24"
+  }, props, {
+    ref: ref
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M9.53033 6.53033C9.82322 6.23744 9.82322 5.76256 9.53033 5.46967C9.23744 5.17678 8.76256 5.17678 8.46967 5.46967L4.46967 9.46967C4.39776 9.54158 4.34351 9.62445 4.30691 9.71291C4.27024 9.80134 4.25 9.89831 4.25 10C4.25 10.1017 4.27024 10.1987 4.30691 10.2871C4.34351 10.3755 4.39776 10.4584 4.46967 10.5303L8.46967 14.5303C8.76256 14.8232 9.23744 14.8232 9.53033 14.5303C9.82322 14.2374 9.82322 13.7626 9.53033 13.4697L6.81066 10.75H16C16.862 10.75 17.6886 11.0924 18.2981 11.7019C18.9076 12.3114 19.25 13.138 19.25 14C19.25 14.862 18.9076 15.6886 18.2981 16.2981C17.6886 16.9076 16.862 17.25 16 17.25H15C14.5858 17.25 14.25 17.5858 14.25 18C14.25 18.4142 14.5858 18.75 15 18.75H16C17.2598 18.75 18.468 18.2496 19.3588 17.3588C20.2496 16.468 20.75 15.2598 20.75 14C20.75 12.7402 20.2496 11.532 19.3588 10.6412C18.468 9.75044 17.2598 9.25 16 9.25H6.81066L9.53033 6.53033Z"
+  }));
+});
+var _default = UndoIcon;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/icons/wand-icon.js":
+/*!*********************************************************!*\
+  !*** ../modules/ai/assets/js/editor/icons/wand-icon.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var WandIcon = _react.default.forwardRef(function (props, ref) {
+  return /*#__PURE__*/_react.default.createElement(_ui.SvgIcon, (0, _extends2.default)({
+    viewBox: "0 0 24 24"
+  }, props, {
+    ref: ref
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M9 2.25C9.41421 2.25 9.75 2.58579 9.75 3C9.75 3.33152 9.8817 3.64946 10.1161 3.88388C10.3505 4.1183 10.6685 4.25 11 4.25C11.4142 4.25 11.75 4.58579 11.75 5C11.75 5.41421 11.4142 5.75 11 5.75C10.6685 5.75 10.3505 5.8817 10.1161 6.11612C9.8817 6.35054 9.75 6.66848 9.75 7C9.75 7.41421 9.41421 7.75 9 7.75C8.58579 7.75 8.25 7.41421 8.25 7C8.25 6.66848 8.1183 6.35054 7.88388 6.11612C7.64946 5.8817 7.33152 5.75 7 5.75C6.58579 5.75 6.25 5.41421 6.25 5C6.25 4.58579 6.58579 4.25 7 4.25C7.33152 4.25 7.64946 4.1183 7.88388 3.88388C8.1183 3.64946 8.25 3.33152 8.25 3C8.25 2.58579 8.58579 2.25 9 2.25ZM9 4.88746C8.98182 4.90673 8.96333 4.92576 8.94454 4.94454C8.92576 4.96333 8.90673 4.98182 8.88746 5C8.90673 5.01818 8.92576 5.03667 8.94454 5.05546C8.96333 5.07424 8.98182 5.09327 9 5.11254C9.01818 5.09327 9.03667 5.07424 9.05546 5.05546C9.07424 5.03667 9.09327 5.01818 9.11254 5C9.09327 4.98182 9.07424 4.96333 9.05546 4.94454C9.03667 4.92576 9.01818 4.90673 9 4.88746Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M18.5303 2.46967C18.2374 2.17678 17.7626 2.17678 17.4697 2.46967L2.46967 17.4697C2.17678 17.7626 2.17678 18.2374 2.46967 18.5303L5.46967 21.5303C5.76256 21.8232 6.23744 21.8232 6.53033 21.5303L21.5303 6.53033C21.8232 6.23744 21.8232 5.76256 21.5303 5.46967L18.5303 2.46967ZM18 7.93934L19.9393 6L18 4.06066L16.0607 6L18 7.93934ZM15 7.06066L16.9393 9L6 19.9393L4.06066 18L15 7.06066Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M19.75 13C19.75 12.5858 19.4142 12.25 19 12.25C18.5858 12.25 18.25 12.5858 18.25 13C18.25 13.3315 18.1183 13.6495 17.8839 13.8839C17.6495 14.1183 17.3315 14.25 17 14.25C16.5858 14.25 16.25 14.5858 16.25 15C16.25 15.4142 16.5858 15.75 17 15.75C17.3315 15.75 17.6495 15.8817 17.8839 16.1161C18.1183 16.3505 18.25 16.6685 18.25 17C18.25 17.4142 18.5858 17.75 19 17.75C19.4142 17.75 19.75 17.4142 19.75 17C19.75 16.6685 19.8817 16.3505 20.1161 16.1161C20.3505 15.8817 20.6685 15.75 21 15.75C21.4142 15.75 21.75 15.4142 21.75 15C21.75 14.5858 21.4142 14.25 21 14.25C20.6685 14.25 20.3505 14.1183 20.1161 13.8839C19.8817 13.6495 19.75 13.3315 19.75 13ZM18.9445 14.9445C18.9633 14.9258 18.9818 14.9067 19 14.8875C19.0182 14.9067 19.0367 14.9258 19.0555 14.9445C19.0742 14.9633 19.0933 14.9818 19.1125 15C19.0933 15.0182 19.0742 15.0367 19.0555 15.0555C19.0367 15.0742 19.0182 15.0933 19 15.1125C18.9818 15.0933 18.9633 15.0742 18.9445 15.0555C18.9258 15.0367 18.9067 15.0182 18.8875 15C18.9067 14.9818 18.9258 14.9633 18.9445 14.9445Z"
+  }));
+});
+var _default = WandIcon;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/icons/zoom-in-icon.js":
+/*!************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/icons/zoom-in-icon.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var ZoomInIcon = _react.default.forwardRef(function (props, ref) {
+  return /*#__PURE__*/_react.default.createElement(_ui.SvgIcon, (0, _extends2.default)({
+    viewBox: "0 0 24 24"
+  }, props, {
+    ref: ref
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M10 3.75C6.54822 3.75 3.75 6.54822 3.75 10C3.75 13.4518 6.54822 16.25 10 16.25C13.4518 16.25 16.25 13.4518 16.25 10C16.25 6.54822 13.4518 3.75 10 3.75ZM2.25 10C2.25 5.71979 5.71979 2.25 10 2.25C14.2802 2.25 17.75 5.71979 17.75 10C17.75 14.2802 14.2802 17.75 10 17.75C5.71979 17.75 2.25 14.2802 2.25 10Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M6.25 10C6.25 9.58579 6.58579 9.25 7 9.25H13C13.4142 9.25 13.75 9.58579 13.75 10C13.75 10.4142 13.4142 10.75 13 10.75H7C6.58579 10.75 6.25 10.4142 6.25 10Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M10 6.25C10.4142 6.25 10.75 6.58579 10.75 7V13C10.75 13.4142 10.4142 13.75 10 13.75C9.58579 13.75 9.25 13.4142 9.25 13V7C9.25 6.58579 9.58579 6.25 10 6.25Z"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M14.4697 14.4697C14.7626 14.1768 15.2374 14.1768 15.5303 14.4697L21.5303 20.4697C21.8232 20.7626 21.8232 21.2374 21.5303 21.5303C21.2374 21.8232 20.7626 21.8232 20.4697 21.5303L14.4697 15.5303C14.1768 15.2374 14.1768 14.7626 14.4697 14.4697Z"
+  }));
+});
+var _default = ZoomInIcon;
+exports["default"] = _default;
+
+/***/ }),
+
 /***/ "../modules/ai/assets/js/editor/page-content.js":
 /*!******************************************************!*\
   !*** ../modules/ai/assets/js/editor/page-content.js ***!
@@ -1452,6 +2504,7 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports["default"] = void 0;
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
 var _formText = _interopRequireDefault(__webpack_require__(/*! ./pages/form-text */ "../modules/ai/assets/js/editor/pages/form-text/index.js"));
 var _connect = _interopRequireDefault(__webpack_require__(/*! ./pages/connect */ "../modules/ai/assets/js/editor/pages/connect/index.js"));
 var _formCode = _interopRequireDefault(__webpack_require__(/*! ./pages/form-code */ "../modules/ai/assets/js/editor/pages/form-code/index.js"));
@@ -1461,6 +2514,7 @@ var _useUserInfo2 = _interopRequireDefault(__webpack_require__(/*! ./hooks/use-u
 var _wizardDialog = _interopRequireDefault(__webpack_require__(/*! ./components/wizard-dialog */ "../modules/ai/assets/js/editor/components/wizard-dialog.js"));
 var _promptDialog = _interopRequireDefault(__webpack_require__(/*! ./components/prompt-dialog */ "../modules/ai/assets/js/editor/components/prompt-dialog.js"));
 var _upgradeChip = _interopRequireDefault(__webpack_require__(/*! ./components/upgrade-chip */ "../modules/ai/assets/js/editor/components/upgrade-chip.js"));
+var _formMedia = _interopRequireDefault(__webpack_require__(/*! ./pages/form-media */ "../modules/ai/assets/js/editor/pages/form-media/index.js"));
 var PageContent = function PageContent(_ref) {
   var type = _ref.type,
     controlType = _ref.controlType,
@@ -1468,6 +2522,7 @@ var PageContent = function PageContent(_ref) {
     onConnect = _ref.onConnect,
     getControlValue = _ref.getControlValue,
     setControlValue = _ref.setControlValue,
+    controlView = _ref.controlView,
     additionalOptions = _ref.additionalOptions;
   var _useUserInfo = (0, _useUserInfo2.default)(),
     isLoading = _useUserInfo.isLoading,
@@ -1478,33 +2533,86 @@ var PageContent = function PageContent(_ref) {
     hasSubscription = _useUserInfo.hasSubscription,
     credits = _useUserInfo.credits,
     usagePercentage = _useUserInfo.usagePercentage;
+  var promptDialogStyleProps = {
+    sx: {
+      '& .MuiDialog-container': {
+        alignItems: 'flex-start',
+        mt: 'media' === type ? '2.5vh' : '18vh'
+      }
+    },
+    PaperProps: {
+      sx: {
+        m: 0,
+        maxHeight: 'media' === type ? '95vh' : '76vh',
+        height: !isLoading && 'media' === type ? '95vh' : 'auto'
+      }
+    }
+  };
+  var maybeRenderUpgradeChip = function maybeRenderUpgradeChip() {
+    var needsUpgradeChip = !hasSubscription || 80 <= usagePercentage;
+    if (!needsUpgradeChip) {
+      return;
+    }
+    return /*#__PURE__*/_react.default.createElement(_upgradeChip.default, {
+      hasSubscription: hasSubscription,
+      usagePercentage: usagePercentage
+    });
+  };
   if (isLoading) {
-    return /*#__PURE__*/_react.default.createElement(_promptDialog.default, {
+    return /*#__PURE__*/_react.default.createElement(_promptDialog.default, (0, _extends2.default)({
       onClose: onClose
-    }, /*#__PURE__*/_react.default.createElement(_loader.default, null));
+    }, promptDialogStyleProps, {
+      maxWidth: 'media' === type ? 'lg' : 'sm'
+    }), /*#__PURE__*/_react.default.createElement(_promptDialog.default.Header, {
+      onClose: onClose
+    }), /*#__PURE__*/_react.default.createElement(_promptDialog.default.Content, {
+      dividers: true
+    }, /*#__PURE__*/_react.default.createElement(_loader.default, null)));
   }
   if (!isConnected) {
     return /*#__PURE__*/_react.default.createElement(_wizardDialog.default, {
       onClose: onClose
+    }, /*#__PURE__*/_react.default.createElement(_wizardDialog.default.Header, {
+      onClose: onClose
+    }), /*#__PURE__*/_react.default.createElement(_wizardDialog.default.Content, {
+      dividers: true
     }, /*#__PURE__*/_react.default.createElement(_connect.default, {
       connectUrl: connectUrl,
       onSuccess: function onSuccess(data) {
         onConnect(data);
         fetchData();
       }
-    }));
+    })));
   }
   if (!isGetStarted) {
     return /*#__PURE__*/_react.default.createElement(_wizardDialog.default, {
       onClose: onClose
+    }, /*#__PURE__*/_react.default.createElement(_wizardDialog.default.Header, {
+      onClose: onClose
+    }), /*#__PURE__*/_react.default.createElement(_wizardDialog.default.Content, {
+      dividers: true
     }, /*#__PURE__*/_react.default.createElement(_getStarted.default, {
       onSuccess: fetchData
-    }));
+    })));
+  }
+  if ('media' === type) {
+    return /*#__PURE__*/_react.default.createElement(_formMedia.default, {
+      onClose: onClose,
+      getControlValue: getControlValue,
+      controlView: controlView,
+      additionalOptions: additionalOptions,
+      credits: credits,
+      maybeRenderUpgradeChip: maybeRenderUpgradeChip,
+      DialogProps: promptDialogStyleProps
+    });
   }
   if ('code' === type) {
-    return /*#__PURE__*/_react.default.createElement(_promptDialog.default, {
-      onClose: onClose,
-      headerAction: !hasSubscription && /*#__PURE__*/_react.default.createElement(_upgradeChip.default, null)
+    return /*#__PURE__*/_react.default.createElement(_promptDialog.default, (0, _extends2.default)({
+      onClose: onClose
+    }, promptDialogStyleProps), /*#__PURE__*/_react.default.createElement(_promptDialog.default.Header, {
+      onClose: onClose
+    }, maybeRenderUpgradeChip()), /*#__PURE__*/_react.default.createElement(_promptDialog.default.Content, {
+      dividers: true
     }, /*#__PURE__*/_react.default.createElement(_formCode.default, {
       onClose: onClose,
       getControlValue: getControlValue,
@@ -1512,11 +2620,14 @@ var PageContent = function PageContent(_ref) {
       additionalOptions: additionalOptions,
       credits: credits,
       usagePercentage: usagePercentage
-    }));
+    })));
   }
-  return /*#__PURE__*/_react.default.createElement(_promptDialog.default, {
-    onClose: onClose,
-    headerAction: !hasSubscription && /*#__PURE__*/_react.default.createElement(_upgradeChip.default, null)
+  return /*#__PURE__*/_react.default.createElement(_promptDialog.default, (0, _extends2.default)({
+    onClose: onClose
+  }, promptDialogStyleProps), /*#__PURE__*/_react.default.createElement(_promptDialog.default.Header, {
+    onClose: onClose
+  }, maybeRenderUpgradeChip()), /*#__PURE__*/_react.default.createElement(_promptDialog.default.Content, {
+    dividers: true
   }, /*#__PURE__*/_react.default.createElement(_formText.default, {
     type: type,
     controlType: controlType,
@@ -1526,7 +2637,7 @@ var PageContent = function PageContent(_ref) {
     additionalOptions: additionalOptions,
     credits: credits,
     usagePercentage: usagePercentage
-  }));
+  })));
 };
 PageContent.propTypes = {
   type: PropTypes.string,
@@ -1535,7 +2646,8 @@ PageContent.propTypes = {
   onConnect: PropTypes.func.isRequired,
   getControlValue: PropTypes.func.isRequired,
   setControlValue: PropTypes.func.isRequired,
-  additionalOptions: PropTypes.object
+  additionalOptions: PropTypes.object,
+  controlView: PropTypes.object
 };
 var _default = PageContent;
 exports["default"] = _default;
@@ -1649,7 +2761,7 @@ var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
 var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
 var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "../node_modules/@babel/runtime/helpers/objectWithoutProperties.js"));
 var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
-var _textArea = _interopRequireDefault(__webpack_require__(/*! ../../components/text-area */ "../modules/ai/assets/js/editor/components/text-area.js"));
+var _textarea = _interopRequireDefault(__webpack_require__(/*! ../../components/textarea */ "../modules/ai/assets/js/editor/components/textarea.js"));
 var _excluded = ["node", "inline", "children", "defaultValue", "onInsert"];
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -1667,8 +2779,10 @@ var CodeBlock = function CodeBlock(_ref) {
   return /*#__PURE__*/_react.default.createElement(_ui.Box, {
     sx: {
       position: 'relative'
-    }
-  }, /*#__PURE__*/_react.default.createElement(_textArea.default, (0, _extends2.default)({
+    },
+    dir: "ltr"
+  }, /*#__PURE__*/_react.default.createElement(_textarea.default, (0, _extends2.default)({
+    fullWidth: true,
     ref: codeBlockInput,
     defaultValue: children[0],
     sx: {
@@ -1683,7 +2797,7 @@ var CodeBlock = function CodeBlock(_ref) {
     },
     sx: {
       position: 'absolute',
-      right: '11px',
+      right: '11px /* @noflip */',
       bottom: '44px'
     }
   }, __('Insert', 'elementor')));
@@ -1889,6 +3003,4361 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "../modules/ai/assets/js/editor/pages/form-media/components/back-button.js":
+/*!*********************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/components/back-button.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "../node_modules/@babel/runtime/helpers/objectWithoutProperties.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _chevronLeftIcon = _interopRequireDefault(__webpack_require__(/*! ../../../icons/chevron-left-icon */ "../modules/ai/assets/js/editor/icons/chevron-left-icon.js"));
+var _excluded = ["children"];
+var StyledChevronLeftIcon = (0, _ui.withDirection)(_chevronLeftIcon.default);
+var BackButton = function BackButton(_ref) {
+  var children = _ref.children,
+    props = (0, _objectWithoutProperties2.default)(_ref, _excluded);
+  return /*#__PURE__*/_react.default.createElement(_ui.Button, (0, _extends2.default)({
+    size: "small",
+    variant: "text",
+    color: "secondary",
+    startIcon: /*#__PURE__*/_react.default.createElement(StyledChevronLeftIcon, null)
+  }, props), children || __('Back', 'elementor'));
+};
+BackButton.propTypes = {
+  children: PropTypes.node
+};
+var _default = BackButton;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/components/enhance-button.js":
+/*!************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/components/enhance-button.js ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "../node_modules/@babel/runtime/helpers/objectWithoutProperties.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _wandIcon = _interopRequireDefault(__webpack_require__(/*! ../../../icons/wand-icon */ "../modules/ai/assets/js/editor/icons/wand-icon.js"));
+var _excluded = ["isLoading"];
+var StyledWandIcon = (0, _ui.withDirection)(_wandIcon.default);
+var EnhanceButton = function EnhanceButton(_ref) {
+  var isLoading = _ref.isLoading,
+    props = (0, _objectWithoutProperties2.default)(_ref, _excluded);
+  if (isLoading) {
+    return /*#__PURE__*/_react.default.createElement(_ui.CircularProgress, {
+      color: "secondary",
+      size: 20,
+      sx: {
+        mr: 2
+      }
+    });
+  }
+  return /*#__PURE__*/_react.default.createElement(_ui.Tooltip, {
+    title: __('Enhance prompt', 'elementor')
+  }, /*#__PURE__*/_react.default.createElement(_ui.Box, {
+    component: "span",
+    sx: {
+      cursor: 'pointer'
+    }
+  }, /*#__PURE__*/_react.default.createElement(_ui.IconButton, (0, _extends2.default)({
+    size: "small",
+    color: "secondary"
+  }, props), /*#__PURE__*/_react.default.createElement(StyledWandIcon, null))));
+};
+EnhanceButton.propTypes = {
+  isLoading: PropTypes.bool
+};
+var _default = EnhanceButton;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/components/gallery.js":
+/*!*****************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/components/gallery.js ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "../node_modules/@babel/runtime/helpers/objectWithoutProperties.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _overlay = _interopRequireDefault(__webpack_require__(/*! ../../../components/ui/overlay */ "../modules/ai/assets/js/editor/components/ui/overlay.js"));
+var _overlayBar = _interopRequireDefault(__webpack_require__(/*! ../../../components/ui/overlay-bar */ "../modules/ai/assets/js/editor/components/ui/overlay-bar.js"));
+var _overlayBarText = _interopRequireDefault(__webpack_require__(/*! ../../../components/ui/overlay-bar-text */ "../modules/ai/assets/js/editor/components/ui/overlay-bar-text.js"));
+var _constants = __webpack_require__(/*! ../constants */ "../modules/ai/assets/js/editor/pages/form-media/constants/index.js");
+var _excluded = ["children"],
+  _excluded2 = ["alt", "src", "text", "children", "aspectRatio", "variant", "OverlayBarProps"];
+var aspectRatios = Object.keys(_constants.IMAGE_ASPECT_RATIO);
+var Gallery = function Gallery(_ref) {
+  var children = _ref.children,
+    props = (0, _objectWithoutProperties2.default)(_ref, _excluded);
+  return /*#__PURE__*/_react.default.createElement(_ui.ImageList, (0, _extends2.default)({
+    width: "100%",
+    cols: 2,
+    gap: 24
+  }, props), children);
+};
+Gallery.propTypes = {
+  children: PropTypes.node
+};
+var GalleryImage = function GalleryImage(_ref2) {
+  var alt = _ref2.alt,
+    src = _ref2.src,
+    text = _ref2.text,
+    children = _ref2.children,
+    _ref2$aspectRatio = _ref2.aspectRatio,
+    aspectRatio = _ref2$aspectRatio === void 0 ? '1:1' : _ref2$aspectRatio,
+    _ref2$variant = _ref2.variant,
+    variant = _ref2$variant === void 0 ? 'contained' : _ref2$variant,
+    _ref2$OverlayBarProps = _ref2.OverlayBarProps,
+    OverlayBarProps = _ref2$OverlayBarProps === void 0 ? {} : _ref2$OverlayBarProps,
+    props = (0, _objectWithoutProperties2.default)(_ref2, _excluded2);
+  var style = {};
+  if ('thumbnail' === variant) {
+    style.width = '100%';
+    style.maxHeight = '238px';
+    style.minWidth = '230px';
+  } else {
+    style.width = 'auto';
+    style.height = 'auto';
+    style.maxWidth = '100%';
+    style.maxHeight = '1:1' === aspectRatio ? 'initial' : '100%';
+    style.objectFit = 'contain';
+    style.aspectRatio = aspectRatio.replace(':', ' / ');
+  }
+  return /*#__PURE__*/_react.default.createElement(_ui.ImageListItem, props, /*#__PURE__*/_react.default.createElement(_ui.Box, {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    sx: {
+      bgcolor: 'secondary.background',
+      height: 'contained' === variant ? 336 : 'auto',
+      position: 'relative',
+      overflow: 'hidden'
+    }
+  }, /*#__PURE__*/_react.default.createElement("img", {
+    alt: alt,
+    src: src,
+    style: style
+  })), children && /*#__PURE__*/_react.default.createElement(_overlay.default, null, /*#__PURE__*/_react.default.createElement(_overlayBar.default, (0, _extends2.default)({
+    gap: 3,
+    position: "bottom"
+  }, OverlayBarProps), text && /*#__PURE__*/_react.default.createElement(_overlayBarText.default, null, text), children)));
+};
+GalleryImage.propTypes = {
+  alt: PropTypes.string,
+  src: PropTypes.string,
+  text: PropTypes.string,
+  children: PropTypes.node,
+  BoxProps: PropTypes.object,
+  OverlayBarProps: PropTypes.object,
+  aspectRatio: PropTypes.oneOf(aspectRatios),
+  variant: PropTypes.oneOf(['contained', 'thumbnail'])
+};
+Gallery.Image = GalleryImage;
+var _default = Gallery;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/components/generate-again-submit.js":
+/*!*******************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/components/generate-again-submit.js ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _refreshIcon = _interopRequireDefault(__webpack_require__(/*! ../../../icons/refresh-icon */ "../modules/ai/assets/js/editor/icons/refresh-icon.js"));
+var GenerateAgainSubmit = function GenerateAgainSubmit(props) {
+  return /*#__PURE__*/_react.default.createElement(_ui.Button, (0, _extends2.default)({
+    fullWidth: true,
+    type: "submit",
+    variant: "contained",
+    color: "secondary",
+    startIcon: /*#__PURE__*/_react.default.createElement(_refreshIcon.default, null),
+    sx: {
+      // TODO: Remove on @elementor/ui 1.4.51.
+      color: 'background.paper'
+    }
+  }, props), __('Generate again', 'elementor'));
+};
+var _default = GenerateAgainSubmit;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/components/generate-images-submit.js":
+/*!********************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/components/generate-images-submit.js ***!
+  \********************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _generateButton = _interopRequireDefault(__webpack_require__(/*! ../../../components/generate-button */ "../modules/ai/assets/js/editor/components/generate-button.js"));
+var GenerateImagesSubmit = function GenerateImagesSubmit(props) {
+  return /*#__PURE__*/_react.default.createElement(_generateButton.default, (0, _extends2.default)({
+    size: "medium",
+    fullWidth: true
+  }, props), __('Generate images', 'elementor'));
+};
+var _default = GenerateImagesSubmit;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/components/generate-loader.js":
+/*!*************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/components/generate-loader.js ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _icons = __webpack_require__(/*! @elementor/icons */ "@elementor/icons");
+var GenerateLoader = function GenerateLoader() {
+  return /*#__PURE__*/_react.default.createElement(_ui.Stack, {
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 5,
+    width: "100%"
+  }, /*#__PURE__*/_react.default.createElement(_icons.AIIcon, {
+    sx: {
+      color: 'text.primary',
+      fontSize: '60px',
+      mb: 3
+    }
+  }), /*#__PURE__*/_react.default.createElement(_ui.Typography, {
+    variant: "h4",
+    sx: {
+      color: 'text.primary'
+    }
+  }, __('Bringing your vision to life...', 'elementor')), /*#__PURE__*/_react.default.createElement(_ui.Typography, {
+    variant: "body2"
+  }, __('Hold tight, painting dreams might take a moment.', 'elementor')), /*#__PURE__*/_react.default.createElement(_ui.Box, {
+    sx: {
+      px: 4,
+      py: 6,
+      width: '100%',
+      maxWidth: 600
+    }
+  }, /*#__PURE__*/_react.default.createElement(_ui.LinearProgress, {
+    color: "inherit"
+  })));
+};
+var _default = GenerateLoader;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/components/generate-submit.js":
+/*!*************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/components/generate-submit.js ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var GenerateSubmit = function GenerateSubmit(props) {
+  return /*#__PURE__*/_react.default.createElement(_ui.Button, (0, _extends2.default)({
+    fullWidth: true,
+    size: "medium",
+    type: "submit",
+    variant: "contained"
+  }, props), props.children || __('Generate', 'elementor'));
+};
+GenerateSubmit.propTypes = {
+  children: PropTypes.node
+};
+var _default = GenerateSubmit;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/components/image-actions.js":
+/*!***********************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/components/image-actions.js ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "../node_modules/@babel/runtime/helpers/objectWithoutProperties.js"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _copyIcon = _interopRequireDefault(__webpack_require__(/*! ../../../icons/copy-icon */ "../modules/ai/assets/js/editor/icons/copy-icon.js"));
+var _editIcon = _interopRequireDefault(__webpack_require__(/*! ../../../icons/edit-icon */ "../modules/ai/assets/js/editor/icons/edit-icon.js"));
+var _downloadIcon = _interopRequireDefault(__webpack_require__(/*! ../../../icons/download-icon */ "../modules/ai/assets/js/editor/icons/download-icon.js"));
+var _zoomInIcon = _interopRequireDefault(__webpack_require__(/*! ../../../icons/zoom-in-icon */ "../modules/ai/assets/js/editor/icons/zoom-in-icon.js"));
+var _excluded = ["children"],
+  _excluded2 = ["sx"],
+  _excluded3 = ["sx"],
+  _excluded4 = ["sx"],
+  _excluded5 = ["sx"];
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+var StyledEditSvgIcon = (0, _ui.withDirection)(_editIcon.default);
+var StyledCopySvgIcon = (0, _ui.withDirection)(_copyIcon.default);
+var StyledZoomInIcon = (0, _ui.withDirection)(_zoomInIcon.default);
+var Tooltip = function Tooltip(props) {
+  return /*#__PURE__*/_react.default.createElement(_ui.Tooltip, (0, _extends2.default)({
+    PopperProps: {
+      sx: {
+        '&.MuiTooltip-popper .MuiTooltip-tooltip.MuiTooltip-tooltipPlacementBottom': {
+          mt: 3
+        }
+      }
+    }
+  }, props));
+};
+var ImageActions = function ImageActions(_ref) {
+  var children = _ref.children,
+    props = (0, _objectWithoutProperties2.default)(_ref, _excluded);
+  return /*#__PURE__*/_react.default.createElement(_ui.Box, (0, _extends2.default)({
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    gap: 3
+  }, props), children);
+};
+ImageActions.propTypes = {
+  children: PropTypes.node
+};
+var UseImage = function UseImage(_ref2) {
+  var sx = _ref2.sx,
+    props = (0, _objectWithoutProperties2.default)(_ref2, _excluded2);
+  return /*#__PURE__*/_react.default.createElement(_ui.Button, (0, _extends2.default)({
+    size: "small",
+    variant: "contained",
+    startIcon: /*#__PURE__*/_react.default.createElement(_downloadIcon.default, null)
+  }, props), __('Use Image', 'elementor'));
+};
+UseImage.propTypes = {
+  sx: PropTypes.object
+};
+var EditImage = function EditImage(props) {
+  return /*#__PURE__*/_react.default.createElement(_ui.Button, (0, _extends2.default)({
+    size: "small",
+    color: "secondary",
+    startIcon: /*#__PURE__*/_react.default.createElement(StyledEditSvgIcon, null)
+  }, props), __('Edit', 'elementor'));
+};
+var EditIcon = function EditIcon(_ref3) {
+  var _ref3$sx = _ref3.sx,
+    sx = _ref3$sx === void 0 ? {} : _ref3$sx,
+    props = (0, _objectWithoutProperties2.default)(_ref3, _excluded3);
+  return /*#__PURE__*/_react.default.createElement(Tooltip, {
+    title: __('Edit', 'elementor')
+  }, /*#__PURE__*/_react.default.createElement(_ui.IconButton, (0, _extends2.default)({
+    sx: _objectSpread({
+      mr: -4,
+      ml: 2,
+      color: 'common.white',
+      '&:hover': {
+        color: 'common.white'
+      }
+    }, sx)
+  }, props), /*#__PURE__*/_react.default.createElement(StyledEditSvgIcon, null)));
+};
+EditIcon.propTypes = {
+  sx: PropTypes.object
+};
+var ZoomIcon = function ZoomIcon(_ref4) {
+  var _ref4$sx = _ref4.sx,
+    sx = _ref4$sx === void 0 ? {} : _ref4$sx,
+    props = (0, _objectWithoutProperties2.default)(_ref4, _excluded4);
+  return /*#__PURE__*/_react.default.createElement(Tooltip, {
+    title: __('Zoom', 'elementor')
+  }, /*#__PURE__*/_react.default.createElement(_ui.IconButton, (0, _extends2.default)({
+    color: "secondary",
+    "aria-label": __('Zoom', 'elementor'),
+    sx: _objectSpread({
+      color: 'common.white',
+      '&:hover': {
+        color: 'common.white'
+      }
+    }, sx)
+  }, props), /*#__PURE__*/_react.default.createElement(StyledZoomInIcon, null)));
+};
+ZoomIcon.propTypes = {
+  sx: PropTypes.object
+};
+var CopyIcon = function CopyIcon(_ref5) {
+  var _ref5$sx = _ref5.sx,
+    sx = _ref5$sx === void 0 ? {} : _ref5$sx,
+    props = (0, _objectWithoutProperties2.default)(_ref5, _excluded5);
+  return /*#__PURE__*/_react.default.createElement(Tooltip, {
+    title: __('Copy prompt', 'elementor')
+  }, /*#__PURE__*/_react.default.createElement(_ui.IconButton, (0, _extends2.default)({
+    sx: _objectSpread({
+      mr: -4,
+      ml: 2,
+      color: 'common.white',
+      '&:hover': {
+        color: 'common.white'
+      }
+    }, sx)
+  }, props), /*#__PURE__*/_react.default.createElement(StyledCopySvgIcon, null)));
+};
+CopyIcon.propTypes = {
+  sx: PropTypes.object
+};
+ImageActions.UseImage = UseImage;
+ImageActions.EditImage = EditImage;
+ImageActions.EditIcon = EditIcon;
+ImageActions.ZoomIcon = ZoomIcon;
+ImageActions.CopyIcon = CopyIcon;
+var _default = ImageActions;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/components/image-form.js":
+/*!********************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/components/image-form.js ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "../node_modules/@babel/runtime/helpers/objectWithoutProperties.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _excluded = ["children"];
+var ImageForm = function ImageForm(_ref) {
+  var children = _ref.children,
+    props = (0, _objectWithoutProperties2.default)(_ref, _excluded);
+  return /*#__PURE__*/_react.default.createElement(_ui.Box, (0, _extends2.default)({
+    component: "form"
+  }, props), /*#__PURE__*/_react.default.createElement(_ui.Stack, {
+    spacing: 6
+  }, children));
+};
+ImageForm.propTypes = {
+  children: PropTypes.node
+};
+var _default = ImageForm;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/components/image-ratio-select.js":
+/*!****************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/components/image-ratio-select.js ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+var _promptActionSelection = _interopRequireDefault(__webpack_require__(/*! ../../../components/prompt-action-selection */ "../modules/ai/assets/js/editor/components/prompt-action-selection.js"));
+var _constants = __webpack_require__(/*! ../constants */ "../modules/ai/assets/js/editor/pages/form-media/constants/index.js");
+var imageRatios = Object.entries(_constants.IMAGE_ASPECT_RATIO).map(function (_ref) {
+  var _ref2 = (0, _slicedToArray2.default)(_ref, 2),
+    value = _ref2[0],
+    label = _ref2[1].label;
+  return {
+    label: label,
+    value: value
+  };
+});
+var ImageRatioSelect = function ImageRatioSelect(props) {
+  return /*#__PURE__*/_react.default.createElement(_promptActionSelection.default, (0, _extends2.default)({
+    options: imageRatios,
+    wrapperStyle: {
+      width: '100%'
+    },
+    label: __('Aspect ratio', 'elementor')
+  }, props));
+};
+var _default = ImageRatioSelect;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/components/image-slider.js":
+/*!**********************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/components/image-slider.js ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "../node_modules/@babel/runtime/helpers/objectWithoutProperties.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _chevronLeftIcon = _interopRequireDefault(__webpack_require__(/*! ../../../icons/chevron-left-icon */ "../modules/ai/assets/js/editor/icons/chevron-left-icon.js"));
+var _chevronRightIcon = _interopRequireDefault(__webpack_require__(/*! ../../../icons/chevron-right-icon */ "../modules/ai/assets/js/editor/icons/chevron-right-icon.js"));
+var _excluded = ["onPrev", "onNext", "children"],
+  _excluded2 = ["children", "startAction", "sx"],
+  _excluded3 = ["src", "alt"];
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+var StyledChevronLeftIcon = (0, _ui.withDirection)(_chevronLeftIcon.default);
+var StyledChevronRightIcon = (0, _ui.withDirection)(_chevronRightIcon.default);
+var ImageSlider = function ImageSlider(_ref) {
+  var onPrev = _ref.onPrev,
+    onNext = _ref.onNext,
+    children = _ref.children,
+    props = (0, _objectWithoutProperties2.default)(_ref, _excluded);
+  return /*#__PURE__*/_react.default.createElement(_ui.Stack, (0, _extends2.default)({
+    alignItems: "flex-start",
+    spacing: 2
+  }, props), /*#__PURE__*/_react.default.createElement(_ui.Stack, {
+    direction: "row",
+    spacing: 6,
+    alignSelf: "center",
+    alignItems: "center"
+  }, /*#__PURE__*/_react.default.createElement(_ui.IconButton, {
+    onClick: onPrev,
+    size: "large",
+    color: "secondary"
+  }, /*#__PURE__*/_react.default.createElement(StyledChevronLeftIcon, null)), /*#__PURE__*/_react.default.createElement(_ui.Stack, {
+    spacing: 2,
+    justifyContent: "space-around",
+    alignItems: "center"
+  }, children), /*#__PURE__*/_react.default.createElement(_ui.IconButton, {
+    onClick: onNext,
+    size: "large",
+    color: "secondary"
+  }, /*#__PURE__*/_react.default.createElement(StyledChevronRightIcon, null))));
+};
+ImageSlider.propTypes = {
+  onPrev: PropTypes.func.isRequired,
+  onNext: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired
+};
+var Actions = function Actions(_ref2) {
+  var children = _ref2.children,
+    startAction = _ref2.startAction,
+    _ref2$sx = _ref2.sx,
+    sx = _ref2$sx === void 0 ? {} : _ref2$sx,
+    props = (0, _objectWithoutProperties2.default)(_ref2, _excluded2);
+  return /*#__PURE__*/_react.default.createElement(_ui.Box, (0, _extends2.default)({
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    width: "100%"
+  }, props, {
+    sx: _objectSpread({
+      mb: 4
+    }, sx)
+  }), startAction, /*#__PURE__*/_react.default.createElement(_ui.Stack, {
+    direction: "row",
+    spacing: 3,
+    justifyContent: "flex-end",
+    flexGrow: 1,
+    width: "100%"
+  }, children));
+};
+Actions.propTypes = {
+  sx: PropTypes.object,
+  startAction: PropTypes.node,
+  children: PropTypes.node.isRequired
+};
+var Image = function Image(_ref3) {
+  var src = _ref3.src,
+    _ref3$alt = _ref3.alt,
+    alt = _ref3$alt === void 0 ? '' : _ref3$alt,
+    props = (0, _objectWithoutProperties2.default)(_ref3, _excluded3);
+  return /*#__PURE__*/_react.default.createElement(_ui.Box, {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  }, /*#__PURE__*/_react.default.createElement("img", (0, _extends2.default)({
+    src: src,
+    alt: alt
+  }, props)));
+};
+Image.propTypes = {
+  alt: PropTypes.string,
+  src: PropTypes.string.isRequired
+};
+ImageSlider.Actions = Actions;
+ImageSlider.Image = Image;
+var _default = ImageSlider;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/components/image-strength-slider.js":
+/*!*******************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/components/image-strength-slider.js ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var ImageStrengthSlider = function ImageStrengthSlider(props) {
+  return /*#__PURE__*/_react.default.createElement(_ui.FormControl, {
+    sx: {
+      width: '100%'
+    }
+  }, /*#__PURE__*/_react.default.createElement(_ui.Slider, (0, _extends2.default)({
+    marks: true,
+    min: 0,
+    step: 10,
+    max: 100,
+    color: "secondary",
+    id: "image_strength",
+    name: "image_strength",
+    valueLabelDisplay: "auto",
+    getAriaValueText: function getAriaValueText(value) {
+      return "".concat(value, "%");
+    },
+    "aria-label": __('Reference strength', 'elementor')
+  }, props)), /*#__PURE__*/_react.default.createElement(_ui.Box, {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
+  }, /*#__PURE__*/_react.default.createElement(_ui.Typography, {
+    variant: "caption"
+  }, __('Prompt', 'elementor')), /*#__PURE__*/_react.default.createElement(_ui.Typography, {
+    variant: "caption"
+  }, __('Reference image', 'elementor'))));
+};
+var _default = ImageStrengthSlider;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/components/image-style-select.js":
+/*!****************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/components/image-style-select.js ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "../node_modules/@babel/runtime/helpers/objectWithoutProperties.js"));
+var _promptActionSelection = _interopRequireDefault(__webpack_require__(/*! ../../../components/prompt-action-selection */ "../modules/ai/assets/js/editor/components/prompt-action-selection.js"));
+var _constants = __webpack_require__(/*! ../constants */ "../modules/ai/assets/js/editor/pages/form-media/constants/index.js");
+var _excluded = ["type"];
+var ImageStyleSelect = function ImageStyleSelect(_ref) {
+  var _IMAGE_PROMPT_CATEGOR;
+  var _ref$type = _ref.type,
+    type = _ref$type === void 0 ? '' : _ref$type,
+    props = (0, _objectWithoutProperties2.default)(_ref, _excluded);
+  // The image styles are determined by the selected type.
+  var imageStyles = Object.entries(((_IMAGE_PROMPT_CATEGOR = _constants.IMAGE_PROMPT_CATEGORIES[type]) === null || _IMAGE_PROMPT_CATEGOR === void 0 ? void 0 : _IMAGE_PROMPT_CATEGOR.subCategories) || {}).map(function (_ref2) {
+    var _ref3 = (0, _slicedToArray2.default)(_ref2, 2),
+      value = _ref3[0],
+      label = _ref3[1];
+    return {
+      label: label,
+      value: value
+    };
+  });
+  return /*#__PURE__*/_react.default.createElement(_promptActionSelection.default, (0, _extends2.default)({
+    options: imageStyles,
+    wrapperStyle: {
+      width: '100%'
+    },
+    label: __('Style', 'elementor')
+  }, props));
+};
+ImageStyleSelect.propTypes = {
+  type: PropTypes.string.isRequired
+};
+var _default = ImageStyleSelect;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/components/image-type-select.js":
+/*!***************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/components/image-type-select.js ***!
+  \***************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+var _promptActionSelection = _interopRequireDefault(__webpack_require__(/*! ../../../components/prompt-action-selection */ "../modules/ai/assets/js/editor/components/prompt-action-selection.js"));
+var _constants = __webpack_require__(/*! ../constants */ "../modules/ai/assets/js/editor/pages/form-media/constants/index.js");
+var imageTypes = Object.entries(_constants.IMAGE_PROMPT_CATEGORIES).map(function (_ref) {
+  var _ref2 = (0, _slicedToArray2.default)(_ref, 2),
+    key = _ref2[0],
+    label = _ref2[1].label;
+  return {
+    label: label,
+    value: key
+  };
+});
+var ImageTypeSelect = function ImageTypeSelect(props) {
+  return /*#__PURE__*/_react.default.createElement(_promptActionSelection.default, (0, _extends2.default)({
+    options: imageTypes,
+    wrapperStyle: {
+      width: '100%'
+    },
+    label: __('Image type', 'elementor')
+  }, props));
+};
+var _default = ImageTypeSelect;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/components/images-display.js":
+/*!************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/components/images-display.js ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "../node_modules/@babel/runtime/helpers/objectWithoutProperties.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _useImageSize2 = _interopRequireDefault(__webpack_require__(/*! ../hooks/use-image-size */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-size.js"));
+var _useImageNavigation2 = _interopRequireDefault(__webpack_require__(/*! ../../../hooks/use-image-navigation */ "../modules/ai/assets/js/editor/hooks/use-image-navigation.js"));
+var _imageSlider = _interopRequireDefault(__webpack_require__(/*! ./image-slider */ "../modules/ai/assets/js/editor/pages/form-media/components/image-slider.js"));
+var _imageActions = _interopRequireDefault(__webpack_require__(/*! ./image-actions */ "../modules/ai/assets/js/editor/pages/form-media/components/image-actions.js"));
+var _gallery = _interopRequireDefault(__webpack_require__(/*! ./gallery */ "../modules/ai/assets/js/editor/pages/form-media/components/gallery.js"));
+var _backButton = _interopRequireDefault(__webpack_require__(/*! ./back-button */ "../modules/ai/assets/js/editor/pages/form-media/components/back-button.js"));
+var _singleImagePreview = _interopRequireDefault(__webpack_require__(/*! ./single-image-preview */ "../modules/ai/assets/js/editor/pages/form-media/components/single-image-preview.js"));
+var _excluded = ["children", "sx"];
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+var Container = function Container(_ref) {
+  var children = _ref.children,
+    _ref$sx = _ref.sx,
+    sx = _ref$sx === void 0 ? {} : _ref$sx,
+    props = (0, _objectWithoutProperties2.default)(_ref, _excluded);
+  return /*#__PURE__*/_react.default.createElement(_ui.Box, (0, _extends2.default)({
+    flexGrow: 1
+  }, props, {
+    sx: _objectSpread({
+      overflowY: 'scroll'
+    }, sx)
+  }), children);
+};
+Container.propTypes = {
+  sx: PropTypes.object,
+  children: PropTypes.node
+};
+var ImagesDisplay = function ImagesDisplay(_ref2) {
+  var images = _ref2.images,
+    aspectRatio = _ref2.aspectRatio,
+    onUseImage = _ref2.onUseImage,
+    onEditImage = _ref2.onEditImage;
+  var _useImageNavigation = (0, _useImageNavigation2.default)(images),
+    zoomIndex = _useImageNavigation.zoomIndex,
+    setZoomIndex = _useImageNavigation.setZoomIndex,
+    actions = _useImageNavigation.actions;
+  var _useImageSize = (0, _useImageSize2.default)(aspectRatio),
+    width = _useImageSize.width,
+    height = _useImageSize.height;
+  if (zoomIndex > -1) {
+    var currentImage = images[zoomIndex];
+    return /*#__PURE__*/_react.default.createElement(Container, null, /*#__PURE__*/_react.default.createElement(_imageSlider.default, {
+      onPrev: actions.prev,
+      onNext: actions.next
+    }, /*#__PURE__*/_react.default.createElement(_imageSlider.default.Actions, {
+      startAction: /*#__PURE__*/_react.default.createElement(_backButton.default, {
+        onClick: actions.reset
+      })
+    }, /*#__PURE__*/_react.default.createElement(_imageActions.default.EditImage, {
+      onClick: function onClick() {
+        return onEditImage(currentImage);
+      }
+    }), /*#__PURE__*/_react.default.createElement(_imageActions.default.UseImage, {
+      onClick: function onClick() {
+        return onUseImage(currentImage);
+      }
+    })), /*#__PURE__*/_react.default.createElement(_imageSlider.default.Image, {
+      src: currentImage.image_url,
+      style: {
+        maxWidth: '630px',
+        width: '100%',
+        height: 'auto'
+      }
+    })));
+  }
+  if (1 === images.length) {
+    var image = images[0];
+    return /*#__PURE__*/_react.default.createElement(Container, {
+      flexDirection: "column"
+    }, /*#__PURE__*/_react.default.createElement(_singleImagePreview.default, null, /*#__PURE__*/_react.default.createElement(_singleImagePreview.default.Image, {
+      src: image.image_url || image.url,
+      style: {
+        width: width,
+        height: height
+      },
+      alt: "generated-image"
+    }, /*#__PURE__*/_react.default.createElement(_singleImagePreview.default.Actions, null, /*#__PURE__*/_react.default.createElement(_imageActions.default.EditImage, {
+      onClick: function onClick() {
+        return onEditImage(image);
+      }
+    }), /*#__PURE__*/_react.default.createElement(_imageActions.default.UseImage, {
+      onClick: function onClick() {
+        return onUseImage(image);
+      }
+    })))));
+  }
+  return /*#__PURE__*/_react.default.createElement(Container, null, /*#__PURE__*/_react.default.createElement(_gallery.default, null, images.map(function (image, index) {
+    return /*#__PURE__*/_react.default.createElement(_gallery.default.Image, {
+      key: "result-".concat(image.seed),
+      alt: "generated-".concat(index),
+      src: image.image_url,
+      aspectRatio: aspectRatio
+    }, /*#__PURE__*/_react.default.createElement(_imageActions.default, null, /*#__PURE__*/_react.default.createElement(_imageActions.default.UseImage, {
+      onClick: function onClick() {
+        return onUseImage(image);
+      },
+      size: "medium",
+      fullWidth: true
+    }), /*#__PURE__*/_react.default.createElement(_ui.Stack, {
+      direction: "row",
+      spacing: 1,
+      alignItems: "center"
+    }, /*#__PURE__*/_react.default.createElement(_imageActions.default.ZoomIcon, {
+      onClick: function onClick() {
+        return setZoomIndex(index);
+      },
+      size: "medium"
+    }), /*#__PURE__*/_react.default.createElement(_imageActions.default.EditIcon, {
+      onClick: function onClick() {
+        return onEditImage(image);
+      },
+      size: "medium"
+    }))));
+  })));
+};
+ImagesDisplay.propTypes = {
+  images: PropTypes.array,
+  aspectRatio: PropTypes.string,
+  onUseImage: PropTypes.func,
+  onEditImage: PropTypes.func
+};
+ImagesDisplay.Container = Container;
+var _default = ImagesDisplay;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/components/new-prompt-button.js":
+/*!***************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/components/new-prompt-button.js ***!
+  \***************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var NewPromptButton = function NewPromptButton(props) {
+  return /*#__PURE__*/_react.default.createElement(_ui.Button, (0, _extends2.default)({
+    fullWidth: true,
+    variant: "text",
+    color: "secondary"
+  }, props), __('New prompt', 'elementor'));
+};
+var _default = NewPromptButton;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/components/prompt-field.js":
+/*!**********************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/components/prompt-field.js ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "../node_modules/@babel/runtime/helpers/objectWithoutProperties.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _textarea = _interopRequireDefault(__webpack_require__(/*! ../../../components/textarea */ "../modules/ai/assets/js/editor/components/textarea.js"));
+var _enhanceButton = _interopRequireDefault(__webpack_require__(/*! ./enhance-button */ "../modules/ai/assets/js/editor/pages/form-media/components/enhance-button.js"));
+var _useImagePromptEnhancer = _interopRequireDefault(__webpack_require__(/*! ../hooks/use-image-prompt-enhancer */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-prompt-enhancer.js"));
+var _excluded = ["disabled", "onChange"];
+var PromptField = function PromptField(_ref) {
+  var disabled = _ref.disabled,
+    _onChange = _ref.onChange,
+    props = (0, _objectWithoutProperties2.default)(_ref, _excluded);
+  var _usePromptEnhancer = (0, _useImagePromptEnhancer.default)(props.value),
+    enhance = _usePromptEnhancer.enhance,
+    isEnhancing = _usePromptEnhancer.isEnhancing;
+  return /*#__PURE__*/_react.default.createElement(_textarea.default, (0, _extends2.default)({
+    minRows: 3,
+    maxRows: 6,
+    InputProps: {
+      endAdornment: /*#__PURE__*/_react.default.createElement(_ui.InputAdornment, {
+        position: "end",
+        sx: {
+          position: 'absolute',
+          bottom: '24px',
+          right: '8px'
+        }
+      }, /*#__PURE__*/_react.default.createElement(_enhanceButton.default, {
+        isLoading: isEnhancing,
+        disabled: disabled || isEnhancing || !props.value,
+        onClick: function onClick() {
+          enhance(prompt).then(function (_ref2) {
+            var result = _ref2.result;
+            return _onChange(result);
+          });
+        }
+      }))
+    },
+    sx: {
+      '& .MuiInputBase-input.MuiOutlinedInput-input.MuiInputBase-inputMultiline': {
+        pb: 9,
+        width: '89%'
+      }
+    },
+    onKeyDown: function onKeyDown(event) {
+      if ('Tab' === event.key) {
+        event.preventDefault();
+        _onChange(props.placeholder);
+      }
+    }
+  }, props, {
+    onChange: function onChange(event) {
+      return _onChange(event.target.value);
+    },
+    disabled: disabled || isEnhancing
+  }));
+};
+PromptField.propTypes = {
+  value: PropTypes.string,
+  disabled: PropTypes.bool,
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func.isRequired
+};
+var _default = PromptField;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/components/single-image-preview.js":
+/*!******************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/components/single-image-preview.js ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "../node_modules/@babel/runtime/helpers/objectWithoutProperties.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _excluded = ["children"],
+  _excluded2 = ["children", "sx"];
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+var SingleImagePreview = function SingleImagePreview(_ref) {
+  var children = _ref.children,
+    props = (0, _objectWithoutProperties2.default)(_ref, _excluded);
+  return /*#__PURE__*/_react.default.createElement(_ui.Box, (0, _extends2.default)({
+    display: "flex"
+  }, props), children);
+};
+SingleImagePreview.propTypes = {
+  children: PropTypes.node.isRequired
+};
+var Actions = function Actions(_ref2) {
+  var children = _ref2.children,
+    _ref2$sx = _ref2.sx,
+    sx = _ref2$sx === void 0 ? {} : _ref2$sx,
+    props = (0, _objectWithoutProperties2.default)(_ref2, _excluded2);
+  return /*#__PURE__*/_react.default.createElement(_ui.Box, (0, _extends2.default)({
+    display: "flex",
+    width: "100%",
+    justifyContent: "flex-end",
+    alignItems: "center"
+  }, props, {
+    sx: _objectSpread({
+      mb: 4
+    }, sx)
+  }), /*#__PURE__*/_react.default.createElement(_ui.Stack, {
+    direction: "row",
+    spacing: 3,
+    justifyContent: "flex-end",
+    width: "100%"
+  }, children));
+};
+Actions.propTypes = {
+  sx: PropTypes.object,
+  children: PropTypes.node.isRequired
+};
+var Image = function Image(_ref3) {
+  var src = _ref3.src,
+    alt = _ref3.alt,
+    _ref3$style = _ref3.style,
+    style = _ref3$style === void 0 ? {} : _ref3$style,
+    children = _ref3.children;
+  return /*#__PURE__*/_react.default.createElement(_ui.Box, {
+    margin: "0 auto"
+  }, children, /*#__PURE__*/_react.default.createElement("img", {
+    src: src,
+    alt: alt,
+    style: _objectSpread({
+      maxWidth: '100%',
+      width: 'auto',
+      maxHeight: '100%'
+    }, style)
+  }));
+};
+Image.propTypes = {
+  style: PropTypes.object,
+  children: PropTypes.node,
+  src: PropTypes.string.isRequired,
+  alt: PropTypes.string.isRequired
+};
+SingleImagePreview.Actions = Actions;
+SingleImagePreview.Image = Image;
+var _default = SingleImagePreview;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/components/unsaved-changes-alert.js":
+/*!*******************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/components/unsaved-changes-alert.js ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "../node_modules/@babel/runtime/helpers/objectWithoutProperties.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _excluded = ["onClose", "onCancel"];
+var UnsavedChangesAlert = function UnsavedChangesAlert(_ref) {
+  var onClose = _ref.onClose,
+    onCancel = _ref.onCancel,
+    props = (0, _objectWithoutProperties2.default)(_ref, _excluded);
+  return /*#__PURE__*/_react.default.createElement(_ui.Dialog, (0, _extends2.default)({
+    "aria-labelledby": "unsaved-changes-alert-title",
+    "aria-describedby": "unsaved-changes-alert-description"
+  }, props), /*#__PURE__*/_react.default.createElement(_ui.DialogTitle, {
+    id: "unsaved-changes-alert-title"
+  }, __('Leave Elementor AI?', 'elementor')), /*#__PURE__*/_react.default.createElement(_ui.DialogContent, null, /*#__PURE__*/_react.default.createElement(_ui.DialogContentText, {
+    id: "unsaved-changes-alert-description"
+  }, __('Images will be gone forever and we won’t be able to recover them.', 'elementor'))), /*#__PURE__*/_react.default.createElement(_ui.DialogActions, null, /*#__PURE__*/_react.default.createElement(_ui.Button, {
+    onClick: onCancel,
+    color: "secondary"
+  }, __('Cancel', 'elementor')), /*#__PURE__*/_react.default.createElement(_ui.Button, {
+    onClick: onClose,
+    color: "error",
+    variant: "contained"
+  }, __('Yes, leave', 'elementor'))));
+};
+UnsavedChangesAlert.propTypes = {
+  onClose: PropTypes.func,
+  onCancel: PropTypes.func
+};
+var _default = UnsavedChangesAlert;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/components/view.js":
+/*!**************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/components/view.js ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "../node_modules/@babel/runtime/helpers/objectWithoutProperties.js"));
+var _panel = _interopRequireDefault(__webpack_require__(/*! ../../../components/ui/panel */ "../modules/ai/assets/js/editor/components/ui/panel.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _loader = _interopRequireDefault(__webpack_require__(/*! ../../../components/loader */ "../modules/ai/assets/js/editor/components/loader.js"));
+var _generateLoader = _interopRequireDefault(__webpack_require__(/*! ./generate-loader */ "../modules/ai/assets/js/editor/pages/form-media/components/generate-loader.js"));
+var _promptErrorMessage = _interopRequireDefault(__webpack_require__(/*! ../../../components/prompt-error-message */ "../modules/ai/assets/js/editor/components/prompt-error-message.js"));
+var _backButton = _interopRequireDefault(__webpack_require__(/*! ./back-button */ "../modules/ai/assets/js/editor/pages/form-media/components/back-button.js"));
+var _locationContext = __webpack_require__(/*! ../context/location-context */ "../modules/ai/assets/js/editor/pages/form-media/context/location-context.js");
+var _excluded = ["sx"],
+  _excluded2 = ["primary", "secondary"],
+  _excluded3 = ["primary", "secondary"],
+  _excluded4 = ["children"],
+  _excluded5 = ["isLoading", "isGenerating", "children"],
+  _excluded6 = ["sx"];
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+var ViewBackButton = function ViewBackButton(_ref) {
+  var _ref$sx = _ref.sx,
+    sx = _ref$sx === void 0 ? {} : _ref$sx,
+    props = (0, _objectWithoutProperties2.default)(_ref, _excluded);
+  var _useLocation = (0, _locationContext.useLocation)(),
+    back = _useLocation.back;
+  return /*#__PURE__*/_react.default.createElement(_backButton.default, (0, _extends2.default)({
+    onClick: function onClick(e) {
+      e.preventDefault();
+      back();
+    }
+  }, props, {
+    sx: _objectSpread({
+      mb: 3,
+      alignSelf: 'flex-start'
+    }, sx)
+  }));
+};
+ViewBackButton.propTypes = {
+  sx: PropTypes.object
+};
+var PanelHeading = function PanelHeading(_ref2) {
+  var primary = _ref2.primary,
+    secondary = _ref2.secondary,
+    props = (0, _objectWithoutProperties2.default)(_ref2, _excluded2);
+  return /*#__PURE__*/_react.default.createElement(_ui.Stack, (0, _extends2.default)({
+    spacing: 3,
+    sx: {
+      mb: 7
+    }
+  }, props), /*#__PURE__*/_react.default.createElement(_ui.Typography, {
+    variant: "h3"
+  }, primary), secondary && /*#__PURE__*/_react.default.createElement(_ui.Typography, {
+    variant: "body1",
+    color: "secondary"
+  }, secondary));
+};
+PanelHeading.propTypes = {
+  primary: PropTypes.string.isRequired,
+  secondary: PropTypes.string
+};
+var ContentHeading = function ContentHeading(_ref3) {
+  var primary = _ref3.primary,
+    secondary = _ref3.secondary,
+    props = (0, _objectWithoutProperties2.default)(_ref3, _excluded3);
+  return /*#__PURE__*/_react.default.createElement(_ui.Stack, (0, _extends2.default)({
+    gap: 4,
+    sx: {
+      mb: 7
+    }
+  }, props), /*#__PURE__*/_react.default.createElement(_ui.Typography, {
+    variant: "h6"
+  }, primary), secondary && /*#__PURE__*/_react.default.createElement(_ui.Typography, {
+    variant: "subtitle1",
+    color: "secondary"
+  }, secondary));
+};
+ContentHeading.propTypes = {
+  primary: PropTypes.string.isRequired,
+  secondary: PropTypes.string
+};
+var View = function View(_ref4) {
+  var children = _ref4.children,
+    props = (0, _objectWithoutProperties2.default)(_ref4, _excluded4);
+  return /*#__PURE__*/_react.default.createElement(_ui.Box, (0, _extends2.default)({
+    display: "flex",
+    sx: {
+      overflowY: 'auto'
+    },
+    height: "100%"
+  }, props), children);
+};
+var Content = function Content(_ref5) {
+  var _ref5$isLoading = _ref5.isLoading,
+    isLoading = _ref5$isLoading === void 0 ? false : _ref5$isLoading,
+    _ref5$isGenerating = _ref5.isGenerating,
+    isGenerating = _ref5$isGenerating === void 0 ? false : _ref5$isGenerating,
+    children = _ref5.children,
+    props = (0, _objectWithoutProperties2.default)(_ref5, _excluded5);
+  if (isGenerating) {
+    return /*#__PURE__*/_react.default.createElement(_generateLoader.default, null);
+  }
+  if (isLoading) {
+    return /*#__PURE__*/_react.default.createElement(_ui.Box, {
+      sx: {
+        width: '100%',
+        maxWidth: 600,
+        margin: '0 auto',
+        alignSelf: 'center'
+      }
+    }, /*#__PURE__*/_react.default.createElement(_loader.default, {
+      color: "inherit"
+    }));
+  }
+  return /*#__PURE__*/_react.default.createElement(_ui.Box, (0, _extends2.default)({
+    sx: {
+      overflowY: 'scroll',
+      p: 8
+    },
+    flexGrow: 1
+  }, props), children);
+};
+Content.propTypes = {
+  children: PropTypes.node,
+  isLoading: PropTypes.bool,
+  isGenerating: PropTypes.bool
+};
+var ErrorMessage = function ErrorMessage(_ref6) {
+  var _ref6$sx = _ref6.sx,
+    sx = _ref6$sx === void 0 ? {} : _ref6$sx,
+    props = (0, _objectWithoutProperties2.default)(_ref6, _excluded6);
+  return /*#__PURE__*/_react.default.createElement(_promptErrorMessage.default, (0, _extends2.default)({
+    actionPosition: "bottom"
+  }, props, {
+    sx: _objectSpread({
+      mb: 6
+    }, sx)
+  }));
+};
+ErrorMessage.propTypes = {
+  sx: PropTypes.object
+};
+View.Panel = _panel.default;
+View.Content = Content;
+View.BackButton = ViewBackButton;
+View.ErrorMessage = ErrorMessage;
+View.PanelHeading = PanelHeading;
+View.ContentHeading = ContentHeading;
+View.propTypes = {
+  children: PropTypes.node
+};
+var _default = View;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/constants/index.js":
+/*!**************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/constants/index.js ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.LOCATIONS = exports.IMAGE_PROMPT_SETTINGS = exports.IMAGE_PROMPT_CATEGORIES = exports.IMAGE_ASPECT_RATIO = void 0;
+var LOCATIONS = {
+  RESIZE: 'resize',
+  GENERATE: 'generate',
+  VARIATIONS: 'variations',
+  IMAGE_TOOLS: 'image-tools',
+  IN_PAINTING: 'in-painting',
+  OUT_PAINTING: 'out-painting',
+  REMOVE_BACKGROUND: 'remove-background',
+  REPLACE_BACKGROUND: 'replace-background',
+  REMOVE_TEXT: 'remove-text'
+};
+exports.LOCATIONS = LOCATIONS;
+var IMAGE_PROMPT_SETTINGS = {
+  IMAGE_TYPE: 'image_type',
+  IMAGE_STYLE: 'style_preset',
+  IMAGE_STRENGTH: 'image_strength',
+  IMAGE_RATIO: 'ratio',
+  IMAGE_ZOOM: 'zoom',
+  IMAGE_UPSCALE: 'upscale_to'
+};
+exports.IMAGE_PROMPT_SETTINGS = IMAGE_PROMPT_SETTINGS;
+var IMAGE_PROMPT_CATEGORIES = {
+  '': {
+    label: __('None', 'elementor'),
+    subCategories: {}
+  },
+  photographic: {
+    label: __('Photographic', 'elementor'),
+    subCategories: {
+      '': __('None', 'elementor'),
+      landscape: __('Landscape', 'elementor'),
+      macro: __('Macro', 'elementor'),
+      portrait: __('Portrait', 'elementor'),
+      'long-exposure': __('Long Exposure', 'elementor')
+    }
+  },
+  background: {
+    label: __('Background', 'elementor'),
+    subCategories: {
+      '': __('None', 'elementor'),
+      floral: __('Floral', 'elementor'),
+      gradient: __('Gradient', 'elementor'),
+      mosaic: __('Mosaic', 'elementor'),
+      neon: __('Neon', 'elementor'),
+      bokeh: __('Bokeh', 'elementor')
+    }
+  },
+  handmade: {
+    label: __('Handmade', 'elementor'),
+    subCategories: {
+      '': __('None', 'elementor'),
+      doodle: __('Doodle', 'elementor'),
+      'line-art': __('Line Art', 'elementor'),
+      'oil-painting': __('Oil Painting', 'elementor'),
+      'pencil-drawing': __('Pencil Drawing', 'elementor'),
+      watercolor: __('Watercolor', 'elementor')
+    }
+  },
+  'digital-art': {
+    label: __('Digital Art', 'elementor'),
+    subCategories: {
+      '': __('None', 'elementor'),
+      amine: __('Anime', 'elementor'),
+      cartoon: __('Cartoon', 'elementor'),
+      cinematic: __('Cinematic', 'elementor'),
+      'comic-book': __('Comic Book', 'elementor'),
+      'fantasy-art': __('Fantasy Art', 'elementor'),
+      isometric: __('Isometric', 'elementor'),
+      vector: __('Vector', 'elementor'),
+      'pixel-art': __('Pixel Art', 'elementor'),
+      'low-poly': __('Low Poly', 'elementor'),
+      'neon-punk': __('Neon Punk', 'elementor')
+    }
+  },
+  '3d': {
+    label: __('3D', 'elementor'),
+    subCategories: {
+      '': __('None', 'elementor'),
+      clay: __('Clay', 'elementor'),
+      digital: __('Digital', 'elementor'),
+      origami: __('Origami', 'elementor'),
+      stone: __('Stone', 'elementor'),
+      wood: __('Wood', 'elementor')
+    }
+  }
+};
+exports.IMAGE_PROMPT_CATEGORIES = IMAGE_PROMPT_CATEGORIES;
+var IMAGE_ASPECT_RATIO = {
+  '1:1': {
+    width: 512,
+    height: 512,
+    label: __('Square', 'elementor') + ' (1:1)'
+  },
+  '3:2': {
+    width: 640,
+    height: 448,
+    label: __('Landscape', 'elementor') + ' (3:2)'
+  },
+  '4:3': {
+    width: 640,
+    height: 448,
+    label: __('Landscape', 'elementor') + ' (4:3)'
+  },
+  '16:9': {
+    width: 704,
+    height: 384,
+    label: __('Landscape', 'elementor') + ' (16:9)'
+  },
+  '2:3': {
+    width: 448,
+    height: 640,
+    label: __('Portrait', 'elementor') + ' (2:3)'
+  },
+  '3:4': {
+    width: 448,
+    height: 640,
+    label: __('Portrait', 'elementor') + ' (3:4)'
+  },
+  '9:16': {
+    width: 384,
+    height: 704,
+    label: __('Portrait', 'elementor') + ' (9:16)'
+  }
+};
+exports.IMAGE_ASPECT_RATIO = IMAGE_ASPECT_RATIO;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/context/edit-image-context.js":
+/*!*************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/context/edit-image-context.js ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.useEditImage = exports.SET_LOADING = exports.SET_ASPECT_RATIO = exports.RESET = exports.EditImageProvider = exports.EditImageContext = void 0;
+var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _useImageSize2 = _interopRequireDefault(__webpack_require__(/*! ../hooks/use-image-size */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-size.js"));
+var _utils = __webpack_require__(/*! ../utils */ "../modules/ai/assets/js/editor/pages/form-media/utils/index.js");
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+var EditImageContext = (0, _react.createContext)({});
+exports.EditImageContext = EditImageContext;
+var SET_STATE = 'SET_STATE';
+var SET_ASPECT_RATIO = 'SET_ASPECT_RATIO';
+exports.SET_ASPECT_RATIO = SET_ASPECT_RATIO;
+var SET_LOADING = 'SET_LOADING';
+exports.SET_LOADING = SET_LOADING;
+var RESET = 'RESET';
+exports.RESET = RESET;
+var initialValue = {
+  id: '',
+  url: '',
+  isLoading: false,
+  aspectRatio: '1:1'
+};
+var reducer = function reducer(state, _ref) {
+  var type = _ref.type,
+    payload = _ref.payload;
+  switch (type) {
+    case SET_STATE:
+      return _objectSpread(_objectSpread({}, state), payload);
+    case SET_ASPECT_RATIO:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        aspectRatio: payload
+      });
+    case SET_LOADING:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        isLoading: payload
+      });
+    case RESET:
+      return initialValue;
+    default:
+      throw Error('Unknown action.');
+  }
+};
+var EditImageProvider = function EditImageProvider(_ref2) {
+  var children = _ref2.children,
+    imageData = _ref2.imageData;
+  var initialData = _objectSpread(_objectSpread({}, initialValue), imageData);
+  var _useReducer = (0, _react.useReducer)(reducer, initialData),
+    _useReducer2 = (0, _slicedToArray2.default)(_useReducer, 2),
+    state = _useReducer2[0],
+    dispatch = _useReducer2[1];
+  return /*#__PURE__*/_react.default.createElement(EditImageContext.Provider, {
+    value: {
+      state: state,
+      dispatch: dispatch
+    }
+  }, children);
+};
+exports.EditImageProvider = EditImageProvider;
+EditImageProvider.propTypes = {
+  children: PropTypes.node,
+  imageData: PropTypes.object
+};
+var useEditImage = function useEditImage() {
+  var _useContext = (0, _react.useContext)(EditImageContext),
+    state = _useContext.state,
+    dispatch = _useContext.dispatch;
+  var id = state.id,
+    url = state.url,
+    aspectRatio = state.aspectRatio,
+    isLoading = state.isLoading;
+  var _useImageSize = (0, _useImageSize2.default)(aspectRatio),
+    width = _useImageSize.width,
+    height = _useImageSize.height;
+  var setEditImage = function setEditImage(payload) {
+    return dispatch({
+      type: SET_STATE,
+      payload: payload
+    });
+  };
+  var setAspectRatio = function setAspectRatio(payload) {
+    return dispatch({
+      type: SET_ASPECT_RATIO,
+      payload: payload
+    });
+  };
+  var reset = function reset() {
+    return dispatch({
+      type: RESET
+    });
+  };
+
+  // Getting the aspect ratio of the image.
+  (0, _react.useEffect)(function () {
+    if (!id) {
+      return;
+    }
+    dispatch({
+      type: SET_LOADING,
+      payload: true
+    });
+    var img = new Image();
+    img.src = url;
+    img.onload = function () {
+      var _getAspectRatioSizes = (0, _utils.getAspectRatioSizes)(img.width, img.height),
+        ratio = _getAspectRatioSizes.ratio;
+      dispatch({
+        type: SET_STATE,
+        payload: {
+          aspectRatio: ratio,
+          isLoading: false
+        }
+      });
+    };
+  }, [id]);
+  return {
+    editImage: state,
+    isLoading: isLoading,
+    aspectRatio: aspectRatio,
+    width: width,
+    height: height,
+    setEditImage: setEditImage,
+    setAspectRatio: setAspectRatio,
+    reset: reset
+  };
+};
+exports.useEditImage = useEditImage;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/context/global-actions-context.js":
+/*!*****************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/context/global-actions-context.js ***!
+  \*****************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.useGlobalActions = exports.GlobalActionsProvider = exports.GlobalActionsContext = void 0;
+var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var GlobalActionsContext = (0, _react.createContext)({});
+exports.GlobalActionsContext = GlobalActionsContext;
+var GlobalActionsProvider = function GlobalActionsProvider(_ref) {
+  var actions = _ref.actions,
+    children = _ref.children;
+  return /*#__PURE__*/_react.default.createElement(GlobalActionsContext.Provider, {
+    value: actions
+  }, children);
+};
+exports.GlobalActionsProvider = GlobalActionsProvider;
+GlobalActionsProvider.propTypes = {
+  actions: PropTypes.object,
+  children: PropTypes.node
+};
+var useGlobalActions = function useGlobalActions() {
+  return (0, _react.useContext)(GlobalActionsContext);
+};
+exports.useGlobalActions = useGlobalActions;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/context/global-settings-context.js":
+/*!******************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/context/global-settings-context.js ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.useGlobalSettings = exports.GlobalSettingsProvider = exports.GlobalSettingsContext = void 0;
+var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var GlobalSettingsContext = (0, _react.createContext)({});
+exports.GlobalSettingsContext = GlobalSettingsContext;
+var GlobalSettingsProvider = function GlobalSettingsProvider(_ref) {
+  var settings = _ref.settings,
+    children = _ref.children;
+  return /*#__PURE__*/_react.default.createElement(GlobalSettingsContext.Provider, {
+    value: settings
+  }, children);
+};
+exports.GlobalSettingsProvider = GlobalSettingsProvider;
+GlobalSettingsProvider.propTypes = {
+  settings: PropTypes.object,
+  children: PropTypes.node
+};
+var useGlobalSettings = function useGlobalSettings() {
+  return (0, _react.useContext)(GlobalSettingsContext);
+};
+exports.useGlobalSettings = useGlobalSettings;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/context/location-context.js":
+/*!***********************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/context/location-context.js ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.useLocation = exports.RoutesContext = exports.NAVIGATE = exports.LocationProvider = exports.BACK = void 0;
+var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "../node_modules/@babel/runtime/helpers/toConsumableArray.js"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+var RoutesContext = (0, _react.createContext)(null);
+exports.RoutesContext = RoutesContext;
+var NAVIGATE = 'NAVIGATE';
+exports.NAVIGATE = NAVIGATE;
+var BACK = 'BACK';
+exports.BACK = BACK;
+var initialValue = {
+  current: '',
+  history: []
+};
+var reducer = function reducer(state, _ref) {
+  var type = _ref.type,
+    payload = _ref.payload;
+  switch (type) {
+    case NAVIGATE:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        current: payload,
+        history: [].concat((0, _toConsumableArray2.default)(state.history), [payload])
+      });
+    case BACK:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        current: state.history[state.history.length - 2],
+        history: state.history.slice(0, state.history.length - 1)
+      });
+    default:
+      return state;
+  }
+};
+var LocationProvider = function LocationProvider(_ref2) {
+  var children = _ref2.children;
+  var _useReducer = (0, _react.useReducer)(reducer, initialValue),
+    _useReducer2 = (0, _slicedToArray2.default)(_useReducer, 2),
+    state = _useReducer2[0],
+    dispatch = _useReducer2[1];
+  return /*#__PURE__*/_react.default.createElement(RoutesContext.Provider, {
+    value: {
+      state: state,
+      dispatch: dispatch
+    }
+  }, children);
+};
+exports.LocationProvider = LocationProvider;
+LocationProvider.propTypes = {
+  children: PropTypes.node
+};
+var useLocation = function useLocation() {
+  var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+    current = _ref3.current;
+  var _useContext = (0, _react.useContext)(RoutesContext),
+    state = _useContext.state,
+    dispatch = _useContext.dispatch;
+  var navigate = function navigate(location) {
+    dispatch({
+      type: NAVIGATE,
+      payload: location
+    });
+  };
+  var back = function back() {
+    dispatch({
+      type: BACK
+    });
+  };
+  (0, _react.useEffect)(function () {
+    if (current) {
+      navigate(current);
+    }
+  }, []);
+  return {
+    current: state.current,
+    history: state.history,
+    navigate: navigate,
+    back: back
+  };
+};
+exports.useLocation = useLocation;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-actions.js":
+/*!**********************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-actions.js ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "../node_modules/@babel/runtime/regenerator/index.js"));
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/objectWithoutProperties */ "../node_modules/@babel/runtime/helpers/objectWithoutProperties.js"));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "../node_modules/@babel/runtime/helpers/asyncToGenerator.js"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _editImageContext = __webpack_require__(/*! ../context/edit-image-context */ "../modules/ai/assets/js/editor/pages/form-media/context/edit-image-context.js");
+var _useImageUpload2 = _interopRequireDefault(__webpack_require__(/*! ./use-image-upload */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-upload.js"));
+var _globalActionsContext = __webpack_require__(/*! ../context/global-actions-context */ "../modules/ai/assets/js/editor/pages/form-media/context/global-actions-context.js");
+var _excluded = ["image"];
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+var normalizeImageData = function normalizeImageData(imageToUpload) {
+  if (!(imageToUpload !== null && imageToUpload !== void 0 && imageToUpload.imageUrl)) {
+    return imageToUpload;
+  }
+  return _objectSpread(_objectSpread({}, imageToUpload), {}, {
+    image_url: imageToUpload.imageUrl,
+    use_gallery_image: true
+  });
+};
+var useImageActions = function useImageActions() {
+  var _useEditImage = (0, _editImageContext.useEditImage)(),
+    editImage = _useEditImage.editImage,
+    setEditImage = _useEditImage.setEditImage;
+  var _useGlobalActions = (0, _globalActionsContext.useGlobalActions)(),
+    setControlImage = _useGlobalActions.setControlImage,
+    saveAndClose = _useGlobalActions.saveAndClose;
+  var _useImageUpload = (0, _useImageUpload2.default)(),
+    attachmentData = _useImageUpload.attachmentData,
+    isUploading = _useImageUpload.isUploading,
+    uploadError = _useImageUpload.uploadError,
+    uploadImage = _useImageUpload.upload,
+    resetUpload = _useImageUpload.resetUpload;
+  var upload = function upload(imageToUpload, prompt) {
+    return uploadImage({
+      image: normalizeImageData(imageToUpload),
+      prompt: prompt || imageToUpload.prompt
+    });
+  };
+  var getFinalImage = /*#__PURE__*/function () {
+    var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(imageToUpload, prompt) {
+      var isImageAlreadyUploaded, image, _result, result;
+      return _regenerator.default.wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            isImageAlreadyUploaded = editImage.url === imageToUpload.url;
+            if (!isImageAlreadyUploaded) {
+              _context.next = 4;
+              break;
+            }
+            // Removing inner image property to avoid duplicated uploads.
+            image = editImage.image, _result = (0, _objectWithoutProperties2.default)(editImage, _excluded);
+            return _context.abrupt("return", _result);
+          case 4:
+            _context.next = 6;
+            return upload(imageToUpload, prompt);
+          case 6:
+            result = _context.sent;
+            return _context.abrupt("return", result.image);
+          case 8:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return function getFinalImage(_x, _x2) {
+      return _ref.apply(this, arguments);
+    };
+  }();
+  var edit = /*#__PURE__*/function () {
+    var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(imageToUpload, prompt) {
+      var result;
+      return _regenerator.default.wrap(function _callee2$(_context2) {
+        while (1) switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return upload(imageToUpload, prompt);
+          case 2:
+            result = _context2.sent;
+            setEditImage(result.image);
+          case 4:
+          case "end":
+            return _context2.stop();
+        }
+      }, _callee2);
+    }));
+    return function edit(_x3, _x4) {
+      return _ref2.apply(this, arguments);
+    };
+  }();
+  var use = /*#__PURE__*/function () {
+    var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(imageToUpload, prompt) {
+      var result;
+      return _regenerator.default.wrap(function _callee3$(_context3) {
+        while (1) switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return getFinalImage(imageToUpload, prompt);
+          case 2:
+            result = _context3.sent;
+            setControlImage(result);
+            saveAndClose();
+          case 5:
+          case "end":
+            return _context3.stop();
+        }
+      }, _callee3);
+    }));
+    return function use(_x5, _x6) {
+      return _ref3.apply(this, arguments);
+    };
+  }();
+  return {
+    use: use,
+    edit: edit,
+    reset: resetUpload,
+    error: uploadError,
+    data: attachmentData,
+    isLoading: isUploading
+  };
+};
+var _default = useImageActions;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-prompt-enhancer.js":
+/*!******************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-prompt-enhancer.js ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _api = __webpack_require__(/*! ../../../api */ "../modules/ai/assets/js/editor/api/index.js");
+var _usePrompt2 = _interopRequireDefault(__webpack_require__(/*! ../../../hooks/use-prompt */ "../modules/ai/assets/js/editor/hooks/use-prompt.js"));
+var getResult = function getResult(prompt) {
+  return (0, _api.getImagePromptEnhanced)(prompt);
+};
+var usePromptEnhancer = function usePromptEnhancer(prompt) {
+  var _usePrompt = (0, _usePrompt2.default)(function () {
+      return getResult(prompt);
+    }, prompt),
+    enhancedData = _usePrompt.data,
+    isEnhancing = _usePrompt.isLoading,
+    enhance = _usePrompt.send;
+  return {
+    enhance: enhance,
+    isEnhancing: isEnhancing,
+    enhancedPrompt: enhancedData === null || enhancedData === void 0 ? void 0 : enhancedData.result
+  };
+};
+var _default = usePromptEnhancer;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-prompt.js":
+/*!*********************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-prompt.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = __webpack_require__(/*! react */ "react");
+var _usePrompt = _interopRequireDefault(__webpack_require__(/*! ../../../hooks/use-prompt */ "../modules/ai/assets/js/editor/hooks/use-prompt.js"));
+var _globalActionsContext = __webpack_require__(/*! ../context/global-actions-context */ "../modules/ai/assets/js/editor/pages/form-media/context/global-actions-context.js");
+var useImagePrompt = function useImagePrompt() {
+  var promptData = _usePrompt.default.apply(void 0, arguments);
+  var _useGlobalActions = (0, _globalActionsContext.useGlobalActions)(),
+    setHasUnsavedChanges = _useGlobalActions.setHasUnsavedChanges,
+    state = _useGlobalActions.state;
+  (0, _react.useEffect)(function () {
+    var _promptData$data;
+    if ((_promptData$data = promptData.data) !== null && _promptData$data !== void 0 && _promptData$data.result) {
+      // Updating the hasUnsavedChanges global state that will trigger the unsaved changes dialog.
+      setHasUnsavedChanges(true);
+    }
+  }, [promptData.data]);
+  (0, _react.useEffect)(function () {
+    if (state.isAllSaved) {
+      promptData.sendUsageData();
+    }
+  }, [state.isAllSaved]);
+  return promptData;
+};
+var _default = useImagePrompt;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-size.js":
+/*!*******************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-size.js ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _constants = __webpack_require__(/*! ../constants */ "../modules/ai/assets/js/editor/pages/form-media/constants/index.js");
+var useImageSize = function useImageSize(aspectRatio) {
+  var _IMAGE_ASPECT_RATIO$a = _constants.IMAGE_ASPECT_RATIO[aspectRatio],
+    width = _IMAGE_ASPECT_RATIO$a.width,
+    height = _IMAGE_ASPECT_RATIO$a.height;
+  return {
+    width: width,
+    height: height
+  };
+};
+var _default = useImageSize;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-upload.js":
+/*!*********************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-upload.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+var _react = __webpack_require__(/*! react */ "react");
+var _api = __webpack_require__(/*! ../../../api */ "../modules/ai/assets/js/editor/api/index.js");
+var useImageUpload = function useImageUpload() {
+  var _useState = (0, _react.useState)(false),
+    _useState2 = (0, _slicedToArray2.default)(_useState, 2),
+    isUploading = _useState2[0],
+    setIsUploading = _useState2[1];
+  var _useState3 = (0, _react.useState)(''),
+    _useState4 = (0, _slicedToArray2.default)(_useState3, 2),
+    uploadError = _useState4[0],
+    setUploadError = _useState4[1];
+  var _useState5 = (0, _react.useState)({}),
+    _useState6 = (0, _slicedToArray2.default)(_useState5, 2),
+    attachmentData = _useState6[0],
+    setAttachmentData = _useState6[1];
+  var upload = function upload(_ref) {
+    var image = _ref.image,
+      prompt = _ref.prompt;
+    return new Promise(function (resolve, reject) {
+      setUploadError('');
+      setAttachmentData({});
+      setIsUploading(true);
+      (0, _api.uploadImage)({
+        image: image,
+        prompt: prompt
+      }).then(function (result) {
+        setAttachmentData(result);
+        resolve(result);
+      }).catch(function (err) {
+        var error = (err === null || err === void 0 ? void 0 : err.responseText) || err;
+        setUploadError(error);
+        reject(error);
+      }).finally(function () {
+        return setIsUploading(false);
+      });
+    });
+  };
+  var resetUpload = function resetUpload() {
+    setUploadError('');
+    setAttachmentData({});
+    setIsUploading(false);
+  };
+  return {
+    upload: upload,
+    resetUpload: resetUpload,
+    isUploading: isUploading,
+    uploadError: uploadError,
+    attachmentData: attachmentData
+  };
+};
+var _default = useImageUpload;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-prompt-settings.js":
+/*!************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/hooks/use-prompt-settings.js ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.IMAGE_ZOOM = exports.IMAGE_UPSCALE = exports.IMAGE_TYPE = exports.IMAGE_STYLE = exports.IMAGE_STRENGTH = exports.IMAGE_RATIO = void 0;
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+var _react = __webpack_require__(/*! react */ "react");
+var _constants = __webpack_require__(/*! ../constants */ "../modules/ai/assets/js/editor/pages/form-media/constants/index.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+var IMAGE_TYPE = _constants.IMAGE_PROMPT_SETTINGS.IMAGE_TYPE,
+  IMAGE_STYLE = _constants.IMAGE_PROMPT_SETTINGS.IMAGE_STYLE,
+  IMAGE_STRENGTH = _constants.IMAGE_PROMPT_SETTINGS.IMAGE_STRENGTH,
+  IMAGE_RATIO = _constants.IMAGE_PROMPT_SETTINGS.IMAGE_RATIO,
+  IMAGE_ZOOM = _constants.IMAGE_PROMPT_SETTINGS.IMAGE_ZOOM,
+  IMAGE_UPSCALE = _constants.IMAGE_PROMPT_SETTINGS.IMAGE_UPSCALE;
+exports.IMAGE_UPSCALE = IMAGE_UPSCALE;
+exports.IMAGE_ZOOM = IMAGE_ZOOM;
+exports.IMAGE_RATIO = IMAGE_RATIO;
+exports.IMAGE_STRENGTH = IMAGE_STRENGTH;
+exports.IMAGE_STYLE = IMAGE_STYLE;
+exports.IMAGE_TYPE = IMAGE_TYPE;
+var DEFAULT_TYPE = '';
+var DEFAULT_STYLE = '';
+var DEFAULT_STRENGTH = 0;
+var DEFAULT_RATIO = '1:1';
+var DEFAULT_ZOOM = '1';
+var DEFAULT_UPSCALE = '512';
+var usePromptSettings = function usePromptSettings() {
+  var _useState3;
+  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+    _ref$type = _ref.type,
+    type = _ref$type === void 0 ? DEFAULT_TYPE : _ref$type,
+    _ref$style = _ref.style,
+    style = _ref$style === void 0 ? DEFAULT_STYLE : _ref$style,
+    _ref$imageWeight = _ref.imageWeight,
+    imageWeight = _ref$imageWeight === void 0 ? DEFAULT_STRENGTH : _ref$imageWeight,
+    _ref$aspectRatio = _ref.aspectRatio,
+    aspectRatio = _ref$aspectRatio === void 0 ? DEFAULT_RATIO : _ref$aspectRatio,
+    _ref$zoom = _ref.zoom,
+    zoom = _ref$zoom === void 0 ? DEFAULT_ZOOM : _ref$zoom,
+    _ref$upScaleTo = _ref.upScaleTo,
+    upScaleTo = _ref$upScaleTo === void 0 ? DEFAULT_UPSCALE : _ref$upScaleTo;
+  var _useState = (0, _react.useState)((_useState3 = {}, (0, _defineProperty2.default)(_useState3, IMAGE_TYPE, type), (0, _defineProperty2.default)(_useState3, IMAGE_STYLE, style), (0, _defineProperty2.default)(_useState3, IMAGE_STRENGTH, imageWeight), (0, _defineProperty2.default)(_useState3, IMAGE_RATIO, aspectRatio), (0, _defineProperty2.default)(_useState3, IMAGE_ZOOM, zoom), (0, _defineProperty2.default)(_useState3, IMAGE_UPSCALE, upScaleTo), _useState3)),
+    _useState2 = (0, _slicedToArray2.default)(_useState, 2),
+    settings = _useState2[0],
+    setSettings = _useState2[1];
+  var updateSettings = function updateSettings(updated) {
+    return setSettings(function (prev) {
+      return _objectSpread(_objectSpread({}, prev), updated);
+    });
+  };
+  var resetSettings = function resetSettings() {
+    var _setSettings;
+    setSettings((_setSettings = {}, (0, _defineProperty2.default)(_setSettings, IMAGE_TYPE, type), (0, _defineProperty2.default)(_setSettings, IMAGE_STYLE, DEFAULT_STYLE), (0, _defineProperty2.default)(_setSettings, IMAGE_STRENGTH, DEFAULT_STRENGTH), (0, _defineProperty2.default)(_setSettings, IMAGE_RATIO, aspectRatio), (0, _defineProperty2.default)(_setSettings, IMAGE_ZOOM, DEFAULT_ZOOM), (0, _defineProperty2.default)(_setSettings, IMAGE_UPSCALE, DEFAULT_UPSCALE), _setSettings));
+  };
+  return {
+    settings: settings,
+    updateSettings: updateSettings,
+    resetSettings: resetSettings
+  };
+};
+var _default = usePromptSettings;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/index.js":
+/*!****************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/index.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _locationContext = __webpack_require__(/*! ./context/location-context */ "../modules/ai/assets/js/editor/pages/form-media/context/location-context.js");
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _promptDialog = _interopRequireDefault(__webpack_require__(/*! ../../components/prompt-dialog */ "../modules/ai/assets/js/editor/components/prompt-dialog.js"));
+var _mediaOutlet = _interopRequireDefault(__webpack_require__(/*! ./media-outlet */ "../modules/ai/assets/js/editor/pages/form-media/media-outlet.js"));
+var _unsavedChangesAlert = _interopRequireDefault(__webpack_require__(/*! ./components/unsaved-changes-alert */ "../modules/ai/assets/js/editor/pages/form-media/components/unsaved-changes-alert.js"));
+var _editImageContext = __webpack_require__(/*! ./context/edit-image-context */ "../modules/ai/assets/js/editor/pages/form-media/context/edit-image-context.js");
+var _globalActionsContext = __webpack_require__(/*! ./context/global-actions-context */ "../modules/ai/assets/js/editor/pages/form-media/context/global-actions-context.js");
+var _globalSettingsContext = __webpack_require__(/*! ./context/global-settings-context */ "../modules/ai/assets/js/editor/pages/form-media/context/global-settings-context.js");
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+var initialData = {
+  isAllSaved: false,
+  hasUnsavedChanges: false
+};
+var SET_UNSAVED_CHANGES = 'SET_UNSAVED_CHANGES';
+var SAVE_AND_CLOSE = 'SAVE_AND_CLOSE';
+var reducer = function reducer(state, _ref) {
+  var type = _ref.type,
+    payload = _ref.payload;
+  switch (type) {
+    case SET_UNSAVED_CHANGES:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        hasUnsavedChanges: payload,
+        isAllSaved: payload ? false : state.isAllSaved
+      });
+    case SAVE_AND_CLOSE:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        isAllSaved: true,
+        hasUnsavedChanges: false
+      });
+    case RESET:
+      return initialValue;
+    default:
+      throw Error('Unknown action.');
+  }
+};
+var FormMedia = function FormMedia(_ref2) {
+  var onClose = _ref2.onClose,
+    DialogProps = _ref2.DialogProps,
+    getControlValue = _ref2.getControlValue,
+    controlView = _ref2.controlView,
+    additionalOptions = _ref2.additionalOptions,
+    maybeRenderUpgradeChip = _ref2.maybeRenderUpgradeChip;
+  var _useReducer = (0, _react.useReducer)(reducer, initialData),
+    _useReducer2 = (0, _slicedToArray2.default)(_useReducer, 2),
+    state = _useReducer2[0],
+    dispatch = _useReducer2[1];
+  var _useState = (0, _react.useState)(false),
+    _useState2 = (0, _slicedToArray2.default)(_useState, 2),
+    showUnsavedChangeAlert = _useState2[0],
+    setShowUnsavedChangeAlert = _useState2[1];
+  var setHasUnsavedChanges = function setHasUnsavedChanges(payload) {
+    return dispatch({
+      type: SET_UNSAVED_CHANGES,
+      payload: payload
+    });
+  };
+  var saveAndClose = function saveAndClose() {
+    return dispatch({
+      type: SAVE_AND_CLOSE
+    });
+  };
+  var onCloseIntent = function onCloseIntent() {
+    if (state.hasUnsavedChanges) {
+      setShowUnsavedChangeAlert(true);
+      return;
+    }
+    onClose();
+  };
+  var editImageInitialData = getControlValue() === (additionalOptions === null || additionalOptions === void 0 ? void 0 : additionalOptions.defaultValue) ? {} : getControlValue();
+  var globalSettings = {
+    initialImageType: (additionalOptions === null || additionalOptions === void 0 ? void 0 : additionalOptions.defaultImageType) || ''
+  };
+  var globalActions = {
+    state: state,
+    getControlValue: getControlValue,
+    saveAndClose: saveAndClose,
+    close: onCloseIntent,
+    setHasUnsavedChanges: setHasUnsavedChanges,
+    setControlImage: function setControlImage(image) {
+      controlView.setSettingsModel(image);
+      controlView.applySavedValue();
+    }
+  };
+  (0, _react.useEffect)(function () {
+    if (state.isAllSaved) {
+      // Closing the app only once the state was updated, to allow registered effects to take place before closing.
+      onClose();
+    }
+  }, [state.isAllSaved]);
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_promptDialog.default, (0, _extends2.default)({
+    onClose: function onClose() {
+      return onCloseIntent();
+    },
+    maxWidth: "lg"
+  }, DialogProps), /*#__PURE__*/_react.default.createElement(_promptDialog.default.Header, {
+    onClose: function onClose() {
+      return onCloseIntent();
+    }
+  }, maybeRenderUpgradeChip()), /*#__PURE__*/_react.default.createElement(_ui.Divider, null), /*#__PURE__*/_react.default.createElement(_globalSettingsContext.GlobalSettingsProvider, {
+    settings: globalSettings
+  }, /*#__PURE__*/_react.default.createElement(_globalActionsContext.GlobalActionsProvider, {
+    actions: globalActions
+  }, /*#__PURE__*/_react.default.createElement(_locationContext.LocationProvider, null, /*#__PURE__*/_react.default.createElement(_editImageContext.EditImageProvider, {
+    imageData: editImageInitialData
+  }, /*#__PURE__*/_react.default.createElement(_mediaOutlet.default, null)))))), showUnsavedChangeAlert && /*#__PURE__*/_react.default.createElement(_unsavedChangesAlert.default, {
+    onClose: onClose,
+    onCancel: function onCancel() {
+      return setShowUnsavedChangeAlert(false);
+    },
+    open: true
+  }));
+};
+FormMedia.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  DialogProps: PropTypes.object,
+  getControlValue: PropTypes.func.isRequired,
+  controlView: PropTypes.object,
+  additionalOptions: PropTypes.object,
+  credits: PropTypes.number,
+  maybeRenderUpgradeChip: PropTypes.func
+};
+var _default = FormMedia;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/media-outlet.js":
+/*!***********************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/media-outlet.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
+var _view = _interopRequireDefault(__webpack_require__(/*! ./components/view */ "../modules/ai/assets/js/editor/pages/form-media/components/view.js"));
+var _loader = _interopRequireDefault(__webpack_require__(/*! ../../components/loader */ "../modules/ai/assets/js/editor/components/loader.js"));
+var _constants = __webpack_require__(/*! ./constants */ "../modules/ai/assets/js/editor/pages/form-media/constants/index.js");
+var _generate = _interopRequireDefault(__webpack_require__(/*! ./views/generate */ "../modules/ai/assets/js/editor/pages/form-media/views/generate/index.js"));
+var _imageTools = _interopRequireDefault(__webpack_require__(/*! ./views/image-tools */ "../modules/ai/assets/js/editor/pages/form-media/views/image-tools/index.js"));
+var _resize = _interopRequireDefault(__webpack_require__(/*! ./views/resize */ "../modules/ai/assets/js/editor/pages/form-media/views/resize/index.js"));
+var _inPainting = _interopRequireDefault(__webpack_require__(/*! ./views/in-painting */ "../modules/ai/assets/js/editor/pages/form-media/views/in-painting/index.js"));
+var _outPainting = _interopRequireDefault(__webpack_require__(/*! ./views/out-painting */ "../modules/ai/assets/js/editor/pages/form-media/views/out-painting/index.js"));
+var _variations = _interopRequireDefault(__webpack_require__(/*! ./views/variations */ "../modules/ai/assets/js/editor/pages/form-media/views/variations/index.js"));
+var _replaceBackground = _interopRequireDefault(__webpack_require__(/*! ./views/replace-background */ "../modules/ai/assets/js/editor/pages/form-media/views/replace-background/index.js"));
+var _removeBackground = _interopRequireDefault(__webpack_require__(/*! ./views/remove-background */ "../modules/ai/assets/js/editor/pages/form-media/views/remove-background/index.js"));
+var _locationContext = __webpack_require__(/*! ./context/location-context */ "../modules/ai/assets/js/editor/pages/form-media/context/location-context.js");
+var _editImageContext = __webpack_require__(/*! ./context/edit-image-context */ "../modules/ai/assets/js/editor/pages/form-media/context/edit-image-context.js");
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var MediaOutlet = function MediaOutlet() {
+  var _useEditImage = (0, _editImageContext.useEditImage)(),
+    editImage = _useEditImage.editImage;
+  var _useLocation = (0, _locationContext.useLocation)({
+      current: _constants.LOCATIONS.GENERATE
+    }),
+    current = _useLocation.current,
+    navigate = _useLocation.navigate;
+  (0, _react.useEffect)(function () {
+    var isNotPlaceholderImage = editImage.id;
+    if (isNotPlaceholderImage) {
+      navigate(_constants.LOCATIONS.IMAGE_TOOLS);
+    }
+  }, [editImage.id]);
+  if (!current) {
+    return /*#__PURE__*/_react.default.createElement(_view.default, {
+      alignItems: "center"
+    }, /*#__PURE__*/_react.default.createElement(_loader.default, null));
+  }
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, current === _constants.LOCATIONS.GENERATE && /*#__PURE__*/_react.default.createElement(_generate.default, null), current === _constants.LOCATIONS.IMAGE_TOOLS && /*#__PURE__*/_react.default.createElement(_imageTools.default, null), current === _constants.LOCATIONS.VARIATIONS && /*#__PURE__*/_react.default.createElement(_variations.default, null), current === _constants.LOCATIONS.IN_PAINTING && /*#__PURE__*/_react.default.createElement(_inPainting.default, null), current === _constants.LOCATIONS.OUT_PAINTING && /*#__PURE__*/_react.default.createElement(_outPainting.default, null), current === _constants.LOCATIONS.RESIZE && /*#__PURE__*/_react.default.createElement(_resize.default, null), current === _constants.LOCATIONS.REPLACE_BACKGROUND && /*#__PURE__*/_react.default.createElement(_replaceBackground.default, null), current === _constants.LOCATIONS.REMOVE_BACKGROUND && /*#__PURE__*/_react.default.createElement(_removeBackground.default, null));
+};
+var _default = MediaOutlet;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/utils/index.js":
+/*!**********************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/utils/index.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.getAspectRatioSizes = void 0;
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+var _constants = __webpack_require__(/*! ../constants */ "../modules/ai/assets/js/editor/pages/form-media/constants/index.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+var getAspectRatioSizes = function getAspectRatioSizes(width, height) {
+  var aspectRatios = Object.keys(_constants.IMAGE_ASPECT_RATIO);
+  var targetRatio = width / height;
+  var closestRatio = aspectRatios[0];
+  var minDiff = Infinity;
+  aspectRatios.forEach(function (ratio) {
+    var _ratio$split$map = ratio.split(':').map(Number),
+      _ratio$split$map2 = (0, _slicedToArray2.default)(_ratio$split$map, 2),
+      w = _ratio$split$map2[0],
+      h = _ratio$split$map2[1];
+    var diff = Math.abs(targetRatio - w / h);
+    if (diff < minDiff) {
+      minDiff = diff;
+      closestRatio = ratio;
+    }
+  });
+  return _objectSpread({
+    ratio: closestRatio
+  }, _constants.IMAGE_ASPECT_RATIO[closestRatio]);
+};
+exports.getAspectRatioSizes = getAspectRatioSizes;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/views/generate/hooks/use-suggested-images.js":
+/*!****************************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/views/generate/hooks/use-suggested-images.js ***!
+  \****************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+var _react = __webpack_require__(/*! react */ "react");
+var _useImagesPreload2 = _interopRequireDefault(__webpack_require__(/*! ../../../../../hooks/use-images-preload */ "../modules/ai/assets/js/editor/hooks/use-images-preload.js"));
+var _useSessionStorage2 = _interopRequireDefault(__webpack_require__(/*! ../../../../../hooks/use-session-storage */ "../modules/ai/assets/js/editor/hooks/use-session-storage.js"));
+var shuffleImages = function shuffleImages(images) {
+  return images.map(function (image) {
+    return [Math.random(), image];
+  }).sort(function (_ref, _ref2) {
+    var _ref3 = (0, _slicedToArray2.default)(_ref, 1),
+      a = _ref3[0];
+    var _ref4 = (0, _slicedToArray2.default)(_ref2, 1),
+      b = _ref4[0];
+    return a - b;
+  }).map(function (_ref5) {
+    var _ref6 = (0, _slicedToArray2.default)(_ref5, 2),
+      image = _ref6[1];
+    return image;
+  });
+};
+var useSuggestedImages = function useSuggestedImages(_ref7) {
+  var selectedType = _ref7.selectedType;
+  var _useState = (0, _react.useState)(false),
+    _useState2 = (0, _slicedToArray2.default)(_useState, 2),
+    isLoading = _useState2[0],
+    setIsLoading = _useState2[1];
+  var _useSessionStorage = (0, _useSessionStorage2.default)('ai-image-gallery', {
+      images: []
+    }),
+    data = _useSessionStorage.data,
+    setStateAndSessionData = _useSessionStorage.setStateAndSessionData;
+  var _useImagesPreload = (0, _useImagesPreload2.default)(),
+    ready = _useImagesPreload.ready,
+    preloadImages = _useImagesPreload.preloadImages;
+  var imagesData = (0, _react.useMemo)(function () {
+    var shuffledImages = shuffleImages(data.images);
+    if (!selectedType) {
+      return shuffledImages;
+    }
+    var categoryImages = shuffledImages.filter(function (_ref8) {
+      var imageType = _ref8.imageType;
+      return imageType.includes(selectedType);
+    });
+
+    // Some categories don't have images, so we TEMPORARLY fallback to the shuffled images.
+    return categoryImages.length ? categoryImages : shuffledImages;
+  }, [selectedType, data]);
+  var fetchImages = function fetchImages() {
+    setIsLoading(true);
+    fetch('https://my.elementor.com/ai/images-prompt-gallery/ai-gallery.json').then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      return setStateAndSessionData(json);
+    })
+    // eslint-disable-next-line no-console
+    .catch(function (e) {
+      return console.log(e.message);
+    }).finally(function () {
+      return setIsLoading(false);
+    });
+  };
+  (0, _react.useEffect)(function () {
+    if (0 === (data === null || data === void 0 ? void 0 : data.images.length)) {
+      fetchImages();
+      return;
+    }
+    preloadImages(data.images.map(function (_ref9) {
+      var thumbnailUrl = _ref9.thumbnailUrl;
+      return thumbnailUrl;
+    }));
+  }, [data]);
+  return {
+    imagesData: imagesData,
+    isLoading: !ready || isLoading
+  };
+};
+var _default = useSuggestedImages;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/views/generate/hooks/use-text-to-image.js":
+/*!*************************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/views/generate/hooks/use-text-to-image.js ***!
+  \*************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _api = __webpack_require__(/*! ../../../../../api */ "../modules/ai/assets/js/editor/api/index.js");
+var _useImagePrompt = _interopRequireDefault(__webpack_require__(/*! ../../../hooks/use-image-prompt */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-prompt.js"));
+var useTextToImage = function useTextToImage(initialValue) {
+  return (0, _useImagePrompt.default)(_api.getTextToImageGeneration, initialValue);
+};
+var _default = useTextToImage;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/views/generate/index.js":
+/*!*******************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/views/generate/index.js ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _view = _interopRequireDefault(__webpack_require__(/*! ../../components/view */ "../modules/ai/assets/js/editor/pages/form-media/components/view.js"));
+var _gallery = _interopRequireDefault(__webpack_require__(/*! ../../components/gallery */ "../modules/ai/assets/js/editor/pages/form-media/components/gallery.js"));
+var _imageForm = _interopRequireDefault(__webpack_require__(/*! ../../components/image-form */ "../modules/ai/assets/js/editor/pages/form-media/components/image-form.js"));
+var _promptField = _interopRequireDefault(__webpack_require__(/*! ../../components/prompt-field */ "../modules/ai/assets/js/editor/pages/form-media/components/prompt-field.js"));
+var _imageTypeSelect = _interopRequireDefault(__webpack_require__(/*! ../../components/image-type-select */ "../modules/ai/assets/js/editor/pages/form-media/components/image-type-select.js"));
+var _imageStyleSelect = _interopRequireDefault(__webpack_require__(/*! ../../components/image-style-select */ "../modules/ai/assets/js/editor/pages/form-media/components/image-style-select.js"));
+var _imageRatioSelect = _interopRequireDefault(__webpack_require__(/*! ../../components/image-ratio-select */ "../modules/ai/assets/js/editor/pages/form-media/components/image-ratio-select.js"));
+var _generateAgainSubmit = _interopRequireDefault(__webpack_require__(/*! ../../components/generate-again-submit */ "../modules/ai/assets/js/editor/pages/form-media/components/generate-again-submit.js"));
+var _newPromptButton = _interopRequireDefault(__webpack_require__(/*! ../../components/new-prompt-button */ "../modules/ai/assets/js/editor/pages/form-media/components/new-prompt-button.js"));
+var _generateImagesSubmit = _interopRequireDefault(__webpack_require__(/*! ../../components/generate-images-submit */ "../modules/ai/assets/js/editor/pages/form-media/components/generate-images-submit.js"));
+var _imagesDisplay = _interopRequireDefault(__webpack_require__(/*! ../../components/images-display */ "../modules/ai/assets/js/editor/pages/form-media/components/images-display.js"));
+var _imageActions = _interopRequireDefault(__webpack_require__(/*! ../../components/image-actions */ "../modules/ai/assets/js/editor/pages/form-media/components/image-actions.js"));
+var _usePromptSettings2 = _interopRequireWildcard(__webpack_require__(/*! ../../hooks/use-prompt-settings */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-prompt-settings.js"));
+var _useSuggestedImages2 = _interopRequireDefault(__webpack_require__(/*! ./hooks/use-suggested-images */ "../modules/ai/assets/js/editor/pages/form-media/views/generate/hooks/use-suggested-images.js"));
+var _useTextToImage2 = _interopRequireDefault(__webpack_require__(/*! ./hooks/use-text-to-image */ "../modules/ai/assets/js/editor/pages/form-media/views/generate/hooks/use-text-to-image.js"));
+var _useImageActions2 = _interopRequireDefault(__webpack_require__(/*! ../../hooks/use-image-actions */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-actions.js"));
+var _globalSettingsContext = __webpack_require__(/*! ../../context/global-settings-context */ "../modules/ai/assets/js/editor/pages/form-media/context/global-settings-context.js");
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var getPromptPlaceholder = function getPromptPlaceholder(images) {
+  if (!(images !== null && images !== void 0 && images.length)) {
+    return __('describe your image', 'elementor');
+  }
+  var randomImage = images[Math.floor(Math.random() * images.length)];
+  return randomImage.prompt;
+};
+var Generate = function Generate() {
+  var _useState = (0, _react.useState)(''),
+    _useState2 = (0, _slicedToArray2.default)(_useState, 2),
+    prompt = _useState2[0],
+    setPrompt = _useState2[1];
+  var _useGlobalSettings = (0, _globalSettingsContext.useGlobalSettings)(),
+    initialImageType = _useGlobalSettings.initialImageType;
+  var _usePromptSettings = (0, _usePromptSettings2.default)({
+      type: initialImageType
+    }),
+    settings = _usePromptSettings.settings,
+    updateSettings = _usePromptSettings.updateSettings,
+    resetSettings = _usePromptSettings.resetSettings;
+  var _useSuggestedImages = (0, _useSuggestedImages2.default)({
+      selectedType: settings[_usePromptSettings2.IMAGE_TYPE]
+    }),
+    suggestedImages = _useSuggestedImages.imagesData,
+    isPreloading = _useSuggestedImages.isLoading;
+  var promptPlaceholder = getPromptPlaceholder(suggestedImages);
+  var _useTextToImage = (0, _useTextToImage2.default)(),
+    generatedImages = _useTextToImage.data,
+    send = _useTextToImage.send,
+    isGenerating = _useTextToImage.isLoading,
+    error = _useTextToImage.error,
+    reset = _useTextToImage.reset;
+  var _useImageActions = (0, _useImageActions2.default)(),
+    use = _useImageActions.use,
+    edit = _useImageActions.edit,
+    isUploading = _useImageActions.isLoading;
+  var isLoading = isPreloading || isGenerating || isUploading;
+
+  // The aspect ratio in the content view shuld only be updated when the generated images are updated.
+  var generateAspectRatio = (0, _react.useMemo)(function () {
+    return settings[_usePromptSettings2.IMAGE_RATIO];
+  }, [generatedImages === null || generatedImages === void 0 ? void 0 : generatedImages.result]);
+  var handleSubmit = function handleSubmit(event) {
+    event.preventDefault();
+    send(prompt, settings);
+  };
+  var handleCopyPrompt = function handleCopyPrompt(_ref) {
+    var _updateSettings;
+    var selectedPrompt = _ref.prompt,
+      imageType = _ref.imageType;
+    setPrompt(selectedPrompt);
+    var _imageType$split = imageType.split('/'),
+      _imageType$split2 = (0, _slicedToArray2.default)(_imageType$split, 2),
+      type = _imageType$split2[0],
+      style = _imageType$split2[1];
+    updateSettings((_updateSettings = {}, (0, _defineProperty2.default)(_updateSettings, _usePromptSettings2.IMAGE_TYPE, type), (0, _defineProperty2.default)(_updateSettings, _usePromptSettings2.IMAGE_STYLE, style), _updateSettings));
+  };
+  return /*#__PURE__*/_react.default.createElement(_view.default, null, /*#__PURE__*/_react.default.createElement(_view.default.Panel, null, /*#__PURE__*/_react.default.createElement(_view.default.PanelHeading, {
+    primary: __('Imagine anything create everything', 'elementor'),
+    secondary: __('Generate images by selecting the desired type and style, and entering a prompt.', 'elementor')
+  }), error && /*#__PURE__*/_react.default.createElement(_view.default.ErrorMessage, {
+    error: error,
+    onRetry: handleSubmit
+  }), /*#__PURE__*/_react.default.createElement(_imageForm.default, {
+    onSubmit: handleSubmit
+  }, /*#__PURE__*/_react.default.createElement(_promptField.default, {
+    value: prompt,
+    disabled: isLoading,
+    placeholder: promptPlaceholder,
+    onChange: setPrompt
+  }), /*#__PURE__*/_react.default.createElement(_imageTypeSelect.default, {
+    disabled: isLoading,
+    value: settings[_usePromptSettings2.IMAGE_TYPE],
+    onChange: function onChange(event) {
+      return updateSettings((0, _defineProperty2.default)({}, _usePromptSettings2.IMAGE_TYPE, event.target.value));
+    }
+  }), /*#__PURE__*/_react.default.createElement(_imageStyleSelect.default, {
+    type: settings[_usePromptSettings2.IMAGE_TYPE],
+    value: settings[_usePromptSettings2.IMAGE_STYLE],
+    disabled: isLoading || !settings[_usePromptSettings2.IMAGE_TYPE] || false,
+    onChange: function onChange(event) {
+      return updateSettings((0, _defineProperty2.default)({}, _usePromptSettings2.IMAGE_STYLE, event.target.value));
+    }
+  }), /*#__PURE__*/_react.default.createElement(_imageRatioSelect.default, {
+    disabled: isLoading,
+    value: settings[_usePromptSettings2.IMAGE_RATIO],
+    onChange: function onChange(event) {
+      return updateSettings((0, _defineProperty2.default)({}, _usePromptSettings2.IMAGE_RATIO, event.target.value));
+    }
+  }), generatedImages !== null && generatedImages !== void 0 && generatedImages.result ? /*#__PURE__*/_react.default.createElement(_ui.Stack, {
+    gap: 5,
+    sx: {
+      my: 6
+    }
+  }, /*#__PURE__*/_react.default.createElement(_generateAgainSubmit.default, {
+    disabled: isLoading || '' === prompt
+  }), /*#__PURE__*/_react.default.createElement(_newPromptButton.default, {
+    disabled: isLoading,
+    onClick: function onClick() {
+      resetSettings();
+      setPrompt('');
+      reset();
+    }
+  })) : /*#__PURE__*/_react.default.createElement(_generateImagesSubmit.default, {
+    disabled: isLoading || '' === prompt
+  }))), /*#__PURE__*/_react.default.createElement(_view.default.Content, {
+    isLoading: isPreloading || isUploading,
+    isGenerating: isGenerating
+  }, generatedImages !== null && generatedImages !== void 0 && generatedImages.result ? /*#__PURE__*/_react.default.createElement(_imagesDisplay.default, {
+    images: generatedImages === null || generatedImages === void 0 ? void 0 : generatedImages.result,
+    aspectRatio: generateAspectRatio,
+    onUseImage: use,
+    onEditImage: edit
+  }) : /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_view.default.ContentHeading, {
+    primary: __('Spark your imagination with images generated by our community', 'elementor')
+  }), /*#__PURE__*/_react.default.createElement(_gallery.default, {
+    cols: 3
+  }, suggestedImages === null || suggestedImages === void 0 ? void 0 : suggestedImages.map(function (suggestedPrompt) {
+    return /*#__PURE__*/_react.default.createElement(_gallery.default.Image, {
+      variant: "thumbnail",
+      key: suggestedPrompt.prompt,
+      alt: suggestedPrompt.prompt,
+      text: suggestedPrompt.prompt,
+      src: suggestedPrompt.thumbnailUrl
+    }, /*#__PURE__*/_react.default.createElement(_imageActions.default, null, /*#__PURE__*/_react.default.createElement(_imageActions.default.UseImage, {
+      onClick: function onClick() {
+        return use(suggestedPrompt);
+      },
+      fullWidth: true
+    }), /*#__PURE__*/_react.default.createElement(_imageActions.default.CopyIcon, {
+      onClick: function onClick() {
+        return handleCopyPrompt(suggestedPrompt);
+      }
+    }), /*#__PURE__*/_react.default.createElement(_imageActions.default.EditIcon, {
+      onClick: function onClick() {
+        return edit(suggestedPrompt);
+      }
+    })));
+  })))));
+};
+var _default = Generate;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/views/image-tools/image-tools-content.js":
+/*!************************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/views/image-tools/image-tools-content.js ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _singleImagePreview = _interopRequireDefault(__webpack_require__(/*! ../../components/single-image-preview */ "../modules/ai/assets/js/editor/pages/form-media/components/single-image-preview.js"));
+var _imageActions = _interopRequireDefault(__webpack_require__(/*! ../../components/image-actions */ "../modules/ai/assets/js/editor/pages/form-media/components/image-actions.js"));
+var _editImageContext = __webpack_require__(/*! ../../context/edit-image-context */ "../modules/ai/assets/js/editor/pages/form-media/context/edit-image-context.js");
+var _useImageActions2 = _interopRequireDefault(__webpack_require__(/*! ../../hooks/use-image-actions */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-actions.js"));
+var ImageToolsContent = function ImageToolsContent() {
+  var _useEditImage = (0, _editImageContext.useEditImage)(),
+    editImage = _useEditImage.editImage,
+    width = _useEditImage.width,
+    height = _useEditImage.height;
+  var _useImageActions = (0, _useImageActions2.default)(),
+    use = _useImageActions.use;
+  return /*#__PURE__*/_react.default.createElement(_singleImagePreview.default, null, /*#__PURE__*/_react.default.createElement(_singleImagePreview.default.Image, {
+    src: editImage.url,
+    style: {
+      width: width,
+      height: height
+    },
+    alt: editImage.alt || __('Image preview', 'elementor')
+  }, /*#__PURE__*/_react.default.createElement(_singleImagePreview.default.Actions, null, /*#__PURE__*/_react.default.createElement(_imageActions.default.UseImage, {
+    onClick: function onClick() {
+      return use(editImage);
+    }
+  }))));
+};
+var _default = ImageToolsContent;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/views/image-tools/image-tools-panel.js":
+/*!**********************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/views/image-tools/image-tools-panel.js ***!
+  \**********************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _expandIcon = _interopRequireDefault(__webpack_require__(/*! ../../../../icons/expand-icon */ "../modules/ai/assets/js/editor/icons/expand-icon.js"));
+var _brushIcon = _interopRequireDefault(__webpack_require__(/*! ../../../../icons/brush-icon */ "../modules/ai/assets/js/editor/icons/brush-icon.js"));
+var _evolveIcon = _interopRequireDefault(__webpack_require__(/*! ../../../../icons/evolve-icon */ "../modules/ai/assets/js/editor/icons/evolve-icon.js"));
+var _enlargerIcon = _interopRequireDefault(__webpack_require__(/*! ../../../../icons/enlarger-icon */ "../modules/ai/assets/js/editor/icons/enlarger-icon.js"));
+var _removeBg = _interopRequireDefault(__webpack_require__(/*! ../../../../icons/remove-bg */ "../modules/ai/assets/js/editor/icons/remove-bg.js"));
+var _replaceBg = _interopRequireDefault(__webpack_require__(/*! ../../../../icons/replace-bg */ "../modules/ai/assets/js/editor/icons/replace-bg.js"));
+var _constants = __webpack_require__(/*! ../../constants */ "../modules/ai/assets/js/editor/pages/form-media/constants/index.js");
+var _locationContext = __webpack_require__(/*! ../../context/location-context */ "../modules/ai/assets/js/editor/pages/form-media/context/location-context.js");
+var TeaserDrawing = function TeaserDrawing() {
+  return /*#__PURE__*/_react.default.createElement(_ui.SvgIcon, {
+    viewBox: "0 0 184 80",
+    sx: {
+      width: 184,
+      height: 80
+    }
+  }, /*#__PURE__*/_react.default.createElement("g", {
+    clipPath: "url(#clip0_3127_96542)"
+  }, /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M49.6014 1.36364C49.6014 0.610521 48.9907 0 48.2373 0C47.4839 0 46.8731 0.610521 46.8731 1.36364C46.8731 1.9664 46.6336 2.54448 46.2072 2.9707C45.7808 3.39692 45.2025 3.63636 44.5995 3.63636C43.8461 3.63636 43.2354 4.24689 43.2354 5C43.2354 5.75311 43.8461 6.36364 44.5995 6.36364C45.2025 6.36364 45.7808 6.60308 46.2072 7.0293C46.6336 7.45552 46.8731 8.0336 46.8731 8.63636C46.8731 9.38948 47.4839 10 48.2373 10C48.9907 10 49.6014 9.38948 49.6014 8.63636C49.6014 8.0336 49.8409 7.45552 50.2673 7.0293C50.6937 6.60308 51.272 6.36364 51.875 6.36364C52.6284 6.36364 53.2392 5.75311 53.2392 5C53.2392 4.24689 52.6284 3.63636 51.875 3.63636C51.272 3.63636 50.6937 3.39692 50.2673 2.9707C49.8409 2.54448 49.6014 1.9664 49.6014 1.36364ZM48.1364 4.89917C48.1706 4.86501 48.2042 4.83041 48.2373 4.79538C48.2703 4.83041 48.304 4.86501 48.3381 4.89917C48.3723 4.93333 48.4069 4.96694 48.4419 5C48.4069 5.03306 48.3723 5.06667 48.3381 5.10083C48.304 5.13499 48.2703 5.16959 48.2373 5.20462C48.2042 5.16959 48.1706 5.13499 48.1364 5.10083C48.1022 5.06667 48.0676 5.03306 48.0326 5C48.0676 4.96694 48.1022 4.93333 48.1364 4.89917Z",
+    fill: "#69727D"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M66.6927 22.3677C66.6927 21.6177 66.082 21.0098 65.3286 21.0098C64.5752 21.0098 63.9644 21.6177 63.9644 22.3677C63.9644 22.9679 63.7249 23.5436 63.2985 23.968C62.8721 24.3924 62.2938 24.6309 61.6908 24.6309C60.9374 24.6309 60.3267 25.2388 60.3267 25.9888C60.3267 26.7387 60.9374 27.3467 61.6908 27.3467C62.2938 27.3467 62.8721 27.5851 63.2985 28.0096C63.7249 28.434 63.9644 29.0096 63.9644 29.6099C63.9644 30.3598 64.5752 30.9678 65.3286 30.9678C66.082 30.9678 66.6927 30.3598 66.6927 29.6099C66.6927 29.0096 66.9323 28.434 67.3586 28.0096C67.785 27.5851 68.3633 27.3467 68.9663 27.3467C69.7197 27.3467 70.3305 26.7387 70.3305 25.9888C70.3305 25.2388 69.7197 24.6309 68.9663 24.6309C68.3633 24.6309 67.785 24.3924 67.3586 23.968C66.9323 23.5436 66.6927 22.9679 66.6927 22.3677ZM65.2277 25.8884C65.2619 25.8544 65.2955 25.8199 65.3286 25.785C65.3616 25.8199 65.3953 25.8544 65.4294 25.8884C65.4636 25.9224 65.4982 25.9559 65.5333 25.9888C65.4982 26.0217 65.4636 26.0552 65.4294 26.0892C65.3953 26.1232 65.3616 26.1577 65.3286 26.1925C65.2955 26.1577 65.2619 26.1232 65.2277 26.0892C65.1935 26.0552 65.1589 26.0217 65.1239 25.9888C65.1589 25.9559 65.1935 25.9224 65.2277 25.8884Z",
+    fill: "#69727D"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M53.9717 12L57.2198 17.0456L3.24796 51.4731L-0.000164873 46.4275L53.9717 12Z",
+    fill: "#69727D"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M64.9761 5L68.2242 10.0456L57.2612 17.0387L54.013 11.9931L64.9761 5Z",
+    fill: "#E6E8EA"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M65.7284 9.49923L64.432 7.48537L56.5088 12.5394L57.8052 14.5533L65.7284 9.49923ZM64.9761 5L54.013 11.9931L57.2612 17.0387L68.2242 10.0456L64.9761 5Z",
+    fill: "#69727D"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M128 41C128 43.7687 121.671 46.2089 112.052 47.6451L114.482 74.7976C114.494 74.8647 114.5 74.9322 114.5 75C114.5 75.0001 114.5 75.0002 114.5 75.0003C114.513 75.1456 114.487 75.2779 114.43 75.3982C113.514 77.9735 103.8 80 91.95 80C79.496 80 69.4 77.7614 69.4 75C69.4 74.8146 69.4456 74.6315 69.5343 74.4513L71.2141 47.5326C62.0087 46.0835 56 43.6977 56 41C56 36.5817 72.1177 33 92 33C111.882 33 128 36.5817 128 41Z",
+    fill: "#69727D"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M106.685 3.08259C112.562 16.564 109.338 34.1761 106.713 41.4407C106.713 41.4407 105.151 41.9127 100.894 41.9715C96.6371 42.0303 95.0251 41.9866 95.0251 41.4558C95.0252 40.9249 94.6272 34.6461 96.4177 22.3308C98.0343 11.2116 102.692 5.02553 105.448 2.75675C105.865 2.4137 106.47 2.58777 106.685 3.08259Z",
+    fill: "#E6E8EA"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M104.883 4.66783C105.347 4.17219 106.14 4.35208 106.38 4.9873C108.716 11.1748 109.254 18.1507 108.889 24.5355C108.513 31.1152 107.184 36.9856 105.954 40.5842C105.778 40.6166 105.55 40.6541 105.265 40.6927C104.388 40.8119 102.974 40.9423 100.88 40.9712C98.7385 41.0008 97.3196 41.0031 96.4377 40.9371C96.2614 40.9239 96.1203 40.9088 96.0088 40.8935C95.9567 39.0573 95.8782 32.9919 97.4073 22.4743C98.766 13.1288 102.302 7.42438 104.883 4.66783ZM106.713 41.4403L107.002 42.3975C107.305 42.3062 107.546 42.0773 107.653 41.7802C109 38.0524 110.481 31.7376 110.886 24.6496C111.29 17.5654 110.626 9.61894 107.602 2.68255C107.147 1.63949 105.792 1.17814 104.812 1.98425C101.838 4.43294 97.0752 10.8574 95.4281 22.1866C93.7715 33.5811 93.975 39.865 94.0187 41.2138C94.0225 41.3324 94.0251 41.4128 94.0251 41.4552C94.025 42.261 94.695 42.5983 95.0067 42.7098C95.3591 42.8358 95.8079 42.8956 96.2886 42.9316C97.2769 43.0055 98.7924 43.0002 100.908 42.971C103.071 42.9411 104.566 42.806 105.534 42.6745C106.018 42.6088 106.371 42.5438 106.61 42.4932C106.729 42.4679 106.82 42.4461 106.885 42.4296C106.917 42.4214 106.943 42.4144 106.962 42.409L106.987 42.4021L106.996 42.3995L106.999 42.3984L107.001 42.398C107.001 42.398 107.002 42.3975 106.713 41.4403ZM106.426 40.4822L106.428 40.4817L106.43 40.4812C106.43 40.4812 106.429 40.4814 106.426 40.4822Z",
+    fill: "#69727D"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M104.22 13.8372C104.787 15.7536 104.996 18.3439 104.953 21.2589C104.907 24.4148 104.569 27.8559 104.134 31.0529C103.7 34.2469 103.172 37.1799 102.753 39.3152C102.544 40.3824 102.361 41.2491 102.232 41.8481C102.22 41.9009 102.209 41.9516 102.199 42.0001H100.503C100.526 38.5025 100.676 33.4168 101.183 28.2866C101.724 22.8227 102.66 17.4299 104.22 13.8372ZM103 43.0001C103.974 43.2266 103.974 43.2264 103.974 43.2262L103.978 43.2093L103.989 43.1613C103.999 43.1192 104.013 43.0571 104.031 42.976C104.067 42.814 104.12 42.5763 104.186 42.2713C104.318 41.6613 104.503 40.7819 104.716 39.7006C105.14 37.5391 105.675 34.5658 106.116 31.3223C106.556 28.0818 106.905 24.5541 106.953 21.2881C107 18.0456 106.753 14.9635 105.943 12.6671C105.815 12.3045 105.676 11.9539 105.512 11.6797C105.394 11.4809 105.045 10.9388 104.371 10.9076C103.702 10.8766 103.301 11.3772 103.156 11.5722C102.959 11.8385 102.774 12.1912 102.594 12.5778C100.767 16.4945 99.7565 22.3931 99.1929 28.0897C98.6258 33.8211 98.5 39.4812 98.5 43.0001V44.0001H103.794L103.974 43.2262L103 43.0001Z",
+    fill: "#69727D"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M79.2952 3.08259C73.4181 16.564 76.6423 34.1761 79.2676 41.4407C79.2676 41.4407 80.8299 41.9127 85.0867 41.9715C89.3434 42.0303 90.9554 41.9866 90.9554 41.4558C90.9553 40.9249 91.3533 34.6461 89.5628 22.3308C87.9462 11.2116 83.2888 5.02553 80.5325 2.75675C80.1157 2.4137 79.511 2.58777 79.2952 3.08259Z",
+    fill: "#E6E8EA"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M81.0978 4.66783C80.6337 4.17219 79.8403 4.35208 79.6005 4.9873C77.2644 11.1748 76.7267 18.1507 77.0914 24.5355C77.4671 31.1152 78.7963 36.9856 80.0267 40.5842C80.2028 40.6166 80.4308 40.6541 80.7155 40.6927C81.5929 40.8119 83.0069 40.9423 85.1005 40.9712C87.242 41.0008 88.6609 41.0031 89.5427 40.9371C89.7191 40.9239 89.8602 40.9088 89.9716 40.8935C90.0238 39.0573 90.1023 32.9919 88.5732 22.4743C87.2145 13.1288 83.6789 7.42438 81.0978 4.66783ZM79.2676 41.4403L78.9784 42.3975C78.676 42.3062 78.4345 42.0773 78.3271 41.7802C76.98 38.0524 75.4994 31.7376 75.0946 24.6496C74.69 17.5654 75.3547 9.61894 78.3786 2.68255C78.8333 1.63949 80.1887 1.17814 81.168 1.98425C84.1429 4.43294 88.9053 10.8574 90.5524 22.1866C92.209 33.5811 92.0055 39.865 91.9618 41.2138C91.958 41.3324 91.9554 41.4128 91.9554 41.4552C91.9554 42.261 91.2855 42.5983 90.9737 42.7098C90.6214 42.8358 90.1726 42.8956 89.6919 42.9316C88.7036 43.0055 87.1881 43.0002 85.0728 42.971C82.9096 42.9411 81.4141 42.806 80.4462 42.6745C79.9621 42.6088 79.6094 42.5438 79.3707 42.4932C79.2514 42.4679 79.1605 42.4461 79.0958 42.4296C79.0635 42.4214 79.0377 42.4144 79.0182 42.409L78.9937 42.4021L78.9849 42.3995L78.9814 42.3984L78.9798 42.398C78.9798 42.398 78.9784 42.3975 79.2676 41.4403ZM79.5541 40.4822L79.5526 40.4817L79.5507 40.4812C79.5507 40.4812 79.5514 40.4814 79.5541 40.4822Z",
+    fill: "#69727D"
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M81.7604 13.8372C81.1939 15.7536 80.9847 18.3439 81.0272 21.2589C81.0733 24.4148 81.4118 27.8559 81.8464 31.0529C82.2805 34.2469 82.8081 37.1799 83.2274 39.3152C83.4369 40.3824 83.6192 41.2491 83.7488 41.8481C83.7603 41.9009 83.7713 41.9516 83.7819 42.0001H85.4771C85.4542 38.5025 85.3049 33.4168 84.7973 28.2866C84.2567 22.8227 83.32 17.4299 81.7604 13.8372ZM82.9805 43.0001C82.0065 43.2266 82.0064 43.2264 82.0064 43.2262L82.0025 43.2093L81.9914 43.1613C81.9818 43.1192 81.9677 43.0571 81.9494 42.976C81.913 42.814 81.8602 42.5763 81.7941 42.2713C81.6621 41.6613 81.4772 40.7819 81.2648 39.7006C80.8404 37.5391 80.3054 34.5658 79.8646 31.3223C79.4241 28.0818 79.0751 24.5541 79.0275 21.2881C78.9801 18.0456 79.227 14.9635 80.0375 12.6671C80.1655 12.3045 80.305 11.9539 80.4683 11.6797C80.5868 11.4809 80.9351 10.9388 81.6092 10.9076C82.2782 10.8766 82.6793 11.3772 82.8241 11.5722C83.0217 11.8385 83.2064 12.1912 83.3867 12.5778C85.2136 16.4945 86.224 22.3931 86.7876 28.0897C87.3546 33.8211 87.4805 39.4812 87.4805 43.0001V44.0001H82.1863L82.0064 43.2262L82.9805 43.0001Z",
+    fill: "#69727D"
+  })), /*#__PURE__*/_react.default.createElement("defs", null, /*#__PURE__*/_react.default.createElement("clipPath", {
+    id: "clip0_3127_96542"
+  }, /*#__PURE__*/_react.default.createElement("rect", {
+    width: "184",
+    height: "80",
+    fill: "white"
+  }))));
+};
+var ImageToolsContainer = (0, _ui.styled)(_ui.Box)(function (_ref) {
+  var theme = _ref.theme;
+  return {
+    height: "calc(100% - 140px)"
+  };
+});
+var ToolsTeaserContainer = (0, _ui.styled)(_ui.Box)(function (_ref2) {
+  var theme = _ref2.theme;
+  return {
+    position: 'sticky',
+    top: "calc(100% - ".concat(theme.spacing(10), ")")
+  };
+});
+var ImageToolsPanel = function ImageToolsPanel() {
+  var _useLocation = (0, _locationContext.useLocation)(),
+    navigate = _useLocation.navigate;
+  var tools = [{
+    label: __('Expand Image', 'elementor'),
+    Icon: _expandIcon.default,
+    onClick: function onClick() {
+      return navigate(_constants.LOCATIONS.OUT_PAINTING);
+    }
+  }, {
+    label: __('Generative Fill', 'elementor'),
+    Icon: _brushIcon.default,
+    onClick: function onClick() {
+      return navigate(_constants.LOCATIONS.IN_PAINTING);
+    }
+  }, {
+    label: __('Resize', 'elementor'),
+    Icon: _enlargerIcon.default,
+    onClick: function onClick() {
+      return navigate(_constants.LOCATIONS.RESIZE);
+    }
+  }, {
+    label: __('Variations', 'elementor'),
+    Icon: _evolveIcon.default,
+    onClick: function onClick() {
+      return navigate(_constants.LOCATIONS.VARIATIONS);
+    }
+  }, {
+    label: __('Remove Background', 'elementor'),
+    Icon: _removeBg.default,
+    onClick: function onClick() {
+      return navigate(_constants.LOCATIONS.REMOVE_BACKGROUND);
+    }
+  }, {
+    label: __('Replace Background', 'elementor'),
+    Icon: _replaceBg.default,
+    onClick: function onClick() {
+      return navigate(_constants.LOCATIONS.REPLACE_BACKGROUND);
+    }
+  }];
+  return /*#__PURE__*/_react.default.createElement(ImageToolsContainer, null, /*#__PURE__*/_react.default.createElement(_ui.Box, {
+    display: "grid",
+    gridTemplateColumns: "repeat(2, 1fr)",
+    gap: 3,
+    justifyContent: "center"
+  }, tools.map(function (_ref3) {
+    var label = _ref3.label,
+      Icon = _ref3.Icon,
+      onClick = _ref3.onClick;
+    return /*#__PURE__*/_react.default.createElement(_ui.Button, {
+      onClick: onClick,
+      key: label,
+      variant: "outlined",
+      color: "secondary",
+      disabled: false,
+      sx: {
+        py: 7,
+        fontSize: '12px',
+        height: 'auto',
+        borderRadius: '4px'
+      }
+    }, /*#__PURE__*/_react.default.createElement(_ui.Box, {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "column"
+    }, /*#__PURE__*/_react.default.createElement(Icon, {
+      sx: {
+        mb: 2
+      }
+    }), label));
+  })), /*#__PURE__*/_react.default.createElement(ToolsTeaserContainer, {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  }, /*#__PURE__*/_react.default.createElement(TeaserDrawing, null), /*#__PURE__*/_react.default.createElement(_ui.Typography, {
+    variant: "body2",
+    align: "center",
+    color: "secondary",
+    sx: {
+      mt: 5
+    }
+  }, __('Stay tuned! More incredible AI tools are coming your way soon.', 'elementor'))));
+};
+ImageToolsPanel.propTypes = {
+  generateNewPrompt: PropTypes.func,
+  panelActive: PropTypes.bool
+};
+var _default = ImageToolsPanel;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/views/image-tools/index.js":
+/*!**********************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/views/image-tools/index.js ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _view = _interopRequireDefault(__webpack_require__(/*! ../../components/view */ "../modules/ai/assets/js/editor/pages/form-media/components/view.js"));
+var _imageToolsPanel = _interopRequireDefault(__webpack_require__(/*! ./image-tools-panel */ "../modules/ai/assets/js/editor/pages/form-media/views/image-tools/image-tools-panel.js"));
+var _imageToolsContent = _interopRequireDefault(__webpack_require__(/*! ./image-tools-content */ "../modules/ai/assets/js/editor/pages/form-media/views/image-tools/image-tools-content.js"));
+var _locationContext = __webpack_require__(/*! ../../context/location-context */ "../modules/ai/assets/js/editor/pages/form-media/context/location-context.js");
+var _constants = __webpack_require__(/*! ../../constants */ "../modules/ai/assets/js/editor/pages/form-media/constants/index.js");
+var ImageTools = function ImageTools() {
+  var _useLocation = (0, _locationContext.useLocation)(),
+    navigate = _useLocation.navigate;
+  return /*#__PURE__*/_react.default.createElement(_view.default, null, /*#__PURE__*/_react.default.createElement(_view.default.Panel, null, /*#__PURE__*/_react.default.createElement(_view.default.BackButton, {
+    onClick: function onClick() {
+      return navigate(_constants.LOCATIONS.GENERATE);
+    }
+  }, __('Generate with a prompt', 'elementor')), /*#__PURE__*/_react.default.createElement(_view.default.PanelHeading, {
+    primary: __('Edit with AI', 'elementor')
+  }), /*#__PURE__*/_react.default.createElement(_imageToolsPanel.default, null)), /*#__PURE__*/_react.default.createElement(_view.default.Content, null, /*#__PURE__*/_react.default.createElement(_imageToolsContent.default, null)));
+};
+var _default = ImageTools;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/views/in-painting/hooks/use-in-painting.js":
+/*!**************************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/views/in-painting/hooks/use-in-painting.js ***!
+  \**************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _api = __webpack_require__(/*! ../../../../../api */ "../modules/ai/assets/js/editor/api/index.js");
+var _useImagePrompt = _interopRequireDefault(__webpack_require__(/*! ../../../hooks/use-image-prompt */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-prompt.js"));
+var useInPainting = function useInPainting(initialValue) {
+  var fetchAction = function fetchAction(prompt, promptSettings, image, mask) {
+    return (0, _api.getImageToImageMaskGeneration)(prompt, promptSettings, image, mask);
+  };
+  return (0, _useImagePrompt.default)(fetchAction, initialValue);
+};
+var _default = useInPainting;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/views/in-painting/in-painting-content.js":
+/*!************************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/views/in-painting/in-painting-content.js ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "../node_modules/@babel/runtime/regenerator/index.js"));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "../node_modules/@babel/runtime/helpers/asyncToGenerator.js"));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _reactSketchCanvas = __webpack_require__(/*! react-sketch-canvas */ "../node_modules/react-sketch-canvas/dist/react-sketch-canvas.esm.js");
+var _undoIcon = _interopRequireDefault(__webpack_require__(/*! ../../../../icons/undo-icon */ "../modules/ai/assets/js/editor/icons/undo-icon.js"));
+var _redoIcon = _interopRequireDefault(__webpack_require__(/*! ../../../../icons/redo-icon */ "../modules/ai/assets/js/editor/icons/redo-icon.js"));
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var STROKE_SELECT_WIDTH = 120;
+var BRUSH_COLOR = 'rgba(0, 0, 0, 0.75)';
+var StyledUndoIcon = (0, _ui.withDirection)(_undoIcon.default);
+var StyledRedoIcon = (0, _ui.withDirection)(_redoIcon.default);
+var BrushCursor = (0, _ui.styled)(_ui.Box, {
+  shouldForwardProp: function shouldForwardProp(prop) {
+    return 'size' === prop;
+  }
+})(function (_ref) {
+  var theme = _ref.theme,
+    size = _ref.size;
+  return {
+    position: 'absolute',
+    width: size,
+    height: size,
+    borderRadius: '50%',
+    backgroundColor: BRUSH_COLOR,
+    pointerEvents: 'none',
+    transform: "translate(".concat('rtl' === theme.direction ? '50%' : '-50%', ", -50%)"),
+    border: "1px solid #fff"
+  };
+});
+var BrishSizeIcon = (0, _ui.styled)(_ui.Box, {
+  shouldForwardProp: function shouldForwardProp(prop) {
+    return 'size' === prop;
+  }
+})(function (_ref2) {
+  var theme = _ref2.theme,
+    size = _ref2.size;
+  return {
+    width: size / 2,
+    height: size / 2,
+    borderRadius: '50%',
+    backgroundColor: theme.palette.secondary.main
+  };
+});
+var InPaintingContent = function InPaintingContent(_ref3) {
+  var editImage = _ref3.editImage,
+    setMask = _ref3.setMask,
+    canvasWidth = _ref3.width,
+    canvasHeight = _ref3.height;
+  var sketchRef = (0, _react.useRef)();
+  var _useState = (0, _react.useState)(30),
+    _useState2 = (0, _slicedToArray2.default)(_useState, 2),
+    stroke = _useState2[0],
+    setStroke = _useState2[1];
+  var brushCursorRef = (0, _react.useRef)();
+  (0, _react.useEffect)(function () {
+    var canvas = document.querySelector('.eui-in-painting-canvas');
+
+    // The BrushCursor should follow the mouse position but should stay only inside the canvas.
+    var positionElement = function positionElement(e) {
+      var _canvas$getBoundingCl = canvas.getBoundingClientRect(),
+        left = _canvas$getBoundingCl.left,
+        top = _canvas$getBoundingCl.top,
+        width = _canvas$getBoundingCl.width,
+        height = _canvas$getBoundingCl.height;
+      var x = e.clientX - left;
+      var y = e.clientY - top;
+      if (x > 0 && x < width && y > 0 && y < height) {
+        brushCursorRef.current.style.left = "".concat(x, "px");
+        brushCursorRef.current.style.top = "".concat(y, "px");
+      }
+    };
+    window.addEventListener('mousemove', positionElement);
+    return function () {
+      window.removeEventListener('mousemove', positionElement);
+    };
+  }, [stroke]);
+  return /*#__PURE__*/_react.default.createElement(_ui.Stack, {
+    alignItems: "flex-start",
+    spacing: 2,
+    flexGrow: 1
+  }, /*#__PURE__*/_react.default.createElement(_ui.Stack, {
+    width: "100%",
+    direction: "row",
+    spacing: 7,
+    alignSelf: "center",
+    justifyContent: "center",
+    sx: {
+      mb: 6
+    }
+  }, /*#__PURE__*/_react.default.createElement(_ui.Stack, {
+    direction: "row",
+    gap: 3
+  }, /*#__PURE__*/_react.default.createElement(_ui.Tooltip, {
+    title: __('Undo', 'elementor')
+  }, /*#__PURE__*/_react.default.createElement(_ui.Button, {
+    variant: "outlined",
+    color: "secondary",
+    onClick: function onClick() {
+      return sketchRef.current.undo();
+    },
+    sx: {
+      px: 0
+    }
+  }, /*#__PURE__*/_react.default.createElement(StyledUndoIcon, null))), /*#__PURE__*/_react.default.createElement(_ui.Tooltip, {
+    title: __('Redo', 'elementor')
+  }, /*#__PURE__*/_react.default.createElement(_ui.Button, {
+    variant: "outlined",
+    color: "secondary",
+    onClick: function onClick() {
+      return sketchRef.current.redo();
+    },
+    sx: {
+      px: 0
+    }
+  }, /*#__PURE__*/_react.default.createElement(StyledRedoIcon, null)))), /*#__PURE__*/_react.default.createElement(_ui.FormControl, {
+    sx: {
+      minWidth: STROKE_SELECT_WIDTH
+    }
+  }, /*#__PURE__*/_react.default.createElement(_ui.InputLabel, {
+    id: "stroke"
+  }, "Stroke"), /*#__PURE__*/_react.default.createElement(_ui.Select, {
+    autoWidth: true,
+    label: "Stroke",
+    value: stroke,
+    color: "secondary",
+    id: "demo-simple-select",
+    labelId: "demo-simple-select-label",
+    onChange: function onChange(e) {
+      return setStroke(e.target.value);
+    },
+    MenuProps: {
+      PaperProps: {
+        sx: {
+          maxWidth: STROKE_SELECT_WIDTH
+        }
+      },
+      MenuListProps: {
+        sx: {
+          minWidth: STROKE_SELECT_WIDTH
+        }
+      }
+    },
+    sx: {
+      '& .MuiSelect-select .MuiListItemIcon-root': {
+        mr: 1,
+        width: 'initial',
+        minWidth: 'initial',
+        justifyContent: 'flex-start'
+      }
+    }
+  }, [10, 20, 30, 40, 50].map(function (value) {
+    return /*#__PURE__*/_react.default.createElement(_ui.MenuItem, {
+      key: 'stroke-width-option-' + value,
+      value: value
+    }, /*#__PURE__*/_react.default.createElement(_ui.Stack, {
+      direction: "row",
+      alignItems: "center",
+      gap: 3
+    }, /*#__PURE__*/_react.default.createElement(_ui.ListItemIcon, {
+      sx: {
+        width: 30,
+        display: 'flex',
+        justifyContent: 'center'
+      }
+    }, /*#__PURE__*/_react.default.createElement(BrishSizeIcon, {
+      size: value
+    })), /*#__PURE__*/_react.default.createElement(_ui.ListItemText, null, value)));
+  })))), /*#__PURE__*/_react.default.createElement("div", {
+    style: {
+      margin: '0 auto',
+      position: 'relative',
+      cursor: 'none',
+      overflow: 'hidden'
+    }
+  }, /*#__PURE__*/_react.default.createElement(BrushCursor, {
+    ref: brushCursorRef,
+    size: stroke
+  }), /*#__PURE__*/_react.default.createElement(_reactSketchCanvas.ReactSketchCanvas, {
+    className: "eui-in-painting-canvas",
+    withViewBox: true,
+    ref: sketchRef,
+    height: canvasHeight + 'px',
+    width: canvasWidth + 'px',
+    strokeWidth: stroke,
+    strokeColor: BRUSH_COLOR,
+    backgroundImage: editImage.url,
+    onChange: /*#__PURE__*/(0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
+      var svg;
+      return _regenerator.default.wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return sketchRef.current.exportSvg();
+          case 2:
+            svg = _context.sent;
+            setMask(svg);
+          case 4:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }))
+  })));
+};
+InPaintingContent.propTypes = {
+  setMask: PropTypes.func.isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+  editImage: PropTypes.object.isRequired
+};
+var _default = InPaintingContent;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/views/in-painting/index.js":
+/*!**********************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/views/in-painting/index.js ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _view = _interopRequireDefault(__webpack_require__(/*! ../../components/view */ "../modules/ai/assets/js/editor/pages/form-media/components/view.js"));
+var _imageForm = _interopRequireDefault(__webpack_require__(/*! ../../components/image-form */ "../modules/ai/assets/js/editor/pages/form-media/components/image-form.js"));
+var _promptField = _interopRequireDefault(__webpack_require__(/*! ../../components/prompt-field */ "../modules/ai/assets/js/editor/pages/form-media/components/prompt-field.js"));
+var _inPaintingContent = _interopRequireDefault(__webpack_require__(/*! ./in-painting-content */ "../modules/ai/assets/js/editor/pages/form-media/views/in-painting/in-painting-content.js"));
+var _generateSubmit = _interopRequireDefault(__webpack_require__(/*! ../../components/generate-submit */ "../modules/ai/assets/js/editor/pages/form-media/components/generate-submit.js"));
+var _generateAgainSubmit = _interopRequireDefault(__webpack_require__(/*! ../../components/generate-again-submit */ "../modules/ai/assets/js/editor/pages/form-media/components/generate-again-submit.js"));
+var _newPromptButton = _interopRequireDefault(__webpack_require__(/*! ../../components/new-prompt-button */ "../modules/ai/assets/js/editor/pages/form-media/components/new-prompt-button.js"));
+var _imagesDisplay = _interopRequireDefault(__webpack_require__(/*! ../../components/images-display */ "../modules/ai/assets/js/editor/pages/form-media/components/images-display.js"));
+var _usePromptSettings2 = _interopRequireDefault(__webpack_require__(/*! ../../hooks/use-prompt-settings */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-prompt-settings.js"));
+var _useInPainting2 = _interopRequireDefault(__webpack_require__(/*! ./hooks/use-in-painting */ "../modules/ai/assets/js/editor/pages/form-media/views/in-painting/hooks/use-in-painting.js"));
+var _editImageContext = __webpack_require__(/*! ../../context/edit-image-context */ "../modules/ai/assets/js/editor/pages/form-media/context/edit-image-context.js");
+var _useImageActions2 = _interopRequireDefault(__webpack_require__(/*! ../../hooks/use-image-actions */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-actions.js"));
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var InPainting = function InPainting() {
+  var _useState = (0, _react.useState)(''),
+    _useState2 = (0, _slicedToArray2.default)(_useState, 2),
+    prompt = _useState2[0],
+    setPrompt = _useState2[1];
+  var _useState3 = (0, _react.useState)(''),
+    _useState4 = (0, _slicedToArray2.default)(_useState3, 2),
+    mask = _useState4[0],
+    setMask = _useState4[1];
+  var _usePromptSettings = (0, _usePromptSettings2.default)(),
+    settings = _usePromptSettings.settings,
+    resetSettings = _usePromptSettings.resetSettings;
+  var _useEditImage = (0, _editImageContext.useEditImage)(),
+    editImage = _useEditImage.editImage,
+    width = _useEditImage.width,
+    height = _useEditImage.height;
+  var _useImageActions = (0, _useImageActions2.default)(),
+    use = _useImageActions.use,
+    edit = _useImageActions.edit,
+    isUploading = _useImageActions.isLoading;
+  var _useInPainting = (0, _useInPainting2.default)(),
+    data = _useInPainting.data,
+    send = _useInPainting.send,
+    isGenerating = _useInPainting.isLoading,
+    error = _useInPainting.error,
+    reset = _useInPainting.reset;
+  var isLoading = isGenerating || isUploading;
+  var handleSubmit = function handleSubmit(event) {
+    event.preventDefault();
+
+    // The fallback instruction should be hidden for the user.
+    var finalPrompt = prompt || 'Remove object and fill based on the surroundings';
+    send(finalPrompt, settings, editImage, mask);
+  };
+  return /*#__PURE__*/_react.default.createElement(_view.default, null, /*#__PURE__*/_react.default.createElement(_view.default.Panel, null, /*#__PURE__*/_react.default.createElement(_view.default.BackButton, null), /*#__PURE__*/_react.default.createElement(_view.default.PanelHeading, {
+    primary: __('Generative Fill', 'elementor'),
+    secondary: __('Mark an area and edit it with a prompt.', 'elementor')
+  }), error && /*#__PURE__*/_react.default.createElement(_view.default.ErrorMessage, {
+    error: error,
+    onRetry: handleSubmit
+  }), /*#__PURE__*/_react.default.createElement(_imageForm.default, {
+    onSubmit: handleSubmit
+  }, /*#__PURE__*/_react.default.createElement(_promptField.default, {
+    value: prompt,
+    disabled: isLoading,
+    onChange: setPrompt,
+    placeholder: __('Describe what you want to generate in the marked area (English only)', 'elementor')
+  }), data !== null && data !== void 0 && data.result ? /*#__PURE__*/_react.default.createElement(_ui.Stack, {
+    gap: 5,
+    sx: {
+      my: 6
+    }
+  }, /*#__PURE__*/_react.default.createElement(_generateAgainSubmit.default, {
+    disabled: isLoading
+  }), /*#__PURE__*/_react.default.createElement(_newPromptButton.default, {
+    disabled: isLoading,
+    onClick: function onClick() {
+      resetSettings();
+      setPrompt('');
+      reset();
+    }
+  })) : /*#__PURE__*/_react.default.createElement(_generateSubmit.default, {
+    disabled: isLoading
+  }))), /*#__PURE__*/_react.default.createElement(_view.default.Content, {
+    isGenerating: isLoading
+  }, data !== null && data !== void 0 && data.result ? /*#__PURE__*/_react.default.createElement(_imagesDisplay.default, {
+    images: data.result,
+    aspectRatio: editImage.aspectRatio,
+    onUseImage: use,
+    onEditImage: edit
+  }) : /*#__PURE__*/_react.default.createElement(_inPaintingContent.default, {
+    editImage: editImage,
+    width: width,
+    height: height,
+    setMask: setMask
+  })));
+};
+var _default = InPainting;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/views/out-painting/hooks/use-out-painting.js":
+/*!****************************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/views/out-painting/hooks/use-out-painting.js ***!
+  \****************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _api = __webpack_require__(/*! ../../../../../api */ "../modules/ai/assets/js/editor/api/index.js");
+var _useImagePrompt = _interopRequireDefault(__webpack_require__(/*! ../../../hooks/use-image-prompt */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-prompt.js"));
+var useOutPainting = function useOutPainting(initialValue) {
+  var fetchAction = function fetchAction(prompt, promptSettings, image, mask) {
+    return (0, _api.getImageToImageOutPainting)(prompt, promptSettings, image, mask);
+  };
+  return (0, _useImagePrompt.default)(fetchAction, initialValue);
+};
+var _default = useOutPainting;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/views/out-painting/index.js":
+/*!***********************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/views/out-painting/index.js ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _view = _interopRequireDefault(__webpack_require__(/*! ../../components/view */ "../modules/ai/assets/js/editor/pages/form-media/components/view.js"));
+var _imageForm = _interopRequireDefault(__webpack_require__(/*! ../../components/image-form */ "../modules/ai/assets/js/editor/pages/form-media/components/image-form.js"));
+var _imageRatioSelect = _interopRequireDefault(__webpack_require__(/*! ../../components/image-ratio-select */ "../modules/ai/assets/js/editor/pages/form-media/components/image-ratio-select.js"));
+var _generateSubmit = _interopRequireDefault(__webpack_require__(/*! ../../components/generate-submit */ "../modules/ai/assets/js/editor/pages/form-media/components/generate-submit.js"));
+var _generateAgainSubmit = _interopRequireDefault(__webpack_require__(/*! ../../components/generate-again-submit */ "../modules/ai/assets/js/editor/pages/form-media/components/generate-again-submit.js"));
+var _newPromptButton = _interopRequireDefault(__webpack_require__(/*! ../../components/new-prompt-button */ "../modules/ai/assets/js/editor/pages/form-media/components/new-prompt-button.js"));
+var _promptField = _interopRequireDefault(__webpack_require__(/*! ../../components/prompt-field */ "../modules/ai/assets/js/editor/pages/form-media/components/prompt-field.js"));
+var _outPaintingContent = _interopRequireDefault(__webpack_require__(/*! ./out-painting-content */ "../modules/ai/assets/js/editor/pages/form-media/views/out-painting/out-painting-content.js"));
+var _imagesDisplay = _interopRequireDefault(__webpack_require__(/*! ../../components/images-display */ "../modules/ai/assets/js/editor/pages/form-media/components/images-display.js"));
+var _editImageContext = __webpack_require__(/*! ../../context/edit-image-context */ "../modules/ai/assets/js/editor/pages/form-media/context/edit-image-context.js");
+var _useImageActions2 = _interopRequireDefault(__webpack_require__(/*! ../../hooks/use-image-actions */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-actions.js"));
+var _usePromptSettings2 = _interopRequireWildcard(__webpack_require__(/*! ../../hooks/use-prompt-settings */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-prompt-settings.js"));
+var _useOutPainting2 = _interopRequireDefault(__webpack_require__(/*! ./hooks/use-out-painting */ "../modules/ai/assets/js/editor/pages/form-media/views/out-painting/hooks/use-out-painting.js"));
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var OutPainting = function OutPainting() {
+  var _useState = (0, _react.useState)(''),
+    _useState2 = (0, _slicedToArray2.default)(_useState, 2),
+    prompt = _useState2[0],
+    setPrompt = _useState2[1];
+  var _useEditImage = (0, _editImageContext.useEditImage)(),
+    editImage = _useEditImage.editImage,
+    initialAspectRatio = _useEditImage.aspectRatio;
+  var _useState3 = (0, _react.useState)(''),
+    _useState4 = (0, _slicedToArray2.default)(_useState3, 2),
+    mask = _useState4[0],
+    setMask = _useState4[1];
+  var _usePromptSettings = (0, _usePromptSettings2.default)({
+      aspectRatio: initialAspectRatio
+    }),
+    settings = _usePromptSettings.settings,
+    updateSettings = _usePromptSettings.updateSettings,
+    resetSettings = _usePromptSettings.resetSettings;
+  var _useImageActions = (0, _useImageActions2.default)(),
+    use = _useImageActions.use,
+    edit = _useImageActions.edit,
+    isUploading = _useImageActions.isLoading;
+  var _useOutPainting = (0, _useOutPainting2.default)(),
+    data = _useOutPainting.data,
+    send = _useOutPainting.send,
+    isGenerating = _useOutPainting.isLoading,
+    error = _useOutPainting.error,
+    reset = _useOutPainting.reset;
+  var isLoading = isGenerating || isUploading;
+  var generatedAspectRatio = (0, _react.useMemo)(function () {
+    return settings[_usePromptSettings2.IMAGE_RATIO];
+  }, [data === null || data === void 0 ? void 0 : data.result]);
+  var hasGeneratedResult = !!(data !== null && data !== void 0 && data.result);
+  var handleSubmit = function handleSubmit(event) {
+    event.preventDefault();
+
+    // The fallback instruction should be hidden for the user.
+    var finalPrompt = prompt || 'Fill based on the surroundings';
+    send(finalPrompt, settings, editImage, mask);
+  };
+  return /*#__PURE__*/_react.default.createElement(_view.default, null, /*#__PURE__*/_react.default.createElement(_view.default.Panel, null, /*#__PURE__*/_react.default.createElement(_view.default.BackButton, null), /*#__PURE__*/_react.default.createElement(_view.default.PanelHeading, {
+    primary: __('Expand Image', 'elementor'),
+    secondary: __('Position image in it’s new size to generate content around the edges.', 'elementor')
+  }), error && /*#__PURE__*/_react.default.createElement(_view.default.ErrorMessage, {
+    error: error,
+    onRetry: handleSubmit
+  }), /*#__PURE__*/_react.default.createElement(_imageForm.default, {
+    onSubmit: handleSubmit
+  }, /*#__PURE__*/_react.default.createElement(_imageRatioSelect.default, {
+    disabled: isLoading || hasGeneratedResult,
+    value: settings[_usePromptSettings2.IMAGE_RATIO],
+    onChange: function onChange(event) {
+      return updateSettings((0, _defineProperty2.default)({}, _usePromptSettings2.IMAGE_RATIO, event.target.value));
+    }
+  }), /*#__PURE__*/_react.default.createElement(_ui.FormControl, {
+    sx: {
+      width: '100%',
+      mb: 6
+    }
+  }, /*#__PURE__*/_react.default.createElement(_ui.Slider, {
+    marks: true,
+    id: "zoom",
+    name: "zoom",
+    max: 2,
+    min: 0.1,
+    step: 0.1,
+    color: "secondary",
+    defaultValue: 1,
+    disabled: isLoading || hasGeneratedResult,
+    valueLabelDisplay: "auto",
+    "aria-labelledby": "image-size-slider",
+    "aria-label": __('Reference strength', 'elementor'),
+    onChange: function onChange(_, value) {
+      return updateSettings((0, _defineProperty2.default)({}, _usePromptSettings2.IMAGE_ZOOM, value));
+    }
+  }), /*#__PURE__*/_react.default.createElement(_ui.Typography, {
+    id: "image-size-slider",
+    variant: "caption",
+    gutterBottom: true
+  }, __('Original image size', 'elementor'))), /*#__PURE__*/_react.default.createElement(_promptField.default, {
+    value: prompt,
+    disabled: isLoading,
+    onChange: setPrompt,
+    placeholder: __('Describe what you want to generate in the expended area (English only)', 'elementor')
+  }), data !== null && data !== void 0 && data.result ? /*#__PURE__*/_react.default.createElement(_ui.Stack, {
+    gap: 5,
+    sx: {
+      my: 6
+    }
+  }, /*#__PURE__*/_react.default.createElement(_generateAgainSubmit.default, {
+    disabled: isLoading
+  }), /*#__PURE__*/_react.default.createElement(_newPromptButton.default, {
+    disabled: isLoading,
+    onClick: function onClick() {
+      resetSettings();
+      setPrompt('');
+      reset();
+    }
+  })) : /*#__PURE__*/_react.default.createElement(_generateSubmit.default, {
+    disabled: isLoading
+  }))), /*#__PURE__*/_react.default.createElement(_view.default.Content, {
+    isGenerating: isLoading
+  }, hasGeneratedResult ? /*#__PURE__*/_react.default.createElement(_imagesDisplay.default, {
+    onUseImage: use,
+    onEditImage: edit,
+    images: data.result,
+    aspectRatio: generatedAspectRatio
+  }) : /*#__PURE__*/_react.default.createElement(_outPaintingContent.default, {
+    setMask: setMask,
+    editImage: editImage,
+    scale: settings[_usePromptSettings2.IMAGE_ZOOM],
+    aspectRatio: settings[_usePromptSettings2.IMAGE_RATIO]
+  })));
+};
+var _default = OutPainting;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/views/out-painting/out-painting-content.js":
+/*!**************************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/views/out-painting/out-painting-content.js ***!
+  \**************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "../node_modules/@babel/runtime/regenerator/index.js"));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "../node_modules/@babel/runtime/helpers/asyncToGenerator.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _reactAvatarEditor = _interopRequireDefault(__webpack_require__(/*! react-avatar-editor */ "../node_modules/react-avatar-editor/dist/index.js"));
+var _useImageSize2 = _interopRequireDefault(__webpack_require__(/*! ../../hooks/use-image-size */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-size.js"));
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var OutPaintingContent = function OutPaintingContent(_ref) {
+  var scale = _ref.scale,
+    setMask = _ref.setMask,
+    editImage = _ref.editImage,
+    aspectRatio = _ref.aspectRatio;
+  var cropperRef = (0, _react.useRef)();
+  var _useImageSize = (0, _useImageSize2.default)(aspectRatio),
+    width = _useImageSize.width,
+    height = _useImageSize.height;
+  var updateMask = /*#__PURE__*/function () {
+    var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
+      var imageDataURL;
+      return _regenerator.default.wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return cropperRef.current.getImageScaledToCanvas().toDataURL();
+          case 2:
+            imageDataURL = _context.sent;
+            setMask(imageDataURL);
+          case 4:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return function updateMask() {
+      return _ref2.apply(this, arguments);
+    };
+  }();
+  return /*#__PURE__*/_react.default.createElement(_ui.Stack, {
+    alignItems: 'center',
+    spacing: 2,
+    flexGrow: 1
+  }, /*#__PURE__*/_react.default.createElement(_reactAvatarEditor.default, {
+    ref: cropperRef,
+    image: editImage.url,
+    style: {
+      backgroundImage: 'linear-gradient(45deg, #bbb 25%, transparent 25%), linear-gradient(-45deg, #bbb 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #bbb 75%), linear-gradient(-45deg, transparent 75%, #bbb 75%)',
+      backgroundSize: '20px 20px',
+      backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px',
+      outline: '2px dashed #000',
+      marginTop: '12px'
+    },
+    color: [0, 0, 0, 0.9],
+    rotate: 0,
+    border: 0,
+    allowZoomOut: true,
+    backgroundColor: 'transparent',
+    showGrid: true,
+    onImageChange: function onImageChange() {
+      return updateMask();
+    },
+    onPositionChange: function onPositionChange() {
+      return updateMask();
+    },
+    width: width,
+    height: height,
+    scale: scale
+  }));
+};
+OutPaintingContent.propTypes = {
+  scale: PropTypes.number.isRequired,
+  setMask: PropTypes.func.isRequired,
+  editImage: PropTypes.object.isRequired,
+  aspectRatio: PropTypes.string.isRequired
+};
+var _default = OutPaintingContent;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/views/remove-background/hooks/use-remove-background.js":
+/*!**************************************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/views/remove-background/hooks/use-remove-background.js ***!
+  \**************************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _api = __webpack_require__(/*! ../../../../../api */ "../modules/ai/assets/js/editor/api/index.js");
+var _useImagePrompt = _interopRequireDefault(__webpack_require__(/*! ../../../hooks/use-image-prompt */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-prompt.js"));
+var useRemoveBackground = function useRemoveBackground(initialValue) {
+  var fetchAction = function fetchAction(image) {
+    return (0, _api.getImageToImageRemoveBackground)(image);
+  };
+  return (0, _useImagePrompt.default)(fetchAction, initialValue);
+};
+var _default = useRemoveBackground;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/views/remove-background/index.js":
+/*!****************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/views/remove-background/index.js ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _view = _interopRequireDefault(__webpack_require__(/*! ../../components/view */ "../modules/ai/assets/js/editor/pages/form-media/components/view.js"));
+var _generateSubmit = _interopRequireDefault(__webpack_require__(/*! ../../components/generate-submit */ "../modules/ai/assets/js/editor/pages/form-media/components/generate-submit.js"));
+var _imageForm = _interopRequireDefault(__webpack_require__(/*! ../../components/image-form */ "../modules/ai/assets/js/editor/pages/form-media/components/image-form.js"));
+var _imagesDisplay = _interopRequireDefault(__webpack_require__(/*! ../../components/images-display */ "../modules/ai/assets/js/editor/pages/form-media/components/images-display.js"));
+var _singleImagePreview = _interopRequireDefault(__webpack_require__(/*! ../../components/single-image-preview */ "../modules/ai/assets/js/editor/pages/form-media/components/single-image-preview.js"));
+var _editImageContext = __webpack_require__(/*! ../../context/edit-image-context */ "../modules/ai/assets/js/editor/pages/form-media/context/edit-image-context.js");
+var _useImageActions2 = _interopRequireDefault(__webpack_require__(/*! ../../hooks/use-image-actions */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-actions.js"));
+var _useRemoveBackground2 = _interopRequireDefault(__webpack_require__(/*! ./hooks/use-remove-background */ "../modules/ai/assets/js/editor/pages/form-media/views/remove-background/hooks/use-remove-background.js"));
+var _newPromptButton = _interopRequireDefault(__webpack_require__(/*! ../../components/new-prompt-button */ "../modules/ai/assets/js/editor/pages/form-media/components/new-prompt-button.js"));
+var _constants = __webpack_require__(/*! ../../constants */ "../modules/ai/assets/js/editor/pages/form-media/constants/index.js");
+var _locationContext = __webpack_require__(/*! ../../context/location-context */ "../modules/ai/assets/js/editor/pages/form-media/context/location-context.js");
+var RemoveBackground = function RemoveBackground() {
+  var _useEditImage = (0, _editImageContext.useEditImage)(),
+    editImage = _useEditImage.editImage;
+  var _useImageActions = (0, _useImageActions2.default)(),
+    use = _useImageActions.use,
+    edit = _useImageActions.edit,
+    isUploading = _useImageActions.isLoading;
+  var _useRemoveBackground = (0, _useRemoveBackground2.default)(),
+    data = _useRemoveBackground.data,
+    send = _useRemoveBackground.send,
+    isGenerating = _useRemoveBackground.isLoading,
+    error = _useRemoveBackground.error;
+  var _useLocation = (0, _locationContext.useLocation)(),
+    navigate = _useLocation.navigate;
+  var isLoading = isGenerating || isUploading;
+  var handleSubmit = function handleSubmit(event) {
+    event.preventDefault();
+    send(editImage);
+  };
+  return /*#__PURE__*/_react.default.createElement(_view.default, null, /*#__PURE__*/_react.default.createElement(_view.default.Panel, null, /*#__PURE__*/_react.default.createElement(_view.default.BackButton, null), /*#__PURE__*/_react.default.createElement(_view.default.PanelHeading, {
+    primary: __('Remove Background', 'elementor'),
+    secondary: __('Create an image of the subject with a transparent background', 'elementor')
+  }), error && /*#__PURE__*/_react.default.createElement(_view.default.ErrorMessage, {
+    error: error,
+    onRetry: handleSubmit
+  }), /*#__PURE__*/_react.default.createElement(_imageForm.default, {
+    onSubmit: handleSubmit
+  }, data !== null && data !== void 0 && data.result ? /*#__PURE__*/_react.default.createElement(_newPromptButton.default, {
+    disabled: isLoading,
+    onClick: function onClick() {
+      return navigate(_constants.LOCATIONS.GENERATE);
+    }
+  }) : /*#__PURE__*/_react.default.createElement(_generateSubmit.default, {
+    disabled: isLoading
+  }, __('Remove Background', 'elementor')))), /*#__PURE__*/_react.default.createElement(_view.default.Content, {
+    isGenerating: isLoading
+  }, data !== null && data !== void 0 && data.result ? /*#__PURE__*/_react.default.createElement(_ui.Box, {
+    sx: {
+      backgroundImage: 'linear-gradient(45deg, #bbb 25%, transparent 25%), linear-gradient(-45deg, #bbb 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #bbb 75%), linear-gradient(-45deg, transparent 75%, #bbb 75%)',
+      backgroundSize: '20px 20px',
+      backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px'
+    }
+  }, /*#__PURE__*/_react.default.createElement(_imagesDisplay.default, {
+    onUseImage: use,
+    onEditImage: edit,
+    images: data.result,
+    aspectRatio: editImage.aspectRatio
+  })) : /*#__PURE__*/_react.default.createElement(_singleImagePreview.default, null, /*#__PURE__*/_react.default.createElement(_singleImagePreview.default.Image, {
+    src: editImage.url,
+    alt: editImage.alt,
+    style: {
+      width: editImage.width,
+      height: editImage.height
+    }
+  }))));
+};
+var _default = RemoveBackground;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/views/replace-background/hooks/use-replace-background.js":
+/*!****************************************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/views/replace-background/hooks/use-replace-background.js ***!
+  \****************************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _api = __webpack_require__(/*! ../../../../../api */ "../modules/ai/assets/js/editor/api/index.js");
+var _useImagePrompt = _interopRequireDefault(__webpack_require__(/*! ../../../hooks/use-image-prompt */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-prompt.js"));
+var useReplaceBackground = function useReplaceBackground(initialValue) {
+  var fetchAction = function fetchAction(prompt, image) {
+    return (0, _api.getImageToImageReplaceBackground)(prompt, image);
+  };
+  return (0, _useImagePrompt.default)(fetchAction, initialValue);
+};
+var _default = useReplaceBackground;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/views/replace-background/index.js":
+/*!*****************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/views/replace-background/index.js ***!
+  \*****************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+var _view = _interopRequireDefault(__webpack_require__(/*! ../../components/view */ "../modules/ai/assets/js/editor/pages/form-media/components/view.js"));
+var _generateSubmit = _interopRequireDefault(__webpack_require__(/*! ../../components/generate-submit */ "../modules/ai/assets/js/editor/pages/form-media/components/generate-submit.js"));
+var _imageForm = _interopRequireDefault(__webpack_require__(/*! ../../components/image-form */ "../modules/ai/assets/js/editor/pages/form-media/components/image-form.js"));
+var _imagesDisplay = _interopRequireDefault(__webpack_require__(/*! ../../components/images-display */ "../modules/ai/assets/js/editor/pages/form-media/components/images-display.js"));
+var _singleImagePreview = _interopRequireDefault(__webpack_require__(/*! ../../components/single-image-preview */ "../modules/ai/assets/js/editor/pages/form-media/components/single-image-preview.js"));
+var _editImageContext = __webpack_require__(/*! ../../context/edit-image-context */ "../modules/ai/assets/js/editor/pages/form-media/context/edit-image-context.js");
+var _useImageActions2 = _interopRequireDefault(__webpack_require__(/*! ../../hooks/use-image-actions */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-actions.js"));
+var _useReplaceBackground2 = _interopRequireDefault(__webpack_require__(/*! ./hooks/use-replace-background */ "../modules/ai/assets/js/editor/pages/form-media/views/replace-background/hooks/use-replace-background.js"));
+var _promptField = _interopRequireDefault(__webpack_require__(/*! ../../components/prompt-field */ "../modules/ai/assets/js/editor/pages/form-media/components/prompt-field.js"));
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var RemoveBackground = function RemoveBackground() {
+  var _useState = (0, _react.useState)(''),
+    _useState2 = (0, _slicedToArray2.default)(_useState, 2),
+    prompt = _useState2[0],
+    setPrompt = _useState2[1];
+  var _useEditImage = (0, _editImageContext.useEditImage)(),
+    editImage = _useEditImage.editImage;
+  var _useImageActions = (0, _useImageActions2.default)(),
+    use = _useImageActions.use,
+    edit = _useImageActions.edit,
+    isUploading = _useImageActions.isLoading;
+  var _useReplaceBackground = (0, _useReplaceBackground2.default)(),
+    data = _useReplaceBackground.data,
+    send = _useReplaceBackground.send,
+    isGenerating = _useReplaceBackground.isLoading,
+    error = _useReplaceBackground.error;
+  var isLoading = isGenerating || isUploading;
+  var handleSubmit = function handleSubmit(event) {
+    event.preventDefault();
+    send(prompt, editImage);
+  };
+  return /*#__PURE__*/_react.default.createElement(_view.default, null, /*#__PURE__*/_react.default.createElement(_view.default.Panel, null, /*#__PURE__*/_react.default.createElement(_view.default.BackButton, null), /*#__PURE__*/_react.default.createElement(_view.default.PanelHeading, {
+    primary: __('Replace Background', 'elementor'),
+    secondary: __('Generate a new background with a prompt.', 'elementor')
+  }), error && /*#__PURE__*/_react.default.createElement(_view.default.ErrorMessage, {
+    error: error,
+    onRetry: handleSubmit
+  }), /*#__PURE__*/_react.default.createElement(_imageForm.default, {
+    onSubmit: handleSubmit
+  }, /*#__PURE__*/_react.default.createElement(_promptField.default, {
+    value: prompt,
+    disabled: isLoading,
+    onChange: setPrompt,
+    placeholder: __('Describe what you want to generate in the background (English only)', 'elementor')
+  }), /*#__PURE__*/_react.default.createElement(_generateSubmit.default, {
+    disabled: isLoading || '' === prompt
+  }, __('Replace Background', 'elementor')))), /*#__PURE__*/_react.default.createElement(_view.default.Content, {
+    isGenerating: isLoading
+  }, data !== null && data !== void 0 && data.result ? /*#__PURE__*/_react.default.createElement(_imagesDisplay.default, {
+    onUseImage: use,
+    onEditImage: edit,
+    images: data.result,
+    aspectRatio: editImage.aspectRatio
+  }) : /*#__PURE__*/_react.default.createElement(_singleImagePreview.default, null, /*#__PURE__*/_react.default.createElement(_singleImagePreview.default.Image, {
+    src: editImage.url,
+    alt: editImage.alt,
+    style: {
+      width: editImage.width,
+      height: editImage.height
+    }
+  }))));
+};
+var _default = RemoveBackground;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/views/resize/hooks/use-resize.js":
+/*!****************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/views/resize/hooks/use-resize.js ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _api = __webpack_require__(/*! ../../../../../api */ "../modules/ai/assets/js/editor/api/index.js");
+var _useImagePrompt = _interopRequireDefault(__webpack_require__(/*! ../../../hooks/use-image-prompt */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-prompt.js"));
+var useResize = function useResize(initialValue) {
+  var fetchAction = function fetchAction(prompt, promptSettings, image) {
+    return (0, _api.getImageToImageUpscale)(prompt, promptSettings, image);
+  };
+  return (0, _useImagePrompt.default)(fetchAction, initialValue);
+};
+var _default = useResize;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/views/resize/index.js":
+/*!*****************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/views/resize/index.js ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _view = _interopRequireDefault(__webpack_require__(/*! ../../components/view */ "../modules/ai/assets/js/editor/pages/form-media/components/view.js"));
+var _generateSubmit = _interopRequireDefault(__webpack_require__(/*! ../../components/generate-submit */ "../modules/ai/assets/js/editor/pages/form-media/components/generate-submit.js"));
+var _imageForm = _interopRequireDefault(__webpack_require__(/*! ../../components/image-form */ "../modules/ai/assets/js/editor/pages/form-media/components/image-form.js"));
+var _imagesDisplay = _interopRequireDefault(__webpack_require__(/*! ../../components/images-display */ "../modules/ai/assets/js/editor/pages/form-media/components/images-display.js"));
+var _singleImagePreview = _interopRequireDefault(__webpack_require__(/*! ../../components/single-image-preview */ "../modules/ai/assets/js/editor/pages/form-media/components/single-image-preview.js"));
+var _editImageContext = __webpack_require__(/*! ../../context/edit-image-context */ "../modules/ai/assets/js/editor/pages/form-media/context/edit-image-context.js");
+var _useResize2 = _interopRequireDefault(__webpack_require__(/*! ./hooks/use-resize */ "../modules/ai/assets/js/editor/pages/form-media/views/resize/hooks/use-resize.js"));
+var _useImageActions2 = _interopRequireDefault(__webpack_require__(/*! ../../hooks/use-image-actions */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-actions.js"));
+var _usePromptSettings2 = _interopRequireWildcard(__webpack_require__(/*! ../../hooks/use-prompt-settings */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-prompt-settings.js"));
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var Resize = function Resize() {
+  var _useEditImage = (0, _editImageContext.useEditImage)(),
+    editImage = _useEditImage.editImage,
+    initialEditImageWidth = _useEditImage.width;
+  var _useImageActions = (0, _useImageActions2.default)(),
+    use = _useImageActions.use,
+    edit = _useImageActions.edit,
+    isUploading = _useImageActions.isLoading;
+  var _usePromptSettings = (0, _usePromptSettings2.default)(),
+    settings = _usePromptSettings.settings,
+    updateSettings = _usePromptSettings.updateSettings;
+  var _useResize = (0, _useResize2.default)(),
+    data = _useResize.data,
+    send = _useResize.send,
+    isGenerating = _useResize.isLoading,
+    error = _useResize.error;
+  var isLoading = isGenerating || isUploading;
+  var handleSubmit = function handleSubmit(event) {
+    event.preventDefault();
+    send(null, settings, editImage);
+  };
+  return /*#__PURE__*/_react.default.createElement(_view.default, null, /*#__PURE__*/_react.default.createElement(_view.default.Panel, null, /*#__PURE__*/_react.default.createElement(_view.default.BackButton, null), /*#__PURE__*/_react.default.createElement(_view.default.PanelHeading, {
+    primary: __('Resize', 'elementor'),
+    secondary: __('Make an image larger and improve it’s resolution.', 'elementor')
+  }), error && /*#__PURE__*/_react.default.createElement(_view.default.ErrorMessage, {
+    error: error,
+    onRetry: handleSubmit
+  }), /*#__PURE__*/_react.default.createElement(_imageForm.default, {
+    onSubmit: handleSubmit
+  }, /*#__PURE__*/_react.default.createElement(_ui.Stack, {
+    spacing: 2
+  }, /*#__PURE__*/_react.default.createElement(_ui.Box, {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
+  }, /*#__PURE__*/_react.default.createElement(_ui.Typography, {
+    variant: "caption"
+  }, "512px"), /*#__PURE__*/_react.default.createElement(_ui.Typography, {
+    variant: "caption"
+  }, "2048px")), /*#__PURE__*/_react.default.createElement(_ui.Slider, {
+    marks: true,
+    step: 64,
+    min: 512,
+    max: 2048,
+    id: "upscale_to",
+    color: "secondary",
+    name: "upscale_to",
+    disabled: isLoading,
+    defaultValue: initialEditImageWidth,
+    valueLabelDisplay: "auto",
+    "aria-label": __('Upscale to', 'elementor'),
+    onChange: function onChange(_, value) {
+      return updateSettings((0, _defineProperty2.default)({}, _usePromptSettings2.IMAGE_UPSCALE, value));
+    }
+  }), /*#__PURE__*/_react.default.createElement(_ui.Box, {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
+  }, /*#__PURE__*/_react.default.createElement(_ui.Typography, {
+    variant: "caption"
+  }, __('Current', 'elementor')), /*#__PURE__*/_react.default.createElement(_ui.Typography, {
+    variant: "caption"
+  }, __('Output', 'elementor')))), /*#__PURE__*/_react.default.createElement(_generateSubmit.default, {
+    disabled: isLoading
+  }))), /*#__PURE__*/_react.default.createElement(_view.default.Content, {
+    isGenerating: isLoading
+  }, data !== null && data !== void 0 && data.result ? /*#__PURE__*/_react.default.createElement(_imagesDisplay.default, {
+    onUseImage: use,
+    onEditImage: edit,
+    images: data.result,
+    aspectRatio: editImage.aspectRatio
+  }) : /*#__PURE__*/_react.default.createElement(_singleImagePreview.default, null, /*#__PURE__*/_react.default.createElement(_singleImagePreview.default.Image, {
+    src: editImage.url,
+    alt: editImage.alt,
+    style: {
+      width: editImage.width,
+      height: editImage.height
+    }
+  }))));
+};
+var _default = Resize;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/views/variations/components/variations-placeholder.js":
+/*!*************************************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/views/variations/components/variations-placeholder.js ***!
+  \*************************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _icons = __webpack_require__(/*! @elementor/icons */ "@elementor/icons");
+var VariationsPlaceholder = function VariationsPlaceholder() {
+  return /*#__PURE__*/_react.default.createElement(_ui.Box, {
+    sx: {
+      overflowY: 'scroll'
+    },
+    flexGrow: 1
+  }, /*#__PURE__*/_react.default.createElement(_ui.Box, {
+    display: "grid",
+    gridTemplateColumns: "repeat(2, 1fr)",
+    gap: 7
+  }, Array(4).fill(true).map(function (_, index) {
+    return /*#__PURE__*/_react.default.createElement(_ui.Box, {
+      key: "placeholder-".concat(index),
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      sx: {
+        bgcolor: 'secondary.background',
+        height: 336
+      }
+    }, /*#__PURE__*/_react.default.createElement(_icons.AIIcon, {
+      color: "secondary",
+      sx: {
+        fontSize: 36
+      }
+    }));
+  })));
+};
+VariationsPlaceholder.propTypes = {};
+var _default = VariationsPlaceholder;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/views/variations/hooks/use-image-to-image.js":
+/*!****************************************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/views/variations/hooks/use-image-to-image.js ***!
+  \****************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _api = __webpack_require__(/*! ../../../../../api */ "../modules/ai/assets/js/editor/api/index.js");
+var _useImagePrompt = _interopRequireDefault(__webpack_require__(/*! ../../../hooks/use-image-prompt */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-prompt.js"));
+var useImageToImage = function useImageToImage(initialValue) {
+  var fetchAction = function fetchAction(prompt, promptSettings, image) {
+    return (0, _api.getImageToImageGeneration)(prompt, promptSettings, image);
+  };
+  return (0, _useImagePrompt.default)(fetchAction, initialValue);
+};
+var _default = useImageToImage;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/ai/assets/js/editor/pages/form-media/views/variations/index.js":
+/*!*********************************************************************************!*\
+  !*** ../modules/ai/assets/js/editor/pages/form-media/views/variations/index.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
+var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
+var _view = _interopRequireDefault(__webpack_require__(/*! ../../components/view */ "../modules/ai/assets/js/editor/pages/form-media/components/view.js"));
+var _imageForm = _interopRequireDefault(__webpack_require__(/*! ../../components/image-form */ "../modules/ai/assets/js/editor/pages/form-media/components/image-form.js"));
+var _imageStrengthSlider = _interopRequireDefault(__webpack_require__(/*! ../../components/image-strength-slider */ "../modules/ai/assets/js/editor/pages/form-media/components/image-strength-slider.js"));
+var _promptField = _interopRequireDefault(__webpack_require__(/*! ../../components/prompt-field */ "../modules/ai/assets/js/editor/pages/form-media/components/prompt-field.js"));
+var _imageTypeSelect = _interopRequireDefault(__webpack_require__(/*! ../../components/image-type-select */ "../modules/ai/assets/js/editor/pages/form-media/components/image-type-select.js"));
+var _imageStyleSelect = _interopRequireDefault(__webpack_require__(/*! ../../components/image-style-select */ "../modules/ai/assets/js/editor/pages/form-media/components/image-style-select.js"));
+var _imageRatioSelect = _interopRequireDefault(__webpack_require__(/*! ../../components/image-ratio-select */ "../modules/ai/assets/js/editor/pages/form-media/components/image-ratio-select.js"));
+var _generateAgainSubmit = _interopRequireDefault(__webpack_require__(/*! ../../components/generate-again-submit */ "../modules/ai/assets/js/editor/pages/form-media/components/generate-again-submit.js"));
+var _generateImagesSubmit = _interopRequireDefault(__webpack_require__(/*! ../../components/generate-images-submit */ "../modules/ai/assets/js/editor/pages/form-media/components/generate-images-submit.js"));
+var _imagesDisplay = _interopRequireDefault(__webpack_require__(/*! ../../components/images-display */ "../modules/ai/assets/js/editor/pages/form-media/components/images-display.js"));
+var _variationsPlaceholder = _interopRequireDefault(__webpack_require__(/*! ./components/variations-placeholder */ "../modules/ai/assets/js/editor/pages/form-media/views/variations/components/variations-placeholder.js"));
+var _useImageToImage2 = _interopRequireDefault(__webpack_require__(/*! ./hooks/use-image-to-image */ "../modules/ai/assets/js/editor/pages/form-media/views/variations/hooks/use-image-to-image.js"));
+var _useImageActions2 = _interopRequireDefault(__webpack_require__(/*! ../../hooks/use-image-actions */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-image-actions.js"));
+var _editImageContext = __webpack_require__(/*! ../../context/edit-image-context */ "../modules/ai/assets/js/editor/pages/form-media/context/edit-image-context.js");
+var _usePromptSettings2 = _interopRequireWildcard(__webpack_require__(/*! ../../hooks/use-prompt-settings */ "../modules/ai/assets/js/editor/pages/form-media/hooks/use-prompt-settings.js"));
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var IMAGE_WEIGHT_DEFAULT = 45;
+var Variations = function Variations() {
+  var _data$result;
+  var _useState = (0, _react.useState)(''),
+    _useState2 = (0, _slicedToArray2.default)(_useState, 2),
+    prompt = _useState2[0],
+    setPrompt = _useState2[1];
+  var _useEditImage = (0, _editImageContext.useEditImage)(),
+    editImage = _useEditImage.editImage,
+    initialAspectRatio = _useEditImage.aspectRatio;
+  var _usePromptSettings = (0, _usePromptSettings2.default)({
+      aspectRatio: initialAspectRatio,
+      imageWeight: IMAGE_WEIGHT_DEFAULT
+    }),
+    settings = _usePromptSettings.settings,
+    updateSettings = _usePromptSettings.updateSettings;
+  var _useImageToImage = (0, _useImageToImage2.default)(),
+    data = _useImageToImage.data,
+    send = _useImageToImage.send,
+    isGenerating = _useImageToImage.isLoading,
+    error = _useImageToImage.error;
+  var _useImageActions = (0, _useImageActions2.default)(),
+    use = _useImageActions.use,
+    edit = _useImageActions.edit,
+    isUploading = _useImageActions.isLoading;
+  var isLoading = isGenerating || isUploading;
+  var generatedAspectRatio = (0, _react.useMemo)(function () {
+    return settings[_usePromptSettings2.IMAGE_RATIO];
+  }, [data === null || data === void 0 ? void 0 : data.result]);
+  var handleSubmit = function handleSubmit(event) {
+    event.preventDefault();
+    send(prompt, settings, editImage);
+  };
+  return /*#__PURE__*/_react.default.createElement(_view.default, null, /*#__PURE__*/_react.default.createElement(_view.default.Panel, null, /*#__PURE__*/_react.default.createElement(_view.default.BackButton, null), /*#__PURE__*/_react.default.createElement(_view.default.PanelHeading, {
+    primary: __('Variations', 'elementor'),
+    secondary: __('Create new versions of the original image.', 'elementor')
+  }), error && /*#__PURE__*/_react.default.createElement(_view.default.ErrorMessage, {
+    error: error,
+    onRetry: handleSubmit
+  }), /*#__PURE__*/_react.default.createElement(_imageForm.default, {
+    onSubmit: handleSubmit
+  }, /*#__PURE__*/_react.default.createElement(_ui.Box, {
+    sx: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      bgcolor: 'secondary.background'
+    }
+  }, /*#__PURE__*/_react.default.createElement("img", {
+    src: (editImage === null || editImage === void 0 ? void 0 : editImage.image_url) || (editImage === null || editImage === void 0 ? void 0 : editImage.url),
+    alt: prompt,
+    style: {
+      width: 'auto',
+      height: 'auto',
+      maxWidth: '100%',
+      maxHeight: 166,
+      objectFit: 'contained'
+    }
+  })), /*#__PURE__*/_react.default.createElement(_imageStrengthSlider.default, {
+    disabled: isLoading,
+    defaultValue: IMAGE_WEIGHT_DEFAULT,
+    onChange: function onChange(event) {
+      return updateSettings((0, _defineProperty2.default)({}, _usePromptSettings2.IMAGE_STRENGTH, event.target.value));
+    }
+  }), /*#__PURE__*/_react.default.createElement(_promptField.default, {
+    value: prompt,
+    disabled: isLoading,
+    placeholder: __('describe your image', 'elementor'),
+    onChange: setPrompt
+  }), /*#__PURE__*/_react.default.createElement(_imageTypeSelect.default, {
+    disabled: isLoading,
+    value: settings[_usePromptSettings2.IMAGE_TYPE],
+    onChange: function onChange(event) {
+      return updateSettings((0, _defineProperty2.default)({}, _usePromptSettings2.IMAGE_TYPE, event.target.value));
+    }
+  }), /*#__PURE__*/_react.default.createElement(_imageStyleSelect.default, {
+    type: settings[_usePromptSettings2.IMAGE_TYPE],
+    value: settings[_usePromptSettings2.IMAGE_STYLE],
+    disabled: isLoading || !settings[_usePromptSettings2.IMAGE_TYPE] || false,
+    onChange: function onChange(event) {
+      return updateSettings((0, _defineProperty2.default)({}, _usePromptSettings2.IMAGE_STYLE, event.target.value));
+    }
+  }), /*#__PURE__*/_react.default.createElement(_imageRatioSelect.default, {
+    disabled: isLoading,
+    value: settings[_usePromptSettings2.IMAGE_RATIO],
+    onChange: function onChange(event) {
+      return updateSettings((0, _defineProperty2.default)({}, _usePromptSettings2.IMAGE_RATIO, event.target.value));
+    }
+  }), /*#__PURE__*/_react.default.createElement(_ui.Stack, {
+    gap: 5,
+    sx: {
+      my: 6
+    }
+  }, (data === null || data === void 0 ? void 0 : (_data$result = data.result) === null || _data$result === void 0 ? void 0 : _data$result.length) > 0 ? /*#__PURE__*/_react.default.createElement(_generateAgainSubmit.default, {
+    disabled: isLoading || '' === prompt
+  }) : /*#__PURE__*/_react.default.createElement(_generateImagesSubmit.default, {
+    disabled: isLoading || '' === prompt
+  })))), /*#__PURE__*/_react.default.createElement(_view.default.Content, {
+    isGenerating: isLoading
+  }, data !== null && data !== void 0 && data.result ? /*#__PURE__*/_react.default.createElement(_imagesDisplay.default, {
+    images: data.result,
+    aspectRatio: generatedAspectRatio,
+    onUseImage: use,
+    onEditImage: edit
+  }) : /*#__PURE__*/_react.default.createElement(_variationsPlaceholder.default, null)));
+};
+Variations.propTypes = {};
+var _default = Variations;
+exports["default"] = _default;
+
+/***/ }),
+
 /***/ "../modules/ai/assets/js/editor/pages/form-text/index.js":
 /*!***************************************************************!*\
   !*** ../modules/ai/assets/js/editor/pages/form-text/index.js ***!
@@ -1914,7 +7383,7 @@ var _ui = __webpack_require__(/*! @elementor/ui */ "@elementor/ui");
 var _icons = __webpack_require__(/*! @elementor/icons */ "@elementor/icons");
 var _loader = _interopRequireDefault(__webpack_require__(/*! ../../components/loader */ "../modules/ai/assets/js/editor/components/loader.js"));
 var _promptSearch = _interopRequireDefault(__webpack_require__(/*! ../../components/prompt-search */ "../modules/ai/assets/js/editor/components/prompt-search.js"));
-var _textArea = _interopRequireDefault(__webpack_require__(/*! ../../components/text-area */ "../modules/ai/assets/js/editor/components/text-area.js"));
+var _textarea = _interopRequireDefault(__webpack_require__(/*! ../../components/textarea */ "../modules/ai/assets/js/editor/components/textarea.js"));
 var _promptSuggestions = _interopRequireDefault(__webpack_require__(/*! ../../components/prompt-suggestions */ "../modules/ai/assets/js/editor/components/prompt-suggestions.js"));
 var _promptActionSelection = _interopRequireDefault(__webpack_require__(/*! ../../components/prompt-action-selection */ "../modules/ai/assets/js/editor/components/prompt-action-selection.js"));
 var _generateButton = _interopRequireDefault(__webpack_require__(/*! ../../components/generate-button */ "../modules/ai/assets/js/editor/components/generate-button.js"));
@@ -2065,7 +7534,8 @@ var FormText = function FormText(_ref) {
     sx: {
       mt: 3
     }
-  }, /*#__PURE__*/_react.default.createElement(_textArea.default, {
+  }, /*#__PURE__*/_react.default.createElement(_textarea.default, {
+    fullWidth: true,
     ref: resultField,
     defaultValue: data.result,
     helperText: __('Text generated by AI may be inaccurate or offensive.', 'elementor')
@@ -4540,6 +10010,17 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "../node_modules/react-avatar-editor/dist/index.js":
+/*!*********************************************************!*\
+  !*** ../node_modules/react-avatar-editor/dist/index.js ***!
+  \*********************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+!function(e,t){ true?module.exports=t(__webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js"),__webpack_require__(/*! react */ "react")):0}(this,function(e,t){"use strict";function o(e){return e&&"object"==typeof e&&"default"in e?e:{default:e}}var n=o(e),i=o(t);function r(e,t){for(var o=0;o<t.length;o++){var n=t[o];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function s(e,t,o){return t in e?Object.defineProperty(e,t,{value:o,enumerable:!0,configurable:!0,writable:!0}):e[t]=o,e}function u(){return(u=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var o=arguments[t];for(var n in o)Object.prototype.hasOwnProperty.call(o,n)&&(e[n]=o[n])}return e}).apply(this,arguments)}function a(t,e){var o,n=Object.keys(t);return Object.getOwnPropertySymbols&&(o=Object.getOwnPropertySymbols(t),e&&(o=o.filter(function(e){return Object.getOwnPropertyDescriptor(t,e).enumerable})),n.push.apply(n,o)),n}function y(t){for(var e=1;e<arguments.length;e++){var o=null!=arguments[e]?arguments[e]:{};e%2?a(Object(o),!0).forEach(function(e){s(t,e,o[e])}):Object.getOwnPropertyDescriptors?Object.defineProperties(t,Object.getOwnPropertyDescriptors(o)):a(Object(o)).forEach(function(e){Object.defineProperty(t,e,Object.getOwnPropertyDescriptor(o,e))})}return t}function h(e){return(h=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function c(e,t){return(c=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function l(e,t){if(null==e)return{};var o,n=function(e,t){if(null==e)return{};for(var o,n={},a=Object.keys(e),r=0;r<a.length;r++)o=a[r],0<=t.indexOf(o)||(n[o]=e[o]);return n}(e,t);if(Object.getOwnPropertySymbols)for(var a=Object.getOwnPropertySymbols(e),r=0;r<a.length;r++)o=a[r],0<=t.indexOf(o)||Object.prototype.propertyIsEnumerable.call(e,o)&&(n[o]=e[o]);return n}function d(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function p(r){var i=function(){if("undefined"==typeof Reflect||!Reflect.construct)return!1;if(Reflect.construct.sham)return!1;if("function"==typeof Proxy)return!0;try{return Date.prototype.toString.call(Reflect.construct(Date,[],function(){})),!0}catch(e){return!1}}();return function(){var e,t,o,n,a=h(r);return t=i?(e=h(this).constructor,Reflect.construct(a,arguments,e)):a.apply(this,arguments),o=this,!(n=t)||"object"!=typeof n&&"function"!=typeof n?d(o):n}}function m(e,t){return function(e){if(Array.isArray(e))return e}(e)||function(e,t){if("undefined"==typeof Symbol||!(Symbol.iterator in Object(e)))return;var o=[],n=!0,a=!1,r=void 0;try{for(var i,s=e[Symbol.iterator]();!(n=(i=s.next()).done)&&(o.push(i.value),!t||o.length!==t);n=!0);}catch(e){a=!0,r=e}finally{try{n||null==s.return||s.return()}finally{if(a)throw r}}return o}(e,t)||g(e,t)||function(){throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function g(e,t){if(e){if("string"==typeof e)return f(e,t);var o=Object.prototype.toString.call(e).slice(8,-1);return"Object"===o&&e.constructor&&(o=e.constructor.name),"Map"===o||"Set"===o?Array.from(e):"Arguments"===o||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(o)?f(e,t):void 0}}function f(e,t){(null==t||t>e.length)&&(t=e.length);for(var o=0,n=new Array(t);o<t;o++)n[o]=e[o];return n}function v(a,r){return new Promise(function(e,t){var o,n=new Image;n.onload=function(){return e(n)},n.onerror=t,!1==(null!==(o=a)&&!!o.match(/^\s*data:([a-z]+\/[a-z]+(;[a-z-]+=[a-z-]+)?)?(;base64)?,[a-z0-9!$&',()*+;=\-._~:@/?%\s]*\s*$/i))&&r&&(n.crossOrigin=r),n.src=a})}var b,w=!("undefined"==typeof window||"undefined"==typeof navigator||!("ontouchstart"in window||0<navigator.msMaxTouchPoints)),M="undefined"!=typeof File,O={touch:{react:{down:"onTouchStart",mouseDown:"onMouseDown",drag:"onTouchMove",move:"onTouchMove",mouseMove:"onMouseMove",up:"onTouchEnd",mouseUp:"onMouseUp"},native:{down:"touchstart",mouseDown:"mousedown",drag:"touchmove",move:"touchmove",mouseMove:"mousemove",up:"touchend",mouseUp:"mouseup"}},desktop:{react:{down:"onMouseDown",drag:"onDragOver",move:"onMouseMove",up:"onMouseUp"},native:{down:"mousedown",drag:"dragStart",move:"mousemove",up:"mouseup"}}},I=w?O.touch:O.desktop,P="undefined"!=typeof window&&window.devicePixelRatio?window.devicePixelRatio:1,C={x:.5,y:.5},x=function(){!function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&c(e,t)}(a,i["default"].Component);var e,t,o,n=p(a);function a(e){var v;return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,a),s(d(v=n.call(this,e)),"state",{drag:!1,my:null,mx:null,image:C}),s(d(v),"handleImageReady",function(e){var t=v.getInitialSize(e.width,e.height);t.resource=e,t.x=.5,t.y=.5,t.backgroundColor=v.props.backgroundColor,v.setState({drag:!1,image:t},v.props.onImageReady),v.props.onLoadSuccess(t)}),s(d(v),"clearImage",function(){v.canvas.getContext("2d").clearRect(0,0,v.canvas.width,v.canvas.height),v.setState({image:C})}),s(d(v),"handleMouseDown",function(e){(e=e||window.event).preventDefault(),v.setState({drag:!0,mx:null,my:null})}),s(d(v),"handleMouseUp",function(){v.state.drag&&(v.setState({drag:!1}),v.props.onMouseUp())}),s(d(v),"handleMouseMove",function(e){var t,o,n,a,r,i,s,u,h,c,l,d,p,g,f,m;e=e||window.event,!1!==v.state.drag&&(e.preventDefault(),n={mx:t=e.targetTouches?e.targetTouches[0].pageX:e.clientX,my:o=e.targetTouches?e.targetTouches[0].pageY:e.clientY},m=v.props.rotate,m=(m%=360)<0?m+360:m,v.state.mx&&v.state.my&&(a=v.state.mx-t,r=v.state.my-o,i=v.state.image.width*v.props.scale,s=v.state.image.height*v.props.scale,h=(u=v.getCroppingRect()).x,c=u.y,h*=i,c*=s,l=function(e){return e*(Math.PI/180)},d=Math.cos(l(m)),g=c+-a*(p=Math.sin(l(m)))+r*d,f={x:(h+a*d+r*p)/i+1/v.props.scale*v.getXScale()/2,y:g/s+1/v.props.scale*v.getYScale()/2},v.props.onPositionChange(f),n.image=y(y({},v.state.image),f)),v.setState(n),v.props.onMouseMove(e))}),s(d(v),"setCanvas",function(e){v.canvas=e}),v.canvas=null,v}return e=a,(t=[{key:"componentDidMount",value:function(){this.props.disableHiDPIScaling&&(P=1);var e,t,o=this.canvas.getContext("2d");this.props.image&&this.loadImage(this.props.image),this.paint(o),document&&(e=!!function(){var t=!1;try{var e=Object.defineProperty({},"passive",{get:function(){t=!0}});window.addEventListener("test",e,e),window.removeEventListener("test",e,e)}catch(e){t=!1}return t}()&&{passive:!1},t=I.native,document.addEventListener(t.move,this.handleMouseMove,e),document.addEventListener(t.up,this.handleMouseUp,e),w&&(document.addEventListener(t.mouseMove,this.handleMouseMove,e),document.addEventListener(t.mouseUp,this.handleMouseUp,e)))}},{key:"componentDidUpdate",value:function(e,t){this.props.image&&this.props.image!==e.image||this.props.width!==e.width||this.props.height!==e.height||this.props.backgroundColor!==e.backgroundColor?this.loadImage(this.props.image):this.props.image||t.image===C||this.clearImage();var o=this.canvas.getContext("2d");o.clearRect(0,0,this.canvas.width,this.canvas.height),this.paint(o),this.paintImage(o,this.state.image,this.props.border),e.image===this.props.image&&e.width===this.props.width&&e.height===this.props.height&&e.position===this.props.position&&e.scale===this.props.scale&&e.rotate===this.props.rotate&&t.my===this.state.my&&t.mx===this.state.mx&&t.image.x===this.state.image.x&&t.image.y===this.state.image.y&&t.backgroundColor===this.state.backgroundColor||this.props.onImageChange()}},{key:"componentWillUnmount",value:function(){var e;document&&(e=I.native,document.removeEventListener(e.move,this.handleMouseMove,!1),document.removeEventListener(e.up,this.handleMouseUp,!1),w&&(document.removeEventListener(e.mouseMove,this.handleMouseMove,!1),document.removeEventListener(e.mouseUp,this.handleMouseUp,!1)))}},{key:"isVertical",value:function(){return!this.props.disableCanvasRotation&&this.props.rotate%180!=0}},{key:"getBorders",value:function(e){var t=0<arguments.length&&void 0!==e?e:this.props.border;return Array.isArray(t)?t:[t,t]}},{key:"getDimensions",value:function(){var e=this.props,t=e.width,o=e.height,n=e.rotate,a=e.border,r={},i=m(this.getBorders(a),2),s=i[0],u=i[1],h=t,c=o;return this.isVertical()?(r.width=c,r.height=h):(r.width=h,r.height=c),r.width+=2*s,r.height+=2*u,{canvas:r,rotate:n,width:t,height:o,border:a}}},{key:"getImage",value:function(){var e=this.getCroppingRect(),t=this.state.image;e.x*=t.resource.width,e.y*=t.resource.height,e.width*=t.resource.width,e.height*=t.resource.height;var o=document.createElement("canvas");this.isVertical()?(o.width=e.height,o.height=e.width):(o.width=e.width,o.height=e.height);var n=o.getContext("2d");return n.translate(o.width/2,o.height/2),n.rotate(this.props.rotate*Math.PI/180),n.translate(-o.width/2,-o.height/2),this.isVertical()&&n.translate((o.width-o.height)/2,(o.height-o.width)/2),t.backgroundColor&&(n.fillStyle=t.backgroundColor,n.fillRect(-e.x,-e.y,t.resource.width,t.resource.height)),n.drawImage(t.resource,-e.x,-e.y),o}},{key:"getImageScaledToCanvas",value:function(){var e=this.getDimensions(),t=e.width,o=e.height,n=document.createElement("canvas");return this.isVertical()?(n.width=o,n.height=t):(n.width=t,n.height=o),this.paintImage(n.getContext("2d"),this.state.image,0,1),n}},{key:"getXScale",value:function(){var e=this.props.width/this.props.height,t=this.state.image.width/this.state.image.height;return Math.min(1,e/t)}},{key:"getYScale",value:function(){var e=this.props.height/this.props.width,t=this.state.image.height/this.state.image.width;return Math.min(1,e/t)}},{key:"getCroppingRect",value:function(){var e=this.props.position||{x:this.state.image.x,y:this.state.image.y},t=1/this.props.scale*this.getXScale(),o=1/this.props.scale*this.getYScale(),n={x:e.x-t/2,y:e.y-o/2,width:t,height:o},a=0,r=1-n.width,i=0,s=1-n.height;return(this.props.disableBoundaryChecks||1<t||1<o)&&(a=-n.width,i=-n.height,s=r=1),y(y({},n),{},{x:Math.max(a,Math.min(n.x,r)),y:Math.max(i,Math.min(n.y,s))})}},{key:"loadImage",value:function(e){var t;M&&e instanceof File?this.loadingImage=(t=e,new Promise(function(o,n){var e=new FileReader;e.onload=function(e){try{var t=v(e.target.result);o(t)}catch(e){n(e)}},e.readAsDataURL(t)}).then(this.handleImageReady).catch(this.props.onLoadFailure)):"string"==typeof e&&(this.loadingImage=v(e,this.props.crossOrigin).then(this.handleImageReady).catch(this.props.onLoadFailure))}},{key:"getInitialSize",value:function(e,t){var o,n,a=this.getDimensions();return t/e<a.height/a.width?n=e*((o=this.getDimensions().height)/t):o=t*((n=this.getDimensions().width)/e),{height:o,width:n}}},{key:"paintImage",value:function(e,t,o,n){var a,r=3<arguments.length&&void 0!==n?n:P;t.resource&&(a=this.calculatePosition(t,o),e.save(),e.translate(e.canvas.width/2,e.canvas.height/2),e.rotate(this.props.rotate*Math.PI/180),e.translate(-e.canvas.width/2,-e.canvas.height/2),this.isVertical()&&e.translate((e.canvas.width-e.canvas.height)/2,(e.canvas.height-e.canvas.width)/2),e.scale(r,r),e.globalCompositeOperation="destination-over",e.drawImage(t.resource,a.x,a.y,a.width,a.height),t.backgroundColor&&(e.fillStyle=t.backgroundColor,e.fillRect(a.x,a.y,a.width,a.height)),e.restore())}},{key:"calculatePosition",value:function(e,t){e=e||this.state.image;var o=m(this.getBorders(t),2),n=o[0],a=o[1],r=this.getCroppingRect(),i=e.width*this.props.scale,s=e.height*this.props.scale,u=-r.x*i,h=-r.y*s;return this.isVertical()?(u+=a,h+=n):(u+=n,h+=a),{x:u,y:h,height:s,width:i}}},{key:"paint",value:function(e){e.save(),e.scale(P,P),e.translate(0,0),e.fillStyle="rgba("+this.props.color.slice(0,4).join(",")+")";var t,o,n,a,r,i,s,u,h=this.props.borderRadius,c=this.getDimensions(),l=m(this.getBorders(c.border),2),d=l[0],p=l[1],g=c.canvas.height,f=c.canvas.width,h=Math.max(h,0);h=Math.min(h,f/2-d,g/2-p),e.beginPath(),t=e,a=f-2*(o=d),r=g-2*(n=p),0===(i=h)?t.rect(o,n,a,r):(s=a-i,u=r-i,t.translate(o,n),t.arc(i,i,i,Math.PI,1.5*Math.PI),t.lineTo(s,0),t.arc(s,i,i,1.5*Math.PI,2*Math.PI),t.lineTo(a,u),t.arc(s,u,i,2*Math.PI,.5*Math.PI),t.lineTo(i,r),t.arc(i,u,i,.5*Math.PI,Math.PI),t.translate(-o,-n)),e.rect(f,0,-f,g),e.fill("evenodd"),e.restore()}},{key:"render",value:function(){var e=this.props,t=(e.scale,e.rotate,e.image,e.border,e.borderRadius,e.width,e.height,e.position,e.color,e.backgroundColor,e.style),o=(e.crossOrigin,e.onLoadFailure,e.onLoadSuccess,e.onImageReady,e.onImageChange,e.onMouseUp,e.onMouseMove,e.onPositionChange,e.disableBoundaryChecks,e.disableHiDPIScaling,e.disableCanvasRotation,l(e,["scale","rotate","image","border","borderRadius","width","height","position","color","backgroundColor","style","crossOrigin","onLoadFailure","onLoadSuccess","onImageReady","onImageChange","onMouseUp","onMouseMove","onPositionChange","disableBoundaryChecks","disableHiDPIScaling","disableCanvasRotation"])),n=this.getDimensions(),a={width:n.canvas.width,height:n.canvas.height,cursor:this.state.drag?"grabbing":"grab",touchAction:"none"},r={width:n.canvas.width*P,height:n.canvas.height*P,style:y(y({},a),t)};return r[I.react.down]=this.handleMouseDown,w&&(r[I.react.mouseDown]=this.handleMouseDown),i.default.createElement("canvas",u({ref:this.setCanvas},r,o))}}])&&r(e.prototype,t),o&&r(e,o),a}();return s(x,"propTypes",{scale:n.default.number,rotate:n.default.number,image:n.default.oneOfType([n.default.string].concat(function(e){if(Array.isArray(e))return f(e)}(b=M?[n.default.instanceOf(File)]:[])||function(e){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(e))return Array.from(e)}(b)||g(b)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}())),border:n.default.oneOfType([n.default.number,n.default.arrayOf(n.default.number)]),borderRadius:n.default.number,width:n.default.number,height:n.default.number,position:n.default.shape({x:n.default.number,y:n.default.number}),color:n.default.arrayOf(n.default.number),backgroundColor:n.default.string,crossOrigin:n.default.oneOf(["","anonymous","use-credentials"]),onLoadFailure:n.default.func,onLoadSuccess:n.default.func,onImageReady:n.default.func,onImageChange:n.default.func,onMouseUp:n.default.func,onMouseMove:n.default.func,onPositionChange:n.default.func,disableBoundaryChecks:n.default.bool,disableHiDPIScaling:n.default.bool,disableCanvasRotation:n.default.bool}),s(x,"defaultProps",{scale:1,rotate:0,border:25,borderRadius:0,width:200,height:200,color:[0,0,0,.5],onLoadFailure:function(){},onLoadSuccess:function(){},onImageReady:function(){},onImageChange:function(){},onMouseUp:function(){},onMouseMove:function(){},onPositionChange:function(){},disableBoundaryChecks:!1,disableHiDPIScaling:!1,disableCanvasRotation:!0}),x});
+
+
+/***/ }),
+
 /***/ "../node_modules/react-draggable/build/cjs/Draggable.js":
 /*!**************************************************************!*\
   !*** ../node_modules/react-draggable/build/cjs/Draggable.js ***!
@@ -6629,6 +12110,1601 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "../node_modules/react-sketch-canvas/dist/react-sketch-canvas.esm.js":
+/*!***************************************************************************!*\
+  !*** ../node_modules/react-sketch-canvas/dist/react-sketch-canvas.esm.js ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Canvas": () => (/* binding */ Canvas),
+/* harmony export */   "ReactSketchCanvas": () => (/* binding */ ReactSketchCanvas)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
+}
+
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+var runtime = {exports: {}};
+
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+(function (module) {
+var runtime = (function (exports) {
+
+  var Op = Object.prototype;
+  var hasOwn = Op.hasOwnProperty;
+  var undefined$1; // More compressible than void 0.
+  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+  function define(obj, key, value) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+    return obj[key];
+  }
+  try {
+    // IE 8 has a broken Object.defineProperty that only works on DOM objects.
+    define({}, "");
+  } catch (err) {
+    define = function(obj, key, value) {
+      return obj[key] = value;
+    };
+  }
+
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+    var generator = Object.create(protoGenerator.prototype);
+    var context = new Context(tryLocsList || []);
+
+    // The ._invoke method unifies the implementations of the .next,
+    // .throw, and .return methods.
+    generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+    return generator;
+  }
+  exports.wrap = wrap;
+
+  // Try/catch helper to minimize deoptimizations. Returns a completion
+  // record like context.tryEntries[i].completion. This interface could
+  // have been (and was previously) designed to take a closure to be
+  // invoked without arguments, but in all the cases we care about we
+  // already have an existing method we want to call, so there's no need
+  // to create a new function object. We can even get away with assuming
+  // the method takes exactly one argument, since that happens to be true
+  // in every case, so we don't have to touch the arguments object. The
+  // only additional allocation required is the completion record, which
+  // has a stable shape and so hopefully should be cheap to allocate.
+  function tryCatch(fn, obj, arg) {
+    try {
+      return { type: "normal", arg: fn.call(obj, arg) };
+    } catch (err) {
+      return { type: "throw", arg: err };
+    }
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed";
+
+  // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+  var ContinueSentinel = {};
+
+  // Dummy constructor functions that we use as the .constructor and
+  // .constructor.prototype properties for functions that return Generator
+  // objects. For full spec compliance, you may wish to configure your
+  // minifier not to mangle the names of these two functions.
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+
+  // This is a polyfill for %IteratorPrototype% for environments that
+  // don't natively support it.
+  var IteratorPrototype = {};
+  define(IteratorPrototype, iteratorSymbol, function () {
+    return this;
+  });
+
+  var getProto = Object.getPrototypeOf;
+  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  if (NativeIteratorPrototype &&
+      NativeIteratorPrototype !== Op &&
+      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+    // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+  }
+
+  var Gp = GeneratorFunctionPrototype.prototype =
+    Generator.prototype = Object.create(IteratorPrototype);
+  GeneratorFunction.prototype = GeneratorFunctionPrototype;
+  define(Gp, "constructor", GeneratorFunctionPrototype);
+  define(GeneratorFunctionPrototype, "constructor", GeneratorFunction);
+  GeneratorFunction.displayName = define(
+    GeneratorFunctionPrototype,
+    toStringTagSymbol,
+    "GeneratorFunction"
+  );
+
+  // Helper for defining the .next, .throw, and .return methods of the
+  // Iterator interface in terms of a single ._invoke method.
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function(method) {
+      define(prototype, method, function(arg) {
+        return this._invoke(method, arg);
+      });
+    });
+  }
+
+  exports.isGeneratorFunction = function(genFun) {
+    var ctor = typeof genFun === "function" && genFun.constructor;
+    return ctor
+      ? ctor === GeneratorFunction ||
+        // For the native GeneratorFunction constructor, the best we can
+        // do is to check its .name property.
+        (ctor.displayName || ctor.name) === "GeneratorFunction"
+      : false;
+  };
+
+  exports.mark = function(genFun) {
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+    } else {
+      genFun.__proto__ = GeneratorFunctionPrototype;
+      define(genFun, toStringTagSymbol, "GeneratorFunction");
+    }
+    genFun.prototype = Object.create(Gp);
+    return genFun;
+  };
+
+  // Within the body of any async function, `await x` is transformed to
+  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+  // meant to be awaited.
+  exports.awrap = function(arg) {
+    return { __await: arg };
+  };
+
+  function AsyncIterator(generator, PromiseImpl) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+      if (record.type === "throw") {
+        reject(record.arg);
+      } else {
+        var result = record.arg;
+        var value = result.value;
+        if (value &&
+            typeof value === "object" &&
+            hasOwn.call(value, "__await")) {
+          return PromiseImpl.resolve(value.__await).then(function(value) {
+            invoke("next", value, resolve, reject);
+          }, function(err) {
+            invoke("throw", err, resolve, reject);
+          });
+        }
+
+        return PromiseImpl.resolve(value).then(function(unwrapped) {
+          // When a yielded Promise is resolved, its final value becomes
+          // the .value of the Promise<{value,done}> result for the
+          // current iteration.
+          result.value = unwrapped;
+          resolve(result);
+        }, function(error) {
+          // If a rejected Promise was yielded, throw the rejection back
+          // into the async generator function so it can be handled there.
+          return invoke("throw", error, resolve, reject);
+        });
+      }
+    }
+
+    var previousPromise;
+
+    function enqueue(method, arg) {
+      function callInvokeWithMethodAndArg() {
+        return new PromiseImpl(function(resolve, reject) {
+          invoke(method, arg, resolve, reject);
+        });
+      }
+
+      return previousPromise =
+        // If enqueue has been called before, then we want to wait until
+        // all previous Promises have been resolved before calling invoke,
+        // so that results are always delivered in the correct order. If
+        // enqueue has not been called before, then it is important to
+        // call invoke immediately, without waiting on a callback to fire,
+        // so that the async generator function has the opportunity to do
+        // any necessary setup in a predictable way. This predictability
+        // is why the Promise constructor synchronously invokes its
+        // executor callback, and why async functions synchronously
+        // execute code before the first await. Since we implement simple
+        // async functions in terms of async generators, it is especially
+        // important to get this right, even though it requires care.
+        previousPromise ? previousPromise.then(
+          callInvokeWithMethodAndArg,
+          // Avoid propagating failures to Promises returned by later
+          // invocations of the iterator.
+          callInvokeWithMethodAndArg
+        ) : callInvokeWithMethodAndArg();
+    }
+
+    // Define the unified helper method that is used to implement .next,
+    // .throw, and .return (see defineIteratorMethods).
+    this._invoke = enqueue;
+  }
+
+  defineIteratorMethods(AsyncIterator.prototype);
+  define(AsyncIterator.prototype, asyncIteratorSymbol, function () {
+    return this;
+  });
+  exports.AsyncIterator = AsyncIterator;
+
+  // Note that simple async functions are implemented on top of
+  // AsyncIterator objects; they just return a Promise for the value of
+  // the final result produced by the iterator.
+  exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
+    if (PromiseImpl === void 0) PromiseImpl = Promise;
+
+    var iter = new AsyncIterator(
+      wrap(innerFn, outerFn, self, tryLocsList),
+      PromiseImpl
+    );
+
+    return exports.isGeneratorFunction(outerFn)
+      ? iter // If outerFn is a generator, return the full iterator.
+      : iter.next().then(function(result) {
+          return result.done ? result.value : iter.next();
+        });
+  };
+
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = GenStateSuspendedStart;
+
+    return function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        if (method === "throw") {
+          throw arg;
+        }
+
+        // Be forgiving, per 25.3.3.3.3 of the spec:
+        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+        return doneResult();
+      }
+
+      context.method = method;
+      context.arg = arg;
+
+      while (true) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+
+        if (context.method === "next") {
+          // Setting context._sent for legacy support of Babel's
+          // function.sent implementation.
+          context.sent = context._sent = context.arg;
+
+        } else if (context.method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw context.arg;
+          }
+
+          context.dispatchException(context.arg);
+
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+
+        state = GenStateExecuting;
+
+        var record = tryCatch(innerFn, self, context);
+        if (record.type === "normal") {
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done
+            ? GenStateCompleted
+            : GenStateSuspendedYield;
+
+          if (record.arg === ContinueSentinel) {
+            continue;
+          }
+
+          return {
+            value: record.arg,
+            done: context.done
+          };
+
+        } else if (record.type === "throw") {
+          state = GenStateCompleted;
+          // Dispatch the exception by looping back around to the
+          // context.dispatchException(context.arg) call above.
+          context.method = "throw";
+          context.arg = record.arg;
+        }
+      }
+    };
+  }
+
+  // Call delegate.iterator[context.method](context.arg) and handle the
+  // result, either by returning a { value, done } result from the
+  // delegate iterator, or by modifying context.method and context.arg,
+  // setting context.delegate to null, and returning the ContinueSentinel.
+  function maybeInvokeDelegate(delegate, context) {
+    var method = delegate.iterator[context.method];
+    if (method === undefined$1) {
+      // A .throw or .return when the delegate iterator has no .throw
+      // method always terminates the yield* loop.
+      context.delegate = null;
+
+      if (context.method === "throw") {
+        // Note: ["return"] must be used for ES3 parsing compatibility.
+        if (delegate.iterator["return"]) {
+          // If the delegate iterator has a return method, give it a
+          // chance to clean up.
+          context.method = "return";
+          context.arg = undefined$1;
+          maybeInvokeDelegate(delegate, context);
+
+          if (context.method === "throw") {
+            // If maybeInvokeDelegate(context) changed context.method from
+            // "return" to "throw", let that override the TypeError below.
+            return ContinueSentinel;
+          }
+        }
+
+        context.method = "throw";
+        context.arg = new TypeError(
+          "The iterator does not provide a 'throw' method");
+      }
+
+      return ContinueSentinel;
+    }
+
+    var record = tryCatch(method, delegate.iterator, context.arg);
+
+    if (record.type === "throw") {
+      context.method = "throw";
+      context.arg = record.arg;
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    var info = record.arg;
+
+    if (! info) {
+      context.method = "throw";
+      context.arg = new TypeError("iterator result is not an object");
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    if (info.done) {
+      // Assign the result of the finished delegate to the temporary
+      // variable specified by delegate.resultName (see delegateYield).
+      context[delegate.resultName] = info.value;
+
+      // Resume execution at the desired location (see delegateYield).
+      context.next = delegate.nextLoc;
+
+      // If context.method was "throw" but the delegate handled the
+      // exception, let the outer generator proceed normally. If
+      // context.method was "next", forget context.arg since it has been
+      // "consumed" by the delegate iterator. If context.method was
+      // "return", allow the original .return call to continue in the
+      // outer generator.
+      if (context.method !== "return") {
+        context.method = "next";
+        context.arg = undefined$1;
+      }
+
+    } else {
+      // Re-yield the result returned by the delegate method.
+      return info;
+    }
+
+    // The delegate iterator is finished, so forget it and continue with
+    // the outer generator.
+    context.delegate = null;
+    return ContinueSentinel;
+  }
+
+  // Define Generator.prototype.{next,throw,return} in terms of the
+  // unified ._invoke helper method.
+  defineIteratorMethods(Gp);
+
+  define(Gp, toStringTagSymbol, "Generator");
+
+  // A Generator should always return itself as the iterator object when the
+  // @@iterator function is called on it. Some browsers' implementations of the
+  // iterator prototype chain incorrectly implement this, causing the Generator
+  // object to not be returned from this call. This ensures that doesn't happen.
+  // See https://github.com/facebook/regenerator/issues/274 for more details.
+  define(Gp, iteratorSymbol, function() {
+    return this;
+  });
+
+  define(Gp, "toString", function() {
+    return "[object Generator]";
+  });
+
+  function pushTryEntry(locs) {
+    var entry = { tryLoc: locs[0] };
+
+    if (1 in locs) {
+      entry.catchLoc = locs[1];
+    }
+
+    if (2 in locs) {
+      entry.finallyLoc = locs[2];
+      entry.afterLoc = locs[3];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryLocsList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{ tryLoc: "root" }];
+    tryLocsList.forEach(pushTryEntry, this);
+    this.reset(true);
+  }
+
+  exports.keys = function(object) {
+    var keys = [];
+    for (var key in object) {
+      keys.push(key);
+    }
+    keys.reverse();
+
+    // Rather than returning an object with a next method, we keep
+    // things simple and return the next function itself.
+    return function next() {
+      while (keys.length) {
+        var key = keys.pop();
+        if (key in object) {
+          next.value = key;
+          next.done = false;
+          return next;
+        }
+      }
+
+      // To avoid creating an additional object, we just hang the .value
+      // and .done properties off the next function object itself. This
+      // also ensures that the minifier will not anonymize the function.
+      next.done = true;
+      return next;
+    };
+  };
+
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) {
+        return iteratorMethod.call(iterable);
+      }
+
+      if (typeof iterable.next === "function") {
+        return iterable;
+      }
+
+      if (!isNaN(iterable.length)) {
+        var i = -1, next = function next() {
+          while (++i < iterable.length) {
+            if (hasOwn.call(iterable, i)) {
+              next.value = iterable[i];
+              next.done = false;
+              return next;
+            }
+          }
+
+          next.value = undefined$1;
+          next.done = true;
+
+          return next;
+        };
+
+        return next.next = next;
+      }
+    }
+
+    // Return an iterator with no values.
+    return { next: doneResult };
+  }
+  exports.values = values;
+
+  function doneResult() {
+    return { value: undefined$1, done: true };
+  }
+
+  Context.prototype = {
+    constructor: Context,
+
+    reset: function(skipTempReset) {
+      this.prev = 0;
+      this.next = 0;
+      // Resetting context._sent for legacy support of Babel's
+      // function.sent implementation.
+      this.sent = this._sent = undefined$1;
+      this.done = false;
+      this.delegate = null;
+
+      this.method = "next";
+      this.arg = undefined$1;
+
+      this.tryEntries.forEach(resetTryEntry);
+
+      if (!skipTempReset) {
+        for (var name in this) {
+          // Not sure about the optimal order of these conditions:
+          if (name.charAt(0) === "t" &&
+              hasOwn.call(this, name) &&
+              !isNaN(+name.slice(1))) {
+            this[name] = undefined$1;
+          }
+        }
+      }
+    },
+
+    stop: function() {
+      this.done = true;
+
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+
+    dispatchException: function(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+
+        if (caught) {
+          // If the dispatched exception was caught by a catch block,
+          // then let that catch block handle the exception normally.
+          context.method = "next";
+          context.arg = undefined$1;
+        }
+
+        return !! caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+
+    abrupt: function(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev &&
+            hasOwn.call(entry, "finallyLoc") &&
+            this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+
+      if (finallyEntry &&
+          (type === "break" ||
+           type === "continue") &&
+          finallyEntry.tryLoc <= arg &&
+          arg <= finallyEntry.finallyLoc) {
+        // Ignore the finally entry if control is not jumping to a
+        // location outside the try/catch block.
+        finallyEntry = null;
+      }
+
+      var record = finallyEntry ? finallyEntry.completion : {};
+      record.type = type;
+      record.arg = arg;
+
+      if (finallyEntry) {
+        this.method = "next";
+        this.next = finallyEntry.finallyLoc;
+        return ContinueSentinel;
+      }
+
+      return this.complete(record);
+    },
+
+    complete: function(record, afterLoc) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" ||
+          record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = this.arg = record.arg;
+        this.method = "return";
+        this.next = "end";
+      } else if (record.type === "normal" && afterLoc) {
+        this.next = afterLoc;
+      }
+
+      return ContinueSentinel;
+    },
+
+    finish: function(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.finallyLoc === finallyLoc) {
+          this.complete(entry.completion, entry.afterLoc);
+          resetTryEntry(entry);
+          return ContinueSentinel;
+        }
+      }
+    },
+
+    "catch": function(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+          return thrown;
+        }
+      }
+
+      // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+      throw new Error("illegal catch attempt");
+    },
+
+    delegateYield: function(iterable, resultName, nextLoc) {
+      this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      if (this.method === "next") {
+        // Deliberately forget the last sent value so that we don't
+        // accidentally pass it on to the delegate.
+        this.arg = undefined$1;
+      }
+
+      return ContinueSentinel;
+    }
+  };
+
+  // Regardless of whether this script is executing as a CommonJS module
+  // or not, return the runtime object so that we can declare the variable
+  // regeneratorRuntime in the outer scope, which allows this module to be
+  // injected easily by `bin/regenerator --include-runtime script.js`.
+  return exports;
+
+}(
+  // If this script is executing as a CommonJS module, use module.exports
+  // as the regeneratorRuntime namespace. Otherwise create a new empty
+  // object. Either way, the resulting object will be used to initialize
+  // the regeneratorRuntime variable at the top of this file.
+  module.exports 
+));
+
+try {
+  regeneratorRuntime = runtime;
+} catch (accidentalStrictMode) {
+  // This module should not be running in strict mode, so the above
+  // assignment should always work unless something is misconfigured. Just
+  // in case runtime.js accidentally runs in strict mode, in modern engines
+  // we can explicitly access globalThis. In older engines we can escape
+  // strict mode using a global Function call. This could conceivably fail
+  // if a Content Security Policy forbids using Function, but in that case
+  // the proper solution is to fix the accidental strict mode problem. If
+  // you've misconfigured your bundler to force strict mode and applied a
+  // CSP to forbid Function, and you're not willing to fix either of those
+  // problems, please detail your unique predicament in a GitHub issue.
+  if (typeof globalThis === "object") {
+    globalThis.regeneratorRuntime = runtime;
+  } else {
+    Function("r", "regeneratorRuntime = r")(runtime);
+  }
+}
+}(runtime));
+
+var _regeneratorRuntime = runtime.exports;
+
+/**
+ * Generate SVG Path tag from the given points
+ */
+
+var SvgPath = function SvgPath(_ref) {
+  var paths = _ref.paths,
+      id = _ref.id,
+      strokeWidth = _ref.strokeWidth,
+      strokeColor = _ref.strokeColor,
+      _ref$command = _ref.command,
+      command = _ref$command === void 0 ? bezierCommand : _ref$command;
+
+  if (paths.length === 1) {
+    var _paths$ = paths[0],
+        x = _paths$.x,
+        y = _paths$.y;
+    var radius = strokeWidth / 2;
+    return react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+      key: id,
+      id: id,
+      cx: x,
+      cy: y,
+      r: radius,
+      stroke: strokeColor,
+      fill: strokeColor
+    });
+  }
+
+  var d = paths.reduce(function (acc, point, i, a) {
+    return i === 0 ? "M " + point.x + "," + point.y : acc + " " + command(point, i, a);
+  }, '');
+  return react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    key: id,
+    id: id,
+    d: d,
+    fill: "none",
+    strokeLinecap: "round",
+    stroke: strokeColor,
+    strokeWidth: strokeWidth
+  });
+};
+var line = function line(pointA, pointB) {
+  var lengthX = pointB.x - pointA.x;
+  var lengthY = pointB.y - pointA.y;
+  return {
+    length: Math.sqrt(Math.pow(lengthX, 2) + Math.pow(lengthY, 2)),
+    angle: Math.atan2(lengthY, lengthX)
+  };
+};
+
+var controlPoint = function controlPoint(controlPoints) {
+  var current = controlPoints.current,
+      next = controlPoints.next,
+      previous = controlPoints.previous,
+      reverse = controlPoints.reverse;
+  var p = previous || current;
+  var n = next || current;
+  var smoothing = 0.2;
+  var o = line(p, n);
+  var angle = o.angle + (reverse ? Math.PI : 0);
+  var length = o.length * smoothing;
+  var x = current.x + Math.cos(angle) * length;
+  var y = current.y + Math.sin(angle) * length;
+  return [x, y];
+};
+
+var bezierCommand = function bezierCommand(point, i, a) {
+  var cpsX = null;
+  var cpsY = null;
+
+  switch (i) {
+    case 0:
+      var _controlPoint = controlPoint({
+        current: point
+      });
+
+      cpsX = _controlPoint[0];
+      cpsY = _controlPoint[1];
+      break;
+
+    case 1:
+      var _controlPoint2 = controlPoint({
+        current: a[i - 1],
+        next: point
+      });
+
+      cpsX = _controlPoint2[0];
+      cpsY = _controlPoint2[1];
+      break;
+
+    default:
+      var _controlPoint3 = controlPoint({
+        current: a[i - 1],
+        previous: a[i - 2],
+        next: point
+      });
+
+      cpsX = _controlPoint3[0];
+      cpsY = _controlPoint3[1];
+      break;
+  }
+
+  var _controlPoint4 = controlPoint({
+    current: point,
+    previous: a[i - 1],
+    next: a[i + 1],
+    reverse: true
+  }),
+      cpeX = _controlPoint4[0],
+      cpeY = _controlPoint4[1];
+
+  return "C " + cpsX + "," + cpsY + " " + cpeX + "," + cpeY + " " + point.x + ", " + point.y;
+};
+
+var Paths = function Paths(_ref2) {
+  var id = _ref2.id,
+      paths = _ref2.paths;
+  return react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, paths.map(function (path, index) {
+    return react__WEBPACK_IMPORTED_MODULE_0__.createElement(SvgPath, {
+      key: id + "__" + index,
+      paths: path.paths,
+      id: id + "__" + index,
+      strokeWidth: path.strokeWidth,
+      strokeColor: path.strokeColor,
+      command: bezierCommand
+    });
+  }));
+};
+
+var loadImage = function loadImage(url) {
+  return new Promise(function (resolve, reject) {
+    var img = new Image();
+    img.addEventListener('load', function () {
+      if (img.width > 0) {
+        resolve(img);
+      }
+
+      reject('Image not found');
+    });
+    img.addEventListener('error', function (err) {
+      return reject(err);
+    });
+    img.src = url;
+    img.setAttribute('crossorigin', 'anonymous');
+  });
+};
+
+function getCanvasWithViewBox(canvas) {
+  var _canvas$firstChild;
+
+  var svgCanvas = (_canvas$firstChild = canvas.firstChild) == null ? void 0 : _canvas$firstChild.cloneNode(true);
+  var width = canvas.offsetWidth;
+  var height = canvas.offsetHeight;
+  svgCanvas.setAttribute('viewBox', "0 0 " + width + " " + height);
+  svgCanvas.setAttribute('width', width.toString());
+  svgCanvas.setAttribute('height', height.toString());
+  return {
+    svgCanvas: svgCanvas,
+    width: width,
+    height: height
+  };
+}
+
+var Canvas = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (props, ref) {
+  var paths = props.paths,
+      isDrawing = props.isDrawing,
+      onPointerDown = props.onPointerDown,
+      onPointerMove = props.onPointerMove,
+      onPointerUp = props.onPointerUp,
+      _props$id = props.id,
+      id = _props$id === void 0 ? 'react-sketch-canvas' : _props$id,
+      _props$width = props.width,
+      width = _props$width === void 0 ? '100%' : _props$width,
+      _props$height = props.height,
+      height = _props$height === void 0 ? '100%' : _props$height,
+      _props$className = props.className,
+      className = _props$className === void 0 ? 'react-sketch-canvas' : _props$className,
+      _props$canvasColor = props.canvasColor,
+      canvasColor = _props$canvasColor === void 0 ? 'red' : _props$canvasColor,
+      _props$backgroundImag = props.backgroundImage,
+      backgroundImage = _props$backgroundImag === void 0 ? '' : _props$backgroundImag,
+      _props$exportWithBack = props.exportWithBackgroundImage,
+      exportWithBackgroundImage = _props$exportWithBack === void 0 ? false : _props$exportWithBack,
+      _props$preserveBackgr = props.preserveBackgroundImageAspectRatio,
+      preserveBackgroundImageAspectRatio = _props$preserveBackgr === void 0 ? 'none' : _props$preserveBackgr,
+      _props$allowOnlyPoint = props.allowOnlyPointerType,
+      allowOnlyPointerType = _props$allowOnlyPoint === void 0 ? 'all' : _props$allowOnlyPoint,
+      _props$style = props.style,
+      style = _props$style === void 0 ? {
+    border: '0.0625rem solid #9c9c9c',
+    borderRadius: '0.25rem'
+  } : _props$style,
+      _props$svgStyle = props.svgStyle,
+      svgStyle = _props$svgStyle === void 0 ? {} : _props$svgStyle;
+  var canvasRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null); // Converts mouse coordinates to relative coordinate based on the absolute position of svg
+
+  var getCoordinates = function getCoordinates(pointerEvent) {
+    var _canvasRef$current, _window$scrollX, _window$scrollY;
+
+    var boundingArea = (_canvasRef$current = canvasRef.current) == null ? void 0 : _canvasRef$current.getBoundingClientRect();
+    var scrollLeft = (_window$scrollX = window.scrollX) != null ? _window$scrollX : 0;
+    var scrollTop = (_window$scrollY = window.scrollY) != null ? _window$scrollY : 0;
+
+    if (!boundingArea) {
+      return {
+        x: 0,
+        y: 0
+      };
+    }
+
+    var point = {
+      x: pointerEvent.pageX - boundingArea.left - scrollLeft,
+      y: pointerEvent.pageY - boundingArea.top - scrollTop
+    };
+    return point;
+  };
+  /* Mouse Handlers - Mouse down, move and up */
+
+
+  var handlePointerDown = function handlePointerDown(event) {
+    // Allow only chosen pointer type
+    if (allowOnlyPointerType !== 'all' && event.pointerType !== allowOnlyPointerType) {
+      return;
+    }
+
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    var point = getCoordinates(event);
+    onPointerDown(point);
+  };
+
+  var handlePointerMove = function handlePointerMove(event) {
+    if (!isDrawing) return; // Allow only chosen pointer type
+
+    if (allowOnlyPointerType !== 'all' && event.pointerType !== allowOnlyPointerType) {
+      return;
+    }
+
+    var point = getCoordinates(event);
+    onPointerMove(point);
+  };
+
+  var handlePointerUp = function handlePointerUp(event) {
+    if (event.pointerType === 'mouse' && event.button !== 0) return; // Allow only chosen pointer type
+
+    if (allowOnlyPointerType !== 'all' && event.pointerType !== allowOnlyPointerType) {
+      return;
+    }
+
+    onPointerUp();
+  };
+  /* Mouse Handlers ends */
+
+
+  react__WEBPACK_IMPORTED_MODULE_0__.useImperativeHandle(ref, function () {
+    return {
+      exportImage: function exportImage(imageType) {
+        return new Promise( /*#__PURE__*/function () {
+          var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(resolve, reject) {
+            var canvas, _getCanvasWithViewBox, svgCanvas, _width, _height, canvasSketch, loadImagePromises, img;
+
+            return _regeneratorRuntime.wrap(function _callee$(_context) {
+              while (1) {
+                switch (_context.prev = _context.next) {
+                  case 0:
+                    _context.prev = 0;
+                    canvas = canvasRef.current;
+
+                    if (canvas) {
+                      _context.next = 4;
+                      break;
+                    }
+
+                    throw Error('Canvas not rendered yet');
+
+                  case 4:
+                    _getCanvasWithViewBox = getCanvasWithViewBox(canvas), svgCanvas = _getCanvasWithViewBox.svgCanvas, _width = _getCanvasWithViewBox.width, _height = _getCanvasWithViewBox.height;
+                    canvasSketch = "data:image/svg+xml;base64," + btoa(svgCanvas.outerHTML);
+                    _context.next = 8;
+                    return loadImage(canvasSketch);
+
+                  case 8:
+                    _context.t0 = _context.sent;
+                    loadImagePromises = [_context.t0];
+
+                    if (!exportWithBackgroundImage) {
+                      _context.next = 21;
+                      break;
+                    }
+
+                    _context.prev = 11;
+                    _context.next = 14;
+                    return loadImage(backgroundImage);
+
+                  case 14:
+                    img = _context.sent;
+                    loadImagePromises.push(img);
+                    _context.next = 21;
+                    break;
+
+                  case 18:
+                    _context.prev = 18;
+                    _context.t1 = _context["catch"](11);
+                    console.warn('exportWithBackgroundImage props is set without a valid background image URL. This option is ignored');
+
+                  case 21:
+                    Promise.all(loadImagePromises).then(function (images) {
+                      var renderCanvas = document.createElement('canvas');
+                      renderCanvas.setAttribute('width', _width.toString());
+                      renderCanvas.setAttribute('height', _height.toString());
+                      var context = renderCanvas.getContext('2d');
+
+                      if (!context) {
+                        throw Error('Canvas not rendered yet');
+                      }
+
+                      images.reverse().forEach(function (image) {
+                        context.drawImage(image, 0, 0);
+                      });
+                      resolve(renderCanvas.toDataURL("image/" + imageType));
+                    })["catch"](function (e) {
+                      throw e;
+                    });
+                    _context.next = 27;
+                    break;
+
+                  case 24:
+                    _context.prev = 24;
+                    _context.t2 = _context["catch"](0);
+                    reject(_context.t2);
+
+                  case 27:
+                  case "end":
+                    return _context.stop();
+                }
+              }
+            }, _callee, null, [[0, 24], [11, 18]]);
+          }));
+
+          return function (_x, _x2) {
+            return _ref.apply(this, arguments);
+          };
+        }());
+      },
+      exportSvg: function exportSvg() {
+        return new Promise(function (resolve, reject) {
+          try {
+            var _canvasRef$current2;
+
+            var canvas = (_canvasRef$current2 = canvasRef.current) != null ? _canvasRef$current2 : null;
+
+            if (canvas !== null) {
+              var _svgCanvas$querySelec, _svgCanvas$querySelec2;
+
+              var _getCanvasWithViewBox2 = getCanvasWithViewBox(canvas),
+                  svgCanvas = _getCanvasWithViewBox2.svgCanvas;
+
+              if (exportWithBackgroundImage) {
+                resolve(svgCanvas.outerHTML);
+                return;
+              }
+
+              (_svgCanvas$querySelec = svgCanvas.querySelector("#" + id + "__background")) == null ? void 0 : _svgCanvas$querySelec.remove();
+              (_svgCanvas$querySelec2 = svgCanvas.querySelector("#" + id + "__canvas-background")) == null ? void 0 : _svgCanvas$querySelec2.setAttribute('fill', canvasColor);
+              resolve(svgCanvas.outerHTML);
+            }
+
+            reject(new Error('Canvas not loaded'));
+          } catch (e) {
+            reject(e);
+          }
+        });
+      }
+    };
+  });
+  /* Add event listener to Mouse up and Touch up to
+  release drawing even when point goes out of canvas */
+
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
+    document.addEventListener('pointerup', handlePointerUp);
+    return function () {
+      document.removeEventListener('pointerup', handlePointerUp);
+    };
+  }, [handlePointerUp]);
+  var eraserPaths = paths.filter(function (path) {
+    return !path.drawMode;
+  });
+  var currentGroup = 0;
+  var pathGroups = paths.reduce(function (arrayGroup, path) {
+    if (!path.drawMode) {
+      currentGroup += 1;
+      return arrayGroup;
+    }
+
+    if (arrayGroup[currentGroup] === undefined) {
+      arrayGroup[currentGroup] = [];
+    }
+
+    arrayGroup[currentGroup].push(path);
+    return arrayGroup;
+  }, [[]]);
+  return react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    role: "presentation",
+    ref: canvasRef,
+    className: className,
+    style: _extends({
+      touchAction: 'none',
+      width: width,
+      height: height
+    }, style),
+    "touch-action": "none",
+    onPointerDown: handlePointerDown,
+    onPointerMove: handlePointerMove,
+    onPointerUp: handlePointerUp
+  }, react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+    version: "1.1",
+    baseProfile: "full",
+    xmlns: "http://www.w3.org/2000/svg",
+    xmlnsXlink: "http://www.w3.org/1999/xlink",
+    style: _extends({
+      width: '100%',
+      height: '100%'
+    }, svgStyle),
+    id: id
+  }, react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
+    id: id + "__eraser-stroke-group",
+    display: "none"
+  }, react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    id: id + "__mask-background",
+    x: "0",
+    y: "0",
+    width: "100%",
+    height: "100%",
+    fill: "white"
+  }), eraserPaths.map(function (eraserPath, i) {
+    return react__WEBPACK_IMPORTED_MODULE_0__.createElement(SvgPath, {
+      key: id + "__eraser-" + i,
+      id: id + "__eraser-" + i,
+      paths: eraserPath.paths,
+      strokeColor: "#000000",
+      strokeWidth: eraserPath.strokeWidth
+    });
+  })), react__WEBPACK_IMPORTED_MODULE_0__.createElement("defs", null, backgroundImage && react__WEBPACK_IMPORTED_MODULE_0__.createElement("pattern", {
+    id: id + "__background",
+    x: "0",
+    y: "0",
+    width: "100%",
+    height: "100%",
+    patternUnits: "userSpaceOnUse"
+  }, react__WEBPACK_IMPORTED_MODULE_0__.createElement("image", {
+    x: "0",
+    y: "0",
+    width: "100%",
+    height: "100%",
+    xlinkHref: backgroundImage,
+    preserveAspectRatio: preserveBackgroundImageAspectRatio
+  })), eraserPaths.map(function (_, i) {
+    return react__WEBPACK_IMPORTED_MODULE_0__.createElement("mask", {
+      id: id + "__eraser-mask-" + i,
+      key: id + "__eraser-mask-" + i,
+      maskUnits: "userSpaceOnUse"
+    }, react__WEBPACK_IMPORTED_MODULE_0__.createElement("use", {
+      href: "#" + id + "__mask-background"
+    }), Array.from({
+      length: eraserPaths.length - i
+    }, function (_, j) {
+      return j + i;
+    }).map(function (k) {
+      return react__WEBPACK_IMPORTED_MODULE_0__.createElement("use", {
+        key: k.toString(),
+        href: "#" + id + "__eraser-" + k.toString()
+      });
+    }));
+  })), react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
+    id: id + "__canvas-background-group"
+  }, react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    id: id + "__canvas-background",
+    x: "0",
+    y: "0",
+    width: "100%",
+    height: "100%",
+    fill: backgroundImage ? "url(#" + id + "__background)" : canvasColor
+  })), pathGroups.map(function (pathGroup, i) {
+    return react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
+      id: id + "__stroke-group-" + i,
+      key: id + "__stroke-group-" + i,
+      mask: "url(#" + id + "__eraser-mask-" + i + ")"
+    }, react__WEBPACK_IMPORTED_MODULE_0__.createElement(Paths, {
+      id: id,
+      paths: pathGroup
+    }));
+  })));
+});
+
+var ReactSketchCanvas = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (props, ref) {
+  var _props$id = props.id,
+      id = _props$id === void 0 ? 'react-sketch-canvas' : _props$id,
+      _props$width = props.width,
+      width = _props$width === void 0 ? '100%' : _props$width,
+      _props$height = props.height,
+      height = _props$height === void 0 ? '100%' : _props$height,
+      _props$className = props.className,
+      className = _props$className === void 0 ? '' : _props$className,
+      _props$canvasColor = props.canvasColor,
+      canvasColor = _props$canvasColor === void 0 ? 'white' : _props$canvasColor,
+      _props$strokeColor = props.strokeColor,
+      strokeColor = _props$strokeColor === void 0 ? 'red' : _props$strokeColor,
+      _props$backgroundImag = props.backgroundImage,
+      backgroundImage = _props$backgroundImag === void 0 ? '' : _props$backgroundImag,
+      _props$exportWithBack = props.exportWithBackgroundImage,
+      exportWithBackgroundImage = _props$exportWithBack === void 0 ? false : _props$exportWithBack,
+      _props$preserveBackgr = props.preserveBackgroundImageAspectRatio,
+      preserveBackgroundImageAspectRatio = _props$preserveBackgr === void 0 ? 'none' : _props$preserveBackgr,
+      _props$strokeWidth = props.strokeWidth,
+      strokeWidth = _props$strokeWidth === void 0 ? 4 : _props$strokeWidth,
+      _props$eraserWidth = props.eraserWidth,
+      eraserWidth = _props$eraserWidth === void 0 ? 8 : _props$eraserWidth,
+      _props$allowOnlyPoint = props.allowOnlyPointerType,
+      allowOnlyPointerType = _props$allowOnlyPoint === void 0 ? 'all' : _props$allowOnlyPoint,
+      _props$style = props.style,
+      style = _props$style === void 0 ? {
+    border: '0.0625rem solid #9c9c9c',
+    borderRadius: '0.25rem'
+  } : _props$style,
+      _props$svgStyle = props.svgStyle,
+      svgStyle = _props$svgStyle === void 0 ? {} : _props$svgStyle,
+      _props$onChange = props.onChange,
+      onChange = _props$onChange === void 0 ? function (_paths) {} : _props$onChange,
+      _props$onStroke = props.onStroke,
+      onStroke = _props$onStroke === void 0 ? function (_path, _isEraser) {} : _props$onStroke,
+      _props$withTimestamp = props.withTimestamp,
+      withTimestamp = _props$withTimestamp === void 0 ? false : _props$withTimestamp;
+  var svgCanvas = react__WEBPACK_IMPORTED_MODULE_0__.createRef();
+
+  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0__.useState(true),
+      drawMode = _React$useState[0],
+      setDrawMode = _React$useState[1];
+
+  var _React$useState2 = react__WEBPACK_IMPORTED_MODULE_0__.useState(false),
+      isDrawing = _React$useState2[0],
+      setIsDrawing = _React$useState2[1];
+
+  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_0__.useState([]),
+      resetStack = _React$useState3[0],
+      setResetStack = _React$useState3[1];
+
+  var _React$useState4 = react__WEBPACK_IMPORTED_MODULE_0__.useState([]),
+      undoStack = _React$useState4[0],
+      setUndoStack = _React$useState4[1];
+
+  var _React$useState5 = react__WEBPACK_IMPORTED_MODULE_0__.useState([]),
+      currentPaths = _React$useState5[0],
+      setCurrentPaths = _React$useState5[1];
+
+  var liftStrokeUp = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(function () {
+    var _currentPaths$slice$, _currentPaths$slice;
+
+    var lastStroke = (_currentPaths$slice$ = (_currentPaths$slice = currentPaths.slice(-1)) == null ? void 0 : _currentPaths$slice[0]) != null ? _currentPaths$slice$ : null;
+
+    if (lastStroke === null) {
+      console.warn('No stroke found!');
+      return;
+    }
+
+    onStroke(lastStroke, !lastStroke.drawMode);
+  }, [isDrawing]);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
+    liftStrokeUp();
+  }, [isDrawing]);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
+    onChange(currentPaths);
+  }, [currentPaths]);
+  react__WEBPACK_IMPORTED_MODULE_0__.useImperativeHandle(ref, function () {
+    return {
+      eraseMode: function eraseMode(erase) {
+        setDrawMode(!erase);
+      },
+      clearCanvas: function clearCanvas() {
+        setResetStack([].concat(currentPaths));
+        setCurrentPaths([]);
+      },
+      undo: function undo() {
+        // If there was a last reset then
+        if (resetStack.length !== 0) {
+          setCurrentPaths([].concat(resetStack));
+          setResetStack([]);
+          return;
+        }
+
+        setUndoStack(function (undoStack) {
+          return [].concat(undoStack, currentPaths.slice(-1));
+        });
+        setCurrentPaths(function (currentPaths) {
+          return currentPaths.slice(0, -1);
+        });
+      },
+      redo: function redo() {
+        // Nothing to Redo
+        if (undoStack.length === 0) return;
+        setCurrentPaths(function (currentPaths) {
+          return [].concat(currentPaths, undoStack.slice(-1));
+        });
+        setUndoStack(function (undoStack) {
+          return undoStack.slice(0, -1);
+        });
+      },
+      exportImage: function exportImage(imageType) {
+        var _svgCanvas$current;
+
+        var exportImage = (_svgCanvas$current = svgCanvas.current) == null ? void 0 : _svgCanvas$current.exportImage;
+
+        if (!exportImage) {
+          throw Error('Export function called before canvas loaded');
+        } else {
+          return exportImage(imageType);
+        }
+      },
+      exportSvg: function exportSvg() {
+        return new Promise(function (resolve, reject) {
+          var _svgCanvas$current2;
+
+          var exportSvg = (_svgCanvas$current2 = svgCanvas.current) == null ? void 0 : _svgCanvas$current2.exportSvg;
+
+          if (!exportSvg) {
+            reject(Error('Export function called before canvas loaded'));
+          } else {
+            exportSvg().then(function (data) {
+              resolve(data);
+            })["catch"](function (e) {
+              reject(e);
+            });
+          }
+        });
+      },
+      exportPaths: function exportPaths() {
+        return new Promise(function (resolve, reject) {
+          try {
+            resolve(currentPaths);
+          } catch (e) {
+            reject(e);
+          }
+        });
+      },
+      loadPaths: function loadPaths(paths) {
+        setCurrentPaths(function (currentPaths) {
+          return [].concat(currentPaths, paths);
+        });
+      },
+      getSketchingTime: function getSketchingTime() {
+        return new Promise(function (resolve, reject) {
+          if (!withTimestamp) {
+            reject(new Error("Set 'withTimestamp' prop to get sketching time"));
+          }
+
+          try {
+            var sketchingTime = currentPaths.reduce(function (totalSketchingTime, path) {
+              var _path$startTimestamp, _path$endTimestamp;
+
+              var startTimestamp = (_path$startTimestamp = path.startTimestamp) != null ? _path$startTimestamp : 0;
+              var endTimestamp = (_path$endTimestamp = path.endTimestamp) != null ? _path$endTimestamp : 0;
+              return totalSketchingTime + (endTimestamp - startTimestamp);
+            }, 0);
+            resolve(sketchingTime);
+          } catch (e) {
+            reject(e);
+          }
+        });
+      },
+      resetCanvas: function resetCanvas() {
+        setResetStack([]);
+        setUndoStack([]);
+        setCurrentPaths([]);
+      }
+    };
+  });
+
+  var handlePointerDown = function handlePointerDown(point) {
+    setIsDrawing(true);
+    setUndoStack([]);
+    var stroke = {
+      drawMode: drawMode,
+      strokeColor: drawMode ? strokeColor : '#000000',
+      strokeWidth: drawMode ? strokeWidth : eraserWidth,
+      paths: [point]
+    };
+
+    if (withTimestamp) {
+      stroke = _extends({}, stroke, {
+        startTimestamp: Date.now(),
+        endTimestamp: 0
+      });
+    }
+
+    setCurrentPaths(function (currentPaths) {
+      return [].concat(currentPaths, [stroke]);
+    });
+  };
+
+  var handlePointerMove = function handlePointerMove(point) {
+    if (!isDrawing) return;
+    var currentStroke = currentPaths.slice(-1)[0];
+
+    var updatedStroke = _extends({}, currentStroke, {
+      paths: [].concat(currentStroke.paths, [point])
+    });
+
+    setCurrentPaths(function (currentPaths) {
+      return [].concat(currentPaths.slice(0, -1), [updatedStroke]);
+    });
+  };
+
+  var handlePointerUp = function handlePointerUp() {
+    var _currentPaths$slice$2, _currentPaths$slice2;
+
+    if (!isDrawing) {
+      return;
+    }
+
+    setIsDrawing(false);
+
+    if (!withTimestamp) {
+      return;
+    }
+
+    var currentStroke = (_currentPaths$slice$2 = (_currentPaths$slice2 = currentPaths.slice(-1)) == null ? void 0 : _currentPaths$slice2[0]) != null ? _currentPaths$slice$2 : null;
+
+    if (currentStroke === null) {
+      return;
+    }
+
+    var updatedStroke = _extends({}, currentStroke, {
+      endTimestamp: Date.now()
+    });
+
+    setCurrentPaths(function (currentPaths) {
+      return [].concat(currentPaths.slice(0, -1), [updatedStroke]);
+    });
+  };
+
+  return react__WEBPACK_IMPORTED_MODULE_0__.createElement(Canvas, {
+    ref: svgCanvas,
+    id: id,
+    width: width,
+    height: height,
+    className: className,
+    canvasColor: canvasColor,
+    backgroundImage: backgroundImage,
+    exportWithBackgroundImage: exportWithBackgroundImage,
+    preserveBackgroundImageAspectRatio: preserveBackgroundImageAspectRatio,
+    allowOnlyPointerType: allowOnlyPointerType,
+    style: style,
+    svgStyle: svgStyle,
+    paths: currentPaths,
+    isDrawing: isDrawing,
+    onPointerDown: handlePointerDown,
+    onPointerMove: handlePointerMove,
+    onPointerUp: handlePointerUp
+  });
+});
+
+
+//# sourceMappingURL=react-sketch-canvas.esm.js.map
+
+
+/***/ }),
+
 /***/ "../node_modules/style-to-object/index.js":
 /*!************************************************!*\
   !*** ../node_modules/style-to-object/index.js ***!
@@ -6765,6 +13841,20 @@ module.exports = _arrayWithHoles, module.exports.__esModule = true, module.expor
 
 /***/ }),
 
+/***/ "../node_modules/@babel/runtime/helpers/arrayWithoutHoles.js":
+/*!*******************************************************************!*\
+  !*** ../node_modules/@babel/runtime/helpers/arrayWithoutHoles.js ***!
+  \*******************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var arrayLikeToArray = __webpack_require__(/*! ./arrayLikeToArray.js */ "../node_modules/@babel/runtime/helpers/arrayLikeToArray.js");
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) return arrayLikeToArray(arr);
+}
+module.exports = _arrayWithoutHoles, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
 /***/ "../node_modules/@babel/runtime/helpers/asyncToGenerator.js":
 /*!******************************************************************!*\
   !*** ../node_modules/@babel/runtime/helpers/asyncToGenerator.js ***!
@@ -6869,6 +13959,19 @@ module.exports = _interopRequireDefault, module.exports.__esModule = true, modul
 
 /***/ }),
 
+/***/ "../node_modules/@babel/runtime/helpers/iterableToArray.js":
+/*!*****************************************************************!*\
+  !*** ../node_modules/@babel/runtime/helpers/iterableToArray.js ***!
+  \*****************************************************************/
+/***/ ((module) => {
+
+function _iterableToArray(iter) {
+  if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
+}
+module.exports = _iterableToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
 /***/ "../node_modules/@babel/runtime/helpers/iterableToArrayLimit.js":
 /*!**********************************************************************!*\
   !*** ../node_modules/@babel/runtime/helpers/iterableToArrayLimit.js ***!
@@ -6916,6 +14019,19 @@ function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 module.exports = _nonIterableRest, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ "../node_modules/@babel/runtime/helpers/nonIterableSpread.js":
+/*!*******************************************************************!*\
+  !*** ../node_modules/@babel/runtime/helpers/nonIterableSpread.js ***!
+  \*******************************************************************/
+/***/ ((module) => {
+
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+module.exports = _nonIterableSpread, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
 
@@ -7294,6 +14410,23 @@ function _slicedToArray(arr, i) {
   return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || unsupportedIterableToArray(arr, i) || nonIterableRest();
 }
 module.exports = _slicedToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ "../node_modules/@babel/runtime/helpers/toConsumableArray.js":
+/*!*******************************************************************!*\
+  !*** ../node_modules/@babel/runtime/helpers/toConsumableArray.js ***!
+  \*******************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var arrayWithoutHoles = __webpack_require__(/*! ./arrayWithoutHoles.js */ "../node_modules/@babel/runtime/helpers/arrayWithoutHoles.js");
+var iterableToArray = __webpack_require__(/*! ./iterableToArray.js */ "../node_modules/@babel/runtime/helpers/iterableToArray.js");
+var unsupportedIterableToArray = __webpack_require__(/*! ./unsupportedIterableToArray.js */ "../node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js");
+var nonIterableSpread = __webpack_require__(/*! ./nonIterableSpread.js */ "../node_modules/@babel/runtime/helpers/nonIterableSpread.js");
+function _toConsumableArray(arr) {
+  return arrayWithoutHoles(arr) || iterableToArray(arr) || unsupportedIterableToArray(arr) || nonIterableSpread();
+}
+module.exports = _toConsumableArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
 
@@ -28838,13 +35971,25 @@ function isUrl(fileUrlOrPath) {
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports

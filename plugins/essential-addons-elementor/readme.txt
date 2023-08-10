@@ -2,7 +2,7 @@
 Contributors: wpdevteam, re_enter_rupok, Asif2BD, priyomukul, manzurahammed
 Tags: elementor, elements, widgets, page builder, builder, visual editor, wordpress page builder
 Tested up to: 6.1
-Stable tag: 5.4.10
+Stable tag: 5.5.2
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
@@ -88,6 +88,39 @@ List of Extensions :
 * Conditional Display
 
 == Changelog ==
+
+= 5.5.2 - 03/08/2023 =
+
+- Fixed: EA Smart Post List | showing 0 on the search result
+- Fixed: EA Offcanvas | Not saving changes when used it with Advanced Accordion with Flexbox container
+- Fixed: EA Counter | Number font family not working
+- Fixed: EA Tooltip | Starting to offset to the right of the icon when increasing tooltip width
+- Fixed: EA Offcanvas | Country and State dropdown not working when adding it on checkout page
+- Few minor bug fixes & improvements
+
+= 5.5.1 - 27/07/2023 =
+
+- Fixed: EA Protected Content | Showing the direct URL of the Youtube instead of the video itself
+- Fixed: EA Offcanvas | H3 Tag visible on the page if added without the title
+- Few minor bug fixes & improvements
+
+= 5.5.0 - 16/07/2023 =
+
+- Added: New Widget- EA Woo Thank You
+- Few minor bug fixes & improvements
+
+= 5.4.12 - 06/07/2023 =
+
+- Improved: EA Content Protection | Added scrolling control for password field
+- Improved: Added PHP 8.2 Compatibility Support
+- Fixed: Swiper JS issue with All the Carousel Widgets
+- Few minor bug fixes & improvements
+
+= 5.4.11 - 01/06/2023 =
+
+- Improved: EA Protected Content | Error message offset settings and Style support
+- Fixed: EA EA Mailchimp | Form submission giving undefined error issue
+- Few minor bug fixes & improvements
 
 = 5.4.10 - 22/05/2023 =
 

@@ -11,7 +11,7 @@ use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
 use \Elementor\Plugin;
-use \Elementor\Core\Schemes\Typography;
+use \Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use \Essential_Addons_Elementor\Pro\Classes\Helper;
 use http\Message\Body;
 
@@ -86,6 +86,9 @@ class Content_Protection {
 					'eael_ext_content_protection'      => 'yes',
 					'eael_ext_content_protection_type' => 'password',
 				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -100,6 +103,9 @@ class Content_Protection {
 					'eael_ext_content_protection'      => 'yes',
 					'eael_ext_content_protection_type' => 'password',
 				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -112,6 +118,24 @@ class Content_Protection {
 				'default'   => 'Submit',
 				'condition' => [
 					'eael_ext_content_protection'      => 'yes',
+					'eael_ext_content_protection_type' => 'password',
+				],
+				'ai' => [
+					'active' => false,
+				],
+			]
+		);
+
+		$element->add_control(
+			'eael_ext_scroll_to_section',
+			[
+				'label'        => __( 'Scroll to Section', 'essential-addons-elementor' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'default'      => 'yes',
+				'label_on'     => __( 'Yes', 'essential-addons-elementor' ),
+				'label_off'    => __( 'No', 'essential-addons-elementor' ),
+				'return_value' => 'yes',
+				'condition'    => [
 					'eael_ext_content_protection_type' => 'password',
 				],
 			]
@@ -224,6 +248,9 @@ class Content_Protection {
                 'dynamic' => [
                     'active' => true,
                 ],
+				'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -265,7 +292,9 @@ class Content_Protection {
 			Group_Control_Typography::get_type(),
 			[
 				'name'      => 'eael_ext_content_protection_message_text_typography',
-				'scheme'    => Typography::TYPOGRAPHY_2,
+				'global' => [
+					'default' => Global_Typography::TYPOGRAPHY_SECONDARY
+				],
 				'selector'  => '{{WRAPPER}} .eael-protected-content-message',
 				'condition' => [
 					'eael_ext_content_protection_message_type' => 'text',
@@ -347,7 +376,9 @@ class Content_Protection {
             Group_Control_Typography::get_type(),
             [
                 'name' => 'eael_ext_content_protection_error_message_text_typography',
-                'scheme' => Typography::TYPOGRAPHY_2,
+                'global' => [
+	                'default' => Global_Typography::TYPOGRAPHY_SECONDARY
+                ],
                 'selector' => '{{WRAPPER}} .protected-content-error-msg',
                 'condition' => [
                     'eael_ext_content_protection_message_type' => 'text',
@@ -789,8 +820,12 @@ class Content_Protection {
 		if ( $settings[ 'eael_ext_content_protection_message_type' ] == 'text' ) {
 			$html .= '<div class="eael-protected-content-message-text">' . $settings[ 'eael_ext_content_protection_message_text' ] . '</div>';
 		} elseif ( $settings[ 'eael_ext_content_protection_message_type' ] == 'template' ) {
-			if ( !empty( $settings[ 'eael_ext_content_protection_message_template' ] ) ) {
-				$html .= Plugin::$instance->frontend->get_builder_content( $settings[ 'eael_ext_content_protection_message_template' ], true );
+			if ( ! empty( $settings['eael_ext_content_protection_message_template'] ) ) {
+				// WPML Compatibility
+				if ( ! is_array( $settings['eael_ext_content_protection_message_template'] ) ) {
+					$settings['eael_ext_content_protection_message_template'] = apply_filters( 'wpml_object_id', $settings['eael_ext_content_protection_message_template'], 'wp_template', true );
+				}
+				$html .= Plugin::$instance->frontend->get_builder_content( $settings['eael_ext_content_protection_message_template'], true );
 			}
 		}
 		$html .= '</div>';
@@ -816,7 +851,7 @@ class Content_Protection {
 			if ( $settings[ 'eael_ext_content_protection_password' ] != $_POST[ 'eael_ext_content_protection_password_' . $widget_id ] ) {
 				$html .= sprintf(
                     __('<p class="protected-content-error-msg">%s</p>', 'essential-addons-elementor'),
-                    $settings['eael_ext_content_protection_password_incorrect_message']
+                    Helper::eael_wp_kses( $settings['eael_ext_content_protection_password_incorrect_message'] )
                 );
 			}
 		}
@@ -842,7 +877,7 @@ class Content_Protection {
 				if ( $this->current_user_privileges( $settings ) === true ) {
 					$html .= $content;
 				} else {
-					$html .= '<div class="eael-protected-content">' . $this->render_message( $settings ) . '</div>';
+					$html .= '<div class="eael-protected-content jjjjß">' . $this->render_message( $settings ) . '</div>';
 				}
 			} elseif ( $settings[ 'eael_ext_content_protection_type' ] == 'password' ) {
 				if ( empty( $settings[ 'eael_ext_content_protection_password' ] ) ) {
@@ -853,15 +888,17 @@ class Content_Protection {
 					if ( isset( $_POST[ 'eael_ext_content_protection_password_' . $widget_id ] ) ) {
 						if ( ( $settings[ 'eael_ext_content_protection_password' ] == $_POST[ 'eael_ext_content_protection_password_' . $widget_id ] ) && wp_verify_nonce( $_POST[ 'eael_content_protection_nonce_' . $widget_id ], 'eael_protected_nonce' ) ) {
 							$unlocked = true;
-							$this->eael_content_protection_remember_cookie( $widget );
+							$token = md5( 'eael_ext_pc_' . $_POST[ 'eael_ext_content_protection_password_' . $widget_id ] );
+							$this->eael_content_protection_remember_cookie( $widget, $token );
 						}
 					}
 
-					if ( isset( $_COOKIE[ 'eael_ext_content_protection_password_' . $widget_id ] ) || $unlocked ) {
+					if ( ( ! empty( $_COOKIE[ 'eael_ext_content_protection_password_' . $widget_id ] ) && $_COOKIE[ 'eael_ext_content_protection_password_' . $widget_id ] === md5( 'eael_ext_pc_' . $settings['eael_ext_content_protection_password'] ) ) || $unlocked ) {
 						$html .= $content;
 						$html .= $this->eael_content_protection_scroll( $widget );
 					} else {
 						$html .= '<div class="eael-protected-content">' . $this->render_message( $settings ) . $this->password_protected_form( $widget_id, $settings ) . '</div>';
+						$html .= $this->eael_content_protection_scroll( $widget );
 					}
 				}
 			}
@@ -878,7 +915,7 @@ class Content_Protection {
 	 * @param $widget
 	 * @return false|string
 	 */
-	public function eael_content_protection_remember_cookie( $widget ) {
+	public function eael_content_protection_remember_cookie( $widget, $token ) {
 		if ( !isset( $_POST[ 'eael_ext_content_protection_password_' . $widget->get_id() ] ) ) {
 			return false;
 		}
@@ -889,7 +926,7 @@ class Content_Protection {
                 var expires = new Date();
                 var expires_time = expires.getTime() + parseInt(" . $expire_time . ");
                 expires.setTime(expires_time);
-                document.cookie = 'eael_ext_content_protection_password_{$widget->get_id()}=true;expires=' + expires.toUTCString();
+                document.cookie = 'eael_ext_content_protection_password_{$widget->get_id()}={$token};expires=' + expires.toUTCString();
             </script>";
 		}
 	}
@@ -900,18 +937,21 @@ class Content_Protection {
 	 * @return false|string
 	 */
 	public function eael_content_protection_scroll( $widget ) {
+
+		if ( $widget->get_settings_for_display( 'eael_ext_scroll_to_section' ) !== 'yes' ) return;
+
 		if ( isset( $_POST[ 'eael_ext_content_protection_password_' . $widget->get_id() ] ) ) {
 			ob_start();
 			$form_id = "elementor-element-" . $widget->get_id();
 			?>
-            <script>
-				jQuery(document).ready(function ($) {
-					var id = ".<?php echo $form_id; ?>";
-					$('html, body').animate({
-												scrollTop: $(id).offset().top
-											}, 2000);
-				});
-            </script>
+			<script>
+                jQuery(document).ready(function ($) {
+                    var id = ".<?php echo $form_id; ?>";
+                    $('html, body').animate({
+                        scrollTop: $(id).offset().top
+                    }, 2000);
+                });
+			</script>
 			<?php
 			return ob_get_clean();
 		}

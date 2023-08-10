@@ -24,16 +24,12 @@
 .eael-image-scroller.eael-image-scroller-hover img {
   -webkit-transition-property: -webkit-transform;
   transition-property: -webkit-transform;
-  -o-transition-property: transform;
   transition-property: transform;
   transition-property: transform, -webkit-transform;
   -webkit-transition-duration: 1s;
-       -o-transition-duration: 1s;
           transition-duration: 1s;
   -webkit-transition-timing-function: linear;
-       -o-transition-timing-function: linear;
           transition-timing-function: linear;
   -webkit-transition-delay: 0s;
-       -o-transition-delay: 0s;
           transition-delay: 0s;
 }

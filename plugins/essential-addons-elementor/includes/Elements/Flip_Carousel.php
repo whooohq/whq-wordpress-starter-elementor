@@ -91,6 +91,9 @@ class Flip_Carousel extends Widget_Base {
 				'type' => Controls_Manager::TEXT,
 				'label_block' => false,
 				'default' => 400,
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -119,7 +122,10 @@ class Flip_Carousel extends Widget_Base {
 				'default' => 1,
 				'condition' => [
 					'eael_flip_carousel_start_from!' => 'true'
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -159,7 +165,10 @@ class Flip_Carousel extends Widget_Base {
 				'default' => 2000,
 				'condition' => [
 					'eael_flip_carousel_autoplay' => 'true'
-				]
+				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -263,6 +272,9 @@ class Flip_Carousel extends Widget_Base {
                 'default' => [
                     'url' => EAEL_PRO_PLUGIN_URL . 'assets/front-end/img/slide.png',
                 ],
+				'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -275,7 +287,10 @@ class Flip_Carousel extends Widget_Base {
                     'active' => true,
                 ],
                 'label_block' => true,
-                'default' => esc_html__( '', 'essential-addons-elementor' )
+                'default' => esc_html__( '', 'essential-addons-elementor' ),
+				'ai' => [
+					'active' => false,
+				],
             ]
         );
 

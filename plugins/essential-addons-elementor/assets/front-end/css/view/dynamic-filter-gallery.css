@@ -26,7 +26,6 @@
 }
 .eael-filter-gallery-control ul li.control.active {
   -webkit-transition: 300ms;
-  -o-transition: 300ms;
   transition: 300ms;
 }
 .dynamic-gallery-thumbnail {
@@ -140,7 +139,6 @@
 .eael-filter-gallery-container .caption > a.popup-media > i,
 .eael-filter-gallery-container .caption .buttons a {
   -webkit-transition: 300ms;
-  -o-transition: 300ms;
   transition: 300ms;
 }
 /* Card button styles */
@@ -164,7 +162,6 @@ a.popup-only-media.eael-magnific-link {
 /* -------------------------------- */
 .eael-filter-gallery-container .dynamic-gallery-item-inner .caption {
   -webkit-transition: 300ms;
-  -o-transition: 300ms;
   transition: 300ms;
 }
 /*fade in */

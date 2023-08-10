@@ -1,4 +1,4 @@
-/*! elementor - v3.13.3 - 22-05-2023 */
+/*! elementor - v3.15.0 - 02-08-2023 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -747,6 +747,7 @@ var CommandBase = /*#__PURE__*/function (_CommandInfra) {
      * Validate `arg.container` & `arg.containers`.
      *
      * @param {{}} args
+     * @deprecated since 3.7.0, extend `$e.modules.editor.CommandContainerBase` or `$e.modules.editor.CommandContainerInternalBase` instead.
      *
      * @throws {Error}
      */
@@ -755,7 +756,7 @@ var CommandBase = /*#__PURE__*/function (_CommandInfra) {
     value: function requireContainer() {
       var _this = this;
       var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.args;
-      _deprecation.default.deprecated('requireContainer', '3.7.0', 'Extend `$e.modules.editor.CommandContainerBase` or `$e.modules.editor.CommandContainerInternalBase`');
+      _deprecation.default.deprecated('requireContainer()', '3.7.0', 'Extend `$e.modules.editor.CommandContainerBase` or `$e.modules.editor.CommandContainerInternalBase`');
       if (!args.container && !args.containers) {
         throw Error('container or containers are required.');
       }
@@ -854,7 +855,9 @@ var CommandInfra = /*#__PURE__*/function (_ArgsObject) {
   (0, _createClass2.default)(CommandInfra, [{
     key: "currentCommand",
     get:
-    // TODO - Remove backwards compatibility.
+    /**
+     * @deprecated since 3.7.0, use `this.command` instead.
+     */
     function get() {
       _deprecation.default.deprecated('this.currentCommand', '3.7.0', 'this.command');
       return this.command;
@@ -1671,10 +1674,16 @@ $e.modules.editor = {
 
 // TODO: Remove, BC.
 $e.modules.document = {
+  /**
+   * @deprecated since 3.7.0, use `$e.modules.editor.document.CommandHistoryBase` instead.
+   */
   get CommandHistory() {
     elementorDevTools.deprecation.deprecated('$e.modules.document.CommandHistory', '3.7.0', '$e.modules.editor.document.CommandHistoryBase');
     return $e.modules.editor.document.CommandHistoryBase;
   },
+  /**
+   * @deprecated since 3.7.0, use `$e.modules.editor.document.CommandHistoryDebounceBase` instead.
+   */
   get CommandHistoryDebounce() {
     elementorDevTools.deprecation.deprecated('$e.modules.CommandHistoryDebounce', '3.7.0', '$e.modules.editor.document.CommandHistoryDebounceBase');
     return $e.modules.editor.document.CommandHistoryDebounceBase;

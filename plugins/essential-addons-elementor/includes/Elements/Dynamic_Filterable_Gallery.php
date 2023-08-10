@@ -21,6 +21,8 @@ class Dynamic_Filterable_Gallery extends Widget_Base
 {
     use Helper;
 
+	private $page_id;
+
     public function get_name()
     {
         return 'eael-dynamic-filterable-gallery';
@@ -94,6 +96,9 @@ class Dynamic_Filterable_Gallery extends Widget_Base
                 'type' => Controls_Manager::TEXT,
                 'label_block' => false,
                 'default' => 500,
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -328,6 +333,9 @@ class Dynamic_Filterable_Gallery extends Widget_Base
                 'condition' => [
                     'show_gallery_filter_controls' => '1',
                 ],
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -347,6 +355,9 @@ class Dynamic_Filterable_Gallery extends Widget_Base
               'type' => Controls_Manager::TEXT,
               'dynamic' => [ 'active' => true ],
               'default' => __('Read More', 'essential-addons-elementor'),
+              'ai' => [
+                'active' => false,
+            ],
           ]
         );
 
@@ -426,6 +437,9 @@ class Dynamic_Filterable_Gallery extends Widget_Base
                 'condition' => [
                     'show_load_more' => '1',
                 ],
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 

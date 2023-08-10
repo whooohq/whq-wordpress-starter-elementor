@@ -1,4 +1,4 @@
-/*! elementor - v3.13.3 - 22-05-2023 */
+/*! elementor - v3.15.0 - 02-08-2023 */
 :root {
   --e-is-device-mode: 0;
 }
@@ -111,9 +111,12 @@
 
 #e-responsive-bar {
   width: 100%;
-  margin-top: calc(-40px + 40px * var(--e-is-device-mode));
+  -webkit-margin-before: calc(-40px + 40px * var(--e-is-device-mode));
+          margin-block-start: calc(-40px + 40px * var(--e-is-device-mode));
   z-index: 1;
-  transition: margin-top 0.2s ease-in-out;
+  transition: -webkit-margin-before 0.2s ease-in-out;
+  transition: margin-block-start 0.2s ease-in-out;
+  transition: margin-block-start 0.2s ease-in-out, -webkit-margin-before 0.2s ease-in-out;
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;

@@ -7,7 +7,7 @@ use \Elementor\Group_Control_Background;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Typography;
 use Elementor\Repeater;
-use \Elementor\Core\Schemes\Typography;
+use \Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use \Elementor\Utils;
 use \Elementor\Widget_Base;
 use \Essential_Addons_Elementor\Classes\Helper;
@@ -126,6 +126,9 @@ class Logo_Carousel extends Widget_Base {
 				'default' => [
 					'url' => Utils::get_placeholder_image_src(),
 				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -137,6 +140,9 @@ class Logo_Carousel extends Widget_Base {
 				'dynamic' => [
 					'active' => true,
 				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -147,6 +153,9 @@ class Logo_Carousel extends Widget_Base {
 				'type'    => Controls_Manager::TEXT,
 				'dynamic' => [
 					'active' => true,
+				],
+				'ai' => [
+					'active' => false,
 				],
 			]
 		);
@@ -657,7 +666,9 @@ class Logo_Carousel extends Widget_Base {
 			[
 				'name'     => 'title_typography',
 				'label'    => __( 'Typography', 'essential-addons-elementor' ),
-				'scheme'   => Typography::TYPOGRAPHY_4,
+				'global' => [
+					'default' => Global_Typography::TYPOGRAPHY_ACCENT
+				],
 				'selector' => '{{WRAPPER}} .eael-logo-carousel-title',
 			]
 		);
@@ -1135,10 +1146,16 @@ class Logo_Carousel extends Widget_Base {
 	 */
 	protected function render() {
 		$settings = $this->get_settings_for_display();
+		
+		$swiper_class = $swiper_version_class = '';
+        if ( class_exists( 'Elementor\Plugin' ) ) {
+            $swiper_class           = \Elementor\Plugin::$instance->experiments->is_feature_active( 'e_swiper_latest' ) ? 'swiper' : 'swiper-container';
+            $swiper_version_class   = 'swiper' === $swiper_class ? 'swiper-8' : 'swiper-8-lower';
+        }
 
 		$this->add_render_attribute( 'logo-carousel-wrap', 'class', 'swiper-container-wrap eael-logo-carousel-wrap' );
 
-		$this->add_render_attribute( 'logo-carousel', 'class', 'swiper swiper-container eael-logo-carousel' );
+		$this->add_render_attribute( 'logo-carousel', 'class', esc_attr( $swiper_class ) . ' ' . esc_attr( $swiper_version_class ) . ' eael-logo-carousel' );
 		$this->add_render_attribute( 'logo-carousel', 'class', 'swiper-container-' . esc_attr( $this->get_id() ) );
 		$this->add_render_attribute( 'logo-carousel', 'data-pagination', '.swiper-pagination-' . esc_attr( $this->get_id() ) );
 		$this->add_render_attribute( 'logo-carousel', 'data-arrow-next', '.swiper-button-next-' . esc_attr( $this->get_id() ) );

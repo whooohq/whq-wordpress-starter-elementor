@@ -10,6 +10,7 @@ use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
 use \Elementor\Utils;
 use \Elementor\Widget_Base;
+use Essential_Addons_Elementor\Classes\Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // If this file is called directly, abort.
@@ -118,6 +119,9 @@ class Counter extends Widget_Base {
 				'condition'             => [
 					'eael_icon_type'  => 'image',
 				],
+                'ai' => [
+                    'active' => false,
+                ],
             ]
         );
         
@@ -142,6 +146,9 @@ class Counter extends Widget_Base {
 				'dynamic'               => [
 					'active'   => true,
 				],
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
         
@@ -152,6 +159,9 @@ class Counter extends Widget_Base {
                 'type'                  => Controls_Manager::TEXT,
 				'dynamic'               => [
 					'active'   => true,
+				],
+                'ai' => [
+					'active' => false,
 				],
             ]
         );
@@ -166,6 +176,9 @@ class Counter extends Widget_Base {
 				],
                 'default'               => __( 'Counter Title', 'essential-addons-elementor' ),
                 'separator'             => 'before',
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
         
@@ -676,7 +689,7 @@ class Counter extends Widget_Base {
             [
                 'name'                  => 'counter_num_typography',
                 'label'                 => __( 'Typography', 'essential-addons-elementor' ),
-                'selector'              => '{{WRAPPER}} .eael-counter-number-wrap',
+                'selector'              => '{{WRAPPER}} .eael-counter-number-wrap .eael-counter-number',
             ]
         );
 
@@ -1054,7 +1067,7 @@ class Counter extends Widget_Base {
                         <div class="eael-counter-number-wrap">
                             <?php
                                 if ( $settings['number_prefix'] != '' ) {
-                                    printf( '<span class="eael-counter-number-prefix">%1$s</span>', $settings['number_prefix'] );
+                                    printf( '<span class="eael-counter-number-prefix">%1$s</span>', esc_html( $settings['number_prefix'] ) );
                                 }
                             ?>
                             <div <?php echo $this->get_render_attribute_string( 'counter-number' ); ?>>
@@ -1062,7 +1075,7 @@ class Counter extends Widget_Base {
                             </div>
                             <?php
                                 if ( $settings['number_suffix'] != '' ) {
-                                    printf( '<span class="eael-counter-number-suffix">%1$s</span>', $settings['number_suffix'] );
+                                    printf( '<span class="eael-counter-number-suffix">%1$s</span>', esc_html( $settings['number_suffix'] ) );
                                 }
                             ?>
                         </div>
@@ -1076,7 +1089,7 @@ class Counter extends Widget_Base {
                         <?php
                             if ( !empty( $settings['counter_title'] ) ) {
                                 printf( '<%1$s %2$s>', $settings['title_html_tag'], $this->get_render_attribute_string( 'counter_title' ) );
-                                    echo $settings['counter_title'];
+                                    echo Helper::eael_wp_kses( $settings['counter_title'] );
                                 printf( '</%1$s>', $settings['title_html_tag'] );
                             }
                         ?>
@@ -1088,7 +1101,7 @@ class Counter extends Widget_Base {
 
                         if ( !empty( $settings['counter_title'] ) ) {
                             printf( '<%1$s %2$s>', $settings['title_html_tag'], $this->get_render_attribute_string( 'counter_title' ) );
-                                echo $settings['counter_title'];
+                                echo Helper::eael_wp_kses( $settings['counter_title'] );
                             printf( '</%1$s>', $settings['title_html_tag'] );
                         }
                     ?>
@@ -1144,7 +1157,7 @@ class Counter extends Widget_Base {
 
                             if ( !empty( $settings['counter_title'] ) ) {
                                 printf( '<%1$s %2$s>', $settings['title_html_tag'], $this->get_render_attribute_string( 'counter_title' ) );
-                                    echo $settings['counter_title'];
+                                    echo Helper::eael_wp_kses( $settings['counter_title'] );
                                 printf( '</%1$s>', $settings['title_html_tag'] );
                             }
                         ?>
@@ -1157,7 +1170,7 @@ class Counter extends Widget_Base {
 
                             if ( !empty( $settings['counter_title'] ) ) {
                                 printf( '<%1$s %2$s>', $settings['title_html_tag'], $this->get_render_attribute_string( 'counter_title' ) );
-                                    echo $settings['counter_title'];
+                                    echo Helper::eael_wp_kses( $settings['counter_title'] );
                                 printf( '</%1$s>', $settings['title_html_tag'] );
                             }
                         ?>
@@ -1206,7 +1219,7 @@ class Counter extends Widget_Base {
                         Icons_Manager::render_icon( $settings['counter_icon_new'] );
                         echo '</span>';
                      } else { ?>
-                        <span class="<?php echo $settings['counter_icon'] ?>" aria-hidden="true"></span>
+                        <span class="<?php echo esc_attr( $settings['counter_icon'] ); ?>" aria-hidden="true"></span>
                     <?php } ?>
                 </span>
             </span>

@@ -908,6 +908,18 @@ $config = [
 		        ],
 	        ],
         ],
+        'woo-thank-you' => [
+	        'class' => '\Essential_Addons_Elementor\Pro\Elements\Woo_Thank_You',
+	        'dependency' => [
+		        'css' => [
+			        [
+				        'file'    => EAEL_PRO_PLUGIN_PATH . 'assets/front-end/css/view/woo-thank-you.min.css',
+				        'type'    => 'self',
+				        'context' => 'view',
+			        ],
+		        ],
+	        ],
+        ],
     ],
     'extensions' => [
         'section-particles'       => [

@@ -602,7 +602,6 @@
   width: 60px;
   height: 60px;
   -webkit-transition: all 0.3s ease;
-  -o-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
 @media all and (min-width: 1024px) {
@@ -632,7 +631,6 @@
   height: 8px;
   width: 8px;
   -webkit-transition: all 0.2s;
-  -o-transition: all 0.2s;
   transition: all 0.2s;
 }
 .eael-woo-product-slider-container.swiper-container-wrap .swiper-pagination-bullet:focus {
@@ -655,7 +653,6 @@
   background-image: none;
   color: #000;
   -webkit-transition: all 0.3s ease;
-  -o-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
 .eael-woo-product-slider-container .swiper-container .swiper-button-next:focus,
@@ -734,7 +731,6 @@
           transform-origin: center center;
   margin: 0 auto;
   -webkit-transition: all ease 0.4s;
-  -o-transition: all ease 0.4s;
   transition: all ease 0.4s;
 }
 .eael-woo-product-slider-container .icons-wrap.box-style {
@@ -840,32 +836,26 @@
   right: -50px;
   top: 30px;
   -webkit-transition: 0.3s ease-in;
-  -o-transition: 0.3s ease-in;
   transition: 0.3s ease-in;
 }
 .eael-woo-product-slider-container .icons-wrap.box-style-list li {
   -webkit-transition: 0.3s ease-in;
-  -o-transition: 0.3s ease-in;
   transition: 0.3s ease-in;
 }
 .eael-woo-product-slider-container .icons-wrap.box-style-list li:nth-child(1) {
   -webkit-transition-delay: 0.1s;
-       -o-transition-delay: 0.1s;
           transition-delay: 0.1s;
 }
 .eael-woo-product-slider-container .icons-wrap.box-style-list li:nth-child(2) {
   -webkit-transition-delay: 0.2s;
-       -o-transition-delay: 0.2s;
           transition-delay: 0.2s;
 }
 .eael-woo-product-slider-container .icons-wrap.box-style-list li:nth-child(3) {
   -webkit-transition-delay: 0.3s;
-       -o-transition-delay: 0.3s;
           transition-delay: 0.3s;
 }
 .eael-woo-product-slider-container .icons-wrap.box-style-list li:nth-child(4) {
   -webkit-transition-delay: 0.4s;
-       -o-transition-delay: 0.4s;
           transition-delay: 0.4s;
 }
 .eael-woo-product-slider-container .icons-wrap.box-style-list li a {
@@ -1037,7 +1027,6 @@
   height: 100%;
   text-align: center;
   -webkit-transition: all ease 0.4s;
-  -o-transition: all ease 0.4s;
   transition: all ease 0.4s;
 }
 .eael-woo-product-slider-container .icons-wrap li a:hover {

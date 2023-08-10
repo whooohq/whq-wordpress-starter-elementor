@@ -7,7 +7,7 @@ use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
 use Elementor\Repeater;
-use \Elementor\Core\Schemes\Typography;
+use \Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use \Elementor\Widget_Base;
 use \Essential_Addons_Elementor\Pro\Classes\Helper;
 
@@ -124,6 +124,9 @@ class Offcanvas extends Widget_Base
                 ],
                 'default' => '',
                 'separator' => 'before',
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -209,6 +212,9 @@ class Offcanvas extends Widget_Base
                     'active' => true,
                 ],
                 'default' => __('Title', 'essential-addons-elementor'),
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -270,6 +276,9 @@ class Offcanvas extends Widget_Base
                     'active' => true,
                 ],
                 'default' => __('Click Here', 'essential-addons-elementor'),
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -467,7 +476,7 @@ class Offcanvas extends Widget_Base
                     'size' => 300,
                 ],
                 'selectors' => [
-                    '.eael-offcanvas-content-{{ID}}' => 'width: {{SIZE}}{{UNIT}};',
+                    '.eael-offcanvas-content.eael-offcanvas-content-{{ID}}' => 'width: {{SIZE}}{{UNIT}};',
                     '.eael-offcanvas-content-open.eael-offcanvas-content-left .eael-offcanvas-container-{{ID}}' => 'transform: translate3d({{SIZE}}{{UNIT}}, 0, 0);',
                     '.eael-offcanvas-content-open.eael-offcanvas-content-right .eael-offcanvas-container-{{ID}}' => 'transform: translate3d(-{{SIZE}}{{UNIT}}, 0, 0);',
                 ],
@@ -480,7 +489,7 @@ class Offcanvas extends Widget_Base
                 'name' => 'offcanvas_bar_bg',
                 'label' => __('Background', 'essential-addons-elementor'),
                 'types' => ['classic', 'gradient'],
-                'selector' => '.eael-offcanvas-content-{{ID}}',
+                'selector' => '.eael-offcanvas-content.eael-offcanvas-content-{{ID}}',
             ]
         );
 
@@ -491,7 +500,7 @@ class Offcanvas extends Widget_Base
                 'label' => __('Border', 'essential-addons-elementor'),
                 'placeholder' => '1px',
                 'default' => '1px',
-                'selector' => '.eael-offcanvas-content-{{ID}}',
+                'selector' => '.eael-offcanvas-content.eael-offcanvas-content-{{ID}}',
             ]
         );
 
@@ -502,7 +511,7 @@ class Offcanvas extends Widget_Base
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', '%'],
                 'selectors' => [
-                    '.eael-offcanvas-content-{{ID}}' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '.eael-offcanvas-content.eael-offcanvas-content-{{ID}}' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );
@@ -523,7 +532,7 @@ class Offcanvas extends Widget_Base
             Group_Control_Box_Shadow::get_type(),
             [
                 'name' => 'offcanvas_bar_box_shadow',
-                'selector' => '.eael-offcanvas-content-{{ID}}',
+                'selector' => '.eael-offcanvas-content.eael-offcanvas-content-{{ID}}',
                 'separator' => 'before',
             ]
         );
@@ -1078,7 +1087,9 @@ class Offcanvas extends Widget_Base
             [
                 'name' => 'button_typography',
                 'label' => __('Typography', 'essential-addons-elementor'),
-                'scheme' => Typography::TYPOGRAPHY_4,
+                'global' => [
+	                'default' => Global_Typography::TYPOGRAPHY_ACCENT
+                ],
                 'selector' => '{{WRAPPER}} .eael-offcanvas-toggle',
             ]
         );
@@ -1321,7 +1332,9 @@ class Offcanvas extends Widget_Base
         ?>
         <div class="eael-offcanvas-header">
             <div class="eael-offcanvas-title">
+                <?php if( ! empty( $settings['eael_offcanvas_title'] ) ) : ?>
                 <h3><?php echo esc_html($settings['eael_offcanvas_title']); ?></h3>
+                <?php endif; ?>
             </div>
             <div <?php echo $this->get_render_attribute_string('close-button'); ?>>
                 <?php if (isset($settings['__fa4_migrated']['close_button_icon_new']) || empty($settings['close_button_icon'])) {?>
@@ -1372,7 +1385,10 @@ class Offcanvas extends Widget_Base
             foreach ($settings['custom_content'] as $key => $item) {
                 ?>
                 <div class="eael-offcanvas-custom-widget">
-                    <h3 class="eael-offcanvas-widget-title"><?php echo $item['title']; ?></h3>
+                    <?php if( ! empty( $item['title'] ) ) : ?>
+                    <h3 class="eael-offcanvas-widget-title"><?php echo esc_html( $item['title'] ); ?></h3>
+                    <?php endif; ?>
+
                     <div class="eael-offcanvas-widget-content">
                         <?php echo $item['description']; ?>
                     </div>
@@ -1465,29 +1481,31 @@ class Offcanvas extends Widget_Base
             <div <?php echo $this->get_render_attribute_string('content'); ?>>
                 <?php $this->render_close_button();?>
                 <div class="eael-offcanvas-body">
-                    <?php
-if ('sidebar' == $settings['content_type']) {
-
-            $this->render_sidebar();
-
-        } else if ('custom' == $settings['content_type']) {
-
-            $this->render_custom_content();
-
-        } else if ('section' == $settings['content_type'] && !empty($settings['saved_section'])) {
-
-            echo \Elementor\Plugin::$instance->frontend->get_builder_content_for_display($settings['saved_section']);
-
-        } elseif ('template' == $settings['content_type'] && !empty($settings['templates'])) {
-
-            echo \Elementor\Plugin::$instance->frontend->get_builder_content_for_display($settings['templates']);
-
-        } elseif ('widget' == $settings['content_type'] && !empty($settings['saved_widget'])) {
-
-            echo \Elementor\Plugin::$instance->frontend->get_builder_content_for_display($settings['saved_widget']);
-
-        }
-        ?>
+	                <?php
+	                if ( 'sidebar' == $settings['content_type'] ) {
+		                $this->render_sidebar();
+	                } else if ( 'custom' == $settings['content_type'] ) {
+		                $this->render_custom_content();
+	                } else if ( 'section' == $settings['content_type'] && ! empty( $settings['saved_section'] ) ) {
+		                // WPML Compatibility
+		                if ( ! is_array( $settings['saved_section'] ) ) {
+			                $settings['saved_section'] = apply_filters( 'wpml_object_id', $settings['saved_section'], 'wp_template', true );
+		                }
+		                echo \Elementor\Plugin::$instance->frontend->get_builder_content_for_display( $settings['saved_section'] );
+	                } elseif ( 'template' == $settings['content_type'] && ! empty( $settings['templates'] ) ) {
+		                // WPML Compatibility
+		                if ( ! is_array( $settings['templates'] ) ) {
+			                $settings['templates'] = apply_filters( 'wpml_object_id', $settings['templates'], 'wp_template', true );
+		                }
+		                echo \Elementor\Plugin::$instance->frontend->get_builder_content_for_display( $settings['templates'] );
+	                } elseif ( 'widget' == $settings['content_type'] && ! empty( $settings['saved_widget'] ) ) {
+		                // WPML Compatibility
+		                if ( ! is_array( $settings['saved_widget'] ) ) {
+			                $settings['saved_widget'] = apply_filters( 'wpml_object_id', $settings['saved_widget'], 'wp_template', true );
+		                }
+		                echo \Elementor\Plugin::$instance->frontend->get_builder_content_for_display( $settings['saved_widget'] );
+	                }
+	                ?>
                 </div><!-- /.eael-offcanvas-body -->
             </div>
         </div>

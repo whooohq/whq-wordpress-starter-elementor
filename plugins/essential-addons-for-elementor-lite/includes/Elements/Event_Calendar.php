@@ -149,6 +149,9 @@ class Event_Calendar extends Widget_Base
                 'type' => Controls_Manager::TEXT,
                 'dynamic'     => [ 'active' => true ],
                 'label_block' => true,
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -189,7 +192,7 @@ class Event_Calendar extends Widget_Base
             [
                 'label' => __('Start Date', 'essential-addons-for-elementor-lite'),
                 'type' => Controls_Manager::DATE_TIME,
-                'default' => date('Y-m-d H:i', current_time('timestamp', 0)),
+//                'default' => date('Y-m-d H:i', current_time('timestamp', 0)),
                 'condition' => [
                     'eael_event_all_day' => '',
                 ],
@@ -201,7 +204,7 @@ class Event_Calendar extends Widget_Base
             [
                 'label' => __('End Date', 'essential-addons-for-elementor-lite'),
                 'type' => Controls_Manager::DATE_TIME,
-                'default' => date('Y-m-d H:i', strtotime("+59 minute", current_time('timestamp', 0))),
+//                'default' => date('Y-m-d H:i', strtotime("+59 minute", current_time('timestamp', 0))),
                 'condition' => [
                     'eael_event_all_day' => '',
                 ],
@@ -214,7 +217,7 @@ class Event_Calendar extends Widget_Base
                 'label' => __('Start Date', 'essential-addons-for-elementor-lite'),
                 'type' => Controls_Manager::DATE_TIME,
                 'picker_options' => ['enableTime' => false],
-                'default' => date('Y-m-d', current_time('timestamp', 0)),
+//                'default' => date('Y-m-d', current_time('timestamp', 0)),
                 'condition' => [
                     'eael_event_all_day' => 'yes',
                 ],
@@ -227,7 +230,7 @@ class Event_Calendar extends Widget_Base
                 'label' => __('End Date', 'essential-addons-for-elementor-lite'),
                 'type' => Controls_Manager::DATE_TIME,
                 'picker_options' => ['enableTime' => false],
-                'default' => date('Y-m-d', current_time('timestamp', 0)),
+//                'default' => date('Y-m-d', current_time('timestamp', 0)),
                 'condition' => [
                     'eael_event_all_day' => 'yes',
                 ],
@@ -325,6 +328,9 @@ class Event_Calendar extends Widget_Base
                 'label_block' => true,
                 'description' => sprintf(__('<a href="https://essential-addons.com/elementor/docs/google-api-key/" class="eael-btn" target="_blank">%s</a>',
                     'essential-addons-for-elementor-lite'), 'Get API Key'),
+                'ai' => [
+                    'active' => false,
+                ],
             ]
         );
 
@@ -336,6 +342,9 @@ class Event_Calendar extends Widget_Base
                 'label_block' => true,
                 'description' => sprintf(__('<a href="https://essential-addons.com/elementor/docs/google-calendar-id/" class="eael-btn" target="_blank">%s</a>',
                     'essential-addons-for-elementor-lite'), 'Get google calendar ID'),
+                'ai' => [
+                    'active' => false,
+                ],
             ]
         );
 
@@ -627,6 +636,9 @@ class Event_Calendar extends Widget_Base
 			    'condition' => [
 				    'eael_event_details_link_hide!' => 'yes',
 			    ],
+                'ai' => [
+					'active' => false,
+				],
 		    ]
 	    );
 
@@ -1973,11 +1985,13 @@ class Event_Calendar extends Widget_Base
             foreach ($events as $event) {
 
                 if ($event['eael_event_all_day'] == 'yes') {
-                    $start = $event["eael_event_start_date_allday"];
-                    $end = date('Y-m-d', strtotime("+1 days", strtotime($event["eael_event_end_date_allday"])));
+                    $start = !empty( $event["eael_event_start_date_allday"] ) ? $event["eael_event_start_date_allday"] : date('Y-m-d', current_time('timestamp', 0));
+					$_end  = !empty( $event["eael_event_end_date_allday"] ) ? $event["eael_event_end_date_allday"] : date('Y-m-d', current_time('timestamp', 0));
+                    $end = date('Y-m-d', strtotime("+1 days", strtotime($_end)));
                 } else {
-                    $start = $event["eael_event_start_date"];
-                    $end = date('Y-m-d H:i', strtotime($event["eael_event_end_date"])) . ":01";
+                    $start = !empty( $event["eael_event_start_date"] ) ? $event["eael_event_start_date"] : date('Y-m-d', current_time('timestamp', 0));
+					$_end  = !empty( $event["eael_event_end_date"] ) ? $event["eael_event_end_date"] : date('Y-m-d', strtotime("+59 minute", current_time('timestamp', 0)) );
+                    $end = date('Y-m-d H:i', strtotime($_end))  . ":01";
                 }
 
                 if( !empty( $settings['eael_old_events_hide'] ) && 'yes' === $settings['eael_old_events_hide'] ){

@@ -1,9 +1,7 @@
 <?php
-
 namespace Essential_Addons_Elementor\Elements;
-
 use Elementor\Controls_Manager;
-use Elementor\Core\Schemes\Typography;
+use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Typography;
@@ -869,7 +867,9 @@ class Simple_Menu extends Widget_Base
             [
                 'name'     => 'eael_simple_menu_item_typography',
                 'label'    => __('Typography', 'essential-addons-for-elementor-lite'),
-                'scheme'   => Typography::TYPOGRAPHY_1,
+                'global' => [
+	                'default' => Global_Typography::TYPOGRAPHY_PRIMARY
+                ],
                 'selector' => '{{WRAPPER}} .eael-simple-menu >li > a, .eael-simple-menu-container .eael-simple-menu-toggle-text',
             ]
         );
@@ -972,7 +972,7 @@ class Simple_Menu extends Widget_Base
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '#f44336',
                 'selectors' => [
-                    '{{WRAPPER}} .eael-simple-menu li .eael-simple-menu-indicator:before' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-simple-menu li .eael-simple-menu-indicator:before' => 'color: {{VALUE}} !important',
                 ],
             ]
         );
@@ -984,7 +984,7 @@ class Simple_Menu extends Widget_Base
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '#ffffff',
                 'selectors' => [
-                    '{{WRAPPER}} .eael-simple-menu li .eael-simple-menu-indicator' => 'background-color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-simple-menu li .eael-simple-menu-indicator' => 'background-color: {{VALUE}} !important',
                 ],
             ]
         );
@@ -996,7 +996,7 @@ class Simple_Menu extends Widget_Base
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '#f44336',
                 'selectors' => [
-                    '{{WRAPPER}} .eael-simple-menu li .eael-simple-menu-indicator' => 'border-color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-simple-menu li .eael-simple-menu-indicator' => 'border-color: {{VALUE}} !important',
                 ],
             ]
         );
@@ -1154,7 +1154,7 @@ class Simple_Menu extends Widget_Base
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '#f44336',
                 'selectors' => [
-                    '{{WRAPPER}} .eael-simple-menu li .eael-simple-menu-indicator.eael-simple-menu-indicator-open:before' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-simple-menu li .eael-simple-menu-indicator.eael-simple-menu-indicator-open:before' => 'color: {{VALUE}} !important',
                 ],
             ]
         );
@@ -1166,7 +1166,7 @@ class Simple_Menu extends Widget_Base
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '#ffffff',
                 'selectors' => [
-                    '{{WRAPPER}} .eael-simple-menu li .eael-simple-menu-indicator.eael-simple-menu-indicator-open' => 'background-color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-simple-menu li .eael-simple-menu-indicator.eael-simple-menu-indicator-open' => 'background-color: {{VALUE}} !important',
                 ],
             ]
         );
@@ -1178,7 +1178,7 @@ class Simple_Menu extends Widget_Base
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '#f44336',
                 'selectors' => [
-                    '{{WRAPPER}} .eael-simple-menu li .eael-simple-menu-indicator.eael-simple-menu-indicator-open' => 'border-color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-simple-menu li .eael-simple-menu-indicator.eael-simple-menu-indicator-open' => 'border-color: {{VALUE}} !important',
                 ],
             ]
         );
@@ -1265,7 +1265,9 @@ class Simple_Menu extends Widget_Base
             [
                 'name'     => 'eael_simple_menu_dropdown_item_typography',
                 'label'    => __('Typography', 'essential-addons-for-elementor-lite'),
-                'scheme'   => Typography::TYPOGRAPHY_1,
+                'global' => [
+	                'default' => Global_Typography::TYPOGRAPHY_PRIMARY
+                ],
                 'selector' => '{{WRAPPER}} .eael-simple-menu li ul li > a',
             ]
         );
@@ -1366,7 +1368,7 @@ class Simple_Menu extends Widget_Base
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '#f44336',
                 'selectors' => [
-                    '{{WRAPPER}} .eael-simple-menu li ul li .eael-simple-menu-indicator:before' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-simple-menu li ul li .eael-simple-menu-indicator:before' => 'color: {{VALUE}} !important',
                 ],
             ]
         );
@@ -1378,7 +1380,7 @@ class Simple_Menu extends Widget_Base
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '#ffffff',
                 'selectors' => [
-                    '{{WRAPPER}} .eael-simple-menu li ul li .eael-simple-menu-indicator' => 'background-color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-simple-menu li ul li .eael-simple-menu-indicator' => 'background-color: {{VALUE}} !important',
                 ],
             ]
         );
@@ -1390,7 +1392,7 @@ class Simple_Menu extends Widget_Base
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '#f44336',
                 'selectors' => [
-                    '{{WRAPPER}} .eael-simple-menu li ul li .eael-simple-menu-indicator' => 'border-color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-simple-menu li ul li .eael-simple-menu-indicator' => 'border-color: {{VALUE}} !important',
                 ],
             ]
         );
@@ -1459,8 +1461,8 @@ class Simple_Menu extends Widget_Base
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '#f44336',
                 'selectors' => [
-                    '{{WRAPPER}} .eael-simple-menu li ul li .eael-simple-menu-indicator:hover:before'                           => 'color: {{VALUE}}',
-                    '{{WRAPPER}} .eael-simple-menu li ul li .eael-simple-menu-indicator.eael-simple-menu-indicator-open:before' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-simple-menu li ul li .eael-simple-menu-indicator:hover:before'                           => 'color: {{VALUE}} !important',
+                    '{{WRAPPER}} .eael-simple-menu li ul li .eael-simple-menu-indicator.eael-simple-menu-indicator-open:before' => 'color: {{VALUE}} !important',
                 ],
             ]
         );
@@ -1472,8 +1474,8 @@ class Simple_Menu extends Widget_Base
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '#ffffff',
                 'selectors' => [
-                    '{{WRAPPER}} .eael-simple-menu li ul li .eael-simple-menu-indicator:hover'                           => 'background-color: {{VALUE}}',
-                    '{{WRAPPER}} .eael-simple-menu li ul li .eael-simple-menu-indicator.eael-simple-menu-indicator-open' => 'background-color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-simple-menu li ul li .eael-simple-menu-indicator:hover'                           => 'background-color: {{VALUE}} !important',
+                    '{{WRAPPER}} .eael-simple-menu li ul li .eael-simple-menu-indicator.eael-simple-menu-indicator-open' => 'background-color: {{VALUE}} !important',
                 ],
             ]
         );
@@ -1485,8 +1487,8 @@ class Simple_Menu extends Widget_Base
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '#f44336',
                 'selectors' => [
-                    '{{WRAPPER}} .eael-simple-menu li ul li .eael-simple-menu-indicator:hover'                           => 'border-color: {{VALUE}}',
-                    '{{WRAPPER}} .eael-simple-menu li ul li .eael-simple-menu-indicator.eael-simple-menu-indicator-open' => 'border-color: {{VALUE}}',
+                    '{{WRAPPER}} .eael-simple-menu li ul li .eael-simple-menu-indicator:hover'                           => 'border-color: {{VALUE}} !important',
+                    '{{WRAPPER}} .eael-simple-menu li ul li .eael-simple-menu-indicator.eael-simple-menu-indicator-open' => 'border-color: {{VALUE}} !important',
                 ],
             ]
         );

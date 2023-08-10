@@ -102,6 +102,9 @@ class Mailchimp extends Widget_Base
                 ],
                 'label_block' => false,
                 'default' => 'Email',
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
         $this->add_control(
@@ -114,6 +117,9 @@ class Mailchimp extends Widget_Base
                 ],
                 'label_block' => false,
                 'default' => 'Email',
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
         $this->add_control(
@@ -138,6 +144,9 @@ class Mailchimp extends Widget_Base
                 'condition' => [
                     'eael_mailchimp_fname_show' => 'yes',
                 ],
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
         $this->add_control(
@@ -153,6 +162,9 @@ class Mailchimp extends Widget_Base
                 'condition' => [
                     'eael_mailchimp_fname_show' => 'yes',
                 ],
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
         $this->add_control(
@@ -177,6 +189,9 @@ class Mailchimp extends Widget_Base
                 'condition' => [
                     'eael_mailchimp_lname_show' => 'yes',
                 ],
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
         $this->add_control(
@@ -192,6 +207,9 @@ class Mailchimp extends Widget_Base
                 'condition' => [
                     'eael_mailchimp_lname_show' => 'yes',
                 ],
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
         $this->add_control(
@@ -216,6 +234,9 @@ class Mailchimp extends Widget_Base
                 'condition' => [
                     'eael_mailchimp_tags_show' => 'yes',
                 ],
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -232,6 +253,9 @@ class Mailchimp extends Widget_Base
                 'condition' => [
                     'eael_mailchimp_tags_show' => 'yes',
                 ],
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -256,6 +280,9 @@ class Mailchimp extends Widget_Base
                 ],
                 'label_block' => false,
                 'default' => esc_html__('Subscribe', 'essential-addons-elementor'),
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
         $this->add_control(
@@ -268,6 +295,9 @@ class Mailchimp extends Widget_Base
                 ],
                 'label_block' => false,
                 'default' => esc_html__('Submitting...', 'essential-addons-elementor'),
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
         $this->end_controls_section();
@@ -291,6 +321,9 @@ class Mailchimp extends Widget_Base
                 ],
                 'label_block' => true,
                 'default' => esc_html__('You have subscribed successfully!', 'essential-addons-elementor'),
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
         $this->add_control(
@@ -303,6 +336,9 @@ class Mailchimp extends Widget_Base
                 ],
                 'label_block' => true,
                 'default' => esc_html__('Please check your email and confirm subscription!', 'essential-addons-elementor'),
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
         $this->end_controls_section();
@@ -905,7 +941,6 @@ class Mailchimp extends Widget_Base
         $this->add_render_attribute('eael-mailchimp-main-wrapper', 'class', 'eael-mailchimp-wrap');
         $this->add_render_attribute('eael-mailchimp-main-wrapper', 'class', esc_attr($layout));
         $this->add_render_attribute('eael-mailchimp-main-wrapper', 'data-mailchimp-id', esc_attr($this->get_id()));
-        $this->add_render_attribute('eael-mailchimp-main-wrapper', 'data-api-key', esc_attr($api_key));
         $this->add_render_attribute('eael-mailchimp-main-wrapper', 'data-list-id', $settings['eael_mailchimp_lists']);
         $this->add_render_attribute('eael-mailchimp-main-wrapper', 'data-button-text', $settings['eael_section_mailchimp_button_text']);
         $this->add_render_attribute('eael-mailchimp-main-wrapper', 'data-success-text', $settings['eael_section_mailchimp_success_text']);

@@ -319,7 +319,6 @@
           box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   -webkit-transition: -webkit-box-shadow 0.5s;
   transition: -webkit-box-shadow 0.5s;
-  -o-transition: box-shadow 0.5s;
   transition: box-shadow 0.5s;
   transition: box-shadow 0.5s, -webkit-box-shadow 0.5s;
   border-radius: 0px;
@@ -342,7 +341,6 @@
 .eael-learndash-wrapper.layout__3 .card-body {
   position: relative;
   -webkit-transition: height 0.5s;
-  -o-transition: height 0.5s;
   transition: height 0.5s;
   padding: 15px 30px 24px;
   overflow: hidden;
@@ -435,7 +433,6 @@
   border: 2px solid rgba(108, 98, 255, 0.4);
   font-weight: 600;
   -webkit-transition: 300ms;
-  -o-transition: 300ms;
   transition: 300ms;
 }
 

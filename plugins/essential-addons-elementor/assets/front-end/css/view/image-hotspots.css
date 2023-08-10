@@ -20,7 +20,6 @@
       -ms-flex-pack: center;
           justify-content: center;
   -webkit-transition: all 0.3s ease;
-  -o-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
 
@@ -75,7 +74,6 @@
       -ms-flex-pack: center;
           justify-content: center;
   -webkit-transition: all 0.3s ease;
-  -o-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
 

@@ -11,7 +11,8 @@ use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
 use Elementor\Repeater;
-use \Elementor\Core\Schemes\Typography;
+use \Elementor\Core\Kits\Documents\Tabs\Global_Typography;
+use \Elementor\Core\Kits\Documents\Tabs\Global_Colors;
 use \Elementor\Utils;
 use \Elementor\Widget_Base;
 
@@ -142,6 +143,9 @@ class Team_Member_Carousel extends Widget_Base
 					'active' => true,
 				],
 				'default' => __('John Doe', 'essential-addons-elementor'),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -154,6 +158,9 @@ class Team_Member_Carousel extends Widget_Base
 					'active' => true,
 				],
 				'default' => __('WordPress Developer', 'essential-addons-elementor'),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -179,6 +186,9 @@ class Team_Member_Carousel extends Widget_Base
 				],
 				'default' => [
 					'url' => Utils::get_placeholder_image_src(),
+				],
+				'ai' => [
+					'active' => false,
 				],
 			]
 		);
@@ -213,6 +223,9 @@ class Team_Member_Carousel extends Widget_Base
 					],
 				],
 				'description' => __('Enter Email Address of team member', 'essential-addons-elementor'),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -228,6 +241,9 @@ class Team_Member_Carousel extends Widget_Base
 					],
 				],
 				'description' => __('Enter Facebook page or profile URL of team member', 'essential-addons-elementor'),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -243,6 +259,9 @@ class Team_Member_Carousel extends Widget_Base
 					],
 				],
 				'description' => __('Enter Twitter profile URL of team member', 'essential-addons-elementor'),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -258,6 +277,9 @@ class Team_Member_Carousel extends Widget_Base
 					],
 				],
 				'description' => __('Enter Google+ profile URL of team member', 'essential-addons-elementor'),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -273,6 +295,9 @@ class Team_Member_Carousel extends Widget_Base
 					],
 				],
 				'description' => __('Enter Linkedin profile URL of team member', 'essential-addons-elementor'),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -288,6 +313,9 @@ class Team_Member_Carousel extends Widget_Base
 					],
 				],
 				'description' => __('Enter Instagram profile URL of team member', 'essential-addons-elementor'),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -303,6 +331,9 @@ class Team_Member_Carousel extends Widget_Base
 					],
 				],
 				'description' => __('Enter YouTube profile URL of team member', 'essential-addons-elementor'),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -318,6 +349,9 @@ class Team_Member_Carousel extends Widget_Base
 					],
 				],
 				'description' => __('Enter Pinterest profile URL of team member', 'essential-addons-elementor'),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -334,6 +368,9 @@ class Team_Member_Carousel extends Widget_Base
 					],
 				],
 				'description' => __('Enter Dribbble profile URL of team member', 'essential-addons-elementor'),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -350,6 +387,9 @@ class Team_Member_Carousel extends Widget_Base
 					],
 				],
 				'description' => __('Enter XING profile URL of team member', 'essential-addons-elementor'),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -366,6 +406,9 @@ class Team_Member_Carousel extends Widget_Base
 					],
 				],
 				'description' => __('Enter Snapchat profile URL of team member', 'essential-addons-elementor'),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -382,6 +425,9 @@ class Team_Member_Carousel extends Widget_Base
 					],
 				],
 				'description' => __('Enter Custom URL of team member', 'essential-addons-elementor'),
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -1133,7 +1179,9 @@ class Team_Member_Carousel extends Widget_Base
 			[
 				'name'     => 'member_name_typography',
 				'label'    => __('Typography', 'essential-addons-elementor'),
-				'scheme'   => Typography::TYPOGRAPHY_4,
+				'global' => [
+					'default' => Global_Typography::TYPOGRAPHY_ACCENT
+				],
 				'selector' => '{{WRAPPER}} .eael-tm-name',
 			]
 		);
@@ -1195,9 +1243,8 @@ class Team_Member_Carousel extends Widget_Base
 				'label'     => __('Divider Color', 'essential-addons-elementor'),
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '',
-				'scheme'    => [
-					'type'  => \Elementor\Core\Schemes\Color::get_type(),
-					'value' => \Elementor\Core\Schemes\Color::COLOR_1,
+				'global' => [
+					'default' => Global_Colors::COLOR_PRIMARY
 				],
 				'selectors' => [
 					'{{WRAPPER}} .eael-tm-title-divider' => 'border-bottom-color: {{VALUE}}',
@@ -1336,7 +1383,9 @@ class Team_Member_Carousel extends Widget_Base
 			[
 				'name'     => 'member_position_typography',
 				'label'    => __('Typography', 'essential-addons-elementor'),
-				'scheme'   => Typography::TYPOGRAPHY_4,
+				'global' => [
+					'default' => Global_Typography::TYPOGRAPHY_ACCENT
+				],
 				'selector' => '{{WRAPPER}} .eael-tm-position',
 			]
 		);
@@ -1398,9 +1447,8 @@ class Team_Member_Carousel extends Widget_Base
 				'label'     => __('Divider Color', 'essential-addons-elementor'),
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '',
-				'scheme'    => [
-					'type'  => \Elementor\Core\Schemes\Color::get_type(),
-					'value' => \Elementor\Core\Schemes\Color::COLOR_1,
+				'global' => [
+					'default' => Global_Colors::COLOR_PRIMARY
 				],
 				'selectors' => [
 					'{{WRAPPER}} .eael-tm-position-divider' => 'border-bottom-color: {{VALUE}}',
@@ -1539,7 +1587,9 @@ class Team_Member_Carousel extends Widget_Base
 			[
 				'name'     => 'member_description_typography',
 				'label'    => __('Typography', 'essential-addons-elementor'),
-				'scheme'   => Typography::TYPOGRAPHY_4,
+				'global' => [
+					'default' => Global_Typography::TYPOGRAPHY_ACCENT
+				],
 				'selector' => '{{WRAPPER}} .eael-tm-description',
 			]
 		);
@@ -1601,9 +1651,8 @@ class Team_Member_Carousel extends Widget_Base
 				'label'     => __('Divider Color', 'essential-addons-elementor'),
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '',
-				'scheme'    => [
-					'type'  => \Elementor\Core\Schemes\Color::get_type(),
-					'value' => \Elementor\Core\Schemes\Color::COLOR_1,
+				'global' => [
+					'default' => Global_Colors::COLOR_PRIMARY
 				],
 				'selectors' => [
 					'{{WRAPPER}} .eael-tm-description-divider' => 'border-bottom-color: {{VALUE}}',
@@ -2321,10 +2370,16 @@ class Team_Member_Carousel extends Widget_Base
 			$this->add_render_attribute('team-member-carousel-wrap', 'class', 'swiper-container-wrap-dots-' . $settings['dots_position']);
 		}
 
+		$swiper_class = $swiper_version_class = '';
+        if ( class_exists( 'Elementor\Plugin' ) ) {
+            $swiper_class           = \Elementor\Plugin::$instance->experiments->is_feature_active( 'e_swiper_latest' ) ? 'swiper' : 'swiper-container';
+            $swiper_version_class   = 'swiper' === $swiper_class ? 'swiper-8' : 'swiper-8-lower';
+        }
+
 		$this->add_render_attribute(
 			'team-member-carousel',
 			[
-				'class'           => [ 'swiper', 'swiper-container', 'eael-tm-wrapper', 'eael-tm-carousel'],
+				'class'           => [ esc_attr( $swiper_class ), esc_attr( $swiper_version_class ), 'eael-tm-wrapper', 'eael-tm-carousel'],
 				'id'              => 'swiper-container-' . esc_attr($this->get_id()),
 				'data-pagination' => '.swiper-pagination-' . esc_attr($this->get_id()),
 				'data-arrow-next' => '.swiper-button-next-' . esc_attr($this->get_id()),

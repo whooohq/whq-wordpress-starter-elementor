@@ -1,4 +1,4 @@
-/*! elementor - v3.13.3 - 22-05-2023 */
+/*! elementor - v3.15.0 - 02-08-2023 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -2178,6 +2178,82 @@ var CommandContainerBase = /*#__PURE__*/function (_CommandBase) {
   return CommandContainerBase;
 }(_commandBase.default);
 exports["default"] = CommandContainerBase;
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/component-base.js":
+/*!*************************************************!*\
+  !*** ../assets/dev/js/editor/component-base.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/component-base */ "../modules/web-cli/assets/js/modules/component-base.js"));
+var _editor = _interopRequireDefault(__webpack_require__(/*! elementor-panel/pages/editor */ "../assets/dev/js/editor/regions/panel/pages/editor.js"));
+var _baseData = _interopRequireDefault(__webpack_require__(/*! elementor-controls/base-data */ "../assets/dev/js/editor/controls/base-data.js"));
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+var ComponentBase = /*#__PURE__*/function (_ApiComponentBase) {
+  (0, _inherits2.default)(ComponentBase, _ApiComponentBase);
+  var _super = _createSuper(ComponentBase);
+  function ComponentBase() {
+    (0, _classCallCheck2.default)(this, ComponentBase);
+    return _super.apply(this, arguments);
+  }
+  (0, _createClass2.default)(ComponentBase, [{
+    key: "activateControl",
+    value:
+    /**
+     * Call the activate of the control's view
+     *
+     * @param {string} controlPath
+     */
+    function activateControl(controlPath) {
+      var _controlView$activate;
+      if (!controlPath) {
+        return;
+      }
+      var editor = elementor.getPanelView().getCurrentPageView();
+      var currentView = editor.content ? editor.content.currentView : editor;
+      var controlView = this.getControlViewByPath(currentView, controlPath);
+      (_controlView$activate = controlView.activate) === null || _controlView$activate === void 0 ? void 0 : _controlView$activate.call(controlView);
+    }
+
+    /**
+     * Get the control's view by path
+     *
+     * @param {EditorView} currentView
+     * @param {string}     controlPath
+     *
+     * @return {ControlBaseDataView}
+     */
+  }, {
+    key: "getControlViewByPath",
+    value: function getControlViewByPath(currentView, controlPath) {
+      var controls = controlPath.split('/');
+      var controlView = currentView.getControlViewByName(controls[0]);
+      controls.slice(1).forEach(function (control) {
+        var _controlView$getChild, _controlView;
+        controlView = (_controlView$getChild = (_controlView = controlView).getChildControlView) === null || _controlView$getChild === void 0 ? void 0 : _controlView$getChild.call(_controlView, control);
+      });
+      return controlView;
+    }
+  }]);
+  return ComponentBase;
+}(_componentBase.default);
+exports["default"] = ComponentBase;
 
 /***/ }),
 
@@ -5192,6 +5268,8 @@ var Load = /*#__PURE__*/function (_$e$modules$CommandIn) {
     key: "apply",
     value: function apply(args) {
       var config = args.config,
+        _args$setAsInitial = args.setAsInitial,
+        setAsInitial = _args$setAsInitial === void 0 ? false : _args$setAsInitial,
         _args$shouldScroll = args.shouldScroll,
         shouldScroll = _args$shouldScroll === void 0 ? true : _args$shouldScroll;
       if (elementorCommon.config.experimentalFeatures.additional_custom_breakpoints) {
@@ -5208,6 +5286,9 @@ var Load = /*#__PURE__*/function (_$e$modules$CommandIn) {
 
       // Must set current before create a container.
       elementor.documents.setCurrent(document);
+      if (setAsInitial) {
+        elementor.documents.setInitialById(document.id);
+      }
       elementor.settings.page = new elementor.settings.modules.page(config.settings);
       document.container = elementor.settings.page.getEditedView().getContainer();
 
@@ -5222,6 +5303,12 @@ var Load = /*#__PURE__*/function (_$e$modules$CommandIn) {
         // TODO: Find better solution - Fix issue when globals does not render after saving from kit.
         // The issue is that the css-parser is depends upon cache and cache is not available during this time.
         return $e.data.get('globals/index').then(function () {
+          if (setAsInitial) {
+            // There is no need to attach preview when the iframe is reloaded. It will be triggerred
+            // automatically after the iframe finishes loading (see `EditorBase.onPreviewLoaded()`).
+            elementor.reloadPreview();
+            return Promise.resolve();
+          }
           return $e.internal('editor/documents/attach-preview', {
             shouldScroll: shouldScroll,
             selector: args.selector
@@ -5347,6 +5434,8 @@ var Open = /*#__PURE__*/function (_$e$modules$CommandBa) {
         selector = args.selector,
         _args$shouldScroll = args.shouldScroll,
         shouldScroll = _args$shouldScroll === void 0 ? true : _args$shouldScroll,
+        _args$setAsInitial = args.setAsInitial,
+        setAsInitial = _args$setAsInitial === void 0 ? false : _args$setAsInitial,
         currentDocument = elementor.documents.getCurrent();
 
       // Already opened.
@@ -5358,6 +5447,14 @@ var Open = /*#__PURE__*/function (_$e$modules$CommandBa) {
       if (elementor.loaded) {
         elementor.$previewContents.find(".elementor-".concat(id)).addClass('loading');
       }
+      if (setAsInitial) {
+        // Set the new initial document id to be sent with all requests.
+        // The next request needs to have the new initial document id in order to have the correct preview URL.
+        elementorCommon.ajax.addRequestConstant('initial_document_id', id);
+
+        // Because the initial document has changed, we need to clear cached values (e.g. header wp_preview URL),
+        elementor.documents.invalidateCache();
+      }
       return elementor.documents.request(id).then(function (config) {
         elementorCommon.elements.$body.addClass("elementor-editor-".concat(config.type));
 
@@ -5365,6 +5462,7 @@ var Open = /*#__PURE__*/function (_$e$modules$CommandBa) {
         return $e.internal('editor/documents/load', {
           config: config,
           selector: selector,
+          setAsInitial: setAsInitial,
           shouldScroll: shouldScroll
         });
       }).always(function () {
@@ -5500,7 +5598,13 @@ var Switch = /*#__PURE__*/function (_$e$modules$CommandBa) {
         mode = args.mode,
         onClose = args.onClose,
         _args$shouldScroll = args.shouldScroll,
-        shouldScroll = _args$shouldScroll === void 0 ? true : _args$shouldScroll;
+        shouldScroll = _args$shouldScroll === void 0 ? true : _args$shouldScroll,
+        _args$setAsInitial = args.setAsInitial,
+        setAsInitial = _args$setAsInitial === void 0 ? false : _args$setAsInitial;
+      if (setAsInitial) {
+        // Will be removed by the attach-preview after the iframe has loaded.
+        jQuery('#elementor-preview-loading').show();
+      }
       return $e.run('editor/documents/close', {
         id: elementor.documents.getCurrentId(),
         mode: mode,
@@ -5510,7 +5614,8 @@ var Switch = /*#__PURE__*/function (_$e$modules$CommandBa) {
         return $e.run('editor/documents/open', {
           id: id,
           shouldScroll: shouldScroll,
-          selector: args.selector
+          selector: args.selector,
+          setAsInitial: setAsInitial
         });
       }).then(function () {
         elementor.getPanelView().getPages('menu').view.addExitItem();
@@ -5687,6 +5792,16 @@ var Component = /*#__PURE__*/function (_ComponentBase) {
     value: function getInitialId() {
       return elementor.config.initial_document.id;
     }
+  }, {
+    key: "setInitialById",
+    value: function setInitialById(id) {
+      var document = this.get(id);
+      if (!document) {
+        return;
+      }
+      elementor.config.initial_document = document.config;
+      elementorCommon.ajax.addRequestConstant('initial_document_id', document.id);
+    }
 
     /**
      * Function setCurrent().
@@ -5726,8 +5841,16 @@ var Component = /*#__PURE__*/function (_ComponentBase) {
     }
   }, {
     key: "invalidateCache",
-    value: function invalidateCache(id) {
-      elementorCommon.ajax.invalidateCache(this.getRequestArgs(id));
+    value: function invalidateCache() {
+      var _this = this;
+      var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      if (id) {
+        elementorCommon.ajax.invalidateCache(this.getRequestArgs(id));
+        return;
+      }
+      Object.keys(this.documents).forEach(function (docId) {
+        elementorCommon.ajax.invalidateCache(_this.getRequestArgs(docId));
+      });
     }
   }, {
     key: "getRequestArgs",
@@ -8410,7 +8533,54 @@ Object.defineProperty(exports, "Drop", ({
     return _drop.Drop;
   }
 }));
+Object.defineProperty(exports, "Reload", ({
+  enumerable: true,
+  get: function get() {
+    return _reload.Reload;
+  }
+}));
 var _drop = __webpack_require__(/*! ./drop */ "../assets/dev/js/editor/components/preview/commands/drop.js");
+var _reload = __webpack_require__(/*! ./reload */ "../assets/dev/js/editor/components/preview/commands/reload.js");
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/components/preview/commands/reload.js":
+/*!*********************************************************************!*\
+  !*** ../assets/dev/js/editor/components/preview/commands/reload.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.Reload = void 0;
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+var Reload = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Reload, _$e$modules$CommandBa);
+  var _super = _createSuper(Reload);
+  function Reload() {
+    (0, _classCallCheck2.default)(this, Reload);
+    return _super.apply(this, arguments);
+  }
+  (0, _createClass2.default)(Reload, [{
+    key: "apply",
+    value: function apply() {
+      elementor.reloadPreview();
+    }
+  }]);
+  return Reload;
+}($e.modules.CommandBase);
+exports.Reload = Reload;
 
 /***/ }),
 
@@ -8780,8 +8950,11 @@ module.exports = elementorModules.ViewModule.extend({
   getContainerType: function getContainerType() {
     return this.getSettings('name') + '_settings';
   },
+  /**
+   * @deprecated since 3.7.0, use `getContainerType()` instead.
+   */
   getContainerId: function getContainerId() {
-    elementorDevTools.deprecation.deprecated('getContainerId', '3.7.0', 'getContainerType');
+    elementorDevTools.deprecation.deprecated('getContainerId()', '3.7.0', 'getContainerType()');
     return this.getContainerType();
   },
   // Emulate an element view/model structure with the parts needed for a container.
@@ -9095,7 +9268,7 @@ var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtim
 var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
 var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
-var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/component-base */ "../modules/web-cli/assets/js/modules/component-base.js"));
+var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-editor/component-base */ "../assets/dev/js/editor/component-base.js"));
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 var Component = /*#__PURE__*/function (_ComponentBase) {
@@ -9127,8 +9300,12 @@ var Component = /*#__PURE__*/function (_ComponentBase) {
     }
   }, {
     key: "renderTab",
-    value: function renderTab(tab) {
-      elementor.getPanelView().setPage('page_settings').activateTab(tab);
+    value: function renderTab(tab, args) {
+      var activeControl = args.activeControl;
+      if (!activeControl || '' === activeControl) {
+        elementor.getPanelView().setPage('page_settings').activateTab(tab);
+      }
+      this.activateControl(activeControl);
     }
   }, {
     key: "getTabsWrapperSelector",
@@ -9226,8 +9403,11 @@ module.exports = BaseSettings.extend({
   getContainerType: function getContainerType() {
     return 'document';
   },
+  /**
+   * @deprecated since 3.7.0, use `getContainerType()` instead.
+   */
   getContainerId: function getContainerId() {
-    elementorDevTools.deprecation.deprecated('getContainerId', '3.7.0', 'getContainerType');
+    elementorDevTools.deprecation.deprecated('getContainerId()', '3.7.0', 'getContainerType()');
     return this.getContainerType();
   }
 });
@@ -9911,6 +10091,12 @@ TemplateLibraryManager = function TemplateLibraryManager() {
     };
     dialog.show();
   };
+
+  /**
+   * @param {*}      model - Template model.
+   * @param {Object} args  - Template arguments.
+   * @deprecated since 2.8.0, use `$e.run( 'library/insert-template' )` instead.
+   */
   this.importTemplate = function (model) {
     var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     elementorDevTools.deprecation.deprecated('importTemplate', '2.8.0', "$e.run( 'library/insert-template' )");
@@ -10391,7 +10577,10 @@ module.exports = Marionette.ItemView.extend({
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "../node_modules/@babel/runtime/regenerator/index.js"));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "../node_modules/@babel/runtime/helpers/asyncToGenerator.js"));
 var _filesUploadHandler = _interopRequireDefault(__webpack_require__(/*! ../../../../utils/files-upload-handler */ "../assets/dev/js/editor/utils/files-upload-handler.js"));
+var _jsonUploadWarningMessage = __webpack_require__(/*! elementor-utils/json-upload-warning-message */ "../assets/dev/js/utils/json-upload-warning-message.js");
 var TemplateLibraryImportView;
 TemplateLibraryImportView = Marionette.ItemView.extend({
   template: '#tmpl-elementor-template-library-import',
@@ -10422,32 +10611,49 @@ TemplateLibraryImportView = Marionette.ItemView.extend({
   },
   importTemplate: function importTemplate(fileName, fileData) {
     var _this2 = this;
-    var layout = elementor.templates.layout;
-    this.options = {
-      data: {
-        fileName: fileName,
-        fileData: fileData
-      },
-      success: function success(successData) {
-        elementor.templates.getTemplatesCollection().add(successData);
-        $e.route('library/templates/my-templates');
-      },
-      error: function error(errorData) {
-        elementor.templates.showErrorDialog(errorData);
-        layout.showImportView();
-      },
-      complete: function complete() {
-        layout.hideLoadingView();
-      }
-    };
-    if (!elementorCommon.config.filesUpload.unfilteredFiles) {
-      var enableUnfilteredFilesModal = _filesUploadHandler.default.getUnfilteredFilesNotEnabledImportTemplateDialog(function () {
-        return _this2.sendImportRequest();
-      });
-      enableUnfilteredFilesModal.show();
-    } else {
-      this.sendImportRequest();
-    }
+    return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
+      var layout, enableUnfilteredFilesModal;
+      return _regenerator.default.wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            layout = elementor.templates.layout;
+            _this2.options = {
+              data: {
+                fileName: fileName,
+                fileData: fileData
+              },
+              success: function success(successData) {
+                elementor.templates.getTemplatesCollection().add(successData);
+                $e.route('library/templates/my-templates');
+              },
+              error: function error(errorData) {
+                elementor.templates.showErrorDialog(errorData);
+                layout.showImportView();
+              },
+              complete: function complete() {
+                layout.hideLoadingView();
+              }
+            };
+            _context.next = 4;
+            return (0, _jsonUploadWarningMessage.showJsonUploadWarningMessageIfNeeded)({
+              introductionMap: window.elementor.config.user.introduction,
+              IntroductionClass: window.elementorModules.editor.utils.Introduction
+            });
+          case 4:
+            if (!elementorCommon.config.filesUpload.unfilteredFiles) {
+              enableUnfilteredFilesModal = _filesUploadHandler.default.getUnfilteredFilesNotEnabledImportTemplateDialog(function () {
+                return _this2.sendImportRequest();
+              });
+              enableUnfilteredFilesModal.show();
+            } else {
+              _this2.sendImportRequest();
+            }
+          case 5:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }))();
   },
   sendImportRequest: function sendImportRequest() {
     elementorCommon.ajax.addRequest('import_template', this.options);
@@ -11959,11 +12165,15 @@ module.exports = ControlBaseUnitsItemView;
 /*!************************************************!*\
   !*** ../assets/dev/js/editor/controls/base.js ***!
   \************************************************/
-/***/ ((module) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var ControlBaseView;
 ControlBaseView = Marionette.CompositeView.extend({
   ui: function ui() {
@@ -12084,6 +12294,26 @@ ControlBaseView = Marionette.CompositeView.extend({
     }
     this.$el.addClass(elClasses);
     this.toggleControlVisibility();
+  },
+  reRoute: function reRoute(controlActive) {
+    $e.route($e.routes.getCurrent('panel'), this.getControlInRouteArgs(controlActive ? this.getControlPath() : ''), {
+      history: false
+    });
+  },
+  getControlInRouteArgs: function getControlInRouteArgs(path) {
+    return _objectSpread(_objectSpread({}, $e.routes.getCurrentArgs('panel')), {}, {
+      activeControl: path
+    });
+  },
+  getControlPath: function getControlPath() {
+    var controlPath = this.model.get('name'),
+      parent = this._parent;
+    while (!parent.$el.hasClass('elementor-controls-stack')) {
+      var parentName = parent.model.get('name') || parent.model.get('_id');
+      controlPath = parentName + '/' + controlPath;
+      parent = parent._parent;
+    }
+    return controlPath;
   }
 });
 module.exports = ControlBaseView;
@@ -12684,14 +12914,18 @@ var _default = /*#__PURE__*/function (_ControlBaseDataView) {
         onClear: function onClear() {
           return _this.onPickerClear();
         },
-        onShow: function onShow() {
-          return _this.onPickerShow();
-        },
         onAddButtonClick: function onAddButtonClick() {
           return _this.onAddGlobalButtonClick();
+        },
+        onPickerShow: function onPickerShow() {
+          return _this.reRoute(true);
+        },
+        onPickerHide: function onPickerHide() {
+          return _this.reRoute(false);
         }
       };
       this.colorPicker = new _colorPicker.default(options);
+      this.hidePickerOnPreviewClick();
       this.$pickerButton = jQuery(this.colorPicker.picker.getRoot().button);
       this.addTipsyToPickerButton();
       this.addEyedropper();
@@ -12699,6 +12933,19 @@ var _default = /*#__PURE__*/function (_ControlBaseDataView) {
         return _this.onPickerButtonClick();
       });
       jQuery(this.colorPicker.picker.getRoot().root).addClass('elementor-control-unit-1 elementor-control-tag-area');
+    }
+  }, {
+    key: "hidePickerOnPreviewClick",
+    value: function hidePickerOnPreviewClick() {
+      var picker = this.colorPicker.picker;
+      var pickerUtils = picker.constructor.utils;
+
+      // Adding to the eventBindings to unbind in the picker's destroy
+      picker._eventBindings.push(pickerUtils.on(elementorFrontend.elements.window.document, ['touchstart', 'pointerdown'], function () {
+        if (picker.isOpen()) {
+          picker.hide();
+        }
+      }));
     }
   }, {
     key: "addTipsyToPickerButton",
@@ -12914,15 +13161,6 @@ var _default = /*#__PURE__*/function (_ControlBaseDataView) {
       this.colorPicker.toggleClearButtonState(false);
     }
   }, {
-    key: "onPickerShow",
-    value: function onPickerShow() {
-      window.dispatchEvent(new CustomEvent('elementor/color-picker/show', {
-        detail: {
-          el: this.$el
-        }
-      }));
-    }
-  }, {
     key: "onPickerButtonClick",
     value: function onPickerButtonClick() {
       if (this.getGlobalKey()) {
@@ -12942,6 +13180,11 @@ var _default = /*#__PURE__*/function (_ControlBaseDataView) {
         _this5.globalsList = globalsList;
         _this5.triggerMethod('add:global:to:list', _this5.getAddGlobalConfirmMessage(globalsList));
       });
+    }
+  }, {
+    key: "activate",
+    value: function activate() {
+      this.colorPicker.picker.show();
     }
   }, {
     key: "onBeforeDestroy",
@@ -13345,7 +13588,8 @@ ControlMediaItemView = ControlBaseDataView.extend({
     return _.extend(ControlBaseDataView.prototype.events.apply(this, arguments), {
       'click @ui.addImages': 'onAddImagesClick',
       'click @ui.clearGallery': 'onClearGalleryClick',
-      'click @ui.galleryThumbnails': 'onGalleryThumbnailsClick'
+      'click @ui.galleryThumbnails': 'onGalleryThumbnailsClick',
+      'keyup @ui.galleryThumbnails': 'onGalleryThumbnailsKeyPress'
     });
   },
   onReady: function onReady() {
@@ -13472,7 +13716,7 @@ ControlMediaItemView = ControlBaseDataView.extend({
     }
     this.$el.remove();
   },
-  resetGallery: function resetGallery() {
+  clearGallery: function clearGallery() {
     this.setValue([]);
     this.applySavedValue();
   },
@@ -13481,14 +13725,14 @@ ControlMediaItemView = ControlBaseDataView.extend({
     this.getRemoveDialog = function () {
       if (!removeDialog) {
         removeDialog = elementorCommon.dialogsManager.createWidget('confirm', {
-          message: __('Are you sure you want to reset this gallery?', 'elementor'),
-          headerMessage: __('Reset Gallery', 'elementor'),
+          message: __('Are you sure you want to clear this gallery?', 'elementor'),
+          headerMessage: __('Clear gallery', 'elementor'),
           strings: {
-            confirm: __('Delete', 'elementor'),
+            confirm: __('Clear', 'elementor'),
             cancel: __('Cancel', 'elementor')
           },
           defaultOption: 'confirm',
-          onConfirm: this.resetGallery.bind(this)
+          onConfirm: this.clearGallery.bind(this)
         });
       }
       return removeDialog;
@@ -13502,6 +13746,13 @@ ControlMediaItemView = ControlBaseDataView.extend({
   },
   onGalleryThumbnailsClick: function onGalleryThumbnailsClick() {
     this.openFrame('edit');
+  },
+  onGalleryThumbnailsKeyPress: function onGalleryThumbnailsKeyPress(event) {
+    var ENTER_KEY = 13,
+      SPACE_KEY = 32;
+    if (ENTER_KEY === event.which || SPACE_KEY === event.which) {
+      this.onGalleryThumbnailsClick(event);
+    }
   }
 });
 module.exports = ControlMediaItemView;
@@ -14062,8 +14313,11 @@ module.exports = ControlImageDimensionsItemView;
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "../node_modules/@babel/runtime/regenerator/index.js"));
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "../node_modules/@babel/runtime/helpers/asyncToGenerator.js"));
 var _filesUploadHandler = _interopRequireDefault(__webpack_require__(/*! ../utils/files-upload-handler */ "../assets/dev/js/editor/utils/files-upload-handler.js"));
+var _jsonUploadWarningMessage = __webpack_require__(/*! elementor-utils/json-upload-warning-message */ "../assets/dev/js/utils/json-upload-warning-message.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var ControlMultipleBaseItemView = __webpack_require__(/*! elementor-controls/base-multiple */ "../assets/dev/js/editor/controls/base-multiple.js"),
@@ -14131,35 +14385,65 @@ ControlMediaItemView = ControlMultipleBaseItemView.extend({
     this.ui.controlMedia.toggleClass('e-media-empty', !value).toggleClass('e-media-empty-placeholder', !value && !isPlaceholder);
   },
   openFrame: function openFrame(e) {
-    var _e$target,
-      _e$target$dataset,
+    var _arguments = arguments,
       _this = this;
-    var mediaType = (e === null || e === void 0 ? void 0 : (_e$target = e.target) === null || _e$target === void 0 ? void 0 : (_e$target$dataset = _e$target.dataset) === null || _e$target$dataset === void 0 ? void 0 : _e$target$dataset.mediaType) || this.getMediaType();
-    this.mediaType = mediaType;
-    if (!mediaType) {
-      return;
-    }
-    if (!_filesUploadHandler.default.isUploadEnabled(mediaType)) {
-      _filesUploadHandler.default.getUnfilteredFilesNotEnabledDialog(function () {
-        return _this.openFrame(e);
-      }).show();
-      return false;
-    }
+    return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
+      var _e$target, _e$target$dataset;
+      var source, mediaType, selectedId;
+      return _regenerator.default.wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            source = _arguments.length > 1 && _arguments[1] !== undefined ? _arguments[1] : null;
+            mediaType = (e === null || e === void 0 ? void 0 : (_e$target = e.target) === null || _e$target === void 0 ? void 0 : (_e$target$dataset = _e$target.dataset) === null || _e$target$dataset === void 0 ? void 0 : _e$target$dataset.mediaType) || _this.getMediaType();
+            _this.mediaType = mediaType;
+            if (mediaType) {
+              _context.next = 5;
+              break;
+            }
+            return _context.abrupt("return");
+          case 5:
+            if (_filesUploadHandler.default.isUploadEnabled(mediaType)) {
+              _context.next = 8;
+              break;
+            }
+            _filesUploadHandler.default.getUnfilteredFilesNotEnabledDialog(function () {
+              return _this.openFrame(e, 'filter-popup');
+            }).show();
+            return _context.abrupt("return", false);
+          case 8:
+            if (!(source !== 'filter-popup' && ['application/json', 'json'].includes(mediaType))) {
+              _context.next = 11;
+              break;
+            }
+            _context.next = 11;
+            return (0, _jsonUploadWarningMessage.showJsonUploadWarningMessageIfNeeded)({
+              introductionMap: window.elementor.config.user.introduction,
+              IntroductionClass: window.elementorModules.editor.utils.Introduction
+            });
+          case 11:
+            // If there is no frame, or the current initialized frame contains a different library than
+            // the `data-media-type` of the clicked button, (re)initialize the frame.
+            if (!_this.frame || _this.getLibraryType(mediaType) !== _this.currentLibraryType) {
+              _this.initFrame();
+            }
+            _this.frame.open();
 
-    // If there is no frame, or the current initialized frame contains a different library than
-    // the `data-media-type` of the clicked button, (re)initialize the frame.
-    if (!this.frame || this.getLibraryType(mediaType) !== this.currentLibraryType) {
-      this.initFrame();
-    }
-    this.frame.open();
-
-    // Set params to trigger sanitizer
-    _filesUploadHandler.default.setUploadTypeCaller(this.frame);
-    var selectedId = this.getControlValue('id');
-    if (!selectedId) {
-      return;
-    }
-    this.frame.state().get('selection').add(wp.media.attachment(selectedId));
+            // Set params to trigger sanitizer
+            _filesUploadHandler.default.setUploadTypeCaller(_this.frame);
+            selectedId = _this.getControlValue('id');
+            if (selectedId) {
+              _context.next = 17;
+              break;
+            }
+            return _context.abrupt("return");
+          case 17:
+            _this.frame.state().get('selection').add(wp.media.attachment(selectedId));
+          case 18:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }))();
   },
   deleteImage: function deleteImage(event) {
     event.stopPropagation();
@@ -14435,12 +14719,22 @@ var ControlPopoverStarterView = /*#__PURE__*/function (_ControlChooseView) {
   }, {
     key: "onShow",
     value: function onShow() {
+      var _this = this;
       var $popover = this.$el.next('.elementor-controls-popover');
 
       // Attach the current control as a toggle of its popover.
       if ($popover.length) {
         $popover[0].dataset.popoverToggle = "elementor-control-default-".concat(this.model.cid);
+        $popover.on('hide', function () {
+          return _this.onPopoverHide();
+        });
+        $popover.attr('data-on-hide', true);
       }
+    }
+  }, {
+    key: "onPopoverHide",
+    value: function onPopoverHide() {
+      this.reRoute(false);
     }
   }, {
     key: "onResetInputClick",
@@ -14467,20 +14761,28 @@ var ControlPopoverStarterView = /*#__PURE__*/function (_ControlChooseView) {
   }, {
     key: "onPopoverToggleClick",
     value: function onPopoverToggleClick() {
-      var _this = this;
+      var _this2 = this;
       if (this.isGlobalActive() && !this.getControlValue() && !this.getGlobalKey() && this.getGlobalDefault()) {
         this.triggerMethod('unlink:global:default');
       }
       var $popover = this.$el.next('.elementor-controls-popover');
-      $popover.toggle(0, function () {
-        if ($popover.is(':visible')) {
-          window.dispatchEvent(new CustomEvent('elementor/popover/show', {
-            detail: {
-              el: _this.$el
-            }
-          }));
-        }
-      });
+      if (!$popover.attr('data-on-hide')) {
+        $popover.attr('data-on-hide', true);
+        $popover.on('hide', function () {
+          return _this2.onPopoverHide();
+        });
+      }
+      if (!$popover.is(':visible')) {
+        this.reRoute(true);
+      } else {
+        $popover.hide();
+        $popover.trigger('hide');
+      }
+    }
+  }, {
+    key: "activate",
+    value: function activate() {
+      this.$el.next('.elementor-controls-popover').show();
     }
   }, {
     key: "getGlobalCommand",
@@ -14591,11 +14893,11 @@ var ControlPopoverStarterView = /*#__PURE__*/function (_ControlChooseView) {
   }, {
     key: "buildGlobalsList",
     value: function buildGlobalsList(globalTypographies, $globalPreviewItemsContainer) {
-      var _this2 = this;
+      var _this3 = this;
       Object.values(globalTypographies).forEach(function (typography) {
         // Only build markup if the typography is valid.
         if (typography) {
-          var $typographyPreview = _this2.createGlobalItemMarkup(typography);
+          var $typographyPreview = _this3.createGlobalItemMarkup(typography);
           $globalPreviewItemsContainer.append($typographyPreview);
         }
       });
@@ -14662,6 +14964,17 @@ module.exports = Marionette.CompositeView.extend({
   getChildView: function getChildView(item) {
     var controlType = item.get('type');
     return elementor.getControlView(controlType);
+  },
+  getChildControlView: function getChildControlView(name) {
+    return this.getControlViewByModel(this.getControlModel(name));
+  },
+  getControlViewByModel: function getControlViewByModel(model) {
+    return this.children.findByModelCid(model.cid);
+  },
+  getControlModel: function getControlModel(name) {
+    return this.collection.findWhere({
+      name: name
+    });
   },
   childViewOptions: function childViewOptions() {
     return {
@@ -14826,7 +15139,8 @@ ControlRepeaterItemView = ControlBaseDataView.extend({
     return {
       axis: 'y',
       handle: '.elementor-repeater-row-tools',
-      items: ' > :not(.elementor-repeater-row--disable-sort)'
+      items: ' > :not(.elementor-repeater-row--disable-sort)',
+      cancel: '' // Elements that do not allow sorting (by default it includs buttons).
     };
   },
   onRender: function onRender() {
@@ -14870,7 +15184,11 @@ ControlRepeaterItemView = ControlBaseDataView.extend({
     this.updateChildIndexes();
     this.updateActiveRow();
   },
-  // BC since 3.0.0, ensure a new child is appear in container children.
+  /**
+   * Update container to ensure that new child elements appear in container children.
+   *
+   * @param {*} model - Container model.
+   */
   updateContainer: function updateContainer(model) {
     var container = this.options.container.repeaters[this.model.get('name')],
       isInChildren = container.children.filter(function (child) {
@@ -14881,7 +15199,11 @@ ControlRepeaterItemView = ControlBaseDataView.extend({
       this.options.container.addRepeaterItem(this.model.get('name'), model, model.collection.indexOf(model));
     }
   },
-  // BC since 3.0.0, ensure a container children are reset on collection reset.
+  /**
+   * Reset container to ensure that container children are reset on collection reset.
+   *
+   * @deprecated since 3.0.0, use `$e.run( 'document/repeater/remove' )` instead.
+   */
   resetContainer: function resetContainer() {
     elementorDevTools.deprecation.deprecated('Don\'t reset repeater collection directly.', '3.0.0', '$e.run( \'document/repeater/remove\' )');
     this.options.container.repeaters[this.model.get('name')].children = [];
@@ -14894,6 +15216,17 @@ ControlRepeaterItemView = ControlBaseDataView.extend({
       defaults[field.name] = field.default;
     });
     return defaults;
+  },
+  getChildControlView: function getChildControlView(id) {
+    return this.getControlViewByModel(this.getControlModel(id));
+  },
+  getControlViewByModel: function getControlViewByModel(model) {
+    return this.children.findByModelCid(model.cid);
+  },
+  getControlModel: function getControlModel(_id) {
+    return this.collection.findWhere({
+      _id: _id
+    });
   },
   onButtonAddRowClick: function onButtonAddRowClick() {
     var newModel = $e.run('document/repeater/insert', {
@@ -15089,8 +15422,11 @@ ControlSelect2ItemView = ControlBaseDataView.extend({
       });
     }
   },
+  /**
+   * @deprecated since 3.0.0
+   */
   onReady: function onReady() {
-    elementorDevTools.deprecation.deprecated('onReady', '3.0.0');
+    elementorDevTools.deprecation.deprecated('onReady()', '3.0.0');
   },
   /**
    * Get Input Value
@@ -20144,51 +20480,98 @@ var BackwardsCompatibility = /*#__PURE__*/function () {
   }
   (0, _createClass2.default)(BackwardsCompatibility, null, [{
     key: "findViewRecursive",
-    value: function findViewRecursive(parent, key, value) {
+    value:
+    /**
+     * @param {*}        parent
+     * @param {string}   key
+     * @param {string}   value
+     * @param {boolean=} multiple
+     * @deprecated since 2.9.0, use `$e.components.get( 'document' ).utils.findViewRecursive( parent, key, value, multiple )` instead.
+     */
+    function findViewRecursive(parent, key, value) {
       var multiple = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
-      elementorDevTools.deprecation.deprecated('findViewRecursive', '2.9.0', "$e.components.get( 'document' ).utils.findViewRecursive( parent, key, value, multiple )");
+      elementorDevTools.deprecation.deprecated('findViewRecursive()', '2.9.0', "$e.components.get( 'document' ).utils.findViewRecursive( parent, key, value, multiple )");
       return $e.components.get('document').utils.findViewRecursive(parent, key, value, multiple);
     }
+
+    /**
+     * @param {string} id - View ID.
+     * @deprecated since 2.9.0, use `$e.components.get( 'document' ).utils.findViewById( id )` instead.
+     */
   }, {
     key: "findViewById",
     value: function findViewById(id) {
-      elementorDevTools.deprecation.deprecated('findViewById', '2.9.0', "$e.components.get( 'document' ).utils.findViewById( id )");
+      elementorDevTools.deprecation.deprecated('findViewById( id )', '2.9.0', "$e.components.get( 'document' ).utils.findViewById( id )");
       return $e.components.get('document').utils.findViewById(id);
     }
+
+    /**
+     * @param {string} id - Container ID.
+     * @deprecated since 2.9.0, use `$e.components.get( 'document' ).utils.findContainerById( id )` instead.
+     */
   }, {
     key: "findContainerById",
     value: function findContainerById(id) {
-      elementorDevTools.deprecation.deprecated('findContainerById', '2.9.0', "$e.components.get( 'document' ).utils.findContainerById( id )");
+      elementorDevTools.deprecation.deprecated('findContainerById( id )', '2.9.0', "$e.components.get( 'document' ).utils.findContainerById( id )");
       return $e.components.get('document').utils.findContainerById(id);
     }
+
+    /**
+     * @param {*} childModel
+     * @param {*} parentModel
+     * @deprecated since 3.4.0, use `parentModel.isValidChild( childModel )` instead.
+     */
   }, {
     key: "isValidChild",
     value: function isValidChild(childModel, parentModel) {
-      elementorDevTools.deprecation.deprecated('isValidChild', '3.4.0', 'parentModel.isValidChild( childModel )');
+      elementorDevTools.deprecation.deprecated('isValidChild( childModel, parentModel )', '3.4.0', 'parentModel.isValidChild( childModel )');
       return parentModel.isValidChild(childModel);
     }
+
+    /**
+     * @param {*} childModel
+     * @param {*} targetContainer
+     * @deprecated since 3.4.0, use `$e.components.get( 'document/elements' ).utils.isValidGrandChild( childModel, targetContainer )` instead.
+     */
   }, {
     key: "isValidGrandChild",
     value: function isValidGrandChild(childModel, targetContainer) {
-      elementorDevTools.deprecation.deprecated('isValidGrandChild', '3.4.0', "$e.components.get( 'document/elements' ).utils.isValidGrandChild( childModel, targetContainer )");
+      elementorDevTools.deprecation.deprecated('isValidGrandChild( childModel, targetContainer )', '3.4.0', "$e.components.get( 'document/elements' ).utils.isValidGrandChild( childModel, targetContainer )");
       return $e.components.get('document/elements').utils.isValidGrandChild(childModel, targetContainer);
     }
+
+    /**
+     * @param {*} sourceModel
+     * @param {*} targetContainer
+     * @deprecated since 3.4.0, use `$e.components.get( 'document/elements' ).utils.isSameElement( sourceModel, targetContainer )` instead.
+     */
   }, {
     key: "isSameElement",
     value: function isSameElement(sourceModel, targetContainer) {
-      elementorDevTools.deprecation.deprecated('isSameElement', '3.4.0', "$e.components.get( 'document/elements' ).utils.isSameElement( sourceModel, targetContainer )");
+      elementorDevTools.deprecation.deprecated('isSameElement( sourceModel, targetContainer )', '3.4.0', "$e.components.get( 'document/elements' ).utils.isSameElement( sourceModel, targetContainer )");
       return $e.components.get('document/elements').utils.isSameElement(sourceModel, targetContainer);
     }
+
+    /**
+     * @param {*} sourceModel
+     * @param {*} targetContainer
+     * @deprecated since 3.4.0, use `$e.components.get( 'document/elements' ).utils.getPasteOptions( sourceModel, targetContainer )` instead.
+     */
   }, {
     key: "getPasteOptions",
     value: function getPasteOptions(sourceModel, targetContainer) {
-      elementorDevTools.deprecation.deprecated('getPasteOptions', '3.4.0', "$e.components.get( 'document/elements' ).utils.getPasteOptions( sourceModel, targetContainer )");
+      elementorDevTools.deprecation.deprecated('getPasteOptions( sourceModel, targetContainer )', '3.4.0', "$e.components.get( 'document/elements' ).utils.getPasteOptions( sourceModel, targetContainer )");
       return $e.components.get('document/elements').utils.getPasteOptions(sourceModel, targetContainer);
     }
+
+    /**
+     * @param {*} targetContainer
+     * @deprecated since 3.4.0, use `$e.components.get( 'document/elements' ).utils.isPasteEnabled( targetContainer )` instead.
+     */
   }, {
     key: "isPasteEnabled",
     value: function isPasteEnabled(targetContainer) {
-      elementorDevTools.deprecation.deprecated('isPasteEnabled', '3.4.0', "$e.components.get( 'document/elements' ).utils.isPasteEnabled( targetContainer )");
+      elementorDevTools.deprecation.deprecated('isPasteEnabled( targetContainer )', '3.4.0', "$e.components.get( 'document/elements' ).utils.isPasteEnabled( targetContainer )");
       return $e.components.get('document/elements').utils.isPasteEnabled(targetContainer);
     }
   }]);
@@ -24262,73 +24645,122 @@ var BackwardsCompatibility = /*#__PURE__*/function (_ComponentBase) {
         }
       });
     }
+
+    /**
+     * @deprecated since 2.9.0, use `$e.run( 'document/save/default' )` instead.
+     */
   }, {
     key: "defaultSave",
     value: function defaultSave() {
-      elementorDevTools.deprecation.deprecated('defaultSave', '2.9.0', "$e.run( 'document/save/default' )");
+      elementorDevTools.deprecation.deprecated('defaultSave()', '2.9.0', "$e.run( 'document/save/default' )");
       return $e.run('document/save/default');
     }
+
+    /**
+     * @deprecated since 2.9.0, use `$e.run( 'document/save/discard' )` instead.
+     */
   }, {
     key: "discard",
     value: function discard() {
-      elementorDevTools.deprecation.deprecated('discard', '2.9.0', "$e.run( 'document/save/discard' )");
+      elementorDevTools.deprecation.deprecated('discard()', '2.9.0', "$e.run( 'document/save/discard' )");
       return $e.run('document/save/discard');
     }
+
+    /**
+     * @deprecated since 2.9.0, use `$e.run( 'document/save/auto' )` instead.
+     */
   }, {
     key: "doAutoSave",
     value: function doAutoSave() {
-      elementorDevTools.deprecation.deprecated('doAutoSave', '2.9.0', "$e.run( 'document/save/auto' )");
+      elementorDevTools.deprecation.deprecated('doAutoSave()', '2.9.0', "$e.run( 'document/save/auto' )");
       return $e.run('document/save/auto');
     }
+
+    /**
+     * @param {*} options
+     * @deprecated since 2.9.0, use `$e.run( 'document/save/publish', { options } )` instead.
+     */
   }, {
     key: "publish",
     value: function publish(options) {
-      elementorDevTools.deprecation.deprecated('publish', '2.9.0', "$e.run( 'document/save/publish' )");
+      elementorDevTools.deprecation.deprecated('publish( options )', '2.9.0', "$e.run( 'document/save/publish', { options } )");
       return $e.run('document/save/auto', {
         options: options
       });
     }
+
+    /**
+     * @param {*} options
+     * @deprecated since 2.9.0, use `$e.run( 'document/save/auto', { force: true } )` instead.
+     */
   }, {
     key: "saveAutoSave",
     value: function saveAutoSave(options) {
-      elementorDevTools.deprecation.deprecated('saveAutoSave', '2.9.0', "$e.run( 'document/save/auto', { force: true } )");
+      elementorDevTools.deprecation.deprecated('saveAutoSave()', '2.9.0', "$e.run( 'document/save/auto', { force: true } )");
       options.force = true;
       return $e.run('document/save/auto', options);
     }
+
+    /**
+     * @deprecated since 2.9.0, use `$e.run( 'document/save/draft' )` instead.
+     */
   }, {
     key: "saveDraft",
     value: function saveDraft() {
-      elementorDevTools.deprecation.deprecated('saveDraft', '2.9.0', "$e.run( 'document/save/draft' )");
+      elementorDevTools.deprecation.deprecated('saveDraft()', '2.9.0', "$e.run( 'document/save/draft' )");
       return $e.run('document/save/draft');
     }
+
+    /**
+     * @deprecated since 2.9.0, use `$e.run( 'document/save/pending' )` instead.
+     */
   }, {
     key: "savePending",
     value: function savePending() {
-      elementorDevTools.deprecation.deprecated('savePending', '2.9.0', "$e.run( 'document/save/pending' )");
+      elementorDevTools.deprecation.deprecated('savePending()', '2.9.0', "$e.run( 'document/save/pending' )");
       return $e.run('document/save/pending');
     }
+
+    /**
+     * @param {*} options
+     * @deprecated since 2.9.0, use `$e.run( 'document/save/update', options )` instead.
+     */
   }, {
     key: "update",
     value: function update(options) {
-      elementorDevTools.deprecation.deprecated('update', '2.9.0', "$e.run( 'document/save/update' )");
+      elementorDevTools.deprecation.deprecated('update( options )', '2.9.0', "$e.run( 'document/save/update', options )");
       return $e.run('document/save/update', options);
     }
+
+    /**
+     * @deprecated since 2.9.0, use `$e.components.get( 'document/save' ).startAutoSave` instead.
+     */
   }, {
     key: "startTimer",
     value: function startTimer() {
-      elementorDevTools.deprecation.deprecated('startTimer', '2.9.0', "$e.components.get( 'document/save' ).startAutoSave");
+      elementorDevTools.deprecation.deprecated('startTimer()', '2.9.0', "$e.components.get( 'document/save' ).startAutoSave");
       throw Error('Deprecated');
     }
+
+    /**
+     * @param {*} options
+     * @deprecated since 2.9.0, use `$e.internal( 'document/save/save', options )` instead.
+     */
   }, {
     key: "saveEditor",
     value: function saveEditor(options) {
-      elementorDevTools.deprecation.deprecated('saveEditor', '2.9.0', "$e.internal( 'document/save/save' )");
+      elementorDevTools.deprecation.deprecated('saveEditor( options )', '2.9.0', "$e.internal( 'document/save/save', options )");
       $e.internal('document/save/save', options);
     }
+
+    /**
+     * @param {*} status
+     * @deprecated since 2.9.0, use `$e.internal( 'document/save/set-is-modified', { status } )` instead.
+     */
   }, {
     key: "setFlagEditorChange",
     value: function setFlagEditorChange(status) {
-      elementorDevTools.deprecation.deprecated('setFlagEditorChange', '2.9.0', "$e.internal( 'document/save/set-is-modified' )");
+      elementorDevTools.deprecation.deprecated('setFlagEditorChange( status )', '2.9.0', "$e.internal( 'document/save/set-is-modified', { status } )");
       $e.internal('document/save/set-is-modified', {
         status: status
       });
@@ -24951,6 +25383,7 @@ var Save = /*#__PURE__*/function (_$e$modules$CommandIn) {
           remove: ['default']
         }),
         oldStatus = container.settings.get('post_status');
+      this.addPersistentSettingsToPayload(settings, container);
 
       // TODO: Remove - Backwards compatibility.
       elementor.saver.trigger('before:save', args).trigger('before:save:' + status, args);
@@ -25085,6 +25518,16 @@ var Save = /*#__PURE__*/function (_$e$modules$CommandIn) {
     key: "onAfterAjax",
     value: function onAfterAjax(document) {
       document.editor.isSaving = false;
+    }
+  }, {
+    key: "addPersistentSettingsToPayload",
+    value: function addPersistentSettingsToPayload(settings, container) {
+      var _elementor, _elementor$config, _elementor$config$per;
+      (_elementor = elementor) === null || _elementor === void 0 ? void 0 : (_elementor$config = _elementor.config) === null || _elementor$config === void 0 ? void 0 : (_elementor$config$per = _elementor$config.persistent_keys) === null || _elementor$config$per === void 0 ? void 0 : _elementor$config$per.forEach(function (setting) {
+        if (container.settings.defaults.hasOwnProperty(setting) && !settings.hasOwnProperty(setting)) {
+          settings[setting] = container.settings.defaults[setting];
+        }
+      });
     }
   }]);
   return Save;
@@ -26578,7 +27021,6 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "helpers", __webpack_require__(/*! elementor-editor-utils/helpers */ "../assets/dev/js/editor/utils/helpers.js"));
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "imagesManager", __webpack_require__(/*! elementor-editor-utils/images-manager */ "../assets/dev/js/editor/utils/images-manager.js"));
     // TODO: Unused.
-    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "schemes", __webpack_require__(/*! elementor-editor-utils/schemes */ "../assets/dev/js/editor/utils/schemes.js"));
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "presetsFactory", __webpack_require__(/*! elementor-editor-utils/presets-factory */ "../assets/dev/js/editor/utils/presets-factory.js"));
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "templates", __webpack_require__(/*! elementor-templates/manager */ "../assets/dev/js/editor/components/template-library/manager.js"));
     // TODO = BC Since 2.3.0
@@ -26645,7 +27087,9 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
      * TODO: All of the following entries should move to `elementorModules.editor`
      */
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "modules", {
-      // TODO: Deprecated alias since 2.3.0
+      /**
+       * @deprecated since 2.3.0, use `elementorModules.Module` instead.
+       */
       get Module() {
         elementorDevTools.deprecation.deprecated('elementor.modules.Module', '2.3.0', 'elementorModules.Module');
         return elementorModules.Module;
@@ -26653,7 +27097,9 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
       components: {
         templateLibrary: {
           views: {
-            // TODO: Deprecated alias since 2.4.0
+            /**
+             * @deprecated since 2.4.0, use `lementorModules.common.views.modal.Layout` instead.
+             */
             get BaseModalLayout() {
               elementorDevTools.deprecation.deprecated('elementor.modules.components.templateLibrary.views.BaseModalLayout', '2.4.0', 'elementorModules.common.views.modal.Layout');
               return elementorModules.common.views.modal.Layout;
@@ -26667,6 +27113,9 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
         }
       },
       saver: {
+        /**
+         * @deprecated since 2.9.0, use `elementor.modules.components.saver.behaviors.FooterSaver` instead.
+         */
         get footerBehavior() {
           elementorDevTools.deprecation.deprecated('elementor.modules.saver.footerBehavior.', '2.9.0', 'elementor.modules.components.saver.behaviors.FooterSaver');
           return elementor.modules.components.saver.behaviors.FooterSaver;
@@ -26715,7 +27164,9 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
           Base: _elementBase.default
         }, elementTypes),
         models: {
-          // TODO: Deprecated alias since 2.4.0
+          /**
+           * @deprecated since 2.4.0, use `elementorModules.editor.elements.models.BaseSettings` instead.
+           */
           get BaseSettings() {
             elementorDevTools.deprecation.deprecated('elementor.modules.elements.models.BaseSettings', '2.4.0', 'elementorModules.editor.elements.models.BaseSettings');
             return elementorModules.editor.elements.models.BaseSettings;
@@ -26744,7 +27195,9 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
         }
       },
       views: {
-        // TODO: Deprecated alias since 2.4.0
+        /**
+         * @deprecated since 2.4.0, use `elementorModules.editor.views.ControlsStack` instead.
+         */
         get ControlsStack() {
           elementorDevTools.deprecation.deprecated('elementor.modules.views.ControlsStack', '2.4.0', 'elementorModules.editor.views.ControlsStack');
           return elementorModules.editor.views.ControlsStack;
@@ -26755,7 +27208,11 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
   }
   (0, _createClass2.default)(EditorBase, [{
     key: "debug",
-    get: function get() {
+    get:
+    /**
+     * @deprecated since 3.0.0, use `elementorCommon.debug` instead.
+     */
+    function get() {
       elementorDevTools.deprecation.deprecated('elementor.debug', '3.0.0', 'elementorCommon.debug');
       return elementorCommon.debug;
     }
@@ -27050,6 +27507,7 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
       this.addRegions({
         panel: __webpack_require__(/*! elementor-regions/panel/panel */ "../assets/dev/js/editor/regions/panel/panel.js")
       });
+      window.dispatchEvent(new CustomEvent('elementor/panel/init'));
       this.trigger('panel:init');
     }
   }, {
@@ -27432,7 +27890,7 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
     value: function reloadPreview() {
       // TODO: Should be command?
       jQuery('#elementor-preview-loading').show();
-      this.$preview[0].contentWindow.location.reload(true);
+      this.$preview[0].src = this.config.initial_document.urls.preview;
     }
   }, {
     key: "changeDeviceMode",
@@ -27592,7 +28050,6 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
       }
       this.$previewContents = this.$preview.contents();
       this.initFrontend();
-      this.schemes.init();
       this.preventClicksInsideEditor();
       this.addBackgroundClickArea(elementorFrontend.elements.window.document);
       if (!this.previewLoadedOnce) {
@@ -27740,7 +28197,14 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
           config.callback($elementsToHide);
           return;
         }
-        $elementsToHide.hide();
+        $elementsToHide.each(function (elementIndex, element) {
+          var $element = jQuery(element);
+          var isVisible = $element.is(':visible');
+          $element.hide();
+          if (isVisible) {
+            $element.trigger('hide');
+          }
+        });
       });
     }
   }, {
@@ -29304,7 +29768,8 @@ BaseElementView = BaseContainer.extend({
   attributes: function attributes() {
     return {
       'data-id': this.getID(),
-      'data-element_type': this.model.get('elType')
+      'data-element_type': this.model.get('elType'),
+      'data-model-cid': this.model.cid
     };
   },
   ui: function ui() {
@@ -29628,6 +30093,11 @@ BaseElementView = BaseContainer.extend({
       // Don't allow adding anything other than widget, inner-section or a container.
       return;
     }
+
+    // Don't allow adding inner-sections inside inner-sections.
+    if ('section' === model.elType && this.isInner()) {
+      return;
+    }
     var customData = elementView.model.get('custom');
     if (customData) {
       jQuery.extend(model, customData);
@@ -29760,7 +30230,9 @@ BaseElementView = BaseContainer.extend({
   },
   renderCustomElementID: function renderCustomElementID() {
     var customElementID = this.getEditModel().get('settings').get('_element_id');
-    this.$el.attr('id', customElementID);
+    if (customElementID) {
+      this.$el.attr('id', customElementID);
+    }
   },
   renderUI: function renderUI() {
     this.renderStyles();
@@ -31845,6 +32317,7 @@ var ContainerView = BaseElementView.extend({
    *
    */
   getContextMenuGroups: function getContextMenuGroups() {
+    var _this2 = this;
     var groups = BaseElementView.prototype.getContextMenuGroups.apply(this, arguments),
       transferGroupClipboardIndex = groups.indexOf(_.findWhere(groups, {
         name: 'clipboard'
@@ -31857,7 +32330,10 @@ var ContainerView = BaseElementView.extend({
       actions: [{
         name: 'save',
         title: __('Save as Template', 'elementor'),
-        callback: this.saveAsTemplate.bind(this)
+        callback: this.saveAsTemplate.bind(this),
+        isEnabled: function isEnabled() {
+          return !_this2.getContainer().isLocked();
+        }
       }]
     });
     groups.splice(transferGroupGeneralIndex + 1, 0, {
@@ -31947,19 +32423,19 @@ var ContainerView = BaseElementView.extend({
     this.addSectionView = addSectionView;
   },
   onRender: function onRender() {
-    var _this2 = this;
+    var _this3 = this;
     BaseElementView.prototype.onRender.apply(this, arguments);
 
     // Defer to wait for everything to render.
     setTimeout(function () {
-      _this2.nestingLevel = _this2.getNestingLevel();
-      _this2.$el[0].dataset.nestingLevel = _this2.nestingLevel;
+      _this3.nestingLevel = _this3.getNestingLevel();
+      _this3.$el[0].dataset.nestingLevel = _this3.nestingLevel;
 
       // Add the EmptyView to the end of the Grid Container on initial page load if there are already some widgets.
-      if (_this2.isGridContainer()) {
-        _this2.reInitEmptyView();
+      if (_this3.isGridContainer()) {
+        _this3.reInitEmptyView();
       }
-      _this2.droppableInitialize(_this2.container.settings);
+      _this3.droppableInitialize(_this3.container.settings);
     });
   },
   onRenderEmpty: function onRenderEmpty() {
@@ -32239,9 +32715,12 @@ var SectionView = BaseElementView.extend({
   },
   template: Marionette.TemplateCache.get('#tmpl-elementor-section-content'),
   addSectionView: null,
+  /**
+   * @deprecated since 2.9.0, use `toggleSectionIsFull()` instead.
+   */
   _checkIsFull: function _checkIsFull() {
     this.toggleSectionIsFull();
-    elementorDevTools.deprecation.deprecated('_checkIsFull', '2.9.0', 'toggleSectionIsFull()');
+    elementorDevTools.deprecation.deprecated('_checkIsFull()', '2.9.0', 'toggleSectionIsFull()');
   },
   toggleSectionIsFull: function toggleSectionIsFull() {
     this.$el.toggleClass('elementor-section-filled', this.isCollectionFilled());
@@ -32758,17 +33237,29 @@ var GlobalColorIntroduction = /*#__PURE__*/function () {
     key: "bindEvent",
     value: function bindEvent() {
       var _this = this;
-      window.addEventListener('elementor/color-picker/show', function (e) {
-        var _e$detail;
-        // Prevent from the tooltip to appear when the event is being triggerred from the site-settings.
-        if ('kit' === elementor.documents.getCurrent().config.type) {
+      $e.routes.on('run:after', function (component, route, args) {
+        var _controlView$model, _controlView$model$at;
+        // Prevent the Tooltip from appearing when the event is triggered from site-settings.
+        if (!$e.routes.isPartOf('panel/editor')) {
           return;
         }
-        if (e !== null && e !== void 0 && (_e$detail = e.detail) !== null && _e$detail !== void 0 && _e$detail.el) {
-          _this.tooltip.show(e.detail.el);
-          _this.tooltip.setViewed();
+        var controlView = _this.getControlView(args.activeControl);
+        if ('color' !== (controlView === null || controlView === void 0 ? void 0 : (_controlView$model = controlView.model) === null || _controlView$model === void 0 ? void 0 : (_controlView$model$at = _controlView$model.attributes) === null || _controlView$model$at === void 0 ? void 0 : _controlView$model$at.type)) {
+          return;
         }
+        _this.tooltip.show(controlView.el);
+        _this.tooltip.setViewed();
       });
+    }
+  }, {
+    key: "getControlView",
+    value: function getControlView(control) {
+      if (!control) {
+        return null;
+      }
+      var editor = elementor.getPanelView().getCurrentPageView();
+      var currentView = editor.content ? editor.content.currentView : editor;
+      return $e.components.get('panel').getControlViewByPath(currentView, control);
     }
   }, {
     key: "initTooltip",
@@ -32796,7 +33287,7 @@ var GlobalColorIntroduction = /*#__PURE__*/function () {
       this.tooltip.getDialog().addButton({
         name: 'action',
         text: __('Got it!', 'elementor'),
-        classes: 'elementor-button e-brand',
+        classes: 'elementor-button e-primary',
         callback: function callback() {
           return _this2.tooltip.getDialog().hide();
         }
@@ -32838,20 +33329,29 @@ var GlobalFontIntroduction = /*#__PURE__*/function () {
     key: "bindEvent",
     value: function bindEvent() {
       var _this = this;
-      window.addEventListener('elementor/popover/show', function (e) {
-        // Prevent from the tooltip to appear when the event is being triggerred from the site-settings.
-        if ('kit' === elementor.documents.getCurrent().config.type) {
+      $e.routes.on('run:after', function (component, route, args) {
+        var _controlView$model, _controlView$model$at;
+        // Prevent the Tooltip from appearing when the event is triggered from site-settings.
+        if (!$e.routes.isPartOf('panel/editor')) {
           return;
         }
-        var $popoverElement = null;
-        if (e.detail.el.hasClass('elementor-control-typography_typography')) {
-          $popoverElement = e.detail.el;
+        var controlView = _this.getControlView(args.activeControl);
+        if ('popover_toggle' !== (controlView === null || controlView === void 0 ? void 0 : (_controlView$model = controlView.model) === null || _controlView$model === void 0 ? void 0 : (_controlView$model$at = _controlView$model.attributes) === null || _controlView$model$at === void 0 ? void 0 : _controlView$model$at.type)) {
+          return;
         }
-        if ($popoverElement) {
-          _this.tooltip.show(e.detail.el);
-          _this.tooltip.setViewed();
-        }
+        _this.tooltip.show(controlView.el);
+        _this.tooltip.setViewed();
       });
+    }
+  }, {
+    key: "getControlView",
+    value: function getControlView(control) {
+      if (!control) {
+        return null;
+      }
+      var editor = elementor.getPanelView().getCurrentPageView();
+      var currentView = editor.content ? editor.content.currentView : editor;
+      return $e.components.get('panel').getControlViewByPath(currentView, control);
     }
   }, {
     key: "initTooltip",
@@ -32879,7 +33379,7 @@ var GlobalFontIntroduction = /*#__PURE__*/function () {
       this.tooltip.getDialog().addButton({
         name: 'action',
         text: __('Got it!', 'elementor'),
-        classes: 'elementor-button e-brand',
+        classes: 'elementor-button e-primary',
         callback: function callback() {
           return _this2.tooltip.getDialog().hide();
         }
@@ -33218,7 +33718,7 @@ var _default = /*#__PURE__*/function (_Marionette$ItemView) {
   }, {
     key: "onRendr",
     value: function onRendr() {
-      this.$el.css('padding-' + (elementorCommon.config.isRTL ? 'right' : 'left'), this.getOption('indent'));
+      this.$el.css('padding-inline-start', this.getOption('indent'));
     }
   }]);
   return _default;
@@ -33281,6 +33781,7 @@ var _default = /*#__PURE__*/function (_Marionette$Composite) {
       return {
         contextmenu: 'onContextMenu',
         'click @ui.item': 'onItemClick',
+        'keydown @ui.item': 'onItemPress',
         'click @ui.toggle': 'onToggleClick',
         'click @ui.toggleList': 'onToggleListClick',
         'click @ui.indicator': 'onIndicatorClick',
@@ -33580,7 +34081,7 @@ var _default = /*#__PURE__*/function (_Marionette$Composite) {
       if (this.isRoot()) {
         return;
       }
-      this.ui.item.css('padding-' + (elementorCommon.config.isRTL ? 'right' : 'left'), this.getIndent());
+      this.ui.item.css('padding-inline-start', this.getIndent());
       this.toggleHiddenClass();
       this.renderIndicators();
     }
@@ -33606,6 +34107,19 @@ var _default = /*#__PURE__*/function (_Marionette$Composite) {
           return false;
         }
       });
+    }
+  }, {
+    key: "onItemPress",
+    value: function onItemPress(event) {
+      var ENTER_KEY = 13,
+        SPACE_KEY = 32;
+      if (ENTER_KEY === event.keyCode) {
+        this.onItemClick(event);
+        return;
+      }
+      if (SPACE_KEY === event.keyCode) {
+        this.onToggleListClick(event);
+      }
     }
   }, {
     key: "onItemClick",
@@ -34312,6 +34826,48 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "../assets/dev/js/editor/regions/panel/commands/editor-preferences.js":
+/*!****************************************************************************!*\
+  !*** ../assets/dev/js/editor/regions/panel/commands/editor-preferences.js ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.EditorPreferences = void 0;
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+var EditorPreferences = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(EditorPreferences, _$e$modules$CommandBa);
+  var _super = _createSuper(EditorPreferences);
+  function EditorPreferences() {
+    (0, _classCallCheck2.default)(this, EditorPreferences);
+    return _super.apply(this, arguments);
+  }
+  (0, _createClass2.default)(EditorPreferences, [{
+    key: "apply",
+    value: function apply() {
+      $e.route('panel/editor-preferences');
+    }
+  }]);
+  return EditorPreferences;
+}($e.modules.CommandBase);
+exports.EditorPreferences = EditorPreferences;
+var _default = EditorPreferences;
+exports["default"] = _default;
+
+/***/ }),
+
 /***/ "../assets/dev/js/editor/regions/panel/commands/exit.js":
 /*!**************************************************************!*\
   !*** ../assets/dev/js/editor/regions/panel/commands/exit.js ***!
@@ -34378,6 +34934,12 @@ Object.defineProperty(exports, "Close", ({
     return _close.Close;
   }
 }));
+Object.defineProperty(exports, "EditorPreferences", ({
+  enumerable: true,
+  get: function get() {
+    return _editorPreferences.EditorPreferences;
+  }
+}));
 Object.defineProperty(exports, "Exit", ({
   enumerable: true,
   get: function get() {
@@ -34388,6 +34950,12 @@ Object.defineProperty(exports, "Open", ({
   enumerable: true,
   get: function get() {
     return _open.Open;
+  }
+}));
+Object.defineProperty(exports, "PageSettings", ({
+  enumerable: true,
+  get: function get() {
+    return _pageSettings.PageSettings;
   }
 }));
 Object.defineProperty(exports, "Publish", ({
@@ -34409,6 +34977,8 @@ Object.defineProperty(exports, "Toggle", ({
   }
 }));
 var _changeDeviceMode = __webpack_require__(/*! ./change-device-mode */ "../assets/dev/js/editor/regions/panel/commands/change-device-mode.js");
+var _pageSettings = __webpack_require__(/*! ./page-settings */ "../assets/dev/js/editor/regions/panel/commands/page-settings.js");
+var _editorPreferences = __webpack_require__(/*! ./editor-preferences */ "../assets/dev/js/editor/regions/panel/commands/editor-preferences.js");
 var _close = __webpack_require__(/*! ./close */ "../assets/dev/js/editor/regions/panel/commands/close.js");
 var _exit = __webpack_require__(/*! ./exit */ "../assets/dev/js/editor/regions/panel/commands/exit.js");
 var _open = __webpack_require__(/*! ./open */ "../assets/dev/js/editor/regions/panel/commands/open.js");
@@ -34630,6 +35200,48 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "../assets/dev/js/editor/regions/panel/commands/page-settings.js":
+/*!***********************************************************************!*\
+  !*** ../assets/dev/js/editor/regions/panel/commands/page-settings.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.PageSettings = void 0;
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+var PageSettings = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(PageSettings, _$e$modules$CommandBa);
+  var _super = _createSuper(PageSettings);
+  function PageSettings() {
+    (0, _classCallCheck2.default)(this, PageSettings);
+    return _super.apply(this, arguments);
+  }
+  (0, _createClass2.default)(PageSettings, [{
+    key: "apply",
+    value: function apply() {
+      $e.route('panel/page-settings/settings');
+    }
+  }]);
+  return PageSettings;
+}($e.modules.CommandBase);
+exports.PageSettings = PageSettings;
+var _default = PageSettings;
+exports["default"] = _default;
+
+/***/ }),
+
 /***/ "../assets/dev/js/editor/regions/panel/commands/publish.js":
 /*!*****************************************************************!*\
   !*** ../assets/dev/js/editor/regions/panel/commands/publish.js ***!
@@ -34778,7 +35390,7 @@ var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/h
 var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
-var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/component-base */ "../modules/web-cli/assets/js/modules/component-base.js"));
+var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-editor/component-base */ "../assets/dev/js/editor/component-base.js"));
 var commands = _interopRequireWildcard(__webpack_require__(/*! ./commands/ */ "../assets/dev/js/editor/regions/panel/commands/index.js"));
 var commandsInternal = _interopRequireWildcard(__webpack_require__(/*! ./commands/internal/ */ "../assets/dev/js/editor/regions/panel/commands/internal/index.js"));
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -34852,6 +35464,12 @@ var Component = /*#__PURE__*/function (_ComponentBase) {
         },
         'change-device-mode': {
           keys: 'ctrl+shift+m'
+        },
+        'page-settings': {
+          keys: 'ctrl+shift+y'
+        },
+        'editor-preferences': {
+          keys: 'ctrl+shift+u'
         }
       };
     }
@@ -35162,22 +35780,8 @@ PanelLayoutView = Marionette.LayoutView.extend({
       menu: {
         view: elementor.modules.layouts.panel.pages.menu.Menu,
         title: '<img src="' + elementorCommon.config.urls.assets + 'images/logo-panel.svg">'
-      },
-      colorScheme: {
-        view: __webpack_require__(/*! elementor-panel/pages/schemes/colors */ "../assets/dev/js/editor/regions/panel/pages/schemes/colors.js")
-      },
-      typographyScheme: {
-        view: __webpack_require__(/*! elementor-panel/pages/schemes/typography */ "../assets/dev/js/editor/regions/panel/pages/schemes/typography.js")
       }
     };
-    var schemesTypes = Object.keys(elementor.schemes.getSchemes()),
-      disabledSchemes = _.difference(schemesTypes, elementor.schemes.getEnabledSchemesTypes());
-    _.each(disabledSchemes, function (schemeType) {
-      var scheme = elementor.schemes.getScheme(schemeType);
-      pages[schemeType + 'Scheme'].view = (__webpack_require__(/*! elementor-panel/pages/schemes/disabled */ "../assets/dev/js/editor/regions/panel/pages/schemes/disabled.js").extend)({
-        disabledTitle: scheme.disabled_title
-      });
-    });
     return pages;
   },
   initPages: function initPages() {
@@ -35465,7 +36069,7 @@ var _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helper
 var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
 var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
-var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/component-base */ "../modules/web-cli/assets/js/modules/component-base.js"));
+var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-editor/component-base */ "../assets/dev/js/editor/component-base.js"));
 var commands = _interopRequireWildcard(__webpack_require__(/*! ./commands/ */ "../assets/dev/js/editor/regions/panel/pages/editor/commands/index.js"));
 var _hooks = __webpack_require__(/*! elementor-document/hooks */ "../assets/dev/js/editor/document/hooks/index.js");
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -35486,6 +36090,7 @@ var Component = /*#__PURE__*/function (_ComponentBase) {
 
       // Remember last used tab.
       this.activeTabs = {};
+      this.activeModelId = null;
     }
   }, {
     key: "getNamespace",
@@ -35525,19 +36130,27 @@ var Component = /*#__PURE__*/function (_ComponentBase) {
     value: function renderTab(tab, args) {
       var model = args.model,
         view = args.view,
+        activeControl = args.activeControl,
         title = sprintf(__('Edit %s', 'elementor'), elementor.getElementData(model).title);
-      elementor.getPanelView().setPage('editor', title, {
-        tab: tab,
-        model: model,
-        controls: elementor.getElementControls(model),
-        editedElementView: view
-      });
+      if (this.wasOutOfFocus() || this.activeModelId !== args.model.id || tab !== this.activeTabs[args.model.id]) {
+        this.activeModelId = args.model.id;
+        this.activeTabs[args.model.id] = tab;
+        elementor.getPanelView().setPage('editor', title, {
+          tab: tab,
+          model: model,
+          controls: elementor.getElementControls(model),
+          editedElementView: view
+        });
+      }
+      this.activateControl(activeControl);
     }
   }, {
-    key: "activateTab",
-    value: function activateTab(tab, args) {
-      this.activeTabs[args.model.id] = tab;
-      (0, _get2.default)((0, _getPrototypeOf2.default)(Component.prototype), "activateTab", this).call(this, tab, args);
+    key: "wasOutOfFocus",
+    value: function wasOutOfFocus() {
+      var history = $e.routes.getHistory('panel');
+      var lastRoute = history[history.length - 1].route;
+      var lastRouteParts = lastRoute.split('/');
+      return 'categories' === lastRouteParts[lastRouteParts.length - 1];
     }
   }, {
     key: "setDefaultTab",
@@ -36042,7 +36655,11 @@ module.exports = PanelElementsCategoryView;
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
 var _contextMenu = _interopRequireDefault(__webpack_require__(/*! elementor-behaviors/context-menu */ "../assets/dev/js/editor/elements/views/behaviors/context-menu.js"));
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 module.exports = Marionette.ItemView.extend({
   template: '#tmpl-elementor-element-library-element',
   className: function className() {
@@ -36082,6 +36699,9 @@ module.exports = Marionette.ItemView.extend({
     if (!elementor.userCan('design') || !this.isEditable()) {
       return;
     }
+    this.ui.element.on('click', function () {
+      return _this.addToPage();
+    });
     this.ui.element.html5Draggable({
       onDragStart: function onDragStart() {
         // Reset the sort cache.
@@ -36113,6 +36733,98 @@ module.exports = Marionette.ItemView.extend({
         text: promotion.action_button.text,
         classes: promotion.action_button.classes || ['elementor-button', 'go-pro']
       }
+    });
+  },
+  addToPage: function addToPage() {
+    var selectedElements = this.getSelectedElements();
+    var isMultiSelect = selectedElements.length > 1;
+
+    // Currently, we don't support multi-selected elements.
+    if (isMultiSelect) {
+      return;
+    }
+    var _selectedElements = (0, _slicedToArray2.default)(selectedElements, 1),
+      element = _selectedElements[0];
+
+    // Order matters.
+    var scenariosMap = {
+      addToDocument: {
+        check: function check() {
+          return !element;
+        },
+        getArgs: function getArgs() {
+          return {
+            view: elementor.getPreviewView(),
+            options: {}
+          };
+        }
+      },
+      addToFirstColumn: {
+        check: function check() {
+          return 'section' === element.model.get('elType');
+        },
+        getArgs: function getArgs() {
+          var _element$view$childre;
+          return {
+            view: (_element$view$childre = element.view.children) === null || _element$view$childre === void 0 ? void 0 : _element$view$childre.findByIndex(0),
+            options: {}
+          };
+        }
+      },
+      addToParent: {
+        check: function check() {
+          return 'widget' === element.model.get('elType');
+        },
+        getArgs: function getArgs() {
+          var parent = element.parent,
+            model = element.model;
+          return {
+            view: parent.view,
+            options: {
+              at: parent.model.get('elements').findIndex(model) + 1
+            }
+          };
+        }
+      },
+      default: {
+        check: function check() {
+          return true;
+        },
+        getArgs: function getArgs() {
+          return {
+            view: element.view,
+            options: {}
+          };
+        }
+      }
+    };
+    var _Object$values$find = Object.values(scenariosMap).find(function (_ref) {
+        var check = _ref.check;
+        return check();
+      }),
+      getArgs = _Object$values$find.getArgs;
+    var _getArgs = getArgs(),
+      view = _getArgs.view,
+      options = _getArgs.options;
+    var container = view.getContainer();
+    if (!container) {
+      throw new Error("View doesn't support adding from panel", view);
+    }
+    $e.run('preview/drop', {
+      container: container,
+      options: _objectSpread(_objectSpread({}, options), {}, {
+        scrollIntoView: true
+      }),
+      model: this.model.toJSON()
+    });
+  },
+  getSelectedElements: function getSelectedElements() {
+    return elementor.selection.getElements().filter(function (_ref2) {
+      var _elementor$documents$;
+      var view = _ref2.view;
+      // Remove elements that don't exist in the current document's DOM, because of a bug in
+      // the selection manager that doesn't deselect elements properly.
+      return (_elementor$documents$ = elementor.documents.getCurrent().$element) === null || _elementor$documents$ === void 0 ? void 0 : _elementor$documents$[0].contains(view.$el[0]);
     });
   }
 });
@@ -36642,329 +37354,6 @@ module.exports = Marionette.ItemView.extend({
 
 /***/ }),
 
-/***/ "../assets/dev/js/editor/regions/panel/pages/schemes/base.js":
-/*!*******************************************************************!*\
-  !*** ../assets/dev/js/editor/regions/panel/pages/schemes/base.js ***!
-  \*******************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-
-var childViewTypes = {
-    color: __webpack_require__(/*! elementor-panel/pages/schemes/items/color */ "../assets/dev/js/editor/regions/panel/pages/schemes/items/color.js"),
-    typography: __webpack_require__(/*! elementor-panel/pages/schemes/items/typography */ "../assets/dev/js/editor/regions/panel/pages/schemes/items/typography.js")
-  },
-  PanelSchemeBaseView;
-PanelSchemeBaseView = Marionette.CompositeView.extend({
-  id: function id() {
-    return 'elementor-panel-scheme-' + this.getType();
-  },
-  className: function className() {
-    return 'elementor-panel-scheme elementor-panel-scheme-' + this.getUIType();
-  },
-  childViewContainer: '.elementor-panel-scheme-items',
-  getTemplate: function getTemplate() {
-    return Marionette.TemplateCache.get('#tmpl-elementor-panel-schemes-' + this.getType());
-  },
-  getChildView: function getChildView() {
-    return childViewTypes[this.getUIType()];
-  },
-  getUIType: function getUIType() {
-    return this.getType();
-  },
-  ui: function ui() {
-    return {
-      saveButton: '.elementor-panel-scheme-save .elementor-button',
-      discardButton: '.elementor-panel-scheme-discard .elementor-button',
-      resetButton: '.elementor-panel-scheme-reset .elementor-button'
-    };
-  },
-  events: function events() {
-    return {
-      'click @ui.saveButton': 'saveScheme',
-      'click @ui.discardButton': 'discardScheme',
-      'click @ui.resetButton': 'setDefaultScheme'
-    };
-  },
-  initialize: function initialize() {
-    this.model = new Backbone.Model();
-    this.resetScheme();
-  },
-  getType: function getType() {},
-  getScheme: function getScheme() {
-    return elementor.schemes.getScheme(this.getType());
-  },
-  changeChildrenUIValues: function changeChildrenUIValues(schemeItems) {
-    var self = this;
-    _.each(schemeItems, function (value, key) {
-      var model = self.collection.findWhere({
-          key: key
-        }),
-        childView = self.children.findByModelCid(model.cid);
-      childView.changeUIValue(value);
-    });
-  },
-  discardScheme: function discardScheme() {
-    elementor.schemes.resetSchemes(this.getType());
-    this.onSchemeChange();
-    this.ui.saveButton.prop('disabled', true);
-    this._renderChildren();
-  },
-  setSchemeValue: function setSchemeValue(key, value) {
-    elementor.schemes.setSchemeValue(this.getType(), key, value);
-    this.onSchemeChange();
-  },
-  saveScheme: function saveScheme() {
-    NProgress.start();
-    elementor.schemes.saveScheme(this.getType()).done(NProgress.done);
-    this.ui.saveButton.prop('disabled', true);
-    this.resetScheme();
-    this._renderChildren();
-  },
-  setDefaultScheme: function setDefaultScheme() {
-    var defaultScheme = elementor.config.default_schemes[this.getType()].items;
-    this.changeChildrenUIValues(defaultScheme);
-  },
-  resetItems: function resetItems() {
-    this.model.set('items', this.getScheme().items);
-  },
-  resetCollection: function resetCollection() {
-    var self = this,
-      items = self.model.get('items');
-    self.collection = new Backbone.Collection();
-    _.each(items, function (item, key) {
-      item.type = self.getType();
-      item.key = key;
-      self.collection.add(item);
-    });
-  },
-  resetScheme: function resetScheme() {
-    this.resetItems();
-    this.resetCollection();
-  },
-  onSchemeChange: function onSchemeChange() {
-    elementor.schemes.printSchemesStyle();
-  },
-  onChildviewValueChange: function onChildviewValueChange(childView, newValue) {
-    this.ui.saveButton.removeProp('disabled');
-    this.setSchemeValue(childView.model.get('key'), newValue);
-  }
-});
-module.exports = PanelSchemeBaseView;
-
-/***/ }),
-
-/***/ "../assets/dev/js/editor/regions/panel/pages/schemes/colors.js":
-/*!*********************************************************************!*\
-  !*** ../assets/dev/js/editor/regions/panel/pages/schemes/colors.js ***!
-  \*********************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-
-var PanelSchemeBaseView = __webpack_require__(/*! elementor-panel/pages/schemes/base */ "../assets/dev/js/editor/regions/panel/pages/schemes/base.js"),
-  PanelSchemeColorsView;
-PanelSchemeColorsView = PanelSchemeBaseView.extend({
-  ui: function ui() {
-    var ui = PanelSchemeBaseView.prototype.ui.apply(this, arguments);
-    ui.systemSchemes = '.elementor-panel-scheme-color-system-scheme';
-    return ui;
-  },
-  events: function events() {
-    var events = PanelSchemeBaseView.prototype.events.apply(this, arguments);
-    events['click @ui.systemSchemes'] = 'onSystemSchemeClick';
-    return events;
-  },
-  getType: function getType() {
-    return 'color';
-  },
-  onSystemSchemeClick: function onSystemSchemeClick(event) {
-    var $schemeClicked = jQuery(event.currentTarget),
-      schemeName = $schemeClicked.data('schemeName'),
-      scheme = elementor.config.system_schemes[this.getType()][schemeName].items;
-    this.changeChildrenUIValues(scheme);
-  }
-});
-module.exports = PanelSchemeColorsView;
-
-/***/ }),
-
-/***/ "../assets/dev/js/editor/regions/panel/pages/schemes/disabled.js":
-/*!***********************************************************************!*\
-  !*** ../assets/dev/js/editor/regions/panel/pages/schemes/disabled.js ***!
-  \***********************************************************************/
-/***/ ((module) => {
-
-"use strict";
-
-
-var PanelSchemeDisabledView;
-PanelSchemeDisabledView = Marionette.ItemView.extend({
-  template: '#tmpl-elementor-panel-schemes-disabled',
-  id: 'elementor-panel-schemes-disabled',
-  className: 'elementor-nerd-box',
-  disabledTitle: '',
-  templateHelpers: function templateHelpers() {
-    return {
-      disabledTitle: this.disabledTitle
-    };
-  }
-});
-module.exports = PanelSchemeDisabledView;
-
-/***/ }),
-
-/***/ "../assets/dev/js/editor/regions/panel/pages/schemes/items/base.js":
-/*!*************************************************************************!*\
-  !*** ../assets/dev/js/editor/regions/panel/pages/schemes/items/base.js ***!
-  \*************************************************************************/
-/***/ ((module) => {
-
-"use strict";
-
-
-var PanelSchemeItemView;
-PanelSchemeItemView = Marionette.ItemView.extend({
-  getTemplate: function getTemplate() {
-    return Marionette.TemplateCache.get('#tmpl-elementor-panel-scheme-' + this.getUIType() + '-item');
-  },
-  className: function className() {
-    return 'elementor-panel-scheme-item';
-  }
-});
-module.exports = PanelSchemeItemView;
-
-/***/ }),
-
-/***/ "../assets/dev/js/editor/regions/panel/pages/schemes/items/color.js":
-/*!**************************************************************************!*\
-  !*** ../assets/dev/js/editor/regions/panel/pages/schemes/items/color.js ***!
-  \**************************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-var _colorPicker = _interopRequireDefault(__webpack_require__(/*! elementor-editor/utils/color-picker */ "../assets/dev/js/editor/utils/color-picker.js"));
-var PanelSchemeItemView = __webpack_require__(/*! elementor-panel/pages/schemes/items/base */ "../assets/dev/js/editor/regions/panel/pages/schemes/items/base.js");
-module.exports = PanelSchemeItemView.extend({
-  getUIType: function getUIType() {
-    return 'color';
-  },
-  ui: {
-    pickerPlaceholder: '.elementor-panel-scheme-color-picker-placeholder'
-  },
-  changeUIValue: function changeUIValue(newValue) {
-    this.colorPicker.picker.setColor(newValue);
-  },
-  onRender: function onRender() {
-    var _this = this;
-    this.colorPicker = new _colorPicker.default({
-      picker: {
-        el: this.ui.pickerPlaceholder[0],
-        default: this.model.get('value')
-      },
-      onChange: function onChange() {
-        _this.triggerMethod('value:change', _this.colorPicker.getColor());
-      },
-      onClear: function onClear() {
-        _this.triggerMethod('value:change', '');
-      }
-    });
-  },
-  onBeforeDestroy: function onBeforeDestroy() {
-    this.colorPicker.destroy();
-  }
-});
-
-/***/ }),
-
-/***/ "../assets/dev/js/editor/regions/panel/pages/schemes/items/typography.js":
-/*!*******************************************************************************!*\
-  !*** ../assets/dev/js/editor/regions/panel/pages/schemes/items/typography.js ***!
-  \*******************************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-
-var PanelSchemeItemView = __webpack_require__(/*! elementor-panel/pages/schemes/items/base */ "../assets/dev/js/editor/regions/panel/pages/schemes/items/base.js"),
-  PanelSchemeTypographyView;
-PanelSchemeTypographyView = PanelSchemeItemView.extend({
-  getUIType: function getUIType() {
-    return 'typography';
-  },
-  className: function className() {
-    var classes = PanelSchemeItemView.prototype.className.apply(this, arguments);
-    return classes + ' elementor-panel-box';
-  },
-  ui: {
-    heading: '.elementor-panel-heading',
-    allFields: '.elementor-panel-scheme-typography-item-field',
-    inputFields: 'input.elementor-panel-scheme-typography-item-field',
-    selectFields: 'select.elementor-panel-scheme-typography-item-field',
-    selectFamilyFields: 'select.elementor-panel-scheme-typography-item-field[name="font_family"]'
-  },
-  events: {
-    'input @ui.inputFields': 'onFieldChange',
-    'change @ui.selectFields': 'onFieldChange',
-    'click @ui.heading': 'toggleVisibility'
-  },
-  onRender: function onRender() {
-    var self = this;
-    this.ui.inputFields.add(this.ui.selectFields).each(function () {
-      var $this = jQuery(this),
-        name = $this.attr('name'),
-        value = self.model.get('value')[name];
-      $this.val(value);
-    });
-    this.ui.selectFamilyFields.select2({
-      dir: elementorCommon.config.isRTL ? 'rtl' : 'ltr'
-    });
-  },
-  toggleVisibility: function toggleVisibility() {
-    this.$el.toggleClass('e-open');
-  },
-  changeUIValue: function changeUIValue(newValue) {
-    this.ui.allFields.each(function () {
-      var $this = jQuery(this),
-        thisName = $this.attr('name'),
-        newFieldValue = newValue[thisName];
-      $this.val(newFieldValue).trigger('change');
-    });
-  },
-  onFieldChange: function onFieldChange() {
-    var currentValue = elementor.schemes.getSchemeValue('typography', this.model.get('key')).value;
-    this.triggerMethod('value:change', currentValue);
-  }
-});
-module.exports = PanelSchemeTypographyView;
-
-/***/ }),
-
-/***/ "../assets/dev/js/editor/regions/panel/pages/schemes/typography.js":
-/*!*************************************************************************!*\
-  !*** ../assets/dev/js/editor/regions/panel/pages/schemes/typography.js ***!
-  \*************************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-
-var PanelSchemeBaseView = __webpack_require__(/*! elementor-panel/pages/schemes/base */ "../assets/dev/js/editor/regions/panel/pages/schemes/base.js"),
-  PanelSchemeTypographyView;
-PanelSchemeTypographyView = PanelSchemeBaseView.extend({
-  getType: function getType() {
-    return 'typography';
-  }
-});
-module.exports = PanelSchemeTypographyView;
-
-/***/ }),
-
 /***/ "../assets/dev/js/editor/regions/panel/panel.js":
 /*!******************************************************!*\
   !*** ../assets/dev/js/editor/regions/panel/panel.js ***!
@@ -37115,6 +37504,8 @@ var ColorPicker = /*#__PURE__*/function (_elementorModules$Mod) {
         return _this2.onPickerClear();
       }).on('show', function () {
         return _this2.onPickerShow();
+      }).on('hide', function () {
+        return _this2.onPickerHide();
       });
       this.$pickerAppContainer = jQuery(this.picker.getRoot().app);
       this.createPickerHeader();
@@ -37259,12 +37650,20 @@ var ColorPicker = /*#__PURE__*/function (_elementorModules$Mod) {
     key: "onPickerShow",
     value: function onPickerShow() {
       var resultInput = this.picker.getRoot().interaction.result;
+      var onPickerShow = this.getSettings('onPickerShow');
+      if (onPickerShow) {
+        onPickerShow();
+      }
       setTimeout(function () {
         resultInput.select();
       }, 100);
-      var onShow = this.getSettings('onShow');
-      if (onShow) {
-        onShow();
+    }
+  }, {
+    key: "onPickerHide",
+    value: function onPickerHide() {
+      var onPickerHide = this.getSettings('onPickerHide');
+      if (onPickerHide) {
+        onPickerHide();
       }
     }
   }, {
@@ -38679,7 +39078,7 @@ module.exports = {
   },
   /**
    * @param {string} url
-   * @deprecated 2.6.0
+   * @deprecated since 2.6.0, use `elementor.helpers.enqueuePreviewStylesheet()` instead.
    */
   enqueueStylesheet: function enqueueStylesheet(url) {
     elementorDevTools.deprecation.deprecated('elementor.helpers.enqueueStylesheet()', '2.6.0', 'elementor.helpers.enqueuePreviewStylesheet()');
@@ -38901,6 +39300,9 @@ module.exports = {
     });
     return result;
   },
+  /**
+   * @deprecated since 3.0.0, use `elementorCommon.helpers.getUniqueId()` instead.
+   */
   getUniqueID: function getUniqueID() {
     elementorDevTools.deprecation.deprecated('elementor.helpers.getUniqueID()', '3.0.0', 'elementorCommon.helpers.getUniqueId()');
     return elementorCommon.helpers.getUniqueId();
@@ -38990,10 +39392,13 @@ module.exports = {
     }
     return false;
   },
-  /*
-  * @deprecated 2.0.0
-  */
+  /**
+   * @param {string} string
+   * @param {string} replaces
+   * @deprecated since 2.0.0, use native JS `.replace()` method.
+   */
   stringReplaceAll: function stringReplaceAll(string, replaces) {
+    elementorDevTools.deprecation.deprecated('elementor.helpers.stringReplaceAll()', '2.0.0', 'Use native JS `.replace()` method.');
     var re = new RegExp(Object.keys(replaces).join('|'), 'gi');
     return string.replace(re, function (matched) {
       return replaces[matched];
@@ -39021,8 +39426,12 @@ module.exports = {
     }
     return !(conditions && !elementor.conditions.check(conditions, values, controls));
   },
+  /**
+   * @param {Object} object - An object to clone.
+   * @deprecated since 2.3.0, use `elementorCommon.helpers.cloneObject()` instead.
+   */
   cloneObject: function cloneObject(object) {
-    elementorDevTools.deprecation.deprecated('elementor.helpers.cloneObject', '2.3.0', 'elementorCommon.helpers.cloneObject');
+    elementorDevTools.deprecation.deprecated('elementor.helpers.cloneObject( object )', '2.3.0', 'elementorCommon.helpers.cloneObject( object )');
     return elementorCommon.helpers.cloneObject(object);
   },
   disableElementEvents: function disableElementEvents($element) {
@@ -39044,8 +39453,12 @@ module.exports = {
       $this.removeData('backup-pointer-events').css('pointer-events', backupPointerEvents);
     });
   },
+  /**
+   * @param {*} $element
+   * @deprecated since 2.8.0, use `new ColorPicker( { picker: { el: $element } } )` instead.
+   */
   wpColorPicker: function wpColorPicker($element) {
-    elementorDevTools.deprecation.deprecated('elementor.helpers.wpColorPicker()', '2.8.0', 'new ColorPicker()');
+    elementorDevTools.deprecation.deprecated('elementor.helpers.wpColorPicker( $element )', '2.8.0', 'new ColorPicker( { picker: { el: $element } } )');
     return new _colorPicker.default({
       picker: {
         el: $element
@@ -39861,147 +40274,6 @@ function removeQueryParam(name) {
 
 /***/ }),
 
-/***/ "../assets/dev/js/editor/utils/schemes.js":
-/*!************************************************!*\
-  !*** ../assets/dev/js/editor/utils/schemes.js ***!
-  \************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-
-var Schemes,
-  Stylesheet = __webpack_require__(/*! elementor-editor-utils/stylesheet */ "../assets/dev/js/editor/utils/stylesheet.js"),
-  ControlsCSSParser = __webpack_require__(/*! elementor-editor-utils/controls-css-parser */ "../assets/dev/js/editor/utils/controls-css-parser.js");
-Schemes = function Schemes() {
-  var self = this,
-    stylesheet = new Stylesheet(),
-    schemes = {},
-    settings = {
-      selectorWrapperPrefix: '.elementor-widget-'
-    },
-    elements = {};
-  var buildUI = function buildUI() {
-    elements.$previewHead.append(elements.$style);
-  };
-  var initElements = function initElements() {
-    var id = 'elementor-style-scheme';
-    elements.$style = elementor.$previewContents.find("#".concat(id));
-    if (!elements.$style.length) {
-      elements.$style = jQuery('<style>', {
-        id: id
-      });
-    }
-    elements.$previewHead = elementor.$previewContents.find('head');
-  };
-  var initSchemes = function initSchemes() {
-    schemes = elementorCommon.helpers.cloneObject(elementor.config.schemes.items);
-  };
-  var fetchControlStyles = function fetchControlStyles(control, controlsStack, widgetType) {
-    ControlsCSSParser.addControlStyleRules(stylesheet, control, controlsStack, function (controlStyles) {
-      return self.getSchemeValue(controlStyles.scheme.type, controlStyles.scheme.value, controlStyles.scheme.key).value;
-    }, ['{{WRAPPER}}'], [settings.selectorWrapperPrefix + widgetType]);
-  };
-  var fetchWidgetControlsStyles = function fetchWidgetControlsStyles(widget) {
-    var widgetSchemeControls = self.getWidgetSchemeControls(widget);
-    _.each(widgetSchemeControls, function (control) {
-      fetchControlStyles(control, widgetSchemeControls, widget.widget_type);
-    });
-  };
-  var fetchAllWidgetsSchemesStyle = function fetchAllWidgetsSchemesStyle() {
-    _.each(elementor.widgetsCache, function (widget) {
-      fetchWidgetControlsStyles(widget);
-    });
-  };
-  this.init = function () {
-    initElements();
-    buildUI();
-    initSchemes();
-    return self;
-  };
-  this.getWidgetSchemeControls = function (widget) {
-    return _.filter(widget.controls, function (control) {
-      return _.isObject(control.scheme);
-    });
-  };
-  this.getSchemes = function () {
-    return schemes;
-  };
-  this.getEnabledSchemesTypes = function () {
-    return elementor.config.schemes.enabled_schemes;
-  };
-  this.getScheme = function (schemeType) {
-    return schemes[schemeType];
-  };
-  this.getSchemeValue = function (schemeType, value, key) {
-    if (this.getEnabledSchemesTypes().indexOf(schemeType) < 0) {
-      return false;
-    }
-    var scheme = self.getScheme(schemeType),
-      schemeValue = scheme.items[value];
-    if (key && _.isObject(schemeValue)) {
-      var clonedSchemeValue = elementorCommon.helpers.cloneObject(schemeValue);
-      clonedSchemeValue.value = schemeValue.value[key];
-      return clonedSchemeValue;
-    }
-    return schemeValue;
-  };
-  this.printSchemesStyle = function () {
-    stylesheet.empty();
-    fetchAllWidgetsSchemesStyle();
-    elements.$style.text(stylesheet);
-  };
-  this.resetSchemes = function (schemeName) {
-    schemes[schemeName] = elementorCommon.helpers.cloneObject(elementor.config.schemes.items[schemeName]);
-  };
-  this.saveScheme = function (schemeName) {
-    elementor.config.schemes.items[schemeName].items = elementorCommon.helpers.cloneObject(schemes[schemeName].items);
-    var itemsToSave = {};
-    _.each(schemes[schemeName].items, function (item, key) {
-      itemsToSave[key] = item.value;
-    });
-    return elementorCommon.ajax.addRequest('apply_scheme', {
-      data: {
-        scheme_name: schemeName,
-        data: JSON.stringify(itemsToSave)
-      }
-    });
-  };
-  this.setSchemeValue = function (schemeName, itemKey, value) {
-    schemes[schemeName].items[itemKey].value = value;
-  };
-  this.addSchemeItem = function (schemeName, item, at) {
-    var scheme = schemes[schemeName],
-      schemeKeys = Object.keys(scheme.items),
-      hasAt = undefined !== at,
-      targetIndex = hasAt ? at : +schemeKeys.slice(-1)[0] || 0;
-    if (hasAt) {
-      var itemIndex = schemeKeys.length + 1;
-      for (; itemIndex > at; itemIndex--) {
-        scheme.items[itemIndex] = scheme.items[itemIndex - 1];
-      }
-    }
-    scheme.items[targetIndex + 1] = item;
-  };
-  this.removeSchemeItem = function (schemeName, itemKey) {
-    var items = schemes[schemeName].items;
-
-    // eslint-disable-next-line no-constant-condition
-    while (true) {
-      itemKey++;
-      var nextItem = items[itemKey + 1];
-      if (!nextItem) {
-        delete items[itemKey];
-        break;
-      }
-      items[itemKey] = nextItem;
-    }
-  };
-};
-module.exports = new Schemes();
-
-/***/ }),
-
 /***/ "../assets/dev/js/editor/utils/select2.js":
 /*!************************************************!*\
   !*** ../assets/dev/js/editor/utils/select2.js ***!
@@ -40621,34 +40893,7 @@ var AddSectionBase = /*#__PURE__*/function (_Marionette$ItemView) {
   }, {
     key: "onDropping",
     value: function onDropping() {
-      if (elementor.helpers.maybeDisableWidget()) {
-        return;
-      }
-      var selectedElement = elementor.channels.panelElements.request('element:selected'),
-        historyId = $e.internal('document/history/start-log', {
-          type: 'add',
-          title: elementor.helpers.getModelLabel(selectedElement.model)
-        }),
-        containingElement = $e.run('document/elements/create', {
-          model: {
-            elType: AddSectionBase.IS_CONTAINER_ACTIVE ? 'container' : 'section'
-          },
-          container: elementor.getPreviewContainer(),
-          columns: 1,
-          options: {
-            at: this.getOption('at')
-          }
-        });
-      if (!AddSectionBase.IS_CONTAINER_ACTIVE) {
-        // Create the element in column.
-        containingElement.view.children.findByIndex(0).addElementFromPanel();
-      } else if ('container' !== selectedElement.model.get('elType')) {
-        // Create the element in a Container, only if the dragged element is not a Container already.
-        containingElement.view.addElementFromPanel();
-      }
-      $e.internal('document/history/end-log', {
-        id: historyId
-      });
+      elementor.getPreviewView().addElementFromPanel();
     }
   }, {
     key: "onAfterPaste",
@@ -40944,7 +41189,8 @@ module.exports = Marionette.CompositeView.extend({
         container: container,
         columns: Number(!containerExperiment),
         options: {
-          at: options.at
+          at: options.at,
+          scrollIntoView: options.scrollIntoView
         }
       });
 
@@ -41529,6 +41775,37 @@ var Preview = BaseSectionsContainerView.extend({
     return BaseSectionsContainerView.prototype.createElementFromModel.call(this, model, _objectSpread(_objectSpread({}, options), {}, {
       shouldWrap: 'container' !== model.elType
     }));
+  },
+  addElementFromPanel: function addElementFromPanel(options) {
+    if (elementor.helpers.maybeDisableWidget()) {
+      return;
+    }
+    var isContainerActive = !!elementorCommon.config.experimentalFeatures.container;
+    var selectedElement = elementor.channels.panelElements.request('element:selected'),
+      historyId = $e.internal('document/history/start-log', {
+        type: 'add',
+        title: elementor.helpers.getModelLabel(selectedElement.model)
+      }),
+      containingElement = $e.run('document/elements/create', {
+        model: {
+          elType: isContainerActive ? 'container' : 'section'
+        },
+        container: elementor.getPreviewContainer(),
+        columns: 1,
+        options: _objectSpread({
+          at: this.getOption('at')
+        }, options)
+      });
+    if (!isContainerActive) {
+      // Create the element in column.
+      containingElement.view.children.findByIndex(0).addElementFromPanel(options);
+    } else if ('container' !== selectedElement.model.get('elType')) {
+      // Create the element in a Container, only if the dragged element is not a Container already.
+      containingElement.view.addElementFromPanel(options);
+    }
+    $e.internal('document/history/end-log', {
+      id: historyId
+    });
   },
   onRender: function onRender() {
     var $contentContainer;
@@ -42467,6 +42744,141 @@ module.exports = EventManager;
 
 /***/ }),
 
+/***/ "../assets/dev/js/utils/json-upload-warning-message.js":
+/*!*************************************************************!*\
+  !*** ../assets/dev/js/utils/json-upload-warning-message.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.showJsonUploadWarningMessageIfNeeded = showJsonUploadWarningMessageIfNeeded;
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "../node_modules/@babel/runtime/regenerator/index.js"));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "../node_modules/@babel/runtime/helpers/asyncToGenerator.js"));
+var genericMessageIntroductionKey = 'upload_json_warning_generic_message';
+/**
+ * @type {import('../utils/introduction').default | null}
+ */
+var genericWarningModal = null;
+function showJsonUploadWarningMessageIfNeeded(_ref) {
+  var introductionMap = _ref.introductionMap,
+    IntroductionClass = _ref.IntroductionClass,
+    _ref$waitForSetViewed = _ref.waitForSetViewed,
+    waitForSetViewed = _ref$waitForSetViewed === void 0 ? false : _ref$waitForSetViewed;
+  if (!genericWarningModal) {
+    genericWarningModal = createGenericWarningModal(IntroductionClass);
+  }
+  genericWarningModal.setIntroductionMap(introductionMap);
+  if (genericWarningModal.introductionViewed) {
+    return Promise.resolve();
+  }
+  var dialog = genericWarningModal.getDialog();
+  return new Promise(function (resolve, reject) {
+    dialog.onHide = function () {
+      // When closing the dialog (esc, click on background, etc.) we need to reject the promise.
+      reject();
+    };
+    dialog.onConfirm = /*#__PURE__*/(0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
+      return _regenerator.default.wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            if (!dialog.getElements('checkbox-dont-show-again').prop('checked')) {
+              _context.next = 7;
+              break;
+            }
+            if (!waitForSetViewed) {
+              _context.next = 6;
+              break;
+            }
+            _context.next = 4;
+            return genericWarningModal.setViewed();
+          case 4:
+            _context.next = 7;
+            break;
+          case 6:
+            genericWarningModal.setViewed();
+          case 7:
+            // Hack: we need to resolve the promise and then hide it manually, to avoid rejecting the promise.
+            // this because when closing the dialog (esc, click on background, etc.) it does not trigger `onCancel` method.
+            resolve();
+            dialog.hide();
+          case 9:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    dialog.onCancel = function () {
+      dialog.hide();
+    };
+    genericWarningModal.show();
+  });
+}
+
+/**
+ * @param {import('../utils/introduction').default.prototype.constructor} IntroductionClass
+ *
+ * @return {import('../utils/introduction').default}
+ */
+function createGenericWarningModal(IntroductionClass) {
+  var _introduction$getDial, _introduction$getDial2;
+  var dialogId = 'e-generic-warning-modal-for-json-upload';
+  var introduction = new IntroductionClass({
+    introductionKey: genericMessageIntroductionKey,
+    dialogType: 'confirm',
+    dialogOptions: {
+      id: dialogId,
+      headerMessage: __('Warning: JSON files may be unsafe', 'elementor'),
+      message: __('Uploading JSON files from unknown sources can be harmful and put your site at risk. For maximum safety, only install JSON files from trusted sources.', 'elementor'),
+      effects: {
+        show: 'fadeIn',
+        hide: 'fadeOut'
+      },
+      hide: {
+        onBackgroundClick: true,
+        onButtonClick: false
+      },
+      strings: {
+        confirm: __('Continue', 'elementor'),
+        cancel: __('Cancel', 'elementor')
+      }
+    }
+  });
+  var _createCheckboxAndLab = createCheckboxAndLabel(dialogId),
+    checkbox = _createCheckboxAndLab.checkbox,
+    label = _createCheckboxAndLab.label;
+  introduction.getDialog().addElement('checkbox-dont-show-again', checkbox);
+  (_introduction$getDial = introduction.getDialog().getElements('message')) === null || _introduction$getDial === void 0 ? void 0 : (_introduction$getDial2 = _introduction$getDial.append) === null || _introduction$getDial2 === void 0 ? void 0 : _introduction$getDial2.call(_introduction$getDial, label); // `getElements` return JQuery object.
+
+  return introduction;
+}
+function createCheckboxAndLabel(dialogId) {
+  var checkboxId = "".concat(dialogId, "-dont-show-again");
+  var checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.name = checkboxId;
+  checkbox.id = checkboxId;
+  var label = document.createElement('label');
+  label.htmlFor = checkboxId;
+  label.textContent = __('Do not show this message again', 'elementor');
+  label.style.display = 'block';
+  label.style.marginTop = '20px';
+  label.style.marginBottom = '20px';
+  label.prepend(checkbox);
+  return {
+    checkbox: checkbox,
+    label: label
+  };
+}
+
+/***/ }),
+
 /***/ "../assets/dev/js/utils/notifications.js":
 /*!***********************************************!*\
   !*** ../assets/dev/js/utils/notifications.js ***!
@@ -43015,7 +43427,9 @@ var Back = /*#__PURE__*/function (_$e$modules$CommandBa) {
       args[_key] = arguments[_key];
     }
     _this = _super.call.apply(_super, [this].concat(args));
+    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "document", null);
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "confirmDialog", null);
+    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "unsavedChangesDialog", []);
     return _this;
   }
   (0, _createClass2.default)(Back, [{
@@ -43023,10 +43437,24 @@ var Back = /*#__PURE__*/function (_$e$modules$CommandBa) {
     value: function apply() {
       var panelHistory = $e.routes.getHistory('panel');
 
-      // Don't go back if no where.
+      // When there's no more previous pages to navigate back to,
+      // prompt the user with a confirmation dialog asking if they would like to exit.
       if (1 === panelHistory.length) {
         this.getCloseConfirmDialog(event).show();
         return;
+      }
+
+      // If the user is on the global colors/typography page, and there are unsaved changes,
+      // prompt the user with a confirmation dialog asking if they would like to save the changes.
+      if (this.isGlobalRoute()) {
+        var kit = elementor.config.kit_id;
+        this.document = elementor.documents.get(kit);
+        if (this.isDocumentChanged()) {
+          this.resolveChanges().then(function () {
+            return $e.routes.back('panel');
+          });
+          return;
+        }
       }
       return $e.routes.back('panel');
     }
@@ -43056,6 +43484,66 @@ var Back = /*#__PURE__*/function (_$e$modules$CommandBa) {
         onEscKeyPress: !event
       });
       return this.confirmDialog;
+    }
+  }, {
+    key: "isGlobalRoute",
+    value: function isGlobalRoute() {
+      var panelHistory = $e.routes.getHistory('panel');
+      return /global\/\bglobal-colors|global-typography\b/.test(panelHistory[panelHistory.length - 1].route);
+    }
+  }, {
+    key: "isDocumentChanged",
+    value: function isDocumentChanged() {
+      return this.document && this.document.editor.isChanged;
+    }
+  }, {
+    key: "resolveChanges",
+    value: function resolveChanges() {
+      var _this2 = this;
+      return new Promise(function (resolve) {
+        _this2.getUnsavedChangesDialog(resolve).show();
+      });
+    }
+  }, {
+    key: "getUnsavedChangesDialog",
+    value: function getUnsavedChangesDialog(resolve) {
+      if (!this.document) {
+        resolve();
+        return;
+      }
+      var document = this.document;
+      if (!this.unsavedChangesDialog[document]) {
+        var modalOptions = {
+          id: "elementor-".concat(document, "-save-changes"),
+          headerMessage: __('Save Changes', 'elementor'),
+          message: __('Would you like to save the changes you\'ve made?', 'elementor'),
+          position: {
+            my: 'center center',
+            at: 'center center'
+          },
+          strings: {
+            confirm: __('Save', 'elementor'),
+            cancel: __('Discard', 'elementor')
+          },
+          onConfirm: function onConfirm() {
+            $e.run('document/save/update').then(function () {
+              resolve();
+            });
+          },
+          onCancel: function onCancel() {
+            $e.run('document/save/discard', {
+              document: document
+            }).then(function () {
+              resolve();
+            });
+          }
+        };
+        this.unsavedChangesDialog[document] = elementorCommon.dialogsManager.createWidget('confirm', modalOptions);
+      }
+      this.unsavedChangesDialog[document].setSettings('hide', {
+        onEscKeyPress: !event
+      });
+      return this.unsavedChangesDialog[document];
     }
   }]);
   return Back;
@@ -43310,12 +43798,13 @@ var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/run
 var hooks = _interopRequireWildcard(__webpack_require__(/*! ./hooks */ "../core/kits/assets/js/hooks/index.js"));
 var commands = _interopRequireWildcard(__webpack_require__(/*! ./commands/ */ "../core/kits/assets/js/commands/index.js"));
 var _repeater = _interopRequireDefault(__webpack_require__(/*! ./repeater */ "../core/kits/assets/js/repeater.js"));
+var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-editor/component-base */ "../assets/dev/js/editor/component-base.js"));
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-var _default = /*#__PURE__*/function (_$e$modules$Component) {
-  (0, _inherits2.default)(_default, _$e$modules$Component);
+var _default = /*#__PURE__*/function (_ComponentBase) {
+  (0, _inherits2.default)(_default, _ComponentBase);
   var _super = _createSuper(_default);
   function _default() {
     var _this;
@@ -43346,9 +43835,11 @@ var _default = /*#__PURE__*/function (_$e$modules$Component) {
   }, {
     key: "defaultRoutes",
     value: function defaultRoutes() {
+      var _this2 = this;
       return {
         menu: function menu() {
           elementor.getPanelView().setPage('kit_menu');
+          _this2.currentTab = 'menu';
         }
       };
     }
@@ -43383,12 +43874,17 @@ var _default = /*#__PURE__*/function (_$e$modules$Component) {
     }
   }, {
     key: "renderTab",
-    value: function renderTab(tab) {
-      elementor.getPanelView().setPage('kit_settings').content.currentView.activateTab(tab);
+    value: function renderTab(tab, args) {
+      if (tab !== this.currentTab) {
+        // Prevent re-rendering the same tab (with just different args).
+        this.currentTab = tab;
+        elementor.getPanelView().setPage('kit_settings').content.currentView.activateTab(tab);
+      }
+      this.activateControl(args.activeControl);
     }
   }]);
   return _default;
-}($e.modules.ComponentBase);
+}(_componentBase.default);
 exports["default"] = _default;
 
 /***/ }),
@@ -45439,6 +45935,22 @@ var _default = /*#__PURE__*/function (_elementorModules$edi) {
       return '#elementor-kit-panel-content-controls';
     }
   }, {
+    key: "onBeforeShow",
+    value: function onBeforeShow() {
+      var tabConfig = $e.components.get('panel/global').getActiveTabConfig();
+      elementor.hooks.doAction("panel/".concat(tabConfig.group, "/tab/before-show"), {
+        id: tabConfig.id
+      });
+    }
+  }, {
+    key: "onBeforeDestroy",
+    value: function onBeforeDestroy() {
+      var tabConfig = $e.components.get('panel/global').getActiveTabConfig();
+      elementor.hooks.doAction("panel/".concat(tabConfig.group, "/tab/before-destroy"), {
+        id: tabConfig.id
+      });
+    }
+  }, {
     key: "childViewOptions",
     value: function childViewOptions() {
       var container = this.getOption('container');
@@ -45728,7 +46240,8 @@ var _default = /*#__PURE__*/function (_RepeaterRow) {
     key: "events",
     value: function events() {
       return {
-        'click @ui.removeButton': 'onRemoveButtonClick'
+        'click @ui.removeButton': 'onRemoveButtonClick',
+        'keyup @ui.removeButton': 'onRemoveButtonPress'
       };
     }
   }, {
@@ -45832,6 +46345,16 @@ var _default = /*#__PURE__*/function (_RepeaterRow) {
         }
       });
       this.confirmDeleteModal.show();
+    }
+  }, {
+    key: "onRemoveButtonPress",
+    value: function onRemoveButtonPress(event) {
+      var ENTER_KEY = 13,
+        SPACE_KEY = 32;
+      if (ENTER_KEY === event.keyCode || SPACE_KEY === event.keyCode) {
+        event.currentTarget.click();
+        event.stopPropagation();
+      }
     }
   }]);
   return _default;
@@ -48651,12 +49174,20 @@ var Manager = /*#__PURE__*/function () {
         });
       });
     }
+
+    /**
+     * @deprecated since 2.9.0, use `elementor.documents.getCurrent().history` instead.
+     */
   }, {
     key: "history",
     get: function get() {
       elementorDevTools.deprecation.deprecated('elementor.history.history', '2.9.0', 'elementor.documents.getCurrent().history');
       return elementor.documents.getCurrent().history;
     }
+
+    /**
+     * @deprecated since 2.9.0, use `elementor.documents.getCurrent().revisions` instead.
+     */
   }, {
     key: "revisions",
     get: function get() {
@@ -49952,6 +50483,7 @@ var CommandBase = /*#__PURE__*/function (_CommandInfra) {
      * Validate `arg.container` & `arg.containers`.
      *
      * @param {{}} args
+     * @deprecated since 3.7.0, extend `$e.modules.editor.CommandContainerBase` or `$e.modules.editor.CommandContainerInternalBase` instead.
      *
      * @throws {Error}
      */
@@ -49960,7 +50492,7 @@ var CommandBase = /*#__PURE__*/function (_CommandInfra) {
     value: function requireContainer() {
       var _this = this;
       var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.args;
-      _deprecation.default.deprecated('requireContainer', '3.7.0', 'Extend `$e.modules.editor.CommandContainerBase` or `$e.modules.editor.CommandContainerInternalBase`');
+      _deprecation.default.deprecated('requireContainer()', '3.7.0', 'Extend `$e.modules.editor.CommandContainerBase` or `$e.modules.editor.CommandContainerInternalBase`');
       if (!args.container && !args.containers) {
         throw Error('container or containers are required.');
       }
@@ -50122,7 +50654,9 @@ var CommandInfra = /*#__PURE__*/function (_ArgsObject) {
   (0, _createClass2.default)(CommandInfra, [{
     key: "currentCommand",
     get:
-    // TODO - Remove backwards compatibility.
+    /**
+     * @deprecated since 3.7.0, use `this.command` instead.
+     */
     function get() {
       _deprecation.default.deprecated('this.currentCommand', '3.7.0', 'this.command');
       return this.command;
@@ -50578,6 +51112,10 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
     value: function getNamespace() {
       (0, _forceMethodImplementation.default)();
     }
+
+    /**
+     * @deprecated since 3.7.0, use `getServiceName()` instead.
+     */
   }, {
     key: "getRootContainer",
     value: function getRootContainer() {
@@ -50944,7 +51482,6 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
     key: "activateTab",
     value: function activateTab(tab, args) {
       var _this4 = this;
-      this.currentTab = tab;
       this.renderTab(tab, args);
       jQuery(this.getTabsWrapperSelector() + ' .elementor-component-tab').off('click').on('click', function (event) {
         $e.route(_this4.getTabRoute(event.currentTarget.dataset.tab), args);

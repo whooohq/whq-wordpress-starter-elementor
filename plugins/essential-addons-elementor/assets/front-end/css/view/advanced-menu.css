@@ -236,7 +236,6 @@
 .elementor-widget-eael-advanced-menu.eael-hamburger--none .eael-advanced-menu-container .eael-advanced-menu.eael-advanced-menu-horizontal.eael-advanced-menu-dropdown-animate-fade li ul,
 .elementor-widget-eael-advanced-menu.eael-hamburger--not-responsive .eael-advanced-menu-container .eael-advanced-menu.eael-advanced-menu-horizontal.eael-advanced-menu-dropdown-animate-fade li ul {
   -webkit-transition: all 300ms;
-  -o-transition: all 300ms;
   transition: all 300ms;
 }
 .elementor-widget-eael-advanced-menu.eael-hamburger--none .eael-advanced-menu-container .eael-advanced-menu.eael-advanced-menu-horizontal.eael-advanced-menu-dropdown-animate-to-top li ul,
@@ -245,7 +244,6 @@
       -ms-transform: translateY(20px);
           transform: translateY(20px);
   -webkit-transition: all 300ms;
-  -o-transition: all 300ms;
   transition: all 300ms;
 }
 .elementor-widget-eael-advanced-menu.eael-hamburger--none .eael-advanced-menu-container .eael-advanced-menu.eael-advanced-menu-horizontal.eael-advanced-menu-dropdown-animate-to-top li:hover > ul,
@@ -260,7 +258,6 @@
       -ms-transform: scale(0.8);
           transform: scale(0.8);
   -webkit-transition: all 300ms;
-  -o-transition: all 300ms;
   transition: all 300ms;
 }
 .elementor-widget-eael-advanced-menu.eael-hamburger--none .eael-advanced-menu-container .eael-advanced-menu.eael-advanced-menu-horizontal.eael-advanced-menu-dropdown-animate-zoom-in li:hover > ul,
@@ -275,7 +272,6 @@
       -ms-transform: scale(1.2);
           transform: scale(1.2);
   -webkit-transition: all 300ms;
-  -o-transition: all 300ms;
   transition: all 300ms;
 }
 .elementor-widget-eael-advanced-menu.eael-hamburger--none .eael-advanced-menu-container .eael-advanced-menu.eael-advanced-menu-horizontal.eael-advanced-menu-dropdown-animate-zoom-out li:hover > ul,
@@ -362,7 +358,6 @@
   padding-left: 20px;
   padding-right: 20px;
   -webkit-transition: all 100ms;
-  -o-transition: all 100ms;
   transition: all 100ms;
 }
 .eael-advanced-menu-container .eael-advanced-menu li ul {
@@ -409,7 +404,6 @@
   color: #ffffff;
   -webkit-transition: -webkit-transform 300ms;
   transition: -webkit-transform 300ms;
-  -o-transition: transform 300ms;
   transition: transform 300ms;
   transition: transform 300ms, -webkit-transform 300ms;
 }

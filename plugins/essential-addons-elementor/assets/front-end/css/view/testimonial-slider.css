@@ -20,6 +20,10 @@
   *	Slider Button For all layout
   */
 }
+.elementor-widget-eael-testimonial-slider .swiper-button-next:after, .elementor-widget-eael-testimonial-slider .swiper-rtl .swiper-button-prev:after,
+.elementor-widget-eael-testimonial-slider .swiper-button-prev:after, .elementor-widget-eael-testimonial-slider .swiper-rtl .swiper-button-next:after {
+  content: "";
+}
 .elementor-widget-eael-testimonial-slider .eael-testimonial-slider {
   position: relative;
 }
@@ -436,7 +440,6 @@
   width: 60px;
   height: 60px;
   -webkit-transition: all 0.3s ease;
-  -o-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
 .elementor-widget-eael-testimonial-slider .eael-testimonial-gallary-pagination .swiper-slide-active {

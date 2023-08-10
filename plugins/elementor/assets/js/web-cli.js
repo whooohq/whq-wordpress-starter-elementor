@@ -1,4 +1,4 @@
-/*! elementor - v3.13.3 - 22-05-2023 */
+/*! elementor - v3.15.0 - 02-08-2023 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -2597,12 +2597,16 @@ var API = /*#__PURE__*/function () {
      *
      * @param {string} route
      * @param {*}      [args={}]
+     * @param {Object} [options]
      */
   }, {
     key: "route",
     value: function route(_route) {
       var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      return $e.routes.to(_route, args);
+      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {
+        history: true
+      };
+      return $e.routes.to(_route, args, options);
     }
 
     // TODO: shortcut();
@@ -6120,15 +6124,20 @@ var Routes = /*#__PURE__*/function (_Commands) {
   }, {
     key: "to",
     value: function to(route, args) {
+      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {
+        history: true
+      };
       this.run(route, args);
       var namespaceRoot = this.getComponent(route).getServiceName();
-      if (!this.historyPerComponent[namespaceRoot]) {
-        this.historyPerComponent[namespaceRoot] = [];
+      if (options.history) {
+        if (!this.historyPerComponent[namespaceRoot]) {
+          this.historyPerComponent[namespaceRoot] = [];
+        }
+        this.historyPerComponent[namespaceRoot].push({
+          route: route,
+          args: args
+        });
       }
-      this.historyPerComponent[namespaceRoot].push({
-        route: route,
-        args: args
-      });
     }
   }, {
     key: "back",
@@ -7146,6 +7155,7 @@ var CommandBase = /*#__PURE__*/function (_CommandInfra) {
      * Validate `arg.container` & `arg.containers`.
      *
      * @param {{}} args
+     * @deprecated since 3.7.0, extend `$e.modules.editor.CommandContainerBase` or `$e.modules.editor.CommandContainerInternalBase` instead.
      *
      * @throws {Error}
      */
@@ -7154,7 +7164,7 @@ var CommandBase = /*#__PURE__*/function (_CommandInfra) {
     value: function requireContainer() {
       var _this = this;
       var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.args;
-      _deprecation.default.deprecated('requireContainer', '3.7.0', 'Extend `$e.modules.editor.CommandContainerBase` or `$e.modules.editor.CommandContainerInternalBase`');
+      _deprecation.default.deprecated('requireContainer()', '3.7.0', 'Extend `$e.modules.editor.CommandContainerBase` or `$e.modules.editor.CommandContainerInternalBase`');
       if (!args.container && !args.containers) {
         throw Error('container or containers are required.');
       }
@@ -7633,7 +7643,9 @@ var CommandInfra = /*#__PURE__*/function (_ArgsObject) {
   (0, _createClass2.default)(CommandInfra, [{
     key: "currentCommand",
     get:
-    // TODO - Remove backwards compatibility.
+    /**
+     * @deprecated since 3.7.0, use `this.command` instead.
+     */
     function get() {
       _deprecation.default.deprecated('this.currentCommand', '3.7.0', 'this.command');
       return this.command;
@@ -8134,6 +8146,10 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
     value: function getNamespace() {
       (0, _forceMethodImplementation.default)();
     }
+
+    /**
+     * @deprecated since 3.7.0, use `getServiceName()` instead.
+     */
   }, {
     key: "getRootContainer",
     value: function getRootContainer() {
@@ -8500,7 +8516,6 @@ var ComponentBase = /*#__PURE__*/function (_Module) {
     key: "activateTab",
     value: function activateTab(tab, args) {
       var _this4 = this;
-      this.currentTab = tab;
       this.renderTab(tab, args);
       jQuery(this.getTabsWrapperSelector() + ' .elementor-component-tab').off('click').on('click', function (event) {
         $e.route(_this4.getTabRoute(event.currentTarget.dataset.tab), args);

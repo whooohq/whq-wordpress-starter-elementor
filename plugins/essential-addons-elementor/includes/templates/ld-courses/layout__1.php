@@ -1,5 +1,6 @@
 <?php
 use Essential_Addons_Elementor\Pro\Classes\Helper;
+use Essential_Addons_Elementor\Classes\Helper as HelperClass;
 ?>
 <div class="eael-learn-dash-course eael-course-layout-1 <?php echo !empty($tags_as_string) ? esc_attr($tags_as_string) : ' '; ?>  <?php echo !empty($cats_as_string) ? esc_attr($cats_as_string) : ' '; ?>  ">
     <div class="eael-learn-dash-course-inner">
@@ -17,12 +18,12 @@ use Essential_Addons_Elementor\Pro\Classes\Helper;
                 <?php if( 1 == $ld_course_grid_enable_video_preview && ! empty( $ld_course_grid_video_embed_code ) ) : ?>
                     <!-- .ld_course_grid_video_embed helps to load default css and js from learndash -->
                     <div class="ld_course_grid_video_embed">
-                        <?php echo $ld_course_grid_video_embed_code; ?>
+                        <?php echo HelperClass::eael_wp_kses( $ld_course_grid_video_embed_code ); ?>
                     </div>
                 <?php elseif( $image ) :?>
-                    <img src="<?php echo esc_url($image[0]); ?>" alt="<?php echo $image_alt; ?>" />
+                    <img src="<?php echo esc_url($image[0]); ?>" alt="<?php echo esc_attr( $image_alt ); ?>" />
                 <?php else : ?>
-                    <img alt="" src="<?php echo \Elementor\Utils::get_placeholder_image_src(); ?>"/>
+                    <img alt="" src="<?php echo esc_url( \Elementor\Utils::get_placeholder_image_src() ); ?>"/>
                 <?php endif; ?>
 
                 <?php if($price && $settings['show_price'] === 'true' && $image): ?><div class="price-ticker-tag"><?php echo esc_attr($price); ?></div><?php endif; ?>
@@ -31,7 +32,7 @@ use Essential_Addons_Elementor\Pro\Classes\Helper;
 
         <div class="eael-learn-deash-course-content-card">
             <<?php echo Helper::eael_pro_validate_html_tag($settings['title_tag']); ?> class="course-card-title">
-            <a href="<?php echo esc_url(get_permalink($course->ID)); ?>"><?php echo $course->post_title; ?></a>
+            <a href="<?php echo esc_url(get_permalink($course->ID)); ?>"><?php echo HelperClass::eael_wp_kses( $course->post_title ); ?></a>
             </<?php echo Helper::eael_pro_validate_html_tag($settings['title_tag']); ?>>
 
             <?php if($settings['show_course_duration'] === 'true') : ?>
@@ -69,7 +70,7 @@ use Essential_Addons_Elementor\Pro\Classes\Helper;
                         <span><?php _e('in', 'essential-addons-elementor'); ?></span>
 
                         <?php if (!empty($cats) && !is_wp_error($cats)) : ?>
-                        <a href="<?php echo $author_courses_from_cat; ?>"><?php echo esc_attr(ucfirst($cats[0]->name)); ?></a>
+                        <a href="<?php echo esc_url_raw( $author_courses_from_cat ); ?>"><?php echo esc_attr(ucfirst($cats[0]->name)); ?></a>
                         <?php endif; ?>
                     </div>
                     <p class="author-designation"><?php echo get_the_date('j M y', $course->ID); ?></p>
@@ -82,9 +83,9 @@ use Essential_Addons_Elementor\Pro\Classes\Helper;
                 <a href="<?php echo esc_url(get_permalink($course->ID)); ?>" class="eael-course-button">
 	                <?php
 	                if($settings['change_button_text'] === 'true' && !empty($settings['button_text'])) {
-		                echo $settings['button_text'];
+		                echo HelperClass::eael_wp_kses( $settings['button_text'] );
 	                } else {
-		                echo empty($button_text) ? __( 'See More', 'essential-addons-elementor' ) : $button_text;
+		                echo empty($button_text) ? __( 'See More', 'essential-addons-elementor' ) : HelperClass::eael_wp_kses( $button_text );
 	                }
 	                ?>
                 </a>

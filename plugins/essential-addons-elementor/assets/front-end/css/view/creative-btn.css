@@ -34,12 +34,10 @@
   -webkit-transition: -webkit-transform 0.3s, background-color 0.3s;
   -webkit-transition: background-color 0.3s, -webkit-transform 0.3s;
   transition: background-color 0.3s, -webkit-transform 0.3s;
-  -o-transition: transform 0.3s, background-color 0.3s;
   transition: transform 0.3s, background-color 0.3s;
   transition: transform 0.3s, background-color 0.3s, -webkit-transform 0.3s;
   -webkit-transition-timing-function: cubic-bezier(0.25, 0, 0.3, 1);
-  -o-transition-timing-function: cubic-bezier(0.25, 0, 0.3, 1);
-     transition-timing-function: cubic-bezier(0.25, 0, 0.3, 1);
+  transition-timing-function: cubic-bezier(0.25, 0, 0.3, 1);
 }
 .eael-creative-button--pipaluk::before {
   border: 2px solid #7986cb;
@@ -71,7 +69,6 @@
 /*--- Moema ---*/
 .eael-creative-button--moema {
   -webkit-transition: background-color 0.3s, color 0.3s;
-  -o-transition: background-color 0.3s, color 0.3s;
   transition: background-color 0.3s, color 0.3s;
 }
 .eael-creative-button--moema::before {
@@ -89,7 +86,6 @@
 }
 .eael-creative-button--moema:hover {
   -webkit-transition: background-color 0.1s 0.3s, color 0.1s 0.3s;
-  -o-transition: background-color 0.1s 0.3s, color 0.1s 0.3s;
   transition: background-color 0.1s 0.3s, color 0.1s 0.3s;
   -webkit-animation: anim-moema-1 0.3s forwards;
   animation: anim-moema-1 0.3s forwards;
@@ -144,7 +140,6 @@
 .eael-creative-button--saqui {
   overflow: hidden;
   -webkit-transition: background-color 0.3s ease-in, color 0.3s ease-in;
-  -o-transition: background-color 0.3s ease-in, color 0.3s ease-in;
   transition: background-color 0.3s ease-in, color 0.3s ease-in;
 }
 .eael-creative-button--saqui::after {
@@ -161,7 +156,6 @@
   transform: rotate3d(0, 0, 1, 45deg);
   -webkit-transition: -webkit-transform 0.3s ease-in;
   transition: -webkit-transform 0.3s ease-in;
-  -o-transition: transform 0.3s ease-in;
   transition: transform 0.3s ease-in;
   transition: transform 0.3s ease-in, -webkit-transform 0.3s ease-in;
   display: -webkit-box;
@@ -177,8 +171,7 @@
 .eael-creative-button--saqui:hover::after,
 .eael-creative-button--saqui:hover {
   -webkit-transition-timing-function: ease-out;
-  -o-transition-timing-function: ease-out;
-     transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
 }
 .eael-creative-button--saqui:hover::after {
   -webkit-transform: rotate3d(0, 0, 1, 0deg);
@@ -187,7 +180,6 @@
 /*--- Wapasha ---*/
 .eael-creative-button--wapasha {
   -webkit-transition: background-color 0.3s, color 0.3s;
-  -o-transition: background-color 0.3s, color 0.3s;
   transition: background-color 0.3s, color 0.3s;
 }
 .eael-creative-button--wapasha::before {
@@ -206,12 +198,10 @@
   -webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
   -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
   transition: opacity 0.3s, -webkit-transform 0.3s;
-  -o-transition: transform 0.3s, opacity 0.3s;
   transition: transform 0.3s, opacity 0.3s;
   transition: transform 0.3s, opacity 0.3s, -webkit-transform 0.3s;
   -webkit-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
-  -o-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
-     transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
+  transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
 }
 .eael-creative-button--wapasha:hover::before {
   -webkit-transform: scale3d(1, 1, 1);
@@ -238,12 +228,10 @@
   -webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
   -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
   transition: opacity 0.3s, -webkit-transform 0.3s;
-  -o-transition: transform 0.3s, opacity 0.3s;
   transition: transform 0.3s, opacity 0.3s;
   transition: transform 0.3s, opacity 0.3s, -webkit-transform 0.3s;
   -webkit-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
-  -o-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
-     transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
+  transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
 }
 .eael-creative-button--antiman::before {
   border: 1px solid rgba(0, 0, 0, 0.35);
@@ -265,7 +253,6 @@
 .eael-creative-button.eael-creative-button--shikoba {
   overflow: hidden;
   -webkit-transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-  -o-transition: background-color 0.3s, border-color 0.3s, color 0.3s;
   transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
 .eael-creative-button--shikoba > span {
@@ -274,22 +261,18 @@
   transform: translate3d(0, 0, 0);
   -webkit-transition: -webkit-transform 0.3s;
   transition: -webkit-transform 0.3s;
-  -o-transition: transform 0.3s;
   transition: transform 0.3s;
   transition: transform 0.3s, -webkit-transform 0.3s;
   -webkit-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
-  -o-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
-     transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
+  transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
 }
 .eael-creative-button--shikoba i {
   -webkit-transition: -webkit-transform 0.3s;
   transition: -webkit-transform 0.3s;
-  -o-transition: transform 0.3s;
   transition: transform 0.3s;
   transition: transform 0.3s, -webkit-transform 0.3s;
   -webkit-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
-  -o-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
-     transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
+  transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
 }
 .eael-creative-button--shikoba:hover > span {
   -webkit-transform: translate3d(10px, 0, 0);
@@ -317,12 +300,10 @@
   -webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
   -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
   transition: opacity 0.3s, -webkit-transform 0.3s;
-  -o-transition: transform 0.3s, opacity 0.3s;
   transition: transform 0.3s, opacity 0.3s;
   transition: transform 0.3s, opacity 0.3s, -webkit-transform 0.3s;
   -webkit-transition-timing-function: cubic-bezier(0.7, 0, 0.9, 1);
-  -o-transition-timing-function: cubic-bezier(0.7, 0, 0.9, 1);
-     transition-timing-function: cubic-bezier(0.7, 0, 0.9, 1);
+  transition-timing-function: cubic-bezier(0.7, 0, 0.9, 1);
 }
 .eael-creative-button--wave .eael-creative-button__icon {
   vertical-align: middle;
@@ -339,7 +320,6 @@
 .eael-creative-button--aylen {
   overflow: hidden;
   -webkit-transition: color 0.3s;
-  -o-transition: color 0.3s;
   transition: color 0.3s;
 }
 .eael-creative-button--aylen::before,
@@ -353,12 +333,10 @@
   z-index: -1;
   -webkit-transition: -webkit-transform 0.3s;
   transition: -webkit-transform 0.3s;
-  -o-transition: transform 0.3s;
   transition: transform 0.3s;
   transition: transform 0.3s, -webkit-transform 0.3s;
   -webkit-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
-  -o-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
-     transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
+  transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
 }
 .eael-creative-button--aylen::before {
   opacity: 0.75;
@@ -370,18 +348,15 @@
 }
 .eael-creative-button--aylen:hover::after {
   -webkit-transition-delay: 0.175s;
-  -o-transition-delay: 0.175s;
-     transition-delay: 0.175s;
+  transition-delay: 0.175s;
 }
 /*--- Nuka ---*/
 .eael-creative-button--nuka {
   border: none !important;
   -webkit-transition: color 0.3s;
-  -o-transition: color 0.3s;
   transition: color 0.3s;
   -webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
-  -o-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
-     transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+  transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
 }
 .eael-creative-button--nuka::before,
 .eael-creative-button--nuka::after {
@@ -401,7 +376,6 @@
   -webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
   -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
   transition: opacity 0.3s, -webkit-transform 0.3s;
-  -o-transition: transform 0.3s, opacity 0.3s;
   transition: transform 0.3s, opacity 0.3s;
   transition: transform 0.3s, opacity 0.3s, -webkit-transform 0.3s;
 }
@@ -415,15 +389,13 @@
   -webkit-transition: -webkit-transform 0.3s, background-color 0.3s;
   -webkit-transition: background-color 0.3s, -webkit-transform 0.3s;
   transition: background-color 0.3s, -webkit-transform 0.3s;
-  -o-transition: transform 0.3s, background-color 0.3s;
   transition: transform 0.3s, background-color 0.3s;
   transition: transform 0.3s, background-color 0.3s, -webkit-transform 0.3s;
 }
 .eael-creative-button--nuka::before,
 .eael-creative-button--nuka::after {
   -webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
-  -o-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
-     transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+  transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
 }
 .eael-creative-button--nuka:hover::before {
   opacity: 1;
@@ -454,11 +426,9 @@
   color: #7986cb;
   overflow: hidden;
   -webkit-transition: color 0.3s;
-  -o-transition: color 0.3s;
   transition: color 0.3s;
   -webkit-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
-  -o-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
-     transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
+  transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
 }
 .eael-creative-button--quidel.button--inverted {
   background: #fff;
@@ -491,12 +461,10 @@
   transform: translate3d(0, 100%, 0);
   -webkit-transition: -webkit-transform 0.3s;
   transition: -webkit-transform 0.3s;
-  -o-transition: transform 0.3s;
   transition: transform 0.3s;
   transition: transform 0.3s, -webkit-transform 0.3s;
   -webkit-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
-  -o-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
-     transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
+  transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
 }
 .eael-creative-button--quidel.button--inverted::before {
   background: #7986cb;
@@ -531,7 +499,6 @@
   color: #37474f;
   border-color: #37474f;
   -webkit-transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-  -o-transition: background-color 0.3s, border-color 0.3s, color 0.3s;
   transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
 .eael-creative-button--shikoba.button--inverted {
@@ -544,12 +511,10 @@
   transform: translate3d(-10px, 0, 0);
   -webkit-transition: -webkit-transform 0.3s;
   transition: -webkit-transform 0.3s;
-  -o-transition: transform 0.3s;
   transition: transform 0.3s;
   transition: transform 0.3s, -webkit-transform 0.3s;
   -webkit-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
-  -o-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
-     transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
+  transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
 }
 .eael-creative-button--shikoba .button__icon {
   position: absolute;
@@ -559,12 +524,10 @@
   transform: translate3d(-40px, 2.5em, 0);
   -webkit-transition: -webkit-transform 0.3s;
   transition: -webkit-transform 0.3s;
-  -o-transition: transform 0.3s;
   transition: transform 0.3s;
   transition: transform 0.3s, -webkit-transform 0.3s;
   -webkit-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
-  -o-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
-     transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
+  transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
 }
 .eael-creative-button--shikoba:hover .button__icon,
 .eael-creative-button--shikoba:hover span {

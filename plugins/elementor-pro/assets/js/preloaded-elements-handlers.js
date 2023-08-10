@@ -1,4 +1,4 @@
-/*! elementor-pro - v3.13.2 - 22-05-2023 */
+/*! elementor-pro - v3.15.0 - 31-07-2023 */
 "use strict";
 (self["webpackChunkelementor_pro"] = self["webpackChunkelementor_pro"] || []).push([["preloaded-elements-handlers"],{
 
@@ -30,6 +30,8 @@ var _frontendLegacy16 = _interopRequireDefault(__webpack_require__(/*! modules/t
 var _frontendLegacy17 = _interopRequireDefault(__webpack_require__(/*! modules/woocommerce/assets/js/frontend/frontend-legacy */ "../modules/woocommerce/assets/js/frontend/frontend-legacy.js"));
 var _frontendLegacy18 = _interopRequireDefault(__webpack_require__(/*! modules/loop-builder/assets/js/frontend/frontend-legacy */ "../modules/loop-builder/assets/js/frontend/frontend-legacy.js"));
 var _frontendLegacy19 = _interopRequireDefault(__webpack_require__(/*! modules/mega-menu/assets/js/frontend/frontend-legacy */ "../modules/mega-menu/assets/js/frontend/frontend-legacy.js"));
+var _frontendLegacy20 = _interopRequireDefault(__webpack_require__(/*! modules/nested-carousel/assets/js/frontend/frontend-legacy */ "../modules/nested-carousel/assets/js/frontend/frontend-legacy.js"));
+var _frontendLegacy21 = _interopRequireDefault(__webpack_require__(/*! modules/loop-filter/assets/js/frontend/frontend-legacy */ "../modules/loop-filter/assets/js/frontend/frontend-legacy.js"));
 const extendDefaultHandlers = defaultHandlers => {
   const handlers = {
     animatedText: _frontendLegacy.default,
@@ -50,7 +52,9 @@ const extendDefaultHandlers = defaultHandlers => {
     woocommerce: _frontendLegacy17.default,
     tableOfContents: _frontendLegacy14.default,
     loopBuilder: _frontendLegacy18.default,
-    megaMenu: _frontendLegacy19.default
+    megaMenu: _frontendLegacy19.default,
+    nestedCarousel: _frontendLegacy20.default,
+    taxonomyFilter: _frontendLegacy21.default
   };
   return {
     ...defaultHandlers,
@@ -130,6 +134,136 @@ class AnchorLinks {
   }
 }
 exports["default"] = AnchorLinks;
+
+/***/ }),
+
+/***/ "../assets/dev/js/frontend/utils/flex-horizontal-scroll.js":
+/*!*****************************************************************!*\
+  !*** ../assets/dev/js/frontend/utils/flex-horizontal-scroll.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.changeScrollStatus = changeScrollStatus;
+exports.setHorizontalScrollAlignment = setHorizontalScrollAlignment;
+exports.setHorizontalTitleScrollValues = setHorizontalTitleScrollValues;
+function changeScrollStatus(element, event) {
+  if ('mousedown' === event.type) {
+    element.classList.add('e-scroll');
+    element.dataset.pageX = event.pageX;
+  } else {
+    element.classList.remove('e-scroll', 'e-scroll-active');
+    element.dataset.pageX = '';
+  }
+}
+
+// This function was written using this example https://codepen.io/thenutz/pen/VwYeYEE.
+function setHorizontalTitleScrollValues(element, horizontalScrollStatus, event) {
+  const isActiveScroll = element.classList.contains('e-scroll'),
+    isHorizontalScrollActive = 'enable' === horizontalScrollStatus,
+    headingContentIsWiderThanWrapper = element.scrollWidth > element.clientWidth;
+  if (!isActiveScroll || !isHorizontalScrollActive || !headingContentIsWiderThanWrapper) {
+    return;
+  }
+  event.preventDefault();
+  const previousPositionX = parseFloat(element.dataset.pageX),
+    mouseMoveX = event.pageX - previousPositionX,
+    maximumScrollValue = 5,
+    stepLimit = 20;
+  let toScrollDistanceX = 0;
+  if (stepLimit < mouseMoveX) {
+    toScrollDistanceX = maximumScrollValue;
+  } else if (stepLimit * -1 > mouseMoveX) {
+    toScrollDistanceX = -1 * maximumScrollValue;
+  } else {
+    toScrollDistanceX = mouseMoveX;
+  }
+  element.scrollLeft = element.scrollLeft - toScrollDistanceX;
+  element.classList.add('e-scroll-active');
+}
+function setHorizontalScrollAlignment(_ref) {
+  let {
+    element,
+    direction,
+    justifyCSSVariable,
+    horizontalScrollStatus
+  } = _ref;
+  if (!element) {
+    return;
+  }
+  if (isHorizontalScroll(element, horizontalScrollStatus)) {
+    initialScrollPosition(element, direction, justifyCSSVariable);
+  } else {
+    element.style.setProperty(justifyCSSVariable, '');
+  }
+}
+function isHorizontalScroll(element, horizontalScrollStatus) {
+  return element.clientWidth < getChildrenWidth(element.children) && 'enable' === horizontalScrollStatus;
+}
+function getChildrenWidth(children) {
+  let totalWidth = 0;
+  const parentContainer = children[0].parentNode,
+    computedStyles = getComputedStyle(parentContainer),
+    gap = parseFloat(computedStyles.gap) || 0; // Get the gap value or default to 0 if it's not specified
+
+  for (let i = 0; i < children.length; i++) {
+    totalWidth += children[i].offsetWidth + gap;
+  }
+  return totalWidth;
+}
+function initialScrollPosition(element, direction, justifyCSSVariable) {
+  const isRTL = elementorCommon.config.isRTL;
+  switch (direction) {
+    case 'end':
+      element.style.setProperty(justifyCSSVariable, 'start');
+      element.scrollLeft = isRTL ? -1 * getChildrenWidth(element.children) : getChildrenWidth(element.children);
+      break;
+    default:
+      element.style.setProperty(justifyCSSVariable, 'start');
+      element.scrollLeft = 0;
+  }
+}
+
+/***/ }),
+
+/***/ "../assets/dev/js/frontend/utils/handle-parameter-pollution.js":
+/*!*********************************************************************!*\
+  !*** ../assets/dev/js/frontend/utils/handle-parameter-pollution.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = handleParameterPollution;
+function handleParameterPollution(inputURL) {
+  const urlObject = new URL(inputURL),
+    mainDomain = urlObject.hostname,
+    params = new URLSearchParams(urlObject.search),
+    paramKeysToCheck = ['u']; // Can add more items if we find more problems with other social networks.
+
+  paramKeysToCheck.forEach(key => {
+    const paramValue = params.get(key);
+    if (paramValue) {
+      try {
+        const paramDomain = new URL(paramValue).hostname;
+        if (paramDomain !== mainDomain) {
+          params.delete(key);
+        }
+      } catch (error) {
+        params.delete(key);
+      }
+    }
+  });
+  urlObject.search = params.toString();
+  return urlObject.toString();
+}
 
 /***/ }),
 
@@ -224,6 +358,24 @@ exports["default"] = IconsManager;
 
 /***/ }),
 
+/***/ "../assets/dev/js/frontend/utils/run-element-handlers.js":
+/*!***************************************************************!*\
+  !*** ../assets/dev/js/frontend/utils/run-element-handlers.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = runElementHandlers;
+function runElementHandlers(elements) {
+  [...elements].flatMap(el => [...el.querySelectorAll('.elementor-element')]).forEach(el => elementorFrontend.elementsHandler.runReadyTrigger(el));
+}
+
+/***/ }),
+
 /***/ "../assets/dev/js/frontend/utils/scroll.js":
 /*!*************************************************!*\
   !*** ../assets/dev/js/frontend/utils/scroll.js ***!
@@ -296,7 +448,7 @@ function addDocumentHandle(_ref) {
   const handleElement = createHandleElement({
     title,
     onClick: () => onDocumentClick(id, context, onCloseDocument, selector)
-  }, context);
+  }, context, element);
   element.prepend(handleElement);
   if (EDIT_CONTEXT === context) {
     element.dataset.editableElementorDocument = id;
@@ -322,10 +474,11 @@ function hasHandle(element) {
 }
 
 /**
- * @param {Object}   handleProperties
- * @param {string}   handleProperties.title
- * @param {Function} handleProperties.onClick
- * @param {string}   context
+ * @param {Object}      handleProperties
+ * @param {string}      handleProperties.title
+ * @param {Function}    handleProperties.onClick
+ * @param {string}      context
+ * @param {HTMLElement} element
  *
  * @return {HTMLElement} The newly generated Handle element
  */
@@ -334,20 +487,31 @@ function createHandleElement(_ref2, context) {
     title,
     onClick
   } = _ref2;
-  const element = createElement({
+  let element = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+  const handleTitle = ['header', 'footer'].includes(element?.dataset.elementorType) ? '%s' : __('Edit %s', 'elementor-pro');
+  const innerElement = createElement({
     tag: 'div',
-    classNames: EDIT_CONTEXT === context ? [EDIT_HANDLE_CLASS_NAME] : [EDIT_HANDLE_CLASS_NAME, SAVE_HANDLE_CLASS_NAME],
+    classNames: [`${EDIT_HANDLE_CLASS_NAME}__inner`],
     children: [createElement({
       tag: 'i',
       classNames: [getHandleIcon(context)]
     }), createElement({
       tag: 'div',
       classNames: [`${EDIT_CONTEXT === context ? EDIT_HANDLE_CLASS_NAME : SAVE_HANDLE_CLASS_NAME}__title`],
-      children: [document.createTextNode(EDIT_CONTEXT === context ? __('Edit %s', 'elementor-pro').replace('%s', title) : __('Save %s', 'elementor-pro').replace('%s', title))]
+      children: [document.createTextNode(EDIT_CONTEXT === context ? handleTitle.replace('%s', title) : __('Save %s', 'elementor-pro').replace('%s', title))]
     })]
   });
-  element.addEventListener('click', onClick);
-  return element;
+  const classNames = [EDIT_HANDLE_CLASS_NAME];
+  if (EDIT_CONTEXT !== context) {
+    classNames.push(SAVE_HANDLE_CLASS_NAME);
+  }
+  const containerElement = createElement({
+    tag: 'div',
+    classNames,
+    children: [innerElement]
+  });
+  containerElement.addEventListener('click', onClick);
+  return containerElement;
 }
 function getHandleIcon(context) {
   let icon = 'eicon-edit';
@@ -2734,7 +2898,7 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports["default"] = void 0;
 var _loadMore = _interopRequireDefault(__webpack_require__(/*! modules/posts/assets/js/frontend/handlers/load-more */ "../modules/posts/assets/js/frontend/handlers/load-more.js"));
-var _elementHandlers = _interopRequireDefault(__webpack_require__(/*! ./utils/element-handlers */ "../modules/loop-builder/assets/js/frontend/handlers/utils/element-handlers.js"));
+var _runElementHandlers = _interopRequireDefault(__webpack_require__(/*! elementor-pro/frontend/utils/run-element-handlers */ "../assets/dev/js/frontend/utils/run-element-handlers.js"));
 class LoopLoadMore extends _loadMore.default {
   getDefaultSettings() {
     const defaultSettings = super.getDefaultSettings();
@@ -2750,7 +2914,7 @@ class LoopLoadMore extends _loadMore.default {
       this.handleLazyloadBackgroundElements();
     }
     this.handleDynamicStyleElements(result);
-    (0, _elementHandlers.default)(postsElements);
+    (0, _runElementHandlers.default)(postsElements);
   }
 
   /**
@@ -2788,6 +2952,7 @@ exports["default"] = LoopLoadMore;
   \****************************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
@@ -2795,9 +2960,8 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
-var _imageCarousel = _interopRequireDefault(__webpack_require__(/*! elementor/assets/dev/js/frontend/handlers/image-carousel */ "../../elementor/assets/dev/js/frontend/handlers/image-carousel.js"));
-var _elementHandlers = _interopRequireDefault(__webpack_require__(/*! ./utils/element-handlers */ "../modules/loop-builder/assets/js/frontend/handlers/utils/element-handlers.js"));
-class LoopCarousel extends _imageCarousel.default {
+var _runElementHandlers = _interopRequireDefault(__webpack_require__(/*! elementor-pro/frontend/utils/run-element-handlers */ "../assets/dev/js/frontend/utils/run-element-handlers.js"));
+class LoopCarousel extends elementorModules.frontend.handlers.CarouselBase {
   getDefaultSettings() {
     const defaultSettings = super.getDefaultSettings();
     defaultSettings.selectors.carousel = '.elementor-loop-container';
@@ -2806,24 +2970,16 @@ class LoopCarousel extends _imageCarousel.default {
   getSwiperSettings() {
     const swiperOptions = super.getSwiperSettings(),
       elementSettings = this.getElementSettings(),
-      isRtl = elementorFrontend.config.is_rtl;
+      isRtl = elementorFrontend.config.is_rtl,
+      widgetSelector = `.elementor-element-${this.getID()}`;
     if ('yes' === elementSettings.arrows) {
       swiperOptions.navigation = {
-        prevEl: isRtl ? '.elementor-swiper-button-next' : '.elementor-swiper-button-prev',
-        nextEl: isRtl ? '.elementor-swiper-button-prev' : '.elementor-swiper-button-next'
+        prevEl: isRtl ? `${widgetSelector} .elementor-swiper-button-next` : `${widgetSelector} .elementor-swiper-button-prev`,
+        nextEl: isRtl ? `${widgetSelector} .elementor-swiper-button-prev` : `${widgetSelector} .elementor-swiper-button-next`
       };
     }
-    if (elementSettings.pagination) {
-      swiperOptions.pagination = {
-        el: '.swiper-pagination',
-        type: elementSettings.pagination,
-        clickable: true
-      };
-    }
-    swiperOptions.on = {
-      slideChange: () => {
-        this.handleElementHandlers();
-      }
+    swiperOptions.on.beforeInit = () => {
+      this.a11ySetSlidesAriaLabels();
     };
     return swiperOptions;
   }
@@ -2836,8 +2992,14 @@ class LoopCarousel extends _imageCarousel.default {
       return;
     }
     const newSlides = Array.from(this.swiper.slides).slice(this.swiper.activeIndex - 1, this.swiper.slides.length);
-    (0, _elementHandlers.default)(newSlides);
+    (0, _runElementHandlers.default)(newSlides);
     this.ranElementHandlers = true;
+  }
+  a11ySetSlidesAriaLabels() {
+    const slides = Array.from(this.elements.$slides);
+    slides.forEach((slide, index) => {
+      slide.setAttribute('aria-label', `${parseInt(index + 1)} ${__('of', 'elementor-pro')} ${slides.length}`);
+    });
   }
 }
 exports["default"] = LoopCarousel;
@@ -2965,26 +3127,515 @@ class Loop extends _posts.default {
       this.handleCTA();
     }
   }
+  onDestroy() {
+    if (elementorCommon.config.experimentalFeatures['taxonomy-filter']) {
+      elementorProFrontend.modules.taxonomyFilter.removeWidgetFromLoopWidgetsStore(this.getID());
+    }
+    super.onDestroy();
+  }
 }
 exports["default"] = Loop;
 
 /***/ }),
 
-/***/ "../modules/loop-builder/assets/js/frontend/handlers/utils/element-handlers.js":
-/*!*************************************************************************************!*\
-  !*** ../modules/loop-builder/assets/js/frontend/handlers/utils/element-handlers.js ***!
-  \*************************************************************************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ "../modules/loop-filter/assets/js/frontend/frontend-legacy.js":
+/*!********************************************************************!*\
+  !*** ../modules/loop-filter/assets/js/frontend/frontend-legacy.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _taxonomyFilter = _interopRequireDefault(__webpack_require__(/*! ./handlers/taxonomy-filter */ "../modules/loop-filter/assets/js/frontend/handlers/taxonomy-filter.js"));
+var _frontendModuleBase = _interopRequireDefault(__webpack_require__(/*! ./frontend-module-base */ "../modules/loop-filter/assets/js/frontend/frontend-module-base.js"));
+class LoopFilter extends _frontendModuleBase.default {
+  constructor() {
+    super();
+    elementorFrontend.elementsHandler.attachHandler('taxonomy-filter', _taxonomyFilter.default);
+  }
+}
+exports["default"] = LoopFilter;
+
+/***/ }),
+
+/***/ "../modules/loop-filter/assets/js/frontend/frontend-module-base.js":
+/*!*************************************************************************!*\
+  !*** ../modules/loop-filter/assets/js/frontend/frontend-module-base.js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _runElementHandlers = _interopRequireDefault(__webpack_require__(/*! elementor-pro/frontend/utils/run-element-handlers */ "../assets/dev/js/frontend/utils/run-element-handlers.js"));
+class BaseFilterFrontendModule extends elementorModules.Module {
+  constructor() {
+    super();
+    this.loopWidgetsStore = {};
+  }
+  removeWidgetFromLoopWidgetsStore(widgetId) {
+    delete this.loopWidgetsStore[widgetId];
+  }
+  addWidgetToLoopWidgetsStore(widgetId) {
+    this.loopWidgetsStore[widgetId] = {
+      filters: {},
+      consolidatedFilters: {}
+    };
+  }
+  removeFilterFromLoopWidget(widgetId, filterId) {
+    if (!this.loopWidgetsStore[widgetId]) {
+      this.addWidgetToLoopWidgetsStore(widgetId);
+    }
+    delete this.loopWidgetsStore[widgetId].filters[filterId];
+    this.refreshLoopWidget(widgetId, filterId);
+  }
+
+  /**
+   * Sets the filter data for a loop widget.
+   *
+   * This function should trigger the following sequence:
+   * 1. Update the filter data for the passed ID in the loopElements object.
+   * 2. Trigger a consolidation of all filters belonging to the passed loop widget ID.
+   *   - This should create an object with filter type keys, and for each type, an object of filter IDs, which contain the filter values.
+   *   - This should also remove duplicates.
+   * 3. Trigger a rerender of the loop widget.
+   *
+   * @param {string}  widgetId
+   * @param {string}  filterId
+   * @param {Object}  filterData
+   * @param {boolean} refresh
+   */
+  setFilterDataForLoopWidget(widgetId, filterId, filterData) {
+    let refresh = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+    if (!this.loopWidgetsStore[widgetId]) {
+      this.addWidgetToLoopWidgetsStore(widgetId);
+    }
+    this.loopWidgetsStore[widgetId].filters[filterId] = filterData;
+    if (refresh) {
+      this.refreshLoopWidget(widgetId, filterId);
+    } else {
+      this.consolidateFiltersForLoopWidget(widgetId);
+    }
+  }
+
+  /**
+   * Consolidates all filters for a loop widget.
+   *
+   * @param {string} widgetId
+   */
+  consolidateFiltersForLoopWidget(widgetId) {
+    const loopWidgetFilters = this.loopWidgetsStore[widgetId].filters;
+    const consolidatedFilters = {};
+    for (const filterId in loopWidgetFilters) {
+      const filter = loopWidgetFilters[filterId],
+        filterType = filter.filterType,
+        filterData = filter.filterData;
+
+      // This part is non-generic. To expand this functionality to other filter types, we'll need to refactor and
+      // generalize this part.
+      if (!consolidatedFilters[filterType]) {
+        consolidatedFilters[filterType] = {};
+      }
+      if (!consolidatedFilters[filterType][filterData.selectedTaxonomy]) {
+        consolidatedFilters[filterType][filterData.selectedTaxonomy] = [];
+      }
+      if (!consolidatedFilters[filterType][filterData.selectedTaxonomy].includes(filterData.term)) {
+        consolidatedFilters[filterType][filterData.selectedTaxonomy].push(filterData.term);
+      }
+    }
+    this.loopWidgetsStore[widgetId].consolidatedFilters = consolidatedFilters;
+  }
+  getQueryStringInObjectForm() {
+    const queryString = {};
+    for (const widgetId in this.loopWidgetsStore) {
+      const loopWidget = this.loopWidgetsStore[widgetId];
+      for (const filterType in loopWidget.consolidatedFilters) {
+        const filterData = loopWidget.consolidatedFilters[filterType];
+        for (const filterName in filterData) {
+          // Add an `e-` prefix to the key to avoid clashes with other query strings.
+          // Filter values are arrays, to support multiple select.
+          queryString[`e-filter-${widgetId}-${filterName}`] = filterData[filterName].join(',');
+        }
+      }
+    }
+    return queryString;
+  }
+  updateURLQueryString(filterId) {
+    const currentUrl = new URL(window.location.href),
+      existingQueryString = currentUrl.searchParams,
+      queryStringObject = this.getQueryStringInObjectForm(),
+      updatedParams = new URLSearchParams(),
+      helpers = this.getFilterHelperAttributes(filterId);
+    existingQueryString.forEach((value, key) => {
+      if (!key.startsWith('e-filter')) {
+        updatedParams.append(key, value);
+      }
+    });
+    for (const key in queryStringObject) {
+      updatedParams.set(key, queryStringObject[key]);
+    }
+    let queryString = updatedParams.toString();
+    if (helpers.pageNum > 1) {
+      queryString = queryString ? this.formatQueryString(helpers.baseUrl, queryString) : helpers.baseUrl;
+    } else {
+      queryString = queryString ? `?${queryString}` : location.pathname;
+    }
+    history.pushState(null, null, queryString);
+  }
+  formatQueryString(baseURL, queryString) {
+    const baseURLParams = baseURL.includes('?') ? new URLSearchParams(baseURL.split('?')[1]) : new URLSearchParams(),
+      inputParams = new URLSearchParams(queryString);
+    for (const param of baseURLParams.keys()) {
+      if (inputParams.has(param)) {
+        inputParams.delete(param);
+      }
+    }
+    const excludedVariables = ['page', 'paged'];
+    for (const excludedVar of excludedVariables) {
+      baseURLParams.delete(excludedVar);
+      inputParams.delete(excludedVar);
+    }
+    const mergedParams = new URLSearchParams(baseURLParams.toString());
+    for (const [param, value] of inputParams.entries()) {
+      mergedParams.append(param, value);
+    }
+    const output = baseURL.split('?')[0] + (mergedParams.toString() ? `?${mergedParams.toString()}` : '');
+    return output;
+  }
+  getFilterHelperAttributes(filterId) {
+    const filterWidget = document.querySelector('[data-id="' + filterId + '"]');
+    if (!filterWidget) {
+      return {
+        baseUrl: location.href,
+        pageNum: 1
+      };
+    }
+    const filterBar = filterWidget.querySelector('.e-filter');
+    return filterBar.dataset;
+  }
+  prepareLoopUpdateRequestData(widgetId, filterId) {
+    const widgetFilters = this.loopWidgetsStore[widgetId].consolidatedFilters,
+      helpers = this.getFilterHelperAttributes(filterId);
+    const data = {
+      post_id: elementorFrontend.config.post.id || this.getClosestDataElementorId(document.querySelector(`.elementor-element-${widgetId}`)),
+      widget_filters: widgetFilters,
+      widget_id: widgetId,
+      pagination_base_url: helpers.baseUrl
+    };
+    if (elementorFrontend.isEditMode()) {
+      // In the editor, we have to support loop widgets that have been created but not saved to the database yet.
+      const widgetContainer = window.top.$e.components.get('document').utils.findContainerById(widgetId);
+      data.widget_model = widgetContainer.model.toJSON({
+        remove: ['default', 'editSettings', 'defaultEditSettings']
+      });
+      data.is_edit_mode = true;
+    }
+    return data;
+  }
+  getClosestDataElementorId(element) {
+    const closestParent = element.closest('[data-elementor-id]');
+    return closestParent ? closestParent.getAttribute('data-elementor-id') : 0;
+  }
+  getFetchArgumentsForLoopUpdate(widgetId, filterId) {
+    const data = this.prepareLoopUpdateRequestData(widgetId, filterId);
+    const args = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    };
+    if (elementorFrontend.isEditMode() && !!elementorPro.config.loopFilter?.nonce) {
+      args.headers['X-WP-Nonce'] = elementorPro.config.loopFilter?.nonce;
+    }
+    return args;
+  }
+  fetchUpdatedLoopWidgetMarkup(widgetId, filterId) {
+    return fetch(`${elementorProFrontend.config.urls.rest}elementor-pro/v1/refresh-loop`, this.getFetchArgumentsForLoopUpdate(widgetId, filterId));
+  }
+  createElementFromHTMLString(widgetContainerHTMLString) {
+    const div = document.createElement('div');
+    if (!widgetContainerHTMLString) {
+      div.classList.add('elementor-widget-container');
+      return div;
+    }
+    div.innerHTML = widgetContainerHTMLString.trim();
+    return div.firstElementChild;
+  }
+  addLoadingAnimationOverlay(widgetId) {
+    const widget = document.querySelector(`.elementor-element-${widgetId}`);
+    if (!widget) {
+      return;
+    }
+    const loadingAnimationOverlay = document.createElement('div');
+    loadingAnimationOverlay.classList.add('e-loading-overlay');
+    widget.appendChild(loadingAnimationOverlay);
+  }
+  removeLoadingAnimationOverlay(widgetId) {
+    const widget = document.querySelector(`.elementor-element-${widgetId}`);
+    if (!widget) {
+      return;
+    }
+    const loadingAnimationOverlay = widget.querySelector('.e-loading-overlay');
+    if (!loadingAnimationOverlay) {
+      return;
+    }
+    loadingAnimationOverlay.remove();
+  }
+  refreshLoopWidget(widgetId, filterId) {
+    this.consolidateFiltersForLoopWidget(widgetId);
+    this.updateURLQueryString(filterId);
+    const widget = document.querySelector(`.elementor-element-${widgetId}`);
+    if (!widget) {
+      return;
+    }
+    this.addLoadingAnimationOverlay(widgetId);
+    const fetchUpdatedLoopWidgetMarkup = this.fetchUpdatedLoopWidgetMarkup(widgetId, filterId).then(response => {
+      if (!(response instanceof Response) || !response?.ok || 400 <= response?.status) {
+        return {};
+      }
+      return response.json();
+    })
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    .catch(error => {
+      return {};
+    }).then(response => {
+      if (!response?.data && '' !== response?.data) {
+        return;
+      }
+      const existingWidgetContainer = widget.querySelector('.elementor-widget-container'),
+        newWidgetContainer = this.createElementFromHTMLString(response.data);
+      widget.replaceChild(newWidgetContainer, existingWidgetContainer);
+      this.handleElementHandlers(newWidgetContainer);
+      elementorFrontend.elementsHandler.runReadyTrigger(document.querySelector(`.elementor-element-${widgetId}`));
+      widget.classList.remove('e-loading');
+    }).finally(() => {
+      this.removeLoadingAnimationOverlay(widgetId);
+    });
+    return fetchUpdatedLoopWidgetMarkup;
+
+    // TODO: Deal with pagination. Do we need to manually add the query string to the pagination links?
+  }
+
+  handleElementHandlers(newWidgetMarkup) {
+    const loopItems = newWidgetMarkup.querySelectorAll('.e-loop-item');
+    (0, _runElementHandlers.default)(loopItems);
+  }
+}
+exports["default"] = BaseFilterFrontendModule;
+
+/***/ }),
+
+/***/ "../modules/loop-filter/assets/js/frontend/handlers/taxonomy-filter.js":
+/*!*****************************************************************************!*\
+  !*** ../modules/loop-filter/assets/js/frontend/handlers/taxonomy-filter.js ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports["default"] = runElementHandlers;
-function runElementHandlers(elements) {
-  [...elements].flatMap(el => [...el.querySelectorAll('.elementor-element')]).forEach(el => elementorFrontend.elementsHandler.runReadyTrigger(el));
+exports["default"] = void 0;
+var _flexHorizontalScroll = __webpack_require__(/*! elementor-pro/frontend/utils/flex-horizontal-scroll */ "../assets/dev/js/frontend/utils/flex-horizontal-scroll.js");
+class TaxonomyFilter extends elementorModules.frontend.handlers.Base {
+  constructor() {
+    super(...arguments);
+    this.resizeListenerNestedTabs = null;
+  }
+  getDefaultSettings() {
+    return {
+      selectors: {
+        item: '.e-filter-item',
+        container: '.e-filter'
+      },
+      filterValues: {
+        default: '__all'
+      }
+    };
+  }
+  getDefaultElements() {
+    return {
+      $filterButtons: this.$element.find(this.getSettings('selectors.item')),
+      $container: this.$element.find(this.getSettings('selectors.container'))
+    };
+  }
+  getHeadingEvents(event) {
+    const container = this.elements.$container[0];
+    return {
+      mousedown: _flexHorizontalScroll.changeScrollStatus.bind(this, container),
+      mouseup: _flexHorizontalScroll.changeScrollStatus.bind(this, container),
+      mouseleave: _flexHorizontalScroll.changeScrollStatus.bind(this, container),
+      mousemove: _flexHorizontalScroll.setHorizontalTitleScrollValues.bind(this, container, this.getHorizontalScrollSetting())
+    };
+  }
+  bindEvents() {
+    this.elements.$filterButtons.on('click', this.onFilterButtonClick.bind(this));
+    this.elements.$container.on(this.getHeadingEvents());
+    const settingsObject = {
+      element: this.elements.$container[0],
+      direction: this.getItemsAlignment(),
+      justifyCSSVariable: '--e-filter-justify-content',
+      horizontalScrollStatus: this.getHorizontalScrollSetting()
+    };
+    this.resizeListenerNestedTabs = _flexHorizontalScroll.setHorizontalScrollAlignment.bind(this, settingsObject);
+    elementorFrontend.elements.$window.on('resize', this.resizeListenerNestedTabs);
+  }
+  onElementChange(propertyName) {
+    if (this.checkSliderPropsToWatch(propertyName)) {
+      const settingsObject = {
+        element: this.elements.$container[0],
+        direction: this.getItemsAlignment(),
+        justifyCSSVariable: '--e-filter-justify-content',
+        horizontalScrollStatus: this.getHorizontalScrollSetting()
+      };
+      (0, _flexHorizontalScroll.setHorizontalScrollAlignment)(settingsObject);
+    }
+  }
+  checkSliderPropsToWatch(propertyName) {
+    return 0 === propertyName.indexOf('horizontal_scroll') || 0 === propertyName.indexOf('item_alignment_horizontal');
+  }
+
+  /**
+   * Get the filter buttons elements.
+   *
+   * If the filter buttons weren't rendered when the handler was initialized, this method will cache the filter
+   * button elements and add the necessary event listeners.
+   *
+   * @return {*} jQuery collection of filter button elements. Might be empty.
+   */
+  getFilterButtonElements() {
+    if (this.elements?.$filterButtons.length) {
+      return this.elements.$filterButtons;
+    }
+    this.elements = this.getDefaultElements();
+    this.bindEvents();
+    return this.elements.$filterButtons;
+  }
+  activateFilterButton(selectedTermSlug) {
+    const $filterButtons = this.getFilterButtonElements();
+    if (!$filterButtons.length) {
+      return;
+    }
+    const $activeButton = $filterButtons.filter('[data-filter="' + selectedTermSlug + '"]');
+    $filterButtons.attr('aria-pressed', false);
+    $activeButton.attr('aria-pressed', true);
+  }
+  deactivateFilterButton(clickedFilter) {
+    const $filterButtons = this.getFilterButtonElements();
+    if (!$filterButtons.length) {
+      return;
+    }
+    const $activeButton = $filterButtons.filter('[data-filter="' + clickedFilter + '"]'),
+      $defaultButton = $filterButtons.filter('[data-filter="' + this.getSettings('filterValues.default') + '"]');
+    $activeButton.attr('aria-pressed', false);
+    $defaultButton.attr('aria-pressed', true);
+    elementorProFrontend.modules.taxonomyFilter.removeFilterFromLoopWidget(this.getElementSettings('selected_element'), this.getID());
+  }
+  getCurrentlyActiveFilter() {
+    const filterButtons = this.getFilterButtonElements(),
+      $activeButton = filterButtons.filter('[aria-pressed=true]');
+    if (!$activeButton.length) {
+      return this.getSettings('filterValues.default');
+    }
+    return $activeButton.data('filter');
+  }
+  filterItems(selectedTermSlug) {
+    const elementSettings = this.getElementSettings();
+    if (this.getSettings('filterValues.default') === selectedTermSlug) {
+      elementorProFrontend.modules.taxonomyFilter.removeFilterFromLoopWidget(elementSettings.selected_element, this.getID());
+      return;
+    }
+    elementorProFrontend.modules.taxonomyFilter.setFilterDataForLoopWidget(elementSettings.selected_element, this.getID(), {
+      filterType: 'taxonomy',
+      filterData: {
+        selectedTaxonomy: elementSettings.taxonomy,
+        term: selectedTermSlug
+      }
+    });
+  }
+  setFilter() {
+    let filter = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.getSettings('filterValues.default');
+    this.filterItems(filter);
+    this.activateFilterButton(filter);
+  }
+  onFilterButtonClick(event) {
+    this.removePaginationHiddenClassOnLoopWidgetContainer();
+    const currentlyActiveFilter = this.getCurrentlyActiveFilter(),
+      clickedFilter = event.currentTarget.dataset.filter;
+    if (this.userClickedOnAllWhileItWasActive(clickedFilter, currentlyActiveFilter)) {
+      return;
+    }
+    if (clickedFilter === currentlyActiveFilter) {
+      this.deactivateFilterButton(clickedFilter);
+      return;
+    }
+    this.setFilter(clickedFilter);
+  }
+  removePaginationHiddenClassOnLoopWidgetContainer() {
+    const elementSettings = this.getElementSettings();
+    const loopWidget = document.querySelector('.elementor-element-' + elementSettings.selected_element);
+    if (loopWidget) {
+      loopWidget.classList.remove('e-load-more-pagination-end');
+    }
+  }
+  userClickedOnAllWhileItWasActive(clickedFilter, currentlyActiveFilter) {
+    return clickedFilter === currentlyActiveFilter && clickedFilter === this.getSettings('filterValues.default');
+  }
+  onDestroy() {
+    const selectedElementId = this.getElementSettings('selected_element'),
+      selectedTaxonomy = this.getElementSettings('taxonomy'),
+      filterId = this.getID();
+    if (selectedElementId && selectedTaxonomy) {
+      elementorProFrontend.modules.taxonomyFilter.removeFilterFromLoopWidget(selectedElementId, filterId);
+    }
+    super.onDestroy();
+  }
+  populateLoopWidgetStoreOnInitialPageLoad() {
+    const elementSettings = this.getElementSettings();
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedTermSlug = urlParams.get('e-filter-' + elementSettings.selected_element + '-' + elementSettings.taxonomy);
+    if (selectedTermSlug) {
+      elementorProFrontend.modules.taxonomyFilter.setFilterDataForLoopWidget(elementSettings.selected_element, this.getID(), {
+        filterType: 'taxonomy',
+        filterData: {
+          selectedTaxonomy: elementSettings.taxonomy,
+          term: selectedTermSlug
+        }
+      }, false);
+    }
+  }
+  onInit() {
+    super.onInit();
+    this.populateLoopWidgetStoreOnInitialPageLoad();
+    const settingsObject = {
+      element: this.elements.$container[0],
+      direction: this.getItemsAlignment(),
+      justifyCSSVariable: '--e-filter-justify-content',
+      horizontalScrollStatus: this.getHorizontalScrollSetting()
+    };
+    (0, _flexHorizontalScroll.setHorizontalScrollAlignment)(settingsObject);
+  }
+  getHorizontalScrollSetting() {
+    const currentDevice = elementorFrontend.getCurrentDeviceMode();
+    return elementorFrontend.utils.controls.getResponsiveControlValue(this.getElementSettings(), 'horizontal_scroll', '', currentDevice);
+  }
+  getItemsAlignment() {
+    const currentDevice = elementorFrontend.getCurrentDeviceMode();
+    return elementorFrontend.utils.controls.getResponsiveControlValue(this.getElementSettings(), 'item_alignment_horizontal', '', currentDevice);
+  }
 }
+exports["default"] = TaxonomyFilter;
 
 /***/ }),
 
@@ -3049,7 +3700,8 @@ class lottieHandler extends elementorModules.frontend.handlers.Base {
       $animation: this.$element.find(selectors.animation),
       $caption: this.$element.find(selectors.caption),
       $sectionParent: this.$element.closest('.elementor-section'),
-      $columnParent: this.$element.closest('.elementor-column')
+      $columnParent: this.$element.closest('.elementor-column'),
+      $containerParent: this.$element.closest('.e-con')
     };
   }
   onInit() {
@@ -3440,10 +4092,13 @@ class lottieHandler extends elementorModules.frontend.handlers.Base {
   }
   getHoverAreaElement() {
     const lottieSettings = this.getLottieSettings();
-    if ('section' === lottieSettings.hover_area) {
-      return this.elements.$sectionParent;
-    } else if ('column' === lottieSettings.hover_area) {
-      return this.elements.$columnParent;
+    switch (lottieSettings.hover_area) {
+      case 'section':
+        return this.elements.$sectionParent;
+      case 'column':
+        return this.elements.$columnParent;
+      case 'container':
+        return this.elements.$containerParent;
     }
     return this.elements.$container;
   }
@@ -4405,6 +5060,144 @@ var _default = elementorModules.frontend.handlers.Base.extend({
   }
 });
 exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/nested-carousel/assets/js/frontend/frontend-legacy.js":
+/*!************************************************************************!*\
+  !*** ../modules/nested-carousel/assets/js/frontend/frontend-legacy.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _nestedCarousel = _interopRequireDefault(__webpack_require__(/*! ./handlers/nested-carousel */ "../modules/nested-carousel/assets/js/frontend/handlers/nested-carousel.js"));
+class _default extends elementorModules.Module {
+  constructor() {
+    super();
+    elementorFrontend.elementsHandler.attachHandler('nested-carousel', _nestedCarousel.default);
+  }
+}
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/nested-carousel/assets/js/frontend/handlers/nested-carousel.js":
+/*!*********************************************************************************!*\
+  !*** ../modules/nested-carousel/assets/js/frontend/handlers/nested-carousel.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _runElementHandlers = _interopRequireDefault(__webpack_require__(/*! elementor-pro/frontend/utils/run-element-handlers */ "../assets/dev/js/frontend/utils/run-element-handlers.js"));
+class NestedCarousel extends elementorModules.frontend.handlers.CarouselBase {
+  getDefaultSettings() {
+    const defaultSettings = super.getDefaultSettings();
+    defaultSettings.selectors.carousel = '.e-n-carousel';
+    defaultSettings.selectors.slidesWrapper = '.e-n-carousel > .swiper-wrapper';
+    return defaultSettings;
+  }
+  getSwiperSettings() {
+    const swiperOptions = super.getSwiperSettings(),
+      elementSettings = this.getElementSettings(),
+      isRtl = elementorFrontend.config.is_rtl,
+      widgetSelector = `.elementor-element-${this.getID()}`;
+    if (elementorFrontend.isEditMode()) {
+      delete swiperOptions.autoplay;
+      swiperOptions.loop = false;
+      swiperOptions.noSwipingSelector = '.swiper-slide > .e-con .elementor-element';
+    }
+    if ('yes' === elementSettings.arrows) {
+      swiperOptions.navigation = {
+        prevEl: isRtl ? `${widgetSelector} .elementor-swiper-button-next` : `${widgetSelector} .elementor-swiper-button-prev`,
+        nextEl: isRtl ? `${widgetSelector} .elementor-swiper-button-prev` : `${widgetSelector} .elementor-swiper-button-next`
+      };
+    }
+    this.applySwipeOptions(swiperOptions);
+    return swiperOptions;
+  }
+  async onInit() {
+    this.wrapSlideContent();
+    super.onInit(...arguments);
+    if (!elementorFrontend.config.experimentalFeatures.e_swiper_latest) {
+      this.reInitBackgroundSlideshow();
+    }
+    this.ranElementHandlers = false;
+  }
+  handleElementHandlers() {
+    if (this.ranElementHandlers || !this.swiper) {
+      return;
+    }
+    const duplicatedSlides = Array.from(this.swiper.slides).filter(slide => slide.classList.contains(this.swiper.params.slideDuplicateClass));
+    (0, _runElementHandlers.default)(duplicatedSlides);
+    this.ranElementHandlers = true;
+  }
+  wrapSlideContent() {
+    if (!elementorFrontend.isEditMode()) {
+      return;
+    }
+    const settings = this.getSettings(),
+      slideContentClass = settings.selectors.slideContent.replace('.', ''),
+      $widget = this.$element;
+    let index = 1;
+    this.findElement(`${settings.selectors.slidesWrapper} > .e-con`).each(function () {
+      const $currentContainer = jQuery(this),
+        hasSwiperSlideWrapper = $currentContainer.closest('div').hasClass(slideContentClass),
+        $currentSlide = $widget.find(`${settings.selectors.slidesWrapper} > .${slideContentClass}:nth-child(${index})`);
+      if (!hasSwiperSlideWrapper) {
+        $currentSlide.append($currentContainer);
+      }
+      index++;
+    });
+  }
+  togglePauseOnHover(toggleOn) {
+    if (elementorFrontend.isEditMode()) {
+      return;
+    }
+    super.togglePauseOnHover(toggleOn);
+  }
+  getChangeableProperties() {
+    return {
+      arrows_position: 'arrows_position' // Not a Swiper setting.
+    };
+  }
+
+  applySwipeOptions(swiperOptions) {
+    if (!this.isTouchDevice()) {
+      swiperOptions.shortSwipes = false;
+    } else {
+      swiperOptions.touchRatio = 1;
+      swiperOptions.longSwipesRatio = 0.3;
+      swiperOptions.followFinger = true;
+      swiperOptions.threshold = 10;
+    }
+  }
+  isTouchDevice() {
+    return elementorFrontend.utils.environment.isTouchDevice;
+  }
+  reInitBackgroundSlideshow() {
+    const slideshows = this.elements.$swiperContainer.find('.elementor-background-slideshow');
+    for (const element of slideshows) {
+      if (!element.swiper) {
+        return;
+      }
+      element.swiper.initialized = false;
+      element.swiper.init();
+    }
+  }
+}
+exports["default"] = NestedCarousel;
 
 /***/ }),
 
@@ -5892,7 +6685,7 @@ class LoadMore extends elementorModules.frontend.handlers.Base {
 
     // Grabbing only the new articles from the response without the existing ones (prevent posts duplication).
     const postsElements = result.querySelectorAll(`[data-id="${this.elementId}"] ${selectors.postsContainer} > ${selectors.postWrapperTag}`);
-    const nextPageUrl = result.querySelector('.e-load-more-anchor').getAttribute('data-next-page');
+    const nextPageUrl = result.querySelector(`[data-id="${this.elementId}"] .e-load-more-anchor`).getAttribute('data-next-page');
     postsElements.forEach(element => this.elements.postsContainer.append(element));
     this.elements.loadMoreAnchor.setAttribute('data-page', this.currentPage);
     this.elements.loadMoreAnchor.setAttribute('data-next-page', nextPageUrl);
@@ -6299,14 +7092,16 @@ exports["default"] = _default;
 /*!*****************************************************************************!*\
   !*** ../modules/share-buttons/assets/js/frontend/handlers/share-buttons.js ***!
   \*****************************************************************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
+var _handleParameterPollution = _interopRequireDefault(__webpack_require__(/*! elementor-pro/frontend/utils/handle-parameter-pollution */ "../assets/dev/js/frontend/utils/handle-parameter-pollution.js"));
 var _default = elementorModules.frontend.handlers.Base.extend({
   async onInit() {
     if (!this.isActive()) {
@@ -6322,7 +7117,7 @@ var _default = elementorModules.frontend.handlers.Base.extend({
     if (isCustomURL) {
       shareLinkSettings.url = elementSettings.share_url.url;
     } else {
-      shareLinkSettings.url = location.href;
+      shareLinkSettings.url = (0, _handleParameterPollution.default)(location.href);
       shareLinkSettings.title = elementorFrontend.config.post.title;
       shareLinkSettings.text = elementorFrontend.config.post.excerpt;
       shareLinkSettings.image = elementorFrontend.config.post.featuredImage;
@@ -7008,10 +7803,10 @@ class TOCHandler extends elementorModules.frontend.handlers.Base {
     // If minimizedOn value is set to desktop, it applies for widescreen as well.
     if ('desktop' === minimizedOn || activeBreakpoints.indexOf(minimizedOn) >= activeBreakpoints.indexOf(currentDeviceMode)) {
       if (!isCollapsed) {
-        this.collapseBox();
+        this.collapseBox(false);
       }
     } else if (isCollapsed) {
-      this.expandBox();
+      this.expandBox(false);
     }
   }
   onElementChange(settings) {
@@ -7067,21 +7862,27 @@ class TOCHandler extends elementorModules.frontend.handlers.Base {
     }
   }
   expandBox() {
+    let changeFocus = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
     const boxHeight = this.getCurrentDeviceSetting('min_height');
     this.$element.removeClass(this.getSettings('classes.collapsed'));
     this.elements.$tocBody.attr('aria-expanded', 'true').slideDown();
 
     // Return container to the full height in case a min-height is defined by the user
     this.elements.$widgetContainer.css('min-height', boxHeight.size + boxHeight.unit);
-    this.elements.$collapseButton.trigger('focus');
+    if (changeFocus) {
+      this.elements.$collapseButton.trigger('focus');
+    }
   }
   collapseBox() {
+    let changeFocus = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
     this.$element.addClass(this.getSettings('classes.collapsed'));
     this.elements.$tocBody.attr('aria-expanded', 'false').slideUp();
 
     // Close container in case a min-height is defined by the user
     this.elements.$widgetContainer.css('min-height', '0px');
-    this.elements.$expandButton.trigger('focus');
+    if (changeFocus) {
+      this.elements.$expandButton.trigger('focus');
+    }
   }
   triggerClickOnEnterSpace(event) {
     const ENTER_KEY = 13,
@@ -8448,29 +9249,6 @@ class PurchaseSummaryHandler extends _base.default {
   }
 }
 exports["default"] = PurchaseSummaryHandler;
-
-/***/ }),
-
-/***/ "../../elementor/assets/dev/js/frontend/handlers/image-carousel.js":
-/*!*************************************************************************!*\
-  !*** ../../elementor/assets/dev/js/frontend/handlers/image-carousel.js ***!
-  \*************************************************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = void 0;
-class ImageCarousel extends elementorModules.frontend.handlers.CarouselBase {
-  getDefaultSettings() {
-    const settings = super.getDefaultSettings();
-    settings.selectors.carousel = '.elementor-image-carousel-wrapper';
-    return settings;
-  }
-}
-exports["default"] = ImageCarousel;
 
 /***/ }),
 

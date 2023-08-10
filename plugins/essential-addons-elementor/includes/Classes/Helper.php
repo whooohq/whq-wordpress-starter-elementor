@@ -10,6 +10,7 @@ if (!defined('ABSPATH')) {
 
 class Helper extends \Essential_Addons_Elementor\Classes\Helper
 {
+	use \Essential_Addons_Elementor\Pro\Traits\Dynamic_Filterable_Gallery;
 
 	const EAEL_PRO_ALLOWED_HTML_TAGS = [
 		'article',
@@ -150,43 +151,47 @@ class Helper extends \Essential_Addons_Elementor\Classes\Helper
     }
 
     // Get Mailchimp list
-    public static function mailchimp_lists($element = 'mailchimp', $type_double_optin = false)
-    {
-        $lists = $lists_double_optin = [];
-        $api_key = get_option('eael_save_mailchimp_api');
+	public static function mailchimp_lists( $element = 'mailchimp', $type_double_optin = false ) {
+		$lists   = $lists_double_optin = [];
+		$api_key = get_option( 'eael_save_mailchimp_api' );
 
-        if($element === 'login-register-form'){
-            $api_key = get_option('eael_lr_mailchimp_api_key');
-        }
+		if ( $element === 'login-register-form' ) {
+			$api_key = get_option( 'eael_lr_mailchimp_api_key' );
+		}
 
-        if (empty($api_key)) {
-            return $lists;
-        }
+		if ( empty( $api_key ) ) {
+			return $lists;
+		}
 
-        $response = wp_remote_get('https://' . substr($api_key,
-            strpos($api_key, '-') + 1) . '.api.mailchimp.com/3.0/lists/?fields=lists.id,lists.name,lists.double_optin&count=1000', [
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Authorization' => 'Basic ' . base64_encode('user:' . $api_key),
-            ],
-        ]);
+        $pattern = '/^[0-9a-z]{32}(-us)(0?[1-9]|[1-9][0-9])?$/';
+		if ( ! preg_match( $pattern, $api_key ) ) {
+			return $lists;
+		}
 
-        if (!is_wp_error($response)) {
-            $response = json_decode(wp_remote_retrieve_body($response));
+		$response = wp_safe_remote_get( 'https://' . substr( $api_key,
+				strpos( $api_key, '-' ) + 1 ) . '.api.mailchimp.com/3.0/lists/?fields=lists.id,lists.name,lists.double_optin&count=1000', [
+			'headers' => [
+				'Content-Type'  => 'application/json',
+				'Authorization' => 'Basic ' . base64_encode( 'user:' . $api_key ),
+			],
+		] );
 
-            if (!empty($response) && !empty($response->lists)) {
-                $lists[''] = __('Select One', 'essential-addons-for-elementor-lite');
+		if ( ! is_wp_error( $response ) ) {
+			$response = json_decode( wp_remote_retrieve_body( $response ) );
 
-                for ($i = 0; $i < count($response->lists); $i++) {
-                    $lists[$response->lists[$i]->id] = $response->lists[$i]->name;
-                    $lists[$response->lists[$i]->id] = $response->lists[$i]->name;
-                    $lists_double_optin[$response->lists[$i]->id] = $response->lists[$i]->double_optin;
-                }
-            }
-        }
+			if ( ! empty( $response ) && ! empty( $response->lists ) ) {
+				$lists[''] = __( 'Select One', 'essential-addons-for-elementor-lite' );
 
-        return $type_double_optin ? $lists_double_optin : $lists;
-    }
+				for ( $i = 0; $i < count( $response->lists ); $i ++ ) {
+					$lists[ $response->lists[ $i ]->id ]              = $response->lists[ $i ]->name;
+					$lists[ $response->lists[ $i ]->id ]              = $response->lists[ $i ]->name;
+					$lists_double_optin[ $response->lists[ $i ]->id ] = $response->lists[ $i ]->double_optin;
+				}
+			}
+		}
+
+		return $type_double_optin ? $lists_double_optin : $lists;
+	}
 
     public static function list_db_tables()
     {

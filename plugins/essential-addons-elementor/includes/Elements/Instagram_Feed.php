@@ -80,6 +80,9 @@ class Instagram_Feed extends Widget_Base {
             [
                 'label'       => esc_html__('Access Token', 'essential-addons-elementor'),
                 'type'        => Controls_Manager::TEXT,
+                'ai' => [
+					'active' => false,
+				],
                 'label_block' => true,
                 'description' => '<a href="https://essential-addons.com/elementor/docs/instagram-feed/" class="eael-btn" target="_blank">Get Access Token</a>',
                 'essential-addons-elementor',
@@ -313,6 +316,9 @@ class Instagram_Feed extends Widget_Base {
                     'eael_instafeed_show_profile_image' => 'yes',
                     'eael_instafeed_layout'             => 'card',
                 ],
+                'ai' => [
+                    'active' => false,
+                ],
             ]
         );
 
@@ -340,6 +346,9 @@ class Instagram_Feed extends Widget_Base {
                     'eael_instafeed_show_username' => 'yes',
                     'eael_instafeed_layout'        => 'card',
                 ],
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 
@@ -372,7 +381,10 @@ class Instagram_Feed extends Widget_Base {
                 'default'   => __('Load More', 'essential-addons-elementor'),
                 'condition' => [
                     'eael_instafeed_pagination' => 'yes'
-                ]
+                ],
+                'ai' => [
+					'active' => false,
+				],
             ]
         );
 

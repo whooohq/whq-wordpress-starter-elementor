@@ -8,7 +8,6 @@ if (!defined('ABSPATH')) {
 
 use \Elementor\Controls_Manager;
 use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
-use Elementor\Core\Schemes\Typography;
 use \Elementor\Group_Control_Border;
 use \Elementor\Group_Control_Box_Shadow;
 use \Elementor\Group_Control_Typography;
@@ -19,6 +18,8 @@ use Essential_Addons_Elementor\Traits\Helper;
 class Post_Block extends Widget_Base
 {
     use Helper;
+
+	private $page_id;
 
     public function get_name()
     {
@@ -698,7 +699,9 @@ class Post_Block extends Widget_Base
             [
                 'name' => 'eael_post_block_terms_typography',
                 'label' => __('Meta Typography', 'essential-addons-elementor'),
-                'scheme' => Typography::TYPOGRAPHY_3,
+                'global' => [
+	                'default' => Global_Typography::TYPOGRAPHY_TEXT
+                ],
                 'selector' => '{{WRAPPER}} .post-meta-categories li, {{WRAPPER}} .post-meta-categories li a',
             ]
         );

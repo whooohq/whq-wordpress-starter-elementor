@@ -88,7 +88,7 @@ echo '<div class="eael-post-list-post ' . (has_post_thumbnail() ? '' : 'eael-emp
 			$validate_tag = Helper::eael_pro_validate_html_tag($settings['eael_post_list_title_tag']);
             if ($settings['eael_post_list_post_title'] == 'yes' && !empty($settings['eael_post_list_title_tag'])) {
                 echo "<{$validate_tag} class=\"eael-post-list-title\">";
-                    echo '<a href="' . get_the_permalink() . '"' . $link_settings['title_link_nofollow'] . '' . $link_settings['title_link_target_blank'] . '>' . get_the_title() . '</a>';
+                    echo '<a href="' . get_the_permalink() . '"' . $link_settings['title_link_nofollow'] . '' . $link_settings['title_link_target_blank'] . '>' . esc_html( get_the_title() ) . '</a>';
                 echo "</{$validate_tag}>";
             }
 
