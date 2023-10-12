@@ -12,8 +12,8 @@
  */
 function hello_elementor_child_enqueue_scripts() {
 	// Cache bust
-	$stylecss  = date('Ymd-Gis', filemtime( get_stylesheet_directory() . '/scripts.js' ));
-	$scriptsjs = date('Ymd-Gis', filemtime( get_stylesheet_directory() . '/style.css' ));
+	$scriptsjs  = date('Ymd-Gis', filemtime( get_stylesheet_directory() . '/scripts.js' ));
+	$stylecss = date('Ymd-Gis', filemtime( get_stylesheet_directory() . '/style.css' ));
 
 	wp_enqueue_style(
 		'hello-elementor-child-style',
