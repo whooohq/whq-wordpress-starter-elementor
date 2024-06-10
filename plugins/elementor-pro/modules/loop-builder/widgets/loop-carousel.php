@@ -3,7 +3,6 @@ namespace ElementorPro\Modules\LoopBuilder\Widgets;
 
 use ElementorPro\Modules\LoopBuilder\Documents\Loop as LoopDocument;
 use Elementor\Controls_Manager;
-use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use ElementorPro\Plugin;
 use ElementorPro\Base\Base_Carousel_Trait;
 
@@ -83,7 +82,6 @@ class Loop_Carousel extends Base {
 				'size_units' => [ 'px' ],
 				'range' => [
 					'px' => [
-						'min' => 0,
 						'max' => 400,
 					],
 				],

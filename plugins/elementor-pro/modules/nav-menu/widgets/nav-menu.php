@@ -92,16 +92,17 @@ class Nav_Menu extends Base_Widget {
 			$this->add_control(
 				'menu',
 				[
-					'type' => Controls_Manager::RAW_HTML,
-					'raw' => '<strong>' . esc_html__( 'There are no menus in your site.', 'elementor-pro' ) . '</strong><br>' .
-							sprintf(
-								/* translators: 1: Link opening tag, 2: Link closing tag. */
-								esc_html__( 'Go to the %1$sMenus screen%2$s to create one.', 'elementor-pro' ),
-								sprintf( '<a href="%s" target="_blank">', admin_url( 'nav-menus.php?action=edit&menu=0' ) ),
-								'</a>'
-							),
+					// TODO: Remove define() with the release of Elementor 3.22
+					'type' => defined( 'Controls_Manager::ALERT' ) ? Controls_Manager::ALERT : 'alert',
+					'alert_type' => 'info',
+					'heading' => esc_html__( 'There are no menus in your site.', 'elementor-pro' ),
+					'content' => sprintf(
+						/* translators: 1: Link opening tag, 2: Link closing tag. */
+						esc_html__( 'Go to the %1$sMenus screen%2$s to create one.', 'elementor-pro' ),
+						sprintf( '<a href="%s" target="_blank">', admin_url( 'nav-menus.php?action=edit&menu=0' ) ),
+						'</a>'
+					),
 					'separator' => 'after',
-					'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
 				]
 			);
 		}
@@ -121,28 +122,36 @@ class Nav_Menu extends Base_Widget {
 			]
 		);
 
+		$start = is_rtl() ? 'end' : 'start';
+		$end = is_rtl() ? 'start' : 'end';
+
 		$this->add_control(
 			'align_items',
 			[
 				'label' => esc_html__( 'Alignment', 'elementor-pro' ),
 				'type' => Controls_Manager::CHOOSE,
 				'options' => [
-					'left' => [
-						'title' => esc_html__( 'Left', 'elementor-pro' ),
-						'icon' => 'eicon-h-align-left',
+					'start' => [
+						'title' => esc_html__( 'Start', 'elementor-pro' ),
+						'icon' => "eicon-align-$start-h",
 					],
 					'center' => [
 						'title' => esc_html__( 'Center', 'elementor-pro' ),
-						'icon' => 'eicon-h-align-center',
+						'icon' => 'eicon-align-center-h',
 					],
-					'right' => [
-						'title' => esc_html__( 'Right', 'elementor-pro' ),
-						'icon' => 'eicon-h-align-right',
+					'end' => [
+						'title' => esc_html__( 'End', 'elementor-pro' ),
+						'icon' => "eicon-align-$end-h",
 					],
 					'justify' => [
 						'title' => esc_html__( 'Stretch', 'elementor-pro' ),
-						'icon' => 'eicon-h-align-stretch',
+						'icon' => 'eicon-align-stretch-h',
 					],
+				],
+				// For BC
+				'classes_dictionary' => [
+					'left' => is_rtl() ? 'end' : 'start',
+					'right' => is_rtl() ? 'start' : 'end',
 				],
 				'prefix_class' => 'elementor-nav-menu__align-',
 				'condition' => [
@@ -761,6 +770,12 @@ class Nav_Menu extends Base_Widget {
 						'min' => 1,
 						'max' => 20,
 					],
+					'em' => [
+						'max' => 2,
+					],
+					'rem' => [
+						'max' => 2,
+					],
 				],
 				'condition' => $divider_condition,
 				'selectors' => [
@@ -779,6 +794,12 @@ class Nav_Menu extends Base_Widget {
 					'px' => [
 						'min' => 1,
 						'max' => 100,
+					],
+					'em' => [
+						'max' => 10,
+					],
+					'rem' => [
+						'max' => 10,
 					],
 					'%' => [
 						'min' => 1,
@@ -825,6 +846,12 @@ class Nav_Menu extends Base_Widget {
 					'px' => [
 						'max' => 30,
 					],
+					'em' => [
+						'max' => 3,
+					],
+					'rem' => [
+						'max' => 3,
+					],
 				],
 				'selectors' => [
 					'{{WRAPPER}} .e--pointer-framed .elementor-item:before' => 'border-width: {{SIZE}}{{UNIT}}',
@@ -853,6 +880,12 @@ class Nav_Menu extends Base_Widget {
 					'px' => [
 						'max' => 50,
 					],
+					'em' => [
+						'max' => 5,
+					],
+					'rem' => [
+						'max' => 5,
+					],
 				],
 				'selectors' => [
 					'{{WRAPPER}} .elementor-nav-menu--main .elementor-item' => 'padding-left: {{SIZE}}{{UNIT}}; padding-right: {{SIZE}}{{UNIT}}',
@@ -870,6 +903,12 @@ class Nav_Menu extends Base_Widget {
 					'px' => [
 						'max' => 50,
 					],
+					'em' => [
+						'max' => 5,
+					],
+					'rem' => [
+						'max' => 5,
+					],
 				],
 				'selectors' => [
 					'{{WRAPPER}} .elementor-nav-menu--main .elementor-item' => 'padding-top: {{SIZE}}{{UNIT}}; padding-bottom: {{SIZE}}{{UNIT}}',
@@ -886,6 +925,12 @@ class Nav_Menu extends Base_Widget {
 				'range' => [
 					'px' => [
 						'max' => 100,
+					],
+					'em' => [
+						'max' => 10,
+					],
+					'rem' => [
+						'max' => 10,
 					],
 				],
 				'selectors' => [
@@ -963,7 +1008,6 @@ class Nav_Menu extends Base_Widget {
 				'selectors' => [
 					'{{WRAPPER}} .elementor-nav-menu--dropdown' => 'background-color: {{VALUE}}',
 				],
-				'separator' => 'none',
 			]
 		);
 
@@ -1002,7 +1046,6 @@ class Nav_Menu extends Base_Widget {
 					{{WRAPPER}} .elementor-nav-menu--dropdown a.elementor-item-active,
 					{{WRAPPER}} .elementor-nav-menu--dropdown a.highlighted' => 'background-color: {{VALUE}}',
 				],
-				'separator' => 'none',
 			]
 		);
 
@@ -1036,7 +1079,6 @@ class Nav_Menu extends Base_Widget {
 				'selectors' => [
 					'{{WRAPPER}} .elementor-nav-menu--dropdown a.elementor-item-active' => 'background-color: {{VALUE}}',
 				],
-				'separator' => 'none',
 			]
 		);
 
@@ -1096,7 +1138,13 @@ class Nav_Menu extends Base_Widget {
 			[
 				'label' => esc_html__( 'Horizontal Padding', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
+				'size_units' => [ 'px', 'em', 'rem', 'vw', 'custom' ],
+				'range' => [
+					'vw' => [
+						'min' => 0,
+						'max' => 10,
+					],
+				],
 				'selectors' => [
 					'{{WRAPPER}} .elementor-nav-menu--dropdown a' => 'padding-left: {{SIZE}}{{UNIT}}; padding-right: {{SIZE}}{{UNIT}}',
 				],
@@ -1110,10 +1158,20 @@ class Nav_Menu extends Base_Widget {
 			[
 				'label' => esc_html__( 'Vertical Padding', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
+				'size_units' => [ 'px', 'em', 'rem', 'vh', 'custom' ],
 				'range' => [
 					'px' => [
 						'max' => 50,
+					],
+					'em' => [
+						'max' => 5,
+					],
+					'rem' => [
+						'max' => 5,
+					],
+					'vh' => [
+						'min' => 0,
+						'max' => 10,
 					],
 				],
 				'selectors' => [
@@ -1151,7 +1209,10 @@ class Nav_Menu extends Base_Widget {
 						'max' => 50,
 					],
 					'em' => [
-						'max' => 2,
+						'max' => 5,
+					],
+					'rem' => [
+						'max' => 5,
 					],
 				],
 				'selectors' => [
@@ -1173,6 +1234,14 @@ class Nav_Menu extends Base_Widget {
 					'px' => [
 						'min' => -100,
 						'max' => 100,
+					],
+					'em' => [
+						'min' => -10,
+						'max' => 10,
+					],
+					'rem' => [
+						'min' => -10,
+						'max' => 10,
 					],
 				],
 				'selectors' => [
@@ -1268,9 +1337,16 @@ class Nav_Menu extends Base_Widget {
 			[
 				'label' => esc_html__( 'Size', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
 					'px' => [
 						'min' => 15,
+					],
+					'em' => [
+						'max' => 1.5,
+					],
+					'rem' => [
+						'max' => 1.5,
 					],
 				],
 				'selectors' => [
@@ -1291,6 +1367,9 @@ class Nav_Menu extends Base_Widget {
 						'max' => 20,
 					],
 					'em' => [
+						'max' => 2,
+					],
+					'rem' => [
 						'max' => 2,
 					],
 				],

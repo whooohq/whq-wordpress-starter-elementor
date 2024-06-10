@@ -108,6 +108,14 @@ abstract class Base extends Base_Widget {
 						'min' => 100,
 						'max' => 1000,
 					],
+					'em' => [
+						'min' => 10,
+						'max' => 100,
+					],
+					'rem' => [
+						'min' => 10,
+						'max' => 100,
+					],
 					'vh' => [
 						'min' => 20,
 					],
@@ -401,11 +409,10 @@ abstract class Base extends Base_Widget {
 			[
 				'label' => esc_html__( 'Arrows', 'elementor-pro' ),
 				'type' => Controls_Manager::HEADING,
-				'separator' => 'none',
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'arrows_size',
 			[
 				'label' => esc_html__( 'Size', 'elementor-pro' ),
@@ -416,7 +423,13 @@ abstract class Base extends Base_Widget {
 				],
 				'range' => [
 					'px' => [
-						'min' => 10,
+						'max' => 100,
+					],
+					'em' => [
+						'max' => 10,
+					],
+					'rem' => [
+						'max' => 10,
 					],
 				],
 				'selectors' => [
@@ -467,7 +480,7 @@ abstract class Base extends Base_Widget {
 
 		$swiper_class = Plugin::elementor()->experiments->is_feature_active( 'e_swiper_latest' ) ? 'swiper' : 'swiper-container';
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'pagination_size',
 			[
 				'label' => esc_html__( 'Size', 'elementor-pro' ),
@@ -475,7 +488,13 @@ abstract class Base extends Base_Widget {
 				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
 					'px' => [
-						'max' => 20,
+						'max' => 100,
+					],
+					'em' => [
+						'max' => 10,
+					],
+					'rem' => [
+						'max' => 10,
 					],
 				],
 				'selectors' => [

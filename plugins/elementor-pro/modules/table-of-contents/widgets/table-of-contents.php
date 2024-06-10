@@ -155,6 +155,9 @@ class Table_Of_Contents extends Base_Widget {
 				'default' => [],
 				'label_block' => true,
 				'frontend_available' => true,
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -234,13 +237,14 @@ class Table_Of_Contents extends Base_Widget {
 				'type' => Controls_Manager::SWITCHER,
 				'default' => 'yes',
 				'frontend_available' => true,
+				'separator' => 'before',
 			]
 		);
 
 		$this->add_control(
 			'expand_icon',
 			[
-				'label' => esc_html__( 'Icon', 'elementor-pro' ),
+				'label' => esc_html__( 'Expand Icon', 'elementor-pro' ),
 				'type' => Controls_Manager::ICONS,
 				'default' => [
 					'value' => 'fas fa-chevron-down',
@@ -269,7 +273,7 @@ class Table_Of_Contents extends Base_Widget {
 		$this->add_control(
 			'collapse_icon',
 			[
-				'label' => esc_html__( 'Minimize Icon', 'elementor-pro' ),
+				'label' => esc_html__( 'Collapse Icon', 'elementor-pro' ),
 				'type' => Controls_Manager::ICONS,
 				'default' => [
 					'value' => 'fas fa-chevron-up',
@@ -339,6 +343,7 @@ class Table_Of_Contents extends Base_Widget {
 				'type' => Controls_Manager::SWITCHER,
 				'default' => 'yes',
 				'frontend_available' => true,
+				'separator' => 'before',
 			]
 		);
 
@@ -400,7 +405,7 @@ class Table_Of_Contents extends Base_Widget {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'border_width',
 			[
 				'label' => esc_html__( 'Border Width', 'elementor-pro' ),
@@ -413,14 +418,18 @@ class Table_Of_Contents extends Base_Widget {
 					'em' => [
 						'max' => 2,
 					],
+					'rem' => [
+						'max' => 2,
+					],
 				],
 				'selectors' => [
 					'{{WRAPPER}}' => '--box-border-width: {{SIZE}}{{UNIT}}',
 				],
+				'separator' => 'before',
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'border_radius',
 			[
 				'label' => esc_html__( 'Border Radius', 'elementor-pro' ),
@@ -428,6 +437,18 @@ class Table_Of_Contents extends Base_Widget {
 				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
 				'selectors' => [
 					'{{WRAPPER}}' => '--box-border-radius: {{SIZE}}{{UNIT}}',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'header_separator_width',
+			[
+				'label' => esc_html__( 'Separator Width', 'elementor-pro' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
+				'selectors' => [
+					'{{WRAPPER}}' => '--separator-width: {{SIZE}}{{UNIT}}',
 				],
 			]
 		);
@@ -452,14 +473,20 @@ class Table_Of_Contents extends Base_Widget {
 				'size_units' => [ 'px', 'em', 'rem', 'vh', 'custom' ],
 				'range' => [
 					'px' => [
-						'min' => 0,
 						'max' => 1000,
+					],
+					'em' => [
+						'max' => 100,
+					],
+					'rem' => [
+						'max' => 100,
 					],
 				],
 				'selectors' => [
 					'{{WRAPPER}}' => '--box-min-height: {{SIZE}}{{UNIT}}',
 				],
 				'frontend_available' => true,
+				'separator' => 'after',
 			]
 		);
 
@@ -478,6 +505,35 @@ class Table_Of_Contents extends Base_Widget {
 			[
 				'label' => esc_html__( 'Header', 'elementor-pro' ),
 				'tab' => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$logical_start = is_rtl() ? 'right' : 'left';
+		$logical_end = is_rtl() ? 'left' : 'right';
+
+		$this->add_responsive_control(
+			'header_text_align',
+			[
+				'label' => esc_html__( 'Text Align', 'elementor-pro' ),
+				'type' => Controls_Manager::CHOOSE,
+				'options' => [
+					'start' => [
+						'title' => esc_html__( 'Start', 'elementor-pro' ),
+						'icon' => "eicon-text-align-$logical_start",
+					],
+					'center' => [
+						'title' => esc_html__( 'Center', 'elementor-pro' ),
+						'icon' => 'eicon-text-align-center',
+					],
+					'end' => [
+						'title' => esc_html__( 'End', 'elementor-pro' ),
+						'icon' => "eicon-text-align-$logical_end",
+					],
+				],
+				'default' => 'start',
+				'selectors' => [
+					'{{WRAPPER}} .elementor-toc__header-title' => 'text-align: {{VALUE}}',
+				],
 			]
 		);
 
@@ -528,17 +584,52 @@ class Table_Of_Contents extends Base_Widget {
 				'selectors' => [
 					'{{WRAPPER}}' => '--toggle-button-color: {{VALUE}}',
 				],
+				'separator' => 'before',
 			]
 		);
 
-		$this->add_control(
-			'header_separator_width',
+		$this->add_responsive_control(
+			'toggle_button_position',
 			[
-				'label' => esc_html__( 'Separator Width', 'elementor-pro' ),
-				'type' => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
+				'label' => esc_html__( 'Icon Position', 'elementor-pro' ),
+				'type' => Controls_Manager::CHOOSE,
+				'options' => [
+					'row-reverse' => [
+						'title' => esc_html__( 'Start', 'elementor-pro' ),
+						'icon' => "eicon-h-align-$logical_start",
+					],
+					'row' => [
+						'title' => esc_html__( 'End', 'elementor-pro' ),
+						'icon' => "eicon-h-align-$logical_end",
+					],
+				],
+				'default' => 'row',
+				'toggle' => false,
 				'selectors' => [
-					'{{WRAPPER}}' => '--separator-width: {{SIZE}}{{UNIT}}',
+					'{{WRAPPER}} .elementor-toc__header' => 'flex-direction: {{VALUE}};',
+				],
+				'condition' => [
+					'minimize_box' => 'yes',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'heading_gap',
+			[
+				'label' => esc_html__( 'Gap', 'elementor-pro' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em', 'rem', 'vw', 'custom' ],
+				'range' => [
+					'px' => [
+						'max' => 100,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .elementor-toc__header' => 'column-gap: {{SIZE}}{{UNIT}};',
+				],
+				'condition' => [
+					'minimize_box' => 'yes',
 				],
 			]
 		);
@@ -561,8 +652,13 @@ class Table_Of_Contents extends Base_Widget {
 				'size_units' => [ 'px', 'em', 'rem', 'vh', 'custom' ],
 				'range' => [
 					'px' => [
-						'min' => 0,
 						'max' => 1000,
+					],
+					'em' => [
+						'max' => 100,
+					],
+					'rem' => [
+						'max' => 100,
 					],
 				],
 				'selectors' => [
@@ -582,7 +678,7 @@ class Table_Of_Contents extends Base_Widget {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'list_indent',
 			[
 				'label' => esc_html__( 'Indent', 'elementor-pro' ),
@@ -664,6 +760,21 @@ class Table_Of_Contents extends Base_Widget {
 			]
 		);
 
+		$this->add_control(
+			'item_text_hover_transition_duration',
+			[
+				'label' => esc_html__( 'Transition Duration', 'elementor-pro' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 's', 'ms', 'custom' ],
+				'default' => [
+					'unit' => 'ms',
+				],
+				'selectors' => [
+					'{{WRAPPER}}' => '--item-text-transition-duration: {{SIZE}}{{UNIT}}',
+				],
+			]
+		);
+
 		$this->end_controls_tab(); // hover
 
 		$this->start_controls_tab( 'active',
@@ -738,20 +849,15 @@ class Table_Of_Contents extends Base_Widget {
 
 	protected function render() {
 		$settings = $this->get_settings_for_display();
+		$toc_id = 'elementor-toc__' . $this->get_id();
 
-		$this->add_render_attribute(
-			'header',
-			[
-				'class' => 'elementor-toc__header',
-				'aria-controls' => 'elementor-toc__body',
-			]
-		);
+		$this->add_render_attribute( 'header', 'class', 'elementor-toc__header' );
 
 		$this->add_render_attribute(
 			'body',
 			[
+				'id' => $toc_id,
 				'class' => 'elementor-toc__body',
-				'aria-expanded' => 'true',
 			]
 		);
 
@@ -766,6 +872,8 @@ class Table_Of_Contents extends Base_Widget {
 					'class' => 'elementor-toc__toggle-button elementor-toc__toggle-button--expand',
 					'role' => 'button',
 					'tabindex' => '0',
+					'aria-controls' => $toc_id,
+					'aria-expanded' => 'true',
 					'aria-label' => esc_html__( 'Open table of contents', 'elementor-pro' ),
 				]
 			);
@@ -775,6 +883,8 @@ class Table_Of_Contents extends Base_Widget {
 					'class' => 'elementor-toc__toggle-button elementor-toc__toggle-button--collapse',
 					'role' => 'button',
 					'tabindex' => '0',
+					'aria-controls' => $toc_id,
+					'aria-expanded' => 'true',
 					'aria-label' => esc_html__( 'Close table of contents', 'elementor-pro' ),
 				]
 			);

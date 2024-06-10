@@ -8,8 +8,9 @@ use ElementorPro\Base\Module_Base;
 use ElementorPro\Plugin;
 use Elementor\Core\Base\Document;
 use ElementorPro\Modules\LoopBuilder\Documents\Loop as LoopDocument;
-use Elementor\Core\Experiments\Manager;
 use ElementorPro\Core\Utils;
+use ElementorPro\Modules\LoopBuilder\Skins\Skin_Loop_Post_Taxonomy;
+use Elementor\Widget_Base;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -21,14 +22,26 @@ class Module extends Module_Base {
 	 * Elementor template-library taxonomy slug.
 	 */
 	const TEMPLATE_LIBRARY_TYPE_SLUG = 'loop-item';
-	const EXPERIMENT_NAME = 'loop';
 	const LOOP_BASE_SKIN_ID = 'base';
 	const LOOP_POST_SKIN_ID = 'post';
+	const LOOP_POST_TAXONOMY_SKIN_ID = 'post_taxonomy';
 	const QUERY_ID = 'query';
 	const LOOP_WIDGETS = [
 		'loop-grid',
 		'loop-carousel',
 	];
+
+	const TAXONOMY_LOOP_EXPERIMENT_NAME = 'taxonomy_loop_addition';
+
+	public static $taxonomies_displayed_ids = [];
+
+	public static function add_to_taxonomies_avoid_list( $ids ) {
+		self::$taxonomies_displayed_ids = array_unique( array_merge( self::$taxonomies_displayed_ids, $ids ) );
+	}
+
+	public static function get_taxonomies_avoid_list_ids() {
+		return self::$taxonomies_displayed_ids;
+	}
 
 	public function get_name() {
 		return 'loop-builder';
@@ -47,6 +60,10 @@ class Module extends Module_Base {
 
 		add_filter( 'elementor/finder/categories', [ $this, 'add_finder_items' ] );
 		add_action( 'elementor/template-library/create_new_dialog_fields', [ $this, 'add_posts_type_to_template_popup' ], 10 );
+
+		add_action( 'elementor/template-library/create_new_dialog_fields', [ $this, 'add_taxonomies_type_to_template_popup' ], 12 );
+		add_action( 'elementor-pro/modules/loop-builder/documents/loop/query_settings', [ $this, 'add_taxonomies_type_to_loop_settings_query' ], 12 );
+
 		add_filter( 'elementor/frontend/builder_content_data', [ $this, 'filter_content_data' ], 10, 2 );
 
 		add_action( 'manage_' . Source_Local::CPT . '_posts_columns', function ( $columns ) {
@@ -65,17 +82,36 @@ class Module extends Module_Base {
 		// Prevent enqueue default dynamic CSS for loop item templates
 		add_filter( 'elementor/css-file/dynamic/should_enqueue',
 			function ( $should_enqueue, $post_id ) {
-				if ( static::TEMPLATE_LIBRARY_TYPE_SLUG === get_post_meta( $post_id, Document::TYPE_META_KEY, true ) ) {
+				if ( $this->is_loop_item_document_type_meta_key( $post_id ) ) {
 					$should_enqueue = false;
 				}
 				return $should_enqueue;
 			},
 		10, 2 );
 
+		// Prevent enqueue default Post CSS for loop item templates
+		add_action(
+			'elementor/css-file/post/enqueue',
+			function( $css_file ) {
+				$post_id = $css_file->get_post_id();
+				$file_handle = 'elementor-post-' . $post_id;
+
+				if ( $this->is_loop_item_document_type_meta_key( $post_id ) && wp_style_is( $file_handle, 'enqueued' ) ) {
+					wp_dequeue_style( $file_handle );
+				}
+			}
+		);
+
 		add_filter( 'elementor/editor/localize_settings', function ( $config ) {
 			$config['admin_url'] = admin_url();
 			return $config;
-		});
+		} );
+
+		foreach ( static::LOOP_WIDGETS as $widget_type ) {
+			add_action( 'elementor/widget/' . $widget_type . '/skins_init', function ( Widget_Base $widget ) {
+				$widget->add_skin( new Skin_Loop_Post_Taxonomy( $widget ) );
+			}, 12 );
+		}
 	}
 
 	public function filter_template_to_canvas_view() {
@@ -113,25 +149,6 @@ class Module extends Module_Base {
 	}
 
 	/**
-	 * Add to the experiments
-	 *
-	 * @return array
-	 */
-	public static function get_experimental_data() {
-		return [
-			'name' => static::EXPERIMENT_NAME,
-			'title' => esc_html__( 'Loop', 'elementor-pro' ),
-			'description' => sprintf(
-				esc_html__( 'Create powerful & repeating templates and populate each one with dynamic content like text or images. Great for listings, posts, portfolios and more! %1$sLearn More%2$s', 'elementor-pro' ),
-				'<a href="https://go.elementor.com/wp-dash-loop/" target="_blank">',
-				'</a>'
-			),
-			'release_status' => Manager::RELEASE_STATUS_STABLE,
-			'default' => Manager::STATE_ACTIVE,
-		];
-	}
-
-	/**
 	 * Filter content data.
 	 *
 	 * Determine whether we are in the Editor and are trying to Edit an empty loop template.
@@ -162,10 +179,6 @@ class Module extends Module_Base {
 		return $data;
 	}
 
-	public static function is_active(): bool {
-		return Plugin::elementor()->experiments->is_feature_active( static::EXPERIMENT_NAME );
-	}
-
 	public function add_finder_items( array $categories ) {
 		$categories['create']['items']['loop-template'] = [
 			'title' => esc_html__( 'Add New Loop Template', 'elementor-pro' ),
@@ -184,7 +197,7 @@ class Module extends Module_Base {
 		$form->add_control( '_elementor_source', [
 			'type' => Controls_Manager::SELECT,
 			'label' => esc_html__( 'Choose source type', 'elementor-pro' ),
-			'options' => [ self::LOOP_POST_SKIN_ID => esc_html__( 'Posts', 'elementor-pro' ) ],
+			'options' => $this->get_post_type_options(),
 			'section' => 'main',
 			'required' => true,
 			'conditions' => [
@@ -253,5 +266,34 @@ class Module extends Module_Base {
 		}
 
 		return $columns;
+	}
+
+	private function get_post_type_options() {
+		$options = [ self::LOOP_POST_SKIN_ID => esc_html__( 'Posts', 'elementor-pro' ) ];
+
+		return $options;
+	}
+
+	public function add_taxonomies_type_to_template_popup( $form ) {
+		$this->add_taxonomies_to_options( $form, '_elementor_source' );
+	}
+
+	public function add_taxonomies_type_to_loop_settings_query( $form ) {
+		$this->add_taxonomies_to_options( $form, 'source' );
+	}
+
+	protected function add_taxonomies_to_options( $form, $control_name ) {
+		$controls = $form->get_controls( $control_name );
+
+		if ( ! $controls || ! isset( $controls['options'] ) ) {
+			return;
+		}
+
+		$options = $controls['options'];
+		$options[ self::LOOP_POST_TAXONOMY_SKIN_ID ] = esc_html__( 'Post Taxonomy', 'elementor-pro' );
+
+		$form->update_control($control_name, [
+			'options' => $options,
+		] );
 	}
 }

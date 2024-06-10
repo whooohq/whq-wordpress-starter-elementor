@@ -5,7 +5,6 @@ use Elementor\Core\DocumentTypes\PageBase;
 use Elementor\Controls_Manager;
 use ElementorPro\Base\Module_Base;
 use Elementor\Controls_Stack;
-use Elementor\Core\Experiments\Manager;
 use ElementorPro\Modules\ThemeBuilder\Documents\Theme_Page_Document;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -24,25 +23,13 @@ class Module extends Module_Base {
 		return 'scroll-snap';
 	}
 
-	public static function get_experimental_data() {
-		return [
-			'name' => 'e_scroll_snap',
-			'title' => esc_html__( 'Scroll Snap', 'elementor-pro' ),
-			'description' => esc_html__( 'Customize how visitors scroll through your site. Scroll Snap makes the viewport stop or pause on a specific position of a section when scrolling ends.', 'elementor-pro' )
-				. ' <a href="https://go.elementor.com/wp-dash-scroll-snap" target="_blank">'
-				. esc_html__( 'Learn More', 'elementor-pro' ) . '</a>',
-			'release_status' => Manager::RELEASE_STATUS_STABLE,
-			'default' => Manager::STATE_ACTIVE,
-		];
-	}
-
 	public function register_controls( Controls_Stack $controls_stack, $section_id ) {
 
 		if ( ( ! $controls_stack instanceof Theme_Page_Document && ! $controls_stack instanceof PageBase ) || 'section_custom_css_pro' !== $section_id ) {
 			return;
 		}
 
-		$scroll_snap_children = '.elementor-section:not(.elementor-inner-section), .elementor-location-header, .elementor-location-footer, .page-header, .site-header, .elementor-add-section, .e-con';
+		$scroll_snap_children = '.elementor-section:not(.elementor-inner-section), .elementor-location-header, .elementor-location-footer, .page-header, .site-header, .elementor-add-section, .e-con:not(.e-child)';
 
 		$controls_stack->start_controls_section(
 			'section_scroll_snap',
@@ -98,8 +85,13 @@ class Module extends Module_Base {
 				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
 					'px' => [
-						'min' => 0,
 						'max' => 200,
+					],
+					'em' => [
+						'max' => 20,
+					],
+					'rem' => [
+						'max' => 20,
 					],
 				],
 				'condition' => [

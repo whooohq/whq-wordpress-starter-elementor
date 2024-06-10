@@ -1,4 +1,4 @@
-/*! elementor - v3.15.0 - 02-08-2023 */
+/*! elementor - v3.21.0 - 20-05-2024 */
 :root {
   --e-is-device-mode: 0;
 }
@@ -53,8 +53,7 @@
   display: none;
 }
 .e-responsive-bar-switcher__option:not(:last-child) {
-  -webkit-margin-end: 6px;
-          margin-inline-end: 6px;
+  margin-inline-end: 6px;
 }
 .e-responsive-bar__button {
   -webkit-appearance: none;
@@ -111,12 +110,9 @@
 
 #e-responsive-bar {
   width: 100%;
-  -webkit-margin-before: calc(-40px + 40px * var(--e-is-device-mode));
-          margin-block-start: calc(-40px + 40px * var(--e-is-device-mode));
+  margin-block-start: calc(-40px + 40px * var(--e-is-device-mode));
   z-index: 1;
-  transition: -webkit-margin-before 0.2s ease-in-out;
   transition: margin-block-start 0.2s ease-in-out;
-  transition: margin-block-start 0.2s ease-in-out, -webkit-margin-before 0.2s ease-in-out;
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
@@ -153,8 +149,7 @@
 #e-responsive-bar__size-inputs-wrapper {
   display: flex;
   align-items: center;
-  -webkit-margin-end: 8px;
-          margin-inline-end: 8px;
+  margin-inline-end: 8px;
   color: #BABFC5;
 }
 #e-responsive-bar-switcher {

@@ -40,9 +40,10 @@ class Product_Meta extends Base_Widget {
 		$this->add_control(
 			'wc_style_warning',
 			[
-				'type' => Controls_Manager::RAW_HTML,
-				'raw' => esc_html__( 'The style of this widget is often affected by your theme and plugins. If you experience any such issue, try to switch to a basic theme and deactivate related plugins.', 'elementor-pro' ),
-				'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
+				// TODO: Remove define() with the release of Elementor 3.22
+				'type' => defined( 'Controls_Manager::ALERT' ) ? Controls_Manager::ALERT : 'alert',
+				'alert_type' => 'info',
+				'content' => esc_html__( 'The style of this widget is often affected by your theme and plugins. If you experience any such issue, try to switch to a basic theme and deactivate related plugins.', 'elementor-pro' ),
 			]
 		);
 
@@ -69,7 +70,13 @@ class Product_Meta extends Base_Widget {
 				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
 					'px' => [
-						'max' => 50,
+						'max' => 100,
+					],
+					'em' => [
+						'max' => 10,
+					],
+					'rem' => [
+						'max' => 10,
 					],
 				],
 				'selectors' => [
@@ -134,6 +141,12 @@ class Product_Meta extends Base_Widget {
 						'min' => 1,
 						'max' => 20,
 					],
+					'em' => [
+						'max' => 2,
+					],
+					'rem' => [
+						'max' => 2,
+					],
 				],
 				'condition' => [
 					'divider' => 'yes',
@@ -175,12 +188,13 @@ class Product_Meta extends Base_Widget {
 				],
 				'range' => [
 					'px' => [
-						'min' => 1,
 						'max' => 100,
 					],
-					'%' => [
-						'min' => 1,
-						'max' => 100,
+					'em' => [
+						'max' => 10,
+					],
+					'rem' => [
+						'max' => 10,
 					],
 				],
 				'condition' => [
@@ -360,6 +374,9 @@ class Product_Meta extends Base_Widget {
 				'dynamic' => [
 					'active' => true,
 				],
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 
@@ -371,6 +388,9 @@ class Product_Meta extends Base_Widget {
 				'placeholder' => esc_html__( 'N/A', 'elementor-pro' ),
 				'dynamic' => [
 					'active' => true,
+				],
+				'ai' => [
+					'active' => false,
 				],
 			]
 		);

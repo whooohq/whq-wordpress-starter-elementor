@@ -1,4 +1,4 @@
-/*! elementor - v3.15.0 - 02-08-2023 */
+/*! elementor - v3.21.0 - 20-05-2024 */
 :root {
   --e-a-color-white:	#ffffff;
   --e-a-color-black:	#000000;
@@ -10,8 +10,9 @@
   --e-a-color-danger:	#DC2626;
   --e-a-color-info:	#2563EB;
   --e-a-color-warning:	#F59E0B;
-  --e-a-color-accent:	#524CFF;
+  --e-a-color-accent:	#93003f;
   --e-a-color-global:	#1DDDBF;
+  --e-a-color-accent-promotion:	#93003f;
   --e-a-bg-default:	#ffffff;
   --e-a-bg-invert:	#0C0D0E;
   --e-a-bg-hover:	#F1F2F3;
@@ -49,12 +50,18 @@
   --e-a-btn-bg-primary:	#F3BAFD;
   --e-a-btn-bg-primary-hover: #F5D0FE;
   --e-a-btn-bg-primary-active:#F0ABFC;
-  --e-a-btn-bg-accent:	#524CFF;
-  --e-a-btn-bg-accent-hover:	#4C43E5;
-  --e-a-btn-bg-accent-active:	#4338CA;
+  --e-a-btn-bg-accent:	#93003f;
+  --e-a-btn-bg-accent-hover:	#8F1A4C;
+  --e-a-btn-bg-accent-active:	#A93365;
+  --e-a-btn-bg-info:	#2563EB;
+  --e-a-btn-bg-info-hover:	#134cca;
+  --e-a-btn-bg-info-active:	#0e3b9c;
   --e-a-btn-bg-success:	#0A875A;
   --e-a-btn-bg-success-hover:	#06583a;
   --e-a-btn-bg-success-active:#03281b;
+  --e-a-btn-bg-warning:	#F59E0B;
+  --e-a-btn-bg-warning-hover:	#c57f08;
+  --e-a-btn-bg-warning-active:#945f06;
   --e-a-btn-bg-danger:	#DC2626;
   --e-a-btn-bg-danger-hover:	#b21d1d;
   --e-a-btn-bg-danger-active:	#861616;
@@ -83,7 +90,7 @@
 .dialog-close-button {
   cursor: pointer;
   position: absolute;
-  margin-top: 15px;
+  margin-block-start: 15px;
   left: 15px;
   color: var(--e-a-color-txt);
   font-size: 15px;
@@ -131,16 +138,11 @@
 .dialog-type-alert .dialog-header:after {
   content: "";
   display: block;
-  -webkit-border-after: var(--e-a-border);
-          border-block-end: var(--e-a-border);
-  -webkit-padding-after: 10px;
-          padding-block-end: 10px;
-  -webkit-margin-after: 10px;
-          margin-block-end: 10px;
-  -webkit-margin-start: -20px;
-          margin-inline-start: -20px;
-  -webkit-margin-end: -20px;
-          margin-inline-end: -20px;
+  border-block-end: var(--e-a-border);
+  padding-block-end: 10px;
+  margin-block-end: 10px;
+  margin-inline-start: -20px;
+  margin-inline-end: -20px;
 }
 .dialog-type-confirm .dialog-message,
 .dialog-type-alert .dialog-message {
@@ -148,8 +150,7 @@
 }
 .dialog-type-confirm .dialog-buttons-wrapper,
 .dialog-type-alert .dialog-buttons-wrapper {
-  -webkit-padding-before: 10px;
-          padding-block-start: 10px;
+  padding-block-start: 10px;
   display: flex;
   justify-content: flex-end;
   gap: 15px;
@@ -213,6 +214,10 @@
 .dialog-type-alert .dialog-buttons-wrapper .dialog-button.dialog-cancel:disabled {
   background: transparent;
   color: var(--e-a-color-txt-disabled);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-btn-txt-border,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-btn-txt-border {
+  border: 1px solid var(--e-a-color-txt-muted);
 }
 .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.elementor-button-success, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-success,
 .dialog-type-alert .dialog-buttons-wrapper .dialog-button.elementor-button-success,
@@ -285,6 +290,18 @@
 .dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-accent:active {
   background-color: var(--e-a-btn-bg-accent-active);
 }
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button.elementor-button-info, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-info,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.elementor-button-info,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-info {
+  background-color: var(--e-a-btn-bg-info);
+}
+.dialog-type-confirm .dialog-buttons-wrapper .dialog-button.elementor-button-info:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.elementor-button-info:focus, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-info:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-info:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.elementor-button-info:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.elementor-button-info:focus,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-info:hover,
+.dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-info:focus {
+  background-color: var(--e-a-btn-bg-info-hover);
+}
 .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.elementor-button-warning, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button.e-warning,
 .dialog-type-alert .dialog-buttons-wrapper .dialog-button.elementor-button-warning,
 .dialog-type-alert .dialog-buttons-wrapper .dialog-button.e-warning {
@@ -311,8 +328,7 @@
 }
 .dialog-type-confirm .dialog-buttons-wrapper .dialog-button i,
 .dialog-type-alert .dialog-buttons-wrapper .dialog-button i {
-  -webkit-margin-end: 5px;
-          margin-inline-end: 5px;
+  margin-inline-end: 5px;
 }
 .dialog-type-confirm .dialog-buttons-wrapper .dialog-button:hover, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button:focus, .dialog-type-confirm .dialog-buttons-wrapper .dialog-button:visited,
 .dialog-type-alert .dialog-buttons-wrapper .dialog-button:hover,
@@ -383,8 +399,7 @@
   cursor: pointer;
 }
 #elementor-change-exit-preference-dialog .dialog-message > div {
-  -webkit-margin-after: 10px;
-          margin-block-end: 10px;
+  margin-block-end: 10px;
 }
 
 #e-experiments-messages-dialog .dialog-confirm-header {
@@ -396,8 +411,7 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  -webkit-margin-before: 20px;
-          margin-block-start: 20px;
+  margin-block-start: 20px;
 }
 
 @media (min-width: 1024px) {
@@ -427,14 +441,12 @@
   }
 }
 .elementor-templates-modal .dialog-header {
-  -webkit-border-after: var(--e-a-border);
-          border-block-end: var(--e-a-border);
+  border-block-end: var(--e-a-border);
   padding: 0;
   z-index: 1;
 }
 .elementor-templates-modal .dialog-buttons-wrapper {
-  -webkit-border-before: var(--e-a-border);
-          border-block-start: var(--e-a-border);
+  border-block-start: var(--e-a-border);
   padding: 10px;
   display: flex;
   justify-content: flex-end;
@@ -467,22 +479,19 @@
 }
 .elementor-templates-modal__header__logo-area {
   text-align: start;
-  -webkit-padding-start: 15px;
-          padding-inline-start: 15px;
+  padding-inline-start: 15px;
 }
 .elementor-templates-modal__header__logo-area > * {
   display: flex;
   align-items: center;
 }
 .elementor-templates-modal__header__logo__icon-wrapper {
-  -webkit-margin-end: 10px;
-          margin-inline-end: 10px;
+  margin-inline-end: 10px;
   font-size: 12px;
 }
 .elementor-templates-modal__header__logo__title {
   color: var(--e-a-color-txt-active);
-  -webkit-padding-before: 2px;
-          padding-block-start: 2px;
+  padding-block-start: 2px;
 }
 .elementor-templates-modal__header__items-area {
   display: flex;
@@ -505,18 +514,15 @@
 }
 .elementor-templates-modal__header__close--normal {
   width: 47px;
-  -webkit-border-start: var(--e-a-border);
-          border-inline-start: var(--e-a-border);
+  border-inline-start: var(--e-a-border);
 }
 .elementor-templates-modal__header__close--normal i {
   font-size: 18px;
 }
 .elementor-templates-modal__header__close--skip {
   padding: 10px;
-  -webkit-padding-start: 20px;
-          padding-inline-start: 20px;
-  -webkit-margin-end: 10px;
-          margin-inline-end: 10px;
+  padding-inline-start: 20px;
+  margin-inline-end: 10px;
   font-size: 11px;
   font-weight: normal;
   line-height: 1;
@@ -525,12 +531,9 @@
 }
 .elementor-templates-modal__header__close--skip > i {
   font-size: inherit;
-  -webkit-padding-start: 10px;
-          padding-inline-start: 10px;
-  -webkit-margin-start: 15px;
-          margin-inline-start: 15px;
-  -webkit-border-start: 1px solid;
-          border-inline-start: 1px solid;
+  padding-inline-start: 10px;
+  margin-inline-start: 15px;
+  border-inline-start: 1px solid;
 }
 .elementor-templates-modal__header__close--skip > i:not(:hover) {
   color: var(--e-a-color-white);
@@ -538,8 +541,7 @@
 .elementor-templates-modal__sidebar {
   flex-shrink: 0;
   width: 25%;
-  -webkit-border-end: var(--e-a-border);
-          border-inline-end: var(--e-a-border);
+  border-inline-end: var(--e-a-border);
 }
 .elementor-templates-modal__content {
   flex-grow: 1;
@@ -572,7 +574,7 @@
   font-weight: 500;
   line-height: 1.2;
   padding: 8px 16px;
-  margin-left: 10px;
+  margin-inline-end: 10px;
   color: var(--e-a-dark-color-txt);
   border-radius: var(--e-a-border-radius);
   transition: var(--e-a-transition-hover);
@@ -583,15 +585,13 @@
   color: var(--e-a-color-txt-hover);
 }
 #elementor-toast .dialog-button:last-child {
-  margin-left: 0;
+  margin-inline-end: 0;
 }
 
 /* Will select next element after last '.elementor-general-section' */
 #wpadminbar #wp-admin-bar-elementor_edit_page .elementor-general-section + .elementor-second-section {
-  -webkit-border-before: 1px solid #464b50;
-          border-block-start: 1px solid #464b50;
-  -webkit-margin-before: 6px;
-          margin-block-start: 6px;
+  border-block-start: 1px solid #464b50;
+  margin-block-start: 6px;
 }
 
 .e-logo-wrapper {
@@ -614,7 +614,7 @@
   width: 650px;
   max-width: 98%;
   top: 18vh;
-  left: calc( 50% - 650px / 2 );
+  left: calc(50% - 650px / 2);
 }
 #elementor-finder__modal .dialog-content {
   text-align: start;
@@ -623,7 +623,7 @@
   height: initial;
   min-height: 0;
   padding: 0;
-  text-align: right;
+  text-align: start;
 }
 #elementor-finder__search {
   padding: 15px;
@@ -631,8 +631,7 @@
 }
 #elementor-finder__search i {
   font-size: 16px;
-  -webkit-margin-end: 15px;
-          margin-inline-end: 15px;
+  margin-inline-end: 15px;
 }
 #elementor-finder__search__input {
   border: none;
@@ -670,7 +669,7 @@
 .elementor-finder__results__category__title {
   padding: 5px 25px;
   font-size: 10px;
-  border-bottom: var(--e-a-border);
+  border-block-end: var(--e-a-border);
 }
 .elementor-finder__results__category--dynamic .elementor-finder__results__category__items {
   min-height: 26px;
@@ -714,8 +713,7 @@
   font-size: 13px;
 }
 .elementor-finder__results__item__description {
-  -webkit-margin-start: 5px;
-          margin-inline-start: 5px;
+  margin-inline-start: 5px;
   font-style: italic;
 }
 .elementor-finder__results__item__badge {

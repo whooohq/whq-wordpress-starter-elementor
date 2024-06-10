@@ -8,6 +8,7 @@ use Elementor\TemplateLibrary\Source_Local;
 use Elementor\Widget_Base;
 use ElementorPro\Base\Module_Base;
 use ElementorPro\Core\Utils;
+use ElementorPro\Modules\QueryControl\Controls\Group_Control_Taxonomy;
 use ElementorPro\Modules\QueryControl\Controls\Template_Query;
 use ElementorPro\Modules\QueryControl\Classes\Elementor_Post_Query;
 use ElementorPro\Modules\QueryControl\Classes\Elementor_Related_Query;
@@ -738,7 +739,7 @@ class Module extends Module_Base {
 				foreach ( $query->posts as $post ) {
 					$document = Plugin::elementor()->documents->get( $post->ID );
 					if ( $document ) {
-						$results[ $post->ID ] = esc_html( $post->post_title ) . ' (' . $document->get_post_type_title() . ')';
+						$results[ $post->ID ] = htmlentities( esc_html( $post->post_title ) ) . ' (' . $document->get_post_type_title() . ')';
 					}
 				}
 				break;
@@ -847,6 +848,8 @@ class Module extends Module_Base {
 		$controls_manager->add_group_control( Group_Control_Query::get_type(), new Group_Control_Query() );
 
 		$controls_manager->add_group_control( Group_Control_Related::get_type(), new Group_Control_Related() );
+
+		$controls_manager->add_group_control( Group_Control_Taxonomy::get_type(), new Group_Control_Taxonomy() );
 
 		$controls_manager->register( new Query() );
 

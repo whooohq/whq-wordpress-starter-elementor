@@ -3,7 +3,6 @@ namespace ElementorPro\Modules\Notes;
 
 use Elementor\Core\Base\App;
 use ElementorPro\License\API;
-use Elementor\Core\Experiments\Manager;
 use Elementor\TemplateLibrary\Source_Local;
 use ElementorPro\Modules\Notes\Data\Controller;
 use ElementorPro\Modules\Notes\User\Delete_User;
@@ -26,21 +25,6 @@ class Module extends App {
 	// Module-related tables.
 	const TABLE_NOTES = 'e_notes';
 	const TABLE_NOTES_USERS_RELATIONS = 'e_notes_users_relations';
-
-	/**
-	 * Add to the experiments
-	 *
-	 * @return array
-	 */
-	public static function get_experimental_data() {
-		return [
-			'name' => static::NAME,
-			'title' => esc_html__( 'Notes', 'elementor-pro' ),
-			'description' => esc_html__( 'Creates a dedicated workspace for your team and other stakeholders to leave comments and replies on your website while it\'s in progress. Notifications for mentions, replies, etc. are sent by email, and all notes are stored in your site\'s database.', 'elementor-pro' ),
-			'release_status' => Manager::RELEASE_STATUS_STABLE,
-			'default' => Manager::STATE_ACTIVE,
-		];
-	}
 
 	/**
 	 * @return string
@@ -179,9 +163,9 @@ class Module extends App {
 	}
 
 	private function on_elementor_pro_init() {
-		$is_active = API::is_license_active() && API::is_licence_has_feature( static::LICENSE_FEATURE_NAME );
+		$has_license = API::is_license_active() && API::is_licence_has_feature( static::LICENSE_FEATURE_NAME );
 
-		if ( ! $is_active ) {
+		if ( ! $has_license ) {
 			return;
 		}
 
@@ -225,6 +209,12 @@ class Module extends App {
 
 			add_action( 'elementor/editor/before_enqueue_scripts', function () {
 				$this->enqueue_main_scripts();
+			} );
+
+			add_filter( 'elementor-pro/editor/v2/packages', function ( $packages ) {
+				$packages[] = 'editor-notes';
+
+				return $packages;
 			} );
 		}
 	}

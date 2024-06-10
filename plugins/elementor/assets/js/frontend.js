@@ -1,4 +1,5 @@
-/*! elementor - v3.15.0 - 02-08-2023 */
+/*! elementor - v3.21.0 - 20-05-2024 */
+"use strict";
 (self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["frontend"],{
 
 /***/ "../assets/dev/js/frontend/documents-manager.js":
@@ -7,7 +8,6 @@
   \******************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
@@ -69,7 +69,6 @@ exports["default"] = _default;
   \**************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
@@ -101,6 +100,8 @@ module.exports = function ($) {
   };
   if (elementorFrontendConfig.experimentalFeatures['nested-elements']) {
     this.elementsHandlers['nested-tabs.default'] = () => Promise.resolve(/*! import() */).then(__webpack_require__.bind(__webpack_require__, /*! elementor/modules/nested-tabs/assets/js/frontend/handlers/nested-tabs */ "../modules/nested-tabs/assets/js/frontend/handlers/nested-tabs.js"));
+  }
+  if (elementorFrontendConfig.experimentalFeatures['nested-elements']) {
     this.elementsHandlers['nested-accordion.default'] = () => Promise.resolve(/*! import() */).then(__webpack_require__.bind(__webpack_require__, /*! elementor/modules/nested-accordion/assets/js/frontend/handlers/nested-accordion */ "../modules/nested-accordion/assets/js/frontend/handlers/nested-accordion.js"));
   }
   const addGlobalHandlers = () => elementorFrontend.hooks.addAction('frontend/element_ready/global', _global.default);
@@ -242,7 +243,6 @@ module.exports = function ($) {
   \*********************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
@@ -277,13 +277,13 @@ class Frontend extends elementorModules.ViewModule {
     this.config = elementorFrontendConfig;
     this.config.legacyMode = {
       /**
-       * @deprecated since 3.1.0, use `elementorFrontend.config.experimentalFeatures.e_dom_optimization` instead.
+       * @deprecated since 3.1.0
        */
       get elementWrappers() {
         if (elementorFrontend.isEditMode()) {
-          window.top.elementorDevTools.deprecation.deprecated('elementorFrontend.config.legacyMode.elementWrappers', '3.1.0', 'elementorFrontend.config.experimentalFeatures.e_dom_optimization');
+          window.top.elementorDevTools.deprecation.deprecated('elementorFrontend.config.legacyMode.elementWrappers', '3.1.0');
         }
-        return !elementorFrontend.config.experimentalFeatures.e_dom_optimization;
+        return false;
       }
     };
     this.populateActiveBreakpointsConfig();
@@ -592,7 +592,6 @@ if (!elementorFrontend.isEditMode()) {
   \******************************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -770,7 +769,6 @@ exports["default"] = BackgroundSlideshow;
   \**************************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -859,7 +857,7 @@ class BackgroundVideo extends elementorModules.frontend.handlers.Base {
         width: videoSize.width,
         autoplay: true,
         loop: !elementSettings.background_play_once,
-        transparent: false,
+        transparent: true,
         background: true,
         muted: true
       };
@@ -1031,7 +1029,6 @@ exports["default"] = BackgroundVideo;
   \********************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
@@ -1052,7 +1049,6 @@ exports["default"] = _default;
   \****************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
@@ -1072,7 +1068,6 @@ exports["default"] = _default;
   \*****************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -1090,7 +1085,6 @@ exports["default"] = _default;
   \****************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -1157,7 +1151,6 @@ exports["default"] = _default;
   \**********************************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -1226,7 +1219,6 @@ exports["default"] = HandlesPosition;
   \************************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -1318,7 +1310,6 @@ exports["default"] = Shapes;
   \***********************************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -1346,7 +1337,6 @@ exports["default"] = StretchedSection;
   \**************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
 
 
 var _utils = __webpack_require__(/*! ./utils */ "../assets/dev/js/frontend/utils/utils.js");
@@ -1431,7 +1421,6 @@ module.exports = elementorModules.ViewModule.extend({
   \********************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -1489,7 +1478,6 @@ AssetsLoader.assets = {
   \***************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -1582,7 +1570,6 @@ exports["default"] = Controls;
   \********************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -1645,18 +1632,15 @@ class LightboxManager extends elementorModules.ViewModule {
     if (isColorPickingMode) {
       return;
     }
-    const lightbox = this.isOptimizedAssetsLoading() ? await LightboxManager.getLightbox() : elementorFrontend.utils.lightbox;
+    const lightbox = await LightboxManager.getLightbox();
     lightbox.createLightbox(element);
-  }
-  isOptimizedAssetsLoading() {
-    return elementorFrontend.config.experimentalFeatures.e_optimized_assets_loading;
   }
   bindEvents() {
     elementorFrontend.elements.$document.on('click', this.getSettings('selectors.links'), event => this.onLinkClick(event));
   }
   onInit() {
     super.onInit(...arguments);
-    if (!this.isOptimizedAssetsLoading() || elementorFrontend.isEditMode()) {
+    if (elementorFrontend.isEditMode()) {
       return;
     }
 
@@ -1681,7 +1665,6 @@ exports["default"] = LightboxManager;
   \*************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -1703,9 +1686,6 @@ class Swiper {
     container.closest('.elementor-widget-wrap')?.classList.add('e-swiper-container');
     container.closest('.elementor-widget')?.classList.add('e-widget-swiper');
     return new Promise(resolve => {
-      if (!elementorFrontend.config.experimentalFeatures.e_optimized_assets_loading) {
-        return resolve(this.createSwiperInstance(container, this.config));
-      }
       elementorFrontend.utils.assetsLoader.load('script', 'swiper').then(() => resolve(this.createSwiperInstance(container, this.config)));
     });
   }
@@ -1769,7 +1749,6 @@ exports["default"] = Swiper;
   \******************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -1863,7 +1842,6 @@ exports["default"] = _default;
   \************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -1898,7 +1876,6 @@ exports.isScrollSnapActive = isScrollSnapActive;
   \****************************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -1956,7 +1933,6 @@ exports["default"] = BaseLoader;
   \*****************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
@@ -1996,7 +1972,6 @@ exports["default"] = VimeoLoader;
   \*******************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
@@ -2029,7 +2004,6 @@ exports["default"] = YoutubeLoader;
   \***************************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
 
 
 /* eslint-disable camelcase */
@@ -2043,7 +2017,6 @@ __webpack_require__.p = elementorFrontendConfig.urls.assets + 'js/';
   \*********************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -2225,7 +2198,6 @@ exports["default"] = Breakpoints;
   \****************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -2278,7 +2250,6 @@ exports["default"] = _default;
   \***************************************/
 /***/ ((module) => {
 
-"use strict";
 
 
 /**
@@ -2534,7 +2505,6 @@ module.exports = EventManager;
   \*****************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -2590,7 +2560,6 @@ exports["default"] = _default;
   \*************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -2671,7 +2640,6 @@ exports["default"] = _default;
   \********************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", ({
@@ -2694,6 +2662,7 @@ exports["default"] = _default;
   \********************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
+
 var isPrototypeOf = __webpack_require__(/*! ../internals/object-is-prototype-of */ "../node_modules/core-js/internals/object-is-prototype-of.js");
 
 var $TypeError = TypeError;
@@ -2711,6 +2680,7 @@ module.exports = function (it, Prototype) {
   !*** ../node_modules/core-js/internals/dom-exception-constants.js ***!
   \********************************************************************/
 /***/ ((module) => {
+
 
 module.exports = {
   IndexSizeError: { s: 'INDEX_SIZE_ERR', c: 1, m: 1 },
@@ -2749,7 +2719,6 @@ module.exports = {
   \******************************************************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
 
 var $ = __webpack_require__(/*! ../internals/export */ "../node_modules/core-js/internals/export.js");
 var global = __webpack_require__(/*! ../internals/global */ "../node_modules/core-js/internals/global.js");

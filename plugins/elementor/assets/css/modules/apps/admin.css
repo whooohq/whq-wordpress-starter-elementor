@@ -1,4 +1,4 @@
-body.elementor_page_elementor-apps {
+body.elementor-apps-page {
   background: var(--e-a-color-white);
 }
 
@@ -22,6 +22,10 @@ body.elementor_page_elementor-apps {
 .e-a-apps .e-a-page-footer {
   margin: 60px auto;
   text-align: center;
+}
+.e-a-apps .e-a-page-footer p {
+  max-width: 1200px;
+  margin: auto;
 }
 .e-a-apps .e-a-list {
   display: grid;
@@ -50,7 +54,7 @@ body.elementor_page_elementor-apps {
   border-radius: var(--e-a-border-radius);
   width: 70px;
   display: flex;
-  margin-bottom: 20px;
+  margin-block-end: 20px;
 }
 .e-a-apps .e-a-heading .e-a-badge {
   background: #ECFDF5;
@@ -81,7 +85,7 @@ body.elementor_page_elementor-apps {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-top: 20px;
+  margin-block-start: 20px;
 }
 .e-a-apps .e-a-actions a {
   text-decoration: none;

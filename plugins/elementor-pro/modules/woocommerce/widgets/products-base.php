@@ -27,9 +27,10 @@ abstract class Products_Base extends Base_Widget {
 		$this->add_control(
 			'wc_style_warning',
 			[
-				'type' => Controls_Manager::RAW_HTML,
-				'raw' => esc_html__( 'The style of this widget is often affected by your theme and plugins. If you experience any such issue, try to switch to a basic theme and deactivate related plugins.', 'elementor-pro' ),
-				'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
+				// TODO: Remove define() with the release of Elementor 3.22
+				'type' => defined( 'Controls_Manager::ALERT' ) ? Controls_Manager::ALERT : 'alert',
+				'alert_type' => 'info',
+				'content' => esc_html__( 'The style of this widget is often affected by your theme and plugins. If you experience any such issue, try to switch to a basic theme and deactivate related plugins.', 'elementor-pro' ),
 			]
 		);
 
@@ -59,8 +60,13 @@ abstract class Products_Base extends Base_Widget {
 				],
 				'range' => [
 					'px' => [
-						'min' => 0,
 						'max' => 100,
+					],
+					'em' => [
+						'max' => 10,
+					],
+					'rem' => [
+						'max' => 10,
 					],
 				],
 				'selectors' => [
@@ -86,8 +92,13 @@ abstract class Products_Base extends Base_Widget {
 				],
 				'range' => [
 					'px' => [
-						'min' => 0,
 						'max' => 100,
+					],
+					'em' => [
+						'max' => 10,
+					],
+					'rem' => [
+						'max' => 10,
 					],
 				],
 				'selectors' => [
@@ -207,10 +218,14 @@ abstract class Products_Base extends Base_Widget {
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
+					'px' => [
+						'max' => 100,
+					],
 					'em' => [
-						'min' => 0,
-						'max' => 5,
-						'step' => 0.1,
+						'max' => 10,
+					],
+					'rem' => [
+						'max' => 10,
 					],
 				],
 				'selectors' => [
@@ -261,10 +276,14 @@ abstract class Products_Base extends Base_Widget {
 					'unit' => 'em',
 				],
 				'range' => [
+					'px' => [
+						'max' => 50,
+					],
 					'em' => [
-						'min' => 0,
-						'max' => 4,
-						'step' => 0.1,
+						'max' => 5,
+					],
+					'rem' => [
+						'max' => 5,
 					],
 				],
 				'selectors' => [
@@ -280,10 +299,14 @@ abstract class Products_Base extends Base_Widget {
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
+					'px' => [
+						'max' => 50,
+					],
 					'em' => [
-						'min' => 0,
 						'max' => 5,
-						'step' => 0.1,
+					],
+					'rem' => [
+						'max' => 5,
 					],
 				],
 				'selectors' => [
@@ -572,14 +595,13 @@ abstract class Products_Base extends Base_Widget {
 				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
 					'px' => [
-						'min' => 0,
 						'max' => 50,
-						'step' => 1,
 					],
 					'em' => [
-						'min' => 0,
-						'max' => 3.5,
-						'step' => 0.1,
+						'max' => 5,
+					],
+					'rem' => [
+						'max' => 5,
 					],
 				],
 				'selectors' => [
@@ -618,8 +640,13 @@ abstract class Products_Base extends Base_Widget {
 				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
 				'range' => [
 					'px' => [
-						'min' => 0,
 						'max' => 200,
+					],
+					'em' => [
+						'max' => 20,
+					],
+					'rem' => [
+						'max' => 20,
 					],
 				],
 				'selectors' => [
@@ -786,10 +813,14 @@ abstract class Products_Base extends Base_Widget {
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'custom' ],
 				'range' => [
+					'px' => [
+						'max' => 20,
+					],
 					'em' => [
-						'min' => 0,
 						'max' => 2,
-						'step' => 0.1,
+					],
+					'rem' => [
+						'max' => 2,
 					],
 				],
 				'selectors' => [
@@ -1050,6 +1081,10 @@ abstract class Products_Base extends Base_Widget {
 						'max' => 20,
 					],
 					'em' => [
+						'min' => -2,
+						'max' => 2,
+					],
+					'rem' => [
 						'min' => -2,
 						'max' => 2,
 					],
